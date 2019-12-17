@@ -1,0 +1,8 @@
+{
+  "filename": "OWML.TestMod.dll",
+  "author": "Alek",
+  "name": "TestMod",
+  "uniqueName": "Alek.TestMod",
+  "version": "0.1",
+  "enabled": false
+}
