@@ -1,32 +1,33 @@
-# Outer Wilds Mod Loader (OWML)
+# Outer Wilds Mod Loader
 
-## Install:
-
-1. Check that the path to the game is correct in OWML.Config.json. The default is "C:/Program Files (x86)/Outer Wilds".
-2. Run OWML.Launcher.exe.
+OWML makes mod developent for Outer Wilds (hopefully!) much easier, and makes us able to use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game.
 
 ## How it works
 
 The launcher does this:
-1. Copy some files from the game which is needed by OWML:
-   * Assembly-CSharp.dll
-   * UnityEngine.CoreModule.dll
-2. Patch the game file \Managed\Assembly-CSharp.dll usind dnpatch to make the game call the mod loader when it starts. 
-3. Copy OWML files to the game folder, used by the mod loader.
-3. Start the game.
+1. Copies some files from the game which is needed by OWML: Assembly-CSharp.dll and UnityEngine.CoreModule.dll.
+2. Patches the game file \Managed\Assembly-CSharp.dll usind dnpatch to make the game call the mod loader when it starts. 
+3. Copies OWML files to the game folder, used by the mod loader.
+3. Starts the game.
 
 The mod loader does this:
-1. Get all mods from the Mods folder
-2. Create a mod helper object with useful events, etc.
+1. Gets all mods from the Mods folder
+2. Creates a mod helper with useful events, etc.
 3. For each mod found in Mods:
-   1. Create a new Unity game object
-   2. Add the mod behaviour to the game object.
-   3. Initialize the mod bevaiour with the mod helper.
+   1. Creates a new Unity game object
+   2. Adds the mod behaviour to the game object.
+   3. Initializes the mod behaviour with the mod helper.
    
+## Compatibility
+
+* Tested with Outer Wilds 1.0.0, 1.0.2 and 1.0.3.
+* Currently Windows only.
+
 ## For players
 
-Download mods and put them in the Mods folder.
-Make sure each mod has its own folder in Mods.
+1. Check that the path to the game is correct in OWML.Config.json. The default is "C:/Program Files (x86)/Outer Wilds".
+2. Download mods and put them in the Mods folder. Make sure each mod has its own folder in Mods.
+3. Run OWML.Launcher.exe as administrator.
 
 ## For modders
 
@@ -37,13 +38,16 @@ Make a new project with a class inheriting from ModBehaviour. This is a Unity mo
 Your initial logic goes in Awake or Start (called by Unity). You'll have access to the mod helper at that time. Example:
 
 ~~~~
-private void Start()
+public class TestMod : ModBehaviour
 {
-    ModHelper.Console.WriteLine("In some mod!");
+    private void Start()
+    {
+        ModHelper.Console.WriteLine($"In {nameof(TestMod)}!");
+    }
 }
 ~~~~
 
-This will be called when the game starts (at the title menu) which might be too early for what you want to do. The mod helper contains events we can use to know when the game has properly loaded. Here we add an event for when the Flashlight class has loaded: 
+This will be called when the game starts (at the title menu), which might be too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when  Flashlight has loaded:
 
 ~~~~
 private void Start()
@@ -62,14 +66,15 @@ private void OnStart(MonoBehaviour behaviour)
 }
 ~~~~
 
-Mod helper:
+The mod helper contains useful helpers:
 
-|Thing|What it does|
-|-----|------------|
+|Helper|What it does|
+|------|------------|
 |Logger|Logs to file|
 |Console|Prints to the console|
-|Events|Allows listening to events, such as Awake or Start of monobehaviours. Uses HarmonyHelper.
-|HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method. 
+|Events|Allows listening to events, such as Awake and Start of monobehaviours. Uses HarmonyHelper.|
+|HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
+|?|More to come!|
 
 Add a manifest file called manifest.json. Example: 
 
@@ -84,9 +89,11 @@ Add a manifest file called manifest.json. Example:
 }
 ~~~~
 
-## Thanks to
+## Credits
 
-* Outer Wilds, one of my favorite games ever: http://www.outerwilds.com
+* Outer Wilds: http://www.outerwilds.com
+* Outer Wilds on Discord: https://discord.gg/csKYR3w
+* Outer Wilds on Reddit: https://www.reddit.com/r/outerwilds
 * SMAPI, the main inspiration for this project: https://smapi.io
 
 Dependencies:
