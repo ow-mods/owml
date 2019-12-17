@@ -2,8 +2,8 @@
 
 ## Install:
 
-1. Check that the path to the game is correct in config.json. The default is "C:/Program Files (x86)/Outer Wilds".
-2. Run Launcher.exe.
+1. Check that the path to the game is correct in OWML.Config.json. The default is "C:/Program Files (x86)/Outer Wilds".
+2. Run OWML.Launcher.exe.
 
 ## How it works
 
@@ -18,7 +18,7 @@ The launcher does this:
 The mod loader does this:
 1. Get all mods from the Mods folder
 2. Create a mod helper object with useful events, etc.
-3. For each mod:
+3. For each mod found in Mods:
    1. Create a new Unity game object
    2. Add the mod behaviour to the game object.
    3. Initialize the mod bevaiour with the mod helper.
@@ -26,13 +26,13 @@ The mod loader does this:
 ## For players
 
 Download mods and put them in the Mods folder.
-Make sure each mod has it's own folder in Mods.
+Make sure each mod has its own folder in Mods.
 
 ## For modders
 
 See sample mods for examples.
 
-Make a new project with a class inheriting from ModBehaviour. This is a Unity monobehaviour and acts accordingly. Unity doc: https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
+Make a new project with a class inheriting from ModBehaviour. This is a Unity monobehaviour, see Unity doc: https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
 
 Your initial logic goes in Awake or Start (called by Unity). You'll have access to the mod helper at that time. Example:
 
@@ -63,12 +63,13 @@ private void OnStart(MonoBehaviour behaviour)
 ~~~~
 
 Mod helper:
+
 |Thing|What it does|
 |-----|------------|
 |Logger|Logs to file|
 |Console|Prints to the console|
 |Events|Allows listening to events, such as Awake or Start of monobehaviours. Uses HarmonyHelper.
-|HarmonyHelper|Helper methods for Harmony, such as adding a method after another, and changing or removing the contents of a method. 
+|HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method. 
 
 Add a manifest file called manifest.json. Example: 
 
@@ -85,8 +86,8 @@ Add a manifest file called manifest.json. Example:
 
 ## Thanks to
 
-* Outer Wilds, one of my favorite games ever: http://www.outerwilds.com/
-* SMAPI, the main inspiration for this project: https://smapi.io/
+* Outer Wilds, one of my favorite games ever: http://www.outerwilds.com
+* SMAPI, the main inspiration for this project: https://smapi.io
 
 Dependencies:
 * dnpatch: https://github.com/ioncodes/dnpatch
