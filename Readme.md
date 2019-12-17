@@ -25,7 +25,7 @@ Two mods are included as examples/inspiration:
 
 |Sample mod|Description|
 |----------|-----------|
-|OWML.EnableDebugMode|This enables the built-in debug mode in the game. It allows you to do some fun stuff by pressing certain keys, such as exploding the sun at will. It also cycles through various debug UI's by pressing F1.|
+|OWML.EnableDebugMode|This enables the built-in debug mode in the game. It allows you to do some fun stuff by pressing certain keys, such as exploding the sun with the End key, and cycling through various debug UI's with F1.|
 |OWML.TestMod|This blows up the sun right away. Disabled by default (in manifest.json).|
 
 ## For players
