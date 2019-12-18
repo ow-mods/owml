@@ -16,16 +16,11 @@ namespace OWML.Launcher
             Console.WriteLine("Started OWML.");
 
             var config = GetConfig();
-            if (!Directory.Exists(config.GamePath))
-            {
-                Console.WriteLine($"Game not found at {config.GamePath}");
-                Console.WriteLine("Edit OWML.Config.json and try again.");
-                Console.ReadLine();
-                return;
-            }
+
+            RequireCorrectGamePath(config);
 
             Console.WriteLine($"Game found at {config.GamePath}");
-            Console.WriteLine($"For detailed log, see Logs/OWML.Log.txt");
+            Console.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
             CopyGameFiles(config);
 
@@ -40,6 +35,22 @@ namespace OWML.Launcher
             StartGame(config);
 
             Console.ReadLine();
+        }
+
+        private void RequireCorrectGamePath(ModConfig config)
+        {
+            var isCorrectPath = Directory.Exists(config.GamePath);
+            while (!isCorrectPath)
+            {
+                Console.WriteLine($"Game not found at {config.GamePath}");
+                Console.WriteLine("Please enter the correct game path:");
+                config.GamePath = Console.ReadLine()?.Trim();
+                if (Directory.Exists(config.GamePath))
+                {
+                    SaveConfig(config);
+                    isCorrectPath = true;
+                }
+            }
         }
 
         private void CopyGameFiles(IModConfig config)
@@ -74,6 +85,12 @@ namespace OWML.Launcher
             var config = JsonConvert.DeserializeObject<ModConfig>(json);
             config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
             return config;
+        }
+
+        private void SaveConfig(IModConfig config)
+        {
+            var json = JsonConvert.SerializeObject(config);
+            File.WriteAllText("OWML.Config.json", json);
         }
 
         private void ListenForOutput(IModConfig config)
