@@ -26,7 +26,7 @@ Two mods are included as examples/inspiration:
 1. Extract the OWML zip file anywhere you want.
 2. Check that the path to the game is correct in OWML.Config.json.
 3. Download mods and put them in the Mods folder. Make sure each mod has its own folder in Mods.
-4. Run OWML.Launcher.exe **as administrator**. If you get tired of running as admin, give your user full control to all game files instead.
+4. Run OWML.Launcher.exe.
 
 ## For modders
 
@@ -48,7 +48,7 @@ Inherit from ModBehaviour. You can have any number of classes/projects you want,
 
 ModBehaviour is a Unity MonoBehaviour. Unity will call whichever magic Unity methods are on there, such as Awake, Start, Update and FixedUpdate. See the [Unity doc](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) for more info.
 
-Your initial logic goes in Awake or Start, called by Unity. You'll have access to the mod helper at that time. Example:
+Your initial logic goes in Start, called by Unity. You'll have access to the mod helper at that time. Example:
 
 ~~~~
 public class TestMod : ModBehaviour
@@ -71,6 +71,8 @@ The mod helper contains useful helper classes:
 |Events|Allows listening to events, such as Awake and Start of MonoBehaviours. Uses HarmonyHelper.|
 |HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
 |?|More to come!|
+
+Note: ModHelper can not be used in Awake, it's not initialized at that time.
 
 ### Events
 
