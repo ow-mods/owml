@@ -5,7 +5,7 @@ namespace OWML.Common
     public class ModConfig : IModConfig
     {
         [JsonProperty("gamePath")]
-        public string GamePath { get; private set; }
+        public string GamePath { get; set; }
         
         [JsonIgnore]
         public string ManagedPath => $"{GamePath}/OuterWilds_Data/Managed";
