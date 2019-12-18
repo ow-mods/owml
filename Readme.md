@@ -28,17 +28,37 @@ Two mods are included as examples/inspiration:
 |OWML.EnableDebugMode|This enables the built-in debug mode in the game. It allows you to do some fun stuff by pressing certain keys, such as exploding the sun with the End key, and cycling through various debug UIs with F1.|
 |OWML.TestMod|This blows up the sun right away. Disabled by default (in manifest.json).|
 
+## Configuration
+
+OWML is configured by OWML.Config.json:
+
+|Key|Description|
+|---|-----------|
+|gamePath|The path to the game files. This must be correct for anything to work. Default: "C:/Program Files (x86)/Outer Wilds"|
+
+Each mod is defined in a manifest.json file:
+
+|Key|Description|
+|---|-----------|
+|filename|The filename of the DLL containing the ModBehaviour class.|
+|author|The name of the author.|
+|name|The name of the mod.|
+|uniqueName|Usually {author}.{uniqueName}.|
+|version|The version number.|
+|enabled|Whether or not the mod will be loaded.|
+
 ## For players
 
-1. Check that the path to the game is correct in OWML.Config.json.
-2. Download mods and put them in the Mods folder. Make sure each mod has its own folder in Mods.
-3. Run OWML.Launcher.exe **as administrator**. If you get tired of running as admin, give full control to all game files to all users.
+1. Extract the OWML zip file anywhere you want.
+2. Check that the path to the game is correct in OWML.Config.json.
+3. Download mods and put them in the Mods folder. Make sure each mod has its own folder in Mods.
+4. Run OWML.Launcher.exe **as administrator**. If you get tired of running as admin, give your user full control to all game files.
 
 ## For modders
 
-See the sample mods for examples.
+Refer to the sample mods for examples.
 
-Make a new project and reference the following files:
+Make a new project targeting .Net Framework 3.5. Reference the following files:
 * OWML:
   * OWML.Common.dll
   * OWML.Events.dll
@@ -47,6 +67,8 @@ Make a new project and reference the following files:
   * UnityEngine.CoreModule.dll
 
 Inherit from ModBehaviour. This is a Unity MonoBehaviour, see Unity doc: https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
+
+You can have any number of classes/projects you want, but only one ModBehaviour per mod.
 
 Your initial logic goes in Awake or Start (called by Unity). You'll have access to the mod helper at that time. Example:
 
@@ -70,7 +92,7 @@ The mod helper contains useful helper classes:
 |HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
 |?|More to come!|
 
-This will be called when the game starts (at the title menu), which might be too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when  Flashlight has loaded, which is after the player has "woken up":
+Start/Awake in your ModBehaviour will be called when the game starts (at the title menu), which is usually too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when Flashlight has loaded, which is after the player has "woken up":
 
 ~~~~
 private void Start()
@@ -89,6 +111,8 @@ private void OnStart(MonoBehaviour behaviour)
 }
 ~~~~
 
+For modifying game code, see if you can use functionality from the mod helper. If not, refer to the [Harmony doc](https://github.com/pardeike/Harmony) and consider working with me to expand the helper classes.
+
 Add a manifest file called manifest.json. Example:
 
 ~~~~
@@ -102,29 +126,15 @@ Add a manifest file called manifest.json. Example:
 }
 ~~~~
 
-## Configuration
-
-OWML is configured by OWML.Config.json:
-
-|Key|Description|
-|---|-----------|
-|gamePath|The path to the game. This must be correct for anything to work. Default: "C:/Program Files (x86)/Outer Wilds"|
-
-Each mod is defined in a manifest.json file:
-
-|Key|Description|
-|---|-----------|
-|filename|The filename of the DLL containing the ModBehaviour class.|
-|author|The name of the author.|
-|name|The name of the mod.|
-|uniqueName|Usually {author}.{uniqueName}.|
-|version|The version number.|
-|enabled|Whether or not the mod will be loaded.|
-
 ## Compatibility
 
 * Tested with Outer Wilds 1.0.0, 1.0.2 and 1.0.3.
 * Currently Windows only.
+
+## Feedback
+
+* I'm Alek on the Outer Wilds Discord: https://discord.gg/csKYR3w
+* Feature requests: make an issue on Github. I also welcome PRs!
 
 ## Credits
 
@@ -135,11 +145,6 @@ Each mod is defined in a manifest.json file:
 
 Dependencies:
 * dnpatch for patching DLL files: https://github.com/ioncodes/dnpatch
-  * uses dnlib: https://github.com/0xd4d/dnlib
+  * Uses dnlib: https://github.com/0xd4d/dnlib
 * Harmony for patching DLLs in memory: https://github.com/pardeike/Harmony
 * Newtonsoft.Json for Unity: https://github.com/SaladLab/Json.Net.Unity3D
-
-## Feedback
-
-* I'm Alek on the Outer Wilds Discord: https://discord.gg/csKYR3w
-* Feature requests: make an issue on Github. I also welcome PRs!
