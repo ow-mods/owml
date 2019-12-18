@@ -11,6 +11,8 @@ namespace OWML.Launcher
 {
     public class App
     {
+        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
+
         public void Run()
         {
             Console.WriteLine("Started OWML.");
@@ -39,24 +41,31 @@ namespace OWML.Launcher
 
         private void RequireCorrectGamePath(ModConfig config)
         {
-            var isCorrectPath = Directory.Exists(config.GamePath);
-            while (!isCorrectPath)
+            var isValidGamePath = IsValidGamePath(config);
+            while (!isValidGamePath)
             {
                 Console.WriteLine($"Game not found at {config.GamePath}");
                 Console.WriteLine("Please enter the correct game path:");
                 config.GamePath = Console.ReadLine()?.Trim();
-                if (Directory.Exists(config.GamePath))
+                if (IsValidGamePath(config))
                 {
                     SaveConfig(config);
-                    isCorrectPath = true;
+                    isValidGamePath = true;
                 }
             }
         }
 
+        private bool IsValidGamePath(IModConfig config)
+        {
+            return Directory.Exists(config.GamePath) &&
+                   Directory.Exists(config.ManagedPath) &&
+                   File.Exists($"{config.GamePath}/OuterWilds.exe") &&
+                   _filesToCopy.All(filename => File.Exists($"{config.ManagedPath}/{filename}"));
+        }
+
         private void CopyGameFiles(IModConfig config)
         {
-            var filesToCopy = new[] { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
-            foreach (var fileName in filesToCopy)
+            foreach (var fileName in _filesToCopy)
             {
                 File.Copy($"{config.ManagedPath}/{fileName}", fileName, true);
             }
