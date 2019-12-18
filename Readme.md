@@ -1,6 +1,6 @@
 # Outer Wilds Mod Loader
 
-OWML makes mod development for Outer Wilds (hopefully!) much easier, and makes us able to use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game. OWML is inspired by SMAPI for Stardew Valley.
+OWML makes mod development for Outer Wilds (hopefully!) much easier, and makes us able to use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game. OWML behaves similarly to SMAPI for Stardew Valley.
 
 ## How it works
 
@@ -55,6 +55,8 @@ Each mod is defined in a manifest.json file:
 
 Refer to the sample mods for examples.
 
+### Get started
+
 Make a new project targeting .Net Framework 3.5. Reference the following files:
 * OWML:
   * OWML.Common.dll
@@ -63,11 +65,13 @@ Make a new project targeting .Net Framework 3.5. Reference the following files:
   * Assembly-CSharp.dll
   * UnityEngine.CoreModule.dll
 
-Inherit from ModBehaviour. This is a Unity MonoBehaviour, see Unity doc: https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
+Inherit from ModBehaviour. You can have any number of classes/projects you want, but only one ModBehaviour per mod.
 
-You can have any number of classes/projects you want, but only one ModBehaviour per mod.
+### Magic methods
 
-Your initial logic goes in Awake or Start (called by Unity). You'll have access to the mod helper at that time. Example:
+ModBehaviour is a Unity MonoBehaviour. Unity will call whichever magic Unity methods are on there, such as Awake, Start, Update and FixedUpdate. See the [Unity doc](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) for more info.
+
+Your initial logic goes in Awake or Start, called by Unity. You'll have access to the mod helper at that time. Example:
 
 ~~~~
 public class TestMod : ModBehaviour
@@ -79,6 +83,8 @@ public class TestMod : ModBehaviour
 }
 ~~~~
 
+### Mod helper
+
 The mod helper contains useful helper classes:
 
 |Helper|What it does|
@@ -88,6 +94,8 @@ The mod helper contains useful helper classes:
 |Events|Allows listening to events, such as Awake and Start of MonoBehaviours. Uses HarmonyHelper.|
 |HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
 |?|More to come!|
+
+### Events
 
 Start/Awake in your ModBehaviour will be called when the game starts (at the title menu), which is usually too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when Flashlight has loaded, which is after the player has "woken up":
 
@@ -108,7 +116,37 @@ private void OnStart(MonoBehaviour behaviour)
 }
 ~~~~
 
-For modifying game code, see if you can use functionality from the mod helper. If not, refer to the [Harmony doc](https://github.com/pardeike/Harmony) and consider working with me to expand the helper classes.
+### Tips and tricks
+
+Your mod can contain more MonoBehaviors which can be added dynamically:
+~~~~
+AddComponent<SomeBehaviour>();
+~~~~
+
+Listen for inputs:
+~~~~
+private void Update()
+{
+	if (Input.GetKeyDown(DebugKeyCode.cycleGUIMode))
+	{
+		ModHelper.Console.WriteLine("F1 pressed!");
+	}
+}
+~~~~
+
+Change private variables with [Reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection):
+~~~~
+typeof(GUIMode).GetAnyField("_renderMode").SetValue(null, _renderValue);
+~~~~
+
+Modify existing game methods with [Harmony](https://github.com/pardeike/Harmony). The mod helper contains a wrapper for Harmony, making some of the functionality easy to use. See the source code of HarmonyHelper and ModEvents. As an example, here we remove the contents of DebugInputManagers Awake method which makes sure the debug mode isn't disabled:
+~~~~
+ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
+~~~~
+
+If you develop new functionality using Harmony, please consider working with me to expand the mod helper classes, to aid other modders as well.
+
+### Manifest
 
 Add a manifest file called manifest.json. Example:
 
@@ -130,8 +168,10 @@ Add a manifest file called manifest.json. Example:
 
 ## Feedback
 
-* I'm Alek on the Outer Wilds Discord: https://discord.gg/csKYR3w
-* Feature requests: make an issue on Github. I also welcome PRs!
+I'll be working tightly with the mod community to improve OWML and aid in mod development. 
+I'm Alek on the [Outer Wilds Discord](https://discord.gg/csKYR3w).
+
+Feature requests, bug reports and PRs are welcome on GitHub.
 
 ## Credits
 

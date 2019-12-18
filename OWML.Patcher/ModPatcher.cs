@@ -32,16 +32,12 @@ namespace OWML.Patcher
             var instructions = patcher.GetInstructions(target).ToList();
             if (IsPatched(instructions))
             {
-                for (var i = 0; i < newInstructions.Length; i++)
-                {
-                    instructions.Remove(instructions.Last());
-                }
+                ReplacePatchedInstructions(instructions, newInstructions);
             }
             else
             {
-                instructions.Remove(instructions.Last());
+                AddNewInstructions(instructions, newInstructions);
             }
-            instructions.AddRange(newInstructions);
             target.Instructions = instructions.ToArray();
             try
             {
@@ -63,10 +59,26 @@ namespace OWML.Patcher
             }
         }
 
+        private void ReplacePatchedInstructions(List<Instruction> instructions, Instruction[] newInstructions)
+        {
+            Console.WriteLine("Game is already patched. Re-patching.");
+            for (var i = 0; i < newInstructions.Length; i++)
+            {
+                instructions.Remove(instructions.Last());
+            }
+            instructions.AddRange(newInstructions);
+        }
+
+        private void AddNewInstructions(List<Instruction> instructions, Instruction[] newInstructions)
+        {
+            Console.WriteLine("Game is not patched. Patching!");
+            instructions.Remove(instructions.Last());
+            instructions.AddRange(newInstructions);
+        }
+
         private bool IsPatched(List<Instruction> instructions)
         {
-            return instructions.Any(
-                x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader)));
+            return instructions.Any(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader)));
         }
 
     }
