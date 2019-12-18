@@ -5,16 +5,12 @@ OWML makes mod development for Outer Wilds (hopefully!) much easier, and makes u
 ## How it works
 
 OWML does the following:
-1. Copies some files from the game which is needed by OWML.
-2. Shows the mods found in the Mods folder.
-3. Patches the game to make the game call the mod loader. 
-4. Copies OWML files to the game folder, used by the mod loader.
-5. Starts the game which calls the mod loader.
-6. Creates a mod helper with useful events, etc.
-7. For each mod in the Mods folder:
-   1. Creates a new Unity game object.
-   2. Adds the mod behaviour to the game object.
-   3. Initializes the mod behaviour with the mod helper.
+1. Shows the mods found in the Mods folder.
+2. Patches the game to make it call the mod loader. 
+3. Starts the game which calls the mod loader.
+4. The mod loader does this for each mod:
+   1. Creates a new Unity game object containing the mod behaviour.
+   2. Initializes the mod behaviour with a mod helper.
    
 ## Sample mods
 
@@ -49,7 +45,7 @@ Each mod is defined in a manifest.json file:
 1. Extract the OWML zip file anywhere you want.
 2. Check that the path to the game is correct in OWML.Config.json.
 3. Download mods and put them in the Mods folder. Make sure each mod has its own folder in Mods.
-4. Run OWML.Launcher.exe **as administrator**. If you get tired of running as admin, give your user full control to all game files.
+4. Run OWML.Launcher.exe **as administrator**. If you get tired of running as admin, give your user full control to all game files instead.
 
 ## For modders
 
