@@ -81,7 +81,8 @@ namespace OWML.Launcher
 
         private ModConfig GetConfig()
         {
-            var json = File.ReadAllText("OWML.Config.json");
+            var json = File.ReadAllText("OWML.Config.json")
+                .Replace("\\", "/");
             var config = JsonConvert.DeserializeObject<ModConfig>(json);
             config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
             return config;
