@@ -1,20 +1,17 @@
 # Outer Wilds Mod Loader
 
-OWML makes mod developent for Outer Wilds (hopefully!) much easier, and makes us able to use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game.
+OWML makes mod development for Outer Wilds (hopefully!) much easier, and makes us able to use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game. OWML is inspired by SMAPI for Stardew Valley.
 
 ## How it works
 
-The launcher does this:
+OWML does the following:
 1. Copies some files from the game which is needed by OWML.
 2. Shows the mods found in the Mods folder.
 3. Patches the game to make the game call the mod loader. 
 4. Copies OWML files to the game folder, used by the mod loader.
-5. Starts the game.
-
-The mod loader does this:
-1. Gets all mods from the Mods folder.
-2. Creates a mod helper with useful events, etc.
-3. For each mod:
+5. Starts the game which calls the mod loader.
+6. Creates a mod helper with useful events, etc.
+7. For each mod in the Mods folder:
    1. Creates a new Unity game object.
    2. Adds the mod behaviour to the game object.
    3. Initializes the mod behaviour with the mod helper.
