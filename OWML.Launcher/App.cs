@@ -11,7 +11,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
+        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "UnityEngine.PhysicsModule.dll", "UnityEngine.IMGUIModule.dll", "UnityEngine.AudioModule.dll", "Assembly-CSharp.dll" };
 
         public void Run()
         {
