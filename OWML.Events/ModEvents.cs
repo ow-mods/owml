@@ -25,22 +25,22 @@ namespace OWML.Events
             {
                 case Common.Events.BeforeAwake:
                     {
-                        _harmonyHelper.AddPrefix<T>("Awake", nameof(Patches.PreAwake));
+                        _harmonyHelper.AddPrefix<T>("Awake", typeof(Patches), nameof(Patches.PreAwake));
                         break;
                     }
                 case Common.Events.BeforeStart:
                     {
-                        _harmonyHelper.AddPrefix<T>("Awake", nameof(Patches.PreStart));
+                        _harmonyHelper.AddPrefix<T>("Awake", typeof(Patches), nameof(Patches.PreStart));
                         break;
                     }
                 case Common.Events.AfterAwake:
                     {
-                        _harmonyHelper.AddPostfix<T>("Start", nameof(Patches.PostAwake));
+                        _harmonyHelper.AddPostfix<T>("Start", typeof(Patches), nameof(Patches.PostAwake));
                         break;
                     }
                 case Common.Events.AfterStart:
                     {
-                        _harmonyHelper.AddPostfix<T>("Start", nameof(Patches.PostStart));
+                        _harmonyHelper.AddPostfix<T>("Start", typeof(Patches), nameof(Patches.PostStart));
                         break;
                     }
                 default:
