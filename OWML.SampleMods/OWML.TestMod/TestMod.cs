@@ -9,14 +9,14 @@ namespace OWML.TestMod
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(TestMod)}!");
-            ModHelper.Events.AddStartEvent<Flashlight>();
-            ModHelper.Events.OnStart += OnStart;
+            ModHelper.Events.AddEvent<Flashlight>(Events.AfterStart);
+            ModHelper.Events.OnEvent += OnEvent;
         }
 
-        private void OnStart(MonoBehaviour behaviour)
+        private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
             ModHelper.Console.WriteLine("Behaviour name: " + behaviour.name);
-            if (behaviour.GetType() == typeof(Flashlight))
+            if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
             {
                 ModHelper.Console.WriteLine("BOOM!");
                 GlobalMessenger.FireEvent("TriggerSupernova");

@@ -6,16 +6,10 @@ namespace OWML.Events
 {
     public class ModEvents : IModEvents
     {
-        public Action<MonoBehaviour> OnAwake
+        public Action<MonoBehaviour, Common.Events> OnEvent
         {
-            get => Patches.OnAwake;
-            set => Patches.OnAwake += value;
-        }
-
-        public Action<MonoBehaviour> OnStart
-        {
-            get => Patches.OnStart;
-            set => Patches.OnStart += value;
+            get => Patches.OnEvent;
+            set => Patches.OnEvent += value;
         }
 
         private readonly IHarmonyHelper _harmonyHelper;
@@ -25,14 +19,35 @@ namespace OWML.Events
             _harmonyHelper = harmonyHelper;
         }
 
-        public void AddAwakeEvent<T>() where T : MonoBehaviour
+        public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
         {
-            _harmonyHelper.AddPostfix<T>("Awake", nameof(Patches.PostAwake));
-        }
-
-        public void AddStartEvent<T>() where T : MonoBehaviour
-        {
-            _harmonyHelper.AddPostfix<T>("Start", nameof(Patches.PostStart));
+            switch (ev)
+            {
+                case Common.Events.BeforeAwake:
+                    {
+                        _harmonyHelper.AddPrefix<T>("Awake", nameof(Patches.PreAwake));
+                        break;
+                    }
+                case Common.Events.BeforeStart:
+                    {
+                        _harmonyHelper.AddPrefix<T>("Awake", nameof(Patches.PreStart));
+                        break;
+                    }
+                case Common.Events.AfterAwake:
+                    {
+                        _harmonyHelper.AddPostfix<T>("Start", nameof(Patches.PostAwake));
+                        break;
+                    }
+                case Common.Events.AfterStart:
+                    {
+                        _harmonyHelper.AddPostfix<T>("Start", nameof(Patches.PostStart));
+                        break;
+                    }
+                default:
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(ev), ev, null);
+                    }
+            }
         }
 
     }
