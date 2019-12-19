@@ -76,19 +76,19 @@ Note: ModHelper can not be used in Awake, it's not initialized at that time.
 
 ### Events
 
-Start/Awake in your ModBehaviour will be called when the game starts (at the title menu), which is usually too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when Flashlight has loaded, which is after the player has "woken up":
+Start in your ModBehaviour will be called when the game starts (at the title menu), which is usually too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when Flashlight has loaded, which is after the player has "woken up":
 
 ~~~~
 private void Start()
 {
-	ModHelper.Events.AddStartEvent<Flashlight>();
-	ModHelper.Events.OnStart += OnStart;
+	ModHelper.Events.AddEvent<Flashlight>(Events.AfterStart);
+	ModHelper.Events.OnEvent += OnEvent;
 }
 
-private void OnStart(MonoBehaviour behaviour)
+private void OnEvent(MonoBehaviour behaviour, Events ev)
 {
 	ModHelper.Console.WriteLine("Behaviour name: " + behaviour.name);
-	if (behaviour.GetType() == typeof(Flashlight))
+	if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
 	{
 		ModHelper.Console.WriteLine("Flashlight has started!");
 	}

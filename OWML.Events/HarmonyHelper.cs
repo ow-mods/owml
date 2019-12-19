@@ -17,6 +17,18 @@ namespace OWML.Events
             _console = console;
         }
 
+        public void AddPrefix<T>(string methodName, string patchName) where T : MonoBehaviour
+        {
+            var prefix = typeof(Patches).GetMethod(patchName);
+            if (prefix == null)
+            {
+                _logger.Log("prefix is null");
+                _console.WriteLine("prefix is null");
+                return;
+            }
+            Patch<T>(methodName, prefix, null, null);
+        }
+
         public void AddPostfix<T>(string methodName, string patchName) where T : MonoBehaviour
         {
             var postfix = typeof(Patches).GetMethod(patchName);
@@ -46,7 +58,7 @@ namespace OWML.Events
             Patch<T>(methodName, null, null, patchMethod);
         }
 
-        private void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler) where T : MonoBehaviour
+        public void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler) where T : MonoBehaviour
         {
             var targetType = typeof(T);
             _logger.Log("Trying to patch " + targetType.Name);

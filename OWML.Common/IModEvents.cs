@@ -5,10 +5,8 @@ namespace OWML.Common
 {
     public interface IModEvents
     {
-        Action<MonoBehaviour> OnAwake { get; set; }
-        Action<MonoBehaviour> OnStart { get; set; }
+        Action<MonoBehaviour, Events> OnEvent { get; set; }
 
-        void AddAwakeEvent<T>() where T : MonoBehaviour;
-        void AddStartEvent<T>() where T : MonoBehaviour;
+        void AddEvent<T>(Events ev) where T : MonoBehaviour;
     }
 }

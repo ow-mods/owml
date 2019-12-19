@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events.cs" />
     <Compile Include="IHarmonyHelper.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModEvents.cs" />
