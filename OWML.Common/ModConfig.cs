@@ -18,7 +18,7 @@ namespace OWML.Common
 
         [JsonIgnore]
         public string LogFilePath => $"{OWMLPath}Logs/OWML.Log.txt";
-        
+
         [JsonIgnore]
         public string OutputFilePath => $"{OWMLPath}Logs/OWML.Output.txt";
 
