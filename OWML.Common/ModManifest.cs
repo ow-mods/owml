@@ -19,9 +19,12 @@ namespace OWML.Common
         [JsonProperty("version")]
         public string Version { get; private set; }
 
+        [JsonProperty("owmlVersion")]
+        public string OWMLVersion { get; private set; }
+
         [JsonProperty("enabled")]
         public bool Enabled { get; private set; }
-
+        
         [JsonIgnore]
         public string FolderPath { get; set; }
 

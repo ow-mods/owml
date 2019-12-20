@@ -11,6 +11,8 @@ namespace OWML.Launcher
 {
     public class App
     {
+        private const string OWMLVersion = "0.1.3";
+
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
         public void Run()
@@ -83,8 +85,9 @@ namespace OWML.Launcher
             Console.WriteLine("Found mods:");
             foreach (var manifest in manifests)
             {
-                var stateText = manifest.Enabled ? "" : " (disabled)";
-                Console.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}");
+                var stateText = manifest.Enabled ? "" : "(disabled)";
+                var versionCheckText = manifest.OWMLVersion == OWMLVersion ? "" : $"(mod is for OWML {manifest.OWMLVersion} but you are running OWML {OWMLVersion})";
+                Console.WriteLine($"* {manifest.UniqueName} ({manifest.Version}) {stateText} {versionCheckText}");
             }
         }
 
