@@ -1,6 +1,6 @@
 # Outer Wilds Mod Loader
 
-OWML makes mod development for Outer Wilds (hopefully!) much easier, and makes us able to use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game. OWML behaves similarly to SMAPI for Stardew Valley.
+OWML makes mod development for Outer Wilds much easier, and lets us use many mods simultaneously. Hopefully this will encourage many people to make mods for this amazing game. OWML behaves similarly to SMAPI for Stardew Valley.
 
 ## How it works
 
@@ -138,7 +138,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.1.5",
+  "owmlVersion": "0.1.6",
   "enabled": true
 }
 ~~~~
