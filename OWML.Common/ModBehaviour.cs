@@ -4,7 +4,7 @@ namespace OWML.Common
 {
     public class ModBehaviour : MonoBehaviour
     {
-        protected IModHelper ModHelper;
+        public static IModHelper ModHelper;
 
         public void Init(IModHelper modHelper)
         {
