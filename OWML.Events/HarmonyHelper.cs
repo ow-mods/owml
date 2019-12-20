@@ -47,7 +47,7 @@ namespace OWML.Events
 
         public void Transpile<T>(string methodName, Type patchType, string patchMethodName)
         {
-            var patchMethod = patchType.GetMethod(patchMethodName);
+            var patchMethod = patchType.GetAnyMethod(patchMethodName);
             if (patchMethod == null)
             {
                 _logger.Log("patchMethod is null");
@@ -57,7 +57,7 @@ namespace OWML.Events
             Patch<T>(methodName, null, null, patchMethod);
         }
 
-        public void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
+        private void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
         {
             var targetType = typeof(T);
             _logger.Log("Trying to patch " + targetType.Name);
