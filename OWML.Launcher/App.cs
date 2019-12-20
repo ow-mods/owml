@@ -30,7 +30,7 @@ namespace OWML.Launcher
 
             ListenForOutput(config);
 
-            var modFinder = new ModFinder(config, new ModLogger(config), new ModConsole(config));
+            var modFinder = new ModFinder(config);
 
             ShowModList(modFinder);
 
