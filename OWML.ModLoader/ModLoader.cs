@@ -30,7 +30,7 @@ namespace OWML.ModLoader
                 var console = new ModConsole(config);
                 var harmonyHelper = new HarmonyHelper(logger, console);
                 var events = new ModEvents(harmonyHelper);
-                var helper = new ModHelper(logger, console, events, harmonyHelper);
+                var helper = new ModHelper(config, logger, console, events, harmonyHelper);
                 var modFinder = new ModFinder(config);
                 var owo = new Owo(helper, modFinder);
                 owo.LoadMods();

@@ -6,7 +6,10 @@ namespace OWML.Common
     {
         [JsonProperty("gamePath")]
         public string GamePath { get; set; }
-        
+
+        [JsonProperty("verbose")]
+        public bool Verbose { get; private set; }
+
         [JsonIgnore]
         public string ManagedPath => $"{GamePath}/OuterWilds_Data/Managed";
 

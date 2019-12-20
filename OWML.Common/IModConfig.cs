@@ -8,5 +8,6 @@
         string ModsPath { get; }
         string OutputFilePath { get; }
         string LogFilePath { get; }
+        bool Verbose { get; }
     }
 }
