@@ -138,7 +138,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.1.3",
+  "owmlVersion": "0.1.4",
   "enabled": true
 }
 ~~~~
@@ -150,6 +150,7 @@ OWML is configured by OWML.Config.json:
 |Key|Description|
 |---|-----------|
 |gamePath|The path to the game files. This must be correct for anything to work. Default: "C:/Program Files (x86)/Outer Wilds"|
+|verbose|If this is true, errors from all of the game will be displayed and logged. Intended for modders only.|
 
 Each mod is defined in a manifest.json file:
 
