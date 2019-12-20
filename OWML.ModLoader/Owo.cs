@@ -20,10 +20,23 @@ namespace OWML.ModLoader
         public void LoadMods()
         {
             _helper.Logger.Log($"{nameof(Owo)}: {nameof(LoadMods)}");
+            if (_helper.Config.Verbose)
+            {
+                Application.logMessageReceived += OnLogMessageReceived;
+            }
             var manifests = _modFinder.GetManifests();
             foreach (var manifest in manifests)
             {
                 LoadMod(manifest);
+            }
+        }
+
+        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
+        {
+            _helper.Logger.Log($"{type}: {message}");
+            if (type == LogType.Error || type == LogType.Exception)
+            {
+                _helper.Console.WriteLine($"{type}: {message}");
             }
         }
 
@@ -32,7 +45,7 @@ namespace OWML.ModLoader
             var modType = LoadModType(manifest);
             if (modType == null)
             {
-                _helper.Logger.Log($"Mod type is null, skipping");
+                _helper.Logger.Log("Mod type is null, skipping");
                 return;
             }
             _helper.Logger.Log($"Loading {manifest.UniqueName} ({manifest.Version})...");

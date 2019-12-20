@@ -138,7 +138,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.1.5",
+  "owmlVersion": "0.1.6",
   "enabled": true
 }
 ~~~~
