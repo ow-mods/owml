@@ -2,7 +2,6 @@
 using System.Reflection;
 using Harmony;
 using OWML.Common;
-using UnityEngine;
 
 namespace OWML.Events
 {
@@ -17,7 +16,7 @@ namespace OWML.Events
             _console = console;
         }
 
-        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName) where T : MonoBehaviour
+        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName)
         {
             var prefix = patchType.GetAnyMethod(patchMethodName);
             if (prefix == null)
@@ -29,7 +28,7 @@ namespace OWML.Events
             Patch<T>(methodName, prefix, null, null);
         }
 
-        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName) where T : MonoBehaviour
+        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName)
         {
             var postfix = patchType.GetAnyMethod(patchMethodName);
             if (postfix == null)
@@ -41,14 +40,14 @@ namespace OWML.Events
             Patch<T>(methodName, null, postfix, null);
         }
 
-        public void EmptyMethod<T>(string methodName) where T : MonoBehaviour
+        public void EmptyMethod<T>(string methodName)
         {
             Transpile<T>(methodName, typeof(Patches), nameof(Patches.EmptyMethod));
         }
 
-        public void Transpile<T>(string methodName, Type patchType, string patchMethodName) where T : MonoBehaviour
+        public void Transpile<T>(string methodName, Type patchType, string patchMethodName)
         {
-            var patchMethod = patchType.GetMethod(patchMethodName);
+            var patchMethod = patchType.GetAnyMethod(patchMethodName);
             if (patchMethod == null)
             {
                 _logger.Log("patchMethod is null");
@@ -58,7 +57,7 @@ namespace OWML.Events
             Patch<T>(methodName, null, null, patchMethod);
         }
 
-        public void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler) where T : MonoBehaviour
+        private void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
         {
             var targetType = typeof(T);
             _logger.Log("Trying to patch " + targetType.Name);
