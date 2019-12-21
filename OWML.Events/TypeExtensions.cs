@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using OWML.Common;
 
 namespace OWML.Events
 {
@@ -20,6 +21,41 @@ namespace OWML.Events
         public static FieldInfo GetAnyField(this Type type, string name)
         {
             return type.GetField(name, Flags);
+        }
+
+        public static T GetValue<T>(this object obj, string name)
+        {
+            var type = obj.GetType();
+            var field = type.GetAnyField(name);
+            if (field != null)
+            {
+                return (T)field.GetValue(obj);
+            }
+            var property = type.GetAnyProperty(name);
+            if (property != null)
+            {
+                return (T)property.GetValue(obj, null);
+            }
+            ModBehaviour.ModHelper.Console.WriteLine($"Couldn't find field or property with name {name} on {type.Name}");
+            return default;
+        }
+
+        public static void SetValue(this object obj, string name, object value)
+        {
+            var type = obj.GetType();
+            var field = type.GetAnyField(name);
+            if (field != null)
+            {
+                field.SetValue(obj, value);
+                return;
+            }
+            var property = type.GetAnyProperty(name);
+            if (property != null)
+            {
+                property.SetValue(obj, value, null);
+                return;
+            }
+            ModBehaviour.ModHelper.Console.WriteLine($"Couldn't find field or property with name {name} on {type.Name}");
         }
 
     }
