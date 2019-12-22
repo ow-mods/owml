@@ -10,17 +10,23 @@ namespace OWML.Events
 
         public static MethodInfo GetAnyMethod(this Type type, string name)
         {
-            return type.GetMethod(name, Flags);
+            return type.GetMethod(name, Flags) ??
+                   type.BaseType?.GetMethod(name, Flags) ??
+                   type.BaseType?.BaseType?.GetMethod(name, Flags);
         }
 
         public static PropertyInfo GetAnyProperty(this Type type, string name)
         {
-            return type.GetProperty(name, Flags);
+            return type.GetProperty(name, Flags) ??
+                   type.BaseType?.GetProperty(name, Flags) ??
+                   type.BaseType?.BaseType?.GetProperty(name, Flags);
         }
 
         public static FieldInfo GetAnyField(this Type type, string name)
         {
-            return type.GetField(name, Flags);
+            return type.GetField(name, Flags) ??
+                   type.BaseType?.GetField(name, Flags) ??
+                   type.BaseType?.BaseType?.GetField(name, Flags);
         }
 
         public static T GetValue<T>(this object obj, string name)
