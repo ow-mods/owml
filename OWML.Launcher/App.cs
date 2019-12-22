@@ -13,7 +13,7 @@ namespace OWML.Launcher
     {
         private const string OWMLVersion = "0.1.7";
 
-        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "UnityEngine.UnityWebRequestWWWModule.dll", "Assembly-CSharp.dll" };
+        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
         public void Run()
         {

@@ -24,16 +24,23 @@ namespace OWML.Assets
 
             var go = new GameObject();
             go.AddComponent<Mod3DObject>();
+            go.AddComponent<OWRigidbody>();
 
-            var mesh = _objImporter.ImportFile(objectPath);
-
-            var meshFilter = go.AddComponent<MeshFilter>();
-            meshFilter.mesh = mesh;
+            var loadObject = LoadObject(go, objectPath);
+            modBehaviour.StartCoroutine(loadObject);
 
             var loadTexture = LoadTexture(go, imagePath);
             modBehaviour.StartCoroutine(loadTexture);
 
             return go;
+        }
+
+        private IEnumerator LoadObject(GameObject go, string objectPath)
+        {
+            var mesh = _objImporter.ImportFile(objectPath);
+            var meshFilter = go.AddComponent<MeshFilter>();
+            meshFilter.mesh = mesh;
+            yield return null;
         }
 
         private IEnumerator LoadTexture(GameObject go, string imagePath)

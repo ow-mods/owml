@@ -7,6 +7,7 @@ namespace OWML.Load3DModel
     {
         private bool _isStarted;
         private GameObject _duck;
+        private Transform _player;
 
         private void Start()
         {
@@ -20,6 +21,7 @@ namespace OWML.Load3DModel
         {
             if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
             {
+                _player = GameObject.FindWithTag("Player").transform;
                 _isStarted = true;
             }
         }
@@ -28,9 +30,8 @@ namespace OWML.Load3DModel
         {
             if (_isStarted && Input.GetMouseButtonDown(0))
             {
-                ModHelper.Console.WriteLine("Creating duck...");
-                var duck = Instantiate(_duck, GameObject.FindWithTag("Player").transform.position, Quaternion.identity);
-                ModHelper.Console.WriteLine("Created duck!");
+                ModHelper.Console.WriteLine("Creating duck");
+                var duck = Instantiate(_duck, _player.position, Quaternion.identity);
             }
         }
 
