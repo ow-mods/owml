@@ -1,0 +1,9 @@
+{
+  "filename": "OWML.Load3DModel.dll",
+  "author": "Alek",
+  "name": "Load3DModel",
+  "uniqueName": "Alek.Load3DModel",
+  "version": "0.1",
+  "owmlVersion": "0.1.7",
+  "enabled": true
+}

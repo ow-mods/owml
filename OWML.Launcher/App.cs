@@ -13,7 +13,7 @@ namespace OWML.Launcher
     {
         private const string OWMLVersion = "0.1.7";
 
-        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
+        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "UnityEngine.UnityWebRequestWWWModule.dll", "Assembly-CSharp.dll" };
 
         public void Run()
         {
@@ -117,7 +117,7 @@ namespace OWML.Launcher
         {
             var patcher = new ModPatcher(config);
             patcher.PatchGame();
-            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.Events.dll", "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll" };
+            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.Events.dll", "OWML.Assets.dll", "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll" };
             foreach (var filename in filesToCopy)
             {
                 File.Copy(filename, $"{config.ManagedPath}/{filename}", true);

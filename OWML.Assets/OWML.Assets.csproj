@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</ProjectGuid>
+    <ProjectGuid>{A62856BD-D06C-4F2C-86E8-91C6FDF8F8D5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.Common</RootNamespace>
-    <AssemblyName>OWML.Common</AssemblyName>
+    <RootNamespace>OWML.Assets</RootNamespace>
+    <AssemblyName>OWML.Assets</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,36 +31,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="UnityEngine.CoreModule">
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events.cs" />
-    <Compile Include="IHarmonyHelper.cs" />
-    <Compile Include="IModAssets.cs" />
-    <Compile Include="IModConfig.cs" />
-    <Compile Include="IModEvents.cs" />
-    <Compile Include="IModFinder.cs" />
-    <Compile Include="IModHelper.cs" />
-    <Compile Include="IModConsole.cs" />
-    <Compile Include="IModLogger.cs" />
-    <Compile Include="IModManifest.cs" />
-    <Compile Include="ModBehaviour.cs" />
-    <Compile Include="ModConfig.cs" />
-    <Compile Include="ModConsole.cs" />
-    <Compile Include="ModHelper.cs" />
-    <Compile Include="ModLogger.cs" />
-    <Compile Include="ModManifest.cs" />
+    <Compile Include="ModAssets.cs" />
+    <Compile Include="ObjImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
+      <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
+      <Name>OWML.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
