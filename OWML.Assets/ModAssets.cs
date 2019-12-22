@@ -24,6 +24,8 @@ namespace OWML.Assets
 
             var go = new GameObject();
             go.AddComponent<Mod3DObject>();
+            go.AddComponent<SphereCollider>();
+            go.AddComponent<Rigidbody>();
             go.AddComponent<OWRigidbody>();
 
             var loadObject = LoadObject(go, objectPath);

@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using System.Reflection;
+using OWML.Common;
 using UnityEngine;
 
 namespace OWML.Load3DModel
@@ -7,7 +8,7 @@ namespace OWML.Load3DModel
     {
         private bool _isStarted;
         private GameObject _duck;
-        private Transform _player;
+        private PlayerBody _player;
 
         private void Start()
         {
@@ -16,12 +17,12 @@ namespace OWML.Load3DModel
             ModHelper.Events.AddEvent<Flashlight>(Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;
         }
-        
+
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
             if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
             {
-                _player = GameObject.FindWithTag("Player").transform;
+                _player = GameObject.FindObjectOfType<PlayerBody>();
                 _isStarted = true;
             }
         }
@@ -31,7 +32,15 @@ namespace OWML.Load3DModel
             if (_isStarted && Input.GetMouseButtonDown(0))
             {
                 ModHelper.Console.WriteLine("Creating duck");
-                var duck = Instantiate(_duck, _player.position, Quaternion.identity);
+                var pos = _player.transform.position + _player.transform.forward;
+                var duck = Instantiate(_duck, pos, Quaternion.identity);
+                var duckBody = duck.GetComponent<OWRigidbody>();
+                duckBody.SetMass(_player.GetMass());
+                duckBody.SetVelocity(_player.GetVelocity());
+                duckBody.SetAngularVelocity(_player.GetAngularVelocity());
+                duckBody.SetCenterOfMass(_player.GetCenterOfMass());
+                duckBody.RegisterAttachedGravityVolume(_player.GetAttachedGravityVolume());
+                duckBody.RegisterAttachedForceDetector(_player.GetAttachedForceDetector());
             }
         }
 
