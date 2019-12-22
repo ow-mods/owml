@@ -23,6 +23,7 @@ namespace OWML.Assets
             _console.WriteLine("Creating object from " + objectPath);
 
             var go = new GameObject();
+            go.AddComponent<Mod3DObject>();
 
             var mesh = _objImporter.ImportFile(objectPath);
 
