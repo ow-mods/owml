@@ -76,7 +76,7 @@ Note: ModHelper can not be used in Awake, it's not initialized at that time.
 
 ### Events
 
-Start in your ModBehaviour will be called when the game starts (at the title menu), which is usually too early for what you want to do. The mod helper contains events we can use to know when certain behaviours start. Here we add an event for when Flashlight has loaded, which is after the player has "woken up":
+Start in your ModBehaviour will be called when the game starts (at the title menu), which is usually too early for what you want to do. The mod helper contains events we can use to know when certain things happen. Here we add an event for when Flashlight has started, which is after the player has "woken up":
 
 ~~~~
 private void Start()
@@ -97,12 +97,14 @@ private void OnEvent(MonoBehaviour behaviour, Events ev)
 
 ### Tips and tricks
 
+#### Multiple MonoBehaviours
+
 Your mod can contain more MonoBehaviors which can be added dynamically:
 ~~~~
 AddComponent<SomeBehaviour>();
 ~~~~
 
-Listen for inputs:
+#### Listen for inputs
 ~~~~
 private void Update()
 {
@@ -113,19 +115,30 @@ private void Update()
 }
 ~~~~
 
-Decompile the game with [dnSpy](https://github.com/0xd4d/dnSpy). Open {gamePath}\OuterWilds_Data\Managed\Assembly-CSharp.dll in dnSpy to learn how the game works and find what you want to change.
+#### Decompile the game
+
+Use [dnSpy](https://github.com/0xd4d/dnSpy) to browse the game code and learn how the game ticks. Open {gamePath}\OuterWilds_Data\Managed\Assembly-CSharp.dll in dnSpy.
+
+#### Reflection
 
 Change private variables with [reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection). Example:
 ~~~~
 typeof(GUIMode).GetAnyField("_renderMode").SetValue(null, _renderValue);
 ~~~~
 
-Modify existing game methods with [Harmony](https://github.com/pardeike/Harmony). The mod helper contains a wrapper for Harmony, making some of the functionality easy to use. See the source code of HarmonyHelper and ModEvents. As an example, here we remove the contents of DebugInputManagers Awake method which makes sure the debug mode isn't disabled:
+OWML.Events.dll contains extension methods for easy reflection. Get and set private variables like this:
+
+~~~~
+var foo = behaviour.GetValue<string>("_foo");
+behaviour.SetValue<string>("_bar", foo);
+~~~~
+
+#### Patch game methods
+
+Modify existing game methods with [Harmony](https://github.com/pardeike/Harmony). The mod helper contains a wrapper for Harmony, making some of the functionality easy to use. See the source code of HarmonyHelper and ModEvents. Here we remove the contents of DebugInputManagers Awake method which makes sure the debug mode isn't disabled:
 ~~~~
 ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
 ~~~~
-
-If you develop new functionality using Harmony, please consider working with me to expand the mod helper classes, to aid other modders as well.
 
 ### Manifest
 
@@ -138,7 +151,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.1.6",
+  "owmlVersion": "0.1.7",
   "enabled": true
 }
 ~~~~
