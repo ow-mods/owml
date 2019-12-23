@@ -3,7 +3,7 @@
   "author": "Alek",
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
-  "version": "0.1",
+  "version": "0.2",
   "owmlVersion": "0.2.1",
-  "enabled": true
+  "enabled": false
 }
