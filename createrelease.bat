@@ -13,6 +13,7 @@ copy "OWML.Launcher\bin\Debug\Newtonsoft.Json.dll" "Release\Newtonsoft.Json.dll"
 copy "OWML.Launcher\bin\Debug\System.Runtime.Serialization.dll" "Release\System.Runtime.Serialization.dll"
 copy "OWML.Launcher\bin\Debug\OWML.Config.json" "Release\OWML.Config.json"
 copy "OWML.Assets\bin\Debug\OWML.Assets.dll" "Release\OWML.Assets.dll"
+copy "OWML.Assets\bin\Debug\NAudio-Unity.dll" "Release\NAudio-Unity.dll"
 
 mkdir "Release\Logs"
 mkdir "Release\Mods"
@@ -31,5 +32,6 @@ copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\manifest.json" "Release\Mo
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\duck.obj" "Release\Mods\OWML.LoadCustomAssets\duck.obj"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\duck.png" "Release\Mods\OWML.LoadCustomAssets\duck.png"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\blaster-firing.wav" "Release\Mods\OWML.LoadCustomAssets\blaster-firing.wav"
+copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\spiral-mountain.mp3" "Release\Mods\OWML.LoadCustomAssets\spiral-mountain.mp3"
 
 7z a "Release\OWML.zip" "Release"

@@ -117,7 +117,8 @@ namespace OWML.Launcher
         {
             var patcher = new ModPatcher(config);
             patcher.PatchGame();
-            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.Events.dll", "OWML.Assets.dll", "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll" };
+            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.Events.dll", "OWML.Assets.dll",
+                "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
             foreach (var filename in filesToCopy)
             {
                 File.Copy(filename, $"{config.ManagedPath}/{filename}", true);
