@@ -53,7 +53,7 @@ namespace OWML.ModLoader
             var go = new GameObject(manifest.UniqueName);
             var mod = (ModBehaviour)go.AddComponent(modType);
             _helper.Logger.Log("Added! Initializing...");
-            mod.Init(_helper);
+            mod.Init(_helper, manifest);
             _helper.Console.WriteLine($"Loaded {manifest.UniqueName} ({manifest.Version}).");
             _helper.Logger.Log($"Loaded {manifest.UniqueName} ({manifest.Version}).");
         }
