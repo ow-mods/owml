@@ -51,12 +51,8 @@ namespace OWML.Assets
             {
                 _console.WriteLine("Mesh is null");
             }
-            else
-            {
-                _console.WriteLine("Got mesh");
-                var meshFilter = go.AddComponent<MeshFilter>();
-                meshFilter.mesh = mesh;
-            }
+            var meshFilter = go.AddComponent<MeshFilter>();
+            meshFilter.mesh = mesh;
             yield return null;
         }
 
@@ -73,12 +69,8 @@ namespace OWML.Assets
             {
                 _console.WriteLine("Texture is null");
             }
-            else
-            {
-                _console.WriteLine("Got texture");
-                var meshRenderer = go.AddComponent<MeshRenderer>();
-                meshRenderer.material.mainTexture = texture;
-            }
+            var meshRenderer = go.AddComponent<MeshRenderer>();
+            meshRenderer.material.mainTexture = texture;
         }
 
         private IEnumerator LoadAudioClip(AudioSource audioSource, string audioPath)
@@ -94,11 +86,7 @@ namespace OWML.Assets
             {
                 _console.WriteLine("Audio is null");
             }
-            else
-            {
-                _console.WriteLine("Got audio");
-                audioSource.clip = audio;
-            }
+            audioSource.clip = audio;
         }
 
     }
