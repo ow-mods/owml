@@ -43,6 +43,10 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Load3DModel.cs" />
@@ -52,6 +56,10 @@
     <ProjectReference Include="..\..\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OWML.Events\OWML.Events.csproj">
+      <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
+      <Name>OWML.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using OWML.Common;
+﻿using OWML.Common;
 using UnityEngine;
 
 namespace OWML.Load3DModel
@@ -7,22 +6,33 @@ namespace OWML.Load3DModel
     public class Load3DModel : ModBehaviour
     {
         private bool _isStarted;
-        private GameObject _duck;
-        private PlayerBody _player;
+        private OWRigidbody _duckBody;
+        private Transform _playerTransform;
+        private OWRigidbody _playerBody;
 
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(Load3DModel)}!");
-            _duck = ModHelper.Assets.Create3DObject(this, "duck.obj", "duck.png");
-            ModHelper.Events.AddEvent<Flashlight>(Events.AfterStart);
+            _duckBody = CreateDuck();
+            ModHelper.Events.AddEvent<Flashlight>(Common.Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Events ev)
+        private OWRigidbody CreateDuck()
         {
-            if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
+            var duck = ModHelper.Assets.Create3DObject(this, "duck.obj", "duck.png");
+            duck.AddComponent<SphereCollider>();
+            duck.AddComponent<Rigidbody>();
+            var duckBody = duck.AddComponent<OWRigidbody>();
+            return duckBody;
+        }
+
+        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        {
+            if (behaviour.GetType() == typeof(Flashlight) && ev == Common.Events.AfterStart)
             {
-                _player = GameObject.FindObjectOfType<PlayerBody>();
+                _playerTransform = Locator.GetPlayerTransform();
+                _playerBody = _playerTransform.GetAttachedOWRigidbody();
                 _isStarted = true;
             }
         }
@@ -32,15 +42,10 @@ namespace OWML.Load3DModel
             if (_isStarted && Input.GetMouseButtonDown(0))
             {
                 ModHelper.Console.WriteLine("Creating duck");
-                var pos = _player.transform.position + _player.transform.forward;
-                var duck = Instantiate(_duck, pos, Quaternion.identity);
-                var duckBody = duck.GetComponent<OWRigidbody>();
-                duckBody.SetMass(_player.GetMass());
-                duckBody.SetVelocity(_player.GetVelocity());
-                duckBody.SetAngularVelocity(_player.GetAngularVelocity());
-                duckBody.SetCenterOfMass(_player.GetCenterOfMass());
-                duckBody.RegisterAttachedGravityVolume(_player.GetAttachedGravityVolume());
-                duckBody.RegisterAttachedForceDetector(_player.GetAttachedForceDetector());
+                var duckBody = Instantiate(_duckBody);
+                duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 5f);
+                duckBody.SetRotation(_playerTransform.rotation);
+                duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 5f);
             }
         }
 
