@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using OWML.Assets;
 using OWML.Common;
 using OWML.Events;
 using UnityEngine;
@@ -30,7 +31,8 @@ namespace OWML.ModLoader
                 var console = new ModConsole(config);
                 var harmonyHelper = new HarmonyHelper(logger, console);
                 var events = new ModEvents(harmonyHelper);
-                var helper = new ModHelper(config, logger, console, events, harmonyHelper);
+                var assets = new ModAssets(console);
+                var helper = new ModHelper(config, logger, console, events, harmonyHelper, assets);
                 var modFinder = new ModFinder(config);
                 var owo = new Owo(helper, modFinder);
                 owo.LoadMods();

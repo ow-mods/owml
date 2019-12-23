@@ -7,5 +7,6 @@
         IModConsole Console { get; }
         IModEvents Events { get; }
         IHarmonyHelper HarmonyHelper { get; }
+        IModAssets Assets { get; }
     }
 }

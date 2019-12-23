@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OWML.Assets\OWML.Assets.csproj">
+      <Project>{A62856BD-D06C-4F2C-86E8-91C6FDF8F8D5}</Project>
+      <Name>OWML.Assets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>

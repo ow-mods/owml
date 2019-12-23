@@ -12,6 +12,7 @@ copy "OWML.Launcher\bin\Debug\OWML.Launcher.exe" "Release\OWML.Launcher.exe"
 copy "OWML.Launcher\bin\Debug\Newtonsoft.Json.dll" "Release\Newtonsoft.Json.dll"
 copy "OWML.Launcher\bin\Debug\System.Runtime.Serialization.dll" "Release\System.Runtime.Serialization.dll"
 copy "OWML.Launcher\bin\Debug\OWML.Config.json" "Release\OWML.Config.json"
+copy "OWML.Assets\bin\Debug\OWML.Assets.dll" "Release\OWML.Assets.dll"
 
 mkdir "Release\Logs"
 mkdir "Release\Mods"
@@ -23,5 +24,11 @@ copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\manifest.json" "Release\Mod
 mkdir "Release\Mods\OWML.TestMod"
 copy "OWML.SampleMods\OWML.TestMod\bin\Debug\OWML.TestMod.dll" "Release\Mods\OWML.TestMod\OWML.TestMod.dll"
 copy "OWML.SampleMods\OWML.TestMod\bin\Debug\manifest.json" "Release\Mods\OWML.TestMod\manifest.json"
+
+mkdir "Release\Mods\OWML.Create3DObject"
+copy "OWML.SampleMods\OWML.Create3DObject\bin\Debug\OWML.Create3DObject.dll" "Release\Mods\OWML.Create3DObject\OWML.Create3DObject.dll"
+copy "OWML.SampleMods\OWML.Create3DObject\bin\Debug\manifest.json" "Release\Mods\OWML.Create3DObject\manifest.json"
+copy "OWML.SampleMods\OWML.Create3DObject\bin\Debug\duck.obj" "Release\Mods\OWML.Create3DObject\duck.obj"
+copy "OWML.SampleMods\OWML.Create3DObject\bin\Debug\duck.png" "Release\Mods\OWML.Create3DObject\duck.png"
 
 7z a "Release\OWML.zip" "Release"

@@ -14,12 +14,13 @@ OWML does the following:
    
 ## Sample mods
 
-Two mods are included as examples/inspiration:
+Some mods are included as examples/inspiration:
 
 |Sample mod|Description|
 |----------|-----------|
 |OWML.EnableDebugMode|This enables the built-in debug mode in the game. It allows you to do some fun stuff by pressing certain keys, such as exploding the sun with the End key, and cycling through various debug UIs with F1.|
 |OWML.TestMod|This blows up the sun as soon as the player wakes up. Disabled by default (in manifest.json).|
+|OWML.Create3DObject|Shoots a rubber duck when you click the left mouse button. It behaves wonky.|
 
 ## For players
 
@@ -70,6 +71,7 @@ The mod helper contains useful helper classes:
 |Console|Prints to the console (via Logs\OWML.Output.txt...)|
 |Events|Allows listening to events, such as Awake and Start of MonoBehaviours. Uses HarmonyHelper.|
 |HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
+|Assets|Create custom 3D objects from object files.|
 |?|More to come!|
 
 Note: ModHelper can not be used in Awake, it's not initialized at that time.
@@ -94,6 +96,22 @@ private void OnEvent(MonoBehaviour behaviour, Events ev)
 	}
 }
 ~~~~
+
+### Create custom 3D objects
+
+Put your 3D object file (.obj) and it's texture in your mod folder, then create the object like this:
+~~~~
+var duck = ModHelper.Assets.Create3DObject(this, "duck.obj", "duck.png");
+~~~~
+
+It's recommended to create the object at the start of the game, then to copy when needed, like this:
+~~~~
+var duckCopy = Instantiate(_duckBody);
+~~~~
+
+See the sample mod OWML.Create3DObject.
+
+Custom objects behaves wonky, it's a work in progress.
 
 ### Tips and tricks
 
@@ -162,7 +180,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.1.7",
+  "owmlVersion": "0.2.0",
   "enabled": true
 }
 ~~~~
@@ -206,6 +224,8 @@ Feature requests, bug reports and PRs are welcome on GitHub.
 * Outer Wilds on Discord: https://discord.gg/csKYR3w
 * Outer Wilds on Reddit: https://www.reddit.com/r/outerwilds
 * SMAPI, the main inspiration for this project: https://smapi.io
+* Texture_Turtle for graphics on Nexus Mods page.
+* el anónimo for ObjImporter script: https://wiki.unity3d.com/index.php?title=ObjImporter
 
 Dependencies:
 * dnpatch for patching DLL files: https://github.com/ioncodes/dnpatch
