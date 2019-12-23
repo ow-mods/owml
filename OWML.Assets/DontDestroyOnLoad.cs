@@ -2,7 +2,7 @@
 
 namespace OWML.Assets
 {
-    public class Mod3DObject : MonoBehaviour
+    public class DontDestroyOnLoad : MonoBehaviour
     {
         private void Start()
         {

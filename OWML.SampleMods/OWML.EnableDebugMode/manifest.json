@@ -4,6 +4,6 @@
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.2.0",
+  "owmlVersion": "0.2.1",
   "enabled": true
 }

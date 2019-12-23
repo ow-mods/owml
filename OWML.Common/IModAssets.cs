@@ -4,6 +4,7 @@ namespace OWML.Common
 {
     public interface IModAssets
     {
-        GameObject Create3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename);
+        GameObject Load3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename);
+        AudioSource LoadAudio(ModBehaviour modBehaviour, string audioFilename);
     }
 }

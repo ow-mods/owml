@@ -35,6 +35,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
@@ -48,7 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mod3DObject.cs" />
+    <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="ModAssets.cs" />
     <Compile Include="ObjImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
