@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.TestMod", "OWML.Sample
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Assets", "OWML.Assets\OWML.Assets.csproj", "{A62856BD-D06C-4F2C-86E8-91C6FDF8F8D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Create3DObject", "OWML.SampleMods\OWML.Create3DObject\OWML.Create3DObject.csproj", "{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.LoadCustomAssets", "OWML.SampleMods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.csproj", "{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

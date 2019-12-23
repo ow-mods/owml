@@ -20,7 +20,7 @@ Some mods are included as examples/inspiration:
 |----------|-----------|
 |OWML.EnableDebugMode|This enables the built-in debug mode in the game. It allows you to do some fun stuff by pressing certain keys, such as exploding the sun with the End key, and cycling through various debug UIs with F1.|
 |OWML.TestMod|This blows up the sun as soon as the player wakes up. Disabled by default (in manifest.json).|
-|OWML.Create3DObject|Shoots a rubber duck when you click the left mouse button. It behaves wonky.|
+|OWML.LoadCustomAssets|Showcases loading of custom 3D objects and audio. Click the left mouse button to shoot rubber ducks.|
 
 ## For players
 
@@ -71,7 +71,7 @@ The mod helper contains useful helper classes:
 |Console|Prints to the console (via Logs\OWML.Output.txt...)|
 |Events|Allows listening to events, such as Awake and Start of MonoBehaviours. Uses HarmonyHelper.|
 |HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
-|Assets|Create custom 3D objects from object files.|
+|Assets|Loads custom 3D objects and audio.|
 |?|More to come!|
 
 Note: ModHelper can not be used in Awake, it's not initialized at that time.
@@ -97,21 +97,23 @@ private void OnEvent(MonoBehaviour behaviour, Events ev)
 }
 ~~~~
 
-### Create custom 3D objects
+### Load custom assets
 
-Put your 3D object file (.obj) and it's texture in your mod folder, then create the object like this:
+Put your custom assets in your mod folder, then load them like this:
 ~~~~
-var duck = ModHelper.Assets.Create3DObject(this, "duck.obj", "duck.png");
-~~~~
-
-It's recommended to create the object at the start of the game, then to copy when needed, like this:
-~~~~
-var duckCopy = Instantiate(_duckBody);
+var duck = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+var audio = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
 ~~~~
 
-See the sample mod OWML.Create3DObject.
+It's recommended to load custom assets at the start of the game, then copy/play when needed, like this:
+~~~~
+var duckCopy = Instantiate(_duck);
+_audio.Play();
+~~~~
 
-Custom objects behaves wonky, it's a work in progress.
+See the sample mod OWML.LoadCustomAssets.
+
+Custom 3D objects behaves wonky, it's a work in progress.
 
 ### Tips and tricks
 
@@ -180,7 +182,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.2.0",
+  "owmlVersion": "0.2.1",
   "enabled": true
 }
 ~~~~

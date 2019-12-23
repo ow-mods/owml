@@ -7,8 +7,8 @@
     <ProjectGuid>{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.Create3DObject</RootNamespace>
-    <AssemblyName>OWML.Create3DObject</AssemblyName>
+    <RootNamespace>OWML.LoadCustomAssets</RootNamespace>
+    <AssemblyName>OWML.LoadCustomAssets</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -40,6 +40,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -49,7 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Create3DObject.cs" />
+    <Compile Include="LoadCustomAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +72,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="blaster-firing.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="duck.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

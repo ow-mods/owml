@@ -1,9 +1,0 @@
-{
-  "filename": "OWML.Create3DObject.dll",
-  "author": "Alek",
-  "name": "Create3DObject",
-  "uniqueName": "Alek.Create3DObject",
-  "version": "0.1",
-  "owmlVersion": "0.2.0",
-  "enabled": true
-}
