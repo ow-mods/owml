@@ -1,21 +1,39 @@
 ﻿using OWML.Common;
 using OWML.Events;
+using UnityEngine;
 
 namespace OWML.EnableDebugMode
 {
     public class EnableDebugMode : ModBehaviour
     {
         private int _renderValue;
+        private bool _isStarted;
         private PlayerSpawner _playerSpawner;
 
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
+            ModHelper.Events.AddEvent<PlayerSpawner>(Common.Events.AfterAwake);
+            ModHelper.Events.OnEvent += OnEvent;
+        }
+
+        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        {
+            if (behaviour.GetType() == typeof(PlayerSpawner) && ev == Common.Events.AfterAwake)
+            {
+                _playerSpawner = (PlayerSpawner)behaviour;
+                _isStarted = true;
+            }
         }
 
         private void Update()
         {
+            if (!_isStarted)
+            {
+                return;
+            }
+
             if (Input.GetKeyDown(DebugKeyCode.cycleGUIMode))
             {
                 CycleGUIMode();
@@ -61,23 +79,18 @@ namespace OWML.EnableDebugMode
 
         private void CycleGUIMode()
         {
-            ModHelper.Console.WriteLine("F1 pressed!");
             _renderValue++;
             if (_renderValue >= 8)
             {
                 _renderValue = 0;
             }
-            ModHelper.Console.WriteLine("_renderValue: " + _renderValue);
+            ModHelper.Console.WriteLine("Render value: " + _renderValue);
             typeof(GUIMode).GetAnyField("_renderMode").SetValue(null, _renderValue);
         }
 
         private void WarpTo(SpawnLocation location)
         {
             ModHelper.Console.WriteLine($"Warping to {location}!");
-            if (_playerSpawner == null)
-            {
-                _playerSpawner = FindObjectOfType<PlayerSpawner>();
-            }
             _playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
         }
 
