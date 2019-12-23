@@ -11,7 +11,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string OWMLVersion = "0.1.7";
+        private const string OWMLVersion = "0.2.0";
 
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 

@@ -1,9 +1,9 @@
 ﻿using OWML.Common;
 using UnityEngine;
 
-namespace OWML.Load3DModel
+namespace OWML.Create3DObject
 {
-    public class Load3DModel : ModBehaviour
+    public class Create3DObject : ModBehaviour
     {
         private bool _isStarted;
         private OWRigidbody _duckBody;
@@ -12,7 +12,7 @@ namespace OWML.Load3DModel
 
         private void Start()
         {
-            ModHelper.Console.WriteLine($"In {nameof(Load3DModel)}!");
+            ModHelper.Console.WriteLine($"In {nameof(Create3DObject)}!");
             _duckBody = CreateDuck();
             ModHelper.Events.AddEvent<Flashlight>(Common.Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;

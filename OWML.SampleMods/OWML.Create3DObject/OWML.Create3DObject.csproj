@@ -7,8 +7,8 @@
     <ProjectGuid>{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.Load3DModel</RootNamespace>
-    <AssemblyName>OWML.Load3DModel</AssemblyName>
+    <RootNamespace>OWML.Create3DObject</RootNamespace>
+    <AssemblyName>OWML.Create3DObject</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,7 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Load3DModel.cs" />
+    <Compile Include="Create3DObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
