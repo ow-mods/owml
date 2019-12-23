@@ -43,9 +43,9 @@ namespace OWML.Create3DObject
             {
                 ModHelper.Console.WriteLine("Creating duck");
                 var duckBody = Instantiate(_duckBody);
-                duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 5f);
+                duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 1f);
                 duckBody.SetRotation(_playerTransform.rotation);
-                duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 5f);
+                duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 10f);
             }
         }
 
