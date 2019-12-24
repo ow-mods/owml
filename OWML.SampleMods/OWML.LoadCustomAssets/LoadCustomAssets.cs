@@ -14,19 +14,24 @@ namespace OWML.Create3DObject
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
-            _duckBody = CreateDuck();
-            _audio = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+            var gunSoundAsset = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+            gunSoundAsset.OnLoaded += OnGunSoundLoaded;
+            var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+            duckAsset.OnLoaded += OnDuckLoaded;
             ModHelper.Events.AddEvent<Flashlight>(Common.Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
-        private OWRigidbody CreateDuck()
+        private void OnGunSoundLoaded(AudioSource audio)
         {
-            var duck = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+            ModHelper.Console.WriteLine("Gun sound loaded!");
+        }
+
+        private void OnDuckLoaded(GameObject duck)
+        {
             duck.AddComponent<SphereCollider>();
             duck.AddComponent<Rigidbody>();
-            var duckBody = duck.AddComponent<OWRigidbody>();
-            return duckBody;
+            _duckBody = duck.AddComponent<OWRigidbody>();
         }
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
