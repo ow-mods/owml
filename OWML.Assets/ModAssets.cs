@@ -70,10 +70,10 @@ namespace OWML.Assets
             go.AddComponent<DontDestroyOnLoad>();
             var audioSource = go.AddComponent<AudioSource>();
 
-            var routine = audioFilename.EndsWith(".mp3")
+            var loadAudioFrom = audioFilename.EndsWith(".mp3")
                 ? LoadAudioFromMp3(audioSource, audioPath)
                 : LoadAudioFromWav(audioSource, audioPath);
-            modBehaviour.StartCoroutine(routine);
+            modBehaviour.StartCoroutine(loadAudioFrom);
             return audioSource;
         }
 
@@ -111,10 +111,8 @@ namespace OWML.Assets
             using (var reader = new AudioFileReader(audioPath))
             {
                 var outputBytes = new float[reader.Length];
-                _console.WriteLine("Length: " + reader.Length);
                 reader.Read(outputBytes, 0, (int)reader.Length);
-                audioClip = AudioClip.Create(audioPath, (int)reader.Length, reader.WaveFormat.Channels,
-                    reader.WaveFormat.SampleRate, false);
+                audioClip = AudioClip.Create(audioPath, (int)reader.Length, reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
                 audioClip.SetData(outputBytes, 0);
             }
             audioSource.clip = audioClip;

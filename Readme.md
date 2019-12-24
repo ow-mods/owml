@@ -99,6 +99,8 @@ private void OnEvent(MonoBehaviour behaviour, Events ev)
 
 ### Load custom assets
 
+ModHelper.Assets let's you load assets at runtime. See the sample mod OWML.LoadCustomAssets.
+
 Put your custom assets in your mod folder, then load them like this:
 ~~~~
 var duck = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
@@ -111,9 +113,15 @@ var duckCopy = Instantiate(_duck);
 _audio.Play();
 ~~~~
 
-See the sample mod OWML.LoadCustomAssets.
+Supported asset types:
 
-Custom 3D objects behave wonky, it's a work in progress.
+|Asset type|Compatibility|
+|----------|-------------|
+|3D models|.obj is supported, using [this script](https://wiki.unity3d.com/index.php?title=ObjImporter).|
+|Images|Most formats are supported, using Unity's [WWW](https://docs.unity3d.com/ScriptReference/WWW.html).|
+|Audio|Wav is supported using [WWW](https://docs.unity3d.com/ScriptReference/WWW.html). Mp3 is supported using [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity).|
+
+Support for more asset types is in progress.
 
 ### Tips and tricks
 
@@ -182,7 +190,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.2.1",
+  "owmlVersion": "0.2.2",
   "enabled": true
 }
 ~~~~
@@ -227,10 +235,11 @@ Feature requests, bug reports and PRs are welcome on GitHub.
 * Outer Wilds on Reddit: https://www.reddit.com/r/outerwilds
 * SMAPI, the main inspiration for this project: https://smapi.io
 * Texture_Turtle for graphics on Nexus Mods page.
-* el anónimo for ObjImporter script: https://wiki.unity3d.com/index.php?title=ObjImporter
 
 Dependencies:
 * dnpatch for patching DLL files: https://github.com/ioncodes/dnpatch
   * Uses dnlib: https://github.com/0xd4d/dnlib
 * Harmony for patching DLLs in memory: https://github.com/pardeike/Harmony
 * Newtonsoft.Json for Unity: https://github.com/SaladLab/Json.Net.Unity3D
+* ObjImporter: https://wiki.unity3d.com/index.php?title=ObjImporter
+* NAudio-Unity: https://github.com/WulfMarius/NAudio-Unity
