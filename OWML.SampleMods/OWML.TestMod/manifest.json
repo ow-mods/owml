@@ -4,6 +4,6 @@
   "name": "TestMod",
   "uniqueName": "Alek.TestMod",
   "version": "0.1",
-  "owmlVersion": "0.2.1",
+  "owmlVersion": "0.2.2",
   "enabled": false
 }

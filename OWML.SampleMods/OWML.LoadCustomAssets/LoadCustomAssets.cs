@@ -1,7 +1,7 @@
 ﻿using OWML.Common;
 using UnityEngine;
 
-namespace OWML.Create3DObject
+namespace OWML.LoadCustomAssets
 {
     public class LoadCustomAssets : ModBehaviour
     {
@@ -9,13 +9,15 @@ namespace OWML.Create3DObject
         private OWRigidbody _duckBody;
         private Transform _playerTransform;
         private OWRigidbody _playerBody;
-        private AudioSource _audio;
+        private AudioSource _shootSound;
+        private AudioSource _music;
 
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
             _duckBody = CreateDuck();
-            _audio = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+            _shootSound = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+            _music = ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3");
             ModHelper.Events.AddEvent<Flashlight>(Common.Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;
         }
@@ -36,6 +38,7 @@ namespace OWML.Create3DObject
                 _playerTransform = Locator.GetPlayerTransform();
                 _playerBody = _playerTransform.GetAttachedOWRigidbody();
                 _isStarted = true;
+                _music.Play();
             }
         }
 
@@ -54,7 +57,7 @@ namespace OWML.Create3DObject
             duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 1f);
             duckBody.SetRotation(_playerTransform.rotation);
             duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 10f);
-            _audio.Play();
+            _shootSound.Play();
         }
     }
 }

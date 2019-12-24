@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using NAudio.Wave;
 using OWML.Common;
 using UnityEngine;
 
@@ -42,7 +43,7 @@ namespace OWML.Assets
             var meshFilter = go.AddComponent<MeshFilter>();
 
             modBehaviour.StartCoroutine(LoadMesh(meshFilter, objectPath));
-            
+
             return meshFilter;
         }
 
@@ -69,8 +70,10 @@ namespace OWML.Assets
             go.AddComponent<DontDestroyOnLoad>();
             var audioSource = go.AddComponent<AudioSource>();
 
-            modBehaviour.StartCoroutine(LoadAudioClip(audioSource, audioPath));
-
+            var loadAudioFrom = audioFilename.EndsWith(".mp3")
+                ? LoadAudioFromMp3(audioSource, audioPath)
+                : LoadAudioFromWav(audioSource, audioPath);
+            modBehaviour.StartCoroutine(loadAudioFrom);
             return audioSource;
         }
 
@@ -101,8 +104,24 @@ namespace OWML.Assets
             meshRenderer.material.mainTexture = texture;
         }
 
-        private IEnumerator LoadAudioClip(AudioSource audioSource, string audioPath)
+        private IEnumerator LoadAudioFromMp3(AudioSource audioSource, string audioPath)
         {
+            _console.WriteLine("Loading mp3");
+            AudioClip audioClip;
+            using (var reader = new AudioFileReader(audioPath))
+            {
+                var outputBytes = new float[reader.Length];
+                reader.Read(outputBytes, 0, (int)reader.Length);
+                audioClip = AudioClip.Create(audioPath, (int)reader.Length, reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
+                audioClip.SetData(outputBytes, 0);
+            }
+            audioSource.clip = audioClip;
+            yield return null;
+        }
+
+        private IEnumerator LoadAudioFromWav(AudioSource audioSource, string audioPath)
+        {
+            _console.WriteLine("Loading wav");
             AudioClip audio;
             var url = "file://" + audioPath;
             using (var www = new WWW(url))
