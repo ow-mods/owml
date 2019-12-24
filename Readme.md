@@ -99,7 +99,7 @@ private void OnEvent(MonoBehaviour behaviour, Events ev)
 
 ### Load custom assets
 
-ModHelper.Assets let's you load assets at runtime. See the sample mod OWML.LoadCustomAssets.
+ModHelper.Assets lets you load assets at runtime. See the sample mod OWML.LoadCustomAssets.
 
 Put your custom assets in your mod folder, then load them like this:
 ~~~~
