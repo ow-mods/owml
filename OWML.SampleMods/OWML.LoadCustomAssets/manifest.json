@@ -4,6 +4,6 @@
   "name": "LoadCustomAssets",
   "uniqueName": "Alek.LoadCustomAssets",
   "version": "0.2",
-  "owmlVersion": "0.2.1",
+  "owmlVersion": "0.2.2",
   "enabled": false
 }
