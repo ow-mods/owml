@@ -19,17 +19,27 @@ namespace OWML.LoadCustomAssets
             gunSoundAsset.OnLoaded += OnGunSoundLoaded;
             var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
             duckAsset.OnLoaded += OnDuckLoaded;
+            var musicAsset = ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3");
+            musicAsset.OnLoaded += OnMusicLoaded;
             ModHelper.Events.AddEvent<Flashlight>(Common.Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
+        private void OnMusicLoaded(AudioSource audio)
+        {
+            _music = audio;
+            ModHelper.Console.WriteLine("Music loaded!");
+        }
+
         private void OnGunSoundLoaded(AudioSource audio)
         {
+            _shootSound = audio;
             ModHelper.Console.WriteLine("Gun sound loaded!");
         }
 
         private void OnDuckLoaded(GameObject duck)
         {
+            ModHelper.Console.WriteLine("Duck loaded!");
             duck.AddComponent<SphereCollider>();
             duck.AddComponent<Rigidbody>();
             _duckBody = duck.AddComponent<OWRigidbody>();

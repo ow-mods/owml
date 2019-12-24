@@ -13,12 +13,12 @@ namespace OWML.Common
             get => _asset;
             set
             {
-                _asset = value; 
+                _asset = value;
                 OnLoaded?.Invoke(_asset);
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             DontDestroyOnLoad(gameObject);
         }
