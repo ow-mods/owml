@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using OWML.Common;
+using OWML.ModHelper;
 
 namespace OWML.ModLoader
 {

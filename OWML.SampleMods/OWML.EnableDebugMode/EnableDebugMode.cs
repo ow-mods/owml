@@ -1,5 +1,5 @@
-﻿using OWML.Common;
-using OWML.Events;
+﻿using OWML.Events;
+using OWML.ModHelper;
 using UnityEngine;
 
 namespace OWML.EnableDebugMode

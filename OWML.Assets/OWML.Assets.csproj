@@ -42,7 +42,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
@@ -56,14 +58,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioAsset.cs" />
+    <Compile Include="MeshAsset.cs" />
+    <Compile Include="ModAsset.cs" />
     <Compile Include="ModAssets.cs" />
+    <Compile Include="ObjectAsset.cs" />
     <Compile Include="ObjImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextureAsset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
+      <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
+      <Name>OWML.ModHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

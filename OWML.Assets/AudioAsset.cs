@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OWML.Common
+namespace OWML.Assets
 {
     public class AudioAsset : ModAsset<AudioSource>
     {

@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using OWML.Common;
+using UnityEngine;
 
-namespace OWML.Common
+namespace OWML.ModHelper
 {
-    public class ModBehaviour : MonoBehaviour
+    public class ModBehaviour : MonoBehaviour, IModBehaviour
     {
         public static IModHelper ModHelper;
-        public IModManifest ModManifest;
+        public IModManifest ModManifest { get; set; }
 
         public void Init(IModHelper modHelper, IModManifest manifest)
         {

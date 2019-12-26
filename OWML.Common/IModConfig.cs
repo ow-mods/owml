@@ -2,7 +2,7 @@
 {
     public interface IModConfig
     {
-        string GamePath { get; }
+        string GamePath { get; set; }
         string ManagedPath { get; }
         string OWMLPath { get; }
         string ModsPath { get; }

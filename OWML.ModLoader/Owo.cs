@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using OWML.Common;
+using OWML.ModHelper;
 using UnityEngine;
 
 namespace OWML.ModLoader

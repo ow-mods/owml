@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using OWML.Common;
 
 namespace OWML.Events
 {
@@ -42,7 +41,6 @@ namespace OWML.Events
             {
                 return (T)property.GetValue(obj, null);
             }
-            ModBehaviour.ModHelper.Console.WriteLine($"Couldn't find field or property with name {name} on {type.Name}");
             return default;
         }
 
@@ -61,7 +59,6 @@ namespace OWML.Events
                 property.SetValue(obj, value, null);
                 return;
             }
-            ModBehaviour.ModHelper.Console.WriteLine($"Couldn't find field or property with name {name} on {type.Name}");
         }
 
     }

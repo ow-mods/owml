@@ -59,6 +59,10 @@
       <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
       <Name>OWML.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
+      <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
+      <Name>OWML.ModHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -14,6 +14,7 @@ copy "OWML.Launcher\bin\Debug\System.Runtime.Serialization.dll" "Release\System.
 copy "OWML.Launcher\bin\Debug\OWML.Config.json" "Release\OWML.Config.json"
 copy "OWML.Assets\bin\Debug\OWML.Assets.dll" "Release\OWML.Assets.dll"
 copy "OWML.Assets\bin\Debug\NAudio-Unity.dll" "Release\NAudio-Unity.dll"
+copy "OWML.Assets\bin\Debug\OWML.ModHelper.dll" "Release\OWML.ModHelper.dll"
 
 mkdir "Release\Logs"
 mkdir "Release\Mods"
