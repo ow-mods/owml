@@ -1,5 +1,6 @@
 ﻿using OWML.Common;
-using OWML.Events;
+using OWML.ModHelper;
+using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.EnableDebugMode
@@ -14,13 +15,13 @@ namespace OWML.EnableDebugMode
         {
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
-            ModHelper.Events.AddEvent<PlayerSpawner>(Common.Events.AfterAwake);
+            ModHelper.Events.AddEvent<PlayerSpawner>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            if (behaviour.GetType() == typeof(PlayerSpawner) && ev == Common.Events.AfterAwake)
+            if (behaviour.GetType() == typeof(PlayerSpawner) && ev == Events.AfterAwake)
             {
                 _playerSpawner = (PlayerSpawner)behaviour;
                 _isStarted = true;

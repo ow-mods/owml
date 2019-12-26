@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.ModHelper;
 using UnityEngine;
 
 namespace OWML.LoadCustomAssets
@@ -21,7 +22,7 @@ namespace OWML.LoadCustomAssets
             duckAsset.OnLoaded += OnDuckLoaded;
             var musicAsset = ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3");
             musicAsset.OnLoaded += OnMusicLoaded;
-            ModHelper.Events.AddEvent<PlayerBody>(Common.Events.AfterAwake);
+            ModHelper.Events.AddEvent<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
@@ -45,9 +46,9 @@ namespace OWML.LoadCustomAssets
             _duckBody = duck.AddComponent<OWRigidbody>();
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            if (behaviour.GetType() == typeof(PlayerBody) && ev == Common.Events.AfterAwake)
+            if (behaviour.GetType() == typeof(PlayerBody) && ev == Events.AfterAwake)
             {
                 _playerBody = (PlayerBody)behaviour;
                 _playerTransform = behaviour.transform;

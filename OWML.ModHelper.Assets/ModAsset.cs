@@ -1,11 +1,12 @@
 ﻿using System;
+using OWML.Common;
 using UnityEngine;
 
-namespace OWML.Common
+namespace OWML.ModHelper.Assets
 {
-    public class ModAsset<T> : MonoBehaviour
+    public class ModAsset<T> : MonoBehaviour, IModAsset<T>
     {
-        public event Action<T> OnLoaded;
+        public Action<T> OnLoaded { get; set; }
 
         public T Asset { get; private set; }
 

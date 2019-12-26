@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
+using OWML.Common;
 
-namespace OWML.Common
+namespace OWML.ModHelper
 {
     public class ModConfig : IModConfig
     {

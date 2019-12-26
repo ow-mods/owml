@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using OWML.Common;
 
-namespace OWML.Common
+namespace OWML.ModHelper
 {
     public class ModConsole : IModConsole
     {

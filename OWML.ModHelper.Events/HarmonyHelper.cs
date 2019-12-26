@@ -3,7 +3,7 @@ using System.Reflection;
 using Harmony;
 using OWML.Common;
 
-namespace OWML.Events
+namespace OWML.ModHelper.Events
 {
     public class HarmonyHelper : IHarmonyHelper
     {

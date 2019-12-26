@@ -3,7 +3,7 @@ using NAudio.Wave;
 using OWML.Common;
 using UnityEngine;
 
-namespace OWML.Assets
+namespace OWML.ModHelper.Assets
 {
     public class ModAssets : IModAssets
     {
@@ -16,7 +16,7 @@ namespace OWML.Assets
             _objImporter = new ObjImporter();
         }
 
-        public ObjectAsset Load3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename)
+        public IModAsset<GameObject> Load3DObject(IModBehaviour modBehaviour, string objectFilename, string imageFilename)
         {
             var objectPath = modBehaviour.ModManifest.FolderPath + objectFilename;
             var imagePath = modBehaviour.ModManifest.FolderPath + imageFilename;
@@ -31,7 +31,7 @@ namespace OWML.Assets
             return modAsset;
         }
 
-        public MeshAsset LoadMesh(ModBehaviour modBehaviour, string objectFilename)
+        public IModAsset<MeshFilter> LoadMesh(IModBehaviour modBehaviour, string objectFilename)
         {
             var objectPath = modBehaviour.ModManifest.FolderPath + objectFilename;
             _console.WriteLine("Loading mesh from " + objectPath);
@@ -44,7 +44,7 @@ namespace OWML.Assets
             return modAsset;
         }
 
-        public TextureAsset LoadTexture(ModBehaviour modBehaviour, string imageFilename)
+        public IModAsset<MeshRenderer> LoadTexture(IModBehaviour modBehaviour, string imageFilename)
         {
             var imagePath = modBehaviour.ModManifest.FolderPath + imageFilename;
             _console.WriteLine("Loading texture from " + imagePath);
@@ -57,7 +57,7 @@ namespace OWML.Assets
             return modAsset;
         }
 
-        public AudioAsset LoadAudio(ModBehaviour modBehaviour, string audioFilename)
+        public IModAsset<AudioSource> LoadAudio(IModBehaviour modBehaviour, string audioFilename)
         {
             var audioPath = modBehaviour.ModManifest.FolderPath + audioFilename;
             _console.WriteLine("Loading audio from " + audioPath);

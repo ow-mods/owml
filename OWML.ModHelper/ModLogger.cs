@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
+using OWML.Common;
 
-namespace OWML.Common
+namespace OWML.ModHelper
 {
     public class ModLogger : IModLogger
     {

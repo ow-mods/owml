@@ -1,5 +1,7 @@
 ﻿
-namespace OWML.Common
+using OWML.Common;
+
+namespace OWML.ModHelper
 {
     public class ModHelper : IModHelper
     {

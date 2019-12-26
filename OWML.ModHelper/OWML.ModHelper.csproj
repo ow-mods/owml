@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D075D13C-990A-46A2-B596-4600A3411BD5}</ProjectGuid>
+    <ProjectGuid>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.ModLoader</RootNamespace>
-    <AssemblyName>OWML.ModLoader</AssemblyName>
+    <RootNamespace>OWML.ModHelper</RootNamespace>
+    <AssemblyName>OWML.ModHelper</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,36 +34,32 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.Events">
-      <HintPath>..\OWML.Events\bin\Debug\OWML.Events.dll</HintPath>
-    </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModFinder.cs" />
-    <Compile Include="ModLoader.cs" />
-    <Compile Include="Owo.cs" />
+    <Compile Include="ModBehaviour.cs" />
+    <Compile Include="ModConfig.cs" />
+    <Compile Include="ModConsole.cs" />
+    <Compile Include="ModHelper.cs" />
+    <Compile Include="ModLogger.cs" />
+    <Compile Include="ModManifest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
-      <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
+      <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj">
-      <Project>{A62856BD-D06C-4F2C-86E8-91C6FDF8F8D5}</Project>
-      <Name>OWML.ModHelper.Assets</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
-      <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
-      <Name>OWML.ModHelper.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
-      <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
-      <Name>OWML.ModHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

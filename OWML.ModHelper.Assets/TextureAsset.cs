@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OWML.Common
+namespace OWML.ModHelper.Assets
 {
     public class TextureAsset : ModAsset<MeshRenderer>
     {

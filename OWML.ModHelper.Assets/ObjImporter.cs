@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
-namespace OWML.Assets
+namespace OWML.ModHelper.Assets
 {
     // Source: https://wiki.unity3d.com/index.php?title=ObjImporter&oldid=13033
 

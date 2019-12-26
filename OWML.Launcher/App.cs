@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
+using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
 
@@ -41,7 +42,7 @@ namespace OWML.Launcher
             Console.ReadLine();
         }
 
-        private void RequireCorrectGamePath(ModConfig config)
+        private void RequireCorrectGamePath(IModConfig config)
         {
             var isValidGamePath = IsValidGamePath(config);
             while (!isValidGamePath)
@@ -91,7 +92,7 @@ namespace OWML.Launcher
             }
         }
 
-        private ModConfig GetConfig()
+        private IModConfig GetConfig()
         {
             var json = File.ReadAllText("OWML.Config.json")
                 .Replace("\\", "/");
@@ -117,7 +118,7 @@ namespace OWML.Launcher
         {
             var patcher = new ModPatcher(config);
             patcher.PatchGame();
-            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.Events.dll", "OWML.Assets.dll",
+            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.ModHelper.dll", "OWML.ModHelper.Events.dll", "OWML.ModHelper.Assets.dll",
                 "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
             foreach (var filename in filesToCopy)
             {

@@ -38,10 +38,13 @@ Refer to the sample mods for examples.
 Make a new project targeting .Net Framework 3.5. Reference the following files:
 * OWML:
   * OWML.Common.dll
-  * OWML.Events.dll
+  * OWML.ModHelper.dll
+  * OWML.ModHelper.Events.dll
+  * OWML.ModHelper.Assets.dll
 * {gamePath}\OuterWilds_Data\Managed:
   * Assembly-CSharp.dll
   * UnityEngine.CoreModule.dll
+  * More Unity DLLs if needed
 
 Inherit from ModBehaviour. You can have any number of classes/projects you want, but only one ModBehaviour per mod.
 
