@@ -2,7 +2,7 @@
 using OWML.Common;
 using UnityEngine;
 
-namespace OWML.Events
+namespace OWML.ModHelper.Events
 {
     public class ModEvents : IModEvents
     {

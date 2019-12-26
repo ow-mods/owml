@@ -1,9 +1,8 @@
 ﻿using System;
 using OWML.Common;
-using OWML.ModHelper;
 using UnityEngine;
 
-namespace OWML.Assets
+namespace OWML.ModHelper.Assets
 {
     public class ModAsset<T> : MonoBehaviour, IModAsset<T>
     {

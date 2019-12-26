@@ -3,7 +3,7 @@ using NAudio.Wave;
 using OWML.Common;
 using UnityEngine;
 
-namespace OWML.Assets
+namespace OWML.ModHelper.Assets
 {
     public class ModAssets : IModAssets
     {

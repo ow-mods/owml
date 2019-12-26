@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace OWML.Events
+namespace OWML.ModHelper.Events
 {
     public static class TypeExtensions
     {

@@ -58,10 +58,6 @@
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.Events\OWML.Events.csproj">
-      <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
-      <Name>OWML.Events</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
       <Name>OWML.ModHelper</Name>

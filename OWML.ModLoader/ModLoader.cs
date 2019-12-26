@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using OWML.Assets;
 using OWML.Common;
-using OWML.Events;
 using OWML.ModHelper;
+using OWML.ModHelper.Assets;
+using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModLoader

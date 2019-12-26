@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Harmony;
 using UnityEngine;
 
-namespace OWML.Events
+namespace OWML.ModHelper.Events
 {
     internal static class Patches
     {
