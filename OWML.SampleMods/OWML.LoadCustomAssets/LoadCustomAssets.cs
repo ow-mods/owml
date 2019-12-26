@@ -15,13 +15,10 @@ namespace OWML.LoadCustomAssets
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
-            var gunSoundAsset = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
-            gunSoundAsset.OnLoaded += OnGunSoundLoaded;
-            var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
-            duckAsset.OnLoaded += OnDuckLoaded;
-            var musicAsset = ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3");
-            musicAsset.OnLoaded += OnMusicLoaded;
-            ModHelper.Events.AddEvent<Flashlight>(Common.Events.AfterStart);
+            ModHelper.Assets.LoadAudio(this, "blaster-firing.wav", OnGunSoundLoaded);
+            ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png", OnDuckLoaded);
+            ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3", OnMusicLoaded);
+            ModHelper.Events.AddEvent<PlayerBody>(Common.Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
@@ -47,10 +44,10 @@ namespace OWML.LoadCustomAssets
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(Flashlight) && ev == Common.Events.AfterStart)
+            if (behaviour.GetType() == typeof(PlayerBody) && ev == Common.Events.AfterAwake)
             {
-                _playerTransform = Locator.GetPlayerTransform();
-                _playerBody = _playerTransform.GetAttachedOWRigidbody();
+                _playerBody = (PlayerBody)behaviour;
+                _playerTransform = behaviour.transform;
                 _isStarted = true;
                 _music.Play();
             }
@@ -68,7 +65,7 @@ namespace OWML.LoadCustomAssets
         {
             ModHelper.Console.WriteLine("Shooting duck");
             var duckBody = Instantiate(_duckBody);
-            duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 1f);
+            duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 2f);
             duckBody.SetRotation(_playerTransform.rotation);
             duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 10f);
             _shootSound.Play();

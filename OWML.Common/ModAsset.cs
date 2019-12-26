@@ -5,17 +5,14 @@ namespace OWML.Common
 {
     public class ModAsset<T> : MonoBehaviour
     {
-        private T _asset;
         public event Action<T> OnLoaded;
 
-        public T Asset
+        public T Asset { get; private set; }
+
+        public void SetAsset(T asset)
         {
-            get => _asset;
-            set
-            {
-                _asset = value;
-                OnLoaded?.Invoke(_asset);
-            }
+            Asset = asset;
+            OnLoaded?.Invoke(asset);
         }
 
         private void Awake()

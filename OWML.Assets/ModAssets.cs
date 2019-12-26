@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using NAudio.Wave;
 using OWML.Common;
 using UnityEngine;
@@ -16,79 +17,56 @@ namespace OWML.Assets
             _objImporter = new ObjImporter();
         }
 
-        public ModAsset<GameObject> Load3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename)
+        public void Load3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename, Action<GameObject> onLoaded)
         {
             var objectPath = modBehaviour.ModManifest.FolderPath + objectFilename;
             var imagePath = modBehaviour.ModManifest.FolderPath + imageFilename;
             _console.WriteLine("Loading object from " + objectPath);
 
             var go = new GameObject();
-            var modAsset = go.AddComponent<ModAsset<GameObject>>();
-            var meshFilter = go.AddComponent<MeshFilter>();
-            var meshRenderer = go.AddComponent<MeshRenderer>();
+            go.AddComponent<DontDestroyOnLoad>();
 
-            modBehaviour.StartCoroutine(LoadMesh(meshFilter, objectPath));
-            modBehaviour.StartCoroutine(LoadTexture(meshRenderer, imagePath));
-
-            return modAsset;
+            modBehaviour.StartCoroutine(LoadMesh(go, objectPath, onLoaded));
+            modBehaviour.StartCoroutine(LoadTexture(go, imagePath));
         }
 
-        public ModAsset<MeshFilter> LoadMesh(ModBehaviour modBehaviour, string objectFilename)
+        public void LoadMesh(ModBehaviour modBehaviour, string objectFilename, Action<MeshFilter> onLoaded)
         {
             var objectPath = modBehaviour.ModManifest.FolderPath + objectFilename;
             _console.WriteLine("Loading mesh from " + objectPath);
 
             var go = new GameObject();
-            var modAsset = go.AddComponent<ModAsset<MeshFilter>>();
+            go.AddComponent<DontDestroyOnLoad>();
 
-            modBehaviour.StartCoroutine(LoadMesh(modAsset, objectPath));
-
-            return modAsset;
+            modBehaviour.StartCoroutine(LoadMesh(go, objectPath, onLoaded));
         }
 
-        public ModAsset<MeshRenderer> LoadTexture(ModBehaviour modBehaviour, string imageFilename)
+        public void LoadTexture(ModBehaviour modBehaviour, string imageFilename, Action<MeshRenderer> onLoaded)
         {
             var imagePath = modBehaviour.ModManifest.FolderPath + imageFilename;
             _console.WriteLine("Loading texture from " + imagePath);
 
             var go = new GameObject();
-            var modAsset = go.AddComponent<ModAsset<MeshRenderer>>();
+            go.AddComponent<DontDestroyOnLoad>();
 
-            modBehaviour.StartCoroutine(LoadTexture(modAsset, imagePath));
-
-            return modAsset;
+            modBehaviour.StartCoroutine(LoadTexture(go, imagePath, onLoaded));
         }
 
-        public ModAsset<AudioSource> LoadAudio(ModBehaviour modBehaviour, string audioFilename)
+        public void LoadAudio(ModBehaviour modBehaviour, string audioFilename, Action<AudioSource> onLoaded)
         {
             var audioPath = modBehaviour.ModManifest.FolderPath + audioFilename;
             _console.WriteLine("Loading audio from " + audioPath);
 
             var go = new GameObject();
-            var modAsset = go.AddComponent<ModAsset<AudioSource>>();
+            go.AddComponent<DontDestroyOnLoad>();
 
             var loadAudioFrom = audioFilename.EndsWith(".mp3")
-                ? LoadAudioFromMp3(modAsset, audioPath)
-                : LoadAudioFromWav(modAsset, audioPath);
+                ? LoadAudioFromMp3(go, audioPath, onLoaded)
+                : LoadAudioFromWav(go, audioPath, onLoaded);
             modBehaviour.StartCoroutine(loadAudioFrom);
-
-            return modAsset;
         }
 
-        private IEnumerator LoadMesh(ModAsset<MeshFilter> modAsset, string objectPath)
-        {
-            var mesh = _objImporter.ImportFile(objectPath);
-            if (mesh == null)
-            {
-                _console.WriteLine("Mesh is null");
-            }
-            var meshFilter = modAsset.gameObject.AddComponent<MeshFilter>();
-            meshFilter.mesh = mesh;
-            modAsset.Asset = meshFilter;
-            yield return null;
-        }
-
-        private IEnumerator LoadTexture(ModAsset<MeshRenderer> modAsset, string imagePath)
+        private IEnumerator LoadTexture(GameObject go, string imagePath)
         {
             var texture = new Texture2D(4, 4, TextureFormat.DXT1, false);
             var url = "file://" + imagePath;
@@ -101,12 +79,55 @@ namespace OWML.Assets
             {
                 _console.WriteLine("Texture is null");
             }
-            var meshRenderer = modAsset.gameObject.AddComponent<MeshRenderer>();
+            var meshRenderer = go.AddComponent<MeshRenderer>();
             meshRenderer.material.mainTexture = texture;
-            modAsset.Asset = meshRenderer;
         }
 
-        private IEnumerator LoadAudioFromMp3(ModAsset<AudioSource> modAsset, string audioPath)
+        private IEnumerator LoadMesh(GameObject go, string objectPath, Action<MeshFilter> onLoaded)
+        {
+            var mesh = _objImporter.ImportFile(objectPath);
+            if (mesh == null)
+            {
+                _console.WriteLine("Mesh is null");
+            }
+            var meshFilter = go.AddComponent<MeshFilter>();
+            meshFilter.mesh = mesh;
+            onLoaded(meshFilter);
+            yield return null;
+        }
+
+        private IEnumerator LoadMesh(GameObject go, string objectPath, Action<GameObject> onLoaded)
+        {
+            var mesh = _objImporter.ImportFile(objectPath);
+            if (mesh == null)
+            {
+                _console.WriteLine("Mesh is null");
+            }
+            var meshFilter = go.AddComponent<MeshFilter>();
+            meshFilter.mesh = mesh;
+            onLoaded(go);
+            yield return null;
+        }
+
+        private IEnumerator LoadTexture(GameObject go, string imagePath, Action<MeshRenderer> onLoaded)
+        {
+            var texture = new Texture2D(4, 4, TextureFormat.DXT1, false);
+            var url = "file://" + imagePath;
+            using (var www = new WWW(url))
+            {
+                yield return www;
+                www.LoadImageIntoTexture(texture);
+            }
+            if (texture == null)
+            {
+                _console.WriteLine("Texture is null");
+            }
+            var meshRenderer = go.AddComponent<MeshRenderer>();
+            meshRenderer.material.mainTexture = texture;
+            onLoaded(meshRenderer);
+        }
+
+        private IEnumerator LoadAudioFromMp3(GameObject go, string audioPath, Action<AudioSource> onLoaded)
         {
             _console.WriteLine("Loading mp3");
             AudioClip clip;
@@ -117,13 +138,13 @@ namespace OWML.Assets
                 clip = AudioClip.Create(audioPath, (int)reader.Length, reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
                 clip.SetData(outputBytes, 0);
             }
-            var audioSource = modAsset.gameObject.AddComponent<AudioSource>();
+            var audioSource = go.AddComponent<AudioSource>();
             audioSource.clip = clip;
-            modAsset.Asset = audioSource;
+            onLoaded(audioSource);
             yield return null;
         }
 
-        private IEnumerator LoadAudioFromWav(ModAsset<AudioSource> modAsset, string audioPath)
+        private IEnumerator LoadAudioFromWav(GameObject go, string audioPath, Action<AudioSource> onLoaded)
         {
             _console.WriteLine("Loading wav");
             AudioClip clip;
@@ -137,9 +158,9 @@ namespace OWML.Assets
             {
                 _console.WriteLine("Audio is null");
             }
-            var audioSource = modAsset.gameObject.AddComponent<AudioSource>();
+            var audioSource = go.AddComponent<AudioSource>();
             audioSource.clip = clip;
-            modAsset.Asset = audioSource;
+            onLoaded(audioSource);
         }
 
     }

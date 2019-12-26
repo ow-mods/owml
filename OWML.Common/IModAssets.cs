@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace OWML.Common
 {
     public interface IModAssets
     {
-        ModAsset<GameObject> Load3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename);
-        ModAsset<MeshFilter> LoadMesh(ModBehaviour modBehaviour, string objectFilename);
-        ModAsset<MeshRenderer> LoadTexture(ModBehaviour modBehaviour, string imageFilename);
-        ModAsset<AudioSource> LoadAudio(ModBehaviour modBehaviour, string audioFilename);
+        void Load3DObject(ModBehaviour modBehaviour, string objectFilename, string imageFilename, Action<GameObject> onLoaded);
+        void LoadMesh(ModBehaviour modBehaviour, string objectFilename, Action<MeshFilter> onLoaded);
+        void LoadTexture(ModBehaviour modBehaviour, string imageFilename, Action<MeshRenderer> onLoaded);
+        void LoadAudio(ModBehaviour modBehaviour, string audioFilename, Action<AudioSource> onLoaded);
     }
 }
