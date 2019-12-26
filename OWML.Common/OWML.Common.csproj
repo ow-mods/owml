@@ -55,7 +55,6 @@
     <Compile Include="IModConsole.cs" />
     <Compile Include="IModLogger.cs" />
     <Compile Include="IModManifest.cs" />
-    <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="ModAsset.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
