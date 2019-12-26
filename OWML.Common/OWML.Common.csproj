@@ -55,12 +55,17 @@
     <Compile Include="IModConsole.cs" />
     <Compile Include="IModLogger.cs" />
     <Compile Include="IModManifest.cs" />
+    <Compile Include="ModAsset.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModConsole.cs" />
     <Compile Include="ModHelper.cs" />
     <Compile Include="ModLogger.cs" />
     <Compile Include="ModManifest.cs" />
+    <Compile Include="AudioAsset.cs" />
+    <Compile Include="MeshAsset.cs" />
+    <Compile Include="TextureAsset.cs" />
+    <Compile Include="ObjectAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

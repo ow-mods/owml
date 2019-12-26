@@ -103,8 +103,11 @@ ModHelper.Assets lets you load assets at runtime. See the sample mod OWML.LoadCu
 
 Put your custom assets in your mod folder, then load them like this:
 ~~~~
-var duck = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
-var audio = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+duckAsset.OnLoaded += duck => ...
+
+var audioAsset = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+audioAsset.OnLoaded += audioSource => ...
 ~~~~
 
 It's recommended to load custom assets at the start of the game, then copy/play when needed, like this:
@@ -190,7 +193,7 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.2.2",
+  "owmlVersion": "0.2.3",
   "enabled": true
 }
 ~~~~
