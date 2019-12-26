@@ -15,9 +15,12 @@ namespace OWML.LoadCustomAssets
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
-            ModHelper.Assets.LoadAudio(this, "blaster-firing.wav", OnGunSoundLoaded);
-            ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png", OnDuckLoaded);
-            ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3", OnMusicLoaded);
+            var gunSoundAsset = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+            gunSoundAsset.OnLoaded += OnGunSoundLoaded;
+            var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+            duckAsset.OnLoaded += OnDuckLoaded;
+            var musicAsset = ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3");
+            musicAsset.OnLoaded += OnMusicLoaded;
             ModHelper.Events.AddEvent<PlayerBody>(Common.Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }

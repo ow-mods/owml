@@ -12,12 +12,21 @@ namespace OWML.Common
         public void SetAsset(T asset)
         {
             Asset = asset;
+            if (OnLoaded == null)
+            {
+                ModBehaviour.ModHelper.Console.WriteLine("Invoking OnLoaded with no subscribers :(");
+            }
             OnLoaded?.Invoke(asset);
         }
 
-        private void Awake()
+        private void Start()
         {
             DontDestroyOnLoad(gameObject);
+        }
+
+        public T1 AddComponent<T1>() where T1 : Component
+        {
+            return gameObject.AddComponent<T1>();
         }
 
     }
