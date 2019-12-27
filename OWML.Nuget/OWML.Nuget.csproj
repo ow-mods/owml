@@ -67,4 +67,7 @@
     <None Include="OWML.Nuget.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>nuget pack $(ProjectPath)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

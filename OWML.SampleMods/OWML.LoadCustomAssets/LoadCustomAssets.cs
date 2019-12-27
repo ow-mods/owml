@@ -12,16 +12,21 @@ namespace OWML.LoadCustomAssets
         private OWRigidbody _playerBody;
         private AudioSource _shootSound;
         private AudioSource _music;
+        private SaveFile _saveFile;
 
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
-            var gunSoundAsset = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+            _saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
+            ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
+
+            var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
             gunSoundAsset.OnLoaded += OnGunSoundLoaded;
-            var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+            var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
             duckAsset.OnLoaded += OnDuckLoaded;
-            var musicAsset = ModHelper.Assets.LoadAudio(this, "spiral-mountain.mp3");
+            var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
             musicAsset.OnLoaded += OnMusicLoaded;
+
             ModHelper.Events.AddEvent<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
@@ -67,12 +72,16 @@ namespace OWML.LoadCustomAssets
 
         private void ShootDuck()
         {
-            ModHelper.Console.WriteLine("Shooting duck");
             var duckBody = Instantiate(_duckBody);
             duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 2f);
             duckBody.SetRotation(_playerTransform.rotation);
             duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 10f);
             _shootSound.Play();
+
+            _saveFile.NumberOfDucks++;
+            ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
+            ModHelper.Storage.Save(_saveFile, "savefile.json");
         }
+
     }
 }

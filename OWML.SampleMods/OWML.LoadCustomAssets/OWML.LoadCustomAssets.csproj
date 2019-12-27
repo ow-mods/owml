@@ -76,11 +76,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SaveFile.cs" />
     <Compile Include="LoadCustomAssets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="duck.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="savefile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="manifest.json">
