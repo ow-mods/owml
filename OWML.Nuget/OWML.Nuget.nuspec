@@ -8,12 +8,11 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
-    <iconUrl>http://icon_url_here_or_delete_this_line/</iconUrl>
+    <projectUrl>https://github.com/amazingalek/owml</projectUrl>
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright 2019</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>Outer Wilds</tags>
     <dependencies>
       <group targetFramework=".NETFramework3.5">
         <dependency id="Lib.Harmony" version="1.2.0.1" />

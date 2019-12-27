@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OWML.Nuget")]
+[assembly: AssemblyTitle("OWML")]
 [assembly: AssemblyDescription("Mod loader and mod framework for Outer Wilds")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alek")]
-[assembly: AssemblyProduct("OWML.Nuget")]
-[assembly: AssemblyCopyright("Copyright © Alek 2019")]
+[assembly: AssemblyProduct("OWML")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
