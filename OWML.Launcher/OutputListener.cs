@@ -19,6 +19,10 @@ namespace OWML.Launcher
 
         public void Start()
         {
+            if (!Directory.Exists("Logs"))
+            {
+                Directory.CreateDirectory("Logs");
+            }
             File.WriteAllText(_outputPath, "");
             Task.Run(Work);
         }

@@ -17,7 +17,6 @@ copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Assets.dll" "Release\OWML.ModHelper.As
 copy "OWML.Nuget\bin\Debug\0Harmony.dll" "Release\0Harmony.dll"
 copy "OWML.Nuget\bin\Debug\Newtonsoft.Json.dll" "Release\Newtonsoft.Json.dll"
 
-mkdir "Release\Logs"
 mkdir "Release\Mods"
 
 mkdir "Release\Mods\OWML.EnableDebugMode"
