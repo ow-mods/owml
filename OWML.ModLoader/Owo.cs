@@ -3,80 +3,97 @@ using System.Linq;
 using System.Reflection;
 using OWML.Common;
 using OWML.ModHelper;
+using OWML.ModHelper.Assets;
 using UnityEngine;
 
 namespace OWML.ModLoader
 {
     internal class Owo
     {
-        private readonly IModHelper _helper;
         private readonly IModFinder _modFinder;
+        private readonly IModLogger _logger;
+        private readonly IModConsole _console;
+        private readonly IModConfig _config;
+        private readonly IHarmonyHelper _harmonyHelper;
+        private readonly IModEvents _events;
 
-        public Owo(IModHelper helper, IModFinder modFinder)
+        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config, IHarmonyHelper harmonyHelper, IModEvents events)
         {
-            _helper = helper;
             _modFinder = modFinder;
+            _logger = logger;
+            _console = console;
+            _config = config;
+            _harmonyHelper = harmonyHelper;
+            _events = events;
         }
 
         public void LoadMods()
         {
-            _helper.Logger.Log($"{nameof(Owo)}: {nameof(LoadMods)}");
-            if (_helper.Config.Verbose)
+            _logger.Log($"{nameof(Owo)}: {nameof(LoadMods)}");
+            if (_config.Verbose)
             {
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var manifests = _modFinder.GetManifests();
             foreach (var manifest in manifests)
             {
-                LoadMod(manifest);
+                var helper = CreateModHelper(manifest);
+                LoadMod(helper);
             }
+        }
+
+        private IModHelper CreateModHelper(IModManifest manifest)
+        {
+            var assets = new ModAssets(_console, manifest);
+            var storage = new ModStorage(manifest);
+            return new ModHelper.ModHelper(_config, _logger, _console, _events, _harmonyHelper, assets, storage, manifest);
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            _helper.Logger.Log($"{type}: {message}");
+            _logger.Log($"{type}: {message}");
             if (type == LogType.Error || type == LogType.Exception)
             {
-                _helper.Console.WriteLine($"{type}: {message}");
+                _console.WriteLine($"{type}: {message}");
             }
         }
 
-        private void LoadMod(IModManifest manifest)
+        private void LoadMod(IModHelper helper)
         {
-            var modType = LoadModType(manifest);
+            var modType = LoadModType(helper.Manifest);
             if (modType == null)
             {
-                _helper.Logger.Log("Mod type is null, skipping");
+                _logger.Log("Mod type is null, skipping");
                 return;
             }
-            _helper.Logger.Log($"Loading {manifest.UniqueName} ({manifest.Version})...");
-            _helper.Logger.Log("Adding mod behaviour...");
-            var go = new GameObject(manifest.UniqueName);
+            _logger.Log($"Loading {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
+            _logger.Log("Adding mod behaviour...");
+            var go = new GameObject(helper.Manifest.UniqueName);
             var mod = (ModBehaviour)go.AddComponent(modType);
-            _helper.Logger.Log("Added! Initializing...");
-            mod.Init(_helper, manifest);
-            _helper.Console.WriteLine($"Loaded {manifest.UniqueName} ({manifest.Version}).");
-            _helper.Logger.Log($"Loaded {manifest.UniqueName} ({manifest.Version}).");
+            _logger.Log("Added! Initializing...");
+            mod.Init(helper);
+            _console.WriteLine($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
+            _logger.Log($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
         }
 
         private Type LoadModType(IModManifest manifest)
         {
             if (!manifest.Enabled)
             {
-                _helper.Logger.Log($"{manifest.UniqueName} is disabled");
+                _logger.Log($"{manifest.UniqueName} is disabled");
                 return null;
             }
-            _helper.Logger.Log("Loading assembly: " + manifest.AssemblyPath);
+            _logger.Log("Loading assembly: " + manifest.AssemblyPath);
             var assembly = Assembly.LoadFile(manifest.AssemblyPath);
-            _helper.Logger.Log($"Loaded {assembly.FullName}");
+            _logger.Log($"Loaded {assembly.FullName}");
             try
             {
                 return assembly.GetTypes().FirstOrDefault(x => x.IsSubclassOf(typeof(ModBehaviour)));
             }
             catch (Exception ex)
             {
-                _helper.Logger.Log($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
-                _helper.Console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
+                _logger.Log($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
+                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
                 return null;
             }
         }

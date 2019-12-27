@@ -8,58 +8,60 @@ namespace OWML.ModHelper.Assets
     public class ModAssets : IModAssets
     {
         private readonly IModConsole _console;
+        private readonly IModManifest _manifest;
         private readonly ObjImporter _objImporter;
 
-        public ModAssets(IModConsole console)
+        public ModAssets(IModConsole console, IModManifest manifest)
         {
             _console = console;
+            _manifest = manifest;
             _objImporter = new ObjImporter();
         }
 
-        public IModAsset<GameObject> Load3DObject(IModBehaviour modBehaviour, string objectFilename, string imageFilename)
+        public IModAsset<GameObject> Load3DObject(string objectFilename, string imageFilename)
         {
-            var objectPath = modBehaviour.ModManifest.FolderPath + objectFilename;
-            var imagePath = modBehaviour.ModManifest.FolderPath + imageFilename;
+            var objectPath = _manifest.FolderPath + objectFilename;
+            var imagePath = _manifest.FolderPath + imageFilename;
             _console.WriteLine("Loading object from " + objectPath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<ObjectAsset>();
 
-            modBehaviour.StartCoroutine(LoadMesh(modAsset, objectPath));
-            modBehaviour.StartCoroutine(LoadTexture(modAsset, imagePath));
+            modAsset.StartCoroutine(LoadMesh(modAsset, objectPath));
+            modAsset.StartCoroutine(LoadTexture(modAsset, imagePath));
 
             return modAsset;
         }
 
-        public IModAsset<MeshFilter> LoadMesh(IModBehaviour modBehaviour, string objectFilename)
+        public IModAsset<MeshFilter> LoadMesh(string objectFilename)
         {
-            var objectPath = modBehaviour.ModManifest.FolderPath + objectFilename;
+            var objectPath = _manifest.FolderPath + objectFilename;
             _console.WriteLine("Loading mesh from " + objectPath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<MeshAsset>();
 
-            modBehaviour.StartCoroutine(LoadMesh(modAsset, objectPath));
+            modAsset.StartCoroutine(LoadMesh(modAsset, objectPath));
 
             return modAsset;
         }
 
-        public IModAsset<MeshRenderer> LoadTexture(IModBehaviour modBehaviour, string imageFilename)
+        public IModAsset<MeshRenderer> LoadTexture(string imageFilename)
         {
-            var imagePath = modBehaviour.ModManifest.FolderPath + imageFilename;
+            var imagePath = _manifest.FolderPath + imageFilename;
             _console.WriteLine("Loading texture from " + imagePath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<TextureAsset>();
 
-            modBehaviour.StartCoroutine(LoadTexture(modAsset, imagePath));
+            modAsset.StartCoroutine(LoadTexture(modAsset, imagePath));
 
             return modAsset;
         }
 
-        public IModAsset<AudioSource> LoadAudio(IModBehaviour modBehaviour, string audioFilename)
+        public IModAsset<AudioSource> LoadAudio(string audioFilename)
         {
-            var audioPath = modBehaviour.ModManifest.FolderPath + audioFilename;
+            var audioPath = _manifest.FolderPath + audioFilename;
             _console.WriteLine("Loading audio from " + audioPath);
 
             var go = new GameObject();
@@ -68,7 +70,7 @@ namespace OWML.ModHelper.Assets
             var loadAudioFrom = audioFilename.EndsWith(".mp3")
                 ? LoadAudioFromMp3(modAsset, audioPath)
                 : LoadAudioFromWav(modAsset, audioPath);
-            modBehaviour.StartCoroutine(loadAudioFrom);
+            modAsset.StartCoroutine(loadAudioFrom);
 
             return modAsset;
         }
