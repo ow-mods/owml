@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
+    <iconUrl>http://icon_url_here_or_delete_this_line/</iconUrl>
+    <description>$description$</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>Tag1 Tag2</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="Lib.Harmony" version="1.2.0.1" />
+        <dependency id="Json.Net.Unity3D" version="9.0.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Debug\OWML.ModHelper.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Assets.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Events.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.Common.dll" target="lib\net35" />
+    <file src="bin\Debug\NAudio-Unity.dll" target="lib\net35" />
+  </files>
+</package>

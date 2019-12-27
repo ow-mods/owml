@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Assets", "OW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Events", "OWML.ModHelper.Events\OWML.ModHelper.Events.csproj", "{B771615E-6B51-44F8-B862-D7543C12C0FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Nuget", "OWML.Nuget\OWML.Nuget.csproj", "{6A215200-7519-4D57-B140-0E0973EE2345}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{B771615E-6B51-44F8-B862-D7543C12C0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B771615E-6B51-44F8-B862-D7543C12C0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B771615E-6B51-44F8-B862-D7543C12C0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A215200-7519-4D57-B140-0E0973EE2345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A215200-7519-4D57-B140-0E0973EE2345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A215200-7519-4D57-B140-0E0973EE2345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A215200-7519-4D57-B140-0E0973EE2345}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
