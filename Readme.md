@@ -196,7 +196,6 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.2.3",
   "enabled": true
 }
 ~~~~
@@ -219,7 +218,6 @@ Each mod is defined in a manifest.json file:
 |name|The name of the mod.|
 |uniqueName|Usually {author}.{uniqueName}.|
 |version|The version number.|
-|owmlVersion|The version of OWML the mod was made for.|
 |enabled|Whether or not the mod will be loaded.|
 
 ## Compatibility
