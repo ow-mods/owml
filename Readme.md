@@ -35,16 +35,12 @@ Refer to the sample mods for examples.
 
 ### Get started
 
-Make a new project targeting .Net Framework 3.5. Reference the following files:
-* OWML:
-  * OWML.Common.dll
-  * OWML.ModHelper.dll
-  * OWML.ModHelper.Events.dll
-  * OWML.ModHelper.Assets.dll
-* {gamePath}\OuterWilds_Data\Managed:
-  * Assembly-CSharp.dll
-  * UnityEngine.CoreModule.dll
-  * More Unity DLLs if needed
+1. Create a class library project targeting .Net Framework 3.5.
+2. Install the [OWML Nuget package](https://www.nuget.org/packages/OWML/).
+3. Reference the following files in {gamePath}\OuterWilds_Data\Managed:
+    * Assembly-CSharp.dll
+    * UnityEngine.CoreModule.dll
+    * More Unity DLLs if needed
 
 Inherit from ModBehaviour. You can have any number of classes/projects you want, but only one ModBehaviour per mod.
 
@@ -196,7 +192,6 @@ Add a manifest file called manifest.json. Example:
   "name": "EnableDebugMode",
   "uniqueName": "Alek.EnableDebugMode",
   "version": "0.1",
-  "owmlVersion": "0.2.3",
   "enabled": true
 }
 ~~~~
@@ -219,7 +214,6 @@ Each mod is defined in a manifest.json file:
 |name|The name of the mod.|
 |uniqueName|Usually {author}.{uniqueName}.|
 |version|The version number.|
-|owmlVersion|The version of OWML the mod was made for.|
 |enabled|Whether or not the mod will be loaded.|
 
 ## Compatibility
