@@ -71,6 +71,7 @@ The mod helper contains useful helper classes:
 |Events|Allows listening to events, such as Awake and Start of MonoBehaviours. Uses HarmonyHelper.|
 |HarmonyHelper|Helper methods for Harmony, such as extending a method with another, and changing or removing the contents of a method.|
 |Assets|Loads custom 3D objects and audio.|
+|Storage|Save and load data.|
 |?|More to come!|
 
 Note: ModHelper can not be used in Awake, it's not initialized at that time.
@@ -102,10 +103,10 @@ ModHelper.Assets lets you load assets at runtime. See the sample mod OWML.LoadCu
 
 Put your custom assets in your mod folder, then load them like this:
 ~~~~
-var duckAsset = ModHelper.Assets.Load3DObject(this, "duck.obj", "duck.png");
+var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
 duckAsset.OnLoaded += duck => ...
 
-var audioAsset = ModHelper.Assets.LoadAudio(this, "blaster-firing.wav");
+var audioAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
 audioAsset.OnLoaded += audioSource => ...
 ~~~~
 
@@ -124,6 +125,15 @@ Supported asset types:
 |Audio|Wav is supported using [WWW](https://docs.unity3d.com/ScriptReference/WWW.html). Mp3 is supported using [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity).|
 
 Support for more asset types is in progress.
+
+### Load and save data
+
+Put a JSON file in your mod folder and load and save it like so:
+~~~~
+var saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
+...
+ModHelper.Storage.Save(saveFile, "savefile.json");
+~~~~
 
 ### Tips and tricks
 

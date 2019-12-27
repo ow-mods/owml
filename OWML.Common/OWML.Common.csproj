@@ -65,6 +65,7 @@
     <Compile Include="IModConsole.cs" />
     <Compile Include="IModLogger.cs" />
     <Compile Include="IModManifest.cs" />
+    <Compile Include="IModStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
