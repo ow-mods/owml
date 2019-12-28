@@ -24,9 +24,8 @@ namespace OWML.ModLoader
             var console = new ModConsole(config, logger);
             console.WriteLine("Mod loader has been initialized.");
             var harmonyHelper = new HarmonyHelper(logger, console);
-            var events = new ModEvents(harmonyHelper);
             var modFinder = new ModFinder(config);
-            var owo = new Owo(modFinder, logger, console, config, harmonyHelper, events);
+            var owo = new Owo(modFinder, logger, console, config, harmonyHelper);
             owo.LoadMods();
         }
 

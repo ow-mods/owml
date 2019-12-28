@@ -23,10 +23,6 @@ mkdir "Release\Mods\OWML.EnableDebugMode"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\OWML.EnableDebugMode.dll" "Release\Mods\OWML.EnableDebugMode\OWML.EnableDebugMode.dll"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\manifest.json" "Release\Mods\OWML.EnableDebugMode\manifest.json"
 
-mkdir "Release\Mods\OWML.TestMod"
-copy "OWML.SampleMods\OWML.TestMod\bin\Debug\OWML.TestMod.dll" "Release\Mods\OWML.TestMod\OWML.TestMod.dll"
-copy "OWML.SampleMods\OWML.TestMod\bin\Debug\manifest.json" "Release\Mods\OWML.TestMod\manifest.json"
-
 mkdir "Release\Mods\OWML.LoadCustomAssets"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\OWML.LoadCustomAssets.dll" "Release\Mods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.dll"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\manifest.json" "Release\Mods\OWML.LoadCustomAssets\manifest.json"
@@ -37,5 +33,10 @@ copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\spiral-mountain.mp3" "Rele
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\savefile.json" "Release\Mods\OWML.LoadCustomAssets\savefile.json"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\cubebundle" "Release\Mods\OWML.LoadCustomAssets\cubebundle"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\cubebundle.manifest" "Release\Mods\OWML.LoadCustomAssets\cubebundle.manifest"
+
+mkdir "Release\Mods\OWML.LightBramble"
+copy "OWML.SampleMods\OWML.LightBramble\bin\Debug\OWML.LightBramble.dll" "Release\Mods\OWML.LightBramble\OWML.LightBramble.dll"
+copy "OWML.SampleMods\OWML.LightBramble\bin\Debug\manifest.json" "Release\Mods\OWML.LightBramble\manifest.json"
+copy "OWML.SampleMods\OWML.LightBramble\bin\Debug\deku-tree.mp3" "Release\Mods\OWML.LightBramble\deku-tree.mp3"
 
 7z a "Release\OWML.zip" "Release"
