@@ -13,10 +13,6 @@ namespace OWML.ModHelper.Assets
         public void SetAsset(T asset)
         {
             Asset = asset;
-            if (OnLoaded == null)
-            {
-                ModBehaviour.ModHelper.Console.WriteLine("Invoking OnLoaded with no subscribers :(");
-            }
             OnLoaded?.Invoke(asset);
         }
 

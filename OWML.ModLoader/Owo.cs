@@ -4,6 +4,7 @@ using System.Reflection;
 using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
+using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -15,16 +16,14 @@ namespace OWML.ModLoader
         private readonly IModConsole _console;
         private readonly IModConfig _config;
         private readonly IHarmonyHelper _harmonyHelper;
-        private readonly IModEvents _events;
 
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config, IHarmonyHelper harmonyHelper, IModEvents events)
+        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config, IHarmonyHelper harmonyHelper)
         {
             _modFinder = modFinder;
             _logger = logger;
             _console = console;
             _config = config;
             _harmonyHelper = harmonyHelper;
-            _events = events;
         }
 
         public void LoadMods()
@@ -46,7 +45,8 @@ namespace OWML.ModLoader
         {
             var assets = new ModAssets(_console, manifest);
             var storage = new ModStorage(manifest);
-            return new ModHelper.ModHelper(_config, _logger, _console, _events, _harmonyHelper, assets, storage, manifest);
+            var events = new ModEvents(_harmonyHelper);
+            return new ModHelper.ModHelper(_config, _logger, _console, events, _harmonyHelper, assets, storage, manifest);
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)

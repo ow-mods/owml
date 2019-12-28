@@ -19,8 +19,8 @@ Some mods are included as examples/inspiration. **They are all disabled by defau
 |Sample mod|Description|
 |----------|-----------|
 |OWML.EnableDebugMode|Enables the built-in debug mode in the game. Highlights: cycle through debug UIs with F1, warp to planets with the number keys, and explode the sun with the End key.|
-|OWML.TestMod|Blows up the sun as soon as the player wakes up.|
 |OWML.LoadCustomAssets|Showcases loading of custom 3D objects and audio. Click the left mouse button to shoot rubber ducks.|
+|OWML.LightBramble|No fog. No anglerfish. Nice music.|
 
 ## For players
 

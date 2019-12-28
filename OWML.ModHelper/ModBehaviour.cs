@@ -5,7 +5,7 @@ namespace OWML.ModHelper
 {
     public class ModBehaviour : MonoBehaviour
     {
-        public static IModHelper ModHelper;
+        public IModHelper ModHelper { get; private set; }
 
         public void Init(IModHelper modHelper)
         {
