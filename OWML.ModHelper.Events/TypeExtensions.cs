@@ -57,7 +57,6 @@ namespace OWML.ModHelper.Events
             if (property != null)
             {
                 property.SetValue(obj, value, null);
-                return;
             }
         }
 

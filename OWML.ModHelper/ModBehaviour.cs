@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper
 {
-    public class ModBehaviour : MonoBehaviour, IModBehaviour
+    public class ModBehaviour : MonoBehaviour
     {
         public static IModHelper ModHelper;
 
