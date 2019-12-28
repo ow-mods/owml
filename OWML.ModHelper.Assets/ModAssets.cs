@@ -18,6 +18,18 @@ namespace OWML.ModHelper.Assets
             _objImporter = new ObjImporter();
         }
 
+        public AssetBundle LoadBundle(string filename)
+        {
+            var path = _manifest.FolderPath + filename;
+            _console.WriteLine("Loading asset bundle from " + path);
+            var bundle = AssetBundle.LoadFromFile(path);
+            if (bundle == null)
+            {
+                _console.WriteLine("Bundle is null");
+            }
+            return bundle;
+        }
+
         public IModAsset<GameObject> Load3DObject(string objectFilename, string imageFilename)
         {
             var objectPath = _manifest.FolderPath + objectFilename;

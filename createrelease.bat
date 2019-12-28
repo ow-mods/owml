@@ -35,5 +35,7 @@ copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\duck.png" "Release\Mods\OW
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\blaster-firing.wav" "Release\Mods\OWML.LoadCustomAssets\blaster-firing.wav"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\spiral-mountain.mp3" "Release\Mods\OWML.LoadCustomAssets\spiral-mountain.mp3"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\savefile.json" "Release\Mods\OWML.LoadCustomAssets\savefile.json"
+copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\cubebundle" "Release\Mods\OWML.LoadCustomAssets\cubebundle"
+copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\cubebundle.manifest" "Release\Mods\OWML.LoadCustomAssets\cubebundle.manifest"
 
 7z a "Release\OWML.zip" "Release"
