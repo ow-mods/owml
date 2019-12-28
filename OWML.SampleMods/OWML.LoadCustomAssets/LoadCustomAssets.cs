@@ -13,12 +13,20 @@ namespace OWML.LoadCustomAssets
         private AudioSource _shootSound;
         private AudioSource _music;
         private SaveFile _saveFile;
+        private GameObject _cube;
 
         private void Start()
         {
             ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
             _saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
             ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
+
+            var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
+            _cube = assetBundle.LoadAsset<GameObject>("Cube");
+            if (_cube == null)
+            {
+                ModHelper.Console.WriteLine("Cube is null");
+            }
 
             var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
             gunSoundAsset.OnLoaded += OnGunSoundLoaded;
@@ -64,15 +72,24 @@ namespace OWML.LoadCustomAssets
 
         private void Update()
         {
-            if (_isStarted && Input.GetMouseButtonDown(0))
+            if (!_isStarted)
+            {
+                return;
+            }
+            if (Input.GetMouseButtonDown(0))
             {
                 ShootDuck();
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                CreateCube();
             }
         }
 
         private void ShootDuck()
         {
             var duckBody = Instantiate(_duckBody);
+
             duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 2f);
             duckBody.SetRotation(_playerTransform.rotation);
             duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 10f);
@@ -81,6 +98,11 @@ namespace OWML.LoadCustomAssets
             _saveFile.NumberOfDucks++;
             ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
             ModHelper.Storage.Save(_saveFile, "savefile.json");
+        }
+
+        private void CreateCube()
+        {
+            Instantiate(_cube, _playerTransform.position + _playerTransform.forward * 2f, Quaternion.identity);
         }
 
     }
