@@ -57,7 +57,6 @@
     <Compile Include="IHarmonyHelper.cs" />
     <Compile Include="IModAssets.cs" />
     <Compile Include="IModAsset.cs" />
-    <Compile Include="IModBehaviour.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModEvents.cs" />
     <Compile Include="IModFinder.cs" />

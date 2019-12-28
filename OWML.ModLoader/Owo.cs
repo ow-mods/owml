@@ -29,9 +29,9 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            _logger.Log($"{nameof(Owo)}: {nameof(LoadMods)}");
             if (_config.Verbose)
             {
+                _console.WriteLine("Verbose mod is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var manifests = _modFinder.GetManifests();
@@ -69,11 +69,18 @@ namespace OWML.ModLoader
             _logger.Log($"Loading {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
             _logger.Log("Adding mod behaviour...");
             var go = new GameObject(helper.Manifest.UniqueName);
-            var mod = (ModBehaviour)go.AddComponent(modType);
-            _logger.Log("Added! Initializing...");
-            mod.Init(helper);
+            try
+            {
+                var mod = (ModBehaviour)go.AddComponent(modType);
+                _logger.Log("Added! Initializing...");
+                mod.Init(helper);
+            }
+            catch (Exception ex)
+            {
+                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
+                return;
+            }
             _console.WriteLine($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
-            _logger.Log($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
         }
 
         private Type LoadModType(IModManifest manifest)
@@ -92,7 +99,6 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _logger.Log($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
                 _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
                 return null;
             }

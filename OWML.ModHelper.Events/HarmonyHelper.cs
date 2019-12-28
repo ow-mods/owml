@@ -21,7 +21,6 @@ namespace OWML.ModHelper.Events
             var prefix = patchType.GetAnyMethod(patchMethodName);
             if (prefix == null)
             {
-                _logger.Log("prefix is null");
                 _console.WriteLine("prefix is null");
                 return;
             }
@@ -33,7 +32,6 @@ namespace OWML.ModHelper.Events
             var postfix = patchType.GetAnyMethod(patchMethodName);
             if (postfix == null)
             {
-                _logger.Log("postfix is null");
                 _console.WriteLine("postfix is null");
                 return;
             }
@@ -50,7 +48,6 @@ namespace OWML.ModHelper.Events
             var patchMethod = patchType.GetAnyMethod(patchMethodName);
             if (patchMethod == null)
             {
-                _logger.Log("patchMethod is null");
                 _console.WriteLine("patchMethod is null");
                 return;
             }
@@ -70,7 +67,6 @@ namespace OWML.ModHelper.Events
             }
             catch (Exception ex)
             {
-                _logger.Log($"Exception while creating harmony instance: {ex}");
                 _console.WriteLine($"Exception while creating harmony instance: {ex}");
                 return;
             }
@@ -83,13 +79,11 @@ namespace OWML.ModHelper.Events
             }
             catch (Exception ex)
             {
-                _logger.Log($"Exception while getting method {methodName} of {targetType.Name}: {ex}");
                 _console.WriteLine($"Exception while getting method {methodName} of {targetType.Name}: {ex}");
                 return;
             }
             if (original == null)
             {
-                _logger.Log("original is null");
                 _console.WriteLine("original is null");
                 return;
             }
@@ -103,7 +97,6 @@ namespace OWML.ModHelper.Events
             }
             catch (Exception ex)
             {
-                _logger.Log($"Exception while patching {targetType.Name}: {ex}");
                 _console.WriteLine($"Exception while patching {targetType.Name}: {ex}");
             }
         }
