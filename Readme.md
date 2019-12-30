@@ -64,6 +64,7 @@ Each mod is defined in a manifest.json file:
 |name|The name of the mod.|
 |uniqueName|Usually {author}.{uniqueName}.|
 |version|The version number.|
+|owmlVersion|The version of OWML the mod was built for.|
 |enabled|Whether or not the mod will be loaded.|
 
 ## Compatibility
