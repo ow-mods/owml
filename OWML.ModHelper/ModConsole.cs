@@ -7,11 +7,14 @@ namespace OWML.ModHelper
 {
     public class ModConsole : IModConsole
     {
+        public static ModConsole Instance { get; private set; }
+
         private readonly FileStream _writer;
         private readonly IModLogger _logger;
 
         public ModConsole(IModConfig config, IModLogger logger)
         {
+            Instance = this;
             _logger = logger;
             _writer = File.Open(config.OutputFilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
         }
