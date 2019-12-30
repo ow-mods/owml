@@ -12,6 +12,5 @@ namespace OWML.ModHelper
             ModHelper = modHelper;
             DontDestroyOnLoad(gameObject);
         }
-
     }
 }
