@@ -60,7 +60,7 @@ namespace OWML.ModHelper.Events
             }
         }
 
-        public static void Invoke(this object obj, string name, object[] parameters)
+        public static void Invoke(this object obj, string name, params object[] parameters)
         {
             var type = obj.GetType();
             var method = type.GetAnyMethod(name);
