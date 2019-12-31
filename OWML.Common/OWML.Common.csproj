@@ -62,6 +62,7 @@
     <Compile Include="IModFinder.cs" />
     <Compile Include="IModHelper.cs" />
     <Compile Include="IModConsole.cs" />
+    <Compile Include="IModMenus.cs" />
     <Compile Include="IModLogger.cs" />
     <Compile Include="IModManifest.cs" />
     <Compile Include="IModStorage.cs" />

@@ -61,6 +61,7 @@
     <Compile Include="ModHelper.cs" />
     <Compile Include="ModLogger.cs" />
     <Compile Include="ModManifest.cs" />
+    <Compile Include="ModMenus.cs" />
     <Compile Include="ModStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
