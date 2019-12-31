@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -17,6 +18,11 @@ namespace OWML.ModLoader
 
         public IList<IModManifest> GetManifests()
         {
+            if (!Directory.Exists(_config.ModsPath))
+            {
+                Console.WriteLine("Warning: Mods folder not found!");
+                return new List<IModManifest>();
+            }
             var manifestFilenames = Directory.GetFiles(_config.ModsPath, "manifest.json", SearchOption.AllDirectories);
             var manifests = new List<IModManifest>();
             foreach (var manifestFilename in manifestFilenames)
