@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.2";
+        private const string Version = "0.3.4";
 
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
