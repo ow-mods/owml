@@ -77,10 +77,19 @@ namespace OWML.Patcher
             var instructions = patcher.GetInstructions(target).ToList();
             var patchedInstructions = GetPatchedInstructions(instructions);
 
-            Console.WriteLine($"Removing existing patch from {PatchClass}.{PatchMethod}.");
-            foreach (var patchedInstruction in patchedInstructions)
+            if (patchedInstructions.Count == 1)
             {
-                instructions.Remove(patchedInstruction);
+                Console.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
+                return;
+            }
+
+            if (patchedInstructions.Count > 1)
+            {
+                Console.WriteLine($"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
+                foreach (var patchedInstruction in patchedInstructions)
+                {
+                    instructions.Remove(patchedInstruction);
+                }
             }
 
             Console.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");

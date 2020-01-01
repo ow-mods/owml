@@ -23,7 +23,6 @@ namespace OWML.EnableDebugMode
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
             var type = behaviour.GetType();
-            ModHelper.Console.WriteLine($"Event: {ev} of {type.Name}");
             if (type == typeof(PlayerSpawner) && ev == Events.AfterAwake)
             {
                 _playerSpawner = (PlayerSpawner)behaviour;
