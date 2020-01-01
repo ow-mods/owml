@@ -110,8 +110,27 @@ namespace OWML.Launcher
         private void ListenForOutput(IModConfig config)
         {
             var listener = new OutputListener(config);
-            listener.OnOutput += Console.Write;
+            listener.OnOutput += OnOutput;
             listener.Start();
+        }
+
+        private void OnOutput(string s)
+        {
+            //Console.WriteLine("Color: " + Console.ForegroundColor);
+            //if (s.ToLower().Contains("error") || s.ToLower().Contains("exception"))
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Red;
+            //}
+            //else if (s.ToLower().Contains("warning"))
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Yellow;
+            //}
+            //else if (s.ToLower().Contains("success"))
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Green;
+            //}
+            Console.Write(s);
+            //Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         private void PatchGame(IModConfig config)
