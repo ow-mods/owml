@@ -29,16 +29,33 @@ namespace OWML.Launcher
 
         private async Task Work()
         {
+            const int readLength = 128;
             using (var reader = File.Open(_outputPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 while (true)
                 {
-                    var bytes = new byte[128];
-                    reader.Read(bytes, 0, 128);
+                    var bytes = new byte[readLength];
+                    reader.Read(bytes, 0, readLength);
                     var s = Encoding.UTF8.GetString(bytes).Replace("\0", "");
                     if (!string.IsNullOrEmpty(s))
                     {
-                        OnOutput?.Invoke(s);
+                        var newLineIndex = s.LastIndexOf(Environment.NewLine);
+                        if (newLineIndex == -1)
+                        {
+                            reader.Seek(-readLength, SeekOrigin.Current);
+                        }
+                        else if (newLineIndex == s.Length - Environment.NewLine.Length)
+                        {
+                            OnOutput?.Invoke(s);
+                        }
+                        else
+                        {
+                            var seekBack = -readLength + newLineIndex + Environment.NewLine.Length;
+                            reader.Seek(seekBack, SeekOrigin.Current);
+                            var untilNewLine = s.Substring(0, newLineIndex + Environment.NewLine.Length);
+                            OnOutput?.Invoke(untilNewLine);
+                        }
+                        
                     }
                     await Task.Delay(100);
                 }

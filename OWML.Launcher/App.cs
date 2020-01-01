@@ -12,20 +12,20 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.5";
+        private const string Version = "0.3.6";
 
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
         public void Run()
         {
-            Console.WriteLine($"Started OWML version {Version}");
+            PrintLine($"Started OWML version {Version}");
 
             var config = GetConfig();
 
             RequireCorrectGamePath(config);
 
-            Console.WriteLine($"Game found at {config.GamePath}");
-            Console.WriteLine("For detailed log, see Logs/OWML.Log.txt");
+            PrintLine($"Game found at {config.GamePath}");
+            PrintLine("For detailed log, see Logs/OWML.Log.txt");
 
             CopyGameFiles(config);
 
@@ -47,8 +47,8 @@ namespace OWML.Launcher
             var isValidGamePath = IsValidGamePath(config);
             while (!isValidGamePath)
             {
-                Console.WriteLine($"Game not found at {config.GamePath}");
-                Console.WriteLine("Please enter the correct game path:");
+                PrintLine($"Game not found at {config.GamePath}");
+                PrintLine("Please enter the correct game path:");
                 config.GamePath = Console.ReadLine()?.Trim();
                 if (IsValidGamePath(config))
                 {
@@ -72,7 +72,7 @@ namespace OWML.Launcher
             {
                 File.Copy($"{config.ManagedPath}/{fileName}", fileName, true);
             }
-            Console.WriteLine("Game files copied.");
+            PrintLine("Game files copied.");
         }
 
         private void ShowModList(IModFinder modFinder)
@@ -80,15 +80,15 @@ namespace OWML.Launcher
             var manifests = modFinder.GetManifests();
             if (!manifests.Any())
             {
-                Console.WriteLine("Found no mods.");
+                PrintLine("Warning: found no mods.");
                 return;
             }
-            Console.WriteLine("Found mods:");
+            PrintLine("Found mods:");
             foreach (var manifest in manifests)
             {
                 var stateText = manifest.Enabled ? "" : " (disabled)";
                 var versionText = manifest.OWMLVersion == Version ? "" : $" (Warning: made for other version of OWML: {manifest.OWMLVersion})";
-                Console.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
+                PrintLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
             }
         }
 
@@ -110,8 +110,39 @@ namespace OWML.Launcher
         private void ListenForOutput(IModConfig config)
         {
             var listener = new OutputListener(config);
-            listener.OnOutput += Console.Write;
+            listener.OnOutput += OnOutput;
             listener.Start();
+        }
+
+        private void OnOutput(string s)
+        {
+            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (var line in lines)
+            {
+                PrintLine(line);
+            }
+        }
+
+        private void PrintLine(string line)
+        {
+            if (string.IsNullOrEmpty(line))
+            {
+                return;
+            }
+            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else if (line.ToLower().Contains("success"))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            Console.WriteLine(line);
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         private void PatchGame(IModConfig config)
@@ -129,14 +160,14 @@ namespace OWML.Launcher
 
         private void StartGame(IModConfig config)
         {
-            Console.WriteLine("Starting game...");
+            PrintLine("Starting game...");
             try
             {
                 Process.Start($"{config.GamePath}/OuterWilds.exe");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while starting game: " + ex.Message);
+                PrintLine("Error while starting game: " + ex.Message);
             }
         }
 
