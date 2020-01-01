@@ -34,8 +34,6 @@ namespace OWML.Launcher
             
             RequireCorrectGamePath();
 
-            _writer.WriteLine($"Game found at {_config.GamePath}");
-
             CopyGameFiles();
 
             ListenForOutput();
@@ -63,6 +61,7 @@ namespace OWML.Launcher
                     isValidGamePath = true;
                 }
             }
+            _writer.WriteLine($"Game found at {_config.GamePath}");
         }
 
         private bool IsValidGamePath()
