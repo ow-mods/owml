@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Events
             var prefix = patchType.GetAnyMethod(patchMethodName);
             if (prefix == null)
             {
-                _console.WriteLine("prefix is null");
+                _console.WriteLine($"Error in {nameof(AddPrefix)}: {typeof(T).Name}.{methodName} is null");
                 return;
             }
             Patch<T>(methodName, prefix, null, null);
@@ -32,7 +32,7 @@ namespace OWML.ModHelper.Events
             var postfix = patchType.GetAnyMethod(patchMethodName);
             if (postfix == null)
             {
-                _console.WriteLine("postfix is null");
+                _console.WriteLine($"Error in {nameof(AddPostfix)}: {typeof(T).Name}.{methodName} is null");
                 return;
             }
             Patch<T>(methodName, null, postfix, null);
@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Events
             var patchMethod = patchType.GetAnyMethod(patchMethodName);
             if (patchMethod == null)
             {
-                _console.WriteLine("patchMethod is null");
+                _console.WriteLine($"Error in {nameof(Transpile)}: {typeof(T).Name}.{methodName} is null");
                 return;
             }
             Patch<T>(methodName, null, null, patchMethod);
@@ -84,7 +84,7 @@ namespace OWML.ModHelper.Events
             }
             if (original == null)
             {
-                _console.WriteLine("original is null");
+                _console.WriteLine($"Error in {nameof(Patch)}: {targetType.Name}.{methodName} is null");
                 return;
             }
             var prefixMethod = prefix == null ? null : new HarmonyMethod(prefix);
@@ -97,7 +97,7 @@ namespace OWML.ModHelper.Events
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Exception while patching {targetType.Name}: {ex}");
+                _console.WriteLine($"Exception while patching {targetType.Name}.{methodName}: {ex}");
             }
         }
 

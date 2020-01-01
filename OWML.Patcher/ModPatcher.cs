@@ -10,6 +10,7 @@ namespace OWML.Patcher
     public class ModPatcher
     {
         private readonly IModConfig _config;
+        private readonly IModConsole _writer;
 
         private const string PatchClass = "PermanentManager";
         private const string PatchMethod = "Awake";
@@ -18,9 +19,10 @@ namespace OWML.Patcher
         {
         };
 
-        public ModPatcher(IModConfig config)
+        public ModPatcher(IModConfig config, IModConsole writer)
         {
             _config = config;
+            _writer = writer;
         }
 
         public void PatchGame()
@@ -54,11 +56,11 @@ namespace OWML.Patcher
             var patchedInstructions = GetPatchedInstructions(instructions);
             if (!patchedInstructions.Any())
             {
-                Console.WriteLine($"No patch found in {className}.{methodName}.");
+                _writer.WriteLine($"No patch found in {className}.{methodName}.");
                 return;
             }
 
-            Console.WriteLine($"Removing old patch found in {className}.{methodName}.");
+            _writer.WriteLine($"Removing old patch found in {className}.{methodName}.");
             foreach (var patchedInstruction in patchedInstructions)
             {
                 instructions.Remove(patchedInstruction);
@@ -79,20 +81,20 @@ namespace OWML.Patcher
 
             if (patchedInstructions.Count == 1)
             {
-                Console.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
+                _writer.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
                 return;
             }
 
             if (patchedInstructions.Count > 1)
             {
-                Console.WriteLine($"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
+                _writer.WriteLine($"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
                 foreach (var patchedInstruction in patchedInstructions)
                 {
                     instructions.Remove(patchedInstruction);
                 }
             }
 
-            Console.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
+            _writer.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
 
             var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
             instructions.Insert(instructions.Count - 1, newInstruction);
@@ -115,7 +117,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while patching: " + ex);
+                _writer.WriteLine("Error while patching: " + ex);
                 throw;
             }
         }
@@ -128,7 +130,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while saving patched game assembly: " + ex);
+                _writer.WriteLine("Error while saving patched game assembly: " + ex);
                 throw;
             }
         }

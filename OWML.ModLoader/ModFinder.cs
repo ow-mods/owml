@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -10,17 +9,19 @@ namespace OWML.ModLoader
     public class ModFinder : IModFinder
     {
         private readonly IModConfig _config;
+        private readonly IModConsole _console;
 
-        public ModFinder(IModConfig config)
+        public ModFinder(IModConfig config, IModConsole console)
         {
             _config = config;
+            _console = console;
         }
 
         public IList<IModManifest> GetManifests()
         {
             if (!Directory.Exists(_config.ModsPath))
             {
-                Console.WriteLine("Warning: Mods folder not found!");
+                _console.WriteLine("Warning: Mods folder not found!");
                 return new List<IModManifest>();
             }
             var manifestFilenames = Directory.GetFiles(_config.ModsPath, "manifest.json", SearchOption.AllDirectories);

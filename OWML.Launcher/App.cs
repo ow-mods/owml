@@ -4,114 +4,110 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
-using OWML.ModHelper;
-using OWML.ModLoader;
 using OWML.Patcher;
 
 namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.6";
+        private const string Version = "0.3.7";
 
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
+        private readonly IModConfig _config;
+        private readonly IModConsole _writer;
+        private readonly IModFinder _modFinder;
+        private readonly OutputListener _listener;
+
+        public App(IModConfig config, IModConsole writer, IModFinder modFinder, OutputListener listener)
+        {
+            _config = config;
+            _writer = writer;
+            _modFinder = modFinder;
+            _listener = listener;
+        }
+
         public void Run()
         {
-            PrintLine($"Started OWML version {Version}");
+            _writer.WriteLine($"Started OWML version {Version}");
+            _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
+            
+            RequireCorrectGamePath();
 
-            var config = GetConfig();
+            CopyGameFiles();
 
-            RequireCorrectGamePath(config);
+            ListenForOutput();
 
-            PrintLine($"Game found at {config.GamePath}");
-            PrintLine("For detailed log, see Logs/OWML.Log.txt");
+            ShowModList();
 
-            CopyGameFiles(config);
+            PatchGame();
 
-            ListenForOutput(config);
-
-            var modFinder = new ModFinder(config);
-
-            ShowModList(modFinder);
-
-            PatchGame(config);
-
-            StartGame(config);
+            StartGame();
 
             Console.ReadLine();
         }
 
-        private void RequireCorrectGamePath(IModConfig config)
+        private void RequireCorrectGamePath()
         {
-            var isValidGamePath = IsValidGamePath(config);
+            var isValidGamePath = IsValidGamePath();
             while (!isValidGamePath)
             {
-                PrintLine($"Game not found at {config.GamePath}");
-                PrintLine("Please enter the correct game path:");
-                config.GamePath = Console.ReadLine()?.Trim();
-                if (IsValidGamePath(config))
+                _writer.WriteLine($"Game not found at {_config.GamePath}");
+                _writer.WriteLine("Please enter the correct game path:");
+                _config.GamePath = Console.ReadLine()?.Trim();
+                if (IsValidGamePath())
                 {
-                    SaveConfig(config);
+                    SaveConfig();
                     isValidGamePath = true;
                 }
             }
+            _writer.WriteLine($"Game found at {_config.GamePath}");
         }
 
-        private bool IsValidGamePath(IModConfig config)
+        private bool IsValidGamePath()
         {
-            return Directory.Exists(config.GamePath) &&
-                   Directory.Exists(config.ManagedPath) &&
-                   File.Exists($"{config.GamePath}/OuterWilds.exe") &&
-                   _filesToCopy.All(filename => File.Exists($"{config.ManagedPath}/{filename}"));
+            return Directory.Exists(_config.GamePath) &&
+                   Directory.Exists(_config.ManagedPath) &&
+                   File.Exists($"{_config.GamePath}/OuterWilds.exe") &&
+                   _filesToCopy.All(filename => File.Exists($"{_config.ManagedPath}/{filename}"));
         }
 
-        private void CopyGameFiles(IModConfig config)
+        private void CopyGameFiles()
         {
             foreach (var fileName in _filesToCopy)
             {
-                File.Copy($"{config.ManagedPath}/{fileName}", fileName, true);
+                File.Copy($"{_config.ManagedPath}/{fileName}", fileName, true);
             }
-            PrintLine("Game files copied.");
+            _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList(IModFinder modFinder)
+        private void ShowModList()
         {
-            var manifests = modFinder.GetManifests();
+            var manifests = _modFinder.GetManifests();
             if (!manifests.Any())
             {
-                PrintLine("Warning: found no mods.");
+                _writer.WriteLine("Warning: found no mods.");
                 return;
             }
-            PrintLine("Found mods:");
+            _writer.WriteLine("Found mods:");
             foreach (var manifest in manifests)
             {
                 var stateText = manifest.Enabled ? "" : " (disabled)";
                 var versionText = manifest.OWMLVersion == Version ? "" : $" (Warning: made for other version of OWML: {manifest.OWMLVersion})";
-                PrintLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
+                _writer.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
             }
         }
 
-        private IModConfig GetConfig()
+        private void SaveConfig()
         {
-            var json = File.ReadAllText("OWML.Config.json")
-                .Replace("\\", "/");
-            var config = JsonConvert.DeserializeObject<ModConfig>(json);
-            config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
-            return config;
-        }
-
-        private void SaveConfig(IModConfig config)
-        {
-            var json = JsonConvert.SerializeObject(config);
+            var json = JsonConvert.SerializeObject(_config);
             File.WriteAllText("OWML.Config.json", json);
         }
 
-        private void ListenForOutput(IModConfig config)
+        private void ListenForOutput()
         {
-            var listener = new OutputListener(config);
-            listener.OnOutput += OnOutput;
-            listener.Start();
+            _listener.OnOutput += OnOutput;
+            _listener.Start();
         }
 
         private void OnOutput(string s)
@@ -119,55 +115,33 @@ namespace OWML.Launcher
             var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
             foreach (var line in lines)
             {
-                PrintLine(line);
+                _writer.WriteLine(line);
             }
         }
 
-        private void PrintLine(string line)
+        private void PatchGame()
         {
-            if (string.IsNullOrEmpty(line))
-            {
-                return;
-            }
-            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
-            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            }
-            else if (line.ToLower().Contains("success"))
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-            }
-            Console.WriteLine(line);
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
-
-        private void PatchGame(IModConfig config)
-        {
-            var patcher = new ModPatcher(config);
+            var patcher = new ModPatcher(_config, _writer);
             patcher.PatchGame();
             var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.ModHelper.dll", "OWML.ModHelper.Events.dll", "OWML.ModHelper.Assets.dll",
                 "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
             foreach (var filename in filesToCopy)
             {
-                File.Copy(filename, $"{config.ManagedPath}/{filename}", true);
+                File.Copy(filename, $"{_config.ManagedPath}/{filename}", true);
             }
-            File.WriteAllText($"{config.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(config));
+            File.WriteAllText($"{_config.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_config));
         }
 
-        private void StartGame(IModConfig config)
+        private void StartGame()
         {
-            PrintLine("Starting game...");
+            _writer.WriteLine("Starting game...");
             try
             {
-                Process.Start($"{config.GamePath}/OuterWilds.exe");
+                Process.Start($"{_config.GamePath}/OuterWilds.exe");
             }
             catch (Exception ex)
             {
-                PrintLine("Error while starting game: " + ex.Message);
+                _writer.WriteLine("Error while starting game: " + ex.Message);
             }
         }
 
