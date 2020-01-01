@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.7";
+        private const string Version = "0.3.6";
 
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
@@ -114,22 +114,9 @@ namespace OWML.Launcher
             listener.Start();
         }
 
-        private string temp = "";
-
         private void OnOutput(string s)
         {
-            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
-            var lastLine = lines.Last();
-            if (!string.IsNullOrEmpty(lastLine))
-            {
-                temp = lastLine;
-                lines.Remove(lastLine);
-            }
-            else
-            {
-                lines[0] = temp + lines[0];
-                temp = "";
-            }
+            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
             foreach (var line in lines)
             {
                 PrintLine(line);
@@ -142,15 +129,15 @@ namespace OWML.Launcher
             {
                 return;
             }
-            if (line.ToLower().StartsWith("error") || line.ToLower().StartsWith("exception"))
+            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            else if (line.ToLower().StartsWith("warning"))
+            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
-            else if (line.ToLower().StartsWith("success"))
+            else if (line.ToLower().Contains("success"))
             {
                 Console.ForegroundColor = ConsoleColor.Green;
             }
