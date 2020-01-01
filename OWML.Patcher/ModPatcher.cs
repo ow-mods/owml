@@ -77,25 +77,16 @@ namespace OWML.Patcher
             var instructions = patcher.GetInstructions(target).ToList();
             var patchedInstructions = GetPatchedInstructions(instructions);
 
-            if (patchedInstructions.Count == 1)
+            Console.WriteLine($"Removing existing patch from {PatchClass}.{PatchMethod}.");
+            foreach (var patchedInstruction in patchedInstructions)
             {
-                Console.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
-                return;
-            }
-
-            if (patchedInstructions.Count > 1)
-            {
-                Console.WriteLine($"Removing duped patch in {PatchClass}.{PatchMethod}.");
-                foreach (var patchedInstruction in patchedInstructions)
-                {
-                    instructions.Remove(patchedInstruction);
-                }
+                instructions.Remove(patchedInstruction);
             }
 
             Console.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
 
             var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
-            instructions.Insert(0, newInstruction);
+            instructions.Insert(instructions.Count - 1, newInstruction);
 
             target.Instructions = instructions.ToArray();
 
