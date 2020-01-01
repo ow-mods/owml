@@ -51,15 +51,18 @@ namespace OWML.Patcher
             };
             var instructions = patcher.GetInstructions(target).ToList();
 
-            var patchedInstruction = GetPatchedInstruction(instructions);
-            if (patchedInstruction == null)
+            var patchedInstructions = GetPatchedInstructions(instructions);
+            if (!patchedInstructions.Any())
             {
                 Console.WriteLine($"No patch found in {className}.{methodName}.");
                 return;
             }
 
-            Console.WriteLine($"Removing old patch found in {className}.{methodName}...");
-            instructions.Remove(patchedInstruction);
+            Console.WriteLine($"Removing old patch found in {className}.{methodName}.");
+            foreach (var patchedInstruction in patchedInstructions)
+            {
+                instructions.Remove(patchedInstruction);
+            }
             target.Instructions = instructions.ToArray();
             patcher.Patch(target);
         }
@@ -72,14 +75,24 @@ namespace OWML.Patcher
                 Method = PatchMethod
             };
             var instructions = patcher.GetInstructions(target).ToList();
+            var patchedInstructions = GetPatchedInstructions(instructions);
 
-            if (IsPatched(instructions))
+            if (patchedInstructions.Count == 1)
             {
                 Console.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
                 return;
             }
 
-            Console.WriteLine($"Patch not found in {PatchClass}.{PatchMethod}, patching...");
+            if (patchedInstructions.Count > 1)
+            {
+                Console.WriteLine($"Removing duped patch in {PatchClass}.{PatchMethod}.");
+                foreach (var patchedInstruction in patchedInstructions)
+                {
+                    instructions.Remove(patchedInstruction);
+                }
+            }
+
+            Console.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
 
             var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
             instructions.Insert(0, newInstruction);
@@ -89,15 +102,9 @@ namespace OWML.Patcher
             Patch(patcher, target);
         }
 
-        private Instruction GetPatchedInstruction(List<Instruction> instructions)
+        private List<Instruction> GetPatchedInstructions(List<Instruction> instructions)
         {
-            return instructions.FirstOrDefault(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader)));
-        }
-
-        private bool IsPatched(List<Instruction> instructions)
-        {
-            var patchInstruction = GetPatchedInstruction(instructions);
-            return patchInstruction != null;
+            return instructions.Where(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader))).ToList();
         }
 
         private void Patch(dnpatch.Patcher patcher, Target target)
