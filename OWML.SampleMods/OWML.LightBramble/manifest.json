@@ -5,5 +5,5 @@
   "uniqueName": "Alek.LightBramble",
   "version": "0.1",
   "owmlVersion": "0.3.6",
-  "enabled": false
+  "enabled": true
 }
