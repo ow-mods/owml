@@ -15,8 +15,8 @@ namespace OWML.EnableDebugMode
         {
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
-            ModHelper.Events.AddEvent<PlayerSpawner>(Events.AfterAwake);
-            ModHelper.Events.AddEvent<Menu>(Events.AfterAwake);
+            ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
+            ModHelper.Events.Subscribe<Menu>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
 

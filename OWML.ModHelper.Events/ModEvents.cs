@@ -39,10 +39,15 @@ namespace OWML.ModHelper.Events
             }
         }
 
-        public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
+        public void Subscribe<T>(Common.Events ev) where T : MonoBehaviour
         {
             SubscribeToEvent<T>(ev);
             PatchEvent<T>(ev);
+        }
+        
+        public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
+        {
+            Subscribe<T>(ev);
         }
 
         private void SubscribeToEvent<T>(Common.Events ev)
@@ -104,12 +109,12 @@ namespace OWML.ModHelper.Events
 
         private bool IsSubscribedTo(Type type, Common.Events ev)
         {
-            return _subscribedEvents.Any(pair => type == pair.Key || type.IsSubclassOf(pair.Key) && pair.Value == ev);
+            return _subscribedEvents.Any(pair => (type == pair.Key || type.IsSubclassOf(pair.Key)) && pair.Value == ev);
         }
 
         private bool InEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
         {
-            return events.Any(pair => type == pair.Key || type.IsSubclassOf(pair.Key) && pair.Value == ev);
+            return events.Any(pair => type == pair.Key && pair.Value == ev);
         }
 
         private void AddToEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)

@@ -9,12 +9,14 @@ namespace OWML.ModHelper.Events
     {
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
+        private readonly IModManifest _manifest;
         private readonly HarmonyInstance _harmony;
 
-        public HarmonyHelper(IModLogger logger, IModConsole console)
+        public HarmonyHelper(IModLogger logger, IModConsole console, IModManifest manifest)
         {
             _logger = logger;
             _console = console;
+            _manifest = manifest;
             _harmony = CreateInstance();
         }
 
@@ -24,7 +26,7 @@ namespace OWML.ModHelper.Events
             try
             {
                 _logger.Log("Creating harmony instance");
-                harmony = HarmonyInstance.Create("com.alek.owml");
+                harmony = HarmonyInstance.Create("com.owml" + _manifest.UniqueName);
                 _logger.Log("Created harmony instance");
             }
             catch (Exception ex)

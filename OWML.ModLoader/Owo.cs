@@ -15,15 +15,13 @@ namespace OWML.ModLoader
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly IModConfig _config;
-        private readonly IHarmonyHelper _harmonyHelper;
         
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config, IHarmonyHelper harmonyHelper)
+        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config)
         {
             _modFinder = modFinder;
             _logger = logger;
             _console = console;
             _config = config;
-            _harmonyHelper = harmonyHelper;
         }
 
         public void LoadMods()
@@ -45,8 +43,9 @@ namespace OWML.ModLoader
         {
             var assets = new ModAssets(_console, manifest);
             var storage = new ModStorage(_logger, _console, manifest);
-            var events = new ModEvents(_logger, _console, _harmonyHelper);
-            return new ModHelper.ModHelper(_config, _logger, _console, _harmonyHelper, events, assets, storage, manifest);
+            var harmonyHelper = new HarmonyHelper(_logger, _console, manifest);
+            var events = new ModEvents(_logger, _console, harmonyHelper);
+            return new ModHelper.ModHelper(_config, _logger, _console, harmonyHelper, events, assets, storage, manifest);
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)

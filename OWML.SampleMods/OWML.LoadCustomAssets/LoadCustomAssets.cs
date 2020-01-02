@@ -35,7 +35,7 @@ namespace OWML.LoadCustomAssets
             var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
             musicAsset.OnLoaded += OnMusicLoaded;
 
-            ModHelper.Events.AddEvent<PlayerBody>(Events.AfterAwake);
+            ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
