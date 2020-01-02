@@ -10,8 +10,8 @@ namespace OWML.ModHelper.Events
     {
         public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
-        private static readonly List<KeyValuePair<string, Common.Events>> PatchedEvents = new List<KeyValuePair<string, Common.Events>>();
-        private readonly List<KeyValuePair<string, Common.Events>> _subscribedEvents = new List<KeyValuePair<string, Common.Events>>();
+        private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
+        private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Events>>();
 
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly IModConsole _console;
@@ -27,15 +27,15 @@ namespace OWML.ModHelper.Events
 
         private void OnPatchEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            var typeName = behaviour.GetType().Name;
-            if (InEventList(_subscribedEvents, typeName , ev))
+            var type = behaviour.GetType();
+            if (IsSubscribedTo(type, ev))
             {
-                _logger.Log($"Got subscribed event: {ev} of {typeName}");
+                _logger.Log($"Got subscribed event: {ev} of {type.Name}");
                 OnEvent?.Invoke(behaviour, ev);
             }
             else
             {
-                _logger.Log($"Not subscribed to: {ev} of {typeName}");
+                _logger.Log($"Not subscribed to: {ev} of {type.Name}");
             }
         }
 
@@ -45,26 +45,26 @@ namespace OWML.ModHelper.Events
             PatchEvent<T>(ev);
         }
 
-        private void SubscribeToEvent<T>(Common.Events ev) where T : MonoBehaviour
+        private void SubscribeToEvent<T>(Common.Events ev)
         {
-            var typeName = typeof(T).Name;
-            if (InEventList(_subscribedEvents, typeName, ev))
+            var type = typeof(T);
+            if (IsSubscribedTo(type, ev))
             {
-                _console.WriteLine($"Warning: already subscribed to {ev} of {typeName}");
+                _console.WriteLine($"Warning: already subscribed to {ev} of {type.Name}");
                 return;
             }
-            AddToEventList(_subscribedEvents, typeName, ev);
+            AddToEventList(_subscribedEvents, type, ev);
         }
 
-        private void PatchEvent<T>(Common.Events ev) where T : MonoBehaviour
+        private void PatchEvent<T>(Common.Events ev)
         {
-            var typeName = typeof(T).Name;
-            if (InEventList(PatchedEvents, typeName, ev))
+            var type = typeof(T);
+            if (InEventList(PatchedEvents, type, ev))
             {
-                _logger.Log($"Event is already patched: {ev} of {typeName}");
+                _logger.Log($"Event is already patched: {ev} of {type.Name}");
                 return;
             }
-            AddToEventList(PatchedEvents, typeName, ev);
+            AddToEventList(PatchedEvents, type, ev);
 
             switch (ev)
             {
@@ -102,14 +102,19 @@ namespace OWML.ModHelper.Events
             }
         }
 
-        private bool InEventList(List<KeyValuePair<string, Common.Events>> events, string typeName, Common.Events ev)
+        private bool IsSubscribedTo(Type type, Common.Events ev)
         {
-            return events.Any(pair => pair.Key == typeName && pair.Value == ev);
+            return _subscribedEvents.Any(pair => type == pair.Key || type.IsSubclassOf(pair.Key) && pair.Value == ev);
         }
 
-        private void AddToEventList(List<KeyValuePair<string, Common.Events>> events, string typeName, Common.Events ev)
+        private bool InEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
         {
-            events.Add(new KeyValuePair<string, Common.Events>(typeName, ev));
+            return events.Any(pair => type == pair.Key || type.IsSubclassOf(pair.Key) && pair.Value == ev);
+        }
+
+        private void AddToEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
+        {
+            events.Add(new KeyValuePair<Type, Common.Events>(type, ev));
         }
 
     }
