@@ -15,7 +15,7 @@ namespace OWML.ModLoader
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly IModConfig _config;
-        
+
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config)
         {
             _modFinder = modFinder;
