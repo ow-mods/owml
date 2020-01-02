@@ -16,16 +16,22 @@ namespace OWML.EnableDebugMode
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
             ModHelper.Events.AddEvent<PlayerSpawner>(Events.AfterAwake);
+            ModHelper.Events.AddEvent<Menu>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
             ModHelper.Menus.AddModMenu();
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            if (behaviour.GetType() == typeof(PlayerSpawner) && ev == Events.AfterAwake)
+            var type = behaviour.GetType();
+            if (type == typeof(PlayerSpawner) && ev == Events.AfterAwake)
             {
                 _playerSpawner = (PlayerSpawner)behaviour;
                 _isStarted = true;
+            }
+            if (type == typeof(Menu) && ev == Events.AfterAwake)
+            {
+                ModHelper.Console.WriteLine("Awake of Menu");
             }
         }
 

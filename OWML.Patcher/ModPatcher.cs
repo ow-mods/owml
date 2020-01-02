@@ -10,75 +10,129 @@ namespace OWML.Patcher
     public class ModPatcher
     {
         private readonly IModConfig _config;
+        private readonly IModConsole _writer;
 
-        public ModPatcher(IModConfig config)
+        private const string PatchClass = "PermanentManager";
+        private const string PatchMethod = "Awake";
+
+        private readonly Dictionary<string, string> _oldPatches = new Dictionary<string, string>
+        {
+        };
+
+        public ModPatcher(IModConfig config, IModConsole writer)
         {
             _config = config;
+            _writer = writer;
         }
 
         public void PatchGame()
         {
             var patcher = new dnpatch.Patcher($"{_config.ManagedPath}/Assembly-CSharp.dll");
+
+            RemoveOldPatches(patcher);
+
+            AddCurrentPatch(patcher);
+
+            Save(patcher);
+        }
+
+        private void RemoveOldPatches(dnpatch.Patcher patcher)
+        {
+            foreach (var kvPair in _oldPatches)
+            {
+                RemovePatch(patcher, kvPair.Key, kvPair.Value);
+            }
+        }
+
+        private void RemovePatch(dnpatch.Patcher patcher, string className, string methodName)
+        {
             var target = new Target
             {
-                Class = "PermanentManager",
-                Method = "Awake"
-            };
-            var newInstructions = new[]
-            {
-                Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { })),
-                Instruction.Create(OpCodes.Ret)
+                Class = className,
+                Method = methodName
             };
             var instructions = patcher.GetInstructions(target).ToList();
-            if (IsPatched(instructions))
+
+            var patchedInstructions = GetPatchedInstructions(instructions);
+            if (!patchedInstructions.Any())
             {
-                ReplacePatchedInstructions(instructions, newInstructions);
+                _writer.WriteLine($"No patch found in {className}.{methodName}.");
+                return;
             }
-            else
+
+            _writer.WriteLine($"Removing old patch found in {className}.{methodName}.");
+            foreach (var patchedInstruction in patchedInstructions)
             {
-                AddNewInstructions(instructions, newInstructions);
+                instructions.Remove(patchedInstruction);
             }
             target.Instructions = instructions.ToArray();
+            patcher.Patch(target);
+        }
+
+        private void AddCurrentPatch(dnpatch.Patcher patcher)
+        {
+            var target = new Target
+            {
+                Class = PatchClass,
+                Method = PatchMethod
+            };
+            var instructions = patcher.GetInstructions(target).ToList();
+            var patchedInstructions = GetPatchedInstructions(instructions);
+
+            if (patchedInstructions.Count == 1)
+            {
+                _writer.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
+                return;
+            }
+
+            if (patchedInstructions.Count > 1)
+            {
+                _writer.WriteLine($"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
+                foreach (var patchedInstruction in patchedInstructions)
+                {
+                    instructions.Remove(patchedInstruction);
+                }
+            }
+
+            _writer.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
+
+            var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
+            instructions.Insert(instructions.Count - 1, newInstruction);
+
+            target.Instructions = instructions.ToArray();
+
+            Patch(patcher, target);
+        }
+
+        private List<Instruction> GetPatchedInstructions(List<Instruction> instructions)
+        {
+            return instructions.Where(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader))).ToList();
+        }
+
+        private void Patch(dnpatch.Patcher patcher, Target target)
+        {
             try
             {
                 patcher.Patch(target);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while patching game assembly: " + ex);
+                _writer.WriteLine("Error while patching: " + ex);
                 throw;
             }
+        }
+
+        private void Save(dnpatch.Patcher patcher)
+        {
             try
             {
                 patcher.Save(true);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while saving patched game assembly: " + ex);
+                _writer.WriteLine("Error while saving patched game assembly: " + ex);
                 throw;
             }
-        }
-
-        private void ReplacePatchedInstructions(List<Instruction> instructions, Instruction[] newInstructions)
-        {
-            Console.WriteLine("Game is already patched. Re-patching.");
-            for (var i = 0; i < newInstructions.Length; i++)
-            {
-                instructions.Remove(instructions.Last());
-            }
-            instructions.AddRange(newInstructions);
-        }
-
-        private void AddNewInstructions(List<Instruction> instructions, Instruction[] newInstructions)
-        {
-            Console.WriteLine("Game is not patched. Patching!");
-            instructions.Remove(instructions.Last());
-            instructions.AddRange(newInstructions);
-        }
-
-        private bool IsPatched(List<Instruction> instructions)
-        {
-            return instructions.Any(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader)));
         }
 
     }
