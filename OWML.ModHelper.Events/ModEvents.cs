@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using OWML.Common;
 using UnityEngine;
 
@@ -6,21 +8,63 @@ namespace OWML.ModHelper.Events
 {
     public class ModEvents : IModEvents
     {
-        public Action<MonoBehaviour, Common.Events> OnEvent
-        {
-            get => Patches.OnEvent;
-            set => Patches.OnEvent += value;
-        }
+        public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
+
+        private static readonly List<KeyValuePair<string, Common.Events>> PatchedEvents = new List<KeyValuePair<string, Common.Events>>();
+        private readonly List<KeyValuePair<string, Common.Events>> _subscribedEvents = new List<KeyValuePair<string, Common.Events>>();
 
         private readonly IHarmonyHelper _harmonyHelper;
-
-        public ModEvents(IHarmonyHelper harmonyHelper)
+        private readonly IModConsole _console;
+        private readonly IModLogger _logger;
+        
+        public ModEvents(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper)
         {
+            _logger = logger;
+            _console = console;
             _harmonyHelper = harmonyHelper;
+            Patches.OnEvent += OnPatchEvent;
+        }
+
+        private void OnPatchEvent(MonoBehaviour behaviour, Common.Events ev)
+        {
+            var typeName = behaviour.GetType().Name;
+            if (InEventList(_subscribedEvents, typeName , ev))
+            {
+                _logger.Log($"Got subscribed event: {ev} of {typeName}");
+                OnEvent?.Invoke(behaviour, ev);
+            }
+            else
+            {
+                _logger.Log($"Not subscribed to: {ev} of {typeName}");
+            }
         }
 
         public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
         {
+            var typeName = typeof(T).Name;
+            SubscribeToEvent<T>(typeName, ev);
+            PatchEvent<T>(ev);
+        }
+
+        private void SubscribeToEvent<T>(string typeName, Common.Events ev) where T : MonoBehaviour
+        {
+            if (InEventList(_subscribedEvents, typeName, ev))
+            {
+                _console.WriteLine($"Warning: already subscribed to {ev} of {typeName}");
+                return;
+            }
+            AddToEventList(_subscribedEvents, typeName, ev);
+        }
+
+        private void PatchEvent<T>(Common.Events ev) where T : MonoBehaviour
+        {
+            var typeName = typeof(T).Name;
+            if (InEventList(PatchedEvents, typeName, ev))
+            {
+                _logger.Log($"Event is already patched: {ev} of {typeName}");
+                return;
+            }
+            AddToEventList(PatchedEvents, typeName, ev);
             switch (ev)
             {
                 case Common.Events.BeforeAwake:
@@ -52,8 +96,19 @@ namespace OWML.ModHelper.Events
                     break;
 
                 default:
+                    _console.WriteLine("Error: unrecognized event: " + ev);
                     throw new ArgumentOutOfRangeException(nameof(ev), ev, null);
             }
+        }
+
+        private bool InEventList(List<KeyValuePair<string, Common.Events>> events, string typeName, Common.Events ev)
+        {
+            return events.Any(pair => pair.Key == typeName && pair.Value == ev);
+        }
+
+        private void AddToEventList(List<KeyValuePair<string, Common.Events>> events, string typeName, Common.Events ev)
+        {
+            events.Add(new KeyValuePair<string, Common.Events>(typeName, ev));
         }
 
     }
