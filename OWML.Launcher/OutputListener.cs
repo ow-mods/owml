@@ -51,12 +51,7 @@ namespace OWML.Launcher
                 return;
             }
             var newLineIndex = s.LastIndexOf(Environment.NewLine);
-            if (newLineIndex == -1)
-            {
-                _reader.Seek(-ReadLength, SeekOrigin.Current);
-                return;
-            }
-            if (newLineIndex == s.Length - Environment.NewLine.Length)
+            if (newLineIndex == -1 || newLineIndex == s.Length - Environment.NewLine.Length)
             {
                 OnOutput?.Invoke(s);
                 return;

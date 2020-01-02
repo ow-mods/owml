@@ -14,11 +14,11 @@ namespace OWML.LightBramble
         {
             ModHelper.Console.WriteLine("In " + nameof(LightBramble));
 
-            ModHelper.Events.AddEvent<AnglerfishController>(Events.AfterEnable);
-            ModHelper.Events.AddEvent<FogWarpVolume>(Events.AfterAwake);
-            ModHelper.Events.AddEvent<PlanetaryFogController>(Events.AfterEnable);
-            ModHelper.Events.AddEvent<FogOverrideVolume>(Events.AfterAwake);
-            ModHelper.Events.AddEvent<GlobalMusicController>(Events.AfterStart);
+            ModHelper.Events.Subscribe<AnglerfishController>(Events.AfterEnable);
+            ModHelper.Events.Subscribe<FogWarpVolume>(Events.AfterAwake);
+            ModHelper.Events.Subscribe<PlanetaryFogController>(Events.AfterEnable);
+            ModHelper.Events.Subscribe<FogOverrideVolume>(Events.AfterAwake);
+            ModHelper.Events.Subscribe<GlobalMusicController>(Events.AfterStart);
             ModHelper.Events.OnEvent += OnEvent;
 
             var audioAsset = ModHelper.Assets.LoadAudio("deku-tree.mp3");
