@@ -41,13 +41,13 @@ namespace OWML.ModHelper.Events
 
         public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
         {
-            var typeName = typeof(T).Name;
-            SubscribeToEvent<T>(typeName, ev);
+            SubscribeToEvent<T>(ev);
             PatchEvent<T>(ev);
         }
 
-        private void SubscribeToEvent<T>(string typeName, Common.Events ev) where T : MonoBehaviour
+        private void SubscribeToEvent<T>(Common.Events ev) where T : MonoBehaviour
         {
+            var typeName = typeof(T).Name;
             if (InEventList(_subscribedEvents, typeName, ev))
             {
                 _console.WriteLine($"Warning: already subscribed to {ev} of {typeName}");
@@ -65,6 +65,7 @@ namespace OWML.ModHelper.Events
                 return;
             }
             AddToEventList(PatchedEvents, typeName, ev);
+
             switch (ev)
             {
                 case Common.Events.BeforeAwake:
