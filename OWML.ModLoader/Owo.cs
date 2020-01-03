@@ -44,9 +44,9 @@ namespace OWML.ModLoader
         private IModHelper CreateModHelper(IModManifest manifest)
         {
             var assets = new ModAssets(_console, manifest);
-            var storage = new ModStorage(manifest);
-            var harmonyHelper = new HarmonyHelper(_logger, _console);
-            var events = new ModEvents(harmonyHelper);
+            var storage = new ModStorage(_logger, _console, manifest);
+            var harmonyHelper = new HarmonyHelper(_logger, _console, manifest);
+            var events = new ModEvents(_logger, _console, harmonyHelper);
             return new ModHelper.ModHelper(_config, _logger, _console, _menus, events, harmonyHelper, assets, storage, manifest);
         }
 

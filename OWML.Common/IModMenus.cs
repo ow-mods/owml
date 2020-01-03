@@ -2,6 +2,7 @@
 {
     public interface IModMenus
     {
-        void AddModMenu();
+        IModMenu MainMenu { get; }
+        IModMenu PauseMenu { get; }
     }
 }

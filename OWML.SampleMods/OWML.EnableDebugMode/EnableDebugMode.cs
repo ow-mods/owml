@@ -18,7 +18,22 @@ namespace OWML.EnableDebugMode
             ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
             ModHelper.Events.Subscribe<Menu>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
-            ModHelper.Menus.AddModMenu();
+
+            var fooButton = ModHelper.Menus.MainMenu.AddButton("DUCKING FINALLY!", 4);
+            fooButton.onClick.AddListener(OnFooClick);
+
+            //var barButton = ModHelper.Menus.PauseMenu.AddButton("Bar");
+            //barButton.onClick.AddListener(OnBarClick);
+        }
+
+        private void OnFooClick()
+        {
+            ModHelper.Console.WriteLine("Foo clicked!");
+        }
+
+        private void OnBarClick()
+        {
+            ModHelper.Console.WriteLine("Bar clicked!");
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)

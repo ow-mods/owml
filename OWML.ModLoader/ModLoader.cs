@@ -3,6 +3,7 @@ using System.IO;
 using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
+using OWML.ModHelper.Menus;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -22,8 +23,8 @@ namespace OWML.ModLoader
             logger.Log("Got config!");
             var console = new ModConsole(config, logger);
             console.WriteLine("Mod loader has been initialized.");
-            var modFinder = new ModFinder(config);
-            var menus = new ModMenus();
+            var modFinder = new ModFinder(config, console);
+            var menus = new ModMenus(console);
             var owo = new Owo(modFinder, logger, console, config, menus);
             owo.LoadMods();
         }
