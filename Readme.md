@@ -14,7 +14,7 @@ OWML does the following:
 
 ## Sample mods
 
-Some mods are included as examples/inspiration. **They are disabled by default, enable in manifest.json.**
+One mod is included as an example. It's disabled by default, enable in manifest.json.
 
 |Sample mod|Description|
 |----------|-----------|
