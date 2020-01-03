@@ -11,16 +11,14 @@ OWML does the following:
 4. The mod loader does this for each mod:
    1. Creates a new Unity game object containing the mod behaviour.
    2. Initializes the mod behaviour with a mod helper.
-   
+
 ## Sample mods
 
-Some mods are included as examples/inspiration. **They are all disabled by default. Enable in manifest.json.**
+One mod is included as an example. It's disabled by default, enable in manifest.json.
 
 |Sample mod|Description|
 |----------|-----------|
 |OWML.EnableDebugMode|Enables the built-in debug mode in the game. Highlights: cycle through debug UIs with F1, warp to planets with the number keys, and explode the sun with the End key.|
-|OWML.LoadCustomAssets|Showcases loading of custom 3D objects and audio. Click the left mouse button to shoot rubber ducks.|
-|OWML.LightBramble|No fog. No anglerfish. Nice music.|
 
 ## For players
 
@@ -41,10 +39,9 @@ Refer to the sample mods for examples.
     * Assembly-CSharp.dll
     * UnityEngine.CoreModule.dll
     * More Unity DLLs if needed
+4. Inherit from ModBehaviour.
 	
-### More info
-
-See [For modders](https://github.com/amazingalek/owml/wiki/For-modders).
+For more info, see [For modders](https://github.com/amazingalek/owml/wiki/For-modders).
 
 ## Configuration
 
