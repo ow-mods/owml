@@ -4,6 +4,5 @@
     {
         IModMenu MainMenu { get; }
         IModMenu PauseMenu { get; }
-        IModMenu OptionsMenu { get; }
     }
 }
