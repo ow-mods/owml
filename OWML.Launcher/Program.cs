@@ -15,7 +15,8 @@ namespace OWML.Launcher
             var writer = new OutputWriter();
             var modFinder = new ModFinder(config, writer);
             var outputListener = new OutputListener(config);
-            var app = new App(config, writer, modFinder, outputListener);
+            var pathFinder = new PathFinder(config, writer);
+            var app = new App(config, writer, modFinder, outputListener, pathFinder);
             app.Run();
         }
 

@@ -16,7 +16,6 @@ namespace OWML.EnableDebugMode
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
             ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
-            ModHelper.Events.Subscribe<Menu>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
 
@@ -27,10 +26,6 @@ namespace OWML.EnableDebugMode
             {
                 _playerSpawner = (PlayerSpawner)behaviour;
                 _isStarted = true;
-            }
-            if (type == typeof(Menu) && ev == Events.AfterAwake)
-            {
-                ModHelper.Console.WriteLine("Awake of Menu");
             }
         }
 
