@@ -19,7 +19,7 @@ namespace OWML.EnableDebugMode
             ModHelper.Events.Subscribe<Menu>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
         }
-        
+
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
             var type = behaviour.GetType();
