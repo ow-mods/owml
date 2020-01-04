@@ -12,20 +12,20 @@ namespace OWML.ModHelper
         public IHarmonyHelper HarmonyHelper { get; }
         public IModAssets Assets { get; }
         public IModStorage Storage { get; }
-        public IModManifest Manifest { get; }
         public IModMenus Menus { get; }
+        public IModManifest Manifest { get; }
 
-        public ModHelper(IModConfig config, IModLogger logger, IModConsole console, IModMenus menus, IModEvents events, IHarmonyHelper harmonyHelper, IModAssets assets, IModStorage storage, IModManifest manifest)
+        public ModHelper(IModConfig config, IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events, IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest)
         {
             Config = config;
             Logger = logger;
             Console = console;
-            Events = events;
             HarmonyHelper = harmonyHelper;
+            Events = events;
             Assets = assets;
             Storage = storage;
-            Manifest = manifest;
             Menus = menus;
+            Manifest = manifest;
         }
 
     }
