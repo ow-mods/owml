@@ -10,7 +10,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.10";
+        private const string Version = "0.3.11";
 
         private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 
@@ -18,21 +18,23 @@ namespace OWML.Launcher
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
+        private readonly PathFinder _pathFinder;
 
-        public App(IModConfig config, IModConsole writer, IModFinder modFinder, OutputListener listener)
+        public App(IModConfig config, IModConsole writer, IModFinder modFinder, OutputListener listener, PathFinder pathFinder)
         {
             _config = config;
             _writer = writer;
             _modFinder = modFinder;
             _listener = listener;
+            _pathFinder = pathFinder;
         }
 
         public void Run()
         {
             _writer.WriteLine($"Started OWML version {Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
-            
-            RequireCorrectGamePath();
+
+            LocateGamePath();
 
             CopyGameFiles();
 
@@ -47,29 +49,20 @@ namespace OWML.Launcher
             Console.ReadLine();
         }
 
-        private void RequireCorrectGamePath()
+        private void LocateGamePath()
         {
-            var isValidGamePath = IsValidGamePath();
-            while (!isValidGamePath)
+            var gamePath = _pathFinder.FindGamePath();
+            if (gamePath != _config.GamePath)
             {
-                _writer.WriteLine($"Game not found at {_config.GamePath}");
-                _writer.WriteLine("Please enter the correct game path:");
-                _config.GamePath = Console.ReadLine()?.Trim();
-                if (IsValidGamePath())
-                {
-                    SaveConfig();
-                    isValidGamePath = true;
-                }
+                _config.GamePath = gamePath;
+                SaveConfig();
             }
-            _writer.WriteLine($"Game found at {_config.GamePath}");
         }
 
-        private bool IsValidGamePath()
+        private void SaveConfig()
         {
-            return Directory.Exists(_config.GamePath) &&
-                   Directory.Exists(_config.ManagedPath) &&
-                   File.Exists($"{_config.GamePath}/OuterWilds.exe") &&
-                   _filesToCopy.All(filename => File.Exists($"{_config.ManagedPath}/{filename}"));
+            var json = JsonConvert.SerializeObject(_config);
+            File.WriteAllText("OWML.Config.json", json);
         }
 
         private void CopyGameFiles()
@@ -96,12 +89,6 @@ namespace OWML.Launcher
                 var versionText = manifest.OWMLVersion == Version ? "" : $" (Warning: made for other version of OWML: {manifest.OWMLVersion})";
                 _writer.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
             }
-        }
-
-        private void SaveConfig()
-        {
-            var json = JsonConvert.SerializeObject(_config);
-            File.WriteAllText("OWML.Config.json", json);
         }
 
         private void ListenForOutput()
