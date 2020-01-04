@@ -24,7 +24,7 @@ namespace OWML.ModLoader
             var console = new ModConsole(config, logger);
             console.WriteLine("Mod loader has been initialized.");
             var modFinder = new ModFinder(config, console);
-            var menus = new ModMenus(console);
+            var menus = new ModMenus(logger, console);
             var owo = new Owo(modFinder, logger, console, config, menus);
             owo.LoadMods();
         }

@@ -7,10 +7,10 @@ namespace OWML.ModHelper.Menus
         public IModMenu MainMenu { get; }
         public IModMenu PauseMenu { get; }
 
-        public ModMenus(IModConsole console)
+        public ModMenus(IModLogger logger, IModConsole console)
         {
-            MainMenu = new ModMainMenu(console);
-            PauseMenu = new ModPauseMenu(console);
+            MainMenu = new ModMainMenu(logger, console);
+            PauseMenu = new ModPauseMenu(logger, console);
         }
     }
 

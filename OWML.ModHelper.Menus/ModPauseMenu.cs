@@ -9,13 +9,15 @@ namespace OWML.ModHelper.Menus
 {
     public class ModPauseMenu : IModMenu
     {
+        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private Menu _menu;
         private LayoutGroup _layoutGroup;
         private bool _isInitialized;
 
-        public ModPauseMenu(IModConsole console)
+        public ModPauseMenu(IModLogger logger, IModConsole console)
         {
+            _logger = logger;
             _console = console;
         }
 
@@ -45,7 +47,7 @@ namespace OWML.ModHelper.Menus
             }
 
             var original = _layoutGroup.GetComponentInChildren<Button>();
-            _console.WriteLine("Copying button: " + original.name);
+            _logger.Log("Copying button: " + original.name);
 
             var copy = GameObject.Instantiate(original, _layoutGroup.transform);
             copy.name = name;

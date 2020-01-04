@@ -9,13 +9,15 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMainMenu : IModMenu
     {
+        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly TitleAnimationController _anim;
         private readonly List<CanvasGroupFadeController> _fadeControllers;
         private readonly Menu _menu;
 
-        public ModMainMenu(IModConsole console)
+        public ModMainMenu(IModLogger logger, IModConsole console)
         {
+            _logger = logger;
             _console = console;
             var titleScreenManager = GameObject.FindObjectOfType<TitleScreenManager>();
             _anim = titleScreenManager.GetComponent<TitleAnimationController>();
@@ -33,7 +35,7 @@ namespace OWML.ModHelper.Menus
             _console.WriteLine("Adding main menu button: " + name);
 
             var original = _menu.GetComponentInChildren<Button>();
-            _console.WriteLine("Copying button: " + original.name);
+            _logger.Log("Copying button: " + original.name);
 
             var copy = GameObject.Instantiate(original, _menu.transform);
             copy.name = name;
