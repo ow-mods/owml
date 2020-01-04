@@ -37,6 +37,9 @@ namespace OWML.LoadCustomAssets
 
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
+
+            var owo = ModHelper.Menus.MainMenu.AddButton("OWO", 3);
+            owo.onClick.AddListener(OnOwo);
         }
 
         private void OnMusicLoaded(AudioSource audio)
@@ -67,6 +70,8 @@ namespace OWML.LoadCustomAssets
                 _playerTransform = behaviour.transform;
                 _isStarted = true;
                 _music.Play();
+                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 3);
+                uwu.onClick.AddListener(OnUwu);
             }
         }
 
@@ -103,6 +108,16 @@ namespace OWML.LoadCustomAssets
         private void CreateCube()
         {
             Instantiate(_cube, _playerTransform.position + _playerTransform.forward * 2f, Quaternion.identity);
+        }
+
+        private void OnOwo()
+        {
+            ModHelper.Console.WriteLine("OWO!");
+        }
+
+        private void OnUwu()
+        {
+            ModHelper.Console.WriteLine("UWU!");
         }
 
     }

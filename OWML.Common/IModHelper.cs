@@ -9,6 +9,7 @@
         IHarmonyHelper HarmonyHelper { get; }
         IModAssets Assets { get; }
         IModStorage Storage { get; }
+        IModMenus Menus { get; }
         IModManifest Manifest { get; }
     }
 }

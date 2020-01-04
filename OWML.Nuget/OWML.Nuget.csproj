@@ -58,6 +58,10 @@
       <Project>{b771615e-6b51-44f8-b862-d7543c12c0ff}</Project>
       <Name>OWML.ModHelper.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj">
+      <Project>{b874cc24-8340-4238-ac9d-1bfb41186bb5}</Project>
+      <Name>OWML.ModHelper.Menus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{cb57bab8-d70e-4fce-9bf1-328a924173a7}</Project>
       <Name>OWML.ModHelper</Name>
