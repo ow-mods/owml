@@ -12,8 +12,6 @@ namespace OWML.Launcher
     {
         private const string Version = "0.3.11";
 
-        private readonly string[] _filesToCopy = { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
-
         private readonly IModConfig _config;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
@@ -67,7 +65,8 @@ namespace OWML.Launcher
 
         private void CopyGameFiles()
         {
-            foreach (var fileName in _filesToCopy)
+            var filesToCopy = new[] { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
+            foreach (var fileName in filesToCopy)
             {
                 File.Copy($"{_config.ManagedPath}/{fileName}", fileName, true);
             }
