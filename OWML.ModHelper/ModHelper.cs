@@ -8,8 +8,8 @@ namespace OWML.ModHelper
         public IModConfig Config { get; }
         public IModLogger Logger { get; }
         public IModConsole Console { get; }
-        public IModEvents Events { get; }
         public IHarmonyHelper HarmonyHelper { get; }
+        public IModEvents Events { get; }
         public IModAssets Assets { get; }
         public IModStorage Storage { get; }
         public IModMenus Menus { get; }
