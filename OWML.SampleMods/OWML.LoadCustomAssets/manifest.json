@@ -3,7 +3,7 @@
   "author": "Alek",
   "name": "LoadCustomAssets",
   "uniqueName": "Alek.LoadCustomAssets",
-  "version": "0.3",
-  "owmlVersion": "0.3.9",
+  "version": "0.4",
+  "owmlVersion": "0.3.10",
   "enabled": false
 }
