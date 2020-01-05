@@ -6,7 +6,6 @@ namespace OWML.LoadCustomAssets
 {
     public class LoadCustomAssets : ModBehaviour
     {
-        private bool _isStarted;
         private OWRigidbody _duckBody;
         private Transform _playerTransform;
         private OWRigidbody _playerBody;
@@ -14,6 +13,10 @@ namespace OWML.LoadCustomAssets
         private AudioSource _music;
         private SaveFile _saveFile;
         private GameObject _cube;
+
+        private bool _isStarted;
+        private bool _isDucksEnabled;
+        private bool _isCubesEnabled;
 
         private void Start()
         {
@@ -23,10 +26,6 @@ namespace OWML.LoadCustomAssets
 
             var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
             _cube = assetBundle.LoadAsset<GameObject>("Cube");
-            if (_cube == null)
-            {
-                ModHelper.Console.WriteLine("Cube is null");
-            }
 
             var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
             gunSoundAsset.OnLoaded += OnGunSoundLoaded;
@@ -40,6 +39,13 @@ namespace OWML.LoadCustomAssets
 
             var owo = ModHelper.Menus.MainMenu.AddButton("OWO", 3);
             owo.onClick.AddListener(OnOwo);
+        }
+
+        public override void Configure(IModConfig config)
+        {
+            ToggleMusic(config.GetSetting<bool>("enableMusic"));
+            _isDucksEnabled = config.GetSetting<bool>("enableDucks");
+            _isCubesEnabled = config.GetSetting<bool>("enableCubes");
         }
 
         private void OnMusicLoaded(AudioSource audio)
@@ -69,8 +75,8 @@ namespace OWML.LoadCustomAssets
                 _playerBody = (PlayerBody)behaviour;
                 _playerTransform = behaviour.transform;
                 _isStarted = true;
-                _music.Play();
-                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 3);
+                ToggleMusic(ModHelper.Config.GetSetting<bool>("enableMusic"));
+                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 1);
                 uwu.onClick.AddListener(OnUwu);
             }
         }
@@ -81,11 +87,11 @@ namespace OWML.LoadCustomAssets
             {
                 return;
             }
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
             {
                 ShootDuck();
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
             {
                 CreateCube();
             }
@@ -118,6 +124,22 @@ namespace OWML.LoadCustomAssets
         private void OnUwu()
         {
             ModHelper.Console.WriteLine("UWU!");
+        }
+
+        private void ToggleMusic(bool enable)
+        {
+            if (_music == null)
+            {
+                return;
+            }
+            if (enable && _isStarted)
+            {
+                _music.Play();
+            }
+            if (!enable)
+            {
+                _music.Stop();
+            }
         }
 
     }

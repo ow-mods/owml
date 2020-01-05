@@ -8,10 +8,10 @@ namespace OWML.Launcher
 {
     public class PathFinder
     {
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private readonly IModConsole _writer;
 
-        public PathFinder(IModConfig config, IModConsole writer)
+        public PathFinder(IOwmlConfig config, IModConsole writer)
         {
             _config = config;
             _writer = writer;

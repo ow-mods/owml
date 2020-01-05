@@ -29,12 +29,12 @@ namespace OWML.ModLoader
             owo.LoadMods();
         }
 
-        private static IModConfig GetConfig()
+        private static IOwmlConfig GetConfig()
         {
             try
             {
                 var json = File.ReadAllText(ConfigPath);
-                return JsonConvert.DeserializeObject<ModConfig>(json);
+                return JsonConvert.DeserializeObject<OwmlConfig>(json);
             }
             catch (Exception)
             {

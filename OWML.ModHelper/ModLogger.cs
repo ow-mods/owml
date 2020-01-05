@@ -8,9 +8,9 @@ namespace OWML.ModHelper
     {
         public static ModLogger Instance { get; private set; }
 
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
 
-        public ModLogger(IModConfig config)
+        public ModLogger(IOwmlConfig config)
         {
             Instance = this;
             _config = config;

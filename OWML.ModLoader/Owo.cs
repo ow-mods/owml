@@ -5,6 +5,7 @@ using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Menus;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -14,10 +15,10 @@ namespace OWML.ModLoader
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private readonly IModMenus _menus;
 
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config, IModMenus menus)
+        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IOwmlConfig config, IModMenus menus)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -41,13 +42,42 @@ namespace OWML.ModLoader
             }
         }
 
+        private ModsMenu CreateModMenu()
+        {
+            _console.WriteLine("Creating mod menu");
+            var modsMenu = new ModsMenu(_logger, _console);
+            var modMenuButton = _menus.MainMenu.AddButton("MODS", 3);
+            modMenuButton.onClick.AddListener(() =>
+            {
+                modsMenu.Open();
+            });
+            return modsMenu;
+        }
+
         private IModHelper CreateModHelper(IModManifest manifest)
         {
             var assets = new ModAssets(_console, manifest);
             var storage = new ModStorage(_logger, _console, manifest);
             var harmonyHelper = new HarmonyHelper(_logger, _console, manifest);
             var events = new ModEvents(_logger, _console, harmonyHelper);
-            return new ModHelper.ModHelper(_config, _logger, _console, harmonyHelper, events, assets, storage, _menus, manifest);
+            var config = GetConfig(storage);
+            return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, config);
+        }
+
+        private IModConfig GetConfig(IModStorage storage)
+        {
+            _logger.Log("Initializing config");
+            var config = storage.Load<ModConfig>("config.json") ?? new ModConfig();
+            var defaultConfig = storage.Load<ModConfig>("default-config.json") ?? new ModConfig();
+            foreach (var setting in defaultConfig.Settings)
+            {
+                if (!config.Settings.ContainsKey(setting.Key))
+                {
+                    config.Settings.Add(setting.Key, setting.Value);
+                }
+            }
+            storage.Save(config, "config.json");
+            return config;
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)

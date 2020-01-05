@@ -1,29 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using OWML.Common;
 
 namespace OWML.ModHelper
 {
     public class ModConfig : IModConfig
     {
-        [JsonProperty("gamePath")]
-        public string GamePath { get; set; }
+        [JsonProperty("settings")]
+        public Dictionary<string, object> Settings { get; set; }
 
-        [JsonProperty("verbose")]
-        public bool Verbose { get; private set; }
+        public ModConfig()
+        {
+            Settings = new Dictionary<string, object>();
+        }
 
-        [JsonIgnore]
-        public string ManagedPath => $"{GamePath}/OuterWilds_Data/Managed";
+        public T GetSetting<T>(string key)
+        {
+            if (Settings.ContainsKey(key))
+            {
+                return (T)Settings[key];
+            }
+            return default;
+        }
 
-        [JsonProperty("owmlPath")]
-        public string OWMLPath { get; set; }
-
-        [JsonIgnore]
-        public string LogFilePath => $"{OWMLPath}Logs/OWML.Log.txt";
-
-        [JsonIgnore]
-        public string OutputFilePath => $"{OWMLPath}Logs/OWML.Output.txt";
-
-        [JsonIgnore]
-        public string ModsPath => $"{OWMLPath}Mods";
     }
 }

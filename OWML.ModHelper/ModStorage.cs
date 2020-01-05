@@ -22,6 +22,11 @@ namespace OWML.ModHelper
         {
             var path = _manifest.FolderPath + filename;
             _logger.Log($"Loading {path}...");
+            if (!File.Exists(path))
+            {
+                _logger.Log("File not found: " + path);
+                return default;
+            }
             try
             {
                 var json = File.ReadAllText(path);

@@ -51,7 +51,7 @@ namespace OWML.ModHelper.Menus
 
             var copy = GameObject.Instantiate(original, _layoutGroup.transform);
             copy.name = name;
-            copy.transform.SetSiblingIndex(index);
+            copy.transform.SetSiblingIndex(index + 2);
 
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
             GameObject.Destroy(copy.GetComponent<SubmitAction>());
@@ -63,7 +63,7 @@ namespace OWML.ModHelper.Menus
 
         private void Initialize()
         {
-            _console.WriteLine("Trying to initialize pause menu");
+            _logger.Log("Trying to initialize pause menu");
             var pauseMenuManager = GameObject.FindObjectOfType<PauseMenuManager>();
             if (pauseMenuManager == null)
             {

@@ -12,7 +12,7 @@ namespace OWML.ModHelper
         private readonly FileStream _writer;
         private readonly IModLogger _logger;
 
-        public ModConsole(IModConfig config, IModLogger logger)
+        public ModConsole(IOwmlConfig config, IModLogger logger)
         {
             Instance = this;
             _logger = logger;

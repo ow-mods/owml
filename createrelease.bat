@@ -27,6 +27,7 @@ copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\manifest.json" "Release\Mod
 mkdir "Release\Mods\OWML.LoadCustomAssets"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\OWML.LoadCustomAssets.dll" "Release\Mods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.dll"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\manifest.json" "Release\Mods\OWML.LoadCustomAssets\manifest.json"
+copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\default-config.json" "Release\Mods\OWML.LoadCustomAssets\default-config.json"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\duck.obj" "Release\Mods\OWML.LoadCustomAssets\duck.obj"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\duck.png" "Release\Mods\OWML.LoadCustomAssets\duck.png"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\blaster-firing.wav" "Release\Mods\OWML.LoadCustomAssets\blaster-firing.wav"

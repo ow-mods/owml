@@ -2,7 +2,6 @@
 {
     public interface IModHelper
     {
-        IModConfig Config { get; }
         IModLogger Logger { get; }
         IModConsole Console { get; }
         IModEvents Events { get; }
@@ -11,5 +10,6 @@
         IModStorage Storage { get; }
         IModMenus Menus { get; }
         IModManifest Manifest { get; }
+        IModConfig Config { get; }
     }
 }

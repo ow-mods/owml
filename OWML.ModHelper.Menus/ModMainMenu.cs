@@ -39,20 +39,20 @@ namespace OWML.ModHelper.Menus
 
             var copy = GameObject.Instantiate(original, _menu.transform);
             copy.name = name;
-            copy.transform.SetSiblingIndex(index);
+            copy.transform.SetSiblingIndex(index + 2);
 
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
             GameObject.Destroy(copy.GetComponent<SubmitAction>());
 
             copy.GetComponentInChildren<Text>().text = name;
 
-            var fadeController = new CanvasGroupFadeController 
+            var fadeController = new CanvasGroupFadeController
             {
                 group = copy.GetComponent<CanvasGroup>()
             };
             _fadeControllers.Insert(index, fadeController);
             _anim.SetValue("_buttonFadeControllers", _fadeControllers.ToArray());
-            
+
             return copy;
         }
 

@@ -67,10 +67,12 @@
     <Compile Include="IModAssets.cs" />
     <Compile Include="IModAsset.cs" />
     <Compile Include="IModConfig.cs" />
+    <Compile Include="IOwmlConfig.cs" />
     <Compile Include="IModEvents.cs" />
     <Compile Include="IModFinder.cs" />
     <Compile Include="IModHelper.cs" />
     <Compile Include="IModConsole.cs" />
+    <Compile Include="IModBehaviour.cs" />
     <Compile Include="IModMenu.cs" />
     <Compile Include="IModMenus.cs" />
     <Compile Include="IModLogger.cs" />

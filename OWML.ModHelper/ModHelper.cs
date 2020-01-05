@@ -5,7 +5,6 @@ namespace OWML.ModHelper
 {
     public class ModHelper : IModHelper
     {
-        public IModConfig Config { get; }
         public IModLogger Logger { get; }
         public IModConsole Console { get; }
         public IHarmonyHelper HarmonyHelper { get; }
@@ -14,10 +13,11 @@ namespace OWML.ModHelper
         public IModStorage Storage { get; }
         public IModMenus Menus { get; }
         public IModManifest Manifest { get; }
+        public IModConfig Config { get; }
 
-        public ModHelper(IModConfig config, IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events, IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest)
+        public ModHelper(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events, 
+            IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest, IModConfig config)
         {
-            Config = config;
             Logger = logger;
             Console = console;
             HarmonyHelper = harmonyHelper;
@@ -26,6 +26,7 @@ namespace OWML.ModHelper
             Storage = storage;
             Menus = menus;
             Manifest = manifest;
+            Config = config;
         }
 
     }
