@@ -8,10 +8,10 @@ namespace OWML.ModLoader
 {
     public class ModFinder : IModFinder
     {
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private readonly IModConsole _console;
 
-        public ModFinder(IModConfig config, IModConsole console)
+        public ModFinder(IOwmlConfig config, IModConsole console)
         {
             _config = config;
             _console = console;

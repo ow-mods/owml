@@ -13,10 +13,10 @@ namespace OWML.ModHelper
         public IModStorage Storage { get; }
         public IModMenus Menus { get; }
         public IModManifest Manifest { get; }
-        public IOwoConfig Config { get; }
+        public IModConfig Config { get; }
 
         public ModHelper(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events, 
-            IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest, IOwoConfig config)
+            IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest, IModConfig config)
         {
             Logger = logger;
             Console = console;

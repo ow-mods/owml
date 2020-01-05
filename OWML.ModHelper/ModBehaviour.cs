@@ -14,7 +14,7 @@ namespace OWML.ModHelper
             DontDestroyOnLoad(gameObject);
         }
 
-        public virtual void Configure(IOwoConfig config)
+        public virtual void Configure(IModConfig config)
         {
         }
 

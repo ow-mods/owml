@@ -4,6 +4,6 @@
     {
         IModHelper ModHelper { get; }
 
-        void Configure(IOwoConfig config);
+        void Configure(IModConfig config);
     }
 }

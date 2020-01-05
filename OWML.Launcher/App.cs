@@ -12,13 +12,13 @@ namespace OWML.Launcher
     {
         private const string Version = "0.3.11";
 
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
 
-        public App(IModConfig config, IModConsole writer, IModFinder modFinder, OutputListener listener, PathFinder pathFinder)
+        public App(IOwmlConfig config, IModConsole writer, IModFinder modFinder, OutputListener listener, PathFinder pathFinder)
         {
             _config = config;
             _writer = writer;

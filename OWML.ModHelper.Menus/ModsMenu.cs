@@ -31,10 +31,10 @@ namespace OWML.ModHelper.Menus
             });
         }
 
-        private IOwoConfig ParseConfig(Button button)
+        private IModConfig ParseConfig(Button button)
         {
             _console.WriteLine("todo: implement ModsMenu.ParseConfig");
-            return new OwoConfig();
+            return new ModConfig();
         }
 
         public Button AddButton(string name, int index)

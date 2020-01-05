@@ -41,7 +41,7 @@ namespace OWML.LoadCustomAssets
             owo.onClick.AddListener(OnOwo);
         }
 
-        public override void Configure(IOwoConfig config)
+        public override void Configure(IModConfig config)
         {
             ToggleMusic(config.GetSetting<bool>("enableMusic"));
             _isDucksEnabled = config.GetSetting<bool>("enableDucks");

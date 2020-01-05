@@ -12,10 +12,10 @@ namespace OWML.Launcher
 
         public Action<string> OnOutput;
 
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private FileStream _reader;
 
-        public OutputListener(IModConfig config)
+        public OutputListener(IOwmlConfig config)
         {
             _config = config;
         }

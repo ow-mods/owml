@@ -10,6 +10,6 @@
         IModStorage Storage { get; }
         IModMenus Menus { get; }
         IModManifest Manifest { get; }
-        IOwoConfig Config { get; }
+        IModConfig Config { get; }
     }
 }

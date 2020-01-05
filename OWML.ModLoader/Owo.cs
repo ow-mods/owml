@@ -16,10 +16,10 @@ namespace OWML.ModLoader
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private readonly IModMenus _menus;
 
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IModConfig config, IModMenus menus)
+        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IOwmlConfig config, IModMenus menus)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -65,16 +65,16 @@ namespace OWML.ModLoader
             return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, config);
         }
 
-        private IOwoConfig GetConfig(ModStorage storage)
+        private IModConfig GetConfig(ModStorage storage)
         {
-            var config = storage.Load<OwoConfig>("config.json");
+            var config = storage.Load<ModConfig>("config.json");
             if (config != null)
             {
                 _console.WriteLine("Config found");
                 return config;
             }
             _console.WriteLine("Config not found, creating default");
-            config = new OwoConfig
+            config = new ModConfig
             {
                 Settings = new Dictionary<string, object>()
             };

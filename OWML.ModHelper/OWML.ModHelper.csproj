@@ -66,8 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModBehaviour.cs" />
-    <Compile Include="OwoConfig.cs" />
     <Compile Include="ModConfig.cs" />
+    <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModConsole.cs" />
     <Compile Include="ModHelper.cs" />
     <Compile Include="ModLogger.cs" />

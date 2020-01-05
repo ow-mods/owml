@@ -9,7 +9,7 @@ namespace OWML.Patcher
 {
     public class ModPatcher
     {
-        private readonly IModConfig _config;
+        private readonly IOwmlConfig _config;
         private readonly IModConsole _writer;
 
         private const string PatchClass = "PermanentManager";
@@ -19,7 +19,7 @@ namespace OWML.Patcher
         {
         };
 
-        public ModPatcher(IModConfig config, IModConsole writer)
+        public ModPatcher(IOwmlConfig config, IModConsole writer)
         {
             _config = config;
             _writer = writer;
