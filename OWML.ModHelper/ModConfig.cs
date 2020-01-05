@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using OWML.Common;
 
@@ -16,11 +17,21 @@ namespace OWML.ModHelper
 
         public T GetSetting<T>(string key)
         {
-            if (Settings.ContainsKey(key))
+            if (!Settings.ContainsKey(key))
             {
-                return (T)Settings[key];
+                ModConsole.Instance.WriteLine("Error: setting not found: " + key);
+                return default;
             }
-            return default;
+            var setting = Settings[key];
+            try
+            {
+                return (T)setting;
+            }
+            catch (InvalidCastException)
+            {
+                ModConsole.Instance.WriteLine($"Error when getting setting '{key}': can't cast {setting.GetType()} to {typeof(T)}");
+                return default;
+            }
         }
 
     }

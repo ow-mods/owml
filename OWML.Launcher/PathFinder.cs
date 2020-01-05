@@ -21,23 +21,23 @@ namespace OWML.Launcher
         {
             if (IsValidGamePath(_config.GamePath))
             {
-                _writer.WriteLine("Game path is correct in config");
                 return _config.GamePath;
             }
+            _writer.WriteLine("Game path is not correct.");
 
             var gamePath = FindInDefaultFolders();
             if (!string.IsNullOrEmpty(gamePath))
             {
-                _writer.WriteLine("Game path was found in default paths: " + gamePath);
                 return gamePath;
             }
+            _writer.WriteLine("Game not found in default folders.");
 
             gamePath = FindInRegistry();
             if (!string.IsNullOrEmpty(gamePath))
             {
-                _writer.WriteLine("Game path was found in registry: " + gamePath);
                 return gamePath;
             }
+            _writer.WriteLine("Game not found in registry.");
 
             return PromptGamePath();
         }
@@ -49,8 +49,12 @@ namespace OWML.Launcher
                 AppDomain.CurrentDomain.BaseDirectory + "..",
                 "C:/Program Files/Epic Games/OuterWilds",
                 "D:/Program Files/Epic Games/OuterWilds",
+                "E:/Program Files/Epic Games/OuterWilds",
+                "F:/Program Files/Epic Games/OuterWilds",
                 "C:/Program Files (x86)/Outer Wilds",
-                "D:/Program Files (x86)/Outer Wilds"
+                "D:/Program Files (x86)/Outer Wilds",
+                "E:/Program Files (x86)/Outer Wilds",
+                "F:/Program Files (x86)/Outer Wilds"
             };
             return paths.FirstOrDefault(IsValidGamePath);
         }
@@ -64,7 +68,7 @@ namespace OWML.Launcher
 
         private string PromptGamePath()
         {
-            var gamePath = "";
+            var gamePath = _config.GamePath;
             while (!IsValidGamePath(gamePath))
             {
                 _writer.WriteLine("Game not found at " + gamePath);
@@ -77,7 +81,7 @@ namespace OWML.Launcher
 
         private bool IsValidGamePath(string gamePath)
         {
-            return !string.IsNullOrEmpty(gamePath) && 
+            return !string.IsNullOrEmpty(gamePath) &&
                    Directory.Exists(gamePath) &&
                    Directory.Exists($"{gamePath}/OuterWilds_Data/Managed") &&
                    File.Exists($"{gamePath}/OuterWilds.exe");
