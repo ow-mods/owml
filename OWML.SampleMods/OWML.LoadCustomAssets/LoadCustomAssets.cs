@@ -76,7 +76,7 @@ namespace OWML.LoadCustomAssets
                 _playerTransform = behaviour.transform;
                 _isStarted = true;
                 ToggleMusic(ModHelper.Config.GetSetting<bool>("enableMusic"));
-                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 3);
+                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 1);
                 uwu.onClick.AddListener(OnUwu);
             }
         }

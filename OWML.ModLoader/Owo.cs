@@ -64,9 +64,9 @@ namespace OWML.ModLoader
             return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, config);
         }
 
-        private IModConfig GetConfig(ModStorage storage)
+        private IModConfig GetConfig(IModStorage storage)
         {
-            _console.WriteLine("Initializing config");
+            _logger.Log("Initializing config");
             var config = storage.Load<ModConfig>("config.json") ?? new ModConfig();
             var defaultConfig = storage.Load<ModConfig>("default-config.json") ?? new ModConfig();
             foreach (var setting in defaultConfig.Settings)
