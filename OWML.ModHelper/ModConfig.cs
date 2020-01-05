@@ -9,6 +9,11 @@ namespace OWML.ModHelper
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; }
 
+        public ModConfig()
+        {
+            Settings = new Dictionary<string, object>();
+        }
+
         public T GetSetting<T>(string key)
         {
             if (Settings.ContainsKey(key))

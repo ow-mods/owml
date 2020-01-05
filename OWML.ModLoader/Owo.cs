@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using OWML.Common;
@@ -67,17 +66,16 @@ namespace OWML.ModLoader
 
         private IModConfig GetConfig(ModStorage storage)
         {
-            var config = storage.Load<ModConfig>("config.json");
-            if (config != null)
+            _console.WriteLine("Initializing config");
+            var config = storage.Load<ModConfig>("config.json") ?? new ModConfig();
+            var defaultConfig = storage.Load<ModConfig>("default-config.json") ?? new ModConfig();
+            foreach (var setting in defaultConfig.Settings)
             {
-                _console.WriteLine("Config found");
-                return config;
+                if (!config.Settings.ContainsKey(setting.Key))
+                {
+                    config.Settings.Add(setting.Key, setting.Value);
+                }
             }
-            _console.WriteLine("Config not found, creating default");
-            config = new ModConfig
-            {
-                Settings = new Dictionary<string, object>()
-            };
             storage.Save(config, "config.json");
             return config;
         }
