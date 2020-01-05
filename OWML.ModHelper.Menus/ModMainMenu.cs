@@ -39,7 +39,7 @@ namespace OWML.ModHelper.Menus
 
             var copy = GameObject.Instantiate(original, _menu.transform);
             copy.name = name;
-            copy.transform.SetSiblingIndex(index);
+            copy.transform.SetSiblingIndex(index + 2);
 
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
             GameObject.Destroy(copy.GetComponent<SubmitAction>());
@@ -55,6 +55,6 @@ namespace OWML.ModHelper.Menus
             
             return copy;
         }
-
+        
     }
 }

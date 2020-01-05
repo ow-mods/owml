@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Menus;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -41,13 +43,43 @@ namespace OWML.ModLoader
             }
         }
 
+        private ModsMenu CreateModMenu()
+        {
+            _console.WriteLine("Creating mod menu");
+            var modsMenu = new ModsMenu(_logger, _console);
+            var modMenuButton = _menus.MainMenu.AddButton("MODS", 3);
+            modMenuButton.onClick.AddListener(() =>
+            {
+                modsMenu.Open();
+            });
+            return modsMenu;
+        }
+
         private IModHelper CreateModHelper(IModManifest manifest)
         {
             var assets = new ModAssets(_console, manifest);
             var storage = new ModStorage(_logger, _console, manifest);
             var harmonyHelper = new HarmonyHelper(_logger, _console, manifest);
             var events = new ModEvents(_logger, _console, harmonyHelper);
-            return new ModHelper.ModHelper(_config, _logger, _console, harmonyHelper, events, assets, storage, _menus, manifest);
+            var config = GetConfig(storage);
+            return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, config);
+        }
+
+        private IOwoConfig GetConfig(ModStorage storage)
+        {
+            var config = storage.Load<OwoConfig>("config.json");
+            if (config != null)
+            {
+                _console.WriteLine("Config found");
+                return config;
+            }
+            _console.WriteLine("Config not found, creating default");
+            config = new OwoConfig
+            {
+                Settings = new Dictionary<string, object>()
+            };
+            storage.Save(config, "config.json");
+            return config;
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)

@@ -63,7 +63,7 @@ namespace OWML.ModHelper.Menus
 
         private void Initialize()
         {
-            _console.WriteLine("Trying to initialize pause menu");
+            _logger.Log("Trying to initialize pause menu");
             var pauseMenuManager = GameObject.FindObjectOfType<PauseMenuManager>();
             if (pauseMenuManager == null)
             {
