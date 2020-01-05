@@ -10,7 +10,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.11";
+        private const string Version = "0.3.13";
 
         private readonly IOwmlConfig _config;
         private readonly IModConsole _writer;
@@ -85,7 +85,7 @@ namespace OWML.Launcher
             foreach (var manifest in manifests)
             {
                 var stateText = manifest.Enabled ? "" : " (disabled)";
-                var versionText = manifest.OWMLVersion == Version ? "" : $" (Warning: made for other version of OWML: {manifest.OWMLVersion})";
+                var versionText = manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {manifest.OWMLVersion})";
                 _writer.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
             }
         }
