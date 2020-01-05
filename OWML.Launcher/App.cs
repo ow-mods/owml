@@ -10,7 +10,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.13";
+        private const string Version = "0.3.14";
 
         private readonly IOwmlConfig _config;
         private readonly IModConsole _writer;
@@ -50,6 +50,7 @@ namespace OWML.Launcher
         private void LocateGamePath()
         {
             var gamePath = _pathFinder.FindGamePath();
+            _writer.WriteLine("Game found in " + gamePath);
             if (gamePath != _config.GamePath)
             {
                 _config.GamePath = gamePath;
@@ -98,7 +99,7 @@ namespace OWML.Launcher
 
         private void OnOutput(string s)
         {
-            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 _writer.WriteLine(line);
