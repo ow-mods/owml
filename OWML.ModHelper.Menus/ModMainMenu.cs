@@ -46,15 +46,15 @@ namespace OWML.ModHelper.Menus
 
             copy.GetComponentInChildren<Text>().text = name;
 
-            var fadeController = new CanvasGroupFadeController 
+            var fadeController = new CanvasGroupFadeController
             {
                 group = copy.GetComponent<CanvasGroup>()
             };
             _fadeControllers.Insert(index, fadeController);
             _anim.SetValue("_buttonFadeControllers", _fadeControllers.ToArray());
-            
+
             return copy;
         }
-        
+
     }
 }
