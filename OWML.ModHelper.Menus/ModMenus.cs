@@ -5,7 +5,7 @@ namespace OWML.ModHelper.Menus
     public class ModMenus : IModMenus
     {
         public IModMenu MainMenu { get; }
-        public IModMenu PauseMenu { get; }
+        public IModPopupMenu PauseMenu { get; }
 
         public ModMenus(IModLogger logger, IModConsole console)
         {

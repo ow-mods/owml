@@ -26,7 +26,7 @@ namespace OWML.ModHelper.Events
             try
             {
                 _logger.Log("Creating harmony instance");
-                harmony = HarmonyInstance.Create("com.owml" + _manifest.UniqueName);
+                harmony = HarmonyInstance.Create("com.owml." + _manifest.UniqueName);
                 _logger.Log("Created harmony instance");
             }
             catch (Exception ex)
