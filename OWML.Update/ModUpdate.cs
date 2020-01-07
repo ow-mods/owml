@@ -6,8 +6,7 @@ namespace OWML.Update
 {
     public class ModUpdate
     {
-        private const string BaseUrl = "https://github.com";
-        public string ReleasesUrl = BaseUrl + "/amazingalek/owml/releases";
+        public string ReleasesUrl = "https://github.com/amazingalek/owml/releases";
 
         private readonly IModConsole _writer;
 
@@ -19,14 +18,12 @@ namespace OWML.Update
         public string GetLatestVersion()
         {
             var web = new HtmlWeb();
-
-            string versionNumber;
+            HtmlNode releaseLink;
 
             try
             {
                 var releasesDoc = web.Load(ReleasesUrl);
-                var releaseLink = releasesDoc.DocumentNode.QuerySelector("div.release-header a");
-                versionNumber = releaseLink.InnerText;
+                releaseLink = releasesDoc.DocumentNode.QuerySelector("div.release-header a");
             }
             catch (Exception ex)
             {
@@ -34,10 +31,18 @@ namespace OWML.Update
                 return null;
             }
 
+            var versionNumber = releaseLink?.InnerText;
+
+            if (string.IsNullOrEmpty(versionNumber))
+            {
+                _writer.WriteLine("Error: version number is null or empty");
+                return null;
+            }
+
             if (versionNumber.Contains("+"))
             {
                 var indexOfPlus = versionNumber.IndexOf("+");
-                versionNumber = versionNumber.Substring(0, indexOfPlus);
+                return versionNumber.Substring(0, indexOfPlus);
             }
 
             return versionNumber;

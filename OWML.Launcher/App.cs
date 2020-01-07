@@ -11,7 +11,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.17";
+        private const string Version = "0.3.18";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -21,8 +21,8 @@ namespace OWML.Launcher
         private readonly ModPatcher _patcher;
         private readonly ModUpdate _update;
 
-        public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder, OutputListener listener,
-            PathFinder pathFinder, ModPatcher patcher, ModUpdate update)
+        public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
+            OutputListener listener, PathFinder pathFinder, ModPatcher patcher, ModUpdate update)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;

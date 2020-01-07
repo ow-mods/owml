@@ -11,5 +11,6 @@
         IModMenus Menus { get; }
         IModManifest Manifest { get; }
         IModConfig Config { get; }
+        IOwmlConfig OwmlConfig { get; }
     }
 }
