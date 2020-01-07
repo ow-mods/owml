@@ -9,7 +9,7 @@ namespace OWML.Patcher
 {
     public class ModPatcher
     {
-        private readonly IOwmlConfig _config;
+        private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
 
         private const string PatchClass = "PermanentManager";
@@ -19,15 +19,15 @@ namespace OWML.Patcher
         {
         };
 
-        public ModPatcher(IOwmlConfig config, IModConsole writer)
+        public ModPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
-            _config = config;
+            _owmlConfig = owmlConfig;
             _writer = writer;
         }
 
         public void PatchGame()
         {
-            var patcher = new dnpatch.Patcher($"{_config.ManagedPath}/Assembly-CSharp.dll");
+            var patcher = new dnpatch.Patcher($"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll");
 
             RemoveOldPatches(patcher);
 
