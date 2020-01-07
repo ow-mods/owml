@@ -5,6 +5,7 @@ using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
+using OWML.Update;
 
 namespace OWML.Launcher
 {
@@ -18,7 +19,8 @@ namespace OWML.Launcher
             var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);
             var patcher = new ModPatcher(owmlConfig, writer);
-            var app = new App(owmlConfig, writer, modFinder, outputListener, pathFinder, patcher);
+            var update = new ModUpdate(writer);
+            var app = new App(owmlConfig, writer, modFinder, outputListener, pathFinder, patcher, update);
             app.Run();
         }
 

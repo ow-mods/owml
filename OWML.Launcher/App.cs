@@ -5,12 +5,13 @@ using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
 using OWML.Patcher;
+using OWML.Update;
 
 namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.16";
+        private const string Version = "0.3.17";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -18,8 +19,10 @@ namespace OWML.Launcher
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
         private readonly ModPatcher _patcher;
+        private readonly ModUpdate _update;
 
-        public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder, OutputListener listener, PathFinder pathFinder, ModPatcher patcher)
+        public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder, OutputListener listener,
+            PathFinder pathFinder, ModPatcher patcher, ModUpdate update)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
@@ -27,12 +30,15 @@ namespace OWML.Launcher
             _listener = listener;
             _pathFinder = pathFinder;
             _patcher = patcher;
+            _update = update;
         }
 
         public void Run()
         {
             _writer.WriteLine($"Started OWML version {Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
+
+            CheckVersion();
 
             LocateGamePath();
 
@@ -47,6 +53,22 @@ namespace OWML.Launcher
             StartGame();
 
             Console.ReadLine();
+        }
+
+        private void CheckVersion()
+        {
+            var latestVersion = _update.GetLatestVersion();
+            if (string.IsNullOrEmpty(latestVersion))
+            {
+                _writer.WriteLine("Could not check version.");
+                return;
+            }
+            if (Version == latestVersion)
+            {
+                _writer.WriteLine("OWML is up to date.");
+                return;
+            }
+            _writer.WriteLine($"Warning: please update OWML to {latestVersion}: {_update.ReleasesUrl}");
         }
 
         private void LocateGamePath()
