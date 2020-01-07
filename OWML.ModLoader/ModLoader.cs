@@ -14,22 +14,22 @@ namespace OWML.ModLoader
 
         public static void LoadMods()
         {
-            var config = GetConfig();
-            if (config == null)
+            var owmlConfig = GetOwmlConfig();
+            if (owmlConfig == null)
             {
                 return;
             }
-            var logger = new ModLogger(config);
+            var logger = new ModLogger(owmlConfig);
             logger.Log("Got config!");
-            var console = new ModConsole(config, logger);
+            var console = new ModConsole(owmlConfig, logger);
             console.WriteLine("Mod loader has been initialized.");
-            var modFinder = new ModFinder(config, console);
+            var modFinder = new ModFinder(owmlConfig, console);
             var menus = new ModMenus(logger, console);
-            var owo = new Owo(modFinder, logger, console, config, menus);
+            var owo = new Owo(modFinder, logger, console, owmlConfig, menus);
             owo.LoadMods();
         }
 
-        private static IOwmlConfig GetConfig()
+        private static IOwmlConfig GetOwmlConfig()
         {
             try
             {

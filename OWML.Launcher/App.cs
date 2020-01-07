@@ -10,21 +10,23 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.15";
+        private const string Version = "0.3.16";
 
-        private readonly IOwmlConfig _config;
+        private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
+        private readonly ModPatcher _patcher;
 
-        public App(IOwmlConfig config, IModConsole writer, IModFinder modFinder, OutputListener listener, PathFinder pathFinder)
+        public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder, OutputListener listener, PathFinder pathFinder, ModPatcher patcher)
         {
-            _config = config;
+            _owmlConfig = owmlConfig;
             _writer = writer;
             _modFinder = modFinder;
             _listener = listener;
             _pathFinder = pathFinder;
+            _patcher = patcher;
         }
 
         public void Run()
@@ -51,16 +53,16 @@ namespace OWML.Launcher
         {
             var gamePath = _pathFinder.FindGamePath();
             _writer.WriteLine("Game found in " + gamePath);
-            if (gamePath != _config.GamePath)
+            if (gamePath != _owmlConfig.GamePath)
             {
-                _config.GamePath = gamePath;
+                _owmlConfig.GamePath = gamePath;
                 SaveConfig();
             }
         }
 
         private void SaveConfig()
         {
-            var json = JsonConvert.SerializeObject(_config);
+            var json = JsonConvert.SerializeObject(_owmlConfig);
             File.WriteAllText("OWML.Config.json", json);
         }
 
@@ -69,7 +71,7 @@ namespace OWML.Launcher
             var filesToCopy = new[] { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
             foreach (var fileName in filesToCopy)
             {
-                File.Copy($"{_config.ManagedPath}/{fileName}", fileName, true);
+                File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
             }
             _writer.WriteLine("Game files copied.");
         }
@@ -108,16 +110,15 @@ namespace OWML.Launcher
 
         private void PatchGame()
         {
-            var patcher = new ModPatcher(_config, _writer);
-            patcher.PatchGame();
+            _patcher.PatchGame();
             var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.ModHelper.dll",
                 "OWML.ModHelper.Events.dll", "OWML.ModHelper.Assets.dll", "OWML.ModHelper.Menus.dll",
                 "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
             foreach (var filename in filesToCopy)
             {
-                File.Copy(filename, $"{_config.ManagedPath}/{filename}", true);
+                File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
             }
-            File.WriteAllText($"{_config.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_config));
+            File.WriteAllText($"{_owmlConfig.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_owmlConfig));
         }
 
         private void StartGame()
@@ -125,7 +126,7 @@ namespace OWML.Launcher
             _writer.WriteLine("Starting game...");
             try
             {
-                Process.Start($"{_config.GamePath}/OuterWilds.exe");
+                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");
             }
             catch (Exception ex)
             {

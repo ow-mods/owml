@@ -15,21 +15,21 @@ namespace OWML.ModLoader
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-        private readonly IOwmlConfig _config;
+        private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
 
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IOwmlConfig config, IModMenus menus)
+        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console, IOwmlConfig owmlConfig, IModMenus menus)
         {
             _modFinder = modFinder;
             _logger = logger;
             _console = console;
-            _config = config;
+            _owmlConfig = owmlConfig;
             _menus = menus;
         }
 
         public void LoadMods()
         {
-            if (_config.Verbose)
+            if (_owmlConfig.Verbose)
             {
                 _console.WriteLine("Verbose mod is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
@@ -60,11 +60,11 @@ namespace OWML.ModLoader
             var storage = new ModStorage(_logger, _console, manifest);
             var harmonyHelper = new HarmonyHelper(_logger, _console, manifest);
             var events = new ModEvents(_logger, _console, harmonyHelper);
-            var config = GetConfig(storage);
-            return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, config);
+            var modConfig = GetModConfig(storage);
+            return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, modConfig, _owmlConfig);
         }
 
-        private IModConfig GetConfig(IModStorage storage)
+        private IModConfig GetModConfig(IModStorage storage)
         {
             _logger.Log("Initializing config");
             var config = storage.Load<ModConfig>("config.json") ?? new ModConfig();
