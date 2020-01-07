@@ -75,6 +75,8 @@ I'm Alek on the [Outer Wilds Discord](https://discord.gg/csKYR3w).
 
 Feature requests, bug reports and PRs are welcome on GitHub.
 
+Nexus page: https://www.nexusmods.com/outerwilds/mods/1
+
 ## Credits
 
 * Outer Wilds: http://www.outerwilds.com
@@ -90,3 +92,5 @@ Dependencies:
 * Newtonsoft.Json for Unity: https://github.com/SaladLab/Json.Net.Unity3D
 * ObjImporter: https://wiki.unity3d.com/index.php?title=ObjImporter
 * NAudio-Unity: https://github.com/WulfMarius/NAudio-Unity
+* HtmlAgilityPack: https://html-agility-pack.net/
+* HtmlAgilityPack.CssSelector: https://github.com/hcesar/HtmlAgilityPack.CssSelector
