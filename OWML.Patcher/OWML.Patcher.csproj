@@ -34,19 +34,30 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="dnlib, Version=3.3.0.0, Culture=neutral, PublicKeyToken=50e96378b6e77999, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>dnpatch\dnlib.dll</HintPath>
+    <Reference Include="BsPatch">
+      <HintPath>DLLs\BsPatch.dll</HintPath>
     </Reference>
-    <Reference Include="dnpatch">
-      <HintPath>dnpatch\dnpatch.dll</HintPath>
+    <Reference Include="dnlib, Version=1.6.0.0, Culture=neutral, PublicKeyToken=50e96378b6e77999, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\dnlib.dll</HintPath>
+    </Reference>
+    <Reference Include="dnpatch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\dnpatch.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>DLLs\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModPatcher.cs" />
+    <Compile Include="OWPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VrPatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
@@ -57,6 +68,9 @@
       <Project>{D075D13C-990A-46A2-B596-4600A3411BD5}</Project>
       <Name>OWML.ModLoader</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

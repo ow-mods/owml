@@ -18,18 +18,20 @@ namespace OWML.Launcher
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
-        private readonly ModPatcher _patcher;
+        private readonly OWPatcher _owPatcher;
+        private readonly VrPatcher _vrPatcher;
         private readonly ModUpdate _update;
 
         public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, ModPatcher patcher, ModUpdate update)
+            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VrPatcher vrPatcher, ModUpdate update)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
             _modFinder = modFinder;
             _listener = listener;
             _pathFinder = pathFinder;
-            _patcher = patcher;
+            _owPatcher = owPatcher;
+            _vrPatcher = vrPatcher;
             _update = update;
         }
 
@@ -132,15 +134,8 @@ namespace OWML.Launcher
 
         private void PatchGame()
         {
-            _patcher.PatchGame();
-            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.ModHelper.dll",
-                "OWML.ModHelper.Events.dll", "OWML.ModHelper.Assets.dll", "OWML.ModHelper.Menus.dll",
-                "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
-            foreach (var filename in filesToCopy)
-            {
-                File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
-            }
-            File.WriteAllText($"{_owmlConfig.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_owmlConfig));
+            _owPatcher.PatchGame();
+            _vrPatcher.PatchVR();
         }
 
         private void StartGame()

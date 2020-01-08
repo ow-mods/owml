@@ -14,6 +14,9 @@ namespace OWML.ModHelper
         [JsonIgnore]
         public string ManagedPath => $"{GamePath}/OuterWilds_Data/Managed";
 
+        [JsonIgnore]
+        public string PluginsPath => $"{GamePath}/OuterWilds_Data/Plugins";
+
         [JsonProperty("owmlPath")]
         public string OWMLPath { get; set; }
 
