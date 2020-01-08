@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using OWML.Common;
 
 namespace OWML.Launcher
@@ -61,9 +62,28 @@ namespace OWML.Launcher
 
         private string FindInRegistry()
         {
-            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Outer Wilds_is1");
-            var value = (string)key?.GetValue("InstallLocation");
-            return IsValidGamePath(value) ? value : null;
+            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Epic Games\EpicGamesLauncher");
+            var appDataPath = (string)key?.GetValue("AppDataPath");
+            if (string.IsNullOrEmpty(appDataPath))
+            {
+                return null;
+            }
+            var manifestsPath = appDataPath + "Manifests";
+            if (!Directory.Exists(manifestsPath))
+            {
+                return null;
+            }
+            var manifestPaths = Directory.GetFiles(manifestsPath, "*.item", SearchOption.TopDirectoryOnly);
+            foreach (var manifestPath in manifestPaths)
+            {
+                var json = File.ReadAllText(manifestPath);
+                var epicManifest = JsonConvert.DeserializeObject<EpicManifest>(json);
+                if (epicManifest.InstallLocation.Contains("OuterWilds") && IsValidGamePath(epicManifest.InstallLocation))
+                {
+                    return epicManifest.InstallLocation;
+                }
+            }
+            return null;
         }
 
         private string PromptGamePath()
@@ -85,6 +105,12 @@ namespace OWML.Launcher
                    Directory.Exists(gamePath) &&
                    Directory.Exists($"{gamePath}/OuterWilds_Data/Managed") &&
                    File.Exists($"{gamePath}/OuterWilds.exe");
+        }
+
+        public class EpicManifest
+        {
+            [JsonProperty("InstallLocation")]
+            public string InstallLocation { get; set; }
         }
 
     }
