@@ -35,7 +35,6 @@ namespace OWML.Patcher
             {
                 var from = $"{_owmlConfig.OWMLPath}VR/{filename}";
                 var to = $"{_owmlConfig.PluginsPath}/{filename}";
-                _writer.WriteLine($"Copying {from} to {to}");
                 if (File.Exists(from))
                 {
                     File.Copy(from, to, true);
@@ -62,13 +61,13 @@ namespace OWML.Patcher
 
             if (!File.Exists(backupPath))
             {
-                _writer.WriteLine("Backup...");
+                _writer.WriteLine("Taking backup of globalgamemanagers.");
                 File.Copy(originalPath, backupPath, true);
             }
 
             if (enableVR && !File.Exists(vrPath))
             {
-                _writer.WriteLine("Patching VR...");
+                _writer.WriteLine("Patching globalgamemanagers for VR...");
                 var checksum = CalculateChecksum(originalPath);
                 if (checksum == TargetChecksum)
                 {
