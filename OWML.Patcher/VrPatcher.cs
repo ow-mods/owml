@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using BsDiff;
 using OWML.Common;
@@ -37,31 +36,44 @@ namespace OWML.Patcher
 
         private void PatchGlobalManager(bool enable)
         {
-            var original = _owmlConfig.DataPath + "/globalgamemanagers";
-            var backup = _owmlConfig.DataPath + "/globalgamemanagers.bak";
-            var vr = _owmlConfig.DataPath + "/globalgamemanagers.vr";
-            var patch = _owmlConfig.OWMLPath + "VR/patch";
+            var originalPath = _owmlConfig.DataPath + "/globalgamemanagers";
+            var backupPath = _owmlConfig.DataPath + "/globalgamemanagers.bak";
+            var vrPath = _owmlConfig.DataPath + "/globalgamemanagers.vr";
+            var patchPath = _owmlConfig.OWMLPath + "VR/patch";
 
-            _writer.WriteLine("original: " + original);
-            _writer.WriteLine("backup: " + backup);
-            _writer.WriteLine("vr: " + vr);
-            _writer.WriteLine("patch: " + patch);
+            _writer.WriteLine("original: " + originalPath);
+            _writer.WriteLine("backup: " + backupPath);
+            _writer.WriteLine("vr: " + vrPath);
+            _writer.WriteLine("patch: " + patchPath);
             
-            if (!File.Exists(backup))
+            if (!File.Exists(backupPath))
             {
                 _writer.WriteLine("Backup...");
-                File.Copy(original, backup, true);
+                File.Copy(originalPath, backupPath, true);
             }
 
-            if (!File.Exists(vr))
+            if (!File.Exists(vrPath))
             {
                 _writer.WriteLine("Patching VR...");
-                Process.Start(null, $"{backup} {vr} {patch}");
+                ApplyPatch(originalPath, vrPath, patchPath);
             }
 
-            var copyFrom = enable ? vr : backup;
-            File.Copy(copyFrom, original, true);
+            var copyFrom = enable ? vrPath : backupPath;
+            File.Copy(copyFrom, originalPath, true);
         }
 
+        private void ApplyPatch(string oldFile, string newFile, string patchFile)
+        {
+            try
+            {
+                using (FileStream input = new FileStream(oldFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream output = new FileStream(newFile, FileMode.Create))
+                    BinaryPatchUtility.Apply(input, () => new FileStream(patchFile, FileMode.Open, FileAccess.Read, FileShare.Read), output);
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.Error.WriteLine("Could not open '{0}'.", ex.FileName);
+            }
+        }
     }
 }
