@@ -8,7 +8,7 @@ namespace OWML.Launcher
 {
     public class OutputListener
     {
-        private const int ReadLength = 128;
+        private const int ReadLength = 119;
 
         public Action<string> OnOutput;
 
