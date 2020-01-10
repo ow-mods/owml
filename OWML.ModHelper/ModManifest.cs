@@ -27,9 +27,9 @@ namespace OWML.ModHelper
         public bool Enabled { get; private set; }
 
         [JsonIgnore]
-        public string FolderPath { get; set; }
+        public string ModFolderPath { get; set; }
 
         [JsonIgnore]
-        public string AssemblyPath => FolderPath + Filename;
+        public string AssemblyPath => ModFolderPath + Filename;
     }
 }

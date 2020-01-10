@@ -9,7 +9,7 @@
         string OWMLVersion { get; }
         string AssemblyPath { get; }
         string UniqueName { get; }
-        string FolderPath { get; set; }
+        string ModFolderPath { get; set; }
         bool Enabled { get; }
     }
 }

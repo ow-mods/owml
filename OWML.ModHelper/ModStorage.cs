@@ -20,7 +20,7 @@ namespace OWML.ModHelper
 
         public T Load<T>(string filename)
         {
-            var path = _manifest.FolderPath + filename;
+            var path = _manifest.ModFolderPath + filename;
             _logger.Log($"Loading {path}...");
             if (!File.Exists(path))
             {
@@ -41,7 +41,7 @@ namespace OWML.ModHelper
 
         public void Save<T>(T obj, string filename)
         {
-            var path = _manifest.FolderPath + filename;
+            var path = _manifest.ModFolderPath + filename;
             _logger.Log($"Saving {path}...");
             try
             {

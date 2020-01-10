@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Assets
 
         public AssetBundle LoadBundle(string filename)
         {
-            var path = _manifest.FolderPath + filename;
+            var path = _manifest.ModFolderPath + filename;
             _console.WriteLine("Loading asset bundle from " + path);
             var bundle = AssetBundle.LoadFromFile(path);
             if (bundle == null)
@@ -32,8 +32,8 @@ namespace OWML.ModHelper.Assets
 
         public IModAsset<GameObject> Load3DObject(string objectFilename, string imageFilename)
         {
-            var objectPath = _manifest.FolderPath + objectFilename;
-            var imagePath = _manifest.FolderPath + imageFilename;
+            var objectPath = _manifest.ModFolderPath + objectFilename;
+            var imagePath = _manifest.ModFolderPath + imageFilename;
             _console.WriteLine("Loading object from " + objectPath);
 
             var go = new GameObject();
@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Assets
 
         public IModAsset<MeshFilter> LoadMesh(string objectFilename)
         {
-            var objectPath = _manifest.FolderPath + objectFilename;
+            var objectPath = _manifest.ModFolderPath + objectFilename;
             _console.WriteLine("Loading mesh from " + objectPath);
 
             var go = new GameObject();
@@ -60,7 +60,7 @@ namespace OWML.ModHelper.Assets
 
         public IModAsset<MeshRenderer> LoadTexture(string imageFilename)
         {
-            var imagePath = _manifest.FolderPath + imageFilename;
+            var imagePath = _manifest.ModFolderPath + imageFilename;
             _console.WriteLine("Loading texture from " + imagePath);
 
             var go = new GameObject();
@@ -73,7 +73,7 @@ namespace OWML.ModHelper.Assets
 
         public IModAsset<AudioSource> LoadAudio(string audioFilename)
         {
-            var audioPath = _manifest.FolderPath + audioFilename;
+            var audioPath = _manifest.ModFolderPath + audioFilename;
             _console.WriteLine("Loading audio from " + audioPath);
 
             var go = new GameObject();

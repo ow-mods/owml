@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
+using OWML.ModHelper;
 using OWML.Patcher;
 using OWML.Update;
 
@@ -11,25 +13,27 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.20";
+        private const string Version = "0.3.21";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
-        private readonly ModPatcher _patcher;
+        private readonly OWPatcher _owPatcher;
+        private readonly VRPatcher _vrPatcher;
         private readonly ModUpdate _update;
 
         public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, ModPatcher patcher, ModUpdate update)
+            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, ModUpdate update)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
             _modFinder = modFinder;
             _listener = listener;
             _pathFinder = pathFinder;
-            _patcher = patcher;
+            _owPatcher = owPatcher;
+            _vrPatcher = vrPatcher;
             _update = update;
         }
 
@@ -46,9 +50,11 @@ namespace OWML.Launcher
 
             ListenForOutput();
 
-            ShowModList();
+            var manifests = _modFinder.GetManifests();
 
-            PatchGame();
+            ShowModList(manifests);
+
+            PatchGame(manifests);
 
             StartGame();
 
@@ -98,9 +104,8 @@ namespace OWML.Launcher
             _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList()
+        private void ShowModList(IList<IModManifest> manifests)
         {
-            var manifests = _modFinder.GetManifests();
             if (!manifests.Any())
             {
                 _writer.WriteLine("Warning: found no mods.");
@@ -130,17 +135,31 @@ namespace OWML.Launcher
             }
         }
 
-        private void PatchGame()
+        private void PatchGame(IList<IModManifest> manifests)
         {
-            _patcher.PatchGame();
-            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.ModHelper.dll",
-                "OWML.ModHelper.Events.dll", "OWML.ModHelper.Assets.dll", "OWML.ModHelper.Menus.dll",
-                "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
-            foreach (var filename in filesToCopy)
+            var enableVR = IsVRRequired(manifests);
+            _owPatcher.PatchGame();
+            _vrPatcher.PatchVR(enableVR);
+        }
+
+        private bool IsVRRequired(IList<IModManifest> manifests)
+        {
+            foreach (var manifest in manifests)
             {
-                File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
+                var configPath = manifest.ModFolderPath + "config.json";
+                if (manifest.Enabled && File.Exists(configPath))
+                {
+                    var json = File.ReadAllText(configPath);
+                    var config = JsonConvert.DeserializeObject<ModConfig>(json);
+                    if (config.RequireVR)
+                    {
+                        _writer.WriteLine($"{manifest.UniqueName} requires VR.");
+                        return true;
+                    }
+                }
             }
-            File.WriteAllText($"{_owmlConfig.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_owmlConfig));
+            _writer.WriteLine("No mod requires VR.");
+            return false;
         }
 
         private void StartGame()

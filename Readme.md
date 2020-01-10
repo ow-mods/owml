@@ -63,6 +63,23 @@ Each mod is defined in a manifest.json file:
 |owmlVersion|The version of OWML the mod was built for.|
 |enabled|Whether or not the mod will be loaded.|
 
+Each mod can have an optional config file: config.json. To avoid overwriting the config when updating mods, config-default.json is intended to be included with mods, and is used to generate config.json if it doesn't exist. A config file has a list of settings in the following format:
+
+~~~~
+{
+  "settings": {
+    "enableMusic": true,
+    "foo": "bar",
+    "lol": 1337
+  },
+  "requireVR": false
+}
+~~~~
+
+The settings list varies per mod. 
+
+If at least one mod requires VR, OWML will patch the game to be "VR enabled".
+
 ## Compatibility
 
 * Tested with Outer Wilds 1.0.0, 1.0.2, 1.0.3 and 1.0.4.
@@ -94,3 +111,4 @@ Dependencies:
 * NAudio-Unity: https://github.com/WulfMarius/NAudio-Unity
 * HtmlAgilityPack: https://html-agility-pack.net/
 * HtmlAgilityPack.CssSelector: https://github.com/hcesar/HtmlAgilityPack.CssSelector
+* BsDiff: https://github.com/LogosBible/bsdiff.net
