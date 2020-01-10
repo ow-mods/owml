@@ -84,7 +84,7 @@ namespace OWML.ModLoader
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                _console.WriteLine($"{type}: {message}. Stack trace: {stackTrace?.Trim()}");
+                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
