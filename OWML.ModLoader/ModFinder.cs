@@ -30,7 +30,7 @@ namespace OWML.ModLoader
             {
                 var json = File.ReadAllText(manifestFilename);
                 var manifest = JsonConvert.DeserializeObject<ModManifest>(json);
-                manifest.FolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf("manifest.json"));
+                manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf("manifest.json"));
                 manifests.Add(manifest);
             }
             return manifests;

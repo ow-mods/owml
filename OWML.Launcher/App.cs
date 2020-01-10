@@ -146,7 +146,7 @@ namespace OWML.Launcher
         {
             foreach (var manifest in manifests)
             {
-                var configPath = manifest.FolderPath + "config.json";
+                var configPath = manifest.ModFolderPath + "config.json";
                 if (manifest.Enabled && File.Exists(configPath))
                 {
                     var json = File.ReadAllText(configPath);
