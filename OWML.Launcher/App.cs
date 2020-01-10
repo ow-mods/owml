@@ -11,8 +11,8 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.19";
         private const bool EnableVR = true;
+        private const string Version = "0.3.20";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
