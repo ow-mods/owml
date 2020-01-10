@@ -63,7 +63,7 @@ Each mod is defined in a manifest.json file:
 |owmlVersion|The version of OWML the mod was built for.|
 |enabled|Whether or not the mod will be loaded.|
 
-Each mod can have an optional config file: config.json. To avoid overwriting the config updating mods, config-default.json is intended to be included with mods, and is used to generate config.json if it doesn't exist. A config file has a list of settings in this format:
+Each mod can have an optional config file: config.json. To avoid overwriting the config when updating mods, config-default.json is intended to be included with mods, and is used to generate config.json if it doesn't exist. A config file has a list of settings in the following format:
 
 ~~~~
 {
