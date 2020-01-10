@@ -31,7 +31,7 @@ namespace OWML.ModLoader
         {
             if (_owmlConfig.Verbose)
             {
-                _console.WriteLine("Verbose mod is enabled");
+                _console.WriteLine("Verbose mode is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var manifests = _modFinder.GetManifests();
@@ -82,10 +82,9 @@ namespace OWML.ModLoader
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            _logger.Log($"{type}: {message}");
             if (type == LogType.Error || type == LogType.Exception)
             {
-                _console.WriteLine($"{type}: {message}");
+                _console.WriteLine($"{type}: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
