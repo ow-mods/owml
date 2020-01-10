@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
+using OWML.ModHelper;
 using OWML.Patcher;
 using OWML.Update;
 
@@ -11,7 +13,6 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const bool EnableVR = true;
         private const string Version = "0.3.20";
 
         private readonly IOwmlConfig _owmlConfig;
@@ -49,9 +50,11 @@ namespace OWML.Launcher
 
             ListenForOutput();
 
-            ShowModList();
+            var manifests = _modFinder.GetManifests();
 
-            PatchGame();
+            ShowModList(manifests);
+
+            PatchGame(manifests);
 
             StartGame();
 
@@ -101,9 +104,8 @@ namespace OWML.Launcher
             _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList()
+        private void ShowModList(IList<IModManifest> manifests)
         {
-            var manifests = _modFinder.GetManifests();
             if (!manifests.Any())
             {
                 _writer.WriteLine("Warning: found no mods.");
@@ -133,10 +135,31 @@ namespace OWML.Launcher
             }
         }
 
-        private void PatchGame()
+        private void PatchGame(IList<IModManifest> manifests)
         {
+            var enableVR = IsVRRequired(manifests);
             _owPatcher.PatchGame();
-            _vrPatcher.PatchVR(EnableVR);
+            _vrPatcher.PatchVR(enableVR);
+        }
+
+        private bool IsVRRequired(IList<IModManifest> manifests)
+        {
+            foreach (var manifest in manifests)
+            {
+                var configPath = manifest.FolderPath + "config.json";
+                if (manifest.Enabled && File.Exists(configPath))
+                {
+                    var json = File.ReadAllText(configPath);
+                    var config = JsonConvert.DeserializeObject<ModConfig>(json);
+                    if (config.RequireVR)
+                    {
+                        _writer.WriteLine($"{manifest.UniqueName} requires VR.");
+                        return true;
+                    }
+                }
+            }
+            _writer.WriteLine("No mod requires VR.");
+            return false;
         }
 
         private void StartGame()

@@ -27,10 +27,17 @@ namespace OWML.Patcher
             var filenames = new[] { "openvr_api.dll", "OVRPlugin.dll" };
             foreach (var filename in filenames)
             {
-                var from = $"{_owmlConfig.OWMLPath}/VR/{filename}";
+                var from = $"{_owmlConfig.OWMLPath}VR/{filename}";
                 var to = $"{_owmlConfig.PluginsPath}/{filename}";
                 _writer.WriteLine($"Copying {from} to {to}");
-                File.Copy(from, to, true);
+                if (File.Exists(from))
+                {
+                    File.Copy(from, to, true);
+                }
+                else
+                {
+                    _writer.WriteLine("Error: file not found: " + from);
+                }
             }
         }
 

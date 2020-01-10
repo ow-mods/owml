@@ -7,6 +7,9 @@ namespace OWML.ModHelper
 {
     public class ModConfig : IModConfig
     {
+        [JsonProperty("requireVR")]
+        public bool RequireVR { get; set; }
+
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; }
 

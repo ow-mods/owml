@@ -1,9 +1,8 @@
 rmdir /Q /S "Release"
 mkdir "Release"
-mkdir "Release\VR"
-mkdir "Release\BsPatch"
 mkdir "Release\Mods"
 mkdir "Release\Logs"
+mkdir "Release\VR"
 
 copy "OWML.Patcher\bin\Debug\OWML.Patcher.dll" "Release\OWML.Patcher.dll"
 copy "OWML.ModLoader\bin\Debug\OWML.ModLoader.dll" "Release\OWML.ModLoader.dll"
