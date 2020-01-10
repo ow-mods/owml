@@ -12,6 +12,12 @@ namespace OWML.ModHelper.Menus
             MainMenu = new ModMainMenu(logger, console);
             PauseMenu = new ModPauseMenu(logger, console);
         }
+
+        public IModPopupMenu CreateMenu()
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 
 }
