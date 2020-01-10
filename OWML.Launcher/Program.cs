@@ -19,7 +19,7 @@ namespace OWML.Launcher
             var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
-            var vrPatcher = new VrPatcher(owmlConfig, writer);
+            var vrPatcher = new VRPatcher(owmlConfig, writer);
             var update = new ModUpdate(writer);
             var app = new App(owmlConfig, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher, update);
             app.Run();

@@ -12,11 +12,14 @@ namespace OWML.ModHelper
         public bool Verbose { get; private set; }
 
         [JsonIgnore]
-        public string ManagedPath => $"{GamePath}/OuterWilds_Data/Managed";
+        public string DataPath => $"{GamePath}/OuterWilds_Data";
 
         [JsonIgnore]
-        public string PluginsPath => $"{GamePath}/OuterWilds_Data/Plugins";
+        public string ManagedPath => $"{DataPath}/Managed";
 
+        [JsonIgnore]
+        public string PluginsPath => $"{DataPath}/Plugins";
+        
         [JsonProperty("owmlPath")]
         public string OWMLPath { get; set; }
 

@@ -12,6 +12,7 @@ namespace OWML.Launcher
     public class App
     {
         private const string Version = "0.3.19";
+        private const bool EnableVR = true;
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -19,11 +20,11 @@ namespace OWML.Launcher
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
-        private readonly VrPatcher _vrPatcher;
+        private readonly VRPatcher _vrPatcher;
         private readonly ModUpdate _update;
 
         public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VrPatcher vrPatcher, ModUpdate update)
+            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, ModUpdate update)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
@@ -135,7 +136,7 @@ namespace OWML.Launcher
         private void PatchGame()
         {
             _owPatcher.PatchGame();
-            _vrPatcher.PatchVR();
+            _vrPatcher.PatchVR(EnableVR);
         }
 
         private void StartGame()

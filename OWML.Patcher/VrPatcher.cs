@@ -1,25 +1,26 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using BsDiff;
 using OWML.Common;
 
 namespace OWML.Patcher
 {
-    public class VrPatcher
+    public class VRPatcher
     {
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
 
-        public VrPatcher(IOwmlConfig owmlConfig, IModConsole writer)
+        public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
         }
 
-        public void PatchVR()
+        public void PatchVR(bool enable)
         {
             CopyFiles();
-            PatchGlobalManager();
+            PatchGlobalManager(enable);
         }
 
         private void CopyFiles()
@@ -27,35 +28,39 @@ namespace OWML.Patcher
             var filenames = new[] { "openvr_api.dll", "OVRPlugin.dll" };
             foreach (var filename in filenames)
             {
-                var from = _owmlConfig.OWMLPath + filename;
+                var from = $"{_owmlConfig.OWMLPath}/VR/{filename}";
                 var to = $"{_owmlConfig.PluginsPath}/{filename}";
+                _writer.WriteLine($"Copying {from} to {to}");
                 File.Copy(from, to, true);
             }
         }
 
-        private void PatchGlobalManager()
+        private void PatchGlobalManager(bool enable)
         {
-            var oldFilename = _owmlConfig.ManagedPath + "globalgamemanagers";
-            var backupFilename = _owmlConfig.ManagedPath + "globalgamemanagers.bak";
-            var newFilename = _owmlConfig.ManagedPath + "globalgamemanagers.new";
-            var patchFilename = _owmlConfig.OWMLPath + "vr-patch"; // todo
+            var original = _owmlConfig.DataPath + "/globalgamemanagers";
+            var backup = _owmlConfig.DataPath + "/globalgamemanagers.bak";
+            var vr = _owmlConfig.DataPath + "/globalgamemanagers.vr";
+            var patch = _owmlConfig.OWMLPath + "VR/patch";
 
-            File.Copy(oldFilename, backupFilename, true);
-
-            try
+            _writer.WriteLine("original: " + original);
+            _writer.WriteLine("backup: " + backup);
+            _writer.WriteLine("vr: " + vr);
+            _writer.WriteLine("patch: " + patch);
+            
+            if (!File.Exists(backup))
             {
-                using (var input = new FileStream(oldFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
-                using (var output = new FileStream(newFilename, FileMode.Create))
-                {
-                    BinaryPatchUtility.Apply(input, () => new FileStream(patchFilename, FileMode.Open, FileAccess.Read, FileShare.Read), output);
-                }
-            }
-            catch (Exception ex)
-            {
-                _writer.WriteLine("Error while patching globalgamemanagers: " + ex);
+                _writer.WriteLine("Backup...");
+                File.Copy(original, backup, true);
             }
 
-            File.Copy(newFilename, oldFilename, true);
+            if (!File.Exists(vr))
+            {
+                _writer.WriteLine("Patching VR...");
+                Process.Start(null, $"{backup} {vr} {patch}");
+            }
+
+            var copyFrom = enable ? vr : backup;
+            File.Copy(copyFrom, original, true);
         }
 
     }
