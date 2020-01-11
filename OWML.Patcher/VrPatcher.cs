@@ -76,6 +76,7 @@ namespace OWML.Patcher
                 else
                 {
                     _writer.WriteLine($"Error: invalid checksum: {checksum}. Only Outer Wilds v1.0.4 is supported.");
+                    return;
                 }
             }
 
