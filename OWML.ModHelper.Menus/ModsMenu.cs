@@ -43,7 +43,7 @@ namespace OWML.ModHelper.Menus
             var go = new GameObject();
             return go.AddComponent<Button>(); // todo
         }
-
+        
         public List<Button> GetButtons()
         {
             _console.WriteLine("todo: implement ModsMenu.GetButtons");

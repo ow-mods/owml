@@ -6,11 +6,14 @@ namespace OWML.Common
     {
         Action OnOpen { get; set; }
         Action OnClose { get; set; }
+        Action OnInit { get; set; }
 
         bool IsOpen { get; }
 
         void Open();
         void Close();
         void Toggle();
+
+        IModPopupMenu CreateCopy(string name);
     }
 }

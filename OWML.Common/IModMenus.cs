@@ -4,7 +4,5 @@
     {
         IModMenu MainMenu { get; }
         IModPopupMenu PauseMenu { get; }
-
-        IModPopupMenu CreateMenu();
     }
 }

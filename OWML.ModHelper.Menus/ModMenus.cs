@@ -1,5 +1,4 @@
 ﻿using OWML.Common;
-using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -8,21 +7,15 @@ namespace OWML.ModHelper.Menus
         public IModMenu MainMenu { get; }
         public IModPopupMenu PauseMenu { get; }
 
+        private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        public ModMenus(IModLogger logger, IModConsole console)
+        public ModMenus(IModLogger logger, IModConsole console, IModEvents events)
         {
+            _logger = logger;
             _console = console;
             MainMenu = new ModMainMenu(logger, console);
-            PauseMenu = new ModPauseMenu(logger, console);
-        }
-
-        public IModPopupMenu CreateMenu()
-        {
-            var original = PauseMenu ?? MainMenu;
-
-            var copy = GameObject.Instantiate(original);
-
+            PauseMenu = new ModPauseMenu(logger, console, events);
         }
 
     }

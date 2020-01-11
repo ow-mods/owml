@@ -39,6 +39,12 @@ namespace OWML.LoadCustomAssets
 
             var owo = ModHelper.Menus.MainMenu.AddButton("OWO", 3);
             owo.onClick.AddListener(OnOwo);
+
+            ModHelper.Menus.PauseMenu.OnInit += () =>
+            {
+                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 1);
+                uwu.onClick.AddListener(OnUwu);
+            };
         }
 
         public override void Configure(IModConfig config)
@@ -76,8 +82,6 @@ namespace OWML.LoadCustomAssets
                 _playerTransform = behaviour.transform;
                 _isStarted = true;
                 ToggleMusic(ModHelper.Config.GetSetting<bool>("enableMusic"));
-                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 1);
-                uwu.onClick.AddListener(OnUwu);
             }
         }
 
