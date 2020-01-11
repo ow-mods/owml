@@ -67,10 +67,19 @@ Each mod is defined in a manifest.json file:
 |owmlVersion|The version of OWML the mod was built for.|
 |enabled|Whether or not the mod will be loaded.|
 
-Each mod can be configured with an optional config.json. A config file has a list of settings in the following format:
+Each mod can be configured with an **optional** config.json file:
 
+|Key|Description|
+|---|-----------|
+|enabled|Whether or not the mod will be loaded. Default: true.|
+|requireVR|Whether or not the mod requires VR to work. Default: false.|
+|settings|An object of mod-specific settings. Default: empty.|
+
+Example:
 ~~~~
 {
+  "enabled": true,
+  "requireVR": false,
   "settings": {
     "enableMusic": true,
     "foo": "bar",
