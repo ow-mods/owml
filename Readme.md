@@ -101,7 +101,7 @@ Feature requests, bug reports and PRs are welcome on GitHub.
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * [SMAPI](https://smapi.io)
-* Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1).
+* Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)
