@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using OWML.Common;
 
 namespace OWML.ModHelper
@@ -23,8 +24,9 @@ namespace OWML.ModHelper
         [JsonProperty("owmlVersion")]
         public string OWMLVersion { get; private set; }
 
+        [Obsolete("Use Enabled in ModConfig instead")]
         [JsonProperty("enabled")]
-        public bool Enabled { get; private set; }
+        public bool Enabled { get; private set; } = true;
 
         [JsonIgnore]
         public string ModFolderPath { get; set; }
