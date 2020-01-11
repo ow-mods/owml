@@ -6,6 +6,6 @@ namespace OWML.Common
     public interface IModMenu
     {
         List<Button> GetButtons();
-        Button AddButton(string name, int index);
+        Button AddButton(string title, int index);
     }
 }

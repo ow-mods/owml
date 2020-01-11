@@ -37,7 +37,7 @@ namespace OWML.ModHelper.Menus
             return new ModConfig();
         }
 
-        public Button AddButton(string name, int index)
+        public Button AddButton(string title, int index)
         {
             _console.WriteLine("todo: implement ModsMenu.AddButton");
             var go = new GameObject();

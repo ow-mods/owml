@@ -38,7 +38,7 @@ namespace OWML.ModHelper.Menus
             return _layoutGroup.GetComponentsInChildren<Button>().ToList();
         }
 
-        public virtual Button AddButton(string name, int index)
+        public virtual Button AddButton(string title, int index)
         {
             if (Menu == null)
             {
@@ -46,19 +46,19 @@ namespace OWML.ModHelper.Menus
                 return null;
             }
 
-            _console.WriteLine("Adding button: " + name);
+            _console.WriteLine("Adding button: " + title);
 
             var original = _layoutGroup.GetComponentInChildren<Button>();
             _logger.Log("Copying button: " + original.name);
 
             var copy = GameObject.Instantiate(original, _layoutGroup.transform);
-            copy.name = name;
+            copy.name = title;
             copy.transform.SetSiblingIndex(index + 2);
 
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
             GameObject.Destroy(copy.GetComponent<SubmitAction>());
 
-            copy.GetComponentInChildren<Text>().text = name;
+            copy.GetComponentInChildren<Text>().text = title;
 
             return copy;
         }
