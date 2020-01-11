@@ -30,21 +30,21 @@ namespace OWML.ModHelper.Menus
             return _menu.GetComponentsInChildren<Button>().ToList();
         }
 
-        public Button AddButton(string name, int index)
+        public Button AddButton(string title, int index)
         {
-            _console.WriteLine("Adding main menu button: " + name);
+            _console.WriteLine("Adding main menu button: " + title);
 
             var original = _menu.GetComponentInChildren<Button>();
             _logger.Log("Copying button: " + original.name);
 
             var copy = GameObject.Instantiate(original, _menu.transform);
-            copy.name = name;
+            copy.name = title;
             copy.transform.SetSiblingIndex(index + 2);
 
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
             GameObject.Destroy(copy.GetComponent<SubmitAction>());
 
-            copy.GetComponentInChildren<Text>().text = name;
+            copy.GetComponentInChildren<Text>().text = title;
 
             var fadeController = new CanvasGroupFadeController
             {

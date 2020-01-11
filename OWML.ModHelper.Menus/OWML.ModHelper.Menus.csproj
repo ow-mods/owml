@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModPopupMenu.cs" />
     <Compile Include="ModsMenu.cs" />
     <Compile Include="ModPauseMenu.cs" />
     <Compile Include="ModMenus.cs" />
