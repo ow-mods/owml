@@ -22,9 +22,16 @@ One mod is included as an example. It's disabled by default, enable in manifest.
 
 ## For players
 
-1. Extract the OWML zip file anywhere you want.
-2. Download mods and put them in the Mods folder, each mod in separate folders.
-3. Run OWML.Launcher.exe.
+With Vortex:
+1. Download OWML and extract the zip file.
+2. Put the OWML folder in ﻿the game's root folder, usually C:\Program Files\Epic Games\OuterWilds.
+3. Install [the Vortex extension](https://www.nexusmods.com/site/mods/73/).
+4. Use [Vortex](https://www.nexusmods.com/site/mods/1/) to install mods and start the game.
+
+Without Vortex:
+1. Download OWML and extract the zip file anywhere you want.
+2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
+3. Start the game with OWML.Launcher.exe.
 
 ## For modders
 
@@ -63,7 +70,7 @@ Each mod is defined in a manifest.json file:
 |owmlVersion|The version of OWML the mod was built for.|
 |enabled|Whether or not the mod will be loaded.|
 
-Each mod can have an optional config file: config.json. To avoid overwriting the config when updating mods, config-default.json is intended to be included with mods, and is used to generate config.json if it doesn't exist. A config file has a list of settings in the following format:
+Each mod can be configured with an optional config.json. A config file has a list of settings in the following format:
 
 ~~~~
 {
@@ -71,14 +78,11 @@ Each mod can have an optional config file: config.json. To avoid overwriting the
     "enableMusic": true,
     "foo": "bar",
     "lol": 1337
-  },
-  "requireVR": false
+  }
 }
 ~~~~
 
-The settings list varies per mod. 
-
-If at least one mod requires VR, OWML will patch the game to be "VR enabled".
+More info about config can be found [here](https://github.com/amazingalek/owml/wiki/For-modders#mod-config).
 
 ## Compatibility
 
@@ -87,28 +91,28 @@ If at least one mod requires VR, OWML will patch the game to be "VR enabled".
 
 ## Feedback
 
-I'll be working tightly with the mod community to improve OWML and aid in mod development. 
+I'm working tightly with the mod community to improve OWML and aid in mod development. 
 I'm Alek on the [Outer Wilds Discord](https://discord.gg/csKYR3w).
 
 Feature requests, bug reports and PRs are welcome on GitHub.
 
-Nexus page: https://www.nexusmods.com/outerwilds/mods/1
+[Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 ## Credits
 
-* Outer Wilds: http://www.outerwilds.com
-* Outer Wilds on Discord: https://discord.gg/csKYR3w
-* Outer Wilds on Reddit: https://www.reddit.com/r/outerwilds
-* SMAPI, the main inspiration for this project: https://smapi.io
-* Texture_Turtle for graphics on Nexus Mods page.
+* [Outer Wilds](http://www.outerwilds.com)
+* [Outer Wilds on Discord](https://discord.gg/csKYR3w)
+* [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
+* [SMAPI](https://smapi.io)
+* Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1).
 
 Dependencies:
-* dnpatch for patching DLL files: https://github.com/ioncodes/dnpatch
-  * Uses dnlib: https://github.com/0xd4d/dnlib
-* Harmony for patching DLLs in memory: https://github.com/pardeike/Harmony
-* Newtonsoft.Json for Unity: https://github.com/SaladLab/Json.Net.Unity3D
-* ObjImporter: https://wiki.unity3d.com/index.php?title=ObjImporter
-* NAudio-Unity: https://github.com/WulfMarius/NAudio-Unity
-* HtmlAgilityPack: https://html-agility-pack.net/
-* HtmlAgilityPack.CssSelector: https://github.com/hcesar/HtmlAgilityPack.CssSelector
-* BsDiff: https://github.com/LogosBible/bsdiff.net
+* [dnpatch](https://github.com/ioncodes/dnpatch)
+* [dnlib](https://github.com/0xd4d/dnlib)
+* [Harmony](https://github.com/pardeike/Harmony)
+* [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
+* [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
+* [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
+* [HtmlAgilityPack](https://html-agility-pack.net)
+* [HtmlAgilityPack.CssSelector](https://github.com/hcesar/HtmlAgilityPack.CssSelector)
+* [BsDiff](https://github.com/LogosBible/bsdiff.net)
