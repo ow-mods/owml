@@ -5,22 +5,11 @@ OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds
 ## How it works
 
 OWML does the following:
-1. Displays the mods found in the Mods folder.
-2. Patches the game to make it call the mod loader.
-3. Starts the game which calls the mod loader.
-4. The mod loader does this for each mod:
-   1. Creates a new Unity game object containing the mod.
-   2. Initializes the mod with a mod helper.
+1. Patches the game to make it call the mod loader.
+2. Starts the game.
+3. The mod loader loads and initializes the mods.
 
-## Sample mods
-
-One mod is included as an example. It's disabled by default, enable in manifest.json.
-
-|Sample mod|Description|
-|----------|-----------|
-|OWML.EnableDebugMode|Enables the built-in debug mode in the game. Highlights: cycle through debug UIs with F1, warp to planets with the number keys, and explode the sun with the End key.|
-
-## For players
+## Installation
 
 With Vortex:
 1. Download OWML and extract the zip file.
@@ -32,6 +21,14 @@ Without Vortex:
 1. Download OWML and extract the zip file anywhere you want.
 2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
+
+## Sample mod
+
+One mod is included as an example. It's disabled by default, enable in manifest.json.
+
+|Sample mod|Description|
+|----------|-----------|
+|OWML.EnableDebugMode|Enables the built-in debug mode in the game. Highlights: cycle through debug UIs with F1, warp to planets with the number keys, and explode the sun with the End key.|
 
 ## For modders
 
