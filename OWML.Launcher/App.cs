@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,25 +12,27 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.20";
+        private const string Version = "0.3.24";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
-        private readonly ModPatcher _patcher;
+        private readonly OWPatcher _owPatcher;
+        private readonly VRPatcher _vrPatcher;
         private readonly ModUpdate _update;
 
         public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, ModPatcher patcher, ModUpdate update)
+            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, ModUpdate update)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
             _modFinder = modFinder;
             _listener = listener;
             _pathFinder = pathFinder;
-            _patcher = patcher;
+            _owPatcher = owPatcher;
+            _vrPatcher = vrPatcher;
             _update = update;
         }
 
@@ -46,9 +49,11 @@ namespace OWML.Launcher
 
             ListenForOutput();
 
-            ShowModList();
+            var mods = _modFinder.GetMods();
 
-            PatchGame();
+            ShowModList(mods);
+
+            PatchGame(mods);
 
             StartGame();
 
@@ -98,20 +103,20 @@ namespace OWML.Launcher
             _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList()
+        private void ShowModList(IList<IModData> mods)
         {
-            var manifests = _modFinder.GetManifests();
-            if (!manifests.Any())
+            if (!mods.Any())
             {
                 _writer.WriteLine("Warning: found no mods.");
                 return;
             }
             _writer.WriteLine("Found mods:");
-            foreach (var manifest in manifests)
+            foreach (var modData in mods)
             {
-                var stateText = manifest.Enabled ? "" : " (disabled)";
-                var versionText = manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {manifest.OWMLVersion})";
-                _writer.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
+                var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
+                var stateText = enabled ? "" : " (disabled)";
+                var versionText = modData.Manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {modData.Manifest.OWMLVersion})";
+                _writer.WriteLine($"* {modData.Manifest.UniqueName} ({modData.Manifest.Version}){stateText}{versionText}");
             }
         }
 
@@ -130,17 +135,14 @@ namespace OWML.Launcher
             }
         }
 
-        private void PatchGame()
+        private void PatchGame(IList<IModData> mods)
         {
-            _patcher.PatchGame();
-            var filesToCopy = new[] { "OWML.ModLoader.dll", "OWML.Common.dll", "OWML.ModHelper.dll",
-                "OWML.ModHelper.Events.dll", "OWML.ModHelper.Assets.dll", "OWML.ModHelper.Menus.dll",
-                "Newtonsoft.Json.dll", "System.Runtime.Serialization.dll", "0Harmony.dll", "NAudio-Unity.dll" };
-            foreach (var filename in filesToCopy)
-            {
-                File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
-            }
-            File.WriteAllText($"{_owmlConfig.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_owmlConfig));
+            _owPatcher.PatchGame();
+
+            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR);
+            var enableVR = vrMod != null;
+            _writer.WriteLine(enableVR ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
+            _vrPatcher.PatchVR(enableVR);
         }
 
         private void StartGame()

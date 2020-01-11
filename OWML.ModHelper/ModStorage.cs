@@ -7,24 +7,20 @@ namespace OWML.ModHelper
 {
     public class ModStorage : IModStorage
     {
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly IModManifest _manifest;
 
-        public ModStorage(IModLogger logger, IModConsole console, IModManifest manifest)
+        public ModStorage(IModConsole console, IModManifest manifest)
         {
-            _logger = logger;
             _console = console;
             _manifest = manifest;
         }
 
         public T Load<T>(string filename)
         {
-            var path = _manifest.FolderPath + filename;
-            _logger.Log($"Loading {path}...");
+            var path = _manifest.ModFolderPath + filename;
             if (!File.Exists(path))
             {
-                _logger.Log("File not found: " + path);
                 return default;
             }
             try
@@ -41,11 +37,10 @@ namespace OWML.ModHelper
 
         public void Save<T>(T obj, string filename)
         {
-            var path = _manifest.FolderPath + filename;
-            _logger.Log($"Saving {path}...");
+            var path = _manifest.ModFolderPath + filename;
             try
             {
-                var json = JsonConvert.SerializeObject(obj);
+                var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
                 File.WriteAllText(path, json);
             }
             catch (Exception ex)

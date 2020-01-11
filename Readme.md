@@ -5,26 +5,30 @@ OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds
 ## How it works
 
 OWML does the following:
-1. Displays the mods found in the Mods folder.
-2. Patches the game to make it call the mod loader.
-3. Starts the game which calls the mod loader.
-4. The mod loader does this for each mod:
-   1. Creates a new Unity game object containing the mod.
-   2. Initializes the mod with a mod helper.
+1. Patches the game to make it call the mod loader.
+2. Starts the game.
+3. The mod loader loads and initializes the mods.
 
-## Sample mods
+## Installation
+
+With Vortex:
+1. Download OWML and extract the zip file.
+2. Put the OWML folder in ﻿the game's root folder, usually C:\Program Files\Epic Games\OuterWilds.
+3. Install [the Vortex extension](https://www.nexusmods.com/site/mods/73/).
+4. Use [Vortex](https://www.nexusmods.com/site/mods/1/) to install mods and start the game.
+
+Without Vortex:
+1. Download OWML and extract the zip file anywhere you want.
+2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
+3. Start the game with OWML.Launcher.exe.
+
+## Sample mod
 
 One mod is included as an example. It's disabled by default, enable in manifest.json.
 
 |Sample mod|Description|
 |----------|-----------|
 |OWML.EnableDebugMode|Enables the built-in debug mode in the game. Highlights: cycle through debug UIs with F1, warp to planets with the number keys, and explode the sun with the End key.|
-
-## For players
-
-1. Extract the OWML zip file anywhere you want.
-2. Download mods and put them in the Mods folder, each mod in separate folders.
-3. Run OWML.Launcher.exe.
 
 ## For modders
 
@@ -61,7 +65,29 @@ Each mod is defined in a manifest.json file:
 |uniqueName|Usually {author}.{uniqueName}.|
 |version|The version number.|
 |owmlVersion|The version of OWML the mod was built for.|
-|enabled|Whether or not the mod will be loaded.|
+
+Each mod can be configured with an **optional** config.json file:
+
+|Key|Description|
+|---|-----------|
+|enabled|Whether or not the mod will be loaded. Default: true.|
+|requireVR|Whether or not the mod requires VR to work. Default: false.|
+|settings|An object of mod-specific settings. Default: empty.|
+
+Example:
+~~~~
+{
+  "enabled": true,
+  "requireVR": false,
+  "settings": {
+    "enableMusic": true,
+    "foo": "bar",
+    "lol": 1337
+  }
+}
+~~~~
+
+More info about config can be found [here](https://github.com/amazingalek/owml/wiki/For-modders#mod-config).
 
 ## Compatibility
 
@@ -70,27 +96,28 @@ Each mod is defined in a manifest.json file:
 
 ## Feedback
 
-I'll be working tightly with the mod community to improve OWML and aid in mod development. 
+I'm working tightly with the mod community to improve OWML and aid in mod development. 
 I'm Alek on the [Outer Wilds Discord](https://discord.gg/csKYR3w).
 
 Feature requests, bug reports and PRs are welcome on GitHub.
 
-Nexus page: https://www.nexusmods.com/outerwilds/mods/1
+[Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 ## Credits
 
-* Outer Wilds: http://www.outerwilds.com
-* Outer Wilds on Discord: https://discord.gg/csKYR3w
-* Outer Wilds on Reddit: https://www.reddit.com/r/outerwilds
-* SMAPI, the main inspiration for this project: https://smapi.io
-* Texture_Turtle for graphics on Nexus Mods page.
+* [Outer Wilds](http://www.outerwilds.com)
+* [Outer Wilds on Discord](https://discord.gg/csKYR3w)
+* [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
+* [SMAPI](https://smapi.io)
+* Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 Dependencies:
-* dnpatch for patching DLL files: https://github.com/ioncodes/dnpatch
-  * Uses dnlib: https://github.com/0xd4d/dnlib
-* Harmony for patching DLLs in memory: https://github.com/pardeike/Harmony
-* Newtonsoft.Json for Unity: https://github.com/SaladLab/Json.Net.Unity3D
-* ObjImporter: https://wiki.unity3d.com/index.php?title=ObjImporter
-* NAudio-Unity: https://github.com/WulfMarius/NAudio-Unity
-* HtmlAgilityPack: https://html-agility-pack.net/
-* HtmlAgilityPack.CssSelector: https://github.com/hcesar/HtmlAgilityPack.CssSelector
+* [dnpatch](https://github.com/ioncodes/dnpatch)
+* [dnlib](https://github.com/0xd4d/dnlib)
+* [Harmony](https://github.com/pardeike/Harmony)
+* [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
+* [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
+* [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
+* [HtmlAgilityPack](https://html-agility-pack.net)
+* [HtmlAgilityPack.CssSelector](https://github.com/hcesar/HtmlAgilityPack.CssSelector)
+* [BsDiff](https://github.com/LogosBible/bsdiff.net)

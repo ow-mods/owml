@@ -34,11 +34,25 @@ namespace OWML.ModLoader
                 _console.WriteLine("Verbose mode is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
-            var manifests = _modFinder.GetManifests();
-            foreach (var manifest in manifests)
+            var mods = _modFinder.GetMods();
+            foreach (var modData in mods)
             {
-                var helper = CreateModHelper(manifest);
-                LoadMod(helper);
+                var modType = LoadMod(modData);
+                if (modType == null)
+                {
+                    _logger.Log("Mod type is null, skipping");
+                    continue;
+                }
+                var helper = CreateModHelper(modData);
+                InitializeMod(modType, helper);
+            }
+        }
+
+        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
+        {
+            if (type == LogType.Error || type == LogType.Exception)
+            {
+                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
@@ -54,49 +68,40 @@ namespace OWML.ModLoader
             return modsMenu;
         }
 
-        private IModHelper CreateModHelper(IModManifest manifest)
+        private Type LoadMod(IModData modData)
         {
-            var assets = new ModAssets(_console, manifest);
-            var storage = new ModStorage(_logger, _console, manifest);
-            var harmonyHelper = new HarmonyHelper(_logger, _console, manifest);
+            var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
+            if (!enabled)
+            {
+                _logger.Log($"{modData.Manifest.UniqueName} is disabled");
+                return null;
+            }
+            _logger.Log("Loading assembly: " + modData.Manifest.AssemblyPath);
+            var assembly = Assembly.LoadFile(modData.Manifest.AssemblyPath);
+            _logger.Log($"Loaded {assembly.FullName}");
+            try
+            {
+                return assembly.GetTypes().FirstOrDefault(x => x.IsSubclassOf(typeof(ModBehaviour)));
+            }
+            catch (Exception ex)
+            {
+                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
+                return null;
+            }
+        }
+
+        private IModHelper CreateModHelper(IModData modData)
+        {
+            var assets = new ModAssets(_console, modData.Manifest);
+            var storage = new ModStorage(_console, modData.Manifest);
+            var harmonyHelper = new HarmonyHelper(_logger, _console, modData.Manifest);
             var events = new ModEvents(_logger, _console, harmonyHelper);
-            var modConfig = GetModConfig(storage);
-            return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, manifest, modConfig, _owmlConfig);
+            return new ModHelper.ModHelper(_logger, _console, harmonyHelper, events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig);
         }
 
-        private IModConfig GetModConfig(IModStorage storage)
+        private void InitializeMod(Type modType, IModHelper helper)
         {
-            _logger.Log("Initializing config");
-            var config = storage.Load<ModConfig>("config.json") ?? new ModConfig();
-            var defaultConfig = storage.Load<ModConfig>("default-config.json") ?? new ModConfig();
-            foreach (var setting in defaultConfig.Settings)
-            {
-                if (!config.Settings.ContainsKey(setting.Key))
-                {
-                    config.Settings.Add(setting.Key, setting.Value);
-                }
-            }
-            storage.Save(config, "config.json");
-            return config;
-        }
-
-        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
-        {
-            if (type == LogType.Error || type == LogType.Exception)
-            {
-                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
-            }
-        }
-
-        private void LoadMod(IModHelper helper)
-        {
-            var modType = LoadModType(helper.Manifest);
-            if (modType == null)
-            {
-                _logger.Log("Mod type is null, skipping");
-                return;
-            }
-            _logger.Log($"Loading {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
+            _logger.Log($"Initializing {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
             _logger.Log("Adding mod behaviour...");
             var go = new GameObject(helper.Manifest.UniqueName);
             try
@@ -111,27 +116,6 @@ namespace OWML.ModLoader
                 return;
             }
             _console.WriteLine($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
-        }
-
-        private Type LoadModType(IModManifest manifest)
-        {
-            if (!manifest.Enabled)
-            {
-                _logger.Log($"{manifest.UniqueName} is disabled");
-                return null;
-            }
-            _logger.Log("Loading assembly: " + manifest.AssemblyPath);
-            var assembly = Assembly.LoadFile(manifest.AssemblyPath);
-            _logger.Log($"Loaded {assembly.FullName}");
-            try
-            {
-                return assembly.GetTypes().FirstOrDefault(x => x.IsSubclassOf(typeof(ModBehaviour)));
-            }
-            catch (Exception ex)
-            {
-                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
-                return null;
-            }
         }
 
     }

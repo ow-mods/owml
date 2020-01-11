@@ -1,4 +1,6 @@
 {
+  "enabled": false,
+  "requireVR": false, 
   "settings": {
     "enableMusic": true,
     "enableDucks": true,
