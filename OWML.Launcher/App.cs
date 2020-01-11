@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
-using OWML.ModHelper;
 using OWML.Patcher;
 using OWML.Update;
 
@@ -13,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.23";
+        private const string Version = "0.3.24";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -50,11 +49,11 @@ namespace OWML.Launcher
 
             ListenForOutput();
 
-            var manifests = _modFinder.GetManifests();
+            var mods = _modFinder.GetMods();
 
-            ShowModList(manifests);
+            ShowModList(mods);
 
-            PatchGame(manifests);
+            PatchGame(mods);
 
             StartGame();
 
@@ -104,19 +103,20 @@ namespace OWML.Launcher
             _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList(IList<IModManifest> manifests)
+        private void ShowModList(IList<IModData> mods)
         {
-            if (!manifests.Any())
+            if (!mods.Any())
             {
                 _writer.WriteLine("Warning: found no mods.");
                 return;
             }
             _writer.WriteLine("Found mods:");
-            foreach (var manifest in manifests)
+            foreach (var modData in mods)
             {
-                var stateText = manifest.Enabled ? "" : " (disabled)";
-                var versionText = manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {manifest.OWMLVersion})";
-                _writer.WriteLine($"* {manifest.UniqueName} ({manifest.Version}){stateText}{versionText}");
+                var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
+                var stateText = enabled ? "" : " (disabled)";
+                var versionText = modData.Manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {modData.Manifest.OWMLVersion})";
+                _writer.WriteLine($"* {modData.Manifest.UniqueName} ({modData.Manifest.Version}){stateText}{versionText}");
             }
         }
 
@@ -135,31 +135,14 @@ namespace OWML.Launcher
             }
         }
 
-        private void PatchGame(IList<IModManifest> manifests)
+        private void PatchGame(IList<IModData> mods)
         {
-            var enableVR = IsVRRequired(manifests);
             _owPatcher.PatchGame();
-            _vrPatcher.PatchVR(enableVR);
-        }
 
-        private bool IsVRRequired(IList<IModManifest> manifests)
-        {
-            foreach (var manifest in manifests)
-            {
-                var configPath = manifest.ModFolderPath + "config.json";
-                if (manifest.Enabled && File.Exists(configPath))
-                {
-                    var json = File.ReadAllText(configPath);
-                    var config = JsonConvert.DeserializeObject<ModConfig>(json);
-                    if (config.RequireVR)
-                    {
-                        _writer.WriteLine($"{manifest.UniqueName} requires VR.");
-                        return true;
-                    }
-                }
-            }
-            _writer.WriteLine("No mod requires VR.");
-            return false;
+            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR);
+            var enableVR = vrMod != null;
+            _writer.WriteLine(enableVR ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
+            _vrPatcher.PatchVR(enableVR);
         }
 
         private void StartGame()

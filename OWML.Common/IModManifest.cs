@@ -1,4 +1,6 @@
-﻿namespace OWML.Common
+﻿using System;
+
+namespace OWML.Common
 {
     public interface IModManifest
     {
@@ -10,6 +12,8 @@
         string AssemblyPath { get; }
         string UniqueName { get; }
         string ModFolderPath { get; set; }
+
+        [Obsolete("Use Enabled in ModConfig instead")]
         bool Enabled { get; }
     }
 }

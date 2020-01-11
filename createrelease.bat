@@ -32,6 +32,7 @@ copy "OWML.Nuget\bin\Debug\Newtonsoft.Json.dll" "Release\Newtonsoft.Json.dll"
 mkdir "Release\Mods\OWML.EnableDebugMode"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\OWML.EnableDebugMode.dll" "Release\Mods\OWML.EnableDebugMode\OWML.EnableDebugMode.dll"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\manifest.json" "Release\Mods\OWML.EnableDebugMode\manifest.json"
+copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\default-config.json" "Release\Mods\OWML.EnableDebugMode\default-config.json"
 
 mkdir "Release\Mods\OWML.LoadCustomAssets"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\OWML.LoadCustomAssets.dll" "Release\Mods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.dll"
