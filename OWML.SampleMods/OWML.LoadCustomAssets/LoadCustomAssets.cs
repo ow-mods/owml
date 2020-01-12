@@ -37,13 +37,30 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            var owo = ModHelper.Menus.MainMenu.AddButton("OWO", 3);
+            var owo = ModHelper.Menus.MainMenu.AddButton("WUT 2", 2);
             owo.onClick.AddListener(OnOwo);
 
             ModHelper.Menus.PauseMenu.OnInit += () =>
             {
-                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 1);
-                uwu.onClick.AddListener(OnUwu);
+                ModHelper.Console.WriteLine("Pause OnInit");
+
+                var wutMenu = ModHelper.Menus.PauseMenu.Copy();
+                wutMenu.Title = "O_O";
+
+                var resumeCopy = wutMenu.GetButton("RESUME").Copy();
+                resumeCopy.Title = "RESUME COPY";
+                wutMenu.AddButton(resumeCopy);
+
+                var options = wutMenu.GetButton("OPTIONS").Duplicate();
+                options.Title = "OPTIONS DUPE";
+
+                var quit = wutMenu.GetButton("QUIT").Replace();
+                quit.Title = "QUIT REPLACEMENT";
+
+                var whatButton = ModHelper.Menus.PauseMenu.GetButton("OPTIONS").Copy();
+                whatButton.Title = "WHAT OPTIONS COPY";
+                ModHelper.Menus.PauseMenu.AddButton(whatButton);
+                whatButton.OnClick += () => wutMenu.Open();
             };
         }
 
@@ -87,7 +104,7 @@ namespace OWML.LoadCustomAssets
 
         private void Update()
         {
-            if (!_isStarted)
+            if (!_isStarted || OWTime.IsPaused())
             {
                 return;
             }
@@ -123,11 +140,6 @@ namespace OWML.LoadCustomAssets
         private void OnOwo()
         {
             ModHelper.Console.WriteLine("OWO!");
-        }
-
-        private void OnUwu()
-        {
-            ModHelper.Console.WriteLine("UWU!");
         }
 
         private void ToggleMusic(bool enable)

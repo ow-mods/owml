@@ -66,6 +66,7 @@
     <Compile Include="IHarmonyHelper.cs" />
     <Compile Include="IModAssets.cs" />
     <Compile Include="IModAsset.cs" />
+    <Compile Include="IModButton.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModData.cs" />
     <Compile Include="IModPopupMenu.cs" />

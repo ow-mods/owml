@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using OWML.Common;
+using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModPopupMenu : IModPopupMenu
+    public class ModPopupMenu : ModMenu, IModPopupMenu
     {
         public Action OnOpen { get; set; }
         public Action OnClose { get; set; }
@@ -15,60 +14,33 @@ namespace OWML.ModHelper.Menus
 
         public bool IsOpen { get; private set; }
 
+        public string Title
+        {
+            get => _title.text;
+            set => _title.text = value;
+        }
+
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        protected Menu Menu;
-        private LayoutGroup _layoutGroup;
         private Text _title;
 
-        public ModPopupMenu(IModLogger logger, IModConsole console)
+        public ModPopupMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
             _logger = logger;
             _console = console;
         }
 
-        public virtual List<Button> GetButtons()
+        public override void Initialize(Menu menu)
         {
-            if (Menu == null)
-            {
-                _console.WriteLine("Warning: can't get buttons before menu exists");
-                return new List<Button>();
-            }
-            return _layoutGroup.GetComponentsInChildren<Button>().ToList();
-        }
-
-        public virtual Button AddButton(string title, int index)
-        {
-            if (Menu == null)
-            {
-                _console.WriteLine("Warning: can't add button before menu exists");
-                return null;
-            }
-
-            _console.WriteLine("Adding button: " + title);
-
-            var original = _layoutGroup.GetComponentInChildren<Button>();
-            _logger.Log("Copying button: " + original.name);
-
-            var copy = GameObject.Instantiate(original, _layoutGroup.transform);
-            copy.name = title;
-            copy.transform.SetSiblingIndex(index + 2);
-
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            GameObject.Destroy(copy.GetComponent<SubmitAction>());
-
-            copy.GetComponentInChildren<Text>().text = title;
-
-            return copy;
-        }
-
-        public void Initialize(Menu menu)
-        {
-            Menu = menu;
-            _layoutGroup = Menu.GetComponentInChildren<LayoutGroup>();
+            base.Initialize(menu);
             _title = Menu.GetComponentInChildren<Text>();
-            GameObject.Destroy(_title.GetComponent<LocalizedText>());
+            var localizedText = _title.GetComponent<LocalizedText>();
+            if (localizedText != null)
+            {
+                Title = UITextLibrary.GetString(localizedText.GetValue<UITextType>("_textID"));
+                GameObject.Destroy(localizedText);
+            }
             Menu.OnActivateMenu += OnActivateMenu;
             Menu.OnDeactivateMenu += OnDeactivateMenu;
             OnInit?.Invoke();
@@ -86,7 +58,7 @@ namespace OWML.ModHelper.Menus
             OnOpen?.Invoke();
         }
 
-        public virtual void Open()
+        public void Open()
         {
             if (Menu == null)
             {
@@ -96,7 +68,7 @@ namespace OWML.ModHelper.Menus
             Menu.EnableMenu(true);
         }
 
-        public virtual void Close()
+        public void Close()
         {
             if (Menu == null)
             {
@@ -118,6 +90,20 @@ namespace OWML.ModHelper.Menus
             }
         }
 
+        public IModPopupMenu Copy()
+        {
+            if (Menu == null)
+            {
+                _console.WriteLine("Warning: can't copy menu, it doesn't exist.");
+                return null;
+            }
+            var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
+            var modMenu = new ModPopupMenu(_logger, _console);
+            modMenu.Initialize(menu);
+            return modMenu;
+        }
+
+        [Obsolete("Use Copy and Title instead")]
         public IModPopupMenu CreateCopy(string title)
         {
             if (Menu == null)
@@ -125,16 +111,9 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't copy menu, it doesn't exist.");
                 return null;
             }
-            var copy = GameObject.Instantiate(Menu, Menu.transform.parent);
-            var modMenu = new ModPopupMenu(_logger, _console);
-            modMenu.Initialize(copy);
-            modMenu.SetTitle(title);
-            return modMenu;
-        }
-
-        private void SetTitle(string title)
-        {
-            _title.text = title;
+            var menu = Copy();
+            menu.Title = title;
+            return menu;
         }
 
     }
