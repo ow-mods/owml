@@ -15,6 +15,8 @@ namespace OWML.ModLoader
 
         public static void LoadMods()
         {
+            var owmlGo = new GameObject();
+            owmlGo.AddComponent<OwmlBehaviour>();
             var owmlConfig = GetOwmlConfig();
             if (owmlConfig == null)
             {

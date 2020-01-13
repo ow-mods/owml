@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.25";
+        private const string Version = "0.3.26";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -36,7 +36,7 @@ namespace OWML.Launcher
             _update = update;
         }
 
-        public void Run()
+        public void Run(string[] args)
         {
             _writer.WriteLine($"Started OWML version {Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
@@ -55,7 +55,7 @@ namespace OWML.Launcher
 
             PatchGame(mods);
 
-            StartGame();
+            StartGame(args);
 
             Console.ReadLine();
         }
@@ -132,6 +132,10 @@ namespace OWML.Launcher
             foreach (var line in lines)
             {
                 _writer.WriteLine(line);
+                if (line == Constants.QuitKeyPhrase)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
 
@@ -145,12 +149,12 @@ namespace OWML.Launcher
             _vrPatcher.PatchVR(enableVR);
         }
 
-        private void StartGame()
+        private void StartGame(string[] args)
         {
             _writer.WriteLine("Starting game...");
             try
             {
-                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");
+                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));
             }
             catch (Exception ex)
             {
