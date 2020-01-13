@@ -51,10 +51,10 @@ namespace OWML.LoadCustomAssets
                 resumeCopy.Title = "RESUME COPY";
                 wutMenu.AddButton(resumeCopy);
 
-                var options = wutMenu.GetButton("OPTIONS").Duplicate();
+                var options = wutMenu.DuplicateButton("OPTIONS");
                 options.Title = "OPTIONS DUPE";
 
-                var quit = wutMenu.GetButton("QUIT").Replace();
+                var quit = wutMenu.ReplaceButton("QUIT");
                 quit.Title = "QUIT REPLACEMENT";
 
                 var whatButton = ModHelper.Menus.PauseMenu.GetButton("OPTIONS").Copy();

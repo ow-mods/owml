@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
-using OWML.ModHelper.Events;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -14,7 +13,7 @@ namespace OWML.ModHelper.Menus
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-        public LayoutGroup LayoutGroup { get; private set; }
+        private LayoutGroup _layoutGroup;
 
         public int ButtonOffset { get; private set; }
 
@@ -28,8 +27,8 @@ namespace OWML.ModHelper.Menus
         public virtual void Initialize(Menu menu)
         {
             Menu = menu;
-            LayoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
-            Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
+            _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
+            Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x)).Cast<IModButton>());
             ButtonOffset = Buttons.Any() ? Buttons[0].Button.transform.GetSiblingIndex() : 0;
         }
 
@@ -39,17 +38,7 @@ namespace OWML.ModHelper.Menus
             return Menu.GetComponentsInChildren<Button>().ToList();
         }
 
-        public IModButton GetButton(string title)
-        {
-            var button = Buttons.FirstOrDefault(x => x.Title == title);
-            if (button == null)
-            {
-                _console.WriteLine("Warning: no button found with title: " + title);
-            }
-            return button;
-        }
-
-        [Obsolete("Use button.Copy() instead")]
+        [Obsolete("Use DuplicateButton() instead")]
         public Button AddButton(string title, int index)
         {
             _console.WriteLine("Adding main menu button: " + title);
@@ -74,9 +63,41 @@ namespace OWML.ModHelper.Menus
 
         public virtual void AddButton(IModButton button)
         {
-            button.Button.transform.parent = LayoutGroup.transform;
+            button.Button.transform.parent = _layoutGroup.transform;
             button.Index = button.Index;
             Buttons.Add(button);
+        }
+
+        public IModButton GetButton(string title)
+        {
+            var button = Buttons.FirstOrDefault(x => x.Title == title);
+            if (button == null)
+            {
+                _console.WriteLine("Warning: no button found with title: " + title);
+            }
+            return button;
+        }
+
+        public IModButton CopyButton(string title)
+        {
+            var button = GetButton(title);
+            return button.Copy();
+        }
+
+        public IModButton DuplicateButton(string title)
+        {
+            var copy = CopyButton(title);
+            AddButton(copy);
+            return copy;
+        }
+
+        public IModButton ReplaceButton(string title)
+        {
+            var button = GetButton(title);
+            var copy = button.Copy();
+            AddButton(copy);
+            button.Hide();
+            return copy;
         }
 
     }

@@ -10,12 +10,14 @@ namespace OWML.Common
         List<Button> GetButtons();
         List<IModButton> Buttons { get; }
         IModButton GetButton(string title);
+        IModButton CopyButton(string title);
+        IModButton DuplicateButton(string title);
+        IModButton ReplaceButton(string title);
+        void AddButton(IModButton button);
 
         [Obsolete("Use button.Copy() and AddButton instead")]
         Button AddButton(string title, int index);
-        void AddButton(IModButton button);
 
-        LayoutGroup LayoutGroup { get; }
         Menu Menu { get; }
 
         int ButtonOffset { get; }

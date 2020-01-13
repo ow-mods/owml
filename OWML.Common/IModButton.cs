@@ -10,7 +10,7 @@ namespace OWML.Common
         int Index { get; set; }
         Button Button { get; }
         IModButton Copy();
-        IModButton Duplicate();
-        IModButton Replace();
+        void Show();
+        void Hide();
     }
 }
