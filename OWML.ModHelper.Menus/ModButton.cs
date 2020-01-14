@@ -16,15 +16,20 @@ namespace OWML.ModHelper.Menus
             set => _text.text = value;
         }
 
+        private int _index;
         public int Index
         {
-            get => Button.transform.GetSiblingIndex() - GetButtonOffset();
-            set => Button.transform.SetSiblingIndex(value + GetButtonOffset());
+            get => Button.transform.parent == null ? _index : Button.transform.GetSiblingIndex();
+            set
+            {
+                _index = value;
+                Button.transform.SetSiblingIndex(value);
+            }
         }
 
         public Button Button { get; }
 
-        private readonly Text _text; 
+        private readonly Text _text;
 
         public ModButton(Button button)
         {
@@ -46,7 +51,10 @@ namespace OWML.ModHelper.Menus
         {
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
-            return new ModButton(button);
+            return new ModButton(button)
+            {
+                Index = Index + 1
+            };
         }
 
         public void Show()
@@ -57,21 +65,6 @@ namespace OWML.ModHelper.Menus
         public void Hide()
         {
             Button.gameObject.SetActive(false);
-        }
-
-        private int GetButtonOffset()
-        {
-            if (Button == null)
-            {
-                return 0;
-            }
-            var parent = Button.transform.parent;
-            if (parent == null)
-            {
-                return 0;
-            }
-            var firstButton = parent.GetComponentInChildren<Button>();
-            return firstButton == null ? 0 : firstButton.transform.GetSiblingIndex();
         }
 
     }

@@ -15,8 +15,6 @@ namespace OWML.ModHelper.Menus
         private readonly IModConsole _console;
         private LayoutGroup _layoutGroup;
 
-        public int ButtonOffset { get; private set; }
-
         public ModMenu(IModLogger logger, IModConsole console)
         {
             _logger = logger;
@@ -29,7 +27,6 @@ namespace OWML.ModHelper.Menus
             Menu = menu;
             _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
             Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x)).Cast<IModButton>());
-            ButtonOffset = Buttons.Any() ? Buttons[0].Button.transform.GetSiblingIndex() : 0;
         }
 
         [Obsolete("Use Buttons instead")]
@@ -60,10 +57,15 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
+        public void AddButton(IModButton button)
+        {
+            AddButton(button, button.Index);
+        }
+
         public virtual void AddButton(IModButton button, int index)
         {
             button.Button.transform.parent = _layoutGroup.transform;
-            button.Index = button.Index;
+            button.Index = index;
             Buttons.Add(button);
         }
 
@@ -86,7 +88,7 @@ namespace OWML.ModHelper.Menus
         public IModButton DuplicateButton(string title)
         {
             var copy = CopyButton(title);
-            AddButton(copy, copy.Index + 1);
+            AddButton(copy);
             return copy;
         }
 
@@ -94,7 +96,7 @@ namespace OWML.ModHelper.Menus
         {
             var button = GetButton(title);
             var copy = button.Copy();
-            AddButton(copy, copy.Index + 1);
+            AddButton(copy);
             button.Hide();
             return copy;
         }

@@ -6,20 +6,18 @@ namespace OWML.Common
 {
     public interface IModMenu
     {
-        [Obsolete("Use Buttons instead")]
-        List<Button> GetButtons();
+        Menu Menu { get; }
         List<IModButton> Buttons { get; }
         IModButton GetButton(string title);
         IModButton CopyButton(string title);
         IModButton DuplicateButton(string title);
         IModButton ReplaceButton(string title);
+        void AddButton(IModButton button);
         void AddButton(IModButton button, int index);
 
-        [Obsolete("Use button.Copy() and AddButton instead")]
+        [Obsolete("Use Buttons instead")]
+        List<Button> GetButtons();
+        [Obsolete("Use DuplicateButton instead")]
         Button AddButton(string title, int index);
-
-        Menu Menu { get; }
-
-        int ButtonOffset { get; }
     }
 }

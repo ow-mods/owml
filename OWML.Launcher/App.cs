@@ -12,8 +12,6 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.26";
-
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
@@ -38,7 +36,7 @@ namespace OWML.Launcher
 
         public void Run(string[] args)
         {
-            _writer.WriteLine($"Started OWML version {Version}");
+            _writer.WriteLine($"Started OWML version {Constants.OwmlVersion}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
             CheckVersion();
@@ -68,7 +66,7 @@ namespace OWML.Launcher
                 _writer.WriteLine("Could not check version.");
                 return;
             }
-            if (Version == latestVersion)
+            if (Constants.OwmlVersion == latestVersion)
             {
                 _writer.WriteLine("OWML is up to date.");
                 return;
@@ -115,7 +113,7 @@ namespace OWML.Launcher
             {
                 var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
                 var stateText = enabled ? "" : " (disabled)";
-                var versionText = modData.Manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {modData.Manifest.OWMLVersion})";
+                var versionText = modData.Manifest.OWMLVersion == Constants.OwmlVersion ? "" : $" (warning: made for OWML {modData.Manifest.OWMLVersion})";
                 _writer.WriteLine($"* {modData.Manifest.UniqueName} ({modData.Manifest.Version}){stateText}{versionText}");
             }
         }
