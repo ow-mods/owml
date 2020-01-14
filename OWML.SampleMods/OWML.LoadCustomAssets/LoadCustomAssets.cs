@@ -40,26 +40,20 @@ namespace OWML.LoadCustomAssets
             var owo = ModHelper.Menus.MainMenu.AddButton("WUT 2", 2);
             owo.onClick.AddListener(OnOwo);
 
-            var owo2 = ModHelper.Menus.MainMenu.GetButton("RESUME EXPEDITION");
+            var owo2 = ModHelper.Menus.MainMenu.GetButton("RESUME EXPEDITION").Copy();
             owo2.Title = "RESUME COPY";
-            ModHelper.Menus.MainMenu.AddButton(owo2, owo2.Index + 1);
+            ModHelper.Menus.MainMenu.AddButton(owo2);
 
-            ModHelper.Menus.PauseMenu.OnInit += () =>
+            ModHelper.Menus.OptionsMenu.OnInit += () =>
             {
                 ModHelper.Console.WriteLine("Pause OnInit");
 
-                var wutMenu = ModHelper.Menus.PauseMenu.Copy();
+                var wutMenu = ModHelper.Menus.OptionsMenu.Copy();
                 wutMenu.Title = "O_O";
 
-                var resumeCopy = wutMenu.GetButton("RESUME").Copy();
+                var resumeCopy = wutMenu.Buttons[0].Copy();
                 resumeCopy.Title = "RESUME COPY 2";
                 wutMenu.AddButton(resumeCopy);
-
-                var options = wutMenu.DuplicateButton("OPTIONS");
-                options.Title = "OPTIONS DUPE";
-
-                var quit = wutMenu.ReplaceButton("QUIT");
-                quit.Title = "QUIT REPLACEMENT";
 
                 var opt =  ModHelper.Menus.PauseMenu.GetButton("OPTIONS");
                 var whatButton = opt.Copy();
