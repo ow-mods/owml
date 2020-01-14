@@ -22,7 +22,7 @@ namespace OWML.Launcher
             var vrPatcher = new VRPatcher(owmlConfig, writer);
             var update = new ModUpdate(writer);
             var app = new App(owmlConfig, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher, update);
-            app.Run();
+            app.Run(args);
         }
 
         private static IOwmlConfig GetOwmlConfig()
