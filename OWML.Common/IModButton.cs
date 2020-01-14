@@ -5,7 +5,7 @@ namespace OWML.Common
 {
     public interface IModButton
     {
-        Action OnClick { get; set; }
+        event Action OnClick;
         string Title { get; set; }
         int Index { get; set; }
         Button Button { get; }

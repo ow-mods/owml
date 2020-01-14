@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Menus
 {
     public class ModButton : IModButton
     {
-        public Action OnClick { get; set; }
+        public event Action OnClick;
 
         public string Title
         {
