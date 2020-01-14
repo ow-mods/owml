@@ -13,7 +13,7 @@ namespace OWML.Common
         IModButton CopyButton(string title);
         IModButton DuplicateButton(string title);
         IModButton ReplaceButton(string title);
-        void AddButton(IModButton button);
+        void AddButton(IModButton button, int index);
 
         [Obsolete("Use button.Copy() and AddButton instead")]
         Button AddButton(string title, int index);

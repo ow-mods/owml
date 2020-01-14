@@ -37,8 +37,12 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            var owo = ModHelper.Menus.MainMenu.AddButton("WUT 2", 2);
-            owo.onClick.AddListener(OnOwo);
+            //var owo = ModHelper.Menus.MainMenu.AddButton("WUT 2", 2);
+            //owo.onClick.AddListener(OnOwo);
+
+            var owo = ModHelper.Menus.MainMenu.GetButton("RESUME EXPEDITION");
+            owo.Title = "RESUME COPY";
+            ModHelper.Menus.MainMenu.AddButton(owo, 2);
 
             ModHelper.Menus.PauseMenu.OnInit += () =>
             {
@@ -48,8 +52,8 @@ namespace OWML.LoadCustomAssets
                 wutMenu.Title = "O_O";
 
                 var resumeCopy = wutMenu.GetButton("RESUME").Copy();
-                resumeCopy.Title = "RESUME COPY";
-                wutMenu.AddButton(resumeCopy);
+                resumeCopy.Title = "RESUME COPY 2";
+                wutMenu.AddButton(resumeCopy, 2);
 
                 var options = wutMenu.DuplicateButton("OPTIONS");
                 options.Title = "OPTIONS DUPE";
@@ -58,8 +62,8 @@ namespace OWML.LoadCustomAssets
                 quit.Title = "QUIT REPLACEMENT";
 
                 var whatButton = ModHelper.Menus.PauseMenu.GetButton("OPTIONS").Copy();
-                whatButton.Title = "WHAT OPTIONS COPY";
-                ModHelper.Menus.PauseMenu.AddButton(whatButton);
+                whatButton.Title = "WHAT OPTIONS COPY 3";
+                ModHelper.Menus.PauseMenu.AddButton(whatButton, 3);
                 whatButton.OnClick += () => wutMenu.Open();
             };
         }

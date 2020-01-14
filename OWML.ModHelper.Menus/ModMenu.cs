@@ -54,14 +54,13 @@ namespace OWML.ModHelper.Menus
 
             var copy = original.Copy();
             copy.Title = title;
-            copy.Index = index;
 
-            AddButton(copy);
+            AddButton(copy, index);
 
             return copy.Button;
         }
 
-        public virtual void AddButton(IModButton button)
+        public virtual void AddButton(IModButton button, int index)
         {
             button.Button.transform.parent = _layoutGroup.transform;
             button.Index = button.Index;
@@ -87,7 +86,7 @@ namespace OWML.ModHelper.Menus
         public IModButton DuplicateButton(string title)
         {
             var copy = CopyButton(title);
-            AddButton(copy);
+            AddButton(copy, copy.Index + 1);
             return copy;
         }
 
@@ -95,7 +94,7 @@ namespace OWML.ModHelper.Menus
         {
             var button = GetButton(title);
             var copy = button.Copy();
-            AddButton(copy);
+            AddButton(copy, copy.Index + 1);
             button.Hide();
             return copy;
         }

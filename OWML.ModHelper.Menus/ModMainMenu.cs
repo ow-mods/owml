@@ -24,14 +24,14 @@ namespace OWML.ModHelper.Menus
             Initialize(menu);
         }
 
-        public override void AddButton(IModButton button)
+        public override void AddButton(IModButton button, int index)
         {
-            base.AddButton(button);
+            base.AddButton(button, index);
             var fadeController = new CanvasGroupFadeController
             {
                 group = button.Button.GetComponent<CanvasGroup>()
             };
-            _fadeControllers.Insert(button.Index, fadeController);
+            _fadeControllers.Insert(index, fadeController);
             _anim.SetValue("_buttonFadeControllers", _fadeControllers.ToArray());
         }
 
