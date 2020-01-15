@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.26";
+        private const string Version = "0.3.27";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -21,10 +21,10 @@ namespace OWML.Launcher
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
-        private readonly ModUpdate _update;
+        private readonly CheckVersion _checkVersion;
 
         public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, ModUpdate update)
+            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, CheckVersion checkVersion)
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
@@ -33,15 +33,16 @@ namespace OWML.Launcher
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
-            _update = update;
+            _checkVersion = checkVersion;
         }
 
         public void Run(string[] args)
         {
-            _writer.WriteLine($"Started OWML version {Version}");
-            _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
+            _writer.WriteLine($"Started OWML v{Version}");
 
             CheckVersion();
+
+            _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
             LocateGamePath();
 
@@ -62,10 +63,11 @@ namespace OWML.Launcher
 
         private void CheckVersion()
         {
-            var latestVersion = _update.GetLatestVersion();
+            _writer.WriteLine("Checking latest version...");
+            var latestVersion = _checkVersion.GetOwmlVersion();
             if (string.IsNullOrEmpty(latestVersion))
             {
-                _writer.WriteLine("Could not check version.");
+                _writer.WriteLine("Warning: could not check latest OWML version.");
                 return;
             }
             if (Version == latestVersion)
@@ -73,7 +75,7 @@ namespace OWML.Launcher
                 _writer.WriteLine("OWML is up to date.");
                 return;
             }
-            _writer.WriteLine($"Warning: please update OWML to {latestVersion}: {_update.ReleasesUrl}");
+            _writer.WriteLine($"Warning: please update OWML to v{latestVersion}: {_checkVersion.GitHubReleasesUrl}");
         }
 
         private void LocateGamePath()
@@ -114,10 +116,42 @@ namespace OWML.Launcher
             foreach (var modData in mods)
             {
                 var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
-                var stateText = enabled ? "" : " (disabled)";
-                var versionText = modData.Manifest.OWMLVersion == Version ? "" : $" (warning: made for OWML {modData.Manifest.OWMLVersion})";
-                _writer.WriteLine($"* {modData.Manifest.UniqueName} ({modData.Manifest.Version}){stateText}{versionText}");
+                var stateText = enabled ? "" : "(disabled)";
+                _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
+
+                var latestVersion = GetNexusVersion(modData.Manifest);
+                if (!string.IsNullOrEmpty(latestVersion) && modData.Manifest.Version != latestVersion)
+                {
+                    _writer.WriteLine($"  Warning: please update to v{latestVersion}: {_checkVersion.NexusModsUrl}{modData.Manifest.AppIds["nexus"]}");
+                }
+
+                if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
+                {
+                    _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                }
             }
+        }
+
+        private bool IsMadeForSameOwmlMajorVersion(IModManifest manifest)
+        {
+            var owmlVersionSplit = Version.Split('.');
+            var modVersionSplit = manifest.OWMLVersion.Split('.');
+            return owmlVersionSplit.Length == modVersionSplit.Length &&
+                   owmlVersionSplit[0] == modVersionSplit[0] &&
+                   owmlVersionSplit[1] == modVersionSplit[1];
+        }
+
+        private string GetNexusVersion(IModManifest manifest)
+        {
+            if (manifest.AppIds == null || !manifest.AppIds.Any())
+            {
+                return null;
+            }
+            if (!manifest.AppIds.TryGetValue("nexus", out var appId))
+            {
+                return null;
+            }
+            return _checkVersion.GetNexusVersion(appId);
         }
 
         private void ListenForOutput()
