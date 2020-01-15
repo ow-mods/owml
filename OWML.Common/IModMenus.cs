@@ -4,7 +4,6 @@
     {
         IModMenu MainMenu { get; }
         IModPopupMenu PauseMenu { get; }
-        IModPopupMenu OptionsMenu { get; }
-        IModPopupMenu InputMenu { get; }
+        IModTabbedMenu OptionsMenu { get; }
     }
 }

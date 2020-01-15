@@ -70,7 +70,9 @@
     <Compile Include="IModButton.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModData.cs" />
+    <Compile Include="IModTabbedMenu.cs" />
     <Compile Include="IModPopupMenu.cs" />
+    <Compile Include="IModTabMenu.cs" />
     <Compile Include="IOwmlConfig.cs" />
     <Compile Include="IModEvents.cs" />
     <Compile Include="IModFinder.cs" />

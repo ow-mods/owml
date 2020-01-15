@@ -36,31 +36,17 @@ namespace OWML.LoadCustomAssets
 
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
-
-            var owo = ModHelper.Menus.MainMenu.AddButton("WUT 2", 2);
-            owo.onClick.AddListener(OnOwo);
-
-            var owo2 = ModHelper.Menus.MainMenu.GetButton("RESUME EXPEDITION").Copy();
-            owo2.Title = "RESUME COPY";
-            ModHelper.Menus.MainMenu.AddButton(owo2);
-
-            ModHelper.Menus.OptionsMenu.OnInit += () =>
+            
+            ModHelper.Menus.OptionsMenu.Input.OnInit += () =>
             {
-                ModHelper.Console.WriteLine("Pause OnInit");
 
-                var wutMenu = ModHelper.Menus.OptionsMenu.Copy();
-                wutMenu.Title = "O_O";
+                var openInputButton = ModHelper.Menus.PauseMenu.DuplicateButton("RESUME");
+                openInputButton.Title = "OPEN INPUT";
+                openInputButton.OnClick += () =>
+                {
+                    ModHelper.Menus.OptionsMenu.Input.Open();
+                };
 
-                var resumeCopy = wutMenu.Buttons[0].Copy();
-                resumeCopy.Title = "RESUME COPY 2";
-                wutMenu.AddButton(resumeCopy);
-
-                var opt =  ModHelper.Menus.PauseMenu.GetButton("OPTIONS");
-                var whatButton = opt.Copy();
-                whatButton.Title = "WHAT OPTIONS COPY 3";
-                ModHelper.Menus.PauseMenu.AddButton(whatButton);
-
-                whatButton.OnClick += () => wutMenu.Open();
             };
         }
 
@@ -135,11 +121,6 @@ namespace OWML.LoadCustomAssets
         private void CreateCube()
         {
             Instantiate(_cube, _playerTransform.position + _playerTransform.forward * 2f, Quaternion.identity);
-        }
-
-        private void OnOwo()
-        {
-            ModHelper.Console.WriteLine("OWO!");
         }
 
         private void ToggleMusic(bool enable)

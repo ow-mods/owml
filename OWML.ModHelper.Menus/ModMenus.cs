@@ -8,8 +8,7 @@ namespace OWML.ModHelper.Menus
     {
         public IModMenu MainMenu { get; }
         public IModPopupMenu PauseMenu { get; }
-        public IModPopupMenu OptionsMenu { get; }
-        public IModPopupMenu InputMenu { get; }
+        public IModTabbedMenu OptionsMenu { get; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -21,8 +20,7 @@ namespace OWML.ModHelper.Menus
 
             MainMenu = new ModMainMenu(logger, console);
             PauseMenu = new ModPopupMenu(logger, console);
-            OptionsMenu = new ModPopupMenu(logger, console);
-            InputMenu = new ModPopupMenu(logger, console);
+            OptionsMenu = new ModOptionsMenu(logger, console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.OnEvent += OnEvent;
@@ -37,7 +35,6 @@ namespace OWML.ModHelper.Menus
                 var settingsManager = (SettingsManager)behaviour;
                 InitPauseMenu(settingsManager);
                 InitOptionsMenu(settingsManager);
-                InitInputMenu(settingsManager);
             }
         }
 
@@ -52,12 +49,6 @@ namespace OWML.ModHelper.Menus
         {
             var optionsMenu = settingsManager.GetValue<TabbedMenu>("_mainSettingsMenu");
             OptionsMenu.Initialize(optionsMenu);
-        }
-
-        private void InitInputMenu(SettingsManager settingsManager)
-        {
-            var inputMenu = settingsManager.GetValue<Menu>("_inputMenu");
-            InputMenu.Initialize(inputMenu);
         }
 
     }
