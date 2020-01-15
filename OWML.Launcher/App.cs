@@ -38,6 +38,8 @@ namespace OWML.Launcher
 
         public void Run(string[] args)
         {
+            _writer.WriteLine($"Started OWML v{Version}");
+
             CheckVersion();
 
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
@@ -61,7 +63,7 @@ namespace OWML.Launcher
 
         private void CheckVersion()
         {
-            _writer.WriteLine($"Started OWML v{Version}");
+            _writer.WriteLine("Checking latest version...");
             var latestVersion = _checkVersion.GetOwmlVersion();
             if (string.IsNullOrEmpty(latestVersion))
             {
@@ -122,7 +124,21 @@ namespace OWML.Launcher
                 {
                     _writer.WriteLine($"  Warning: please update to v{latestVersion}: {_checkVersion.NexusModsUrl}{modData.Manifest.AppIds["nexus"]}");
                 }
+
+                if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
+                {
+                    _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                }
             }
+        }
+
+        private bool IsMadeForSameOwmlMajorVersion(IModManifest manifest)
+        {
+            var owmlVersionSplit = Version.Split('.');
+            var modVersionSplit = manifest.OWMLVersion.Split('.');
+            return owmlVersionSplit.Length == modVersionSplit.Length &&
+                   owmlVersionSplit[0] == modVersionSplit[0] &&
+                   owmlVersionSplit[1] == modVersionSplit[1];
         }
 
         private string GetNexusVersion(IModManifest manifest)
