@@ -1,15 +1,13 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
-using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModMenus : IModMenus
     {
-        public IModMenu MainMenu { get; }
+        public IModMainMenu MainMenu { get; }
         public IModPauseMenu PauseMenu { get; }
-        public IModTabbedMenu OptionsMenu { get; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -20,8 +18,10 @@ namespace OWML.ModHelper.Menus
             _console = console;
 
             MainMenu = new ModMainMenu(logger, console);
+            var titleScreenManager = GameObject.FindObjectOfType<TitleScreenManager>();
+            MainMenu.Initialize(titleScreenManager);
+
             PauseMenu = new ModPauseMenu(logger, console);
-            OptionsMenu = new ModOptionsMenu(logger, console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.OnEvent += OnEvent;
@@ -29,27 +29,13 @@ namespace OWML.ModHelper.Menus
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(SettingsManager) && 
-                ev == Common.Events.AfterStart && 
+            if (behaviour.GetType() == typeof(SettingsManager) &&
+                ev == Common.Events.AfterStart &&
                 behaviour.name == "PauseMenuManagers")
             {
                 var settingsManager = (SettingsManager)behaviour;
-                InitPauseMenu(settingsManager);
-                InitOptionsMenu(settingsManager);
+                PauseMenu.Initialize(settingsManager);
             }
-        }
-
-        private void InitPauseMenu(SettingsManager settingsManager)
-        {
-            var pauseMenuManager = settingsManager.GetComponent<PauseMenuManager>();
-            var pauseMenu = pauseMenuManager.GetValue<Menu>("_pauseMenu");
-            PauseMenu.Initialize(pauseMenu);
-        }
-
-        private void InitOptionsMenu(SettingsManager settingsManager)
-        {
-            var optionsMenu = settingsManager.GetValue<TabbedMenu>("_mainSettingsMenu");
-            OptionsMenu.Initialize(optionsMenu);
         }
 
     }

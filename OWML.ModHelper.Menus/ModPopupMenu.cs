@@ -45,7 +45,6 @@ namespace OWML.ModHelper.Menus
             }
             Menu.OnActivateMenu += OnActivateMenu;
             Menu.OnDeactivateMenu += OnDeactivateMenu;
-            OnInit?.Invoke();
         }
 
         private void OnDeactivateMenu()

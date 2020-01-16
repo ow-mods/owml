@@ -1,5 +1,4 @@
 ﻿using System;
-using OWML.Common;
 using OWML.Common.Menus;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,12 +38,6 @@ namespace OWML.ModHelper.Menus
                 OnClick?.Invoke();
             });
             _text = Button.GetComponentInChildren<Text>();
-            //var localizedText = _text.GetComponent<LocalizedText>();
-            //if (localizedText != null)
-            //{
-            //    Title = UITextLibrary.GetString(localizedText.GetValue<UITextType>("_textID"));
-            //    GameObject.Destroy(localizedText);
-            //}
         }
 
         public IModButton Copy()
@@ -52,12 +45,6 @@ namespace OWML.ModHelper.Menus
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
             GameObject.Destroy(button.GetComponentInChildren<LocalizedText>());
-            //var localizedText = _text.GetComponent<LocalizedText>();
-            //if (localizedText != null)
-            //{
-            //    Title = UITextLibrary.GetString(localizedText.GetValue<UITextType>("_textID"));
-            //    GameObject.Destroy(localizedText);
-            //}
             return new ModButton(button)
             {
                 Index = Index + 1

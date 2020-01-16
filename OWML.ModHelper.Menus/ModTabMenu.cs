@@ -25,6 +25,7 @@ namespace OWML.ModHelper.Menus
             _tabButton = tabButton;
             var menu = tabButton.GetValue<Menu>("_tabbedMenu");
             Initialize(menu);
+            OnInit?.Invoke();
         }
 
         public override void Open()

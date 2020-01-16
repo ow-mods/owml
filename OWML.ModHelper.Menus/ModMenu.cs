@@ -66,9 +66,11 @@ namespace OWML.ModHelper.Menus
 
         public virtual void AddButton(IModButton button, int index)
         {
+            _console.WriteLine("adding button: " + button.Button.name);
             button.Button.transform.parent = _layoutGroup.transform;
             button.Index = index;
             Buttons.Add(button);
+            _console.WriteLine("added button: " + button.Button.name);
         }
 
         public IModButton GetButton(string title)

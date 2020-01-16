@@ -31,10 +31,10 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(TabbedMenu menu)
         {
-            Menu = menu;
-            _console.WriteLine("init of options");
             base.Initialize(menu);
-            _console.WriteLine("after base init of options");
+
+            Menu = menu;
+            _console.WriteLine("init of options menu");
 
             _tabButtons = menu.GetValue<TabButton[]>("_menuTabs");
 
@@ -42,6 +42,10 @@ namespace OWML.ModHelper.Menus
             AudioTab.Initialize(GetTabButton("Button-Audio"));
             InputTab.Initialize(GetTabButton("Button-Input"));
             GraphicsTab.Initialize(GetTabButton("Button-Graphics"));
+
+            OnInit?.Invoke();
+            
+            _console.WriteLine("options: inited");
         }
 
         public TabButton GetTabButton(string name)

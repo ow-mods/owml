@@ -37,16 +37,30 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            ModHelper.Menus.OptionsMenu.InputTab.OnInit += () =>
+            var lol = ModHelper.Menus.MainMenu.OptionsButton.Copy();
+            lol.Title = "lol";
+            lol.OnClick += () => ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
+            ModHelper.Menus.MainMenu.AddButton(lol);
+
+            ModHelper.Console.WriteLine("LoadCustomAssets: before InputTab.OnInit");
+
+            ModHelper.Menus.PauseMenu.OnInit += () =>
             {
+                ModHelper.Console.WriteLine("LoadCustomAssets: inside InputTab.OnInit");
+
                 var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Copy();
                 openInputButton.Title = "OPEN INPUT";
+
+                ModHelper.Console.WriteLine("got button");
+                
                 ModHelper.Menus.PauseMenu.AddButton(openInputButton);
+
+                ModHelper.Console.WriteLine("added button");
+
                 openInputButton.OnClick += () =>
                 {
-                    ModHelper.Menus.OptionsMenu.InputTab.Open();
+                    ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();
                 };
-
             };
         }
 

@@ -2,8 +2,7 @@
 {
     public interface IModMenus
     {
-        IModMenu MainMenu { get; }
+        IModMainMenu MainMenu { get; }
         IModPauseMenu PauseMenu { get; }
-        IModTabbedMenu OptionsMenu { get; }
     }
 }
