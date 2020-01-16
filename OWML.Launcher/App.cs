@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.27";
+        private const string Version = "0.3.29";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;

@@ -5,7 +5,12 @@ namespace OWML.ModHelper
 {
     public class OwmlBehaviour : MonoBehaviour
     {
-        void OnApplicationQuit()
+        private void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        private void OnApplicationQuit()
         {
             ModConsole.Instance.WriteLine(Constants.QuitKeyPhrase);
         }
