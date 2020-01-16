@@ -28,6 +28,7 @@ namespace OWML.Launcher
         private static IOwmlConfig GetOwmlConfig()
         {
             var json = File.ReadAllText("OWML.Config.json")
+                .Replace("\\\\", "/")
                 .Replace("\\", "/");
             var config = JsonConvert.DeserializeObject<OwmlConfig>(json);
             config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
