@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OWML.Common
+namespace OWML.Common.Menus
 {
     public interface IModPopupMenu : IModMenu
     {

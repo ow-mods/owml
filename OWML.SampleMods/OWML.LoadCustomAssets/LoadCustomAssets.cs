@@ -36,15 +36,15 @@ namespace OWML.LoadCustomAssets
 
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
-            
-            ModHelper.Menus.OptionsMenu.Input.OnInit += () =>
-            {
 
-                var openInputButton = ModHelper.Menus.PauseMenu.DuplicateButton("RESUME");
+            ModHelper.Menus.OptionsMenu.InputTab.OnInit += () =>
+            {
+                var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Copy();
                 openInputButton.Title = "OPEN INPUT";
+                ModHelper.Menus.PauseMenu.AddButton(openInputButton);
                 openInputButton.OnClick += () =>
                 {
-                    ModHelper.Menus.OptionsMenu.Input.Open();
+                    ModHelper.Menus.OptionsMenu.InputTab.Open();
                 };
 
             };

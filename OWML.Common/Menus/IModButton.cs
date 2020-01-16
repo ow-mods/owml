@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.UI;
 
-namespace OWML.Common
+namespace OWML.Common.Menus
 {
     public interface IModButton
     {

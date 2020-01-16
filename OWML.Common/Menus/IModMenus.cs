@@ -1,9 +1,9 @@
-﻿namespace OWML.Common
+﻿namespace OWML.Common.Menus
 {
     public interface IModMenus
     {
         IModMenu MainMenu { get; }
-        IModPopupMenu PauseMenu { get; }
+        IModPauseMenu PauseMenu { get; }
         IModTabbedMenu OptionsMenu { get; }
     }
 }

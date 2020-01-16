@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace OWML.ModHelper.Menus
     public class ModMenus : IModMenus
     {
         public IModMenu MainMenu { get; }
-        public IModPopupMenu PauseMenu { get; }
+        public IModPauseMenu PauseMenu { get; }
         public IModTabbedMenu OptionsMenu { get; }
 
         private readonly IModLogger _logger;
@@ -19,7 +20,7 @@ namespace OWML.ModHelper.Menus
             _console = console;
 
             MainMenu = new ModMainMenu(logger, console);
-            PauseMenu = new ModPopupMenu(logger, console);
+            PauseMenu = new ModPauseMenu(logger, console);
             OptionsMenu = new ModOptionsMenu(logger, console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);

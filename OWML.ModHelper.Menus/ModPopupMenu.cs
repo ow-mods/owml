@@ -1,5 +1,6 @@
 ﻿using System;
 using OWML.Common;
+using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +34,7 @@ namespace OWML.ModHelper.Menus
 
         public override void Initialize(Menu menu)
         {
-            _console.WriteLine(" init of popup " + menu.name);
+            _console.WriteLine(" init of popup menu " + menu.name);
             base.Initialize(menu);
             _title = Menu.GetComponentInChildren<Text>();
             var localizedText = _title.GetComponent<LocalizedText>();
@@ -59,7 +60,7 @@ namespace OWML.ModHelper.Menus
             OnOpen?.Invoke();
         }
 
-        public void Open()
+        public virtual void Open()
         {
             if (Menu == null)
             {

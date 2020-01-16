@@ -74,6 +74,7 @@
     <Compile Include="ModsMenu.cs" />
     <Compile Include="ModMenus.cs" />
     <Compile Include="ModMainMenu.cs" />
+    <Compile Include="ModTabMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

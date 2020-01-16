@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
+using OWML.Common.Menus;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -24,6 +25,7 @@ namespace OWML.ModHelper.Menus
 
         public virtual void Initialize(Menu menu)
         {
+            _console.WriteLine("init of menu " + menu.name);
             Menu = menu;
             _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
             Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x)).Cast<IModButton>());
@@ -71,10 +73,10 @@ namespace OWML.ModHelper.Menus
 
         public IModButton GetButton(string title)
         {
-            var button = Buttons.FirstOrDefault(x => x.Title == title);
+            var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                _console.WriteLine("Warning: no button found with title: " + title);
+                _console.WriteLine("Warning: no button found with title or name: " + title);
             }
             return button;
         }
