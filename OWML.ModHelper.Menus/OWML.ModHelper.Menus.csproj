@@ -69,6 +69,7 @@
     <Compile Include="ModButton.cs" />
     <Compile Include="ModMenu.cs" />
     <Compile Include="ModOptionsMenu.cs" />
+    <Compile Include="ModPauseMenu.cs" />
     <Compile Include="ModPopupMenu.cs" />
     <Compile Include="ModsMenu.cs" />
     <Compile Include="ModMenus.cs" />
