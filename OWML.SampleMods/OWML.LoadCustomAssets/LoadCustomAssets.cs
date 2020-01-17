@@ -69,8 +69,9 @@ namespace OWML.LoadCustomAssets
         private void OnDuckLoaded(GameObject duck)
         {
             ModHelper.Console.WriteLine("Duck loaded!");
-            duck.AddComponent<SphereCollider>();
-            duck.AddComponent<Rigidbody>();
+            var duckCollider = duck.AddComponent<BoxCollider>();
+            duckCollider.center = Vector3.zero;
+            duckCollider.size = Vector3.one;
             _duckBody = duck.AddComponent<OWRigidbody>();
         }
 
