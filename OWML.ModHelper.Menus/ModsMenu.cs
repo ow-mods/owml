@@ -46,6 +46,10 @@ namespace OWML.ModHelper.Menus
         {
             var originalButton = pauseMenu.ResumeButton;
             var modsMenu = pauseMenu.Copy();
+            foreach (var button in modsMenu.Buttons)
+            {
+                button.Hide();
+            }
             foreach (var mod in _registeredMods)
             {
                 var modButton = CreateModButton(originalButton, mod);

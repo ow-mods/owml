@@ -41,6 +41,8 @@ namespace OWML.LoadCustomAssets
             DoMainMenuStuff();
 
             ModHelper.Menus.PauseMenu.OnInit += DoPauseMenuStuff;
+
+            ModHelper.Menus.ModsMenu.Register(this);
         }
 
         private void DoMainMenuStuff()
