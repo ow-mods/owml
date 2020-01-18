@@ -9,8 +9,7 @@ namespace OWML.ModHelper.Menus
     {
         public event Action OnClick;
 
-        public Button Button { get; private set; }
-
+        public Button Button { get; }
         public IModMenu Menu { get; private set; }
 
         private Text _text;
@@ -58,6 +57,27 @@ namespace OWML.ModHelper.Menus
             };
         }
 
+        public IModButton Copy(string title)
+        {
+            var copy = Copy();
+            copy.Title = title;
+            return copy;
+        }
+
+        public IModButton Copy(int index)
+        {
+            var copy = Copy();
+            copy.Index = index;
+            return copy;
+        }
+
+        public IModButton Copy(string title, int index)
+        {
+            var copy = Copy(title);
+            copy.Index = index;
+            return copy;
+        }
+
         public IModButton Duplicate()
         {
             var copy = Copy();
@@ -65,11 +85,53 @@ namespace OWML.ModHelper.Menus
             return copy;
         }
 
+        public IModButton Duplicate(string title)
+        {
+            var dupe = Duplicate();
+            dupe.Title = title;
+            return dupe;
+        }
+
+        public IModButton Duplicate(int index)
+        {
+            var dupe = Duplicate();
+            dupe.Index = index;
+            return dupe;
+        }
+
+        public IModButton Duplicate(string title, int index)
+        {
+            var dupe = Duplicate(title);
+            dupe.Index = index;
+            return dupe;
+        }
+
         public IModButton Replace()
         {
             var duplicate = Duplicate();
             Hide();
             return duplicate;
+        }
+
+        public IModButton Replace(string title)
+        {
+            var replacement = Replace();
+            replacement.Title = title;
+            return replacement;
+        }
+
+        public IModButton Replace(int index)
+        {
+            var replacement = Replace();
+            replacement.Index = index;
+            return replacement;
+        }
+
+        public IModButton Replace(string title, int index)
+        {
+            var replacement = Replace(title);
+            replacement.Index = index;
+            return replacement;
         }
 
         public void Show()
