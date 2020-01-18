@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMainMenu : ModMenu, IModMainMenu
     {
-        public IModTabbedMenu OptionsMenu { get; private set; }
+        public IModTabbedMenu OptionsMenu { get; }
 
         public IModButton ResumeExpeditionButton { get; private set; }
         public IModButton NewExpeditionButton { get; private set; }
@@ -34,12 +34,14 @@ namespace OWML.ModHelper.Menus
             _anim = titleScreenManager.GetComponent<TitleAnimationController>();
             var menu = titleScreenManager.GetValue<Menu>("_mainMenu");
             Initialize(menu);
+
             ResumeExpeditionButton = GetButton("Button-ResumeGame");
             NewExpeditionButton = GetButton("Button-NewGame");
             OptionsButton = GetButton("Button-Options");
             ViewCreditsButton = GetButton("Button-Credits");
             SwitchProfileButton = GetButton("Button-Profile");
             QuitButton = GetButton("Button-Exit");
+
             var tabbedMenu = titleScreenManager.GetValue<TabbedMenu>("_optionsMenu");
             OptionsMenu.Initialize(tabbedMenu);
             InvokeOnInit();

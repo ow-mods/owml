@@ -26,7 +26,6 @@ namespace OWML.ModHelper.Menus
 
         public virtual void Initialize(Menu menu)
         {
-            _console.WriteLine("init of menu " + menu.name);
             Menu = menu;
             _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
             Buttons = new List<IModButton>();

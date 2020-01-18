@@ -33,7 +33,6 @@ namespace OWML.ModHelper.Menus
 
         public override void Initialize(Menu menu)
         {
-            _console.WriteLine(" init of popup menu " + menu.name);
             base.Initialize(menu);
             _title = Menu.GetComponentInChildren<Text>();
             var localizedText = _title.GetComponent<LocalizedText>();

@@ -25,14 +25,10 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(SettingsManager settingsManager)
         {
-            _console.WriteLine("init of pause menu");
-
             var pauseMenuManager = settingsManager.GetComponent<PauseMenuManager>();
             var optionsMenu = settingsManager.GetValue<TabbedMenu>("_mainSettingsMenu");
             OptionsMenu.Initialize(optionsMenu);
 
-            _console.WriteLine("pause: inited options");
-            
             var pauseMenu = pauseMenuManager.GetValue<Menu>("_pauseMenu");
             base.Initialize(pauseMenu);
 
@@ -41,8 +37,6 @@ namespace OWML.ModHelper.Menus
             QuitButton = Buttons.Single(x => x.Button.name == "Button-ExitToMainMenu");
 
             InvokeOnInit();
-
-            _console.WriteLine("pause: totally inited");
         }
 
     }
