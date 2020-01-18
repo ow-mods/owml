@@ -6,7 +6,6 @@ namespace OWML.Common.Menus
     {
         Action OnOpen { get; set; }
         Action OnClose { get; set; }
-        Action OnInit { get; set; }
 
         bool IsOpen { get; }
         string Title { get; set; }

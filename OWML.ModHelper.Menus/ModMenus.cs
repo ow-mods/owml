@@ -24,17 +24,21 @@ namespace OWML.ModHelper.Menus
             PauseMenu = new ModPauseMenu(logger, console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
+            events.Subscribe<TitleScreenManager>(Common.Events.AfterAwake);
             events.OnEvent += OnEvent;
         }
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(SettingsManager) &&
-                ev == Common.Events.AfterStart &&
-                behaviour.name == "PauseMenuManagers")
+            if (behaviour.GetType() == typeof(SettingsManager) && ev == Common.Events.AfterStart && behaviour.name == "PauseMenuManagers")
             {
                 var settingsManager = (SettingsManager)behaviour;
                 PauseMenu.Initialize(settingsManager);
+            }
+            else if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterAwake)
+            {
+                var titleScreenManager = (TitleScreenManager)behaviour;
+                MainMenu.Initialize(titleScreenManager);
             }
         }
 

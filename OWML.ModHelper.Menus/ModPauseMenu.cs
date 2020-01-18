@@ -40,8 +40,8 @@ namespace OWML.ModHelper.Menus
             OptionsButton = Buttons.Single(x => x.Button.name == "Button-Options");
             QuitButton = Buttons.Single(x => x.Button.name == "Button-ExitToMainMenu");
 
-            OnInit?.Invoke();
-            
+            InvokeOnInit();
+
             _console.WriteLine("pause: totally inited");
         }
 

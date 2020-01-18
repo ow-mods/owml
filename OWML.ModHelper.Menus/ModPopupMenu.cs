@@ -11,7 +11,6 @@ namespace OWML.ModHelper.Menus
     {
         public Action OnOpen { get; set; }
         public Action OnClose { get; set; }
-        public Action OnInit { get; set; }
 
         public bool IsOpen { get; private set; }
 

@@ -9,8 +9,10 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMenu : IModMenu
     {
+        public event Action OnInit;
+
         public Menu Menu { get; private set; }
-        public List<IModButton> Buttons { get; }
+        public List<IModButton> Buttons { get; private set; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -20,7 +22,6 @@ namespace OWML.ModHelper.Menus
         {
             _logger = logger;
             _console = console;
-            Buttons = new List<IModButton>();
         }
 
         public virtual void Initialize(Menu menu)
@@ -28,6 +29,7 @@ namespace OWML.ModHelper.Menus
             _console.WriteLine("init of menu " + menu.name);
             Menu = menu;
             _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
+            Buttons = new List<IModButton>();
             Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
         }
 
@@ -82,6 +84,12 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: no button found with title or name: " + title);
             }
             return button;
+        }
+
+        protected void InvokeOnInit()
+        {
+            _console.WriteLine("invoking OnInit from " + Menu.name);
+            OnInit?.Invoke();
         }
 
     }

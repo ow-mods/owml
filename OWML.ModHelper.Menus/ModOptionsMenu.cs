@@ -43,8 +43,8 @@ namespace OWML.ModHelper.Menus
             InputTab.Initialize(GetTabButton("Button-Input"));
             GraphicsTab.Initialize(GetTabButton("Button-Graphics"));
 
-            OnInit?.Invoke();
-            
+            InvokeOnInit();
+
             _console.WriteLine("options: inited");
         }
 

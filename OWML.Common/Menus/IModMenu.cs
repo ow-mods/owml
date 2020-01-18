@@ -6,6 +6,8 @@ namespace OWML.Common.Menus
 {
     public interface IModMenu
     {
+        event Action OnInit;
+
         Menu Menu { get; }
         List<IModButton> Buttons { get; }
         IModButton GetButton(string title);
