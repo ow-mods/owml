@@ -37,14 +37,26 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            var owo = ModHelper.Menus.MainMenu.AddButton("OWO", 3);
-            owo.onClick.AddListener(OnOwo);
+            ModHelper.Menus.MainMenu.OnInit += DoMainMenuStuff;
+            DoMainMenuStuff();
 
-            ModHelper.Menus.PauseMenu.OnInit += () =>
-            {
-                var uwu = ModHelper.Menus.PauseMenu.AddButton("UWU", 1);
-                uwu.onClick.AddListener(OnUwu);
-            };
+            ModHelper.Menus.PauseMenu.OnInit += DoPauseMenuStuff;
+        }
+
+        private void DoMainMenuStuff()
+        {
+            ModHelper.Console.WriteLine(nameof(DoMainMenuStuff));
+            var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate();
+            resumeDupe.Title = "OPEN INPUT MENU";
+            resumeDupe.OnClick += () => ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
+        }
+
+        private void DoPauseMenuStuff()
+        {
+            ModHelper.Console.WriteLine(nameof(DoPauseMenuStuff));
+            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate();
+            openInputButton.Title = "OPEN INPUT MENU";
+            openInputButton.OnClick += () => ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();
         }
 
         public override void Configure(IModConfig config)
@@ -87,7 +99,7 @@ namespace OWML.LoadCustomAssets
 
         private void Update()
         {
-            if (!_isStarted)
+            if (!_isStarted || OWTime.IsPaused())
             {
                 return;
             }
@@ -118,16 +130,6 @@ namespace OWML.LoadCustomAssets
         private void CreateCube()
         {
             Instantiate(_cube, _playerTransform.position + _playerTransform.forward * 2f, Quaternion.identity);
-        }
-
-        private void OnOwo()
-        {
-            ModHelper.Console.WriteLine("OWO!");
-        }
-
-        private void OnUwu()
-        {
-            ModHelper.Console.WriteLine("UWU!");
         }
 
         private void ToggleMusic(bool enable)

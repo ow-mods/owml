@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using OWML.Common;
+using OWML.Common.Menus;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;

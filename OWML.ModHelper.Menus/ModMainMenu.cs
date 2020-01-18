@@ -1,59 +1,60 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using OWML.Common;
+using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModMainMenu : IModMenu
+    public class ModMainMenu : ModMenu, IModMainMenu
     {
+        public IModTabbedMenu OptionsMenu { get; }
+
+        public IModButton ResumeExpeditionButton { get; private set; }
+        public IModButton NewExpeditionButton { get; private set; }
+        public IModButton OptionsButton { get; private set; }
+        public IModButton ViewCreditsButton { get; private set; }
+        public IModButton SwitchProfileButton { get; private set; }
+        public IModButton QuitButton { get; private set; }
+
+        private TitleAnimationController _anim;
+
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-        private readonly TitleAnimationController _anim;
-        private readonly List<CanvasGroupFadeController> _fadeControllers;
-        private readonly Menu _menu;
 
-        public ModMainMenu(IModLogger logger, IModConsole console)
+        public ModMainMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
             _logger = logger;
             _console = console;
-            var titleScreenManager = GameObject.FindObjectOfType<TitleScreenManager>();
+            OptionsMenu = new ModOptionsMenu(logger, console);
+        }
+
+        public void Initialize(TitleScreenManager titleScreenManager)
+        {
             _anim = titleScreenManager.GetComponent<TitleAnimationController>();
-            _menu = titleScreenManager.GetValue<Menu>("_mainMenu");
-            _fadeControllers = _anim.GetValue<CanvasGroupFadeController[]>("_buttonFadeControllers").ToList();
+            var menu = titleScreenManager.GetValue<Menu>("_mainMenu");
+            Initialize(menu);
+
+            ResumeExpeditionButton = GetButton("Button-ResumeGame");
+            NewExpeditionButton = GetButton("Button-NewGame");
+            OptionsButton = GetButton("Button-Options");
+            ViewCreditsButton = GetButton("Button-Credits");
+            SwitchProfileButton = GetButton("Button-Profile");
+            QuitButton = GetButton("Button-Exit");
+
+            var tabbedMenu = titleScreenManager.GetValue<TabbedMenu>("_optionsMenu");
+            OptionsMenu.Initialize(tabbedMenu);
+            InvokeOnInit();
         }
 
-        public List<Button> GetButtons()
+        public override void AddButton(IModButton button, int index)
         {
-            return _menu.GetComponentsInChildren<Button>().ToList();
-        }
-
-        public Button AddButton(string title, int index)
-        {
-            _console.WriteLine("Adding main menu button: " + title);
-
-            var original = _menu.GetComponentInChildren<Button>();
-            _logger.Log("Copying button: " + original.name);
-
-            var copy = GameObject.Instantiate(original, _menu.transform);
-            copy.name = title;
-            copy.transform.SetSiblingIndex(index + 2);
-
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            GameObject.Destroy(copy.GetComponent<SubmitAction>());
-
-            copy.GetComponentInChildren<Text>().text = title;
-
-            var fadeController = new CanvasGroupFadeController
+            base.AddButton(button, index);
+            var fadeControllers = Buttons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController
             {
-                group = copy.GetComponent<CanvasGroup>()
-            };
-            _fadeControllers.Insert(index, fadeController);
-            _anim.SetValue("_buttonFadeControllers", _fadeControllers.ToArray());
-
-            return copy;
+                group = x.Button.GetComponent<CanvasGroup>()
+            });
+            _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
         }
 
     }

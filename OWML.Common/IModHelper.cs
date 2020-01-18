@@ -1,4 +1,6 @@
-﻿namespace OWML.Common
+﻿using OWML.Common.Menus;
+
+namespace OWML.Common
 {
     public interface IModHelper
     {

@@ -66,11 +66,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModButton.cs" />
+    <Compile Include="ModMenu.cs" />
+    <Compile Include="ModOptionsMenu.cs" />
+    <Compile Include="ModPauseMenu.cs" />
     <Compile Include="ModPopupMenu.cs" />
     <Compile Include="ModsMenu.cs" />
-    <Compile Include="ModPauseMenu.cs" />
     <Compile Include="ModMenus.cs" />
     <Compile Include="ModMainMenu.cs" />
+    <Compile Include="ModTabMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
