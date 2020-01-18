@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus
 
         public bool IsOpen { get; private set; }
 
+        private Text _title;
         public string Title
         {
             get => _title.text;
@@ -22,8 +23,6 @@ namespace OWML.ModHelper.Menus
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-
-        private Text _title;
 
         public ModPopupMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
