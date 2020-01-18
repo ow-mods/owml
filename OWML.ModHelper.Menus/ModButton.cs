@@ -12,7 +12,7 @@ namespace OWML.ModHelper.Menus
         public Button Button { get; }
         public IModMenu Menu { get; private set; }
 
-        private Text _text;
+        private readonly Text _text;
         public string Title
         {
             get => _text.text;
