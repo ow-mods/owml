@@ -9,6 +9,11 @@ namespace OWML.ModHelper.Menus
     {
         public event Action OnClick;
 
+        public Button Button { get; private set; }
+
+        public IModMenu Menu { get; private set; }
+
+        private Text _text;
         public string Title
         {
             get => _text.text;
@@ -26,11 +31,7 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public Button Button { get; }
-
-        private readonly Text _text;
-
-        public ModButton(Button button)
+        public ModButton(Button button, IModMenu menu)
         {
             Button = button;
             Button.onClick.AddListener(() =>
@@ -38,6 +39,12 @@ namespace OWML.ModHelper.Menus
                 OnClick?.Invoke();
             });
             _text = Button.GetComponentInChildren<Text>();
+            Initialize(menu);
+        }
+
+        public void Initialize(IModMenu menu)
+        {
+            Menu = menu;
         }
 
         public IModButton Copy()
@@ -45,10 +52,24 @@ namespace OWML.ModHelper.Menus
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
             GameObject.Destroy(button.GetComponentInChildren<LocalizedText>());
-            return new ModButton(button)
+            return new ModButton(button, Menu)
             {
                 Index = Index + 1
             };
+        }
+
+        public IModButton Duplicate()
+        {
+            var copy = Copy();
+            Menu.AddButton(copy);
+            return copy;
+        }
+
+        public IModButton Replace()
+        {
+            var duplicate = Duplicate();
+            Hide();
+            return duplicate;
         }
 
         public void Show()

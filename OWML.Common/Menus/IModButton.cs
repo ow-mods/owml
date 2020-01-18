@@ -10,7 +10,10 @@ namespace OWML.Common.Menus
         int Index { get; set; }
         Button Button { get; }
         IModButton Copy();
+        IModButton Duplicate();
+        IModButton Replace();
         void Show();
         void Hide();
+        void Initialize(IModMenu menu);
     }
 }

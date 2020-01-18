@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
             _console.WriteLine("init of menu " + menu.name);
             Menu = menu;
             _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
-            Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x)).Cast<IModButton>());
+            Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
         }
 
         [Obsolete("Use Buttons instead")]
@@ -69,6 +69,7 @@ namespace OWML.ModHelper.Menus
             _console.WriteLine("adding button: " + button.Button.name);
             button.Button.transform.parent = _layoutGroup.transform;
             button.Index = index;
+            button.Initialize(this);
             Buttons.Add(button);
             _console.WriteLine("added button: " + button.Button.name);
         }
@@ -81,28 +82,6 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: no button found with title or name: " + title);
             }
             return button;
-        }
-
-        public IModButton CopyButton(string title)
-        {
-            var button = GetButton(title);
-            return button.Copy();
-        }
-
-        public IModButton DuplicateButton(string title)
-        {
-            var copy = CopyButton(title);
-            AddButton(copy);
-            return copy;
-        }
-
-        public IModButton ReplaceButton(string title)
-        {
-            var button = GetButton(title);
-            var copy = button.Copy();
-            AddButton(copy);
-            button.Hide();
-            return copy;
         }
 
     }

@@ -37,26 +37,19 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            var lol = ModHelper.Menus.MainMenu.OptionsButton.Copy();
-            lol.Title = "lol";
-            lol.OnClick += () => ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
-            ModHelper.Menus.MainMenu.AddButton(lol);
-
-            ModHelper.Console.WriteLine("LoadCustomAssets: before InputTab.OnInit");
+            var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate();
+            resumeDupe.Title = "Resume dupe";
+            resumeDupe.OnClick += () =>
+            {
+                ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
+            };
 
             ModHelper.Menus.PauseMenu.OnInit += () =>
             {
                 ModHelper.Console.WriteLine("LoadCustomAssets: inside InputTab.OnInit");
 
-                var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Copy();
-                openInputButton.Title = "OPEN INPUT";
-
-                ModHelper.Console.WriteLine("got button");
-                
-                ModHelper.Menus.PauseMenu.AddButton(openInputButton);
-
-                ModHelper.Console.WriteLine("added button");
-
+                var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate();
+                openInputButton.Title = "RESUME DUPE - OPEN INPUT";
                 openInputButton.OnClick += () =>
                 {
                     ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();

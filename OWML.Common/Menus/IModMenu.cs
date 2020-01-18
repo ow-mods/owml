@@ -9,9 +9,6 @@ namespace OWML.Common.Menus
         Menu Menu { get; }
         List<IModButton> Buttons { get; }
         IModButton GetButton(string title);
-        IModButton CopyButton(string title);
-        IModButton DuplicateButton(string title);
-        IModButton ReplaceButton(string title);
         void AddButton(IModButton button);
         void AddButton(IModButton button, int index);
 
