@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "requireVR": false, 
   "settings": {
     "enableMusic": true,
