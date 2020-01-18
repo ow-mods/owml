@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
         private IModPopupMenu CreateModsMenu(IModPauseMenu pauseMenu)
         {
             var originalButton = pauseMenu.ResumeButton;
-            var modsMenu = pauseMenu.Copy();
+            var modsMenu = pauseMenu.Copy("MODS");
             foreach (var button in modsMenu.Buttons)
             {
                 button.Hide();
