@@ -43,27 +43,28 @@ namespace OWML.LoadCustomAssets
             ModHelper.Menus.PauseMenu.OnInit += DoPauseMenuStuff;
         }
 
-        private void DoPauseMenuStuff()
-        {
-            ModHelper.Console.WriteLine("LoadCustomAssets: inside PauseMenu.OnInit");
-
-            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate();
-            openInputButton.Title = "RESUME DUPE - OPEN INPUT";
-            openInputButton.OnClick += () =>
-            {
-                ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();
-            };
-        }
-
         private void DoMainMenuStuff()
         {
             ModHelper.Console.WriteLine("LoadCustomAssets: inside MainMenu.OnInit");
+            ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate("lol resume");
 
             var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate();
             resumeDupe.Title = "Resume dupe";
             resumeDupe.OnClick += () =>
             {
                 ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
+            };
+        }
+
+        private void DoPauseMenuStuff()
+        {
+            ModHelper.Console.WriteLine("LoadCustomAssets: inside PauseMenu.OnInit");
+
+            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate();
+            openInputButton.Title = "OPEN INPUT";
+            openInputButton.OnClick += () =>
+            {
+                ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();
             };
         }
 

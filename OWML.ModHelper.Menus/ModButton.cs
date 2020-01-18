@@ -33,10 +33,7 @@ namespace OWML.ModHelper.Menus
         public ModButton(Button button, IModMenu menu)
         {
             Button = button;
-            Button.onClick.AddListener(() =>
-            {
-                OnClick?.Invoke();
-            });
+            Button.onClick.AddListener(() => OnClick?.Invoke());
             _text = Button.GetComponentInChildren<Text>();
             Initialize(menu);
         }
@@ -49,7 +46,7 @@ namespace OWML.ModHelper.Menus
         public IModButton Copy()
         {
             var button = GameObject.Instantiate(Button);
-            GameObject.Destroy(button.GetComponent<SubmitAction>());
+            GameObject.Destroy(Button.GetComponent<SubmitAction>());
             GameObject.Destroy(button.GetComponentInChildren<LocalizedText>());
             return new ModButton(button, Menu)
             {
