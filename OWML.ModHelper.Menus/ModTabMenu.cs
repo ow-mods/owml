@@ -21,7 +21,6 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(TabButton tabButton)
         {
-            _console.WriteLine("init of tab menu: " + tabButton.name);
             _tabButton = tabButton;
             var menu = tabButton.GetValue<Menu>("_tabbedMenu");
             Initialize(menu);

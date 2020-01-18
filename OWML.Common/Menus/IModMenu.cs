@@ -16,7 +16,7 @@ namespace OWML.Common.Menus
 
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();
-        [Obsolete("Use DuplicateButton instead")]
+        [Obsolete("Use button.Duplicate instead")]
         Button AddButton(string title, int index);
     }
 }

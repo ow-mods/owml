@@ -38,19 +38,15 @@ namespace OWML.ModHelper.Menus
             return Menu.GetComponentsInChildren<Button>().ToList();
         }
 
-        [Obsolete("Use DuplicateButton() instead")]
+        [Obsolete("Use button.Duplicate instead")]
         public Button AddButton(string title, int index)
         {
-            _console.WriteLine("Adding main menu button: " + title);
-
             var original = Buttons?.FirstOrDefault();
             if (original == null)
             {
                 _console.WriteLine("Warning: no buttons to copy");
                 return null;
             }
-
-            _logger.Log("Copying button: " + original.Title);
 
             var copy = original.Copy();
             copy.Title = title;
@@ -67,12 +63,10 @@ namespace OWML.ModHelper.Menus
 
         public virtual void AddButton(IModButton button, int index)
         {
-            _console.WriteLine("adding button: " + button.Button.name);
             button.Button.transform.parent = _layoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
-            _console.WriteLine("added button: " + button.Button.name);
         }
 
         public IModButton GetButton(string title)
@@ -87,7 +81,6 @@ namespace OWML.ModHelper.Menus
 
         protected void InvokeOnInit()
         {
-            _console.WriteLine("invoking OnInit from " + Menu.name);
             OnInit?.Invoke();
         }
 
