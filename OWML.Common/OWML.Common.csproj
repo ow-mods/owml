@@ -72,6 +72,7 @@
     <Compile Include="IModData.cs" />
     <Compile Include="Menus\IModMainMenu.cs" />
     <Compile Include="Menus\IModPauseMenu.cs" />
+    <Compile Include="Menus\IModsMenu.cs" />
     <Compile Include="Menus\IModTabbedMenu.cs" />
     <Compile Include="Menus\IModPopupMenu.cs" />
     <Compile Include="Menus\IModTabMenu.cs" />

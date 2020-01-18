@@ -60,18 +60,6 @@ namespace OWML.ModLoader
             }
         }
 
-        private ModsMenu CreateModMenu()
-        {
-            _console.WriteLine("Creating mod menu");
-            var modsMenu = new ModsMenu(_logger, _console);
-            var modMenuButton = _menus.MainMenu.AddButton("MODS", 3);
-            modMenuButton.onClick.AddListener(() =>
-            {
-                modsMenu.Open();
-            });
-            return modsMenu;
-        }
-
         private Type LoadMod(IModData modData)
         {
             var enabled = modData.Config.Enabled && modData.Manifest.Enabled;

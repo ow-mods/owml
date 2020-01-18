@@ -8,6 +8,7 @@ namespace OWML.ModHelper.Menus
     {
         public IModMainMenu MainMenu { get; }
         public IModPauseMenu PauseMenu { get; }
+        public IModsMenu ModsMenu { get; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -22,6 +23,9 @@ namespace OWML.ModHelper.Menus
             MainMenu.Initialize(titleScreenManager);
 
             PauseMenu = new ModPauseMenu(logger, console);
+
+            ModsMenu = new ModsMenu(logger, console);
+            ModsMenu.Initialize(this);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterAwake);
