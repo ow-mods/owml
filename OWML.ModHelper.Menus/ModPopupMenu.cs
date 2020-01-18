@@ -102,6 +102,13 @@ namespace OWML.ModHelper.Menus
             return modMenu;
         }
 
+        public IModPopupMenu Copy(string title)
+        {
+            var copy = Copy();
+            copy.Title = title;
+            return copy;
+        }
+
         [Obsolete("Use Copy instead")]
         public IModPopupMenu CreateCopy(string title)
         {
