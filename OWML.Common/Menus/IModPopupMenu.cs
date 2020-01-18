@@ -15,6 +15,7 @@ namespace OWML.Common.Menus
         void Toggle();
 
         IModPopupMenu Copy();
+        IModPopupMenu Copy(string title);
         void Initialize(Menu menu);
 
         [Obsolete("Use Copy instead")]
