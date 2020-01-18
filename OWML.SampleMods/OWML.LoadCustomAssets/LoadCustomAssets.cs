@@ -46,7 +46,6 @@ namespace OWML.LoadCustomAssets
         private void DoMainMenuStuff()
         {
             ModHelper.Console.WriteLine("LoadCustomAssets: inside MainMenu.OnInit");
-            ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate("lol resume");
 
             var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate();
             resumeDupe.Title = "Resume dupe";
