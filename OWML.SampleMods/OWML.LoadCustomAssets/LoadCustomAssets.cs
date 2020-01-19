@@ -48,17 +48,16 @@ namespace OWML.LoadCustomAssets
         private void DoMainMenuStuff()
         {
             ModHelper.Console.WriteLine(nameof(DoMainMenuStuff));
-            var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate();
-            resumeDupe.Title = "OPEN INPUT MENU";
+            var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate("OPEN INPUT MENU");
             resumeDupe.OnClick += () => ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
         }
 
         private void DoPauseMenuStuff()
         {
             ModHelper.Console.WriteLine(nameof(DoPauseMenuStuff));
-            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate();
-            openInputButton.Title = "OPEN INPUT MENU";
-            openInputButton.OnClick += () => ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();
+            var owoMenu = ModHelper.Menus.PauseMenu.Copy("OWO");
+            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate("OPEN INPUT MENU");
+            openInputButton.OnClick += () => owoMenu.Open();
         }
 
         public override void Configure(IModConfig config)
