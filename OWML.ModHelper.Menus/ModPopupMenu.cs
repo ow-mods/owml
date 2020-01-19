@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -21,6 +23,8 @@ namespace OWML.ModHelper.Menus
             set => _title.text = value;
         }
 
+        public List<ModInput<object>> InputElements { get; private set; }
+
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
@@ -42,6 +46,14 @@ namespace OWML.ModHelper.Menus
             }
             Menu.OnActivateMenu += OnActivateMenu;
             Menu.OnDeactivateMenu += OnDeactivateMenu;
+
+            InputElements = new List<ModInput<object>>();
+            var toggleElements = Menu.GetComponentsInChildren<TwoButtonToggleElement>();
+            foreach (var toggleElement in toggleElements)
+            {
+                var lol = new ModToggleInput(toggleElement);
+                InputElements.Add(lol);
+            }
         }
 
         private void OnDeactivateMenu()
