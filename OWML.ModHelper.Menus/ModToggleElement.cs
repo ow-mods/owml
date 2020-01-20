@@ -3,11 +3,11 @@ using OWML.ModHelper.Events;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModToggleInput : ModInput<bool>
+    public class ModToggleElement : ModInputElement<bool>
     {
         private readonly TwoButtonToggleElement _element;
 
-        public ModToggleInput(TwoButtonToggleElement element)
+        public ModToggleElement(TwoButtonToggleElement element): base(element)
         {
             _element = element;
             _element.GetValue<Button>("_buttonTrue").onClick.AddListener(() => InvokeOnChange(true));
