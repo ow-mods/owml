@@ -79,19 +79,14 @@ namespace OWML.ModHelper.Menus
         {
             var modMenu = menuTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
             modConfigMenu.Initialize(modMenu.Menu);
-            var index = 0;
+            var index = 2;
             modConfigMenu.AddButton(buttonTemplate.Copy("Enabled"), index++); // todo
             modConfigMenu.AddButton(buttonTemplate.Copy("Requires VR"), index++); // todo
-            foreach (var setting in modConfigMenu.Mod.ModHelper.Config.Settings)
+            foreach (var setting in modConfigMenu.ModData.Config.Settings)
             {
                 modConfigMenu.AddButton(buttonTemplate.Copy(setting.Key), index++); // todo
             }
-            var okButton = buttonTemplate.Copy("OK");
-            okButton.OnClick += () =>
-            {
-                modConfigMenu.Mod.Configure(modConfigMenu.Mod.ModHelper.Config);
-            };
-            modConfigMenu.AddButton(okButton, index);
+            modConfigMenu.AddButton(buttonTemplate.Copy("OK"), index); // todo
             return modConfigMenu;
         }
 
