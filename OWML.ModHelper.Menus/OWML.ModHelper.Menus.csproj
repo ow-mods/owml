@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModButton.cs" />
+    <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModMenu.cs" />
     <Compile Include="ModOptionsMenu.cs" />
     <Compile Include="ModPauseMenu.cs" />

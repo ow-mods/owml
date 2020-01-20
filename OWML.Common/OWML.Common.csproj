@@ -70,6 +70,7 @@
     <Compile Include="Menus\IModButton.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModData.cs" />
+    <Compile Include="Menus\IModConfigMenu.cs" />
     <Compile Include="Menus\IModMainMenu.cs" />
     <Compile Include="Menus\IModPauseMenu.cs" />
     <Compile Include="Menus\IModsMenu.cs" />
