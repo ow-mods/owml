@@ -54,6 +54,7 @@ namespace OWML.ModLoader
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
+            _logger.Log($"Unity log message ({type}): {message}. Stack trace: {stackTrace?.Trim()}");
             if (type == LogType.Error || type == LogType.Exception)
             {
                 _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
