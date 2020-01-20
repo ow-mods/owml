@@ -21,6 +21,7 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
+            _console.WriteLine("ModsMenu: AddMod");
             _modConfigMenus.Add(new ModConfigMenu(_logger, _console, modData, mod));
         }
 
@@ -38,6 +39,7 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(IModMenus menus)
         {
+            _console.WriteLine("ModsMenu: Initialize");
             menus.PauseMenu.OnInit += () =>
             {
                 var modsMenu = CreateModsMenu(menus);
@@ -52,31 +54,45 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModMenus menus)
         {
-            var originalButton = menus.PauseMenu.ResumeButton;
-            var originalMenu = menus.PauseMenu.Copy();
+            var buttonTemplate = menus.PauseMenu.ResumeButton;
             var modsMenu = menus.PauseMenu.Copy("MODS");
             foreach (var button in modsMenu.Buttons)
             {
                 button.Hide();
             }
+            var modMenuTemplate = menus.PauseMenu.Copy();
+            foreach (var button in modMenuTemplate.Buttons)
+            {
+                button.Hide();
+            }
             foreach (var modConfigMenu in _modConfigMenus)
             {
-                var modButton = CreateModButton(modConfigMenu, originalButton, originalMenu);
+                var modButton = buttonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
+                var modMenu = CreateModMenu(modConfigMenu, modMenuTemplate, buttonTemplate);
+                modButton.OnClick += () => modMenu.Open();
                 modsMenu.AddButton(modButton);
             }
             return modsMenu;
         }
 
-        private IModButton CreateModButton(IModConfigMenu modConfigMenu, IModButton originalModButton, IModPopupMenu originalMenu)
+        private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu, IModPopupMenu menuTemplate, IModButton buttonTemplate)
         {
-            var modButton = originalModButton.Copy(modConfigMenu.ModData.Manifest.Name);
-            var modMenu = originalMenu.Copy(modConfigMenu.ModData.Manifest.Name);
+            var modMenu = menuTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
             modConfigMenu.Initialize(modMenu.Menu);
-            modButton.OnClick += () =>
+            var index = 0;
+            modConfigMenu.AddButton(buttonTemplate.Copy("Enabled"), index++); // todo
+            modConfigMenu.AddButton(buttonTemplate.Copy("Requires VR"), index++); // todo
+            foreach (var setting in modConfigMenu.Mod.ModHelper.Config.Settings)
             {
-                modMenu.Open();
+                modConfigMenu.AddButton(buttonTemplate.Copy(setting.Key), index++); // todo
+            }
+            var okButton = buttonTemplate.Copy("OK");
+            okButton.OnClick += () =>
+            {
+                modConfigMenu.Mod.Configure(modConfigMenu.Mod.ModHelper.Config);
             };
-            return modButton;
+            modConfigMenu.AddButton(okButton, index);
+            return modConfigMenu;
         }
 
         private IModConfig ParseConfig(IModButton button)
