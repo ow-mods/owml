@@ -26,8 +26,14 @@ namespace OWML.ModHelper.Menus
 
         public virtual void Initialize(Menu menu)
         {
+            var layoutGroup = menu.GetComponent<LayoutGroup>() ?? menu.GetComponentInChildren<LayoutGroup>();
+            Initialize(menu, layoutGroup);
+        }
+
+        public virtual void Initialize(Menu menu, LayoutGroup layoutGroup)
+        {
             Menu = menu;
-            _layoutGroup = Menu.GetComponent<LayoutGroup>() ?? Menu.GetComponentInChildren<LayoutGroup>();
+            _layoutGroup = layoutGroup;
             Buttons = new List<IModButton>();
             Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
         }
@@ -56,17 +62,18 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
-        public void AddButton(IModButton button)
+        public IModButton AddButton(IModButton button)
         {
-            AddButton(button, button.Index);
+            return AddButton(button, button.Index);
         }
 
-        public virtual void AddButton(IModButton button, int index)
+        public virtual IModButton AddButton(IModButton button, int index)
         {
             button.Button.transform.parent = _layoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
+            return button;
         }
 
         public IModButton GetButton(string title)

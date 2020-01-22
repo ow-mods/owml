@@ -4,6 +4,7 @@ using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -14,7 +15,7 @@ namespace OWML.ModHelper.Menus
 
         private readonly List<IModConfigMenu> _modConfigMenus;
 
-        private Transform _modMenuCanvasTemplate;
+        private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
         public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
@@ -67,8 +68,8 @@ namespace OWML.ModHelper.Menus
             var rebindingCanvas = rebindingMenu.transform.parent;
             _console.WriteLine("parent of rebindingMenu: " + rebindingCanvas.name);
 
-            _modMenuCanvasTemplate = GameObject.Instantiate(rebindingCanvas);
-            _modMenuCanvasTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
+            _modMenuTemplate = GameObject.Instantiate(rebindingCanvas);
+            _modMenuTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
         }
 
         private void InitMainMenu(IModMainMenu mainMenu)
@@ -86,7 +87,7 @@ namespace OWML.ModHelper.Menus
         private void InitPauseMenu(IModPauseMenu pauseMenu)
         {
             _console.WriteLine("PauseMenu OnInit");
-            if (_modMenuCanvasTemplate == null)
+            if (_modMenuTemplate == null)
             {
                 _console.WriteLine("wtf _modMenuCanvasTemplate is null Owo");
             }
@@ -126,26 +127,33 @@ namespace OWML.ModHelper.Menus
         private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu)
         {
             _console.WriteLine("CreateModMenu");
-            if (_modMenuCanvasTemplate == null)
+            if (_modMenuTemplate == null)
             {
                 _console.WriteLine("Error: _modMenuCanvasTemplate is null");
                 return null;
             }
-            var modMenuTemplate = _modMenuCanvasTemplate.GetChild(0).GetComponent<Menu>();
-            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuCanvasTemplate.transform);
+            var modMenuTemplate = _modMenuTemplate.GetChild(0).GetComponent<Menu>();
+            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
             _console.WriteLine("instantiated modmenucopy");
-            modConfigMenu.Initialize(modMenuCopy);
+
+            var layoutGroup = modMenuCopy.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
+            modConfigMenu.Initialize(modMenuCopy, layoutGroup);
             _console.WriteLine("initialized modConfigMenu");
             modConfigMenu.Title = modConfigMenu.ModData.Manifest.Name;
             var index = 2;
-            modConfigMenu.AddButton(_modButtonTemplate.Copy("Enabled"), index++); // todo
-            modConfigMenu.AddButton(_modButtonTemplate.Copy("Requires VR"), index++); // todo
+            AddConfigButton(modConfigMenu, "Enabled", index++);
+            AddConfigButton(modConfigMenu, "Requires VR", index++);
             foreach (var setting in modConfigMenu.ModData.Config.Settings)
             {
-                modConfigMenu.AddButton(_modButtonTemplate.Copy(setting.Key), index++); // todo
+                AddConfigButton(modConfigMenu, setting.Key, index++);
             }
-            modConfigMenu.AddButton(_modButtonTemplate.Copy("OK"), index); // todo
+            AddConfigButton(modConfigMenu, "OK", index);
             return modConfigMenu;
+        }
+
+        private void AddConfigButton(IModConfigMenu modConfigMenu, string name, int index)
+        {
+            modConfigMenu.AddButton(_modButtonTemplate.Copy(name), index); // todo
         }
 
         private IModConfig ParseConfig(IModButton button)

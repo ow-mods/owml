@@ -11,8 +11,8 @@ namespace OWML.Common.Menus
         Menu Menu { get; }
         List<IModButton> Buttons { get; }
         IModButton GetButton(string title);
-        void AddButton(IModButton button);
-        void AddButton(IModButton button, int index);
+        IModButton AddButton(IModButton button);
+        IModButton AddButton(IModButton button, int index);
 
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();
