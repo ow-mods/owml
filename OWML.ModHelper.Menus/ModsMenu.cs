@@ -42,8 +42,12 @@ namespace OWML.ModHelper.Menus
             _console.WriteLine("ModsMenu: Initialize");
             menus.PauseMenu.OnInit += () =>
             {
-                var modsMenu = CreateModsMenu(menus);
+                _console.WriteLine("PauseMenu OnInit");
                 var modsButton = menus.PauseMenu.ResumeButton.Duplicate("MODS");
+                _console.WriteLine("Copied mods button");
+                var optionsMenu = menus.PauseMenu.OptionsMenu;
+                _console.WriteLine("got options menu");
+                var modsMenu = CreateModsMenu(optionsMenu, modsButton, menus.PauseMenu);
                 modsButton.OnClick += () =>
                 {
                     modsMenu.Open();
@@ -52,27 +56,33 @@ namespace OWML.ModHelper.Menus
             // todo main menu
         }
 
-        private IModPopupMenu CreateModsMenu(IModMenus menus)
+        private IModPopupMenu CreateModsMenu(IModTabbedMenu options, IModButton buttonTemplate, IModPopupMenu menuTemplate)
         {
-            var buttonTemplate = menus.PauseMenu.ResumeButton;
-            var modsMenu = menus.PauseMenu.Copy("MODS");
-            foreach (var button in modsMenu.Buttons)
+            _console.WriteLine("CreateModsMenu");
+            var modsTab = options.InputTab.Copy("MODS");
+            _console.WriteLine("Copied tab");
+            foreach (var button in modsTab.Buttons)
             {
                 button.Hide();
             }
-            var modMenuTemplate = menus.PauseMenu.Copy();
+            options.AddTab(modsTab);
+            _console.WriteLine("Added tab");
+            var modMenuTemplate = menuTemplate.Copy();
+            _console.WriteLine("Copied menu template");
             foreach (var button in modMenuTemplate.Buttons)
             {
                 button.Hide();
             }
+            _console.WriteLine("Interating mods...");
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = buttonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
                 var modMenu = CreateModMenu(modConfigMenu, modMenuTemplate, buttonTemplate);
                 modButton.OnClick += () => modMenu.Open();
-                modsMenu.AddButton(modButton);
+                modsTab.AddButton(modButton);
             }
-            return modsMenu;
+            _console.WriteLine("CreateModsMenu is done");
+            return modsTab;
         }
 
         private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu, IModPopupMenu menuTemplate, IModButton buttonTemplate)
