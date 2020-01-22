@@ -14,7 +14,7 @@ namespace OWML.ModHelper.Menus
 
         private readonly List<IModConfigMenu> _modConfigMenus;
 
-        private Menu _modMenuTemplate;
+        private Transform _modMenuCanvasTemplate;
 
         public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
@@ -44,24 +44,9 @@ namespace OWML.ModHelper.Menus
         public void Initialize(IModMenus menus)
         {
             _console.WriteLine("ModsMenu: Initialize");
+            CreateModMenuTemplate(menus.MainMenu);
             menus.MainMenu.OnInit += () => InitMainMenu(menus.MainMenu);
             menus.PauseMenu.OnInit += () => InitPauseMenu(menus.PauseMenu);
-        }
-
-        private void InitMainMenu(IModMainMenu mainMenu)
-        {
-            _console.WriteLine("MainMenu OnInit");
-            if (_modMenuTemplate == null)
-            {
-                CreateModMenuTemplate(mainMenu);
-            }
-            var modsButton = mainMenu.ResumeExpeditionButton.Duplicate("MODS");
-            _console.WriteLine("Copied mods button");
-            var optionsMenu = mainMenu.OptionsMenu;
-            _console.WriteLine("got options menu");
-            var modsMenu = CreateModsMenu(optionsMenu, mainMenu.ResumeExpeditionButton);
-            modsButton.OnClick += () => modsMenu.Open();
-            Menu = mainMenu.Menu;
         }
 
         private void CreateModMenuTemplate(IModMainMenu mainMenu)
@@ -73,13 +58,33 @@ namespace OWML.ModHelper.Menus
             {
                 _console.WriteLine("Error: rebindingMenu is null");
             }
-            _modMenuTemplate = GameObject.Instantiate(rebindingMenu);
-            _modMenuTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
+
+            var rebindingCanvas = rebindingMenu.transform.parent;
+            _console.WriteLine("parent of rebindingMenu: " + rebindingCanvas.name);
+
+            _modMenuCanvasTemplate = GameObject.Instantiate(rebindingCanvas);
+            _modMenuCanvasTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
+        }
+
+        private void InitMainMenu(IModMainMenu mainMenu)
+        {
+            _console.WriteLine("MainMenu OnInit");
+            var modsButton = mainMenu.ResumeExpeditionButton.Duplicate("MODS");
+            _console.WriteLine("Copied mods button");
+            var optionsMenu = mainMenu.OptionsMenu;
+            _console.WriteLine("got options menu");
+            var modsMenu = CreateModsMenu(optionsMenu, mainMenu.ResumeExpeditionButton);
+            modsButton.OnClick += () => modsMenu.Open();
+            Menu = mainMenu.Menu;
         }
 
         private void InitPauseMenu(IModPauseMenu pauseMenu)
         {
             _console.WriteLine("PauseMenu OnInit");
+            if (_modMenuCanvasTemplate == null)
+            {
+                _console.WriteLine("wtf _modMenuCanvasTemplate is null Owo");
+            }
             var modsButton = pauseMenu.ResumeButton.Duplicate("MODS");
             _console.WriteLine("Copied mods button");
             var optionsMenu = pauseMenu.OptionsMenu;
@@ -116,12 +121,13 @@ namespace OWML.ModHelper.Menus
         private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu, IModButton buttonTemplate)
         {
             _console.WriteLine("CreateModMenu");
-            if (_modMenuTemplate == null)
+            if (_modMenuCanvasTemplate == null)
             {
-                _console.WriteLine("Error: _modMenuTemplate is null");
+                _console.WriteLine("Error: _modMenuCanvasTemplate is null");
                 return null;
             }
-            var modMenuCopy = GameObject.Instantiate(_modMenuTemplate, buttonTemplate.Button.transform.root);
+            var modMenuTemplate = _modMenuCanvasTemplate.GetChild(0).GetComponent<Menu>();
+            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuCanvasTemplate.transform);
             _console.WriteLine("instantiated modmenucopy");
             modConfigMenu.Initialize(modMenuCopy);
             _console.WriteLine("initialized modConfigMenu");
