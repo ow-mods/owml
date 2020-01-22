@@ -51,16 +51,18 @@ namespace OWML.ModLoader
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            if (type != LogType.Error && type != LogType.Exception)
+            if (IsRelevantLogMessage(stackTrace, type))
             {
-                return;
+                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
-            var logMessage = $"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}";
-            _logger.Log(logMessage);
-            if (_owmlConfig.Verbose)
-            {
-                _console.WriteLine(logMessage);
-            }
+        }
+
+        private bool IsRelevantLogMessage(string stackTrace, LogType type)
+        {
+            return (type == LogType.Error || type == LogType.Exception) &&
+                   stackTrace?.Trim() != "OWRigidbody.FixedUpdate ()" &&
+                   stackTrace?.Trim() != "CenterOfTheUniverseOffsetApplier.FixedUpdate ()" &&
+                   stackTrace?.Trim() != "QuantumSocket.Awake ()";
         }
 
         private Type LoadMod(IModData modData)

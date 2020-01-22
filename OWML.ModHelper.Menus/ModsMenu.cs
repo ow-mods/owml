@@ -2,6 +2,8 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
+using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -11,6 +13,8 @@ namespace OWML.ModHelper.Menus
         private readonly IModConsole _console;
 
         private readonly List<IModConfigMenu> _modConfigMenus;
+
+        private Menu _modMenuTemplate;
 
         public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
@@ -40,23 +44,52 @@ namespace OWML.ModHelper.Menus
         public void Initialize(IModMenus menus)
         {
             _console.WriteLine("ModsMenu: Initialize");
-            menus.PauseMenu.OnInit += () =>
-            {
-                _console.WriteLine("PauseMenu OnInit");
-                var modsButton = menus.PauseMenu.ResumeButton.Duplicate("MODS");
-                _console.WriteLine("Copied mods button");
-                var optionsMenu = menus.PauseMenu.OptionsMenu;
-                _console.WriteLine("got options menu");
-                var modsMenu = CreateModsMenu(optionsMenu, modsButton, menus.PauseMenu);
-                modsButton.OnClick += () =>
-                {
-                    modsMenu.Open();
-                };
-            };
-            // todo main menu
+            menus.MainMenu.OnInit += () => InitMainMenu(menus.MainMenu);
+            menus.PauseMenu.OnInit += () => InitPauseMenu(menus.PauseMenu);
         }
 
-        private IModPopupMenu CreateModsMenu(IModTabbedMenu options, IModButton buttonTemplate, IModPopupMenu menuTemplate)
+        private void InitMainMenu(IModMainMenu mainMenu)
+        {
+            _console.WriteLine("MainMenu OnInit");
+            if (_modMenuTemplate == null)
+            {
+                CreateModMenuTemplate(mainMenu);
+            }
+            var modsButton = mainMenu.ResumeExpeditionButton.Duplicate("MODS");
+            _console.WriteLine("Copied mods button");
+            var optionsMenu = mainMenu.OptionsMenu;
+            _console.WriteLine("got options menu");
+            var modsMenu = CreateModsMenu(optionsMenu, mainMenu.ResumeExpeditionButton);
+            modsButton.OnClick += () => modsMenu.Open();
+            Menu = mainMenu.Menu;
+        }
+
+        private void CreateModMenuTemplate(IModMainMenu mainMenu)
+        {
+            var remapControlsButton = mainMenu.OptionsMenu.InputTab.Buttons.Single(x => x.Button.name == "UIElement-RemapControls");
+            var submitActionMenu = remapControlsButton.Button.GetComponent<SubmitActionMenu>();
+            var rebindingMenu = submitActionMenu.GetValue<Menu>("_menuToOpen");
+            if (rebindingMenu == null)
+            {
+                _console.WriteLine("Error: rebindingMenu is null");
+            }
+            _modMenuTemplate = GameObject.Instantiate(rebindingMenu);
+            _modMenuTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
+        }
+
+        private void InitPauseMenu(IModPauseMenu pauseMenu)
+        {
+            _console.WriteLine("PauseMenu OnInit");
+            var modsButton = pauseMenu.ResumeButton.Duplicate("MODS");
+            _console.WriteLine("Copied mods button");
+            var optionsMenu = pauseMenu.OptionsMenu;
+            _console.WriteLine("got options menu");
+            var modsMenu = CreateModsMenu(optionsMenu, pauseMenu.ResumeButton);
+            modsButton.OnClick += () => modsMenu.Open();
+            Menu = pauseMenu.Menu;
+        }
+
+        private IModPopupMenu CreateModsMenu(IModTabbedMenu options, IModButton buttonTemplate)
         {
             _console.WriteLine("CreateModsMenu");
             var modsTab = options.InputTab.Copy("MODS");
@@ -67,17 +100,12 @@ namespace OWML.ModHelper.Menus
             }
             options.AddTab(modsTab);
             _console.WriteLine("Added tab");
-            var modMenuTemplate = menuTemplate.Copy();
-            _console.WriteLine("Copied menu template");
-            foreach (var button in modMenuTemplate.Buttons)
-            {
-                button.Hide();
-            }
-            _console.WriteLine("Interating mods...");
             foreach (var modConfigMenu in _modConfigMenus)
             {
+                _console.WriteLine("Mod: " + modConfigMenu.ModData.Manifest.UniqueName);
                 var modButton = buttonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
-                var modMenu = CreateModMenu(modConfigMenu, modMenuTemplate, buttonTemplate);
+                _console.WriteLine("Copied mod button: " + modButton.Title);
+                var modMenu = CreateModMenu(modConfigMenu, buttonTemplate);
                 modButton.OnClick += () => modMenu.Open();
                 modsTab.AddButton(modButton);
             }
@@ -85,10 +113,19 @@ namespace OWML.ModHelper.Menus
             return modsTab;
         }
 
-        private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu, IModPopupMenu menuTemplate, IModButton buttonTemplate)
+        private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu, IModButton buttonTemplate)
         {
-            var modMenu = menuTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
-            modConfigMenu.Initialize(modMenu.Menu);
+            _console.WriteLine("CreateModMenu");
+            if (_modMenuTemplate == null)
+            {
+                _console.WriteLine("Error: _modMenuTemplate is null");
+                return null;
+            }
+            var modMenuCopy = GameObject.Instantiate(_modMenuTemplate, buttonTemplate.Button.transform.root);
+            _console.WriteLine("instantiated modmenucopy");
+            modConfigMenu.Initialize(modMenuCopy);
+            _console.WriteLine("initialized modConfigMenu");
+            modConfigMenu.Title = modConfigMenu.ModData.Manifest.Name;
             var index = 2;
             modConfigMenu.AddButton(buttonTemplate.Copy("Enabled"), index++); // todo
             modConfigMenu.AddButton(buttonTemplate.Copy("Requires VR"), index++); // todo

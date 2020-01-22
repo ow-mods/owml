@@ -11,7 +11,7 @@ namespace OWML.ModHelper.Menus
     {
         public event Action OnInit;
 
-        public Menu Menu { get; private set; }
+        public Menu Menu { get; protected set; }
         public List<IModButton> Buttons { get; private set; }
 
         private readonly IModLogger _logger;
