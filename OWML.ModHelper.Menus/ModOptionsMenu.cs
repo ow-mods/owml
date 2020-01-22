@@ -24,10 +24,6 @@ namespace OWML.ModHelper.Menus
         {
             _logger = logger;
             _console = console;
-            GameplayTab = new ModTabMenu(logger, console, this);
-            AudioTab = new ModTabMenu(logger, console, this);
-            InputTab = new ModTabMenu(logger, console, this);
-            GraphicsTab = new ModTabMenu(logger, console, this);
         }
 
         public void Initialize(TabbedMenu menu)
