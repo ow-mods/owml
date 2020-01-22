@@ -9,5 +9,6 @@ namespace OWML.Common.Menus
         T Value { get; set; }
         MonoBehaviour Element { get; }
         IModInput<T> Copy();
+        int Index { get; set; }
     }
 }

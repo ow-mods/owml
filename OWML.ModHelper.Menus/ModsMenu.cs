@@ -18,6 +18,9 @@ namespace OWML.ModHelper.Menus
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
+        private IModInput<bool> _toggleTemplate;
+        private IModInput<float> _sliderTemplate;
+
         public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
             _logger = logger;
@@ -79,10 +82,6 @@ namespace OWML.ModHelper.Menus
 
         private void InitPauseMenu(IModPauseMenu pauseMenu)
         {
-            if (_modMenuTemplate == null)
-            {
-                _console.WriteLine("wtf _modMenuCanvasTemplate is null Owo");
-            }
             var modsButton = pauseMenu.OptionsButton.Duplicate("MODS");
             var optionsMenu = pauseMenu.OptionsMenu;
             var modsMenu = CreateModsMenu(optionsMenu);
@@ -92,6 +91,8 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
+            _toggleTemplate = options.InputTab.ToggleInputs[0];
+            _sliderTemplate = options.InputTab.SliderInputs[0];
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>().ToList().ForEach(x => x.gameObject.SetActive(false));
@@ -122,19 +123,42 @@ namespace OWML.ModHelper.Menus
             modConfigMenu.GetButton("UIElement-CancelOutOfRebinding").Hide();
 
             var index = 2;
-            AddConfigButton(modConfigMenu, "Enabled", index++);
-            AddConfigButton(modConfigMenu, "Requires VR", index++);
+            AddConfigInput(modConfigMenu, "Enabled", modConfigMenu.ModData.Config.Enabled, index++);
+            AddConfigInput(modConfigMenu, "Requires VR", modConfigMenu.ModData.Config.RequireVR, index++);
             foreach (var setting in modConfigMenu.ModData.Config.Settings)
             {
-                AddConfigButton(modConfigMenu, setting.Key, index++);
+                AddConfigInput(modConfigMenu, setting, index++);
             }
-            AddConfigButton(modConfigMenu, "OK", index);
+            modConfigMenu.AddButton(_modButtonTemplate.Copy("OK"), index);
             return modConfigMenu;
         }
 
-        private void AddConfigButton(IModConfigMenu modConfigMenu, string name, int index)
+        private void AddConfigInput(IModConfigMenu modConfigMenu, string name, object value, int index)
         {
-            modConfigMenu.AddButton(_modButtonTemplate.Copy(name), index); // todo
+            AddConfigInput(modConfigMenu, new KeyValuePair<string, object>(name, value), index);
+        }
+
+        private void AddConfigInput(IModConfigMenu modConfigMenu, KeyValuePair<string, object> setting, int index)
+        {
+            if (setting.Value.GetType() == typeof(bool))
+            {
+                _console.WriteLine("for setting " + setting.Key + ", using type: toggle");
+                var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(), index);
+                // todo
+            }
+            else if (setting.Value.GetType() == typeof(long) || setting.Value.GetType() == typeof(double))
+            {
+                _console.WriteLine("for setting " + setting.Key + ", using type: slider");
+                var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(), index);
+                // todo
+            }
+            else
+            {
+                _console.WriteLine("Error: unrecognized type of setting: " + setting.Value.GetType());
+                return;
+            }
+
+            //modConfigMenu.AddSliderInput()Button(_modButtonTemplate.Copy(setting.Key), index); // todo
         }
 
         private IModConfig ParseConfig(IModButton button)

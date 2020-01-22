@@ -9,12 +9,19 @@ namespace OWML.Common.Menus
         event Action OnInit;
 
         Menu Menu { get; }
+
         List<IModButton> Buttons { get; }
-        List<IModInput<bool>> ToggleElements { get; }
-        List<IModInput<float>> SliderElements { get; }
         IModButton GetButton(string title);
         IModButton AddButton(IModButton button);
         IModButton AddButton(IModButton button, int index);
+
+        List<IModInput<bool>> ToggleInputs { get; }
+        IModInput<bool> AddToggleInput(IModInput<bool> input);
+        IModInput<bool> AddToggleInput(IModInput<bool> input, int index);
+
+        List<IModInput<float>> SliderInputs { get; }
+        IModInput<float> AddSliderInput(IModInput<float> input);
+        IModInput<float> AddSliderInput(IModInput<float> input, int index);
 
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();

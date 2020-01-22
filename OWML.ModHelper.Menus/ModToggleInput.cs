@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModToggleElement : ModInputElement<bool>
+    public class ModToggleInput : ModInput<bool>
     {
         private readonly TwoButtonToggleElement _element;
 
-        public ModToggleElement(TwoButtonToggleElement element): base(element)
+        public ModToggleInput(TwoButtonToggleElement element): base(element)
         {
             _element = element;
             _element.GetValue<Button>("_buttonTrue").onClick.AddListener(() => InvokeOnChange(true));
@@ -29,7 +29,7 @@ namespace OWML.ModHelper.Menus
         public override IModInput<bool> Copy()
         {
             var copy = GameObject.Instantiate(_element);
-            return new ModToggleElement(copy);
+            return new ModToggleInput(copy);
         }
 
     }

@@ -39,8 +39,8 @@ namespace OWML.LoadCustomAssets
 
             var modMenu = ModHelper.Menus.ModsMenu.Register(this);
 
-            ModHelper.Menus.MainMenu.OptionsMenu.InputTab.SliderElements.ForEach(x => ModHelper.Console.WriteLine("slider: " + x.Element.name));
-            ModHelper.Menus.MainMenu.OptionsMenu.InputTab.ToggleElements.ForEach(x => ModHelper.Console.WriteLine("toggle: " + x.Element.name));
+            ModHelper.Menus.MainMenu.OptionsMenu.InputTab.ToggleInputs.ForEach(x => ModHelper.Console.WriteLine("slider: " + x.Element.name));
+            ModHelper.Menus.MainMenu.OptionsMenu.InputTab.SliderInputs.ForEach(x => ModHelper.Console.WriteLine("toggle: " + x.Element.name));
         }
 
         public override void Configure(IModConfig config)
