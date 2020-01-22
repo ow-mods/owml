@@ -11,5 +11,6 @@
 
         void Initialize(TabbedMenu menu);
         new TabbedMenu Menu { get; }
+        void AddTab(IModTabMenu tab);
     }
 }

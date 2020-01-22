@@ -1,6 +1,8 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -10,7 +12,14 @@ namespace OWML.ModHelper.Menus
         private readonly IModConsole _console;
         private readonly IModTabbedMenu _optionsMenu;
 
-        private TabButton _tabButton;
+        public TabButton TabButton { get; private set; }
+
+        private Text _text;
+        public new string Title
+        {
+            get => _text.text;
+            set => _text.text = value;
+        }
 
         public ModTabMenu(IModLogger logger, IModConsole console, IModTabbedMenu optionsMenu) : base(logger, console)
         {
@@ -21,7 +30,7 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(TabButton tabButton)
         {
-            _tabButton = tabButton;
+            TabButton = tabButton;
             var menu = tabButton.GetValue<Menu>("_tabbedMenu");
             Initialize(menu);
             InvokeOnInit();
@@ -33,7 +42,26 @@ namespace OWML.ModHelper.Menus
             {
                 _optionsMenu.Open();
             }
-            _optionsMenu.Menu.Invoke("SelectTabButton", _tabButton);
+            _optionsMenu.Menu.Invoke("SelectTabButton", TabButton);
+        }
+
+        public new IModTabMenu Copy()
+        {
+            var tabButton = GameObject.Instantiate(TabButton, TabButton.transform.parent);
+            GameObject.Destroy(tabButton.GetComponentInChildren<LocalizedText>());
+            _text = tabButton.GetComponentInChildren<Text>();
+            var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
+            tabButton.SetValue("_tabbedMenu", menu);
+            var modMenu = new ModTabMenu(_logger, _console, _optionsMenu);
+            modMenu.Initialize(tabButton);
+            return modMenu;
+        }
+
+        public new IModTabMenu Copy(string title)
+        {
+            var copy = Copy();
+            Title = title;
+            return copy;
         }
 
     }

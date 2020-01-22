@@ -1,32 +1,30 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModOptionsMenu : ModPopupMenu, IModTabbedMenu
     {
-        public IModTabMenu GameplayTab { get; }
-        public IModTabMenu AudioTab { get; }
-        public IModTabMenu InputTab { get; }
-        public IModTabMenu GraphicsTab { get; }
+        public IModTabMenu GameplayTab { get; private set; }
+        public IModTabMenu AudioTab { get; private set; }
+        public IModTabMenu InputTab { get; private set; }
+        public IModTabMenu GraphicsTab { get; private set; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
         public new TabbedMenu Menu { get; private set; }
 
-        private TabButton[] _tabButtons;
+        private List<IModTabMenu> _tabMenus;
 
         public ModOptionsMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
             _logger = logger;
             _console = console;
-            GameplayTab = new ModTabMenu(logger, console, this);
-            AudioTab = new ModTabMenu(logger, console, this);
-            InputTab = new ModTabMenu(logger, console, this);
-            GraphicsTab = new ModTabMenu(logger, console, this);
         }
 
         public void Initialize(TabbedMenu menu)
@@ -34,24 +32,46 @@ namespace OWML.ModHelper.Menus
             base.Initialize(menu);
             Menu = menu;
 
-            _tabButtons = menu.GetValue<TabButton[]>("_menuTabs");
-            GameplayTab.Initialize(GetTabButton("Button-GamePlay"));
-            AudioTab.Initialize(GetTabButton("Button-Audio"));
-            InputTab.Initialize(GetTabButton("Button-Input"));
-            GraphicsTab.Initialize(GetTabButton("Button-Graphics"));
+            var tabButtons = Menu.GetValue<TabButton[]>("_menuTabs");
+            _tabMenus = new List<IModTabMenu>();
+            foreach (var tabButton in tabButtons)
+            {
+                var tabMenu = new ModTabMenu(_logger, _console, this);
+                tabMenu.Initialize(tabButton);
+                _tabMenus.Add(tabMenu);
+            }
+
+            GameplayTab = _tabMenus.Single(x => x.TabButton.name == "Button-GamePlay");
+            AudioTab = _tabMenus.Single(x => x.TabButton.name == "Button-Audio");
+            InputTab = _tabMenus.Single(x => x.TabButton.name == "Button-Input");
+            GraphicsTab = _tabMenus.Single(x => x.TabButton.name == "Button-Graphics");
 
             InvokeOnInit();
         }
 
-        public TabButton GetTabButton(string name)
+        public void AddTab(IModTabMenu tabMenu)
         {
-            var tabButton = _tabButtons.FirstOrDefault(x => x.name == name);
-            if (tabButton == null)
+            _tabMenus.Add(tabMenu);
+            var tabs = _tabMenus.Select(x => x.TabButton).ToArray();
+            Menu.SetValue("_menuTabs", tabs);
+            var parent = tabs[0].transform.parent;
+            tabMenu.TabButton.transform.parent = parent;
+            UpdateTabNavigation();
+        }
+
+        private void UpdateTabNavigation()
+        {
+            for (var i = 0; i < _tabMenus.Count; i++)
             {
-                _console.WriteLine("Error: could not find tab for " + name);
-                return null;
+                var leftIndex = (i - 1 + _tabMenus.Count) % _tabMenus.Count;
+                var rightIndex = (i + 1) % _tabMenus.Count;
+                _tabMenus[i].TabButton.GetComponent<Button>().navigation = new Navigation
+                {
+                    selectOnLeft = _tabMenus[leftIndex].TabButton.GetComponent<Button>(),
+                    selectOnRight = _tabMenus[rightIndex].TabButton.GetComponent<Button>(),
+                    mode = Navigation.Mode.Explicit
+                };
             }
-            return tabButton;
         }
 
         public new IModTabbedMenu Copy()

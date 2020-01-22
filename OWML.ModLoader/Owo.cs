@@ -6,7 +6,6 @@ using OWML.Common.Menus;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Menus;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -33,11 +32,7 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            if (_owmlConfig.Verbose)
-            {
-                _console.WriteLine("Verbose mode is enabled");
-                Application.logMessageReceived += OnLogMessageReceived;
-            }
+            Application.logMessageReceived += OnLogMessageReceived;
             var mods = _modFinder.GetMods();
             foreach (var modData in mods)
             {
@@ -45,31 +40,29 @@ namespace OWML.ModLoader
                 if (modType == null)
                 {
                     _logger.Log("Mod type is null, skipping");
+                    _menus.ModsMenu.AddMod(modData, null);
                     continue;
                 }
                 var helper = CreateModHelper(modData);
-                InitializeMod(modType, helper);
+                var mod = InitializeMod(modType, helper);
+                _menus.ModsMenu.AddMod(modData, mod);
             }
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            if (type == LogType.Error || type == LogType.Exception)
+            if (IsRelevantLogMessage(stackTrace, type))
             {
                 _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
-        private ModsMenu CreateModMenu()
+        private bool IsRelevantLogMessage(string stackTrace, LogType type)
         {
-            _console.WriteLine("Creating mod menu");
-            var modsMenu = new ModsMenu(_logger, _console);
-            var modMenuButton = _menus.MainMenu.AddButton("MODS", 3);
-            modMenuButton.onClick.AddListener(() =>
-            {
-                modsMenu.Open();
-            });
-            return modsMenu;
+            return (type == LogType.Error || type == LogType.Exception) &&
+                   stackTrace?.Trim() != "OWRigidbody.FixedUpdate ()" &&
+                   stackTrace?.Trim() != "CenterOfTheUniverseOffsetApplier.FixedUpdate ()" &&
+                   stackTrace?.Trim() != "QuantumSocket.Awake ()";
         }
 
         private Type LoadMod(IModData modData)
@@ -103,7 +96,7 @@ namespace OWML.ModLoader
                 events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig);
         }
 
-        private void InitializeMod(Type modType, IModHelper helper)
+        private IModBehaviour InitializeMod(Type modType, IModHelper helper)
         {
             _logger.Log($"Initializing {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
             _logger.Log("Adding mod behaviour...");
@@ -113,13 +106,13 @@ namespace OWML.ModLoader
                 var mod = (ModBehaviour)go.AddComponent(modType);
                 _logger.Log("Added! Initializing...");
                 mod.Init(helper);
+                return mod;
             }
             catch (Exception ex)
             {
                 _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
-                return;
+                return null;
             }
-            _console.WriteLine($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
         }
 
     }
