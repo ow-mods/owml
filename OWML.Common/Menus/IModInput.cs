@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace OWML.Common.Menus
 {
@@ -6,5 +7,7 @@ namespace OWML.Common.Menus
     {
         event Action<T> OnChange;
         T Value { get; set; }
+        MonoBehaviour Element { get; }
+        IModInput<T> Copy();
     }
 }

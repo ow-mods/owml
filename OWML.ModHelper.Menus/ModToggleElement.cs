@@ -1,5 +1,7 @@
-﻿using UnityEngine.UI;
+﻿using OWML.Common.Menus;
+using UnityEngine.UI;
 using OWML.ModHelper.Events;
+using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -17,7 +19,18 @@ namespace OWML.ModHelper.Menus
         public override bool Value
         {
             get => _element.GetValue();
-            set => _element.Initialize(value);
+            set
+            {
+                _element.Initialize(value);
+                InvokeOnChange(value);
+            }
         }
+
+        public override IModInput<bool> Copy()
+        {
+            var copy = GameObject.Instantiate(_element);
+            return new ModToggleElement(copy);
+        }
+
     }
 }

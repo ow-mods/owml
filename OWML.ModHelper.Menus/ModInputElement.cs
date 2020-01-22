@@ -15,6 +15,8 @@ namespace OWML.ModHelper.Menus
             Element = element;
         }
 
+        public abstract IModInput<T> Copy();
+
         protected void InvokeOnChange(T value)
         {
             OnChange?.Invoke(value);

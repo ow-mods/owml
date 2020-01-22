@@ -23,8 +23,6 @@ namespace OWML.ModHelper.Menus
             set => _title.text = value;
         }
 
-        public List<ModToggleElement> ToggleElements { get; private set; }
-
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
@@ -52,19 +50,8 @@ namespace OWML.ModHelper.Menus
             }
             Menu.OnActivateMenu += OnActivateMenu;
             Menu.OnDeactivateMenu += OnDeactivateMenu;
-
-            ToggleElements = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleElement(x)).ToList();
-            foreach (var el in ToggleElements)
-            {
-                _console.WriteLine("Toggle element: " + el.Value);
-            }
         }
 
-        public ModToggleElement GetToggleElement(string name)
-        {
-            return ToggleElements.FirstOrDefault(x => x.Element.name == name);
-        }
-        
         private void OnDeactivateMenu()
         {
             IsOpen = false;

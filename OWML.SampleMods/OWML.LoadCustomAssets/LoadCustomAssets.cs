@@ -37,27 +37,10 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            ModHelper.Menus.MainMenu.OnInit += DoMainMenuStuff;
-            DoMainMenuStuff();
-
-            ModHelper.Menus.PauseMenu.OnInit += DoPauseMenuStuff;
-
             var modMenu = ModHelper.Menus.ModsMenu.Register(this);
-        }
 
-        private void DoMainMenuStuff()
-        {
-            ModHelper.Console.WriteLine(nameof(DoMainMenuStuff));
-            var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate("OPEN INPUT MENU");
-            resumeDupe.OnClick += () => ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
-        }
-
-        private void DoPauseMenuStuff()
-        {
-            ModHelper.Console.WriteLine(nameof(DoPauseMenuStuff));
-            var owoMenu = ModHelper.Menus.PauseMenu.Copy("OWO");
-            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate("OPEN INPUT MENU");
-            openInputButton.OnClick += () => owoMenu.Open();
+            ModHelper.Menus.MainMenu.OptionsMenu.InputTab.SliderElements.ForEach(x => ModHelper.Console.WriteLine("slider: " + x.Element.name));
+            ModHelper.Menus.MainMenu.OptionsMenu.InputTab.ToggleElements.ForEach(x => ModHelper.Console.WriteLine("toggle: " + x.Element.name));
         }
 
         public override void Configure(IModConfig config)

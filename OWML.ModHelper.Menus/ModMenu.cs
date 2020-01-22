@@ -12,7 +12,9 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
-        public List<IModButton> Buttons { get; private set; }
+        public List<IModButton> Buttons { get; }
+        public List<IModInput<bool>> ToggleElements { get; }
+        public List<IModInput<float>> SliderElements { get; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -22,6 +24,9 @@ namespace OWML.ModHelper.Menus
         {
             _logger = logger;
             _console = console;
+            Buttons = new List<IModButton>();
+            ToggleElements = new List<IModInput<bool>>();
+            SliderElements = new List<IModInput<float>>();
         }
 
         public virtual void Initialize(Menu menu)
@@ -34,8 +39,9 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             _layoutGroup = layoutGroup;
-            Buttons = new List<IModButton>();
             Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
+            ToggleElements.AddRange(Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleElement(x)).Cast<IModInput<bool>>());
+            SliderElements.AddRange(Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderElement(x)).Cast<IModInput<float>>());
         }
 
         [Obsolete("Use Buttons instead")]

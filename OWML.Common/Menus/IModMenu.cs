@@ -10,6 +10,8 @@ namespace OWML.Common.Menus
 
         Menu Menu { get; }
         List<IModButton> Buttons { get; }
+        List<IModInput<bool>> ToggleElements { get; }
+        List<IModInput<float>> SliderElements { get; }
         IModButton GetButton(string title);
         IModButton AddButton(IModButton button);
         IModButton AddButton(IModButton button, int index);
