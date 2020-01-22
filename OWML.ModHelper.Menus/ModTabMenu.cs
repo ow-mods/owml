@@ -47,7 +47,6 @@ namespace OWML.ModHelper.Menus
 
         public new IModTabMenu Copy()
         {
-            _console.WriteLine("IModTabMenu Copy()");
             var tabButton = GameObject.Instantiate(TabButton, TabButton.transform.parent);
             GameObject.Destroy(tabButton.GetComponentInChildren<LocalizedText>());
             _text = tabButton.GetComponentInChildren<Text>();
@@ -60,7 +59,6 @@ namespace OWML.ModHelper.Menus
 
         public new IModTabMenu Copy(string title)
         {
-            _console.WriteLine("IModTabMenu Copy(title)");
             var copy = Copy();
             Title = title;
             return copy;
