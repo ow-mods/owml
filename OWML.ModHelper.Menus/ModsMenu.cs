@@ -119,6 +119,7 @@ namespace OWML.ModHelper.Menus
             var layoutGroup = modMenuCopy.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
             modConfigMenu.Initialize(modMenuCopy, layoutGroup);
             modConfigMenu.Title = modConfigMenu.ModData.Manifest.Name;
+            modConfigMenu.GetButton("UIElement-CancelOutOfRebinding").Hide();
 
             var index = 2;
             AddConfigButton(modConfigMenu, "Enabled", index++);

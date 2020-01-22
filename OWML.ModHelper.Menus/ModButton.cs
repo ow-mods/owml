@@ -15,7 +15,7 @@ namespace OWML.ModHelper.Menus
         private readonly Text _text;
         public string Title
         {
-            get => _text.text;
+            get => _text != null ? _text.text : "";
             set => _text.text = value;
         }
 
