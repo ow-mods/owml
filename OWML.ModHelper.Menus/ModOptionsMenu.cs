@@ -3,6 +3,7 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -55,6 +56,22 @@ namespace OWML.ModHelper.Menus
             Menu.SetValue("_menuTabs", tabs);
             var parent = tabs[0].transform.parent;
             tabMenu.TabButton.transform.parent = parent;
+            UpdateTabNavigation();
+        }
+
+        private void UpdateTabNavigation()
+        {
+            for (var i = 0; i < _tabMenus.Count; i++)
+            {
+                var leftIndex = (i - 1 + _tabMenus.Count) % _tabMenus.Count;
+                var rightIndex = (i + 1) % _tabMenus.Count;
+                _tabMenus[i].TabButton.GetComponent<Button>().navigation = new Navigation
+                {
+                    selectOnLeft = _tabMenus[leftIndex].TabButton.GetComponent<Button>(),
+                    selectOnRight = _tabMenus[rightIndex].TabButton.GetComponent<Button>(),
+                    mode = Navigation.Mode.Explicit
+                };
+            }
         }
 
         public new IModTabbedMenu Copy()
