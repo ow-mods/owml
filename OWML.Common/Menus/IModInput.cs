@@ -8,7 +8,7 @@ namespace OWML.Common.Menus
         event Action<T> OnChange;
         T Value { get; set; }
         MonoBehaviour Element { get; }
-        IModInput<T> Copy();
+        string Title { get; set; }
         int Index { get; set; }
     }
 }

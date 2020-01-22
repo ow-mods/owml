@@ -15,13 +15,15 @@ namespace OWML.Common.Menus
         IModButton AddButton(IModButton button);
         IModButton AddButton(IModButton button, int index);
 
-        List<IModInput<bool>> ToggleInputs { get; }
-        IModInput<bool> AddToggleInput(IModInput<bool> input);
-        IModInput<bool> AddToggleInput(IModInput<bool> input, int index);
+        List<IModToggleInput> ToggleInputs { get; }
+        IModToggleInput GetToggleInput(string title);
+        IModToggleInput AddToggleInput(IModToggleInput input);
+        IModToggleInput AddToggleInput(IModToggleInput input, int index);
 
-        List<IModInput<float>> SliderInputs { get; }
-        IModInput<float> AddSliderInput(IModInput<float> input);
-        IModInput<float> AddSliderInput(IModInput<float> input, int index);
+        List<IModSliderInput> SliderInputs { get; }
+        IModSliderInput GetSliderInput(string title);
+        IModSliderInput AddSliderInput(IModSliderInput input);
+        IModSliderInput AddSliderInput(IModSliderInput input, int index);
 
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();

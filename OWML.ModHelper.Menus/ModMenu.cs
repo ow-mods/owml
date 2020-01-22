@@ -13,8 +13,8 @@ namespace OWML.ModHelper.Menus
 
         public Menu Menu { get; protected set; }
         public List<IModButton> Buttons { get; }
-        public List<IModInput<bool>> ToggleInputs { get; }
-        public List<IModInput<float>> SliderInputs { get; }
+        public List<IModToggleInput> ToggleInputs { get; }
+        public List<IModSliderInput> SliderInputs { get; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -25,8 +25,8 @@ namespace OWML.ModHelper.Menus
             _logger = logger;
             _console = console;
             Buttons = new List<IModButton>();
-            ToggleInputs = new List<IModInput<bool>>();
-            SliderInputs = new List<IModInput<float>>();
+            ToggleInputs = new List<IModToggleInput>();
+            SliderInputs = new List<IModSliderInput>();
         }
 
         public virtual void Initialize(Menu menu)
@@ -40,8 +40,8 @@ namespace OWML.ModHelper.Menus
             Menu = menu;
             _layoutGroup = layoutGroup;
             Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
-            ToggleInputs.AddRange(Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x)).Cast<IModInput<bool>>());
-            SliderInputs.AddRange(Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x)).Cast<IModInput<float>>());
+            ToggleInputs.AddRange(Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>());
+            SliderInputs.AddRange(Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>());
         }
 
         [Obsolete("Use Buttons instead")]
@@ -82,12 +82,17 @@ namespace OWML.ModHelper.Menus
             return button;
         }
 
-        public IModInput<bool> AddToggleInput(IModInput<bool> input)
+        public IModToggleInput GetToggleInput(string title)
+        {
+            return ToggleInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModToggleInput AddToggleInput(IModToggleInput input)
         {
             return AddToggleInput(input, input.Index);
         }
 
-        public IModInput<bool> AddToggleInput(IModInput<bool> input, int index)
+        public IModToggleInput AddToggleInput(IModToggleInput input, int index)
         {
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
@@ -95,12 +100,17 @@ namespace OWML.ModHelper.Menus
             return input;
         }
 
-        public IModInput<float> AddSliderInput(IModInput<float> input)
+        public IModSliderInput GetSliderInput(string title)
+        {
+            return SliderInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModSliderInput AddSliderInput(IModSliderInput input)
         {
             return AddSliderInput(input, input.Index);
         }
 
-        public IModInput<float> AddSliderInput(IModInput<float> input, int index)
+        public IModSliderInput AddSliderInput(IModSliderInput input, int index)
         {
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;

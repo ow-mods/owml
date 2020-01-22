@@ -18,8 +18,8 @@ namespace OWML.ModHelper.Menus
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
-        private IModInput<bool> _toggleTemplate;
-        private IModInput<float> _sliderTemplate;
+        private IModToggleInput _toggleTemplate;
+        private IModSliderInput _sliderTemplate;
 
         public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
@@ -91,7 +91,9 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            _toggleTemplate = options.InputTab.ToggleInputs[0];
+            _toggleTemplate = options.InputTab.GetToggleInput("UIElement-Rumble");
+            _toggleTemplate.YesButton.Title = "Yes"; // todo doesn't work
+            _toggleTemplate.NoButton.Title = "No";
             _sliderTemplate = options.InputTab.SliderInputs[0];
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
@@ -129,7 +131,6 @@ namespace OWML.ModHelper.Menus
             {
                 AddConfigInput(modConfigMenu, setting, index++);
             }
-            modConfigMenu.AddButton(_modButtonTemplate.Copy("OK"), index);
             return modConfigMenu;
         }
 
@@ -143,13 +144,13 @@ namespace OWML.ModHelper.Menus
             if (setting.Value.GetType() == typeof(bool))
             {
                 _console.WriteLine("for setting " + setting.Key + ", using type: toggle");
-                var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(), index);
+                var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
                 // todo
             }
-            else if (setting.Value.GetType() == typeof(long) || setting.Value.GetType() == typeof(double))
+            else if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.Value.GetType()))
             {
                 _console.WriteLine("for setting " + setting.Key + ", using type: slider");
-                var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(), index);
+                var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(setting.Key), index);
                 // todo
             }
             else

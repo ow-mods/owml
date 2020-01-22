@@ -1,6 +1,7 @@
 ﻿using System;
 using OWML.Common.Menus;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -21,12 +22,21 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        protected ModInput(MonoBehaviour element)
+        private readonly Text _text;
+        public string Title
         {
-            Element = element;
+            get => _text.text;
+            set => _text.text = value;
         }
 
-        public abstract IModInput<T> Copy();
+        protected IModMenu Menu;
+
+        protected ModInput(MonoBehaviour element, IModMenu menu)
+        {
+            Element = element;
+            Menu = menu;
+            _text = element.GetComponentInChildren<Text>();
+        }
 
         protected void InvokeOnChange(T value)
         {

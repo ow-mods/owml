@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModSliderInput : ModInput<float>
+    public class ModSliderInput : ModInput<float>, IModSliderInput
     {
         private readonly SliderElement _element;
 
-        public ModSliderInput(SliderElement element): base(element)
+        public ModSliderInput(SliderElement element, IModMenu menu): base(element, menu)
         {
             _element = element;
             element.OnValueChanged += () => InvokeOnChange(Value);
@@ -19,10 +19,19 @@ namespace OWML.ModHelper.Menus
             set => _element.Initialize((int)value);
         }
 
-        public override IModInput<float> Copy()
+        public IModSliderInput Copy()
         {
             var copy = GameObject.Instantiate(_element);
-            return new ModSliderInput(copy);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            return new ModSliderInput(copy, Menu);
         }
+
+        public IModSliderInput Copy(string title)
+        {
+            var copy = Copy();
+            copy.Title = title;
+            return copy;
+        }
+
     }
 }

@@ -5,15 +5,20 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModToggleInput : ModInput<bool>
+    public class ModToggleInput : ModInput<bool>, IModToggleInput
     {
+        public IModButton YesButton { get; }
+        public IModButton NoButton { get; }
+
         private readonly TwoButtonToggleElement _element;
 
-        public ModToggleInput(TwoButtonToggleElement element): base(element)
+        public ModToggleInput(TwoButtonToggleElement element, IModMenu menu): base(element, menu)
         {
             _element = element;
-            _element.GetValue<Button>("_buttonTrue").onClick.AddListener(() => InvokeOnChange(true));
-            _element.GetValue<Button>("_buttonFalse").onClick.AddListener(() => InvokeOnChange(false));
+            YesButton = new ModButton(_element.GetValue<Button>("_buttonTrue"), menu);
+            YesButton.OnClick += () => InvokeOnChange(true);
+            NoButton = new ModButton(_element.GetValue<Button>("_buttonFalse"), menu);
+            NoButton.OnClick += () => InvokeOnChange(false);
         }
 
         public override bool Value
@@ -26,10 +31,18 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public override IModInput<bool> Copy()
+        public IModToggleInput Copy()
         {
             var copy = GameObject.Instantiate(_element);
-            return new ModToggleInput(copy);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            return new ModToggleInput(copy, Menu);
+        }
+
+        public IModToggleInput Copy(string title)
+        {
+            var copy = Copy();
+            copy.Title = title;
+            return copy;
         }
 
     }
