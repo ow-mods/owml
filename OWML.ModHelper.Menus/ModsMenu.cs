@@ -93,10 +93,8 @@ namespace OWML.ModHelper.Menus
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
             var modsTab = options.InputTab.Copy("MODS");
-            foreach (var button in modsTab.Buttons)
-            {
-                button.Hide();
-            }
+            modsTab.Buttons.ForEach(x => x.Hide());
+            modsTab.Menu.GetComponentsInChildren<Selectable>().ToList().ForEach(x => x.gameObject.SetActive(false));
             options.AddTab(modsTab);
             foreach (var modConfigMenu in _modConfigMenus)
             {
