@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -151,21 +152,37 @@ namespace OWML.ModHelper.Menus
 
             if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.Value.GetType()))
             {
-                _console.WriteLine("for setting " + setting.Key + ", using type: slider");
-                var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(setting.Key), index);
                 // todo text input
                 return;
             }
 
-
-
-            if (true)
+            if (setting.Value is JObject j)
             {
-                _console.WriteLine("Error: unrecognized type of setting: " + setting.Value.GetType());
+                var type = (string)j["type"];
+                if (type == "slider")
+                {
+                    var min = (float)j["min"];
+                    var max = (float)j["max"];
+                    var value = (float)j["value"];
+                    var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(setting.Key), index);
+                    // todo
+                    return;
+                }
+                if (type == "toggle")
+                {
+                    var left = (string)j["left"];
+                    var right = (string)j["right"];
+                    var value = (bool)j["value"];
+                    var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
+                    // todo
+                    return;
+                }
+
+                _console.WriteLine("Error: unrecognized complex setting: " + setting.Value);
                 return;
             }
 
-            //modConfigMenu.AddSliderInput()Button(_modButtonTemplate.Copy(setting.Key), index); // todo
+            _console.WriteLine("Error: unrecognized setting type: " + setting.Value.GetType());
         }
 
         private IModConfig ParseConfig(IModButton button)
