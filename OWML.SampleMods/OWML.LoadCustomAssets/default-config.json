@@ -1,10 +1,22 @@
 {
   "enabled": true,
-  "requireVR": false, 
+  "requireVR": false,
   "settings": {
     "enableMusic": true,
     "enableDucks": true,
     "enableCubes": false,
-    "leet": 1337
+    "speed": 10,
+    "power": {
+      "type": "slider",
+      "value": 10,
+      "min": 0,
+      "max": 20
+    },
+    "enableSuperMode": {
+      "type": "toggle",
+      "value": true,
+      "left": "Absolutely",
+      "right": "Na-ah!"
+    }
   }
 }

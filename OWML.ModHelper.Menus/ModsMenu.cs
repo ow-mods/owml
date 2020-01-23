@@ -141,19 +141,25 @@ namespace OWML.ModHelper.Menus
 
         private void AddConfigInput(IModConfigMenu modConfigMenu, KeyValuePair<string, object> setting, int index)
         {
-            if (setting.Value.GetType() == typeof(bool))
+            if (setting.Value is bool)
             {
                 _console.WriteLine("for setting " + setting.Key + ", using type: toggle");
                 var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
                 // todo
+                return;
             }
-            else if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.Value.GetType()))
+
+            if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.Value.GetType()))
             {
                 _console.WriteLine("for setting " + setting.Key + ", using type: slider");
                 var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(setting.Key), index);
-                // todo
+                // todo text input
+                return;
             }
-            else
+
+
+
+            if (true)
             {
                 _console.WriteLine("Error: unrecognized type of setting: " + setting.Value.GetType());
                 return;
