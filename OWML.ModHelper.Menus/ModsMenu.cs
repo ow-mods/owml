@@ -142,39 +142,39 @@ namespace OWML.ModHelper.Menus
 
         private void AddConfigInput(IModConfigMenu modConfigMenu, KeyValuePair<string, object> setting, int index)
         {
-            if (setting.Value is bool)
+            if (setting.Value is bool value)
             {
                 _console.WriteLine("for setting " + setting.Key + ", using type: toggle");
                 var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
-                // todo
+                toggle.Value = value;
                 return;
             }
 
             if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.Value.GetType()))
             {
+                _console.WriteLine("for setting " + setting.Key + ", using type: text input");
                 // todo text input
                 return;
             }
 
-            if (setting.Value is JObject j)
+            if (setting.Value is JObject obj)
             {
-                var type = (string)j["type"];
+                var type = (string)obj["type"];
                 if (type == "slider")
                 {
-                    var min = (float)j["min"];
-                    var max = (float)j["max"];
-                    var value = (float)j["value"];
                     var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(setting.Key), index);
+                    slider.Value = (float)obj["value"];
+                    var min = (float)obj["min"]; // todo
+                    var max = (float)obj["max"]; // todo
                     // todo
                     return;
                 }
                 if (type == "toggle")
                 {
-                    var left = (string)j["left"];
-                    var right = (string)j["right"];
-                    var value = (bool)j["value"];
                     var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
-                    // todo
+                    toggle.Value = (bool)obj["value"];
+                    toggle.YesButton.Title = (string)obj["left"];
+                    toggle.NoButton.Title = (string)obj["right"];
                     return;
                 }
 
