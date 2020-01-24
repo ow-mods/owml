@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ namespace OWML.ModHelper.Menus
 
         private IModLogger _logger;
         private IModConsole _console;
+        private IModStorage _storage;
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
@@ -23,6 +25,7 @@ namespace OWML.ModHelper.Menus
             _console = console;
             ModData = modData;
             Mod = mod;
+            _storage = new ModStorage(console, modData.Manifest);
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate)
@@ -46,6 +49,8 @@ namespace OWML.ModHelper.Menus
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
+
+            GetButton("UIElement-SaveAndExit").OnClick += () => OnSave();
         }
 
         private void AddConfigInput(string key, object value, int index)
@@ -89,6 +94,7 @@ namespace OWML.ModHelper.Menus
             toggle.Value = (bool)obj["value"];
             toggle.YesButton.Title = (string)obj["left"];
             toggle.NoButton.Title = (string)obj["right"];
+            toggle.Element.name = key;
         }
 
         private void AddSliderInput(string key, JObject obj, int index)
@@ -97,6 +103,7 @@ namespace OWML.ModHelper.Menus
             slider.Value = (float)obj["value"];
             slider.Min = (float)obj["min"];
             slider.Max = (float)obj["max"];
+            slider.Element.name = key;
         }
 
         private void AddTextInput(string key, object value, int index)
@@ -110,6 +117,41 @@ namespace OWML.ModHelper.Menus
             toggle.Value = value;
             toggle.YesButton.Title = "Yes";
             toggle.YesButton.Title = "No";
+            toggle.Element.name = key;
+        }
+
+        private void OnSave()
+        {
+            ModData.Config.Enabled = (bool)GetInputValue("Enabled");
+            ModData.Config.RequireVR = (bool)GetInputValue("Requires VR");
+            var settings = new Dictionary<string, object>();
+            foreach (var key in ModData.Config.Settings.Keys)
+            {
+                var value = GetInputValue(key);
+                if (value != null)
+                {
+                    settings[key] = value;
+                }
+            }
+            ModData.Config.Settings = settings;
+            _storage.Save(ModData.Config, "config.json");
+            Mod.Configure(ModData.Config);
+        }
+
+        private object GetInputValue(string key)
+        {
+            var slider = GetSliderInput(key);
+            if (slider != null)
+            {
+                return slider.Value;
+            }
+            var toggle = GetToggleInput(key);
+            if (toggle != null)
+            {
+                return toggle.Value;
+            }
+            _console.WriteLine("Error: no input found with name " + key);
+            return null;
         }
 
     }

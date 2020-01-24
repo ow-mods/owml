@@ -106,11 +106,5 @@ namespace OWML.ModHelper.Menus
             return modsTab;
         }
 
-        private IModConfig ParseConfig(IModButton button)
-        {
-            _console.WriteLine("todo: implement ModsMenu.ParseConfig");
-            return new ModConfig();
-        }
-
     }
 }
