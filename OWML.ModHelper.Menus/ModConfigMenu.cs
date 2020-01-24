@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 
@@ -44,13 +42,8 @@ namespace OWML.ModHelper.Menus
             AddConfigInput("Requires VR", ModData.Config.RequireVR, index++);
             foreach (var setting in ModData.Config.Settings)
             {
-                AddConfigInput(setting, index++);
+                AddConfigInput(setting.Key, setting.Value, index++);
             }
-        }
-
-        private void AddConfigInput(KeyValuePair<string, object> kvPair, int index)
-        {
-            AddConfigInput(kvPair.Key, kvPair.Value, index);
         }
 
         private void AddConfigInput(string key, object value, int index)

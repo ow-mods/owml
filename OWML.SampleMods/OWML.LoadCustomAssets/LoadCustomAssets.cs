@@ -45,9 +45,12 @@ namespace OWML.LoadCustomAssets
 
         public override void Configure(IModConfig config)
         {
-            ToggleMusic(config.GetSetting<bool>("enableMusic"));
-            _isDucksEnabled = config.GetSetting<bool>("enableDucks");
-            _isCubesEnabled = config.GetSetting<bool>("enableCubes");
+            ToggleMusic(config.GetValue<bool>("enableMusic"));
+            _isDucksEnabled = config.GetValue<bool>("enableDucks");
+            _isCubesEnabled = config.GetValue<bool>("enableCubes");
+            var speed = config.GetValue<float>("speed");
+            var power = config.GetValue<float>("power");
+            var enableSuperMode = config.GetValue<bool>("enableSuperMode");
         }
 
         private void OnMusicLoaded(AudioSource audio)
