@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -71,6 +69,7 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't open menu, it doesn't exist.");
                 return;
             }
+            //Menu.gameObject.SetActive(true); todo
             Menu.EnableMenu(true);
         }
 
