@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -19,9 +18,6 @@ namespace OWML.ModHelper.Menus
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
-        private IModToggleInput _toggleTemplate;
-        private IModSliderInput _sliderTemplate;
-
         public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
         {
             _logger = logger;
@@ -34,7 +30,7 @@ namespace OWML.ModHelper.Menus
             _modConfigMenus.Add(new ModConfigMenu(_logger, _console, modData, mod));
         }
 
-        public IModConfigMenu Register(IModBehaviour modBehaviour)
+        public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
         {
             _console.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
@@ -92,10 +88,8 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            _toggleTemplate = options.InputTab.GetToggleInput("UIElement-Rumble");
-            _toggleTemplate.YesButton.Title = "Yes"; // todo doesn't work
-            _toggleTemplate.NoButton.Title = "No";
-            _sliderTemplate = options.InputTab.SliderInputs[0];
+            var toggleTemplate = options.InputTab.GetToggleInput("UIElement-Rumble");
+            var sliderTemplate = options.InputTab.SliderInputs[0];
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>().ToList().ForEach(x => x.gameObject.SetActive(false));
@@ -103,86 +97,13 @@ namespace OWML.ModHelper.Menus
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
-                var modMenu = CreateModMenu(modConfigMenu);
-                modButton.OnClick += () => modMenu.Open();
+                var modMenuTemplate = _modMenuTemplate.GetChild(0).GetComponent<Menu>();
+                var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
+                modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate);
+                modButton.OnClick += () => modConfigMenu.Open();
                 modsTab.AddButton(modButton);
             }
             return modsTab;
-        }
-
-        private IModConfigMenu CreateModMenu(IModConfigMenu modConfigMenu)
-        {
-            if (_modMenuTemplate == null)
-            {
-                _console.WriteLine("Error: _modMenuCanvasTemplate is null");
-                return null;
-            }
-            var modMenuTemplate = _modMenuTemplate.GetChild(0).GetComponent<Menu>();
-            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-
-            var layoutGroup = modMenuCopy.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
-            modConfigMenu.Initialize(modMenuCopy, layoutGroup);
-            modConfigMenu.Title = modConfigMenu.ModData.Manifest.Name;
-            modConfigMenu.GetButton("UIElement-CancelOutOfRebinding").Hide();
-
-            var index = 2;
-            AddConfigInput(modConfigMenu, "Enabled", modConfigMenu.ModData.Config.Enabled, index++);
-            AddConfigInput(modConfigMenu, "Requires VR", modConfigMenu.ModData.Config.RequireVR, index++);
-            foreach (var setting in modConfigMenu.ModData.Config.Settings)
-            {
-                AddConfigInput(modConfigMenu, setting, index++);
-            }
-            return modConfigMenu;
-        }
-
-        private void AddConfigInput(IModConfigMenu modConfigMenu, string name, object value, int index)
-        {
-            AddConfigInput(modConfigMenu, new KeyValuePair<string, object>(name, value), index);
-        }
-
-        private void AddConfigInput(IModConfigMenu modConfigMenu, KeyValuePair<string, object> setting, int index)
-        {
-            if (setting.Value is bool value)
-            {
-                _console.WriteLine("for setting " + setting.Key + ", using type: toggle");
-                var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
-                toggle.Value = value;
-                return;
-            }
-
-            if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.Value.GetType()))
-            {
-                _console.WriteLine("for setting " + setting.Key + ", using type: text input");
-                // todo text input
-                return;
-            }
-
-            if (setting.Value is JObject obj)
-            {
-                var type = (string)obj["type"];
-                if (type == "slider")
-                {
-                    var slider = modConfigMenu.AddSliderInput(_sliderTemplate.Copy(setting.Key), index);
-                    slider.Value = (float)obj["value"];
-                    var min = (float)obj["min"]; // todo
-                    var max = (float)obj["max"]; // todo
-                    // todo
-                    return;
-                }
-                if (type == "toggle")
-                {
-                    var toggle = modConfigMenu.AddToggleInput(_toggleTemplate.Copy(setting.Key), index);
-                    toggle.Value = (bool)obj["value"];
-                    toggle.YesButton.Title = (string)obj["left"];
-                    toggle.NoButton.Title = (string)obj["right"];
-                    return;
-                }
-
-                _console.WriteLine("Error: unrecognized complex setting: " + setting.Value);
-                return;
-            }
-
-            _console.WriteLine("Error: unrecognized setting type: " + setting.Value.GetType());
         }
 
         private IModConfig ParseConfig(IModButton button)

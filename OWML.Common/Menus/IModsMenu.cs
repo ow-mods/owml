@@ -3,7 +3,7 @@
     public interface IModsMenu : IModPopupMenu
     {
         void AddMod(IModData modData, IModBehaviour mod);
-        IModConfigMenu Register(IModBehaviour modBehaviour);
+        IModConfigMenu GetModMenu(IModBehaviour modBehaviour);
         void Initialize(IModMenus menus);
     }
 }
