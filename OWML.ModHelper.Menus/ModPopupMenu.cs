@@ -30,12 +30,6 @@ namespace OWML.ModHelper.Menus
             _console = console;
         }
 
-        public override void Initialize(Menu menu)
-        {
-            var layoutGroup = menu.GetComponent<LayoutGroup>() ?? menu.GetComponentInChildren<LayoutGroup>();
-            Initialize(menu, layoutGroup);
-        }
-
         public override void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
             base.Initialize(menu, layoutGroup);
@@ -69,7 +63,6 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't open menu, it doesn't exist.");
                 return;
             }
-            //Menu.gameObject.SetActive(true); todo
             Menu.EnableMenu(true);
         }
 

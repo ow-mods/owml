@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -31,7 +33,8 @@ namespace OWML.ModHelper.Menus
 
         public virtual void Initialize(Menu menu)
         {
-            var layoutGroup = menu.GetComponent<LayoutGroup>() ?? menu.GetComponentInChildren<LayoutGroup>();
+            var root = menu.GetValue<GameObject>("_menuActivationRoot");
+            var layoutGroup = root.GetComponent<LayoutGroup>() ?? root.GetComponentInChildren<LayoutGroup>();
             Initialize(menu, layoutGroup);
         }
 
