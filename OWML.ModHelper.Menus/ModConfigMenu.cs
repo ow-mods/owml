@@ -31,8 +31,10 @@ namespace OWML.ModHelper.Menus
             _sliderTemplate = sliderTemplate;
 
             var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
-
             Initialize(menu, layoutGroup);
+
+            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>().Single(x => x.name == "RebindingModeBlocker");
+            blocker.gameObject.SetActive(false);
 
             Title = ModData.Manifest.Name;
             GetButton("UIElement-CancelOutOfRebinding").Hide();
