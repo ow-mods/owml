@@ -5,6 +5,7 @@
     "enableMusic": true,
     "enableDucks": true,
     "enableCubes": false,
+    "alphabet": "abc",
     "speed": 10,
     "power": {
       "type": "slider",

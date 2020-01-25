@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
@@ -63,9 +64,16 @@ namespace OWML.ModHelper.Menus
                 return;
             }
 
+            if (value is string s)
+            {
+                AddTextInput(key, s, index);
+                return;
+            }
+
             if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(value.GetType()))
             {
-                AddTextInput(key, value, index);
+                var f = Convert.ToSingle(value);
+                AddNumberInput(key, f, index);
                 return;
             }
 
@@ -110,10 +118,16 @@ namespace OWML.ModHelper.Menus
             slider.Title = (string)obj["title"] ?? key;
         }
 
-        private void AddTextInput(string key, object value, int index)
+        private void AddTextInput(string key, string value, int index)
         {
             var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
-            textInput.Value = value.ToString();
+            textInput.Value = value;
+        }
+
+        private void AddNumberInput(string key, float value, int index)
+        {
+            var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
+            textInput.Value = "" + value;
         }
 
         private void AddToggleInput(string key, bool value, int index)

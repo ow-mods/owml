@@ -1,16 +1,27 @@
 ﻿using OWML.Common.Menus;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModTextInput : ModInput<string>, IModTextInput
     {
+        private readonly IModToggleInput _toggleInput;
         private readonly IModButton _button;
-        private IModInputMenu _inputMenu;
+        private readonly IModInputMenu _inputMenu;
 
-        public ModTextInput(IModButton button, IModInputMenu inputMenu, IModMenu menu) : base(button.Button, menu)
+        public ModTextInput(IModToggleInput toggleInput, IModInputMenu inputMenu, IModMenu menu) : base(toggleInput.Element, menu)
         {
-            _button = button.Copy();
-            _button.OnClick += () => Open(button.Title);
+            _toggleInput = toggleInput.Copy();
+            GameObject.Destroy(_toggleInput.Element.GetComponent<TwoButtonToggleElement>());
+            _toggleInput.NoButton.Button.transform.parent.gameObject.SetActive(false);
+            _button = _toggleInput.YesButton;
+            var layoutGroup = _button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            layoutGroup.childControlWidth = true;
+            layoutGroup.childForceExpandWidth = true;
+            _button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
+            _button.Title = "...";
+            _button.OnClick += () => Open(_button.Title);
             _inputMenu = inputMenu;
         }
 
@@ -30,6 +41,7 @@ namespace OWML.ModHelper.Menus
             get => _button.Title;
             set
             {
+                ModConsole.Instance.WriteLine("in ModTextInput, setting title: " + value);
                 _button.Title = value;
                 InvokeOnChange(value);
             }
@@ -37,7 +49,7 @@ namespace OWML.ModHelper.Menus
 
         public IModTextInput Copy()
         {
-            var copy = _button.Copy();
+            var copy = _toggleInput.Copy();
             return new ModTextInput(copy, _inputMenu, Menu);
         }
 
