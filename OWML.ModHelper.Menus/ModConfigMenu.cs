@@ -116,7 +116,7 @@ namespace OWML.ModHelper.Menus
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
             toggle.Value = value;
             toggle.YesButton.Title = "Yes";
-            toggle.YesButton.Title = "No";
+            toggle.NoButton.Title = "No";
             toggle.Element.name = key;
         }
 
