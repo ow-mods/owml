@@ -122,12 +122,14 @@ namespace OWML.ModHelper.Menus
         {
             var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
             textInput.Value = value;
+            textInput.Element.name = key;
         }
 
         private void AddNumberInput(string key, float value, int index)
         {
             var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
             textInput.Value = "" + value;
+            textInput.Element.name = key;
         }
 
         private void AddToggleInput(string key, bool value, int index)
@@ -169,6 +171,11 @@ namespace OWML.ModHelper.Menus
             if (toggle != null)
             {
                 return toggle.Value;
+            }
+            var textInput = GetTextInput(key);
+            if (textInput != null)
+            {
+                return textInput.Value;
             }
             _console.WriteLine("Error: no input found with name " + key);
             return null;

@@ -20,10 +20,12 @@ namespace OWML.ModHelper.Menus
             _console = console;
         }
 
-        public void Initialize(PopupInputMenu inputMenu)
+        public void Initialize(PopupInputMenu menu)
         {
-            _inputMenu = GameObject.Instantiate(inputMenu);
-            _inputMenu.gameObject.AddComponent<DontDestroyOnLoad>();
+            var parent = menu.transform.parent.gameObject;
+            var parentCopy = GameObject.Instantiate(parent);
+            parentCopy.AddComponent<DontDestroyOnLoad>();
+            _inputMenu = parentCopy.transform.GetChild(1).GetComponent<PopupInputMenu>();
             Initialize((Menu)_inputMenu);
         }
 
@@ -43,6 +45,7 @@ namespace OWML.ModHelper.Menus
             _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, /*this._confirmCreateProfilePrompt*/null, /*cancelPrompt*/null, true, false);
 
             _inputMenu.SetInputFieldPlaceholderText(placeholderText);
+            _inputMenu.EnableMenu(true);
         }
 
     }

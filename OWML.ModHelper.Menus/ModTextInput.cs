@@ -37,6 +37,7 @@ namespace OWML.ModHelper.Menus
 
         private void OnInput(string text)
         {
+            _inputMenu.OnInput -= OnInput;
             Value = text;
         }
 
