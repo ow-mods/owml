@@ -1,4 +1,5 @@
 ﻿using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,29 +7,32 @@ namespace OWML.ModHelper.Menus
 {
     public class ModTextInput : ModInput<string>, IModTextInput
     {
-        private readonly IModToggleInput _toggleInput;
-        private readonly IModButton _button;
-        private readonly IModInputMenu _inputMenu;
+        public IModButton Button { get; }
 
-        public ModTextInput(IModToggleInput toggleInput, IModInputMenu inputMenu, IModMenu menu) : base(toggleInput.Element, menu)
+        private readonly IModInputMenu _inputMenu;
+        private readonly TwoButtonToggleElement _element;
+
+        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
-            _toggleInput = toggleInput.Copy();
-            GameObject.Destroy(_toggleInput.Element.GetComponent<TwoButtonToggleElement>());
-            _toggleInput.NoButton.Button.transform.parent.gameObject.SetActive(false);
-            _button = _toggleInput.YesButton;
-            var layoutGroup = _button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            _element = element;
+            _inputMenu = inputMenu;
+            Button = new ModButton(_element.GetValue<Button>("_buttonTrue"), menu);
+            Button.OnClick += Open;
+
+            var noButton = _element.GetValue<Button>("_buttonFalse");
+            noButton.transform.parent.gameObject.SetActive(false);
+
+            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
             layoutGroup.childControlWidth = true;
             layoutGroup.childForceExpandWidth = true;
-            _button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
-            _button.Title = "...";
-            _button.OnClick += () => Open(_button.Title);
-            _inputMenu = inputMenu;
+
+            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
-        private void Open(string title)
+        private void Open()
         {
             _inputMenu.OnInput += OnInput;
-            _inputMenu.Open(title);
+            _inputMenu.Open(Button.Title);
         }
 
         private void OnInput(string text)
@@ -38,19 +42,19 @@ namespace OWML.ModHelper.Menus
 
         public override string Value
         {
-            get => _button.Title;
+            get => Button.Title;
             set
             {
-                ModConsole.Instance.WriteLine("in ModTextInput, setting title: " + value);
-                _button.Title = value;
+                Button.Title = value;
                 InvokeOnChange(value);
             }
         }
 
         public IModTextInput Copy()
         {
-            var copy = _toggleInput.Copy();
-            return new ModTextInput(copy, _inputMenu, Menu);
+            var copy = GameObject.Instantiate(_element);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            return new ModTextInput(copy, Menu, _inputMenu);
         }
 
         public IModTextInput Copy(string title)

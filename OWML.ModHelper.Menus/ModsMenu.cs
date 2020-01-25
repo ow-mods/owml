@@ -100,7 +100,7 @@ namespace OWML.ModHelper.Menus
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
                 var modMenuTemplate = _modMenuTemplate.GetChild(0).GetComponent<Menu>();
                 var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-                var textInputTemplate = new ModTextInput(toggleTemplate, _menus.InputMenu, modConfigMenu);
+                var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
                 modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate);
                 modButton.OnClick += () => modConfigMenu.Open();
                 modsTab.AddButton(modButton);
