@@ -14,9 +14,9 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
-        public List<IModButton> Buttons { get; }
-        public List<IModToggleInput> ToggleInputs { get; }
-        public List<IModSliderInput> SliderInputs { get; }
+        public List<IModButton> Buttons { get; private set; }
+        public List<IModToggleInput> ToggleInputs { get; private set; }
+        public List<IModSliderInput> SliderInputs { get; private set; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -26,9 +26,6 @@ namespace OWML.ModHelper.Menus
         {
             _logger = logger;
             _console = console;
-            Buttons = new List<IModButton>();
-            ToggleInputs = new List<IModToggleInput>();
-            SliderInputs = new List<IModSliderInput>();
         }
 
         public virtual void Initialize(Menu menu)
@@ -42,9 +39,9 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             _layoutGroup = layoutGroup;
-            Buttons.AddRange(Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>());
-            ToggleInputs.AddRange(Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>());
-            SliderInputs.AddRange(Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>());
+            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
+            ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
+            SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
         }
 
         [Obsolete("Use Buttons instead")]

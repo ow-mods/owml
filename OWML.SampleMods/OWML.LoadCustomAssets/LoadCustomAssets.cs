@@ -121,6 +121,7 @@ namespace OWML.LoadCustomAssets
 
         private void ToggleMusic(bool enable)
         {
+            ModHelper.Console.WriteLine("ToggleMusic: " + enable);
             if (_music == null)
             {
                 return;

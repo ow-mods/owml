@@ -88,7 +88,7 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            var toggleTemplate = options.InputTab.GetToggleInput("UIElement-Rumble");
+            var toggleTemplate = options.InputTab.ToggleInputs[0];
             var sliderTemplate = options.InputTab.SliderInputs[0];
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());

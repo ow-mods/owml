@@ -50,7 +50,7 @@ namespace OWML.ModHelper.Menus
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
 
-            GetButton("UIElement-SaveAndExit").OnClick += () => OnSave();
+            GetButton("UIElement-SaveAndExit").OnClick += OnSave;
         }
 
         private void AddConfigInput(string key, object value, int index)
