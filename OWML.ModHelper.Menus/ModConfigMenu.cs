@@ -95,6 +95,11 @@ namespace OWML.ModHelper.Menus
             toggle.YesButton.Title = (string)obj["left"];
             toggle.NoButton.Title = (string)obj["right"];
             toggle.Element.name = key;
+            var title = (string)obj["title"];
+            if (!string.IsNullOrEmpty(title))
+            {
+                toggle.Title = title;
+            }
         }
 
         private void AddSliderInput(string key, JObject obj, int index)
@@ -104,6 +109,11 @@ namespace OWML.ModHelper.Menus
             slider.Min = (float)obj["min"];
             slider.Max = (float)obj["max"];
             slider.Element.name = key;
+            var title = (string)obj["title"];
+            if (!string.IsNullOrEmpty(title))
+            {
+                slider.Title = title;
+            }
         }
 
         private void AddTextInput(string key, object value, int index)
@@ -118,6 +128,7 @@ namespace OWML.ModHelper.Menus
             toggle.YesButton.Title = "Yes";
             toggle.NoButton.Title = "No";
             toggle.Element.name = key;
+            toggle.Title = key;
         }
 
         private void OnSave()

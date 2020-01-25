@@ -16,7 +16,8 @@
       "type": "toggle",
       "value": true,
       "left": "Absolutely",
-      "right": "Na-ah!"
+      "right": "Na-ah!",
+      "title":  "Enable Super Mode"
     }
   }
 }
