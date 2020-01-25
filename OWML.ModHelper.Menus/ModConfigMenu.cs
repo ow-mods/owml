@@ -92,14 +92,10 @@ namespace OWML.ModHelper.Menus
         {
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
             toggle.Value = (bool)obj["value"];
-            toggle.YesButton.Title = (string)obj["left"];
-            toggle.NoButton.Title = (string)obj["right"];
+            toggle.YesButton.Title = (string)obj["yes"];
+            toggle.NoButton.Title = (string)obj["no"];
             toggle.Element.name = key;
-            var title = (string)obj["title"];
-            if (!string.IsNullOrEmpty(title))
-            {
-                toggle.Title = title;
-            }
+            toggle.Title = (string)obj["title"] ?? key;
         }
 
         private void AddSliderInput(string key, JObject obj, int index)
@@ -109,11 +105,7 @@ namespace OWML.ModHelper.Menus
             slider.Min = (float)obj["min"];
             slider.Max = (float)obj["max"];
             slider.Element.name = key;
-            var title = (string)obj["title"];
-            if (!string.IsNullOrEmpty(title))
-            {
-                slider.Title = title;
-            }
+            slider.Title = (string)obj["title"] ?? key;
         }
 
         private void AddTextInput(string key, object value, int index)

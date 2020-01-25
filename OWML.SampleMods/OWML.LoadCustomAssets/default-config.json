@@ -15,9 +15,9 @@
     "enableSuperMode": {
       "type": "toggle",
       "value": true,
-      "left": "Absolutely",
-      "right": "Na-ah!",
-      "title":  "Enable Super Mode"
+      "yes": "Absolutely",
+      "no": "Na-ah!",
+      "title": "Enable Super Mode"
     }
   }
 }
