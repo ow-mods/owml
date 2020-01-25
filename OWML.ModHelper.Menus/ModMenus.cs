@@ -1,5 +1,6 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
@@ -9,6 +10,7 @@ namespace OWML.ModHelper.Menus
         public IModMainMenu MainMenu { get; }
         public IModPauseMenu PauseMenu { get; }
         public IModsMenu ModsMenu { get; }
+        public IModInputMenu InputMenu { get; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -26,6 +28,10 @@ namespace OWML.ModHelper.Menus
 
             ModsMenu = new ModsMenu(logger, console);
             ModsMenu.Initialize(this);
+
+            InputMenu = new ModInputMenu(logger, console);
+            var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
+            InputMenu.Initialize(inputMenu);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterAwake);

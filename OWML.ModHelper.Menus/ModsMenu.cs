@@ -12,9 +12,9 @@ namespace OWML.ModHelper.Menus
     {
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-
         private readonly List<IModConfigMenu> _modConfigMenus;
 
+        private IModMenus _menus;
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
@@ -44,6 +44,7 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(IModMenus menus)
         {
+            _menus = menus;
             CreateModMenuTemplate(menus.MainMenu);
             menus.MainMenu.OnInit += () => InitMainMenu(menus.MainMenu);
             menus.PauseMenu.OnInit += () => InitPauseMenu(menus.PauseMenu);
@@ -99,7 +100,8 @@ namespace OWML.ModHelper.Menus
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
                 var modMenuTemplate = _modMenuTemplate.GetChild(0).GetComponent<Menu>();
                 var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-                modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate);
+                var textInputTemplate = new ModTextInput(_modButtonTemplate, _menus.InputMenu, modConfigMenu);
+                modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate);
                 modButton.OnClick += () => modConfigMenu.Open();
                 modsTab.AddButton(modButton);
             }

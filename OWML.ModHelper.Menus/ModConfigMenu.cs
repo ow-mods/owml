@@ -18,6 +18,7 @@ namespace OWML.ModHelper.Menus
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
+        private IModTextInput _textInputTemplate;
 
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
         {
@@ -28,10 +29,11 @@ namespace OWML.ModHelper.Menus
             _storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
+            _textInputTemplate = textInputTemplate;
 
             var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
@@ -110,7 +112,8 @@ namespace OWML.ModHelper.Menus
 
         private void AddTextInput(string key, object value, int index)
         {
-            _console.WriteLine("Error: AddTextInput is not implemented.");
+            var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
+            textInput.Value = value.ToString();
         }
 
         private void AddToggleInput(string key, bool value, int index)

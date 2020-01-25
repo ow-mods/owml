@@ -72,6 +72,7 @@
     <Compile Include="IModData.cs" />
     <Compile Include="Menus\IModConfigMenu.cs" />
     <Compile Include="Menus\IModInput.cs" />
+    <Compile Include="Menus\IModInputMenu.cs" />
     <Compile Include="Menus\IModMainMenu.cs" />
     <Compile Include="Menus\IModPauseMenu.cs" />
     <Compile Include="Menus\IModsMenu.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="IModManifest.cs" />
     <Compile Include="IModStorage.cs" />
     <Compile Include="Menus\IModSliderInput.cs" />
+    <Compile Include="Menus\IModTextInput.cs" />
     <Compile Include="Menus\IModToggleInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

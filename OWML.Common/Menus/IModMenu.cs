@@ -25,6 +25,11 @@ namespace OWML.Common.Menus
         IModSliderInput AddSliderInput(IModSliderInput input);
         IModSliderInput AddSliderInput(IModSliderInput input, int index);
 
+        List<IModTextInput> TextInputs { get; }
+        IModTextInput GetTextInput(string title);
+        IModTextInput AddTextInput(IModTextInput input);
+        IModTextInput AddTextInput(IModTextInput input, int index);
+
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();
         [Obsolete("Use button.Duplicate instead")]

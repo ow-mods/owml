@@ -17,6 +17,7 @@ namespace OWML.ModHelper.Menus
         public List<IModButton> Buttons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
+        public List<IModTextInput> TextInputs { get; private set; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -42,6 +43,7 @@ namespace OWML.ModHelper.Menus
             Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
+            TextInputs = new List<IModTextInput>();
         }
 
         [Obsolete("Use Buttons instead")]
@@ -115,6 +117,24 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
             SliderInputs.Add(input);
+            return input;
+        }
+
+        public IModTextInput GetTextInput(string title)
+        {
+            return TextInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModTextInput AddTextInput(IModTextInput input)
+        {
+            return AddTextInput(input, input.Index);
+        }
+
+        public IModTextInput AddTextInput(IModTextInput input, int index)
+        {
+            input.Element.transform.parent = _layoutGroup.transform;
+            input.Index = index;
+            TextInputs.Add(input);
             return input;
         }
 

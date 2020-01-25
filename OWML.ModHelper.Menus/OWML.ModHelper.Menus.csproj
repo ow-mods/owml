@@ -72,6 +72,7 @@
     <Compile Include="ModButton.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInput.cs" />
+    <Compile Include="ModInputMenu.cs" />
     <Compile Include="ModMenu.cs" />
     <Compile Include="ModOptionsMenu.cs" />
     <Compile Include="ModPauseMenu.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="ModMainMenu.cs" />
     <Compile Include="ModTabMenu.cs" />
     <Compile Include="ModSliderInput.cs" />
+    <Compile Include="ModTextInput.cs" />
     <Compile Include="ModToggleInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
