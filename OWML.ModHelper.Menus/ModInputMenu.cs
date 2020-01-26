@@ -2,7 +2,6 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -11,7 +10,6 @@ namespace OWML.ModHelper.Menus
         public event Action<string> OnInput;
 
         private PopupInputMenu _inputMenu;
-        private InputField _inputField;
 
         private IModLogger _logger;
         private IModConsole _console;
@@ -28,22 +26,41 @@ namespace OWML.ModHelper.Menus
             var parentCopy = GameObject.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _inputMenu = parentCopy.transform.GetChild(1).GetComponent<PopupInputMenu>();
-            _inputField = _inputMenu.GetComponentInChildren<InputField>();
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open(InputField.ContentType contentType, InputField.CharacterValidation validation, string value)
+        public void Open(InputType inputType, string value)
         {
-            _inputMenu.OnPopupConfirm += () => OnInput?.Invoke(_inputMenu.GetInputText());
+            _inputMenu.OnPopupConfirm += OnConfirm;
+
+            if (inputType == InputType.Number)
+            {
+                _inputMenu.OnInputPopupValidateChar += OnValidateCharNumber;
+                _inputMenu.OnPopupValidate += OnValidateNumber;
+            }
 
             var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
-            _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, /*this._confirmCreateProfilePrompt*/null, /*cancelPrompt*/null, true, false);
-
-            _inputField.characterValidation = validation;
-            _inputField.contentType = contentType;
-
+            _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, null, null, true, false);
             _inputMenu.SetInputFieldPlaceholderText(value);
             _inputMenu.EnableMenu(true);
+        }
+
+        private bool OnValidateNumber()
+        {
+            return float.TryParse(_inputMenu.GetInputText(), out _);
+        }
+
+        private bool OnValidateCharNumber(char c)
+        {
+            return "0123456789.".Contains("" + c);
+        }
+
+        private void OnConfirm()
+        {
+            _inputMenu.OnPopupValidate -= OnValidateNumber;
+            _inputMenu.OnInputPopupValidateChar -= OnValidateCharNumber;
+            _inputMenu.OnPopupConfirm -= OnConfirm;
+            OnInput?.Invoke(_inputMenu.GetInputText());
         }
 
     }

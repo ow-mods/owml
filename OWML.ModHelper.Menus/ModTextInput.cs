@@ -1,6 +1,5 @@
 ﻿using OWML.Common.Menus;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -15,7 +14,7 @@ namespace OWML.ModHelper.Menus
         protected override void Open()
         {
             InputMenu.OnInput += OnInput;
-            InputMenu.Open(InputField.ContentType.Standard, InputField.CharacterValidation.None, _value);
+            InputMenu.Open(InputType.Text, _value);
         }
 
         private void OnInput(string text)

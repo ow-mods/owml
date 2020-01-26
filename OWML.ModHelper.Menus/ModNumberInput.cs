@@ -1,7 +1,6 @@
 ﻿using OWML.Common.Menus;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -16,7 +15,7 @@ namespace OWML.ModHelper.Menus
         protected override void Open()
         {
             InputMenu.OnInput += OnInput;
-            InputMenu.Open(InputField.ContentType.DecimalNumber, InputField.CharacterValidation.Decimal, _value.ToString());
+            InputMenu.Open(InputType.Number, _value.ToString());
         }
 
         private void OnInput(string text)
