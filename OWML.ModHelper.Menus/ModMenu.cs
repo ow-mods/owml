@@ -94,6 +94,7 @@ namespace OWML.ModHelper.Menus
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
+            UpdateNavigation();
             return button;
         }
 
@@ -112,6 +113,7 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
             ToggleInputs.Add(input);
+            UpdateNavigation();
             return input;
         }
 
@@ -130,6 +132,7 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
             SliderInputs.Add(input);
+            UpdateNavigation();
             return input;
         }
 
@@ -148,6 +151,7 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
             TextInputs.Add(input);
+            UpdateNavigation();
             return input;
         }
 
@@ -166,6 +170,7 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
             NumberInputs.Add(input);
+            UpdateNavigation();
             return input;
         }
 
@@ -238,6 +243,22 @@ namespace OWML.ModHelper.Menus
             var firstSelectable = Menu.GetComponentInChildren<Selectable>();
             Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
             Menu.SetSelectOnActivate(firstSelectable);
+        }
+
+        protected void UpdateNavigation()
+        {
+            var selectables = Menu.GetComponentsInChildren<Selectable>();
+            for (var i = 0; i < selectables.Length; i++)
+            {
+                var upIndex = (i - 1 + selectables.Length) % selectables.Length;
+                var downIndex = (i + 1) % selectables.Length;
+                selectables[i].navigation = new Navigation
+                {
+                    selectOnUp = selectables[upIndex],
+                    selectOnDown = selectables[downIndex],
+                    mode = Navigation.Mode.Explicit
+                };
+            }
         }
 
     }
