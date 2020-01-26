@@ -12,6 +12,8 @@ namespace OWML.ModHelper.Menus
         private readonly IModInputMenu _inputMenu;
         private readonly TwoButtonToggleElement _element;
 
+        private string _value;
+
         public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
             _element = element;
@@ -32,7 +34,7 @@ namespace OWML.ModHelper.Menus
         private void Open()
         {
             _inputMenu.OnInput += OnInput;
-            _inputMenu.Open(Button.Title);
+            _inputMenu.Open(InputField.CharacterValidation.None, _value);
         }
 
         private void OnInput(string text)
@@ -43,9 +45,10 @@ namespace OWML.ModHelper.Menus
 
         public override string Value
         {
-            get => Button.Title;
+            get => _value;
             set
             {
+                _value = value;
                 Button.Title = value;
                 InvokeOnChange(value);
             }

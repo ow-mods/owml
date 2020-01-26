@@ -2,6 +2,7 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -10,6 +11,7 @@ namespace OWML.ModHelper.Menus
         public event Action<string> OnInput;
 
         private PopupInputMenu _inputMenu;
+        private InputField _inputField;
 
         private IModLogger _logger;
         private IModConsole _console;
@@ -26,25 +28,20 @@ namespace OWML.ModHelper.Menus
             var parentCopy = GameObject.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _inputMenu = parentCopy.transform.GetChild(1).GetComponent<PopupInputMenu>();
+            _inputField = _inputMenu.GetComponentInChildren<InputField>();
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open()
-        {
-            Open("...");
-        }
-
-        public void Open(string placeholderText)
+        public void Open(InputField.CharacterValidation validation, string value)
         {
             _inputMenu.OnPopupConfirm += () => OnInput?.Invoke(_inputMenu.GetInputText());
-
-            //_inputMenu.OnPopupValidate += OnCreateProfileValidate;
-            //_inputMenu.OnInputPopupValidateChar += OnValidateChar;
 
             var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
             _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, /*this._confirmCreateProfilePrompt*/null, /*cancelPrompt*/null, true, false);
 
-            _inputMenu.SetInputFieldPlaceholderText(placeholderText);
+            _inputField.characterValidation = validation;
+
+            _inputMenu.SetInputFieldPlaceholderText(value);
             _inputMenu.EnableMenu(true);
         }
 

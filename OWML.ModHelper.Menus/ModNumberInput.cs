@@ -35,7 +35,7 @@ namespace OWML.ModHelper.Menus
         private void Open()
         {
             _inputMenu.OnInput += OnInput;
-            _inputMenu.Open(Button.Title);
+            _inputMenu.Open(InputField.CharacterValidation.Decimal, _value.ToString());
         }
 
         private void OnInput(string text)
