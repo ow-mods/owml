@@ -3,7 +3,13 @@
   "requireVR": false,
   "settings": {
     "enableMusic": true,
-    "enableDucks": true,
+    "enableDucks": {
+      "type": "toggle",
+      "value": true,
+      "yes": "Quack",
+      "no": "Queck",
+      "title": "Enable Ducks"
+    },
     "enableCubes": false,
     "alphabet": "abc",
     "speed": 10,

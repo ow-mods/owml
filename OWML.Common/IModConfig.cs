@@ -8,9 +8,9 @@ namespace OWML.Common
         bool Enabled { get; set; }
         bool RequireVR { get; set; }
         Dictionary<string, object> Settings { get; set; }
-        T GetValue<T>(string key);
+        T GetSettingsValue<T>(string key);
 
-        [Obsolete("Use GetValue instead")]
+        [Obsolete("Use GetSettingsValue instead")]
         T GetSetting<T>(string key);
     }
 }

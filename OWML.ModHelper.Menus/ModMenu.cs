@@ -19,6 +19,7 @@ namespace OWML.ModHelper.Menus
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
+        public List<IModNumberInput> NumberInputs { get; private set; }
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -45,6 +46,7 @@ namespace OWML.ModHelper.Menus
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
+            NumberInputs = new List<IModNumberInput>();
         }
 
         public IModButton GetButton(string title)
@@ -149,6 +151,24 @@ namespace OWML.ModHelper.Menus
             return input;
         }
 
+        public IModNumberInput GetNumberInput(string title)
+        {
+            return NumberInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModNumberInput AddNumberInput(IModNumberInput input)
+        {
+            return AddNumberInput(input, input.Index);
+        }
+
+        public IModNumberInput AddNumberInput(IModNumberInput input, int index)
+        {
+            input.Element.transform.parent = _layoutGroup.transform;
+            input.Index = index;
+            NumberInputs.Add(input);
+            return input;
+        }
+
         public object GetInputValue(string key)
         {
             var slider = GetSliderInput(key);
@@ -166,6 +186,11 @@ namespace OWML.ModHelper.Menus
             {
                 return textInput.Value;
             }
+            var numberInput = GetNumberInput(key);
+            if (numberInput != null)
+            {
+                return numberInput.Value;
+            }
             _console.WriteLine("Error: no input found with name " + key);
             return null;
         }
@@ -175,40 +200,29 @@ namespace OWML.ModHelper.Menus
             var slider = GetSliderInput(key);
             if (slider != null)
             {
-                try
-                {
-                    slider.Value = value is JObject obj ? (float)obj["value"] : (float)value;
-                }
-                catch (Exception)
-                {
-                    _console.WriteLine("text input: can't cast from " + value.GetType());
-                }
+                var val = value is JObject obj ? obj["value"] : value;
+                slider.Value = Convert.ToSingle(val);
                 return;
             }
             var toggle = GetToggleInput(key);
             if (toggle != null)
             {
-                try
-                {
-                    toggle.Value = value is JObject obj ? (bool)obj["value"] : (bool)value;
-                }
-                catch (Exception)
-                {
-                    _console.WriteLine("text input: can't cast from " + value.GetType());
-                }
+                var val = value is JObject obj ? obj["value"] : value;
+                toggle.Value = Convert.ToBoolean(val);
                 return;
             }
             var textInput = GetTextInput(key);
             if (textInput != null)
             {
-                try
-                {
-                    textInput.Value = value is JObject obj ? obj["value"].ToString() : value.ToString();
-                }
-                catch (Exception)
-                {
-                    _console.WriteLine("text input: can't cast from " + value.GetType());
-                }
+                var val = value is JObject obj ? obj["value"] : value;
+                textInput.Value = Convert.ToString(val);
+                return;
+            }
+            var numberInput = GetNumberInput(key);
+            if (numberInput != null)
+            {
+                var val = value is JObject obj ? obj["value"] : value;
+                numberInput.Value = Convert.ToSingle(val);
                 return;
             }
             _console.WriteLine("Error: no input found with name " + key);

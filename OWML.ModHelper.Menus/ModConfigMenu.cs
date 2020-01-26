@@ -20,6 +20,7 @@ namespace OWML.ModHelper.Menus
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
         private IModTextInput _textInputTemplate;
+        private IModNumberInput _numberInputTemplate;
 
         private IModButton _cancelButton;
         private IModButton _saveButton;
@@ -34,11 +35,12 @@ namespace OWML.ModHelper.Menus
             _storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
             _textInputTemplate = textInputTemplate;
+            _numberInputTemplate = numberInputTemplate;
 
             var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
@@ -154,9 +156,9 @@ namespace OWML.ModHelper.Menus
 
         private void AddNumberInput(string key, float value, int index)
         {
-            var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
-            textInput.Value = "" + value;
-            textInput.Element.name = key;
+            var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
+            numberInput.Value = value;
+            numberInput.Element.name = key;
         }
 
         private void AddToggleInput(string key, bool value, int index)

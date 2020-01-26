@@ -91,6 +91,7 @@
     <Compile Include="IModManifest.cs" />
     <Compile Include="IModStorage.cs" />
     <Compile Include="Menus\IModSliderInput.cs" />
+    <Compile Include="Menus\IModNumberInput.cs" />
     <Compile Include="Menus\IModTextInput.cs" />
     <Compile Include="Menus\IModToggleInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

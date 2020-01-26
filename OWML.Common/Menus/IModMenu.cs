@@ -30,7 +30,13 @@ namespace OWML.Common.Menus
         IModTextInput AddTextInput(IModTextInput input);
         IModTextInput AddTextInput(IModTextInput input, int index);
 
+        List<IModNumberInput> NumberInputs { get; }
+        IModNumberInput GetNumberInput(string title);
+        IModNumberInput AddNumberInput(IModNumberInput input);
+        IModNumberInput AddNumberInput(IModNumberInput input, int index);
+
         object GetInputValue(string key);
+        void SetInputValue(string key, object value);
 
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();
