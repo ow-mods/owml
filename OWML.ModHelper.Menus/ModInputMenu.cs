@@ -40,7 +40,10 @@ namespace OWML.ModHelper.Menus
             }
 
             var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
-            _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, null, null, true, false);
+            var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK", 0, false, false);
+            var cancelPrompt = new ScreenPrompt(cancelCommand, "Cancel", 0, false, false);
+            _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, okPrompt, cancelPrompt, true, true);
+
             _inputMenu.SetInputFieldPlaceholderText(value);
             _inputMenu.EnableMenu(true);
         }
