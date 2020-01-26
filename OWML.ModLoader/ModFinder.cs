@@ -31,13 +31,13 @@ namespace OWML.ModLoader
                 var json = File.ReadAllText(manifestFilename);
                 var manifest = JsonConvert.DeserializeObject<ModManifest>(json);
                 manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf("manifest.json"));
-                var config = GetModConfig(manifest);
-                mods.Add(new ModData(manifest, config));
+                var modData = GetModData(manifest);
+                mods.Add(modData);
             }
             return mods;
         }
 
-        private IModConfig GetModConfig(IModManifest manifest)
+        private IModData GetModData(IModManifest manifest)
         {
             var storage = new ModStorage(_console, manifest);
             var config = storage.Load<ModConfig>("config.json");
@@ -45,6 +45,7 @@ namespace OWML.ModLoader
             if (config == null && defaultConfig == null)
             {
                 config = new ModConfig();
+                defaultConfig = new ModConfig();
             }
             else if (defaultConfig != null && config == null)
             {
@@ -61,7 +62,7 @@ namespace OWML.ModLoader
                 }
             }
             storage.Save(config, "config.json");
-            return config;
+            return new ModData(manifest, config, defaultConfig);
         }
 
     }

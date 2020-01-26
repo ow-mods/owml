@@ -10,5 +10,7 @@ namespace OWML.Common.Menus
         MonoBehaviour Element { get; }
         string Title { get; set; }
         int Index { get; set; }
+        void Show();
+        void Hide();
     }
 }

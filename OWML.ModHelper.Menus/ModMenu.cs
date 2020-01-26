@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -167,6 +168,50 @@ namespace OWML.ModHelper.Menus
             }
             _console.WriteLine("Error: no input found with name " + key);
             return null;
+        }
+
+        public void SetInputValue(string key, object value)
+        {
+            var slider = GetSliderInput(key);
+            if (slider != null)
+            {
+                try
+                {
+                    slider.Value = value is JObject obj ? (float)obj["value"] : (float)value;
+                }
+                catch (Exception)
+                {
+                    _console.WriteLine("text input: can't cast from " + value.GetType());
+                }
+                return;
+            }
+            var toggle = GetToggleInput(key);
+            if (toggle != null)
+            {
+                try
+                {
+                    toggle.Value = value is JObject obj ? (bool)obj["value"] : (bool)value;
+                }
+                catch (Exception)
+                {
+                    _console.WriteLine("text input: can't cast from " + value.GetType());
+                }
+                return;
+            }
+            var textInput = GetTextInput(key);
+            if (textInput != null)
+            {
+                try
+                {
+                    textInput.Value = value is JObject obj ? obj["value"].ToString() : value.ToString();
+                }
+                catch (Exception)
+                {
+                    _console.WriteLine("text input: can't cast from " + value.GetType());
+                }
+                return;
+            }
+            _console.WriteLine("Error: no input found with name " + key);
         }
 
         protected void InvokeOnInit()

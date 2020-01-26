@@ -43,5 +43,15 @@ namespace OWML.ModHelper.Menus
             OnChange?.Invoke(value);
         }
 
+        public void Show()
+        {
+            Element.gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            Element.gameObject.SetActive(false);
+        }
+
     }
 }

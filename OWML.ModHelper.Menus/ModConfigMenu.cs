@@ -21,6 +21,10 @@ namespace OWML.ModHelper.Menus
         private IModSliderInput _sliderTemplate;
         private IModTextInput _textInputTemplate;
 
+        private IModButton _cancelButton;
+        private IModButton _saveButton;
+        private IModButton _resetButton;
+
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
         {
             _logger = logger;
@@ -43,8 +47,17 @@ namespace OWML.ModHelper.Menus
             blocker.gameObject.SetActive(false);
 
             Title = ModData.Manifest.Name;
-            GetButton("UIElement-CancelOutOfRebinding").Hide();
 
+            _cancelButton = GetButton("UIElement-DiscardChangesButton");
+            _saveButton = GetButton("UIElement-SaveAndExit");
+            _resetButton = GetButton("UIElement-ResetToDefaultsButton");
+
+            _saveButton.OnClick += OnSave;
+            _resetButton.OnClick += OnReset;
+
+            GetButton("UIElement-CancelOutOfRebinding").Hide();
+            GetButton("UIElement-KeyRebinder").Hide();
+            
             var index = 2;
             AddConfigInput("Enabled", ModData.Config.Enabled, index++);
             AddConfigInput("Requires VR", ModData.Config.RequireVR, index++);
@@ -52,8 +65,22 @@ namespace OWML.ModHelper.Menus
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
+        }
 
-            GetButton("UIElement-SaveAndExit").OnClick += OnSave;
+        public override void Open()
+        {
+            base.Open();
+            UpdateUIValues();
+        }
+
+        private void UpdateUIValues()
+        {
+            GetToggleInput("Enabled").Value = ModData.Config.Enabled;
+            GetToggleInput("Requires VR").Value = ModData.Config.RequireVR;
+            foreach (var setting in ModData.Config.Settings)
+            {
+                SetInputValue(setting.Key, setting.Value);
+            }
         }
 
         private void AddConfigInput(string key, object value, int index)
@@ -158,6 +185,12 @@ namespace OWML.ModHelper.Menus
             ModData.Config.Settings = settings;
             _storage.Save(ModData.Config, "config.json");
             Mod.Configure(ModData.Config);
+        }
+
+        private void OnReset()
+        {
+            ModData.ResetConfig();
+            UpdateUIValues();
         }
 
     }
