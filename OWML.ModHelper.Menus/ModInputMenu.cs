@@ -32,7 +32,7 @@ namespace OWML.ModHelper.Menus
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open(InputField.CharacterValidation validation, string value)
+        public void Open(InputField.ContentType contentType, InputField.CharacterValidation validation, string value)
         {
             _inputMenu.OnPopupConfirm += () => OnInput?.Invoke(_inputMenu.GetInputText());
 
@@ -40,6 +40,7 @@ namespace OWML.ModHelper.Menus
             _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, /*this._confirmCreateProfilePrompt*/null, /*cancelPrompt*/null, true, false);
 
             _inputField.characterValidation = validation;
+            _inputField.contentType = contentType;
 
             _inputMenu.SetInputFieldPlaceholderText(value);
             _inputMenu.EnableMenu(true);

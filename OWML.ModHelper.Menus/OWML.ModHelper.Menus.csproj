@@ -83,6 +83,7 @@
     <Compile Include="ModTabMenu.cs" />
     <Compile Include="ModSliderInput.cs" />
     <Compile Include="ModNumberInput.cs" />
+    <Compile Include="ModInputField.cs" />
     <Compile Include="ModTextInput.cs" />
     <Compile Include="ModToggleInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

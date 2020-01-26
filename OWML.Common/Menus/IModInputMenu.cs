@@ -7,6 +7,6 @@ namespace OWML.Common.Menus
     {
         event Action<string> OnInput;
         void Initialize(PopupInputMenu inputMenu);
-        void Open(InputField.CharacterValidation validation, string value);
+        void Open(InputField.ContentType contentType, InputField.CharacterValidation validation, string value);
     }
 }

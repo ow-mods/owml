@@ -1,46 +1,27 @@
 ﻿using OWML.Common.Menus;
-using OWML.ModHelper.Events;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModNumberInput : ModInput<float>, IModNumberInput
+    public class ModNumberInput : ModInputField<float>, IModNumberInput
     {
-        public IModButton Button { get; }
-
-        private readonly IModInputMenu _inputMenu;
-        private readonly TwoButtonToggleElement _element;
-
         private float _value;
 
-        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
+        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu, inputMenu)
         {
-            _element = element;
-            _inputMenu = inputMenu;
-            Button = new ModButton(_element.GetValue<Button>("_buttonTrue"), menu);
-            Button.OnClick += Open;
-
-            var noButton = _element.GetValue<Button>("_buttonFalse");
-            noButton.transform.parent.gameObject.SetActive(false);
-
-            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
-            layoutGroup.childControlWidth = true;
-            layoutGroup.childForceExpandWidth = true;
-
-            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
-        private void Open()
+        protected override void Open()
         {
-            _inputMenu.OnInput += OnInput;
-            _inputMenu.Open(InputField.CharacterValidation.Decimal, _value.ToString());
+            InputMenu.OnInput += OnInput;
+            InputMenu.Open(InputField.ContentType.DecimalNumber, InputField.CharacterValidation.Decimal, _value.ToString());
         }
 
         private void OnInput(string text)
         {
-            _inputMenu.OnInput -= OnInput;
+            InputMenu.OnInput -= OnInput;
             Value = Convert.ToSingle(text);
         }
 
@@ -57,9 +38,9 @@ namespace OWML.ModHelper.Menus
 
         public IModNumberInput Copy()
         {
-            var copy = GameObject.Instantiate(_element);
+            var copy = GameObject.Instantiate(ToggleElement);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModNumberInput(copy, Menu, _inputMenu);
+            return new ModNumberInput(copy, Menu, InputMenu);
         }
 
         public IModNumberInput Copy(string title)

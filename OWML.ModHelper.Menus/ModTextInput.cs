@@ -1,45 +1,26 @@
 ﻿using OWML.Common.Menus;
-using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTextInput : ModInput<string>, IModTextInput
+    public class ModTextInput : ModInputField<string>, IModTextInput
     {
-        public IModButton Button { get; }
-
-        private readonly IModInputMenu _inputMenu;
-        private readonly TwoButtonToggleElement _element;
-
         private string _value;
 
-        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
+        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu, inputMenu)
         {
-            _element = element;
-            _inputMenu = inputMenu;
-            Button = new ModButton(_element.GetValue<Button>("_buttonTrue"), menu);
-            Button.OnClick += Open;
-
-            var noButton = _element.GetValue<Button>("_buttonFalse");
-            noButton.transform.parent.gameObject.SetActive(false);
-
-            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
-            layoutGroup.childControlWidth = true;
-            layoutGroup.childForceExpandWidth = true;
-
-            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
-        private void Open()
+        protected override void Open()
         {
-            _inputMenu.OnInput += OnInput;
-            _inputMenu.Open(InputField.CharacterValidation.None, _value);
+            InputMenu.OnInput += OnInput;
+            InputMenu.Open(InputField.ContentType.Standard, InputField.CharacterValidation.None, _value);
         }
 
         private void OnInput(string text)
         {
-            _inputMenu.OnInput -= OnInput;
+            InputMenu.OnInput -= OnInput;
             Value = text;
         }
 
@@ -56,9 +37,9 @@ namespace OWML.ModHelper.Menus
 
         public IModTextInput Copy()
         {
-            var copy = GameObject.Instantiate(_element);
+            var copy = GameObject.Instantiate(ToggleElement);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModTextInput(copy, Menu, _inputMenu);
+            return new ModTextInput(copy, Menu, InputMenu);
         }
 
         public IModTextInput Copy(string title)
