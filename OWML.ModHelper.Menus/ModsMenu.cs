@@ -98,7 +98,7 @@ namespace OWML.ModHelper.Menus
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
-                var modMenuTemplate = _modMenuTemplate.GetChild(0).GetComponent<Menu>();
+                var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
                 var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
                 var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
                 var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);

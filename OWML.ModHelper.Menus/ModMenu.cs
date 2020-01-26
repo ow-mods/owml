@@ -233,5 +233,12 @@ namespace OWML.ModHelper.Menus
             OnInit?.Invoke();
         }
 
+        public void SelectFirst()
+        {
+            var firstSelectable = Menu.GetComponentInChildren<Selectable>();
+            Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
+            Menu.SetSelectOnActivate(firstSelectable);
+        }
+
     }
 }

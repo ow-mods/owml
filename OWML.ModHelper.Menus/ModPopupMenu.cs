@@ -63,6 +63,7 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't open menu, it doesn't exist.");
                 return;
             }
+            SelectFirst();
             Menu.EnableMenu(true);
         }
 

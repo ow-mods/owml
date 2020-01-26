@@ -38,6 +38,7 @@ namespace OWML.ModHelper.Menus
 
         public override void Open()
         {
+            SelectFirst();
             if (!_optionsMenu.IsOpen)
             {
                 _optionsMenu.Open();

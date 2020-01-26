@@ -38,6 +38,8 @@ namespace OWML.Common.Menus
         object GetInputValue(string key);
         void SetInputValue(string key, object value);
 
+        void SelectFirst();
+
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();
         [Obsolete("Use button.Duplicate instead")]
