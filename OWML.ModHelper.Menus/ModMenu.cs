@@ -46,6 +46,16 @@ namespace OWML.ModHelper.Menus
             TextInputs = new List<IModTextInput>();
         }
 
+        public IModButton GetButton(string title)
+        {
+            var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
+            if (button == null)
+            {
+                _console.WriteLine("Warning: no button found with title or name: " + title);
+            }
+            return button;
+        }
+
         [Obsolete("Use Buttons instead")]
         public List<Button> GetButtons()
         {
@@ -138,14 +148,25 @@ namespace OWML.ModHelper.Menus
             return input;
         }
 
-        public IModButton GetButton(string title)
+        public object GetInputValue(string key)
         {
-            var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
-            if (button == null)
+            var slider = GetSliderInput(key);
+            if (slider != null)
             {
-                _console.WriteLine("Warning: no button found with title or name: " + title);
+                return slider.Value;
             }
-            return button;
+            var toggle = GetToggleInput(key);
+            if (toggle != null)
+            {
+                return toggle.Value;
+            }
+            var textInput = GetTextInput(key);
+            if (textInput != null)
+            {
+                return textInput.Value;
+            }
+            _console.WriteLine("Error: no input found with name " + key);
+            return null;
         }
 
         protected void InvokeOnInit()

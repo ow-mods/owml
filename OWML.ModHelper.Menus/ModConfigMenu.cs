@@ -160,26 +160,5 @@ namespace OWML.ModHelper.Menus
             Mod.Configure(ModData.Config);
         }
 
-        private object GetInputValue(string key)
-        {
-            var slider = GetSliderInput(key);
-            if (slider != null)
-            {
-                return slider.Value;
-            }
-            var toggle = GetToggleInput(key);
-            if (toggle != null)
-            {
-                return toggle.Value;
-            }
-            var textInput = GetTextInput(key);
-            if (textInput != null)
-            {
-                return textInput.Value;
-            }
-            _console.WriteLine("Error: no input found with name " + key);
-            return null;
-        }
-
     }
 }

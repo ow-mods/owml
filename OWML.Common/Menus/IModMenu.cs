@@ -30,6 +30,8 @@ namespace OWML.Common.Menus
         IModTextInput AddTextInput(IModTextInput input);
         IModTextInput AddTextInput(IModTextInput input, int index);
 
+        object GetInputValue(string key);
+
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();
         [Obsolete("Use button.Duplicate instead")]
