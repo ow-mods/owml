@@ -247,16 +247,15 @@ namespace OWML.ModHelper.Menus
 
         protected void UpdateNavigation()
         {
-            var tooltipSelectables = Menu.GetComponentsInChildren<TooltipSelectable>();
-            for (var i = 0; i < tooltipSelectables.Length; i++)
+            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>().Select(x => x.GetComponent<Selectable>()).ToList();
+            for (var i = 0; i < selectables.Count; i++)
             {
-                var upIndex = (i - 1 + tooltipSelectables.Length) % tooltipSelectables.Length;
-                var downIndex = (i + 1) % tooltipSelectables.Length;
-                var selectable = tooltipSelectables[i].GetComponent<Selectable>();
-                var navigation = selectable.navigation;
-                navigation.selectOnUp = tooltipSelectables[upIndex].GetComponent<Selectable>();
-                navigation.selectOnDown = tooltipSelectables[downIndex].GetComponent<Selectable>();
-                selectable.navigation = navigation;
+                var upIndex = (i - 1 + selectables.Count) % selectables.Count;
+                var downIndex = (i + 1) % selectables.Count;
+                var navigation = selectables[i].navigation;
+                navigation.selectOnUp = selectables[upIndex];
+                navigation.selectOnDown = selectables[downIndex];
+                selectables[i].navigation = navigation;
             }
         }
 
