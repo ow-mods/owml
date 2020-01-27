@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -48,6 +50,9 @@ namespace OWML.ModHelper.Menus
             var blocker = menu.GetComponentsInChildren<GraphicRaycaster>().Single(x => x.name == "RebindingModeBlocker");
             blocker.gameObject.SetActive(false);
 
+            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>();
+            labelPanel.gameObject.SetActive(false);
+
             Title = ModData.Manifest.Name;
 
             _cancelButton = GetButton("UIElement-DiscardChangesButton");
@@ -59,7 +64,7 @@ namespace OWML.ModHelper.Menus
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
-            
+
             var index = 2;
             AddConfigInput("Enabled", ModData.Config.Enabled, index++);
             AddConfigInput("Requires VR", ModData.Config.RequireVR, index++);
@@ -186,7 +191,10 @@ namespace OWML.ModHelper.Menus
             }
             ModData.Config.Settings = settings;
             _storage.Save(ModData.Config, "config.json");
-            Mod.Configure(ModData.Config);
+            if (Mod != null)
+            {
+                Mod.Configure(ModData.Config);
+            }
         }
 
         private void OnReset()

@@ -94,6 +94,7 @@ namespace OWML.ModHelper.Menus
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>().ToList().ForEach(x => x.gameObject.SetActive(false));
+            modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
             foreach (var modConfigMenu in _modConfigMenus)
             {
