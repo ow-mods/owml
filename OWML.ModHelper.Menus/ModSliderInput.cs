@@ -6,32 +6,21 @@ namespace OWML.ModHelper.Menus
 {
     public class ModSliderInput : ModInput<float>, IModSliderInput
     {
+        public float Min { get; set; }
+        public float Max { get; set; }
+
         private readonly SliderElement _element;
-        private readonly Slider _slider;
 
         public ModSliderInput(SliderElement element, IModMenu menu) : base(element, menu)
         {
             _element = element;
-            _slider = _element.GetComponentInChildren<Slider>();
             element.OnValueChanged += () => InvokeOnChange(Value);
         }
 
         public override float Value
         {
-            get => _element.GetValue();
-            set => _element.Initialize((int)value);
-        }
-
-        public float Min
-        {
-            get => _slider.minValue;
-            set => _slider.minValue = value;
-        }
-
-        public float Max
-        {
-            get => _slider.maxValue;
-            set => _slider.maxValue = value;
+            get => ToRealNumber(_element.GetValue());
+            set => _element.Initialize((int)ToFakeNumber(value));
         }
 
         public IModSliderInput Copy()
@@ -46,6 +35,16 @@ namespace OWML.ModHelper.Menus
             var copy = Copy();
             copy.Title = title;
             return copy;
+        }
+
+        private float ToRealNumber(float fakeNumber)
+        {
+            return fakeNumber * (Max - Min) / 10;
+        }
+
+        private float ToFakeNumber(float realNumber)
+        {
+            return realNumber * 10 / (Max - Min);
         }
 
     }
