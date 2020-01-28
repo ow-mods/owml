@@ -1,11 +1,11 @@
 ﻿using System;
-using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
     public interface IModInputMenu : IModMenu
     {
-        event Action<string> OnInput;
+        event Action<string> OnConfirm;
+        event Action OnCancel;
         void Initialize(PopupInputMenu inputMenu);
         void Open(InputType inputType, string value);
     }

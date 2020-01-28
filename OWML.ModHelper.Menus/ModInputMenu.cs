@@ -1,13 +1,16 @@
 ﻿using System;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModInputMenu : ModMenu, IModInputMenu
     {
-        public event Action<string> OnInput;
+        public event Action<string> OnConfirm;
+        public event Action OnCancel;
 
         private PopupInputMenu _inputMenu;
 
@@ -26,26 +29,31 @@ namespace OWML.ModHelper.Menus
             var parentCopy = GameObject.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _inputMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);
+            GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
         }
 
         public void Open(InputType inputType, string value)
         {
-            _inputMenu.OnPopupConfirm += OnConfirm;
+            _inputMenu.OnPopupConfirm += OnPopupConfirm;
+            _inputMenu.OnPopupCancel += OnPopupCancel;
 
             if (inputType == InputType.Number)
             {
                 _inputMenu.OnInputPopupValidateChar += OnValidateCharNumber;
                 _inputMenu.OnPopupValidate += OnValidateNumber;
             }
+            var message = inputType == InputType.Number ? "Write a number" : "Write some text";
 
-            var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
-            var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK", 0, false, false);
-            var cancelPrompt = new ScreenPrompt(cancelCommand, "Cancel", 0, false, false);
-            _inputMenu.SetUpPopup("Write the thing", InputLibrary.confirm2, cancelCommand, okPrompt, cancelPrompt, true, true);
-
-            _inputMenu.SetInputFieldPlaceholderText(value);
             _inputMenu.EnableMenu(true);
+
+            var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK");
+            var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
+            var cancelPrompt = new ScreenPrompt(cancelCommand, "Cancel");
+            _inputMenu.SetUpPopup(message, InputLibrary.confirm2, cancelCommand, okPrompt, cancelPrompt, true, true);
+            _inputMenu.SetInputFieldPlaceholderText("");
+            _inputMenu.GetInputField().text = value;
+            _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
         private bool OnValidateNumber()
@@ -58,12 +66,24 @@ namespace OWML.ModHelper.Menus
             return "0123456789.".Contains("" + c);
         }
 
-        private void OnConfirm()
+        private void OnPopupConfirm()
+        {
+            UnregisterEvents();
+            OnConfirm?.Invoke(_inputMenu.GetInputText());
+        }
+
+        private void OnPopupCancel()
+        {
+            UnregisterEvents();
+            OnCancel?.Invoke();
+        }
+
+        private void UnregisterEvents()
         {
             _inputMenu.OnPopupValidate -= OnValidateNumber;
             _inputMenu.OnInputPopupValidateChar -= OnValidateCharNumber;
-            _inputMenu.OnPopupConfirm -= OnConfirm;
-            OnInput?.Invoke(_inputMenu.GetInputText());
+            _inputMenu.OnPopupConfirm -= OnPopupConfirm;
+            _inputMenu.OnPopupCancel -= OnPopupCancel;
         }
 
     }

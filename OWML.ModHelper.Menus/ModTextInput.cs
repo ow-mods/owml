@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using System;
+using OWML.Common.Menus;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
@@ -13,14 +14,21 @@ namespace OWML.ModHelper.Menus
 
         protected override void Open()
         {
-            InputMenu.OnInput += OnInput;
-            InputMenu.Open(InputType.Text, _value);
+            InputMenu.OnConfirm += OnConfirm;
+            InputMenu.OnCancel += OnCancel;
+            InputMenu.Open(InputType.Text, Value);
         }
 
-        private void OnInput(string text)
+        private void OnConfirm(string text)
         {
-            InputMenu.OnInput -= OnInput;
+            OnCancel();
             Value = text;
+        }
+
+        private void OnCancel()
+        {
+            InputMenu.OnConfirm -= OnConfirm;
+            InputMenu.OnCancel -= OnCancel;
         }
 
         public override string Value

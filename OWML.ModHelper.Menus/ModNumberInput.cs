@@ -14,14 +14,21 @@ namespace OWML.ModHelper.Menus
 
         protected override void Open()
         {
-            InputMenu.OnInput += OnInput;
-            InputMenu.Open(InputType.Number, _value.ToString());
+            InputMenu.OnConfirm += OnConfirm;
+            InputMenu.OnCancel += OnCancel;
+            InputMenu.Open(InputType.Number, Value.ToString());
         }
 
-        private void OnInput(string text)
+        private void OnConfirm(string text)
         {
-            InputMenu.OnInput -= OnInput;
+            OnCancel();
             Value = Convert.ToSingle(text);
+        }
+
+        private void OnCancel()
+        {
+            InputMenu.OnConfirm -= OnConfirm;
+            InputMenu.OnCancel -= OnCancel;
         }
 
         public override float Value
