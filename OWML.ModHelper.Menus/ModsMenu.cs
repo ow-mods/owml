@@ -12,16 +12,17 @@ namespace OWML.ModHelper.Menus
     {
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
+        private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
 
-        private IModMenus _menus;
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
-        public ModsMenu(IModLogger logger, IModConsole console) : base(logger, console)
+        public ModsMenu(IModLogger logger, IModConsole console, IModMenus menus) : base(logger, console)
         {
             _logger = logger;
             _console = console;
+            _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
         }
 
@@ -42,12 +43,26 @@ namespace OWML.ModHelper.Menus
             return modConfigMenu;
         }
 
-        public void Initialize(IModMenus menus)
+        public void Initialize(IModMainMenu mainMenu)
         {
-            _menus = menus;
-            CreateModMenuTemplate(menus.MainMenu);
-            menus.MainMenu.OnInit += () => InitMainMenu(menus.MainMenu);
-            menus.PauseMenu.OnInit += () => InitPauseMenu(menus.PauseMenu);
+            if (_modMenuTemplate == null)
+            {
+                CreateModMenuTemplate(mainMenu);
+            }
+            var modsButton = mainMenu.OptionsButton.Duplicate("MODS");
+            var optionsMenu = mainMenu.OptionsMenu;
+            var modsMenu = CreateModsMenu(optionsMenu);
+            modsButton.OnClick += () => modsMenu.Open();
+            Menu = mainMenu.Menu;
+        }
+
+        public void Initialize(IModPauseMenu pauseMenu)
+        {
+            var modsButton = pauseMenu.OptionsButton.Duplicate("MODS");
+            var optionsMenu = pauseMenu.OptionsMenu;
+            var modsMenu = CreateModsMenu(optionsMenu);
+            modsButton.OnClick += () => modsMenu.Open();
+            Menu = pauseMenu.Menu;
         }
 
         private void CreateModMenuTemplate(IModMainMenu mainMenu)
@@ -67,24 +82,6 @@ namespace OWML.ModHelper.Menus
             var rebindingCanvas = rebindingMenu.transform.parent;
             _modMenuTemplate = GameObject.Instantiate(rebindingCanvas);
             _modMenuTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
-        }
-
-        private void InitMainMenu(IModMainMenu mainMenu)
-        {
-            var modsButton = mainMenu.OptionsButton.Duplicate("MODS");
-            var optionsMenu = mainMenu.OptionsMenu;
-            var modsMenu = CreateModsMenu(optionsMenu);
-            modsButton.OnClick += () => modsMenu.Open();
-            Menu = mainMenu.Menu;
-        }
-
-        private void InitPauseMenu(IModPauseMenu pauseMenu)
-        {
-            var modsButton = pauseMenu.OptionsButton.Duplicate("MODS");
-            var optionsMenu = pauseMenu.OptionsMenu;
-            var modsMenu = CreateModsMenu(optionsMenu);
-            modsButton.OnClick += () => modsMenu.Open();
-            Menu = pauseMenu.Menu;
         }
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)

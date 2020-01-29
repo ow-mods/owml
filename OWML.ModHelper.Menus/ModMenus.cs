@@ -21,20 +21,12 @@ namespace OWML.ModHelper.Menus
             _console = console;
 
             MainMenu = new ModMainMenu(logger, console);
-            var titleScreenManager = GameObject.FindObjectOfType<TitleScreenManager>();
-            MainMenu.Initialize(titleScreenManager);
-
             PauseMenu = new ModPauseMenu(logger, console);
-
-            ModsMenu = new ModsMenu(logger, console);
-            ModsMenu.Initialize(this);
-
+            ModsMenu = new ModsMenu(logger, console, this);
             InputMenu = new ModInputMenu(logger, console);
-            var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
-            InputMenu.Initialize(inputMenu);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
-            events.Subscribe<TitleScreenManager>(Common.Events.AfterAwake);
+            events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
             events.OnEvent += OnEvent;
         }
 
@@ -44,11 +36,15 @@ namespace OWML.ModHelper.Menus
             {
                 var settingsManager = (SettingsManager)behaviour;
                 PauseMenu.Initialize(settingsManager);
+                ModsMenu.Initialize(PauseMenu);
             }
-            else if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterAwake)
+            else if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterStart)
             {
                 var titleScreenManager = (TitleScreenManager)behaviour;
                 MainMenu.Initialize(titleScreenManager);
+                var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
+                InputMenu.Initialize(inputMenu);
+                ModsMenu.Initialize(MainMenu);
             }
         }
 

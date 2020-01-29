@@ -1,6 +1,4 @@
 ﻿using OWML.Common.Menus;
-using UnityEngine.UI;
-using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
@@ -12,12 +10,12 @@ namespace OWML.ModHelper.Menus
 
         public TwoButtonToggleElement Toggle { get; }
 
-        public ModToggleInput(TwoButtonToggleElement element, IModMenu menu) : base(element, menu)
+        public ModToggleInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
         {
-            Toggle = element;
-            YesButton = new ModButton(Toggle.GetValue<Button>("_buttonTrue"), menu);
+            Toggle = toggle;
+            YesButton = menu.GetButton("Button-ON");
             YesButton.OnClick += () => InvokeOnChange(true);
-            NoButton = new ModButton(Toggle.GetValue<Button>("_buttonFalse"), menu);
+            NoButton = menu.GetButton("Button-OFF");
             NoButton.OnClick += () => InvokeOnChange(false);
         }
 

@@ -24,10 +24,6 @@ namespace OWML.ModHelper.Menus
         private IModTextInput _textInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
-        private IModButton _cancelButton;
-        private IModButton _saveButton;
-        private IModButton _resetButton;
-
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
         {
             _logger = logger;
@@ -55,12 +51,8 @@ namespace OWML.ModHelper.Menus
 
             Title = ModData.Manifest.Name;
 
-            _cancelButton = GetButton("UIElement-DiscardChangesButton");
-            _saveButton = GetButton("UIElement-SaveAndExit");
-            _resetButton = GetButton("UIElement-ResetToDefaultsButton");
-
-            _saveButton.OnClick += OnSave;
-            _resetButton.OnClick += OnReset;
+            GetButton("UIElement-SaveAndExit").OnClick += OnSave;
+            GetButton("UIElement-ResetToDefaultsButton").OnClick += OnReset;
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
@@ -180,16 +172,12 @@ namespace OWML.ModHelper.Menus
         {
             ModData.Config.Enabled = (bool)GetInputValue("Enabled");
             ModData.Config.RequireVR = (bool)GetInputValue("Requires VR");
-            var settings = new Dictionary<string, object>();
-            foreach (var key in ModData.Config.Settings.Keys)
+            var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
+            foreach (var key in keys)
             {
                 var value = GetInputValue(key);
-                if (value != null)
-                {
-                    settings[key] = value;
-                }
+                ModData.Config.SetSettingsValue(key, value);
             }
-            ModData.Config.Settings = settings;
             _storage.Save(ModData.Config, "config.json");
             if (Mod != null)
             {

@@ -39,6 +39,26 @@ namespace OWML.ModHelper
             }
         }
 
+        public void SetSettingsValue(string key, object val)
+        {
+            if (!Settings.ContainsKey(key))
+            {
+                ModConsole.Instance.WriteLine("Error: setting not found: " + key);
+                return;
+            }
+
+            var value = Settings[key];
+
+            if (value is JObject obj)
+            {
+                obj["value"] = "" + val;
+            } 
+            else
+            {
+                Settings[key] = val;
+            }
+        }
+
         [Obsolete("Use GetSettingsValue instead")]
         public T GetSetting<T>(string key)
         {

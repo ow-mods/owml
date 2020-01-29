@@ -25,6 +25,10 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(PopupInputMenu menu)
         {
+            if (Menu != null)
+            {
+                return;
+            }
             var parent = menu.transform.parent.gameObject;
             var parentCopy = GameObject.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();

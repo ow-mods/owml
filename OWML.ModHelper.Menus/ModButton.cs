@@ -51,7 +51,6 @@ namespace OWML.ModHelper.Menus
         {
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
-            //GameObject.Destroy(button.GetComponentInChildren<LocalizedText>()); todo
             return new ModButton(button, Menu)
             {
                 Index = Index + 1
