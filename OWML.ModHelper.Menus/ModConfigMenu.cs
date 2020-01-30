@@ -3,7 +3,6 @@ using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,6 +56,28 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
+            AddInputs();
+
+        }
+
+        //private bool _isFirstOpen = true;
+
+        public override void Open()
+        {
+            //if (_isFirstOpen)
+            //{
+            //    _isFirstOpen = false;
+            //}
+            //else
+            //{
+            //}
+            base.Open();
+            UpdateUIValues();
+
+        }
+
+        private void AddInputs()
+        {
             var index = 2;
             AddConfigInput("Enabled", ModData.Config.Enabled, index++);
             AddConfigInput("Requires VR", ModData.Config.RequireVR, index++);
@@ -64,12 +85,6 @@ namespace OWML.ModHelper.Menus
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
-        }
-
-        public override void Open()
-        {
-            base.Open();
-            UpdateUIValues();
         }
 
         private void UpdateUIValues()

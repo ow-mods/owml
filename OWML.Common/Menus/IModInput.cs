@@ -12,5 +12,6 @@ namespace OWML.Common.Menus
         int Index { get; set; }
         void Show();
         void Hide();
+        void Initialize(IModMenu menu);
     }
 }

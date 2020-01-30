@@ -110,10 +110,8 @@ namespace OWML.ModHelper.Menus
 
         public IModToggleInput AddToggleInput(IModToggleInput input, int index)
         {
-            input.Element.transform.parent = _layoutGroup.transform;
-            input.Index = index;
             ToggleInputs.Add(input);
-            UpdateNavigation();
+            AddInput(input, index);
             return input;
         }
 
@@ -129,10 +127,8 @@ namespace OWML.ModHelper.Menus
 
         public IModSliderInput AddSliderInput(IModSliderInput input, int index)
         {
-            input.Element.transform.parent = _layoutGroup.transform;
-            input.Index = index;
             SliderInputs.Add(input);
-            UpdateNavigation();
+            AddInput(input, index);
             return input;
         }
 
@@ -148,10 +144,8 @@ namespace OWML.ModHelper.Menus
 
         public IModTextInput AddTextInput(IModTextInput input, int index)
         {
-            input.Element.transform.parent = _layoutGroup.transform;
-            input.Index = index;
             TextInputs.Add(input);
-            UpdateNavigation();
+            AddInput(input, index);
             return input;
         }
 
@@ -167,11 +161,17 @@ namespace OWML.ModHelper.Menus
 
         public IModNumberInput AddNumberInput(IModNumberInput input, int index)
         {
+            NumberInputs.Add(input);
+            AddInput(input, index);
+            return input;
+        }
+
+        private void AddInput<T>(IModInput<T> input, int index)
+        {
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
-            NumberInputs.Add(input);
+            input.Initialize(this);
             UpdateNavigation();
-            return input;
         }
 
         public object GetInputValue(string key)

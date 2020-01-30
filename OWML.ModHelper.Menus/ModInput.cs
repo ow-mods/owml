@@ -53,5 +53,10 @@ namespace OWML.ModHelper.Menus
             Element.gameObject.SetActive(false);
         }
 
+        public virtual void Initialize(IModMenu menu)
+        {
+            Menu = menu;
+        }
+
     }
 }
