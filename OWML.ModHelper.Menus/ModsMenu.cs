@@ -104,6 +104,7 @@ namespace OWML.ModHelper.Menus
                 modButton.OnClick += () => modConfigMenu.Open();
                 modsTab.AddButton(modButton);
             }
+            modsTab.UpdateNavigation();
             return modsTab;
         }
 

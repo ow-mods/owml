@@ -84,6 +84,8 @@ namespace OWML.ModHelper.Menus
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
+            SelectFirst();
+            UpdateNavigation();
         }
 
         private void UpdateUIValues()

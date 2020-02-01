@@ -39,6 +39,7 @@ namespace OWML.Common.Menus
         void SetInputValue(string key, object value);
 
         void SelectFirst();
+        void UpdateNavigation();
 
         [Obsolete("Use Buttons instead")]
         List<Button> GetButtons();

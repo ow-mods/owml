@@ -94,7 +94,6 @@ namespace OWML.ModHelper.Menus
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
-            UpdateNavigation();
             return button;
         }
 
@@ -171,7 +170,6 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.parent = _layoutGroup.transform;
             input.Index = index;
             input.Initialize(this);
-            UpdateNavigation();
         }
 
         public object GetInputValue(string key)
@@ -245,7 +243,7 @@ namespace OWML.ModHelper.Menus
             Menu.SetSelectOnActivate(firstSelectable);
         }
 
-        protected void UpdateNavigation()
+        public void UpdateNavigation()
         {
             var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
                 .Select(x => x.GetComponent<Selectable>())
