@@ -31,10 +31,10 @@ namespace OWML.ModHelper.Menus
         public void Initialize(TabButton tabButton)
         {
             TabButton = tabButton;
+            TabButton.OnTabSelect += t => SelectFirst();
             var menu = tabButton.GetValue<Menu>("_tabbedMenu");
             Initialize(menu);
             InvokeOnInit();
-            tabButton.OnTabSelect += (tab) => SelectFirst();
         }
 
         public override void Open()
