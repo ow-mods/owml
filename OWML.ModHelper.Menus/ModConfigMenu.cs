@@ -23,8 +23,6 @@ namespace OWML.ModHelper.Menus
         private IModTextInput _textInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
-        private bool _isInputsAdded;
-
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
         {
             _logger = logger;
@@ -58,17 +56,12 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
-            _isInputsAdded = false;
+            AddInputs();
         }
 
         public override void Open()
         {
             base.Open();
-            if (!_isInputsAdded)
-            {
-                AddInputs();
-                _isInputsAdded = true;
-            }
             UpdateUIValues();
         }
 
