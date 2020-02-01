@@ -69,10 +69,7 @@ namespace OWML.ModHelper.Menus
                 AddInputs();
                 _isInputsAdded = true;
             }
-            else
-            {
-                UpdateUIValues();
-            }
+            UpdateUIValues();
         }
 
         private void AddInputs()
@@ -100,22 +97,21 @@ namespace OWML.ModHelper.Menus
 
         private void AddConfigInput(string key, object value, int index)
         {
-            if (value is bool val)
+            if (value is bool)
             {
-                AddToggleInput(key, val, index);
+                AddToggleInput(key, index);
                 return;
             }
 
-            if (value is string s)
+            if (value is string )
             {
-                AddTextInput(key, s, index);
+                AddTextInput(key, index);
                 return;
             }
 
             if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(value.GetType()))
             {
-                var f = Convert.ToSingle(value);
-                AddNumberInput(key, f, index);
+                AddNumberInput(key, index);
                 return;
             }
 
@@ -143,7 +139,6 @@ namespace OWML.ModHelper.Menus
         private void AddToggleInput(string key, JObject obj, int index)
         {
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-            toggle.Value = (bool)obj["value"];
             toggle.YesButton.Title = (string)obj["yes"];
             toggle.NoButton.Title = (string)obj["no"];
             toggle.Element.name = key;
@@ -153,31 +148,27 @@ namespace OWML.ModHelper.Menus
         private void AddSliderInput(string key, JObject obj, int index)
         {
             var slider = AddSliderInput(_sliderTemplate.Copy(key), index);
-            slider.Value = (float)obj["value"];
             slider.Min = (float)obj["min"];
             slider.Max = (float)obj["max"];
             slider.Element.name = key;
             slider.Title = (string)obj["title"] ?? key;
         }
 
-        private void AddTextInput(string key, string value, int index)
+        private void AddTextInput(string key, int index)
         {
             var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
-            textInput.Value = value;
             textInput.Element.name = key;
         }
 
-        private void AddNumberInput(string key, float value, int index)
+        private void AddNumberInput(string key, int index)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
-            numberInput.Value = value;
             numberInput.Element.name = key;
         }
 
-        private void AddToggleInput(string key, bool value, int index)
+        private void AddToggleInput(string key, int index)
         {
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-            toggle.Value = value;
             toggle.YesButton.Title = "Yes";
             toggle.NoButton.Title = "No";
             toggle.Element.name = key;
