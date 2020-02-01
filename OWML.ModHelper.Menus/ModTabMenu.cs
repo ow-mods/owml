@@ -34,6 +34,7 @@ namespace OWML.ModHelper.Menus
             var menu = tabButton.GetValue<Menu>("_tabbedMenu");
             Initialize(menu);
             InvokeOnInit();
+            tabButton.OnTabSelect += (tab) => SelectFirst();
         }
 
         public override void Open()
