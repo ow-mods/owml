@@ -71,13 +71,10 @@ namespace OWML.ModHelper.Menus
             var buttonTemplate = GameObject.Instantiate(remapControlsButton.Button);
             buttonTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
             _modButtonTemplate = new ModButton(buttonTemplate, mainMenu);
+            _modButtonTemplate.Hide();
 
             var submitActionMenu = remapControlsButton.Button.GetComponent<SubmitActionMenu>();
             var rebindingMenu = submitActionMenu.GetValue<Menu>("_menuToOpen");
-            if (rebindingMenu == null)
-            {
-                _console.WriteLine("Error: rebindingMenu is null");
-            }
 
             var rebindingCanvas = rebindingMenu.transform.parent;
             _modMenuTemplate = GameObject.Instantiate(rebindingCanvas);
@@ -99,9 +96,12 @@ namespace OWML.ModHelper.Menus
                 var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
                 var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
                 var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+                textInputTemplate.Hide();
                 var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+                numberInputTemplate.Hide();
                 modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate);
                 modButton.OnClick += () => modConfigMenu.Open();
+                modButton.Show();
                 modsTab.AddButton(modButton);
             }
             modsTab.UpdateNavigation();

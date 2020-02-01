@@ -129,6 +129,16 @@ namespace OWML.ModHelper.Menus
             _console.WriteLine("Error: unrecognized setting type: " + value.GetType());
         }
 
+        private void AddToggleInput(string key, int index)
+        {
+            var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
+            toggle.YesButton.Title = "Yes";
+            toggle.NoButton.Title = "No";
+            toggle.Element.name = key;
+            toggle.Title = key;
+            toggle.Show();
+        }
+
         private void AddToggleInput(string key, JObject obj, int index)
         {
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
@@ -136,6 +146,7 @@ namespace OWML.ModHelper.Menus
             toggle.NoButton.Title = (string)obj["no"];
             toggle.Element.name = key;
             toggle.Title = (string)obj["title"] ?? key;
+            toggle.Show();
         }
 
         private void AddSliderInput(string key, JObject obj, int index)
@@ -145,27 +156,21 @@ namespace OWML.ModHelper.Menus
             slider.Max = (float)obj["max"];
             slider.Element.name = key;
             slider.Title = (string)obj["title"] ?? key;
+            slider.Show();
         }
 
         private void AddTextInput(string key, int index)
         {
             var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
             textInput.Element.name = key;
+            textInput.Show();
         }
 
         private void AddNumberInput(string key, int index)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
             numberInput.Element.name = key;
-        }
-
-        private void AddToggleInput(string key, int index)
-        {
-            var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-            toggle.YesButton.Title = "Yes";
-            toggle.NoButton.Title = "No";
-            toggle.Element.name = key;
-            toggle.Title = key;
+            numberInput.Show();
         }
 
         private void OnSave()
