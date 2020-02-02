@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.30";
+        private const string Version = "0.3.31";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -177,7 +177,7 @@ namespace OWML.Launcher
         {
             _owPatcher.PatchGame();
 
-            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR);
+            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
             var enableVR = vrMod != null;
             _writer.WriteLine(enableVR ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             _vrPatcher.PatchVR(enableVR);
