@@ -71,11 +71,10 @@ namespace OWML.ModHelper.Menus
             var buttonTemplate = GameObject.Instantiate(remapControlsButton.Button);
             buttonTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
             _modButtonTemplate = new ModButton(buttonTemplate, mainMenu);
-            _modButtonTemplate.Hide();
+            _modButtonTemplate.Button.enabled = false;
 
             var submitActionMenu = remapControlsButton.Button.GetComponent<SubmitActionMenu>();
             var rebindingMenu = submitActionMenu.GetValue<Menu>("_menuToOpen");
-
             var rebindingCanvas = rebindingMenu.transform.parent;
             _modMenuTemplate = GameObject.Instantiate(rebindingCanvas);
             _modMenuTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
@@ -93,6 +92,7 @@ namespace OWML.ModHelper.Menus
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
+                modButton.Button.enabled = true;
                 var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
                 var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
                 var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
@@ -101,7 +101,6 @@ namespace OWML.ModHelper.Menus
                 numberInputTemplate.Hide();
                 modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate);
                 modButton.OnClick += () => modConfigMenu.Open();
-                modButton.Show();
                 modsTab.AddButton(modButton);
             }
             modsTab.UpdateNavigation();
