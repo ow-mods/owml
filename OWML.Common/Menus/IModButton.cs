@@ -6,8 +6,6 @@ namespace OWML.Common.Menus
     public interface IModButton
     {
         event Action OnClick;
-        void Click();
-
         string Title { get; set; }
         int Index { get; set; }
         Button Button { get; }

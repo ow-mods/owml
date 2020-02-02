@@ -1,26 +1,28 @@
-﻿using OWML.Common.Menus;
+﻿using OWML.ModHelper.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper
 {
     public class ControllerButton : MonoBehaviour
     {
-        private IModButton _button;
+        private Button _button;
         private SingleAxisCommand _inputCommand;
 
-        public void Init(IModButton button, SingleAxisCommand inputCommand)
+        public void Init(SingleAxisCommand inputCommand)
         {
-            _button = button;
-            ModConsole.Instance.WriteLine("controller support: " + button.Title);
+            _button = GetComponent<Button>();
+            var textId = GetComponentInChildren<LocalizedText>().GetValue<UITextType>("_textID");
+            var title = UITextLibrary.GetString(textId);
             _inputCommand = inputCommand;
-            GetComponent<ButtonWithHotkeyImageElement>().SetPrompt(new ScreenPrompt(inputCommand, button.Title), InputMode.Menu);
+            GetComponent<ButtonWithHotkeyImageElement>().SetPrompt(new ScreenPrompt(inputCommand, title), InputMode.Menu);
         }
 
         private void Update()
         {
             if (_inputCommand != null && _button != null && OWInput.IsPressed(_inputCommand, InputMode.Menu))
             {
-                _button.Click();
+                _button.onClick.Invoke();
             }
         }
 
