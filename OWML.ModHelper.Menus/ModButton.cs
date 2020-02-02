@@ -144,5 +144,15 @@ namespace OWML.ModHelper.Menus
             Button.gameObject.SetActive(false);
         }
 
+        public void Click()
+        {
+            Button.onClick.Invoke();
+        }
+
+        public void AddControllerSupport(SingleAxisCommand inputCommand)
+        {
+            Button.gameObject.AddComponent<ControllerButton>().Init(this, inputCommand);
+        }
+
     }
 }

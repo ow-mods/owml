@@ -6,6 +6,8 @@ namespace OWML.Common.Menus
     public interface IModButton
     {
         event Action OnClick;
+        void Click();
+
         string Title { get; set; }
         int Index { get; set; }
         Button Button { get; }
@@ -28,5 +30,7 @@ namespace OWML.Common.Menus
 
         void Show();
         void Hide();
+
+        void AddControllerSupport(SingleAxisCommand inputCommand);
     }
 }

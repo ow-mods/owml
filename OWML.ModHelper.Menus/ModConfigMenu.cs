@@ -50,8 +50,17 @@ namespace OWML.ModHelper.Menus
 
             Title = ModData.Manifest.Name;
 
-            GetButton("UIElement-SaveAndExit").OnClick += OnSave;
-            GetButton("UIElement-ResetToDefaultsButton").OnClick += OnReset;
+            var saveButton = GetButton("UIElement-SaveAndExit");
+            var resetButton = GetButton("UIElement-ResetToDefaultsButton");
+            var cancelButton = GetButton("UIElement-DiscardChangesButton");
+
+            saveButton.OnClick += OnSave;
+            resetButton.OnClick += OnReset;
+            cancelButton.OnClick += Close;
+
+            saveButton.AddControllerSupport(InputLibrary.confirm);
+            resetButton.AddControllerSupport(InputLibrary.setDefaults);
+            cancelButton.AddControllerSupport(InputLibrary.cancel);
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
@@ -96,7 +105,7 @@ namespace OWML.ModHelper.Menus
                 return;
             }
 
-            if (value is string )
+            if (value is string)
             {
                 AddTextInput(key, index);
                 return;
@@ -188,6 +197,7 @@ namespace OWML.ModHelper.Menus
             {
                 Mod.Configure(ModData.Config);
             }
+            Close();
         }
 
         private void OnReset()

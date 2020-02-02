@@ -74,7 +74,7 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't close menu, it doesn't exist.");
                 return;
             }
-            Menu.Deactivate();
+            Menu.EnableMenu(false);
         }
 
         public void Toggle()
