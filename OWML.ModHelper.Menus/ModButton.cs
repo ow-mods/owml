@@ -144,7 +144,7 @@ namespace OWML.ModHelper.Menus
             Button.gameObject.SetActive(false);
         }
 
-        public void AddControllerSupport(SingleAxisCommand inputCommand)
+        public void SetControllerCommand(SingleAxisCommand inputCommand)
         {
             Button.gameObject.AddComponent<ControllerButton>().Init(inputCommand);
         }

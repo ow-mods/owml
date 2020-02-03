@@ -12,10 +12,14 @@ namespace OWML.ModHelper
         public void Init(SingleAxisCommand inputCommand)
         {
             _button = GetComponent<Button>();
-            var textId = GetComponentInChildren<LocalizedText>().GetValue<UITextType>("_textID");
-            var title = UITextLibrary.GetString(textId);
             _inputCommand = inputCommand;
-            GetComponent<ButtonWithHotkeyImageElement>().SetPrompt(new ScreenPrompt(inputCommand, title), InputMode.Menu);
+            var imageElement = GetComponent<ButtonWithHotkeyImageElement>();
+            if (imageElement != null)
+            {
+                var textId = GetComponentInChildren<LocalizedText>().GetValue<UITextType>("_textID");
+                var title = UITextLibrary.GetString(textId);
+                imageElement.SetPrompt(new ScreenPrompt(inputCommand, title), InputMode.Menu);
+            }
         }
 
         private void Update()

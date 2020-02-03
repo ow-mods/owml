@@ -58,9 +58,9 @@ namespace OWML.ModHelper.Menus
             resetButton.OnClick += OnReset;
             cancelButton.OnClick += Close;
 
-            saveButton.AddControllerSupport(InputLibrary.confirm);
-            resetButton.AddControllerSupport(InputLibrary.setDefaults);
-            cancelButton.AddControllerSupport(InputLibrary.cancel);
+            saveButton.SetControllerCommand(InputLibrary.confirm);
+            resetButton.SetControllerCommand(InputLibrary.setDefaults);
+            cancelButton.SetControllerCommand(InputLibrary.cancel);
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();

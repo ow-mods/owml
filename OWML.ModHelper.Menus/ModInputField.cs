@@ -15,7 +15,8 @@ namespace OWML.ModHelper.Menus
         {
             ToggleElement = toggle;
             InputMenu = inputMenu;
-            Button = new ModButton(ToggleElement.GetValue<Button>("_buttonTrue"), menu);
+
+            Button = new ModButton(toggle.GetValue<Button>("_buttonTrue"), menu);
             Button.OnClick += Open;
 
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
