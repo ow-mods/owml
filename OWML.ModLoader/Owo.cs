@@ -6,7 +6,6 @@ using OWML.Common.Menus;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Menus;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -45,10 +44,12 @@ namespace OWML.ModLoader
                 if (modType == null)
                 {
                     _logger.Log("Mod type is null, skipping");
+                    _menus.ModsMenu.AddMod(modData, null);
                     continue;
                 }
                 var helper = CreateModHelper(modData);
-                InitializeMod(modType, helper);
+                var mod = InitializeMod(modType, helper);
+                _menus.ModsMenu.AddMod(modData, mod);
             }
         }
 
@@ -60,22 +61,9 @@ namespace OWML.ModLoader
             }
         }
 
-        private ModsMenu CreateModMenu()
-        {
-            _console.WriteLine("Creating mod menu");
-            var modsMenu = new ModsMenu(_logger, _console);
-            var modMenuButton = _menus.MainMenu.AddButton("MODS", 3);
-            modMenuButton.onClick.AddListener(() =>
-            {
-                modsMenu.Open();
-            });
-            return modsMenu;
-        }
-
         private Type LoadMod(IModData modData)
         {
-            var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
-            if (!enabled)
+            if (!modData.Config.Enabled)
             {
                 _logger.Log($"{modData.Manifest.UniqueName} is disabled");
                 return null;
@@ -103,7 +91,7 @@ namespace OWML.ModLoader
                 events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig);
         }
 
-        private void InitializeMod(Type modType, IModHelper helper)
+        private IModBehaviour InitializeMod(Type modType, IModHelper helper)
         {
             _logger.Log($"Initializing {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
             _logger.Log("Adding mod behaviour...");
@@ -113,13 +101,13 @@ namespace OWML.ModLoader
                 var mod = (ModBehaviour)go.AddComponent(modType);
                 _logger.Log("Added! Initializing...");
                 mod.Init(helper);
+                return mod;
             }
             catch (Exception ex)
             {
                 _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
-                return;
+                return null;
             }
-            _console.WriteLine($"Loaded {helper.Manifest.UniqueName} ({helper.Manifest.Version}).");
         }
 
     }

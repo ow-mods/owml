@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 
 namespace OWML.ModHelper
@@ -16,23 +17,52 @@ namespace OWML.ModHelper
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
 
-        public T GetSetting<T>(string key)
+        public T GetSettingsValue<T>(string key)
         {
             if (!Settings.ContainsKey(key))
             {
                 ModConsole.Instance.WriteLine("Error: setting not found: " + key);
                 return default;
             }
-            var setting = Settings[key];
+
+            var value = Settings[key];
+
             try
             {
-                return (T)setting;
+                var val = value is JObject obj ? obj["value"] : value;
+                return (T)Convert.ChangeType(val, typeof(T));
             }
             catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine($"Error when getting setting '{key}': can't cast {setting.GetType()} to {typeof(T)}");
+                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
                 return default;
             }
+        }
+
+        public void SetSettingsValue(string key, object val)
+        {
+            if (!Settings.ContainsKey(key))
+            {
+                ModConsole.Instance.WriteLine("Error: setting not found: " + key);
+                return;
+            }
+
+            var value = Settings[key];
+
+            if (value is JObject obj)
+            {
+                obj["value"] = "" + val;
+            } 
+            else
+            {
+                Settings[key] = val;
+            }
+        }
+
+        [Obsolete("Use GetSettingsValue instead")]
+        public T GetSetting<T>(string key)
+        {
+            return GetSettingsValue<T>(key);
         }
 
     }

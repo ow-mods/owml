@@ -15,8 +15,12 @@ namespace OWML.ModHelper.Menus
         private readonly Text _text;
         public string Title
         {
-            get => _text.text;
-            set => _text.text = value;
+            get => _text != null ? _text.text : "";
+            set
+            {
+                GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                _text.text = value;
+            }
         }
 
         private int _index;
@@ -47,7 +51,6 @@ namespace OWML.ModHelper.Menus
         {
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
-            GameObject.Destroy(button.GetComponentInChildren<LocalizedText>());
             return new ModButton(button, Menu)
             {
                 Index = Index + 1
@@ -139,6 +142,11 @@ namespace OWML.ModHelper.Menus
         public void Hide()
         {
             Button.gameObject.SetActive(false);
+        }
+
+        public void SetControllerCommand(SingleAxisCommand inputCommand)
+        {
+            Button.gameObject.AddComponent<ControllerButton>().Init(inputCommand);
         }
 
     }

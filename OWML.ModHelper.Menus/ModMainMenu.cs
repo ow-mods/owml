@@ -47,14 +47,15 @@ namespace OWML.ModHelper.Menus
             InvokeOnInit();
         }
 
-        public override void AddButton(IModButton button, int index)
+        public override IModButton AddButton(IModButton button, int index)
         {
-            base.AddButton(button, index);
+            var modButton = base.AddButton(button, index);
             var fadeControllers = Buttons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController
             {
                 group = x.Button.GetComponent<CanvasGroup>()
             });
             _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
+            return modButton;
         }
 
     }

@@ -67,11 +67,16 @@
     <Compile Include="IHarmonyHelper.cs" />
     <Compile Include="IModAssets.cs" />
     <Compile Include="IModAsset.cs" />
+    <Compile Include="Menus\InputType.cs" />
     <Compile Include="Menus\IModButton.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModData.cs" />
+    <Compile Include="Menus\IModConfigMenu.cs" />
+    <Compile Include="Menus\IModInput.cs" />
+    <Compile Include="Menus\IModInputMenu.cs" />
     <Compile Include="Menus\IModMainMenu.cs" />
     <Compile Include="Menus\IModPauseMenu.cs" />
+    <Compile Include="Menus\IModsMenu.cs" />
     <Compile Include="Menus\IModTabbedMenu.cs" />
     <Compile Include="Menus\IModPopupMenu.cs" />
     <Compile Include="Menus\IModTabMenu.cs" />
@@ -86,6 +91,10 @@
     <Compile Include="IModLogger.cs" />
     <Compile Include="IModManifest.cs" />
     <Compile Include="IModStorage.cs" />
+    <Compile Include="Menus\IModSliderInput.cs" />
+    <Compile Include="Menus\IModNumberInput.cs" />
+    <Compile Include="Menus\IModTextInput.cs" />
+    <Compile Include="Menus\IModToggleInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

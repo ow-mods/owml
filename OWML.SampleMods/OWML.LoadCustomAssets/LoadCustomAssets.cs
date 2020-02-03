@@ -37,33 +37,17 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
-            ModHelper.Menus.MainMenu.OnInit += DoMainMenuStuff;
-            DoMainMenuStuff();
-
-            ModHelper.Menus.PauseMenu.OnInit += DoPauseMenuStuff;
-        }
-
-        private void DoMainMenuStuff()
-        {
-            ModHelper.Console.WriteLine(nameof(DoMainMenuStuff));
-            var resumeDupe = ModHelper.Menus.MainMenu.ResumeExpeditionButton.Duplicate();
-            resumeDupe.Title = "OPEN INPUT MENU";
-            resumeDupe.OnClick += () => ModHelper.Menus.MainMenu.OptionsMenu.InputTab.Open();
-        }
-
-        private void DoPauseMenuStuff()
-        {
-            ModHelper.Console.WriteLine(nameof(DoPauseMenuStuff));
-            var openInputButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate();
-            openInputButton.Title = "OPEN INPUT MENU";
-            openInputButton.OnClick += () => ModHelper.Menus.PauseMenu.OptionsMenu.InputTab.Open();
+            var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
         }
 
         public override void Configure(IModConfig config)
         {
-            ToggleMusic(config.GetSetting<bool>("enableMusic"));
-            _isDucksEnabled = config.GetSetting<bool>("enableDucks");
-            _isCubesEnabled = config.GetSetting<bool>("enableCubes");
+            ToggleMusic(config.GetSettingsValue<bool>("enableMusic"));
+            _isDucksEnabled = config.GetSettingsValue<bool>("enableDucks");
+            _isCubesEnabled = config.GetSettingsValue<bool>("enableCubes");
+            var speed = config.GetSettingsValue<float>("speed");
+            var power = config.GetSettingsValue<float>("power");
+            var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
         }
 
         private void OnMusicLoaded(AudioSource audio)
@@ -93,7 +77,7 @@ namespace OWML.LoadCustomAssets
                 _playerBody = (PlayerBody)behaviour;
                 _playerTransform = behaviour.transform;
                 _isStarted = true;
-                ToggleMusic(ModHelper.Config.GetSetting<bool>("enableMusic"));
+                ToggleMusic(ModHelper.Config.GetSettingsValue<bool>("enableMusic"));
             }
         }
 
@@ -134,6 +118,7 @@ namespace OWML.LoadCustomAssets
 
         private void ToggleMusic(bool enable)
         {
+            ModHelper.Console.WriteLine("ToggleMusic: " + enable);
             if (_music == null)
             {
                 return;

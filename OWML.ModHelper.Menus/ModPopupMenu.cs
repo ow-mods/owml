@@ -30,9 +30,9 @@ namespace OWML.ModHelper.Menus
             _console = console;
         }
 
-        public override void Initialize(Menu menu)
+        public override void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
-            base.Initialize(menu);
+            base.Initialize(menu, layoutGroup);
             _title = Menu.GetComponentInChildren<Text>();
             var localizedText = _title.GetComponent<LocalizedText>();
             if (localizedText != null)
@@ -63,6 +63,7 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't open menu, it doesn't exist.");
                 return;
             }
+            SelectFirst();
             Menu.EnableMenu(true);
         }
 
@@ -73,7 +74,7 @@ namespace OWML.ModHelper.Menus
                 _console.WriteLine("Warning: can't close menu, it doesn't exist.");
                 return;
             }
-            Menu.Deactivate();
+            Menu.EnableMenu(false);
         }
 
         public void Toggle()
