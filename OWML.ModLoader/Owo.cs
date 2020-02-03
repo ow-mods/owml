@@ -32,7 +32,11 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            Application.logMessageReceived += OnLogMessageReceived;
+            if (_owmlConfig.Verbose)
+            {
+                _console.WriteLine("Verbose mode is enabled");
+                Application.logMessageReceived += OnLogMessageReceived;
+            }
             var mods = _modFinder.GetMods();
             foreach (var modData in mods)
             {
@@ -51,24 +55,15 @@ namespace OWML.ModLoader
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            if (IsRelevantLogMessage(stackTrace, type))
+            if (type == LogType.Error || type == LogType.Exception)
             {
-                _console.WriteLine($"Unity log {type}: {message}. Stack trace: {stackTrace?.Trim()}");
+                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
-        }
-
-        private bool IsRelevantLogMessage(string stackTrace, LogType type)
-        {
-            return (type == LogType.Error || type == LogType.Exception) &&
-                   stackTrace?.Trim() != "OWRigidbody.FixedUpdate ()" &&
-                   stackTrace?.Trim() != "CenterOfTheUniverseOffsetApplier.FixedUpdate ()" &&
-                   stackTrace?.Trim() != "QuantumSocket.Awake ()";
         }
 
         private Type LoadMod(IModData modData)
         {
-            var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
-            if (!enabled)
+            if (!modData.Config.Enabled)
             {
                 _logger.Log($"{modData.Manifest.UniqueName} is disabled");
                 return null;
