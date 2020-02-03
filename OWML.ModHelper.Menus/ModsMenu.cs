@@ -104,6 +104,7 @@ namespace OWML.ModHelper.Menus
                 modsTab.AddButton(modButton);
             }
             modsTab.UpdateNavigation();
+            modsTab.SelectFirst();
             return modsTab;
         }
 
