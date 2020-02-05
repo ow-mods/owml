@@ -59,7 +59,7 @@ namespace OWML.Patcher
                 return;
             }
 
-            if (!File.Exists(backupPath))
+            if (!File.Exists(backupPath) || !OriginalIsSameSizeAsBackupOrVrVersion(originalPath, backupPath, vrPath))
             {
                 _writer.WriteLine("Taking backup of globalgamemanagers.");
                 File.Copy(originalPath, backupPath, true);
@@ -82,6 +82,19 @@ namespace OWML.Patcher
 
             var copyFrom = enableVR ? vrPath : backupPath;
             File.Copy(copyFrom, originalPath, true);
+        }
+
+        private bool OriginalIsSameSizeAsBackupOrVrVersion(string originalPath, string backupPath, string vrPath)
+        {
+            var originalSize = File.ReadAllBytes(originalPath).Length;
+            var backupSize = File.ReadAllBytes(backupPath).Length;
+            var vrSize = File.ReadAllBytes(vrPath).Length;
+            var isSameSize = originalSize == backupSize || originalSize == vrSize;
+            if (!isSameSize)
+            {
+                _writer.WriteLine("Looks like new game version!");
+            }
+            return isSameSize;
         }
 
         private string CalculateChecksum(string filePath)
