@@ -88,7 +88,7 @@ namespace OWML.Patcher
         {
             var originalSize = File.ReadAllBytes(originalPath).Length;
             var backupSize = File.ReadAllBytes(backupPath).Length;
-            var vrSize = File.ReadAllBytes(vrPath).Length;
+            var vrSize = File.Exists(vrPath) ? File.ReadAllBytes(vrPath).Length : 0;
             var isSameSize = originalSize == backupSize || originalSize == vrSize;
             if (!isSameSize)
             {
