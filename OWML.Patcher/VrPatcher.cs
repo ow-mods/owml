@@ -86,7 +86,7 @@ namespace OWML.Patcher
                 }
                 else
                 {
-                    _writer.WriteLine($"Error: invalid checksum: {checksum}. This version of Outer Wilds is not supported :(");
+                    _writer.WriteLine($"Error: invalid checksum: {checksum}. VR patch for this version of Outer Wilds is not yet supported by OWML.");
                     return;
                 }
             }
