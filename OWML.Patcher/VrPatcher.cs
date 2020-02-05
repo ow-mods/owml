@@ -64,7 +64,7 @@ namespace OWML.Patcher
             }
 
             var gameVersionHasChanged = !OriginalIsSameSizeAsBackupOrVrVersion(originalPath, backupPath, vrPath);
-            if (!gameVersionHasChanged)
+            if (gameVersionHasChanged)
             {
                 _writer.WriteLine("Looks like new game version!");
             }
