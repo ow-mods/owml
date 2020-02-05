@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,7 +10,11 @@ namespace OWML.Patcher
 {
     public class VRPatcher
     {
-        private const string TargetChecksum = "d3979abb3b0d2468c3e03e2ee862d5297f5885bd9fc8f3b16cb16805e010d097";
+        private static readonly List<string> PatchChecksums = new List<string>
+        {
+            "d3979abb3b0d2468c3e03e2ee862d5297f5885bd9fc8f3b16cb16805e010d097",
+            "todo"
+        };
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -51,7 +56,6 @@ namespace OWML.Patcher
             var originalPath = _owmlConfig.DataPath + "/globalgamemanagers";
             var backupPath = _owmlConfig.DataPath + "/globalgamemanagers.bak";
             var vrPath = _owmlConfig.DataPath + "/globalgamemanagers.vr";
-            var patchPath = _owmlConfig.OWMLPath + "VR/patch";
 
             if (!File.Exists(originalPath))
             {
@@ -59,23 +63,30 @@ namespace OWML.Patcher
                 return;
             }
 
-            if (!File.Exists(backupPath) || !OriginalIsSameSizeAsBackupOrVrVersion(originalPath, backupPath, vrPath))
+            var gameVersionHasChanged = !OriginalIsSameSizeAsBackupOrVrVersion(originalPath, backupPath, vrPath);
+            if (!gameVersionHasChanged)
+            {
+                _writer.WriteLine("Looks like new game version!");
+            }
+
+            if (!File.Exists(backupPath) || gameVersionHasChanged)
             {
                 _writer.WriteLine("Taking backup of globalgamemanagers.");
                 File.Copy(originalPath, backupPath, true);
             }
 
-            if (enableVR && !File.Exists(vrPath))
+            if (enableVR && (!File.Exists(vrPath) || gameVersionHasChanged))
             {
                 _writer.WriteLine("Patching globalgamemanagers for VR...");
                 var checksum = CalculateChecksum(originalPath);
-                if (checksum == TargetChecksum)
+                if (PatchChecksums.Contains(checksum))
                 {
+                    var patchPath = $"{_owmlConfig.OWMLPath}VR/{checksum}";
                     ApplyPatch(originalPath, vrPath, patchPath);
                 }
                 else
                 {
-                    _writer.WriteLine($"Error: invalid checksum: {checksum}. Only Outer Wilds v1.0.4 is supported.");
+                    _writer.WriteLine($"Error: invalid checksum: {checksum}. This version of Outer Wilds is not supported :(");
                     return;
                 }
             }
@@ -89,12 +100,7 @@ namespace OWML.Patcher
             var originalSize = File.ReadAllBytes(originalPath).Length;
             var backupSize = File.ReadAllBytes(backupPath).Length;
             var vrSize = File.Exists(vrPath) ? File.ReadAllBytes(vrPath).Length : 0;
-            var isSameSize = originalSize == backupSize || originalSize == vrSize;
-            if (!isSameSize)
-            {
-                _writer.WriteLine("Looks like new game version!");
-            }
-            return isSameSize;
+            return originalSize == backupSize || originalSize == vrSize;
         }
 
         private string CalculateChecksum(string filePath)
