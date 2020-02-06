@@ -72,6 +72,10 @@ namespace OWML.Patcher
                 {
                     ApplyPatch(originalPath, vrPath, patchPath);
                 }
+                //else if (checksum == CalculateChecksum(vrPath))
+                //{
+                //    _writer.WriteLine("Error: false alarm, the checksum is from VR patch! :P");
+                //}
                 else
                 {
                     _writer.WriteLine($"Error: invalid checksum: {checksum}. VR patch for this version of Outer Wilds is not yet supported by OWML.");
