@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -20,7 +18,6 @@ namespace OWML.ModHelper.Menus
         public IModButton QuitButton { get; private set; }
 
         private TitleAnimationController _anim;
-        private FontAndLanguageController _fontController;
 
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
@@ -38,8 +35,6 @@ namespace OWML.ModHelper.Menus
             var menu = titleScreenManager.GetValue<Menu>("_mainMenu");
             Initialize(menu);
 
-            //_fontController = titleScreenManager.GetComponentsInChildren<FontAndLanguageController>().Single(x => x.name == "MainMenu");
-
             ResumeExpeditionButton = GetButton("Button-ResumeGame");
             NewExpeditionButton = GetButton("Button-NewGame");
             OptionsButton = GetButton("Button-Options");
@@ -50,18 +45,6 @@ namespace OWML.ModHelper.Menus
             var tabbedMenu = titleScreenManager.GetValue<TabbedMenu>("_optionsMenu");
             OptionsMenu.Initialize(tabbedMenu);
             InvokeOnInit();
-
-            titleScreenManager.StartCoroutine(Lol());
-        }
-
-        private IEnumerator Lol()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(1);
-                _console.WriteLine("Resume scale: " + ResumeExpeditionButton.Button.transform.localScale);
-                _console.WriteLine("Mods scale: " + GetButton("MODS").Button.transform.localScale);
-            }
         }
 
         public override IModButton AddButton(IModButton button, int index)
@@ -72,11 +55,6 @@ namespace OWML.ModHelper.Menus
                 group = x.Button.GetComponent<CanvasGroup>()
             });
             _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
-
-            _console.WriteLine("doing the thing");
-
-            //_fontController.AddTextElement(button.Button.GetComponentInChildren<Text>());
-
             return modButton;
         }
 

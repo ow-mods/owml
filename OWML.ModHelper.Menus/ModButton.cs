@@ -49,9 +49,7 @@ namespace OWML.ModHelper.Menus
 
         public IModButton Copy()
         {
-            ModConsole.Instance.WriteLine("Original scale: " + Button.transform.localScale);
             var button = GameObject.Instantiate(Button);
-            ModConsole.Instance.WriteLine("Copy scale: " + button.transform.localScale);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
             return new ModButton(button, Menu)
             {
