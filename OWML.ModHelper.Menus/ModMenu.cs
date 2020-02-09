@@ -90,10 +90,13 @@ namespace OWML.ModHelper.Menus
 
         public virtual IModButton AddButton(IModButton button, int index)
         {
-            button.Button.transform.parent = _layoutGroup.transform;
+            var transform = button.Button.transform;
+            var scale = transform.localScale;
+            transform.parent = _layoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
+            button.Button.transform.localScale = scale;
             return button;
         }
 
@@ -167,9 +170,12 @@ namespace OWML.ModHelper.Menus
 
         private void AddInput<T>(IModInput<T> input, int index)
         {
-            input.Element.transform.parent = _layoutGroup.transform;
+            var transform = input.Element.transform;
+            var scale = transform.localScale;
+            transform.parent = _layoutGroup.transform;
             input.Index = index;
             input.Initialize(this);
+            input.Element.transform.localScale = scale;
         }
 
         public object GetInputValue(string key)
