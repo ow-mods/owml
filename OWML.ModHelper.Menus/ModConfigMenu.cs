@@ -2,7 +2,6 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,9 +13,9 @@ namespace OWML.ModHelper.Menus
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
 
-        private IModLogger _logger;
-        private IModConsole _console;
-        private IModStorage _storage;
+        private readonly IModLogger _logger;
+        private readonly IModConsole _console;
+        private readonly IModStorage _storage;
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
