@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OWML.Common
 {
@@ -14,8 +13,5 @@ namespace OWML.Common
         string UniqueName { get; }
         string ModFolderPath { get; set; }
         Dictionary<string, string> AppIds { get; }
-
-        [Obsolete("Use Enabled in ModConfig instead")]
-        bool Enabled { get; }
     }
 }
