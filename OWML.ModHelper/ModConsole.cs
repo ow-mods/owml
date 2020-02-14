@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using OWML.Common;
 
@@ -25,6 +26,11 @@ namespace OWML.ModHelper
             var bytes = Encoding.UTF8.GetBytes(s + Environment.NewLine);
             _writer.Write(bytes, 0, bytes.Length);
             _writer.Flush();
+        }
+
+        public void WriteLine(params object[] objects)
+        {
+            WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
     }
