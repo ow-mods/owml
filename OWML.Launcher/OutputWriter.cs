@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OWML.Common;
 
 namespace OWML.Launcher
@@ -25,6 +26,11 @@ namespace OWML.Launcher
             }
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public void WriteLine(params object[] objects)
+        {
+            WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
     }
