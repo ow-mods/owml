@@ -12,7 +12,7 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.35";
+        private const string Version = "0.3.37";
 
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -115,8 +115,7 @@ namespace OWML.Launcher
             _writer.WriteLine("Found mods:");
             foreach (var modData in mods)
             {
-                var enabled = modData.Config.Enabled && modData.Manifest.Enabled;
-                var stateText = enabled ? "" : "(disabled)";
+                var stateText = modData.Config.Enabled ? "" : "(disabled)";
                 _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
 
                 var latestVersion = GetNexusVersion(modData.Manifest);

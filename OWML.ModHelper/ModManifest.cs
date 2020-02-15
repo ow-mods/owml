@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using OWML.Common;
 
@@ -33,9 +32,5 @@ namespace OWML.ModHelper
 
         [JsonIgnore]
         public string AssemblyPath => ModFolderPath + Filename;
-
-        [Obsolete("Use Enabled in ModConfig instead")]
-        [JsonProperty("enabled")]
-        public bool Enabled { get; private set; } = true;
     }
 }

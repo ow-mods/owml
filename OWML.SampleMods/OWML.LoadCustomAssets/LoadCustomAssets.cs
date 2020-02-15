@@ -107,7 +107,7 @@ namespace OWML.LoadCustomAssets
             _shootSound.Play();
 
             _saveFile.NumberOfDucks++;
-            ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
+            ModHelper.Console.WriteLine("Ducks shot:", _saveFile.NumberOfDucks);
             ModHelper.Storage.Save(_saveFile, "savefile.json");
         }
 
@@ -118,7 +118,7 @@ namespace OWML.LoadCustomAssets
 
         private void ToggleMusic(bool enable)
         {
-            ModHelper.Console.WriteLine("ToggleMusic: " + enable);
+            ModHelper.Console.WriteLine("ToggleMusic:", enable);
             if (_music == null)
             {
                 return;
