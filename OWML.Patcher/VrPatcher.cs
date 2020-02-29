@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using BsDiff;
@@ -13,6 +14,13 @@ namespace OWML.Patcher
         private readonly IModConsole _writer;
         private readonly SHA256 _sha;
 
+        private static readonly string[] PluginFilenames = { "openvr_api.dll", "OVRPlugin.dll" };
+        private static readonly string[] PatchChecksums =
+        {
+            "cacc71fcb141d936f1b59e57bf10dc52e8edb3481988379f7d95ecb65c4d3c90",
+            "d3979abb3b0d2468c3e03e2ee862d5297f5885bd9fc8f3b16cb16805e010d097"
+        };
+
         public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
             _owmlConfig = owmlConfig;
@@ -22,74 +30,80 @@ namespace OWML.Patcher
 
         public void PatchVR(bool enableVR)
         {
-            CopyFiles();
             PatchGlobalManager(enableVR);
-        }
-
-        private void CopyFiles()
-        {
-            var filenames = new[] { "openvr_api.dll", "OVRPlugin.dll" };
-            foreach (var filename in filenames)
+            if (enableVR)
             {
-                var from = $"{_owmlConfig.OWMLPath}VR/{filename}";
-                var to = $"{_owmlConfig.PluginsPath}/{filename}";
-                if (File.Exists(from))
-                {
-                    File.Copy(from, to, true);
-                }
-                else
-                {
-                    _writer.WriteLine("Error: file not found: " + from);
-                }
+                AddPluginFiles();
+            }
+            else
+            {
+                RemovePluginFiles();
             }
         }
 
         private void PatchGlobalManager(bool enableVR)
         {
-            var originalPath = _owmlConfig.DataPath + "/globalgamemanagers";
-            if (!File.Exists(originalPath))
+            var currentPath = _owmlConfig.DataPath + "/globalgamemanagers";
+            if (!File.Exists(currentPath))
             {
-                _writer.WriteLine("Error: can't find " + originalPath);
+                _writer.WriteLine("Error: can't find " + currentPath);
                 return;
             }
 
-            var checksum = CalculateChecksum(originalPath);
-            var backupPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{checksum}.bak";
-            var vrPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{checksum}.vr";
+            var currentChecksum = CalculateChecksum(currentPath);
+            _writer.WriteLine("Current checksum: " + currentChecksum);
 
-
+            var backupPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{currentChecksum}.bak";
             if (!File.Exists(backupPath))
             {
                 _writer.WriteLine("Taking backup of globalgamemanagers.");
-                File.Copy(originalPath, backupPath, true);
+                File.Copy(currentPath, backupPath, true);
             }
 
+            var vrPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{currentChecksum}.vr";
             if (enableVR && !File.Exists(vrPath))
             {
                 _writer.WriteLine("Patching globalgamemanagers for VR...");
-                var patchPath = $"{_owmlConfig.OWMLPath}VR/{checksum}";
-                if (File.Exists(patchPath))
+                if (PatchChecksums.Contains(currentChecksum))
                 {
-                    ApplyPatch(originalPath, vrPath, patchPath);
+                    var patchPath = $"{_owmlConfig.OWMLPath}VR/{currentChecksum}";
+                    ApplyPatch(currentPath, vrPath, patchPath);
                 }
                 else
                 {
-                    _writer.WriteLine($"Error: invalid checksum: {checksum}. VR patch for this version of Outer Wilds is not yet supported by OWML.");
-                    return;
+                    var patchedChecksum = PatchChecksums.FirstOrDefault(checksum =>
+                        CalculateChecksum($"{_owmlConfig.DataPath}/globalgamemanagers.{checksum}.vr") == currentChecksum);
+                    if (!string.IsNullOrEmpty(patchedChecksum))
+                    {
+                        _writer.WriteLine("Already patched! Original checksum: " + patchedChecksum);
+                        vrPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{patchedChecksum}.vr";
+                    }
+                    else
+                    {
+                        _writer.WriteLine($"Error: invalid checksum: {currentChecksum}. " +
+                                          "VR patch for this version of Outer Wilds is not yet supported by OWML.");
+                        return;
+                    }
                 }
             }
 
             var copyFrom = enableVR ? vrPath : backupPath;
-            File.Copy(copyFrom, originalPath, true);
+            File.Copy(copyFrom, currentPath, true);
         }
 
         private string CalculateChecksum(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
             var bytes = File.ReadAllBytes(filePath);
             var hash = _sha.ComputeHash(bytes);
             var sb = new StringBuilder();
             foreach (var b in hash)
+            {
                 sb.Append(b.ToString("x2").ToLower());
+            }
             return sb.ToString();
         }
 
@@ -106,6 +120,28 @@ namespace OWML.Patcher
             catch (Exception ex)
             {
                 _writer.WriteLine("Error while patching VR: " + ex);
+            }
+        }
+
+        private void AddPluginFiles()
+        {
+            foreach (var filename in PluginFilenames)
+            {
+                var from = $"{_owmlConfig.OWMLPath}VR/{filename}";
+                var to = $"{_owmlConfig.PluginsPath}/{filename}";
+                File.Copy(from, to, true);
+            }
+        }
+
+        private void RemovePluginFiles()
+        {
+            foreach (var filename in PluginFilenames)
+            {
+                var path = $"{_owmlConfig.PluginsPath}/{filename}";
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
             }
         }
 
