@@ -39,24 +39,44 @@ namespace OWML.ModHelper.Events
             return harmony;
         }
 
-        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters = null)
+        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName)
+        {
+            AddPrefix<T>(methodName, patchType, patchMethodName, null);
+        }
+
+        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters)
         {
             var harmonyMethod = new HarmonyMethod(patchType, patchMethodName, parameters);
             Patch<T>(methodName, harmonyMethod, null, null);
         }
 
-        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters = null)
+        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName)
+        {
+            AddPostfix<T>(methodName, patchType, patchMethodName, null);
+        }
+
+        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters)
         {
             var harmonyMethod = new HarmonyMethod(patchType, patchMethodName, parameters);
             Patch<T>(methodName, null, harmonyMethod, null);
         }
 
-        public void EmptyMethod<T>(string methodName, Type[] parameters = null)
+        public void EmptyMethod<T>(string methodName)
+        {
+            EmptyMethod<T>(methodName, null);
+        }
+
+        public void EmptyMethod<T>(string methodName, Type[] parameters)
         {
             Transpile<T>(methodName, typeof(Patches), nameof(Patches.EmptyMethod), parameters);
         }
 
-        public void Transpile<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters = null)
+        public void Transpile<T>(string methodName, Type patchType, string patchMethodName)
+        {
+            Transpile<T>(methodName, patchType, patchMethodName, null);
+        }
+
+        public void Transpile<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters)
         {
             var harmonyMethod = new HarmonyMethod(patchType, patchMethodName, parameters);
             Patch<T>(methodName, null, null, harmonyMethod);
