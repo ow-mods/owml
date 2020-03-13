@@ -39,45 +39,30 @@ namespace OWML.ModHelper.Events
             return harmony;
         }
 
-        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName)
+        public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters = null)
         {
-            var prefix = patchType.GetAnyMethod(patchMethodName);
-            if (prefix == null)
-            {
-                _console.WriteLine($"Error in {nameof(AddPrefix)}: {typeof(T).Name}.{methodName} is null");
-                return;
-            }
-            Patch<T>(methodName, prefix, null, null);
+            var harmonyMethod = new HarmonyMethod(patchType, patchMethodName, parameters);
+            Patch<T>(methodName, harmonyMethod, null, null);
         }
 
-        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName)
+        public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters = null)
         {
-            var postfix = patchType.GetAnyMethod(patchMethodName);
-            if (postfix == null)
-            {
-                _console.WriteLine($"Error in {nameof(AddPostfix)}: {typeof(T).Name}.{methodName} is null");
-                return;
-            }
-            Patch<T>(methodName, null, postfix, null);
+            var harmonyMethod = new HarmonyMethod(patchType, patchMethodName, parameters);
+            Patch<T>(methodName, null, harmonyMethod, null);
         }
 
-        public void EmptyMethod<T>(string methodName)
+        public void EmptyMethod<T>(string methodName, Type[] parameters = null)
         {
-            Transpile<T>(methodName, typeof(Patches), nameof(Patches.EmptyMethod));
+            Transpile<T>(methodName, typeof(Patches), nameof(Patches.EmptyMethod), parameters);
         }
 
-        public void Transpile<T>(string methodName, Type patchType, string patchMethodName)
+        public void Transpile<T>(string methodName, Type patchType, string patchMethodName, Type[] parameters = null)
         {
-            var patchMethod = patchType.GetAnyMethod(patchMethodName);
-            if (patchMethod == null)
-            {
-                _console.WriteLine($"Error in {nameof(Transpile)}: {typeof(T).Name}.{methodName} is null");
-                return;
-            }
-            Patch<T>(methodName, null, null, patchMethod);
+            var harmonyMethod = new HarmonyMethod(patchType, patchMethodName, parameters);
+            Patch<T>(methodName, null, null, harmonyMethod);
         }
 
-        private void Patch<T>(string methodName, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
+        private void Patch<T>(string methodName, HarmonyMethod prefix, HarmonyMethod postfix, HarmonyMethod transpiler)
         {
             var targetType = typeof(T);
             _logger.Log("Trying to patch " + targetType.Name);
@@ -98,12 +83,9 @@ namespace OWML.ModHelper.Events
                 _console.WriteLine($"Error in {nameof(Patch)}: {targetType.Name}.{methodName} is null");
                 return;
             }
-            var prefixMethod = prefix == null ? null : new HarmonyMethod(prefix);
-            var postfixMethod = postfix == null ? null : new HarmonyMethod(postfix);
-            var transpilerMethod = transpiler == null ? null : new HarmonyMethod(transpiler);
             try
             {
-                _harmony.Patch(original, prefixMethod, postfixMethod, transpilerMethod);
+                _harmony.Patch(original, prefix, postfix, transpiler);
                 _logger.Log($"Patched {targetType.Name}!");
             }
             catch (Exception ex)
