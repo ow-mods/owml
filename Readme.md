@@ -7,7 +7,7 @@ OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds
 OWML does the following:
 1. Patches the game to make it call the mod loader.
 2. Starts the game.
-3. The mod loader loads and initializes the mods.
+3. The mod loader loads and initializes installed mods.
 
 ## Installation
 
@@ -52,7 +52,7 @@ OWML is configured by OWML.Config.json:
 
 |Key|Description|
 |---|-----------|
-|gamePath|The path to the game files.|
+|gamePath|The path to the game files. OWML will try to locate the game automatically, set this manually if needed.|
 |verbose|If this is true, errors from all of the game will be displayed and logged. Intended for modders only.|
 
 Each mod is defined in a manifest.json file:
@@ -91,7 +91,7 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Tested with Outer Wilds 1.0.0, 1.0.2, 1.0.3 and 1.0.4.
+* Tested with all versions of Outer Wilds up to and including v1.0.6.
 * Currently Windows only.
 
 ## Feedback
@@ -108,9 +108,9 @@ Feature requests, bug reports and PRs are welcome on GitHub.
 * [Outer Wilds](http://www.outerwilds.com)
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
-* [SMAPI](https://smapi.io)
+* Inspired by [SMAPI](https://smapi.io)
 * Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
-* TAImatem and Raicuparta for research
+* [TAImatem](https://github.com/TAImatem) and [Raicuparta](https://github.com/Raicuparta/) for research
 
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)
