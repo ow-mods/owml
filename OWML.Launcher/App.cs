@@ -12,9 +12,8 @@ namespace OWML.Launcher
 {
     public class App
     {
-        private const string Version = "0.3.42";
-
         private readonly IOwmlConfig _owmlConfig;
+        private readonly IModManifest _owmlManifest;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
         private readonly OutputListener _listener;
@@ -23,10 +22,11 @@ namespace OWML.Launcher
         private readonly VRPatcher _vrPatcher;
         private readonly CheckVersion _checkVersion;
 
-        public App(IOwmlConfig owmlConfig, IModConsole writer, IModFinder modFinder,
+        public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
             OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, CheckVersion checkVersion)
         {
             _owmlConfig = owmlConfig;
+            _owmlManifest = owmlManifest;
             _writer = writer;
             _modFinder = modFinder;
             _listener = listener;
@@ -38,7 +38,7 @@ namespace OWML.Launcher
 
         public void Run(string[] args)
         {
-            _writer.WriteLine($"Started OWML v{Version}");
+            _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
 
             CheckVersion();
 
@@ -70,7 +70,7 @@ namespace OWML.Launcher
                 _writer.WriteLine("Warning: could not check latest OWML version.");
                 return;
             }
-            if (Version == latestVersion)
+            if (_owmlManifest.Version == latestVersion)
             {
                 _writer.WriteLine("OWML is up to date.");
                 return;
@@ -133,7 +133,7 @@ namespace OWML.Launcher
 
         private bool IsMadeForSameOwmlMajorVersion(IModManifest manifest)
         {
-            var owmlVersionSplit = Version.Split('.');
+            var owmlVersionSplit = _owmlManifest.Version.Split('.');
             var modVersionSplit = manifest.OWMLVersion.Split('.');
             return owmlVersionSplit.Length == modVersionSplit.Length &&
                    owmlVersionSplit[0] == modVersionSplit[0] &&
