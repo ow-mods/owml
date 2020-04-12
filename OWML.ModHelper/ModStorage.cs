@@ -30,7 +30,7 @@ namespace OWML.ModHelper
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while saving {filename}: {ex}");
+                _console.WriteLine($"Error while loading {path}: {ex}");
                 return default;
             }
         }
@@ -45,7 +45,7 @@ namespace OWML.ModHelper
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while loading {filename}: {ex}");
+                _console.WriteLine($"Error while saving {path}: {ex}");
             }
         }
 
