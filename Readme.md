@@ -11,13 +11,17 @@ OWML does the following:
 
 ## Installation
 
+With [Outer Wilds Mod Manager](https://github.com/Raicuparta/ow-mod-manager) (recommended):
+1. Download the [latest release of the Mod Manager](https://github.com/Raicuparta/ow-mod-manager/releases).
+2. Use the Mod Manager to install OWML and mods, and start the game.
+
 With Vortex:
 1. Download OWML and extract the zip file.
 2. Put the OWML folder in ﻿the game's root folder, usually C:\Program Files\Epic Games\OuterWilds.
 3. Install [the Vortex extension](https://www.nexusmods.com/site/mods/73/).
 4. Use [Vortex](https://www.nexusmods.com/site/mods/1/) to install mods and start the game.
 
-Without Vortex:
+Manual install:
 1. Download OWML and extract the zip file anywhere you want.
 2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
@@ -119,6 +123,4 @@ Dependencies:
 * [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
 * [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
 * [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
-* [HtmlAgilityPack](https://html-agility-pack.net)
-* [HtmlAgilityPack.CssSelector](https://github.com/hcesar/HtmlAgilityPack.CssSelector)
 * [BsDiff](https://github.com/LogosBible/bsdiff.net)

@@ -5,7 +5,6 @@ using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
-using OWML.Update;
 
 namespace OWML.Launcher
 {
@@ -21,8 +20,7 @@ namespace OWML.Launcher
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
             var vrPatcher = new VRPatcher(owmlConfig, writer);
-            var checkVersion = new CheckVersion(writer);
-            var app = new App(owmlConfig, owmlManifest, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher, checkVersion);
+            var app = new App(owmlConfig, owmlManifest, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher);
             app.Run(args);
         }
 
