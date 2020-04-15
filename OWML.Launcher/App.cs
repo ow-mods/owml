@@ -6,7 +6,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
 using OWML.Patcher;
-using OWML.Update;
 
 namespace OWML.Launcher
 {
@@ -20,10 +19,9 @@ namespace OWML.Launcher
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
-        private readonly CheckVersion _checkVersion;
 
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, CheckVersion checkVersion)
+            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
@@ -33,15 +31,11 @@ namespace OWML.Launcher
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
-            _checkVersion = checkVersion;
         }
 
         public void Run(string[] args)
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
-
-            CheckVersion();
-
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
             LocateGamePath();
@@ -59,23 +53,6 @@ namespace OWML.Launcher
             StartGame(args);
 
             Console.ReadLine();
-        }
-
-        private void CheckVersion()
-        {
-            _writer.WriteLine("Checking latest version...");
-            var latestVersion = _checkVersion.GetOwmlVersion();
-            if (string.IsNullOrEmpty(latestVersion))
-            {
-                _writer.WriteLine("Warning: could not check latest OWML version.");
-                return;
-            }
-            if (_owmlManifest.Version == latestVersion)
-            {
-                _writer.WriteLine("OWML is up to date.");
-                return;
-            }
-            _writer.WriteLine($"Warning: please update OWML to v{latestVersion}: {_checkVersion.GitHubReleasesUrl}");
         }
 
         private void LocateGamePath()
@@ -118,12 +95,6 @@ namespace OWML.Launcher
                 var stateText = modData.Config.Enabled ? "" : "(disabled)";
                 _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
 
-                var latestVersion = GetNexusVersion(modData.Manifest);
-                if (!string.IsNullOrEmpty(latestVersion) && modData.Manifest.Version != latestVersion)
-                {
-                    _writer.WriteLine($"  Warning: please update to v{latestVersion}: {_checkVersion.NexusModsUrl}{modData.Manifest.AppIds["nexus"]}");
-                }
-
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
                 {
                     _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
@@ -138,19 +109,6 @@ namespace OWML.Launcher
             return owmlVersionSplit.Length == modVersionSplit.Length &&
                    owmlVersionSplit[0] == modVersionSplit[0] &&
                    owmlVersionSplit[1] == modVersionSplit[1];
-        }
-
-        private string GetNexusVersion(IModManifest manifest)
-        {
-            if (manifest.AppIds == null || !manifest.AppIds.Any())
-            {
-                return null;
-            }
-            if (!manifest.AppIds.TryGetValue("nexus", out var appId))
-            {
-                return null;
-            }
-            return _checkVersion.GetNexusVersion(appId);
         }
 
         private void ListenForOutput()
