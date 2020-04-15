@@ -84,10 +84,6 @@
       <Project>{5153D37F-3148-45DE-B1A4-7EBF87965569}</Project>
       <Name>OWML.Patcher</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OWML.Update\OWML.Update.csproj">
-      <Project>{55ACB9AB-CDCB-4F37-94E0-78891023E44C}</Project>
-      <Name>OWML.Update</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
