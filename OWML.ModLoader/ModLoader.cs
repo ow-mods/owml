@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
@@ -12,19 +11,22 @@ namespace OWML.ModLoader
     public class ModLoader
     {
         private static readonly string ConfigPath = $"{Application.dataPath}/Managed/OWML.Config.json";
+        private static readonly string ManifestPath = $"{Application.dataPath}/Managed/OWML.Manifest.json";
 
         public static void LoadMods()
         {
             var owmlGo = new GameObject();
             owmlGo.AddComponent<OwmlBehaviour>();
-            var owmlConfig = GetOwmlConfig();
-            if (owmlConfig == null)
+            var owmlConfig = GetJsonObject<OwmlConfig>(ConfigPath);
+            var owmlManifest = GetJsonObject<ModManifest>(ManifestPath);
+            if (owmlConfig == null || owmlManifest == null)
             {
+                // Everything is wrong and can't write to console...
                 return;
             }
-            var logger = new ModLogger(owmlConfig);
+            var logger = new ModLogger(owmlConfig, owmlManifest);
             logger.Log("Got config!");
-            var console = new ModConsole(owmlConfig, logger);
+            var console = new ModConsole(owmlConfig, logger, owmlManifest);
             console.WriteLine("Mod loader has been initialized.");
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
@@ -34,16 +36,16 @@ namespace OWML.ModLoader
             owo.LoadMods();
         }
 
-        private static IOwmlConfig GetOwmlConfig()
+        private static T GetJsonObject<T>(string path)
         {
             try
             {
-                var json = File.ReadAllText(ConfigPath);
-                return JsonConvert.DeserializeObject<OwmlConfig>(json);
+                var json = File.ReadAllText(path);
+                return JsonConvert.DeserializeObject<T>(json);
             }
             catch (Exception)
             {
-                return null;
+                return default(T);
             }
         }
 
