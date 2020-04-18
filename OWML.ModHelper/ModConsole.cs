@@ -36,7 +36,7 @@ namespace OWML.ModHelper
         {
             _logger.Log(s);
             OnConsole?.Invoke(_manifest, s);
-            var message = $"{_manifest.Name}: {s}";
+            var message = $"[{_manifest.Name}]: {s}";
             InternalWriteLine(message);
         }
 

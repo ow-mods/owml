@@ -32,7 +32,7 @@ namespace OWML.ModHelper
         public void Log(string s)
         {
             OnLog?.Invoke(_manifest, s);
-            var message = $"{_manifest.Name}: {s}";
+            var message = $"[{_manifest.Name}]: {s}";
             LogInternal(message);
         }
 
