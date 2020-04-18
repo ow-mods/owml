@@ -7,24 +7,43 @@ namespace OWML.ModHelper
 {
     public class ModLogger : IModLogger
     {
+        [Obsolete("Use ModHelper.Logger instead")]
         public static ModLogger Instance { get; private set; }
 
-        private readonly IOwmlConfig _config;
+        public static event Action<IModManifest, string> OnLog;
 
-        public ModLogger(IOwmlConfig config)
+
+        private static IOwmlConfig _config;
+        private readonly IModManifest _manifest;
+
+        public ModLogger(IOwmlConfig config, IModManifest manifest)
         {
-            Instance = this;
-            _config = config;
+            if (manifest.Name == "OWML")
+            {
+                Instance = this;
+            }
+            if (_config == null)
+            {
+                _config = config;
+            }
+            _manifest = manifest;
         }
 
         public void Log(string s)
         {
-            File.AppendAllText(_config.LogFilePath, $"{DateTime.Now}: {s}{Environment.NewLine}");
+            OnLog?.Invoke(_manifest, s);
+            var message = $"[{_manifest.Name}]: {s}";
+            LogInternal(message);
         }
 
         public void Log(params object[] objects)
         {
             Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+        }
+
+        private static void LogInternal(string message)
+        {
+            File.AppendAllText(_config.LogFilePath, $"{DateTime.Now}: {message}{Environment.NewLine}");
         }
 
     }
