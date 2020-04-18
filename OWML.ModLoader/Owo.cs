@@ -84,10 +84,12 @@ namespace OWML.ModLoader
 
         private IModHelper CreateModHelper(IModData modData)
         {
-            var assets = new ModAssets(_console, modData.Manifest);
-            var storage = new ModStorage(_console, modData.Manifest);
-            var events = new ModEvents(_logger, _console, _harmonyHelper);
-            return new ModHelper.ModHelper(_logger, _console, _harmonyHelper,
+            var logger = new ModLogger(_owmlConfig, modData.Manifest);
+            var console = new ModConsole(_owmlConfig, _logger, modData.Manifest);
+            var assets = new ModAssets(console, modData.Manifest);
+            var storage = new ModStorage(console, modData.Manifest);
+            var events = new ModEvents(logger, console, _harmonyHelper);
+            return new ModHelper.ModHelper(logger, console, _harmonyHelper,
                 events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig);
         }
 

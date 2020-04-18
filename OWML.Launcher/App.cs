@@ -123,7 +123,7 @@ namespace OWML.Launcher
             foreach (var line in lines)
             {
                 _writer.WriteLine(line);
-                if (line == Constants.QuitKeyPhrase)
+                if (line.EndsWith(Constants.QuitKeyPhrase))
                 {
                     Environment.Exit(0);
                 }
