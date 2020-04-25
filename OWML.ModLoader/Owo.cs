@@ -18,9 +18,10 @@ namespace OWML.ModLoader
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
+        private readonly IModInputHandler _inputHandler;
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
-            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper)
+            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, IModInputHandler inputHandler)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -28,6 +29,7 @@ namespace OWML.ModLoader
             _owmlConfig = owmlConfig;
             _menus = menus;
             _harmonyHelper = harmonyHelper;
+            _inputHandler = inputHandler;
         }
 
         public void LoadMods()
@@ -90,7 +92,7 @@ namespace OWML.ModLoader
             var storage = new ModStorage(console, modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
-                events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig);
+                events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig, _inputHandler);
         }
 
         private IModBehaviour InitializeMod(Type modType, IModHelper helper)

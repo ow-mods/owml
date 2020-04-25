@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
@@ -32,7 +33,8 @@ namespace OWML.ModLoader
             var harmonyHelper = new HarmonyHelper(logger, console);
             var events = new ModEvents(logger, console, harmonyHelper);
             var menus = new ModMenus(logger, console, events);
-            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper);
+            var inputHandler = new ModInputHandler(logger, console, harmonyHelper);
+            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler);
             owo.LoadMods();
         }
 
