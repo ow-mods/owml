@@ -13,5 +13,6 @@ namespace OWML.Common
         string UniqueName { get; }
         string ModFolderPath { get; set; }
         Dictionary<string, string> AppIds { get; }
+        string Dependency { get; }
     }
 }
