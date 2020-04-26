@@ -15,18 +15,15 @@ namespace OWML.ModHelper.Interaction
         {
             _modList = list;
             _finder = finder;
-            // Creates dictionary of key [Dependency] and value [Mods that depend on that dependency]
+
             foreach (var mod in _finder.GetMods())
             {
                 List<IModData> temp = new List<IModData>();
                 foreach (var mod2 in _finder.GetMods())
                 {
-                    if (mod2.Manifest.Dependencies != null)
+                    if (mod2.Manifest.Dependencies != null && mod2.Manifest.Dependencies.Contains(mod.Manifest.Name))
                     {
-                        if (mod2.Manifest.Dependencies.Contains(mod.Manifest.Name))
-                        {
-                            temp.Add(mod2);
-                        }
+                        temp.Add(mod2);
                     }
                 }
                 dependantDict.Add(mod, temp);
