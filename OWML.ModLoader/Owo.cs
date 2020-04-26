@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using OWML.Common;
@@ -38,8 +39,12 @@ namespace OWML.ModLoader
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var mods = _modFinder.GetMods();
-            foreach (var modData in mods)
+
+            var sortedMods = ModSorter.SortMods(mods);
+
+            foreach (var modDep in sortedMods)
             {
+                var modData = modDep.Data;
                 var modType = LoadMod(modData);
                 if (modType == null)
                 {
