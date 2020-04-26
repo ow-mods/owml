@@ -45,8 +45,24 @@ namespace OWML.ModLoader
 
             var sortedMods = ModSorter.SortMods(mods);
 
+            var modNames = new List<string>();
+            foreach (var mod in mods)
+            {
+                if (mod.Config.Enabled == true)
+                {
+                    modNames.Add(mod.Manifest.Name);
+                }
+            }
+
             foreach (var modDep in sortedMods)
             {
+                foreach (var dep in modDep.Dependencies)
+                {
+                    if (!modNames.Contains(dep) && dep != "None")
+                    {
+                        _console.WriteLine("Error! " + modDep.Name + " needs " + dep + ",  but it's disabled!");
+                    }
+                }
                 var modData = modDep.Data;
                 var modType = LoadMod(modData);
                 if (modType == null)
