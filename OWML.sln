@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Nuget", "OWML.Nuget\OW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Menus", "OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj", "{B874CC24-8340-4238-AC9D-1BFB41186BB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Interaction", "OWML.ModHelper.Interaction\OWML.ModHelper.Interaction.csproj", "{3212C570-D4C3-4083-A3DB-616F80BA5DAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{B874CC24-8340-4238-AC9D-1BFB41186BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B874CC24-8340-4238-AC9D-1BFB41186BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B874CC24-8340-4238-AC9D-1BFB41186BB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3212C570-D4C3-4083-A3DB-616F80BA5DAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3212C570-D4C3-4083-A3DB-616F80BA5DAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3212C570-D4C3-4083-A3DB-616F80BA5DAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3212C570-D4C3-4083-A3DB-616F80BA5DAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

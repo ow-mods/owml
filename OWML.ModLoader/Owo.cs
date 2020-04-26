@@ -7,6 +7,7 @@ using OWML.Common.Menus;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Interaction;
 using UnityEngine;
 
 namespace OWML.ModLoader
@@ -19,6 +20,8 @@ namespace OWML.ModLoader
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
+
+        List<ModBehaviour> _modList = new List<ModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper)
@@ -55,6 +58,7 @@ namespace OWML.ModLoader
                 var helper = CreateModHelper(modData);
                 var mod = InitializeMod(modType, helper);
                 _menus.ModsMenu.AddMod(modData, mod);
+                _modList.Add(mod as ModBehaviour);
             }
         }
 
@@ -94,8 +98,9 @@ namespace OWML.ModLoader
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(console, modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
+            var interaction = new ModInteraction(_modList, _modFinder);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
-                events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig);
+                events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig, interaction);
         }
 
         private IModBehaviour InitializeMod(Type modType, IModHelper helper)
