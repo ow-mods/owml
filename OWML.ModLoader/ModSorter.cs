@@ -45,8 +45,7 @@ namespace OWML.ModLoader
 
         private static void Visit<T>(T item, Func<T, IEnumerable<T>> getDependencies, List<T> sorted, Dictionary<T, bool> visited)
         {
-            bool inProcess;
-            var alreadyVisited = visited.TryGetValue(item, out inProcess);
+            var alreadyVisited = visited.TryGetValue(item, out bool inProcess);
 
             if (alreadyVisited)
             {
@@ -79,7 +78,7 @@ namespace OWML.ModLoader
             return item =>
             {
                 var dependencies = getDependencies(item);
-                return dependencies != null ? dependencies.Select(key => map[key]) : null;
+                return dependencies?.Select(key => map[key]);
             };
         }
 
