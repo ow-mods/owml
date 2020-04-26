@@ -86,8 +86,5 @@
       <Name>OWML.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="readme.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
