@@ -12,19 +12,7 @@ namespace OWML.ModLoader
             var modList = new List<ModDep>();
             foreach (var mod in mods)
             {
-                if (mod.Manifest.Dependencies == null)
-                {
-                    mod.Manifest.SetDependencies(new[] { "None" });
-                }
-
-                if (mod.Manifest.Dependencies.First() != "None")
-                {
-                    modList.Add(new ModDep(mod.Manifest.Name, mod, mod.Manifest.Dependencies));
-                }
-                else
-                {
-                    modList.Add(new ModDep(mod.Manifest.Name, mod));
-                }
+                 modList.Add(new ModDep(mod.Manifest.Name, mod, mod.Manifest.Dependencies));
             }
 
             return Sort(modList, x => x.Dependencies, x => x.Name);

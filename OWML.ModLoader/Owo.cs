@@ -44,25 +44,15 @@ namespace OWML.ModLoader
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var mods = _modFinder.GetMods();
-
             var sortedMods = _sorter.SortMods(mods);
-
-            var modNames = new List<string>();
-            foreach (var mod in mods)
-            {
-                if (mod.Config.Enabled == true)
-                {
-                    modNames.Add(mod.Manifest.Name);
-                }
-            }
-
+            var modNames = mods.Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.Name);
             foreach (var modDep in sortedMods)
             {
                 foreach (var dep in modDep.Dependencies)
                 {
-                    if (!modNames.Contains(dep) && dep != "None")
+                    if (!modNames.Contains(dep))
                     {
-                        _console.WriteLine("Error! " + modDep.Name + " needs " + dep + ",  but it's disabled!");
+                        _console.WriteLine($"Error! {modDep.Name} needs {dep}, but it's disabled!");
                     }
                 }
                 var modData = modDep.Data;

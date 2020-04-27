@@ -14,6 +14,6 @@ namespace OWML.Common
         IModManifest Manifest { get; }
         IModConfig Config { get; }
         IOwmlConfig OwmlConfig { get; }
-        IModInteraction ModInteraction { get; }
+        IModInteraction Interaction { get; }
     }
 }
