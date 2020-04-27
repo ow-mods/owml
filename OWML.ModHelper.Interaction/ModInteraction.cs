@@ -9,7 +9,7 @@ namespace OWML.ModHelper.Interaction
     {
         private readonly List<ModBehaviour> _modList = new List<ModBehaviour>();
         private readonly IModFinder _finder;
-        private readonly Dictionary<IModData, List<IModData>> dependantDict = new Dictionary<IModData, List<IModData>>();
+        private readonly Dictionary<IModData, List<IModData>> _dependantDict = new Dictionary<IModData, List<IModData>>();
 
         public ModInteraction(List<ModBehaviour> list, IModFinder finder)
         {
@@ -26,13 +26,24 @@ namespace OWML.ModHelper.Interaction
                         temp.Add(mod2);
                     }
                 }
-                dependantDict.Add(mod, temp);
+                _dependantDict.Add(mod, temp);
             }
         }
 
-        private ModBehaviour GetModFromName(string uniqueName)
+        public List<IModData> GetDependants(string dependencyUniqueName)
+        {
+            return _dependantDict.Where(x => x.Key.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
+        }
+
+        public IModBehaviour GetMod(string uniqueName)
         {
             return _modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
+        }
+
+        public T GetMod<T>(string uniqueName) where T : IModBehaviour
+        {
+            var mod = GetMod(uniqueName);
+            return (T)mod;
         }
 
         public IList<IModData> GetMods()
@@ -40,48 +51,9 @@ namespace OWML.ModHelper.Interaction
             return _finder.GetMods();
         }
 
-        public IList<IModData> GetDependants(string dependencyUniqueName)
-        {
-            return dependantDict.Where(x => x.Key.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
-        }
-
         public bool ModExists(string uniqueName)
         {
             return _finder.GetMods().Count(m => m.Manifest.UniqueName == uniqueName) != 0;
-        }
-
-        public T InvokeMethod<T>(string uniqueName, string methodName, params object[] parameters)
-        {
-            var mod = GetModFromName(uniqueName);
-            if (mod.GetType().GetMethod(methodName) == null)
-            {
-                ModConsole.Instance.WriteLine("Tried to invoke method " + methodName + " in mod " + uniqueName + " but it could not be found.");
-                return default;
-            }
-            return (T)mod.GetType().GetMethod(methodName).Invoke(mod, parameters);
-        }
-
-        public void InvokeMethod(string uniqueName, string methodName, params object[] parameters)
-        {
-            var mod = GetModFromName(uniqueName);
-            if (mod.GetType().GetMethod(methodName) == null)
-            {
-                ModConsole.Instance.WriteLine("Tried to invoke method " + methodName + " in mod " + uniqueName + " but it could not be found.");
-                return;
-            }
-            mod.GetType().GetMethod(methodName).Invoke(mod, parameters);
-        }
-
-        public void SetVariableValue(string uniqueName, string variableName, object value)
-        {
-            var mod = GetModFromName(uniqueName);
-            mod.GetType().SetValue(variableName, value);
-        }
-
-        public T GetVariableValue<T>(string uniqueName, string variableName)
-        {
-            var mod = GetModFromName(uniqueName);
-            return mod.GetType().GetValue<T>(variableName);
         }
     }
 }

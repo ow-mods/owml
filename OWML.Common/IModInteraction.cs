@@ -8,11 +8,9 @@ namespace OWML.Common
     public interface IModInteraction
     {
         IList<IModData> GetMods();
-        IList<IModData> GetDependants(string dependencyName);
+        List<IModData> GetDependants(string dependencyUniqueName);
+        IModBehaviour GetMod(string uniqueName);
+        T GetMod<T>(string uniqueName) where T : IModBehaviour;
         bool ModExists(string uniqueName);
-        T InvokeMethod<T>(string uniqueName, string methodName, params object[] parameters);
-        void InvokeMethod(string uniqueName, string methodName, params object[] parameters);
-        void SetVariableValue(string uniqueName, string variableName, object value);
-        T GetVariableValue<T>(string uniqueName, string variableName);
     }
 }
