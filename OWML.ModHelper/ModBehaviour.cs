@@ -20,7 +20,7 @@ namespace OWML.ModHelper
         {
         }
 
-        public List<IModData> GetDependants()
+        public IList<IModBehaviour> GetDependants()
         {
             return ModHelper.Interaction.GetDependants(ModHelper.Manifest.UniqueName);
         }

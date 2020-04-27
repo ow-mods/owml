@@ -6,7 +6,6 @@ namespace OWML.Common
     {
         IModHelper ModHelper { get; }
         void Configure(IModConfig config);
-
-        List<IModData> GetDependants();
+        IList<IModBehaviour> GetDependants();
     }
 }

@@ -7,8 +7,8 @@ namespace OWML.Common
 {
     public interface IModInteraction
     {
-        IList<IModData> GetMods();
-        List<IModData> GetDependants(string dependencyUniqueName);
+        IList<IModBehaviour> GetMods();
+        IList<IModBehaviour> GetDependants(string dependencyUniqueName);
         IModBehaviour GetMod(string uniqueName);
         T GetMod<T>(string uniqueName) where T : IModBehaviour;
         bool ModExists(string uniqueName);

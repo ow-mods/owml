@@ -8,31 +8,29 @@ namespace OWML.ModHelper.Interaction
     public class ModInteraction : IModInteraction
     {
         private readonly List<ModBehaviour> _modList = new List<ModBehaviour>();
-        private readonly IModFinder _finder;
-        private readonly Dictionary<IModData, List<IModData>> _dependantDict = new Dictionary<IModData, List<IModData>>();
+        private readonly Dictionary<IModBehaviour, List<IModBehaviour>> _dependantDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
 
-        public ModInteraction(List<ModBehaviour> list, IModFinder finder)
+        public ModInteraction(List<ModBehaviour> list)
         {
             _modList = list;
-            _finder = finder;
 
-            foreach (var mod in _finder.GetMods())
+            foreach (var mod in _modList)
             {
-                List<IModData> temp = new List<IModData>();
-                foreach (var mod2 in _finder.GetMods())
+                var dependants = new List<IModBehaviour>();
+                foreach (var dependency in _modList)
                 {
-                    if (mod2.Manifest.Dependencies != null && mod2.Manifest.Dependencies.Contains(mod.Manifest.Name))
+                    if (dependency.ModHelper.Manifest.Dependencies != new string[] { } && dependency.ModHelper.Manifest.Dependencies.Contains(mod.ModHelper.Manifest.Name))
                     {
-                        temp.Add(mod2);
+                        dependants.Add(dependency);
                     }
                 }
-                _dependantDict.Add(mod, temp);
+                _dependantDict.Add(mod, dependants);
             }
         }
 
-        public List<IModData> GetDependants(string dependencyUniqueName)
+        public IList<IModBehaviour> GetDependants(string dependencyUniqueName)
         {
-            return _dependantDict.Where(x => x.Key.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
+            return _dependantDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
         }
 
         public IModBehaviour GetMod(string uniqueName)
@@ -46,14 +44,14 @@ namespace OWML.ModHelper.Interaction
             return (T)mod;
         }
 
-        public IList<IModData> GetMods()
+        public IList<IModBehaviour> GetMods()
         {
-            return _finder.GetMods();
+            return _modList as IList<IModBehaviour>;
         }
 
         public bool ModExists(string uniqueName)
         {
-            return _finder.GetMods().Count(m => m.Manifest.UniqueName == uniqueName) != 0;
+            return _modList.Count(m => m.ModHelper.Manifest.UniqueName == uniqueName) != 0;
         }
     }
 }
