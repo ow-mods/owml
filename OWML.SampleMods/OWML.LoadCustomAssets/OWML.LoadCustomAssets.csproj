@@ -99,7 +99,6 @@
     <Content Include="duck.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="readme.txt" />
     <Content Include="spiral-mountain.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
