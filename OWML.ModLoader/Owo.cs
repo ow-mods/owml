@@ -20,11 +20,12 @@ namespace OWML.ModLoader
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
+        private readonly ModSorter _sorter;
 
         List<ModBehaviour> _modList = new List<ModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
-            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper)
+            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, ModSorter sorter)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -32,6 +33,7 @@ namespace OWML.ModLoader
             _owmlConfig = owmlConfig;
             _menus = menus;
             _harmonyHelper = harmonyHelper;
+            _sorter = sorter;
         }
 
         public void LoadMods()
@@ -43,7 +45,7 @@ namespace OWML.ModLoader
             }
             var mods = _modFinder.GetMods();
 
-            var sortedMods = ModSorter.SortMods(mods);
+            var sortedMods = _sorter.SortMods(mods);
 
             var modNames = new List<string>();
             foreach (var mod in mods)

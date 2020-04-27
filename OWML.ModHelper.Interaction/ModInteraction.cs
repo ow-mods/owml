@@ -30,6 +30,11 @@ namespace OWML.ModHelper.Interaction
             }
         }
 
+        private ModBehaviour GetModFromName(string uniqueName)
+        {
+            return _modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
+        }
+
         public IList<IModData> GetMods()
         {
             return _finder.GetMods();
@@ -42,30 +47,40 @@ namespace OWML.ModHelper.Interaction
 
         public bool ModExists(string uniqueName)
         {
-            return _finder.GetMods().Where(m => m.Manifest.UniqueName == uniqueName).Count() != 0;
+            return _finder.GetMods().Count(m => m.Manifest.UniqueName == uniqueName) != 0;
         }
 
         public T InvokeMethod<T>(string uniqueName, string methodName, params object[] parameters)
         {
-            var mod = _modList.Where(m => m.ModHelper.Manifest.UniqueName == uniqueName).First();
+            var mod = GetModFromName(uniqueName);
+            if (mod.GetType().GetMethod(methodName) == null)
+            {
+                ModConsole.Instance.WriteLine("Tried to invoke method " + methodName + " in mod " + uniqueName + " but it could not be found.");
+                return default;
+            }
             return (T)mod.GetType().GetMethod(methodName).Invoke(mod, parameters);
         }
 
         public void InvokeMethod(string uniqueName, string methodName, params object[] parameters)
         {
-            var mod = _modList.Where(m => m.ModHelper.Manifest.UniqueName == uniqueName).First();
+            var mod = GetModFromName(uniqueName);
+            if (mod.GetType().GetMethod(methodName) == null)
+            {
+                ModConsole.Instance.WriteLine("Tried to invoke method " + methodName + " in mod " + uniqueName + " but it could not be found.");
+                return;
+            }
             mod.GetType().GetMethod(methodName).Invoke(mod, parameters);
         }
 
         public void SetVariableValue(string uniqueName, string variableName, object value)
         {
-            var mod = _modList.Where(m => m.ModHelper.Manifest.UniqueName == uniqueName).First();
+            var mod = GetModFromName(uniqueName);
             mod.GetType().SetValue(variableName, value);
         }
 
         public T GetVariableValue<T>(string uniqueName, string variableName)
         {
-            var mod = _modList.Where(m => m.ModHelper.Manifest.UniqueName == uniqueName).First();
+            var mod = GetModFromName(uniqueName);
             return mod.GetType().GetValue<T>(variableName);
         }
     }
