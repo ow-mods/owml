@@ -93,9 +93,6 @@
       <Name>OWML.ModHelper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="readme.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
