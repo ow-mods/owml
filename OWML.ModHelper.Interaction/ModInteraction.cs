@@ -35,9 +35,9 @@ namespace OWML.ModHelper.Interaction
             return _finder.GetMods();
         }
 
-        public IList<IModData> GetDependants(string dependencyName)
+        public IList<IModData> GetDependants(string dependencyUniqueName)
         {
-            return dependantDict.Where(x => x.Key.Manifest.UniqueName == dependencyName).FirstOrDefault().Value;
+            return dependantDict.Where(x => x.Key.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
         }
 
         public bool ModExists(string uniqueName)
