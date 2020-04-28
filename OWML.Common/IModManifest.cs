@@ -14,5 +14,6 @@ namespace OWML.Common
         string ModFolderPath { get; set; }
         Dictionary<string, string> AppIds { get; }
         string[] Dependencies { get; }
+        bool PriorityLoad { get; }
     }
 }
