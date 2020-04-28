@@ -7,11 +7,11 @@ namespace OWML.ModHelper.Interaction
 {
     public class ModInteraction : IModInteraction
     {
-        private readonly IList<ModBehaviour> _modList;
-        private Dictionary<ModBehaviour, List<ModBehaviour>> _dependantDict = new Dictionary<ModBehaviour, List<ModBehaviour>>();
-        private Dictionary<ModBehaviour, List<ModBehaviour>> _dependencyDict = new Dictionary<ModBehaviour, List<ModBehaviour>>();
+        private readonly IList<IModBehaviour> _modList;
+        private Dictionary<IModBehaviour, List<IModBehaviour>> _dependantDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
+        private Dictionary<IModBehaviour, List<IModBehaviour>> _dependencyDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
 
-        public ModInteraction(IList<ModBehaviour> list)
+        public ModInteraction(IList<IModBehaviour> list)
         {
             _modList = list;
 
@@ -20,15 +20,15 @@ namespace OWML.ModHelper.Interaction
 
         private void RegenDicts()
         {
-            _dependantDict = new Dictionary<ModBehaviour, List<ModBehaviour>>();
-            _dependencyDict = new Dictionary<ModBehaviour, List<ModBehaviour>>();
+            _dependantDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
+            _dependencyDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
             foreach (var mod in _modList)
             {
-                var dependants = new List<ModBehaviour>();
-                var dependencies = new List<ModBehaviour>();
+                var dependants = new List<IModBehaviour>();
+                var dependencies = new List<IModBehaviour>();
                 foreach (var dependency in _modList)
                 { 
-                    if (dependency.ModHelper.Manifest.Dependencies != new string[] { } && dependency.ModHelper.Manifest.Dependencies.Contains(mod.ModHelper.Manifest.UniqueName))
+                    if (dependency.ModHelper.Manifest.Dependencies.Any() && dependency.ModHelper.Manifest.Dependencies.Contains(mod.ModHelper.Manifest.UniqueName))
                     {
                         dependants.Add(dependency);
                     }
@@ -46,13 +46,13 @@ namespace OWML.ModHelper.Interaction
         public IList<IModBehaviour> GetDependants(string dependencyUniqueName)
         {
             RegenDicts();
-            return _dependantDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value.Cast<IModBehaviour>().ToList();
+            return _dependantDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
         }
 
         public IList<IModBehaviour> GetDependencies(string uniqueName)
         {
             RegenDicts();
-            return _dependencyDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == uniqueName).FirstOrDefault().Value.Cast<IModBehaviour>().ToList();
+            return _dependencyDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == uniqueName).FirstOrDefault().Value;
         }
 
         public IModBehaviour GetMod(string uniqueName)
@@ -68,7 +68,7 @@ namespace OWML.ModHelper.Interaction
 
         public IList<IModBehaviour> GetMods()
         {
-            return _modList.Cast<IModBehaviour>().ToList();
+            return _modList;
         }
 
         public bool ModExists(string uniqueName)

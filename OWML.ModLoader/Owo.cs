@@ -22,7 +22,7 @@ namespace OWML.ModLoader
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly ModSorter _sorter;
 
-        List<ModBehaviour> _modList = new List<ModBehaviour>();
+        List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, ModSorter sorter)
@@ -73,7 +73,7 @@ namespace OWML.ModLoader
                 var helper = CreateModHelper(modData);
                 var mod = InitializeMod(modType, helper);
                 _menus.ModsMenu.AddMod(modData, mod);
-                _modList.Add(mod as ModBehaviour);
+                _modList.Add(mod);
             }
         }
 
