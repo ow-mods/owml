@@ -45,7 +45,7 @@ namespace OWML.ModLoader
             }
             var mods = _modFinder.GetMods();
             var sortedMods = _sorter.SortMods(mods);
-            var modNames = mods.Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.Name);
+            var modNames = mods.Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName);
             foreach (var modDep in sortedMods)
             {
                 foreach (var dep in modDep.Dependencies)
