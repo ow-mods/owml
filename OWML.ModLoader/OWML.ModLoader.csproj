@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModData.cs" />
-    <Compile Include="ModDep.cs" />
+    <Compile Include="ModDependency.cs" />
     <Compile Include="ModFinder.cs" />
     <Compile Include="ModLoader.cs" />
     <Compile Include="ModSorter.cs" />

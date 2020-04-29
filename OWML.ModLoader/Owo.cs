@@ -55,11 +55,11 @@ namespace OWML.ModLoader
 
             foreach (var mod in sortedMods)
             {
-                foreach (var dep in mod.Manifest.Dependencies)
+                foreach (var dependency in mod.Manifest.Dependencies)
                 {
-                    if (!modNames.Contains(dep))
+                    if (!modNames.Contains(dependency))
                     {
-                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dep}, but it's disabled!");
+                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dependency}, but it's disabled!");
                     }
                 }
                 var modType = LoadMod(mod);

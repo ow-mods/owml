@@ -9,79 +9,78 @@ namespace OWML.ModLoader
     {
         public IList<IModData> SortMods(IList<IModData> mods)
         {
-            // Make dict of uniqueName to IModData
+            
             var modDict = new Dictionary<string, IModData>();
-            foreach (var item in mods)
-            {
-                modDict.Add(item.Manifest.UniqueName, item);
-            }
-
-            // Make list of uniqueNames
             var modList = new List<string>();
+            HashSet<Edge<string, string>> set = new HashSet<Edge<string, string>>();
             foreach (var mod in mods)
             {
-                 modList.Add(mod.Manifest.UniqueName);
-            }
+                // Add to dict of (uniqueName, IModData)
+                modDict.Add(mod.Manifest.UniqueName, mod);
 
-            // Make hashset of tuples of Dependant : Dependency
-            HashSet<Tuple<string, string>> set = new HashSet<Tuple<string, string>>();
-            foreach (var mod in mods)
-            {
-                foreach (var dep in mod.Manifest.Dependencies)
+                // Add to list of uniqueNames
+                modList.Add(mod.Manifest.UniqueName);
+
+                // Add to hashset of tuples (Dependant : Dependency)
+                foreach (var dependency in mod.Manifest.Dependencies)
                 {
-                    set.Add(new Tuple<string, string>(mod.Manifest.UniqueName, dep));
+                    set.Add(new Edge<string, string>(mod.Manifest.UniqueName, dependency));
                 }
             }
 
-            // Sort the mods
-            var ret = TopologicalSort(
+            var sortedList = TopologicalSort<string>(
                 new HashSet<string>(modList),
-                new HashSet<Tuple<string, string>>(set)
+                new HashSet<Edge<string, string>>(set)
             );
 
-            // Reverse the list
-            ret.Reverse();
+            if (sortedList == null)
+            {
+                // Sorting has failed, return the original mod list
+                return mods;
+            }
+
+            sortedList.Reverse();
 
             // Get the IModData back by looking up uniqueName in dict
             var returnList = new List<IModData>();
-            ret.ForEach(x => returnList.Add(modDict[x]));
+            sortedList.ForEach(mod => returnList.Add(modDict[mod]));
 
             return returnList;
         }
 
         // Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
 
-        static List<T> TopologicalSort<T>(HashSet<T> nodes, HashSet<Tuple<T, T>> edges)
+        static List<string> TopologicalSort<T>(HashSet<string> nodes, HashSet<Edge<string, string>> edges)
         {
             // Empty list that will contain the sorted elements
-            var sortedList = new List<T>();
+            var sortedList = new List<string>();
 
             // Set of all nodes with no incoming edges
-            var nodesWithNoEdges = new HashSet<T>(nodes.Where(n => edges.All(e => e.Item2.Equals(n) == false)));
+            var nodesWithNoEdges = new HashSet<string>(nodes.Where(node => edges.All(edge => edge.Second.Equals(node) == false)));
 
             // while nodesWithNoEdges is non-empty do
             while (nodesWithNoEdges.Any())
             {
                 //  remove a node from nodesWithNoEdges
-                var node = nodesWithNoEdges.First();
-                nodesWithNoEdges.Remove(node);
+                var firstNode = nodesWithNoEdges.First();
+                nodesWithNoEdges.Remove(firstNode);
 
                 // add node to tail of sortedList
-                sortedList.Add(node);
+                sortedList.Add(firstNode);
 
-                // for each node m with an edge e from n to m do
-                foreach (var e in edges.Where(e => e.Item1.Equals(node)).ToList())
+                // for each node secondNode with an edge from firstNode to secondNode do
+                foreach (var edge in edges.Where(e => e.First.Equals(firstNode)).ToList())
                 {
-                    var m = e.Item2;
+                    var secondNode = edge.Second;
 
                     // remove edge e from the graph
-                    edges.Remove(e);
+                    edges.Remove(edge);
 
-                    // if m has no other incoming edges then
-                    if (edges.All(me => me.Item2.Equals(m) == false))
+                    // if secondNode has no other incoming edges then
+                    if (edges.All(mEdge => mEdge.Second.Equals(secondNode) == false))
                     {
-                        // insert m into nodesWithNoEdges
-                        nodesWithNoEdges.Add(m);
+                        // insert secondNode into nodesWithNoEdges
+                        nodesWithNoEdges.Add(secondNode);
                     }
                 }
             }
@@ -89,7 +88,7 @@ namespace OWML.ModLoader
             // if graph has edges then
             if (edges.Any())
             {
-                // return error (graph has at least one cycle)
+                // This will be caught and handled in the caller method
                 return null;
             }
             else
@@ -100,22 +99,22 @@ namespace OWML.ModLoader
         }
     }
 
-    public class Tuple<T1, T2>
+    public class Edge<T1, T2>
     {
-        public T1 Item1 { get; private set; }
-        public T2 Item2 { get; private set; }
-        internal Tuple(T1 first, T2 second)
+        public string First { get; private set; }
+        public string Second { get; private set; }
+        internal Edge(string first, string second)
         {
-            Item1 = first;
-            Item2 = second;
+            this.First = first;
+            this.Second = second;
         }
     }
 
-    public static class Tuple
+    public static class Edge
     {
-        public static Tuple<T1, T2> New<T1, T2>(T1 first, T2 second)
+        public static Edge<string, string> New(string first, string second)
         {
-            var tuple = new Tuple<T1, T2>(first, second);
+            var tuple = new Edge<string, string>(first, second);
             return tuple;
         }
     }
