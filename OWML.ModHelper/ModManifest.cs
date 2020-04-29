@@ -28,7 +28,7 @@ namespace OWML.ModHelper
         public string[] Dependencies { get; private set; } = new string[] { };
 
         [JsonProperty("priorityLoad")]
-        public bool PriorityLoad { get; private set; } = false;
+        public bool PriorityLoad { get; private set; }
 
         [JsonIgnore]
         public string ModFolderPath { get; set; }

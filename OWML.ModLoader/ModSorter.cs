@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace OWML.ModLoader
 {
-    class ModSorter
+    public class ModSorter
     {
         public IList<IModData> SortMods(IList<IModData> mods)
         {
             
             var modDict = new Dictionary<string, IModData>();
             var modList = new List<string>();
-            HashSet<Edge<string, string>> set = new HashSet<Edge<string, string>>();
+            var set = new HashSet<Edge<string, string>>();
             foreach (var mod in mods)
             {
                 // Add to dict of (uniqueName, IModData)
