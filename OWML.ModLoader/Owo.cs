@@ -53,27 +53,26 @@ namespace OWML.ModLoader
 
             var sortedMods = Enumerable.Concat(sortedPriority, sortedNormal);
 
-            foreach (var modDep in sortedMods)
+            foreach (var mod in sortedMods)
             {
-                foreach (var dep in modDep.Dependencies)
+                foreach (var dep in mod.Manifest.Dependencies)
                 {
                     if (!modNames.Contains(dep))
                     {
-                        _console.WriteLine($"Error! {modDep.Name} needs {dep}, but it's disabled!");
+                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dep}, but it's disabled!");
                     }
                 }
-                var modData = modDep.Data;
-                var modType = LoadMod(modData);
+                var modType = LoadMod(mod);
                 if (modType == null)
                 {
                     _logger.Log("Mod type is null, skipping");
-                    _menus.ModsMenu.AddMod(modData, null);
+                    _menus.ModsMenu.AddMod(mod, null);
                     continue;
                 }
-                var helper = CreateModHelper(modData);
-                var mod = InitializeMod(modType, helper);
-                _menus.ModsMenu.AddMod(modData, mod);
-                _modList.Add(mod);
+                var helper = CreateModHelper(mod);
+                var initMod = InitializeMod(modType, helper);
+                _menus.ModsMenu.AddMod(mod, initMod);
+                _modList.Add(initMod);
             }
         }
 
