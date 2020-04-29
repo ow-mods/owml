@@ -32,13 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OW.Unity.Dlls, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\OW.Unity.Dlls.dll</HintPath>
+    <Reference Include="OW.Unity.Dlls, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\OW.Unity.Dlls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,25 +47,28 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OW.Unity.Dlls.1.0.2\lib\net35\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>..\packages\OW.Unity.Dlls.1.0.4\lib\net35\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
