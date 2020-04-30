@@ -14,24 +14,38 @@ namespace OWML.ModLoader
         }
         public IList<IModData> SortMods(IList<IModData> mods)
         {
-            
             var modDict = new Dictionary<string, IModData>();
             var modList = new List<string>();
             var set = new HashSet<Edge>();
+
+            foreach (var mod in mods)
+            {
+                // Add to list of uniqueNames
+                modList.Add(mod.Manifest.UniqueName);
+            }
+
             foreach (var mod in mods)
             {
                 // Add to dict of (uniqueName, IModData)
                 modDict.Add(mod.Manifest.UniqueName, mod);
 
-                // Add to list of uniqueNames
-                modList.Add(mod.Manifest.UniqueName);
-
                 // Add to hashset of tuples (Dependant : Dependency)
                 foreach (var dependency in mod.Manifest.Dependencies)
                 {
-                    set.Add(new Edge(mod.Manifest.UniqueName, dependency));
+                    if (mod.Manifest.PriorityLoad && !modList.Contains(dependency))
+                    {
+                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} (priority load) depends on a normal mod! Removing from load...");
+                        mods.Remove(mod);
+                        modDict.Remove(mod.Manifest.UniqueName);
+                        modList.Remove(mod.Manifest.UniqueName);
+                    }
+                    else
+                    {
+                        set.Add(new Edge(mod.Manifest.UniqueName, dependency));
+                    }
                 }
             }
+
 
             var sortedList = TopologicalSort(
                 new HashSet<string>(modList),
