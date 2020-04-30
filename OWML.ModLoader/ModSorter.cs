@@ -12,6 +12,7 @@ namespace OWML.ModLoader
         {
             _console = console;
         }
+
         public IList<IModData> SortMods(IList<IModData> mods)
         {
             var modDict = new Dictionary<string, IModData>();
@@ -35,7 +36,6 @@ namespace OWML.ModLoader
                     if (mod.Manifest.PriorityLoad && !modList.Contains(dependency))
                     {
                         _console.WriteLine($"Error! {mod.Manifest.UniqueName} (priority load) depends on a normal mod! Removing from load...");
-                        mods.Remove(mod);
                         modDict.Remove(mod.Manifest.UniqueName);
                         modList.Remove(mod.Manifest.UniqueName);
                     }
@@ -55,7 +55,7 @@ namespace OWML.ModLoader
             if (sortedList == null)
             {
                 // Sorting has failed, return the original mod list
-                _console.WriteLine("Error - Cyclic dependency found.");
+                _console.WriteLine("Error - Cyclic dependency found. Returning original load order...");
                 return mods;
             }
 
