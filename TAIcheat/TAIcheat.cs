@@ -59,7 +59,7 @@ namespace TAIcheat
 			{
 				foreach (string key in inputs.Keys)
 				{
-					int temp = ModHelper.InputHandler.UnregisterCombo(inputs[key]);
+					int temp = ModHelper.InputHandler.UnregisterCombination(inputs[key]);
 					if (temp > -3)
 					{
 						if (temp == -1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": invalid combo!");
@@ -75,7 +75,7 @@ namespace TAIcheat
 				{
 					ModCombination tempc = new ModCombination(config.GetSettingsValue<string>(name));
 					inputs.Add(name, tempc);
-					int temp = ModHelper.InputHandler.RegisterCombo(tempc);
+					int temp = ModHelper.InputHandler.RegisterCombination(tempc);
 					if (temp < 0)
 					{
 						if (temp == -1) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");

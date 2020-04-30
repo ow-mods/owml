@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
         private IModTextInput _textInputTemplate;
-        private IModInputInput _inputInputTemplate;
+        private IModComboInput _inputInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
@@ -32,7 +32,7 @@ namespace OWML.ModHelper.Menus
             _storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModInputInput inputInputTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput inputInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
@@ -183,7 +183,7 @@ namespace OWML.ModHelper.Menus
 
         private void AddInputInput(string key, int index)
         {
-            IModInputInput inputInput = AddInputInput(_inputInputTemplate.Copy(key), index);
+            IModComboInput inputInput = AddInputInput(_inputInputTemplate.Copy(key), index);
             inputInput.Element.name = key;
             inputInput.Show();
         }

@@ -7,17 +7,33 @@ using UnityEngine;
 
 namespace OWML.ModHelper
 {
-	public class ModCombination: IModCombination
+	public class ModCombination : IModCombination
 	{
+		private bool _pressed = false, _first = false;
+		private float _firstPressed = 0f, _lastPressed = 0f;
+		private List<KeyCode> _singles = new List<KeyCode>();
+		internal string Combo { get; private set; }
+
 		public ModCombination(string combination)
 		{
-			_combo = combination;
+			Combo = combination;
 		}
-		public string GetCombo()
+
+		public float GetLastPressedMoment() { return _lastPressed; }
+
+		public float GetPressDuration() { return _lastPressed - _firstPressed; }
+
+		public bool IsFirst(bool keep = false)
 		{
-			return _combo;
+			if (_first)
+			{
+				_first = keep;
+				return true;
+			}
+			return false;
 		}
-		public void _SetPressed(bool state = true)
+
+		internal void SetPressed(bool state = true)
 		{
 			if (state)
 			{
@@ -32,27 +48,11 @@ namespace OWML.ModHelper
 				_first = true;
 			_pressed = state;
 		}
-		public float GetLastPressedMoment()
-		{
-			return _lastPressed;
-		}
-		public float GetPressDuration() { return _lastPressed - _firstPressed; }
-		public bool IsFirst(bool keep = false)
-		{
-			if (_first)
-			{
-				_first = keep;
-				return true;
-			}
-			return false;
-		}
-		public void _AddSingle(KeyCode button) { _singles.Add(button); }
-		public List<KeyCode> _GetSingles() { return _singles; }
-		public void _ClearSingles() { _singles.Clear(); }
 
-		private bool _pressed = false, _first = false;
-		private string _combo;
-		private float _firstPressed = 0f, _lastPressed = 0f;
-		private List<KeyCode> _singles = new List<KeyCode>();
+		internal void AddSingle(KeyCode button) { _singles.Add(button); }
+
+		internal List<KeyCode> GetSingles() { return _singles; }
+
+		internal void ClearSingles() { _singles.Clear(); }
 	}
 }

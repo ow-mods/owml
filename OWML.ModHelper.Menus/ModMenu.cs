@@ -19,7 +19,7 @@ namespace OWML.ModHelper.Menus
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
-        public List<IModInputInput> InputInputs { get; private set; }
+        public List<IModComboInput> InputInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
         private readonly IModLogger _logger;
@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Menus
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
-            InputInputs = new List<IModInputInput>();
+            InputInputs = new List<IModComboInput>();
         }
 
         public IModButton GetButton(string title)
@@ -152,15 +152,15 @@ namespace OWML.ModHelper.Menus
             AddInput(input, index);
             return input;
         }
-        public IModInputInput GetInputInput(string title)
+        public IModComboInput GetInputInput(string title)
         {
             return InputInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
         }
-        public IModInputInput AddInputInput(IModInputInput input)
+        public IModComboInput AddInputInput(IModComboInput input)
         {
             return AddInputInput(input, input.Index);
         } 
-        public IModInputInput AddInputInput(IModInputInput input, int index)
+        public IModComboInput AddInputInput(IModComboInput input, int index)
         {
             InputInputs.Add(input);
             AddInput(input, index);

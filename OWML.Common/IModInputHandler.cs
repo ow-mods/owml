@@ -8,11 +8,8 @@ namespace OWML.Common
 {
 	public interface IModInputHandler
 	{
-		int RegisterCombo(IModCombination combo);
-		int UnregisterCombo(IModCombination combo);
-		void _RegisterGamesBinding(InputCommand binding);
-		void _UnregisterGamesBinding(InputCommand binding);
-		bool _ShouldIgnore(KeyCode key);
+		int RegisterCombination(IModCombination combo);
+		int UnregisterCombination(IModCombination combo);
 		bool IsPressed(IModCombination combo);
 		bool IsNewlyPressed(IModCombination combo, bool keep = false);
 		bool WasTapped(IModCombination combo);

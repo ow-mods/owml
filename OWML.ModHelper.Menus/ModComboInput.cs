@@ -7,7 +7,7 @@ using System;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModInputInput : ModInput<string>, IModInputInput
+    public class ModComboInput : ModInput<string>, IModComboInput
     {
 
         private string _value;
@@ -18,11 +18,10 @@ namespace OWML.ModHelper.Menus
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
 
-        public ModInputInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
             ToggleElement = element;
             InputMenu = inputMenu;
-            OnChange += Upd;
             scale = element.GetValue<Button>("_buttonTrue").transform.localScale;
             Button = new ModLayoutButton(element.GetValue<Button>("_buttonTrue"), menu);
             Button.OnClick += Open;
@@ -38,12 +37,12 @@ namespace OWML.ModHelper.Menus
             Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
-        private void Upd(string thing)
+        private void UpdateLayout(string currentCombination)
         {
             int cnt = _layoutGroup.transform.childCount;
             for (int i = cnt - 1; i >= 0; i--)
                 GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
-            string[] str = thing.Split('/');
+            string[] str = currentCombination.Split('/');
             for (int i = 0; i < str.Length; i++)
 			{
                 string[] st = str[i].Split('+');
@@ -76,6 +75,7 @@ namespace OWML.ModHelper.Menus
             }
             Button.UpdateState();
 		}
+
         private void AddText(string txt)
 		{
             GameObject gameObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
@@ -91,6 +91,7 @@ namespace OWML.ModHelper.Menus
             ((RectTransform)gameObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)gameObject.transform).sizeDelta.y * 0.75f);
             ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
         }
+
         protected void Open()
         {
             InputMenu.OnConfirm += OnConfirm;
@@ -116,18 +117,18 @@ namespace OWML.ModHelper.Menus
             set
             {
                 _value = value;
-                InvokeOnChange(value);
+                UpdateLayout(value);
             }
         }
 
-        public IModInputInput Copy()
+        public IModComboInput Copy()
         {
             var copy = GameObject.Instantiate(ToggleElement);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModInputInput(copy, Menu, InputMenu);
+            return new ModComboInput(copy, Menu, InputMenu);
         }
 
-        public IModInputInput Copy(string title)
+        public IModComboInput Copy(string title)
         {
             var copy = Copy();
             copy.Title = title;
