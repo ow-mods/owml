@@ -19,6 +19,7 @@ namespace OWML.ModHelper.Menus
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
+        public List<IModInputInput> InputInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
         private readonly IModLogger _logger;
@@ -47,6 +48,7 @@ namespace OWML.ModHelper.Menus
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
+            InputInputs = new List<IModInputInput>();
         }
 
         public IModButton GetButton(string title)
@@ -150,6 +152,20 @@ namespace OWML.ModHelper.Menus
             AddInput(input, index);
             return input;
         }
+        public IModInputInput GetInputInput(string title)
+        {
+            return InputInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+        public IModInputInput AddInputInput(IModInputInput input)
+        {
+            return AddInputInput(input, input.Index);
+        } 
+        public IModInputInput AddInputInput(IModInputInput input, int index)
+        {
+            InputInputs.Add(input);
+            AddInput(input, index);
+            return input;
+        }
 
         public IModNumberInput GetNumberInput(string title)
         {
@@ -195,6 +211,11 @@ namespace OWML.ModHelper.Menus
             {
                 return textInput.Value;
             }
+            var inputInput = GetInputInput(key);
+            if (inputInput != null)
+            {
+                return inputInput.Value;
+            }
             var numberInput = GetNumberInput(key);
             if (numberInput != null)
             {
@@ -225,6 +246,13 @@ namespace OWML.ModHelper.Menus
             {
                 var val = value is JObject obj ? obj["value"] : value;
                 textInput.Value = Convert.ToString(val);
+                return;
+            }
+            var inputInput = GetInputInput(key);
+            if (inputInput != null)
+            {
+                var val = value is JObject obj ? obj["value"] : value;
+                inputInput.Value = Convert.ToString(val);
                 return;
             }
             var numberInput = GetNumberInput(key);

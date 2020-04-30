@@ -20,6 +20,7 @@ namespace OWML.ModHelper.Menus
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
         private IModTextInput _textInputTemplate;
+        private IModInputInput _inputInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
@@ -31,12 +32,13 @@ namespace OWML.ModHelper.Menus
             _storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModInputInput inputInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
             _textInputTemplate = textInputTemplate;
             _numberInputTemplate = numberInputTemplate;
+            _inputInputTemplate = inputInputTemplate;
 
             var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
@@ -129,6 +131,11 @@ namespace OWML.ModHelper.Menus
                     AddToggleInput(key, obj, index);
                     return;
                 }
+                if (type == "input")
+                {
+                    AddInputInput(key, index);
+                    return;
+                }
 
                 _console.WriteLine("Error: unrecognized complex setting: " + value);
                 return;
@@ -174,6 +181,12 @@ namespace OWML.ModHelper.Menus
             textInput.Show();
         }
 
+        private void AddInputInput(string key, int index)
+        {
+            IModInputInput inputInput = AddInputInput(_inputInputTemplate.Copy(key), index);
+            inputInput.Element.name = key;
+            inputInput.Show();
+        }
         private void AddNumberInput(string key, int index)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);

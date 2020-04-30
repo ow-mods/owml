@@ -1,0 +1,42 @@
+{
+	"enabled": true,
+	"requireVR": false,
+	"settings": {
+		"(tele) Save probe's pos": {
+			"type": "input",
+			"value": "PageDown+LeftShift/PageDown+RightShift"
+		},
+		"(tele) Save RayCast pos": "PageDown+LeftAlt/PageDown+RightAlt",
+		"(tele) Save player's pos": "PageDown",
+		"(tele) Cycle through pos": "PageUp+LeftAlt/PageUp+RightAlt",
+		"(tele) Tele to saved pos": "PageUp",
+		"(insp) RayCast": "Home",
+		"(insp) Cycle through layers": "LeftAlt+Home/RightAlt+Home",
+		"Toggle spacesuit": "G",
+		"Learn launchcode": "LeftAlt+G/RightAlt+G",
+		"Toggle helmet": "H",
+		"Toggle HUD": "LeftAlt+H/RightAlt+H",
+		"Fuel+heal": "J",
+		"Damage ship": "LeftAlt+J/RightAlt+J",
+		"Destroy ship": "LeftAlt+LeftShift+J/RightAlt+RightShift+J",
+		"Engage Ludicrous Speed": "L",
+		"Increase Ludicrous Speed": "LeftShift+L/RightShift+L",
+		"Decrease Ludicrous Speed": "LeftAlt+L/RightAlt+L",
+		"Toggle PowerOverwhelming": "P",
+		"Toggle superjetpack": "LeftAlt+P/RightAlt+P",
+		"Cycle DebugHUD": "Backslash",
+		"Reveal all facts": "O",
+		"Learn all frequencies": "LeftAlt+O/RightAlt+O",
+		"Trigger Supernova": "Delete",
+		"Break all BH fragments": "LeftAlt+Delete/RightAlt+Delete",
+		"Timelapse": "Equals",
+		"Suicide": "Minus",
+		"Toggle nearby Anglerfishes AI": "K",
+		"Disable nearby Anglerfishes": "LeftAlt+K/RightAlt+K",
+		"Toggle player collision": "N",
+		"Toggle player collision extra": "LeftAlt+N/RightAlt+N",
+		"Toggle ship collision": "M",
+		"Toggle ship collision extra": "LeftAlt+M/RightAlt+M",
+		"Debug Vessel Warp": "E+U"
+	}
+}

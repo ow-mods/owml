@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Nuget", "OWML.Nuget\OW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Menus", "OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj", "{B874CC24-8340-4238-AC9D-1BFB41186BB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAIcheat", "TAIcheat\TAIcheat.csproj", "{999B196E-ECFE-4AC2-84D8-EFBCA6B0C2C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{B874CC24-8340-4238-AC9D-1BFB41186BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B874CC24-8340-4238-AC9D-1BFB41186BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B874CC24-8340-4238-AC9D-1BFB41186BB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999B196E-ECFE-4AC2-84D8-EFBCA6B0C2C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999B196E-ECFE-4AC2-84D8-EFBCA6B0C2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999B196E-ECFE-4AC2-84D8-EFBCA6B0C2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999B196E-ECFE-4AC2-84D8-EFBCA6B0C2C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6155732E-89B0-4D1E-A76B-229C056AE1E9} = {D5C426B0-14D9-48F7-90AA-257E2A074B97}
 		{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6} = {D5C426B0-14D9-48F7-90AA-257E2A074B97}
+		{999B196E-ECFE-4AC2-84D8-EFBCA6B0C2C4} = {D5C426B0-14D9-48F7-90AA-257E2A074B97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}

@@ -30,6 +30,11 @@ copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\OWML.EnableDebugMode.dll" "
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\manifest.json" "Release\Mods\OWML.EnableDebugMode\manifest.json"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\default-config.json" "Release\Mods\OWML.EnableDebugMode\default-config.json"
 
+mkdir "Release\Mods\TAIcheat"
+copy "TAIcheat\bin\Debug\TAIcheat.dll" "Release\Mods\TAIcheat\TAIcheat.dll"
+copy "TAIcheat\manifest.json" "Release\Mods\TAIcheat\manifest.json"
+copy "TAIcheat\default-config.json" "Release\Mods\TAIcheat\default-config.json"
+
 mkdir "Release\Mods\OWML.LoadCustomAssets"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\OWML.LoadCustomAssets.dll" "Release\Mods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.dll"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\manifest.json" "Release\Mods\OWML.LoadCustomAssets\manifest.json"

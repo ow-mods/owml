@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper
 {
-	class ModCombination: IModCombination
+	public class ModCombination: IModCombination
 	{
 		public ModCombination(string combination)
 		{

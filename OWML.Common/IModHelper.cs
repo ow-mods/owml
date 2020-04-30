@@ -14,5 +14,6 @@ namespace OWML.Common
         IModManifest Manifest { get; }
         IModConfig Config { get; }
         IOwmlConfig OwmlConfig { get; }
+        IModInputHandler InputHandler { get; }
     }
 }

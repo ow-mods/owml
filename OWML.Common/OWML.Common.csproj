@@ -69,6 +69,8 @@
     <Compile Include="IModAsset.cs" />
     <Compile Include="IModCombination.cs" />
     <Compile Include="IModInputHandler.cs" />
+    <Compile Include="Menus\IModLayoutButton.cs" />
+    <Compile Include="Menus\IModInputInput.cs" />
     <Compile Include="Menus\InputType.cs" />
     <Compile Include="Menus\IModButton.cs" />
     <Compile Include="IModConfig.cs" />
