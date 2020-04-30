@@ -12,7 +12,7 @@ namespace OWML.ModLoader
             
             var modDict = new Dictionary<string, IModData>();
             var modList = new List<string>();
-            var set = new HashSet<Edge<string, string>>();
+            var set = new HashSet<Edge>();
             foreach (var mod in mods)
             {
                 // Add to dict of (uniqueName, IModData)
@@ -24,13 +24,13 @@ namespace OWML.ModLoader
                 // Add to hashset of tuples (Dependant : Dependency)
                 foreach (var dependency in mod.Manifest.Dependencies)
                 {
-                    set.Add(new Edge<string, string>(mod.Manifest.UniqueName, dependency));
+                    set.Add(new Edge(mod.Manifest.UniqueName, dependency));
                 }
             }
 
             var sortedList = TopologicalSort<string>(
                 new HashSet<string>(modList),
-                new HashSet<Edge<string, string>>(set)
+                new HashSet<Edge>(set)
             );
 
             if (sortedList == null)
@@ -50,7 +50,7 @@ namespace OWML.ModLoader
 
         // Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
 
-        static List<string> TopologicalSort<T>(HashSet<string> nodes, HashSet<Edge<string, string>> edges)
+        static List<string> TopologicalSort(HashSet<string> nodes, HashSet<Edge> edges)
         {
             // Empty list that will contain the sorted elements
             var sortedList = new List<string>();
@@ -99,7 +99,7 @@ namespace OWML.ModLoader
         }
     }
 
-    public class Edge<T1, T2>
+    public class Edge
     {
         public string First { get; private set; }
         public string Second { get; private set; }
@@ -107,15 +107,6 @@ namespace OWML.ModLoader
         {
             this.First = first;
             this.Second = second;
-        }
-    }
-
-    public static class Edge
-    {
-        public static Edge<string, string> New(string first, string second)
-        {
-            var tuple = new Edge<string, string>(first, second);
-            return tuple;
         }
     }
 }

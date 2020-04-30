@@ -8,8 +8,8 @@ namespace OWML.ModHelper.Interaction
     public class ModInteraction : IModInteraction
     {
         private readonly IList<IModBehaviour> _modList;
-        private Dictionary<IModBehaviour, List<IModBehaviour>> _dependantDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
-        private Dictionary<IModBehaviour, List<IModBehaviour>> _dependencyDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
+        private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
+        private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
 
         public ModInteraction(IList<IModBehaviour> list)
         {
@@ -20,8 +20,8 @@ namespace OWML.ModHelper.Interaction
 
         private void RegenDicts()
         {
-            _dependantDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
-            _dependencyDict = new Dictionary<IModBehaviour, List<IModBehaviour>>();
+            _dependantDict = new Dictionary<string, List<IModBehaviour>>();
+            _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
             foreach (var mod in _modList)
             {
                 var dependants = new List<IModBehaviour>();
@@ -38,21 +38,21 @@ namespace OWML.ModHelper.Interaction
                         dependencies.Add(dependency);
                     }
                 }
-                _dependantDict.Add(mod, dependants);
-                _dependencyDict.Add(mod, dependencies);
+                _dependantDict.Add(mod.ModHelper.Manifest.UniqueName, dependants);
+                _dependencyDict.Add(mod.ModHelper.Manifest.UniqueName, dependencies);
             }
         }
 
         public IList<IModBehaviour> GetDependants(string dependencyUniqueName)
         {
             RegenDicts();
-            return _dependantDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == dependencyUniqueName).FirstOrDefault().Value;
+            return _dependantDict[dependencyUniqueName];
         }
 
         public IList<IModBehaviour> GetDependencies(string uniqueName)
         {
             RegenDicts();
-            return _dependencyDict.Where(x => x.Key.ModHelper.Manifest.UniqueName == uniqueName).FirstOrDefault().Value;
+            return _dependencyDict[uniqueName];
         }
 
         public IModBehaviour GetMod(string uniqueName)
