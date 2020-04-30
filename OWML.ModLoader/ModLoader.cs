@@ -28,7 +28,7 @@ namespace OWML.ModLoader
             logger.Log("Got config!");
             var console = new ModConsole(owmlConfig, logger, owmlManifest);
             console.WriteLine("Mod loader has been initialized.");
-            var modSorter = new ModSorter();
+            var modSorter = new ModSorter(console);
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
             var events = new ModEvents(logger, console, harmonyHelper);

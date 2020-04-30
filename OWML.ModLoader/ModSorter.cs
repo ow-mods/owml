@@ -7,6 +7,11 @@ namespace OWML.ModLoader
 {
     public class ModSorter
     {
+        private readonly IModConsole _console;
+        public ModSorter(IModConsole console)
+        {
+            _console = console;
+        }
         public IList<IModData> SortMods(IList<IModData> mods)
         {
             
@@ -28,7 +33,7 @@ namespace OWML.ModLoader
                 }
             }
 
-            var sortedList = TopologicalSort<string>(
+            var sortedList = TopologicalSort(
                 new HashSet<string>(modList),
                 new HashSet<Edge>(set)
             );
@@ -36,6 +41,7 @@ namespace OWML.ModLoader
             if (sortedList == null)
             {
                 // Sorting has failed, return the original mod list
+                _console.WriteLine("Error - Cyclic dependency found.");
                 return mods;
             }
 
