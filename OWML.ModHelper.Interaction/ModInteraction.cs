@@ -51,7 +51,10 @@ namespace OWML.ModHelper.Interaction
 
         public IList<IModBehaviour> GetDependencies(string uniqueName)
         {
-            RegenDicts();
+            if (_dependantDict.Count != _modList.Count)
+            {
+                RegenDicts();
+            }
             return _dependencyDict[uniqueName];
         }
 
@@ -73,7 +76,7 @@ namespace OWML.ModHelper.Interaction
 
         public bool ModExists(string uniqueName)
         {
-            return _modList.Count(m => m.ModHelper.Manifest.UniqueName == uniqueName) != 0;
+            return _modList.Any(m => m.ModHelper.Manifest.UniqueName == uniqueName);
         }
     }
 }
