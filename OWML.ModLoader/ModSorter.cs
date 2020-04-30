@@ -21,16 +21,13 @@ namespace OWML.ModLoader
 
             foreach (var mod in mods)
             {
-                // Add to list of uniqueNames
                 modList.Add(mod.Manifest.UniqueName);
             }
 
             foreach (var mod in mods)
             {
-                // Add to dict of (uniqueName, IModData)
                 modDict.Add(mod.Manifest.UniqueName, mod);
 
-                // Add to hashset of tuples (Dependant : Dependency)
                 foreach (var dependency in mod.Manifest.Dependencies)
                 {
                     if (mod.Manifest.PriorityLoad && !modList.Contains(dependency))
@@ -61,7 +58,6 @@ namespace OWML.ModLoader
 
             sortedList.Reverse();
 
-            // Get the IModData back by looking up uniqueName in dict
             var returnList = new List<IModData>();
             sortedList.ForEach(mod => returnList.Add(modDict[mod]));
 
@@ -72,40 +68,30 @@ namespace OWML.ModLoader
 
         static List<string> TopologicalSort(HashSet<string> nodes, HashSet<Edge> edges)
         {
-            // Empty list that will contain the sorted elements
             var sortedList = new List<string>();
 
-            // Set of all nodes with no incoming edges
             var nodesWithNoEdges = new HashSet<string>(nodes.Where(node => edges.All(edge => edge.Second.Equals(node) == false)));
 
-            // while nodesWithNoEdges is non-empty do
             while (nodesWithNoEdges.Any())
             {
-                //  remove a node from nodesWithNoEdges
                 var firstNode = nodesWithNoEdges.First();
                 nodesWithNoEdges.Remove(firstNode);
 
-                // add node to tail of sortedList
                 sortedList.Add(firstNode);
 
-                // for each node secondNode with an edge from firstNode to secondNode do
                 foreach (var edge in edges.Where(e => e.First.Equals(firstNode)).ToList())
                 {
                     var secondNode = edge.Second;
 
-                    // remove edge e from the graph
                     edges.Remove(edge);
 
-                    // if secondNode has no other incoming edges then
                     if (edges.All(mEdge => mEdge.Second.Equals(secondNode) == false))
                     {
-                        // insert secondNode into nodesWithNoEdges
                         nodesWithNoEdges.Add(secondNode);
                     }
                 }
             }
 
-            // if graph has edges then
             if (edges.Any())
             {
                 // This will be caught and handled in the caller method
@@ -113,7 +99,6 @@ namespace OWML.ModLoader
             }
             else
             {
-                // return sortedList (a topologically sorted order)
                 return sortedList;
             }
         }
