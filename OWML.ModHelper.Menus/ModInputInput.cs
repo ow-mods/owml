@@ -12,7 +12,7 @@ namespace OWML.ModHelper.Menus
 
         private string _value;
         private Vector3 scale;
-
+        private UIStyleManager styleManager;
         private HorizontalLayoutGroup _layoutGroup;
         public IModLayoutButton Button { get; }
         protected readonly IModInputMenu InputMenu;
@@ -28,21 +28,18 @@ namespace OWML.ModHelper.Menus
             Button.OnClick += Open;
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
-            //foreach (Image img in Button.Button.gameObject.GetComponentsInChildren<Image>())
-            //    img.gameObject.SetActive(false);
             _layoutGroup = Button.LayoutGroup;
+            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
+            styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
 
             var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
             layoutGroup.childControlWidth = true;
             layoutGroup.childForceExpandWidth = true;
-
             Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
-            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x*2,((RectTransform)Button.Button.transform.parent).sizeDelta.y);
         }
 
         private void Upd(string thing)
         {
-            UIStyleManager styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
             int cnt = _layoutGroup.transform.childCount;
             for (int i = cnt - 1; i >= 0; i--)
                 GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
@@ -72,39 +69,28 @@ namespace OWML.ModHelper.Menus
                     ((RectTransform)gameObject.transform).sizeDelta = new Vector2((float)tex.width*0.75f, (float)tex.height * 0.75f);
                     ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
                     if (j<st.Length-1)
-					{
-                        gameObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
-                        Text text = gameObject.AddComponent<Text>();
-                        text.text = "+";
-                        text.fontSize = 36;
-                        text.font = styleManager.GetMenuFont();
-                        text.color = styleManager.GetButtonForegroundMenuColor(UIElementState.NORMAL);
-                        text.alignment = TextAnchor.MiddleCenter;
-                        gameObject.AddComponent<LayoutElement>().preferredWidth = text.minWidth;
-                        gameObject.transform.SetParent(_layoutGroup.transform);
-                        gameObject.transform.localScale = scale;
-                        ((RectTransform)gameObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)gameObject.transform).sizeDelta.y*0.75f);
-                        ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
-                    }
+                        AddText("+");
                 }
                 if (i < str.Length - 1)
-                {
-                    GameObject gameObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
-                    Text text = gameObject.AddComponent<Text>();
-                    text.text = "/";
-                    text.fontSize = 36;
-                    text.font = styleManager.GetMenuFont();
-                    text.color = styleManager.GetButtonForegroundMenuColor(UIElementState.NORMAL);
-                    text.alignment = TextAnchor.MiddleCenter;
-                    gameObject.AddComponent<LayoutElement>();
-                    gameObject.transform.SetParent(_layoutGroup.transform);
-                    gameObject.transform.localScale = scale;
-                    ((RectTransform)gameObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)gameObject.transform).sizeDelta.y * 0.75f);
-                    ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
-                }
+                    AddText("/");
             }
             Button.UpdateState();
 		}
+        private void AddText(string txt)
+		{
+            GameObject gameObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
+            Text text = gameObject.AddComponent<Text>();
+            text.text = txt;
+            text.fontSize = 36;
+            text.font = styleManager.GetMenuFont();
+            text.color = styleManager.GetButtonForegroundMenuColor(UIElementState.NORMAL);
+            text.alignment = TextAnchor.MiddleCenter;
+            gameObject.AddComponent<LayoutElement>();
+            gameObject.transform.SetParent(_layoutGroup.transform);
+            gameObject.transform.localScale = scale;
+            ((RectTransform)gameObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)gameObject.transform).sizeDelta.y * 0.75f);
+            ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
+        }
         protected void Open()
         {
             InputMenu.OnConfirm += OnConfirm;

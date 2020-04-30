@@ -32,7 +32,6 @@ namespace OWML.ModHelper.Menus
             Button.onClick.AddListener(() => OnClick?.Invoke());
             var temp = Button.GetComponentInChildren<Text>().gameObject;
             GameObject.Destroy(temp);
-            Button.transform.GetChild(1).gameObject.SetActive(false);
             temp = new GameObject("LayoutGroup", new Type[] { typeof(RectTransform) });
             temp.transform.SetParent(button.transform);
             var img = temp.AddComponent<Image>();
@@ -46,18 +45,17 @@ namespace OWML.ModHelper.Menus
             LayoutGroup.childForceExpandHeight = false;
             LayoutGroup.childForceExpandWidth = false;
             LayoutGroup.childAlignment = TextAnchor.MiddleCenter;
+            LayoutGroup.transform.localPosition = Vector3.zero;
+            ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f);
             UpdateState();
         }
         public void UpdateState()
         {
-            LayoutGroup.transform.localPosition = Button.transform.GetChild(0).localPosition;
-            ((RectTransform)LayoutGroup.transform).pivot = ((RectTransform)Button.transform.GetChild(0)).pivot;
             FieldInfo texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);    
             Text[] temp = Button.gameObject.GetComponentsInChildren<Text>();
             texts.SetValue(_buttonStyleApplier, temp);
-            Graphic[] temp2 = temp;
-            foregrounds.SetValue(_buttonStyleApplier, temp2);
+            foregrounds.SetValue(_buttonStyleApplier, (Graphic[])temp);
         }
         public void Initialize(IModMenu menu)
         {
