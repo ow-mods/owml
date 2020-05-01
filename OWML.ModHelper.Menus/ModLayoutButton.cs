@@ -15,6 +15,7 @@ namespace OWML.ModHelper.Menus
         public IModMenu Menu { get; private set; }
         public HorizontalLayoutGroup LayoutGroup { get; private set; }
         private UIStyleApplier _buttonStyleApplier;
+        FieldInfo texts, foregrounds;
 
         private int _index;
         public int Index
@@ -30,14 +31,13 @@ namespace OWML.ModHelper.Menus
         {
             Button = button;
             Button.onClick.AddListener(() => OnClick?.Invoke());
-            var temp = Button.GetComponentInChildren<Text>().gameObject;
-            GameObject.Destroy(temp);
-            temp = new GameObject("LayoutGroup", new Type[] { typeof(RectTransform) });
-            temp.transform.SetParent(button.transform);
-            var img = temp.AddComponent<Image>();
-            img.raycastTarget = true;
-            img.color = new Color(255, 255, 255, 0);
-            LayoutGroup = temp.AddComponent<HorizontalLayoutGroup>();
+            GameObject.Destroy(Button.GetComponentInChildren<Text>().gameObject);
+            var layoutObject = new GameObject("LayoutGroup", new Type[] { typeof(RectTransform) });
+            layoutObject.transform.SetParent(button.transform);
+            var target = layoutObject.AddComponent<Image>();
+            target.raycastTarget = true;
+            target.color = new Color(255, 255, 255, 0);
+            LayoutGroup = layoutObject.AddComponent<HorizontalLayoutGroup>();
             Initialize(menu);
             this._buttonStyleApplier = Button.GetComponent<UIStyleApplier>();
             LayoutGroup.childControlWidth = false;
@@ -47,107 +47,66 @@ namespace OWML.ModHelper.Menus
             LayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             LayoutGroup.transform.localPosition = Vector3.zero;
             ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f);
+            texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
+            foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);
             UpdateState();
         }
         public void UpdateState()
         {
-            FieldInfo texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
-            FieldInfo foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);    
-            Text[] temp = Button.gameObject.GetComponentsInChildren<Text>();
-            texts.SetValue(_buttonStyleApplier, temp);
-            foregrounds.SetValue(_buttonStyleApplier, (Graphic[])temp);
+            Text[] currentTexts = Button.gameObject.GetComponentsInChildren<Text>();
+            texts.SetValue(_buttonStyleApplier, currentTexts);
+            foregrounds.SetValue(_buttonStyleApplier, (Graphic[])currentTexts);
         }
         public void Initialize(IModMenu menu)
         {
             Menu = menu;
         }
 
-        public IModButton Copy()
+        public IModLayoutButton Copy()
         {
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());
-            return new ModButton(button, Menu)
+            return new ModLayoutButton(button, Menu)
             {
                 Index = Index + 1
             };
         }
 
-        public IModButton Copy(string title)
-        {
-            var copy = Copy();
-            copy.Title = title;
-            return copy;
-        }
-
-        public IModButton Copy(int index)
+        public IModLayoutButton Copy(int index)
         {
             var copy = Copy();
             copy.Index = index;
             return copy;
         }
 
-        public IModButton Copy(string title, int index)
-        {
-            var copy = Copy(title);
-            copy.Index = index;
-            return copy;
-        }
-
-        public IModButton Duplicate()
+        public IModLayoutButton Duplicate()
         {
             var copy = Copy();
-            Menu.AddButton(copy);
+            Menu.AddLayoutButton(copy);
             return copy;
         }
 
-        public IModButton Duplicate(string title)
-        {
-            var dupe = Duplicate();
-            dupe.Title = title;
-            return dupe;
-        }
-
-        public IModButton Duplicate(int index)
+        public IModLayoutButton Duplicate(int index)
         {
             var dupe = Duplicate();
             dupe.Index = index;
             return dupe;
         }
 
-        public IModButton Duplicate(string title, int index)
-        {
-            var dupe = Duplicate(title);
-            dupe.Index = index;
-            return dupe;
-        }
-
-        public IModButton Replace()
+        public IModLayoutButton Replace()
         {
             var duplicate = Duplicate();
             Hide();
             return duplicate;
         }
 
-        public IModButton Replace(string title)
-        {
-            var replacement = Replace();
-            replacement.Title = title;
-            return replacement;
-        }
-
-        public IModButton Replace(int index)
+        public IModLayoutButton Replace(int index)
         {
             var replacement = Replace();
             replacement.Index = index;
             return replacement;
         }
 
-        public IModButton Replace(string title, int index)
-        {
-            var replacement = Replace(title);
-            replacement.Index = index;
-            return replacement;
-        }
 
         public void Show()
         {

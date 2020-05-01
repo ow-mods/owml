@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace OWML.Common
 {
-	public interface IModCombination
+	public interface IModInputCombination
 	{
 		float GetLastPressedMoment();
 		float GetPressDuration();

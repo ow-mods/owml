@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
         private IModTextInput _textInputTemplate;
-        private IModComboInput _inputInputTemplate;
+        private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
         public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
@@ -32,13 +32,13 @@ namespace OWML.ModHelper.Menus
             _storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput inputInputTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
             _textInputTemplate = textInputTemplate;
             _numberInputTemplate = numberInputTemplate;
-            _inputInputTemplate = inputInputTemplate;
+            _comboInputTemplate = comboInputTemplate;
 
             var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
@@ -133,7 +133,7 @@ namespace OWML.ModHelper.Menus
                 }
                 if (type == "input")
                 {
-                    AddInputInput(key, index);
+                    AddComboInput(key, index);
                     return;
                 }
 
@@ -181,11 +181,11 @@ namespace OWML.ModHelper.Menus
             textInput.Show();
         }
 
-        private void AddInputInput(string key, int index)
+        private void AddComboInput(string key, int index)
         {
-            IModComboInput inputInput = AddInputInput(_inputInputTemplate.Copy(key), index);
-            inputInput.Element.name = key;
-            inputInput.Show();
+            IModComboInput comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
+            comboInput.Element.name = key;
+            comboInput.Show();
         }
         private void AddNumberInput(string key, int index)
         {

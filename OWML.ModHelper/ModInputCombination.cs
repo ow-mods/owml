@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace OWML.ModHelper
 {
-	public class ModCombination : IModCombination
+	public class ModInputCombination : IModInputCombination
 	{
 		private bool _pressed = false, _first = false;
 		private float _firstPressed = 0f, _lastPressed = 0f;
 		private List<KeyCode> _singles = new List<KeyCode>();
 		internal string Combo { get; private set; }
 
-		public ModCombination(string combination)
+		public ModInputCombination(string combination)
 		{
 			Combo = combination;
 		}
@@ -45,7 +45,9 @@ namespace OWML.ModHelper
 				_lastPressed = Time.realtimeSinceStartup;
 			}
 			else
+			{
 				_first = true;
+			}
 			_pressed = state;
 		}
 

@@ -126,12 +126,12 @@ namespace OWML.ModHelper
 					}
 				if (comboReg.ContainsKey(hash))
 				{
-					IModCombination temp = comboReg[hash];
-					if (temp == lastPressed || !countdowntrigger)
+					IModInputCombination combination = comboReg[hash];
+					if (combination == lastPressed || !countdowntrigger)
 					{
 						if (lastPressed != null)
 							lastPressed.SetPressed(false);
-						lastPressed = (ModCombination)temp;
+						lastPressed = (ModInputCombination)combination;
 						lastPressed.SetPressed();
 						for (int i = 0; i < t; i++)
 							timeout[keys[i]] = Time.realtimeSinceStartup;
@@ -145,88 +145,88 @@ namespace OWML.ModHelper
 			}
 		}
 
-		private bool IsPressed_Combo(IModCombination combination)
+		private bool IsPressed_Combo(IModInputCombination combination)
 		{
 			UpdateCombo();
 			return lastPressed == combination;
 		}
 
-		private bool IsNewlyPressed_Combo(IModCombination combination, bool keep = false)
+		private bool IsNewlyPressed_Combo(IModInputCombination combination, bool keep = false)
 		{
 			UpdateCombo();
 			return lastPressed == combination && combination.IsFirst(keep);
 		}
 
-		private bool WasTapped_Combo(IModCombination combination)
+		private bool WasTapped_Combo(IModInputCombination combination)
 		{
 			UpdateCombo();
 			return combination != lastPressed && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < tapKeep) && (combination.GetPressDuration() < tapDuration);
 		}
 
-		private bool IsNewlyReleased_Combo(IModCombination combination, bool keep = false)
+		private bool IsNewlyReleased_Combo(IModInputCombination combination, bool keep = false)
 		{
 			UpdateCombo();
 			return lastPressed != combination && combination.IsFirst(keep) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < tapKeep);
 		}
 
-		private bool IsPressed_Single(IModCombination combination)
+		private bool IsPressed_Single(IModInputCombination combination)
 		{
 			if (Time.realtimeSinceStartup - lastSingleUpdate > 0.01f)
 			{
 				lastSingleUpdate = Time.realtimeSinceStartup;
-				List<IModCombination> toRemove = new List<IModCombination>();
-				foreach (IModCombination combo in singlePressed)
+				List<IModInputCombination> toRemove = new List<IModInputCombination>();
+				foreach (IModInputCombination combo in singlePressed)
 					if (!IsPressed(combo))
 					{
-						((ModCombination)combo).SetPressed(false);
+						((ModInputCombination)combo).SetPressed(false);
 						toRemove.Add(combo);
 					}
-				foreach (IModCombination combo in toRemove)
+				foreach (IModInputCombination combo in toRemove)
 					singlePressed.Remove(combo);
 			}
-			List<KeyCode> keys = ((ModCombination)combination).GetSingles();
+			List<KeyCode> keys = ((ModInputCombination)combination).GetSingles();
 			foreach (KeyCode key in keys)
 				if (Input.GetKey(key) && (!ShouldIgnore(key) || singlePressed.Contains(combination)))
 				{
 					singlePressed.Add(combination);
 					timeout[(int)key] = Time.realtimeSinceStartup;
-					((ModCombination)combination).SetPressed();
+					((ModInputCombination)combination).SetPressed();
 					return true;
 				}
 			return false;
 		}
 
-		private bool IsNewlyPressed_Single(IModCombination combination, bool keep = false)
+		private bool IsNewlyPressed_Single(IModInputCombination combination, bool keep = false)
 		{
 			return IsPressed_Single(combination) && combination.IsFirst(keep);
 		}
 
-		private bool WasTapped_Single(IModCombination combination)
+		private bool WasTapped_Single(IModInputCombination combination)
 		{
 			return (!IsPressed_Single(combination)) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < tapKeep) && (combination.GetPressDuration() < tapDuration);
 		}
 
-		private bool IsNewlyReleased_Single(IModCombination combination, bool keep = false)
+		private bool IsNewlyReleased_Single(IModInputCombination combination, bool keep = false)
 		{
 			return (!IsPressed_Single(combination)) && combination.IsFirst(keep) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < tapKeep);
 		}
 
-		public bool IsPressed(IModCombination combination)
+		public bool IsPressed(IModInputCombination combination)
 		{
 			return IsPressed_Combo(combination) || IsPressed_Single(combination);
 		}
 
-		public bool IsNewlyPressed(IModCombination combination, bool keep = false)
+		public bool IsNewlyPressed(IModInputCombination combination, bool keep = false)
 		{
 			return IsPressed(combination) && combination.IsFirst(keep);
 		}
 
-		public bool WasTapped(IModCombination combination)
+		public bool WasTapped(IModInputCombination combination)
 		{
 			return (!(IsPressed_Combo(combination) || IsPressed_Single(combination))) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < tapKeep) && (combination.GetPressDuration() < tapDuration);
 		}
 
-		public bool WasNewlyReleased(IModCombination combination, bool keep = false)
+		public bool WasNewlyReleased(IModInputCombination combination, bool keep = false)
 		{
 			return (!(IsPressed_Combo(combination) || IsPressed_Single(combination))) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < tapKeep);
 		}
@@ -246,25 +246,39 @@ namespace OWML.ModHelper
 					string tkey = key.Substring(5);
 					XboxButton tnum = (XboxButton)Enum.Parse(typeof(XboxButton), tkey, true);
 					if (Enum.IsDefined(typeof(XboxButton), tnum))
+					{
 						num = InputTranslator.GetKeyCode(tnum, false);
+					}
 					else
+					{
 						return -1;
+					}
 				}
 				else
 				{
 					string tkey = key;
 					if (key == "control")
+					{
 						tkey = "leftcontrol";
+					}
 					else if (key == "shift")
+					{
 						tkey = "leftshift";
+					}
 					else if (key == "alt")
+					{
 						tkey = "leftalt";
+					}
 					num = (KeyCode)Enum.Parse(typeof(KeyCode), tkey, true);
 				}
 				if (Enum.IsDefined(typeof(KeyCode), num))
+				{
 					curcom[i] = (int)num;
+				}
 				else
+				{
 					return -1;
+				}
 				i++;
 			}
 			Array.Sort(curcom);
@@ -273,15 +287,16 @@ namespace OWML.ModHelper
 			{
 				hsh = hsh * 350 + curcom[i];
 			}
-			if (hsh < 350)
-				if (gamecntr[hsh] > 0)
-					return -3;
+			if (hsh < 350 && gamecntr[hsh] > 0)
+			{
+				return -3;
+			}
 			return (comboReg.ContainsKey(hsh) && !forRemoval ? -3 : hsh);
 		}
 
-		public int RegisterCombination(IModCombination combination)
+		public int RegisterCombination(IModInputCombination combination)
 		{
-			ModCombination tcombo = (ModCombination)combination;
+			ModInputCombination tcombo = (ModInputCombination)combination;
 			tcombo.ClearSingles();
 			if (tcombo == null || tcombo.Combo == null)
 			{
@@ -292,25 +307,31 @@ namespace OWML.ModHelper
 			List<Int64> combos = new List<Int64>();
 			foreach (string comstr in combs)
 			{
-				Int64 temp = ParseCombination(comstr);
-				if (temp <= 0)
-					return (int)temp;
+				Int64 hash = ParseCombination(comstr);
+				if (hash <= 0)
+				{
+					return (int)hash;
+				}
 				else
-					combos.Add(temp);
+				{
+					combos.Add(hash);
+				}
 			}
 			foreach (Int64 comb in combos)
 			{
 				comboReg.Add(comb, combination);
 				if (comb < 350)
+				{
 					tcombo.AddSingle((KeyCode)comb);
+				}
 			}
 			_logger.Log("succesfully registered " + tcombo.Combo);
 			return 1;
 		}
 
-		public int UnregisterCombination(IModCombination combination)
+		public int UnregisterCombination(IModInputCombination combination)
 		{
-			ModCombination tcombo = (ModCombination)combination;
+			ModInputCombination tcombo = (ModInputCombination)combination;
 			if (comboReg.ContainsValue(combination))
 			{
 				if (combination == null || tcombo.Combo == null)
@@ -322,19 +343,27 @@ namespace OWML.ModHelper
 				List<Int64> combos = new List<Int64>();
 				foreach (string comstr in combs)
 				{
-					Int64 temp = ParseCombination(comstr, true);
-					if (temp <= 0 && temp > -3)
-						return (int)temp;
+					Int64 hash = ParseCombination(comstr, true);
+					if (hash <= 0 && hash > -3)
+					{
+						return (int)hash;
+					}
 					else
-						combos.Add(temp);
+					{
+						combos.Add(hash);
+					}
 				}
 				foreach (Int64 comb in combos)
+				{
 					comboReg.Remove(comb);
+				}
 				_logger.Log("succesfully unregistered " + tcombo.Combo);
 				return -3;
 			}
 			else
+			{
 				return 1;
+			}
 		}
 
 		internal void RegisterGamesBinding(InputCommand binding)
@@ -344,9 +373,13 @@ namespace OWML.ModHelper
 				KeyCode key;
 				FieldInfo[] fields;
 				if (binding is SingleAxisCommand)
+				{
 					fields = typeof(SingleAxisCommand).GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+				}
 				else
+				{
 					fields = typeof(DoubleAxisCommand).GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+				}
 				foreach (FieldInfo field in fields)
 				{
 					if (field.FieldType == typeof(KeyCode))
@@ -370,9 +403,13 @@ namespace OWML.ModHelper
 				KeyCode key;
 				FieldInfo[] fields;
 				if (binding is SingleAxisCommand)
+				{
 					fields = typeof(SingleAxisCommand).GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+				}
 				else
+				{
 					fields = typeof(DoubleAxisCommand).GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+				}
 				foreach (FieldInfo field in fields)
 					if (field.FieldType == typeof(KeyCode))
 					{
@@ -393,12 +430,12 @@ namespace OWML.ModHelper
 			return lastPressed != null && Time.realtimeSinceStartup - timeout[(int)code] < cooldown;
 		}
 
-		private HashSet<IModCombination> singlePressed = new HashSet<IModCombination>();
+		private HashSet<IModInputCombination> singlePressed = new HashSet<IModInputCombination>();
 		private float[] timeout = new float[350];
 		private int[] gamecntr = new int[350];
-		private Dictionary<Int64, IModCombination> comboReg = new Dictionary<Int64, IModCombination>();
+		private Dictionary<Int64, IModInputCombination> comboReg = new Dictionary<Int64, IModInputCombination>();
 		private HashSet<InputCommand> bindreg = new HashSet<InputCommand>();
-		private ModCombination lastPressed;
+		private ModInputCombination lastPressed;
 		private float lastUpdate, lastSingleUpdate;
 		private float cooldown = 0.016f;
 		private float tapKeep = 0.3f;

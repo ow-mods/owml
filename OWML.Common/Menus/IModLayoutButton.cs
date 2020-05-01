@@ -12,14 +12,14 @@ namespace OWML.Common.Menus
         void UpdateState();
         void Initialize(IModMenu menu);
 
-        IModButton Copy();
-        IModButton Copy(int index);
+        IModLayoutButton Copy();
+        IModLayoutButton Copy(int index);
 
-        IModButton Duplicate();
-        IModButton Duplicate(int index);
+        IModLayoutButton Duplicate();
+        IModLayoutButton Duplicate(int index);
 
-        IModButton Replace();
-        IModButton Replace(int index);
+        IModLayoutButton Replace();
+        IModLayoutButton Replace(int index);
 
         void Show();
         void Hide();

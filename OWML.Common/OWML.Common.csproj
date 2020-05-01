@@ -73,7 +73,7 @@
     <Compile Include="IHarmonyHelper.cs" />
     <Compile Include="IModAssets.cs" />
     <Compile Include="IModAsset.cs" />
-    <Compile Include="IModCombination.cs" />
+    <Compile Include="IModInputCombination.cs" />
     <Compile Include="IModInputHandler.cs" />
     <Compile Include="Menus\IModLayoutButton.cs" />
     <Compile Include="Menus\IModComboInput.cs" />

@@ -59,34 +59,34 @@ namespace TAIcheat
 			{
 				foreach (string key in inputs.Keys)
 				{
-					int temp = ModHelper.InputHandler.UnregisterCombination(inputs[key]);
-					if (temp > -3)
+					int code = ModHelper.InputHandler.UnregisterCombination(inputs[key]);
+					if (code > -3)
 					{
-						if (temp == -1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": invalid combo!");
-						else if (temp == -2) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": too long!");
-						else if (temp == 1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": not registered!");
+						if (code == -1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": invalid combo!");
+						else if (code == -2) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": too long!");
+						else if (code == 1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": not registered!");
 					}
 				}
 			}
-			inputs = new Dictionary<string, ModCombination>();
+			inputs = new Dictionary<string, ModInputCombination>();
 			foreach (string name in config.Settings.Keys)
 			{
 				if (config.GetSettingsValue<string>(name)!=null)
 				{
-					ModCombination tempc = new ModCombination(config.GetSettingsValue<string>(name));
+					ModInputCombination tempc = new ModInputCombination(config.GetSettingsValue<string>(name));
 					inputs.Add(name, tempc);
-					int temp = ModHelper.InputHandler.RegisterCombination(tempc);
-					if (temp < 0)
+					int code = ModHelper.InputHandler.RegisterCombination(tempc);
+					if (code < 0)
 					{
-						if (temp == -1) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
-						else if (temp == -2) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
-						else if (temp == -3) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": already in use!");
+						if (code == -1) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
+						else if (code == -2) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
+						else if (code == -3) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": already in use!");
 					}
 				}
 			}
 		}
 
-		Dictionary<string, ModCombination> inputs;
+		Dictionary<string, ModInputCombination> inputs;
 
 		private void LateUpdate()
 		{

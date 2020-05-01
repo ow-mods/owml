@@ -97,11 +97,11 @@ namespace OWML.ModHelper.Menus
                 var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
                 var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
                 textInputTemplate.Hide();
-                var inputInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
-                inputInputTemplate.Hide();
+                var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+                comboInputTemplate.Hide();
                 var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
                 numberInputTemplate.Hide();
-                modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, inputInputTemplate);
+                modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, comboInputTemplate);
                 modButton.OnClick += () => modConfigMenu.Open();
                 modsTab.AddButton(modButton);
             }
