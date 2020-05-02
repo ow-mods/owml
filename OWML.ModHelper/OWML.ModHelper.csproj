@@ -74,9 +74,7 @@
     <Compile Include="ControllerButton.cs" />
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="ModBehaviour.cs" />
-    <Compile Include="ModInputCombination.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="ModInputHandler.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModConsole.cs" />

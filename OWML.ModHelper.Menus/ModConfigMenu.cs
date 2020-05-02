@@ -183,7 +183,7 @@ namespace OWML.ModHelper.Menus
 
         private void AddComboInput(string key, int index)
         {
-            IModComboInput comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
+            var comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
             comboInput.Element.name = key;
             comboInput.Show();
         }

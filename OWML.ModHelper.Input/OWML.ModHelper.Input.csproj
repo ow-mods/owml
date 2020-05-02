@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B771615E-6B51-44F8-B862-D7543C12C0FF}</ProjectGuid>
+    <ProjectGuid>{BE89BAC0-91FF-4558-B093-79328D18AB30}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.ModHelper.Events</RootNamespace>
-    <AssemblyName>OWML.ModHelper.Events</AssemblyName>
+    <RootNamespace>OWML.ModHelper.Input</RootNamespace>
+    <AssemblyName>OWML.ModHelper.Input</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,17 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="OW.Unity.Dlls, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\OW.Unity.Dlls.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
@@ -72,18 +72,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarmonyHelper.cs" />
-    <Compile Include="ModEvents.cs" />
-    <Compile Include="Patches.cs" />
+    <Compile Include="ModInputCombination.cs" />
+    <Compile Include="ModInputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
-      <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
+      <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
   </ItemGroup>

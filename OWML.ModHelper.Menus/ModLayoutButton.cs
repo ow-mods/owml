@@ -10,14 +10,15 @@ namespace OWML.ModHelper.Menus
     public class ModLayoutButton : IModLayoutButton
     {
         public event Action OnClick;
-
         public Button Button { get; }
         public IModMenu Menu { get; private set; }
         public HorizontalLayoutGroup LayoutGroup { get; private set; }
-        private UIStyleApplier _buttonStyleApplier;
-        FieldInfo texts, foregrounds;
 
         private int _index;
+        private readonly UIStyleApplier _buttonStyleApplier;
+        private readonly FieldInfo _texts;
+        private readonly FieldInfo _foregrounds;
+
         public int Index
         {
             get => Button.transform.parent == null ? _index : Button.transform.GetSiblingIndex();
@@ -27,6 +28,7 @@ namespace OWML.ModHelper.Menus
                 Button.transform.SetSiblingIndex(value);
             }
         }
+
         public ModLayoutButton(Button button, IModMenu menu)
         {
             Button = button;
@@ -36,27 +38,29 @@ namespace OWML.ModHelper.Menus
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();
             target.raycastTarget = true;
-            target.color = new Color(255, 255, 255, 0);
+            target.color = new Color(255, 255, 255, 0);//transparent
             LayoutGroup = layoutObject.AddComponent<HorizontalLayoutGroup>();
             Initialize(menu);
-            this._buttonStyleApplier = Button.GetComponent<UIStyleApplier>();
+            _buttonStyleApplier = Button.GetComponent<UIStyleApplier>();
             LayoutGroup.childControlWidth = false;
             LayoutGroup.childControlHeight = false;
             LayoutGroup.childForceExpandHeight = false;
             LayoutGroup.childForceExpandWidth = false;
             LayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             LayoutGroup.transform.localPosition = Vector3.zero;
-            ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f);
-            texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
-            foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);
+            ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f);//center
+            _texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
+            _foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);
             UpdateState();
         }
+
         public void UpdateState()
         {
             Text[] currentTexts = Button.gameObject.GetComponentsInChildren<Text>();
-            texts.SetValue(_buttonStyleApplier, currentTexts);
-            foregrounds.SetValue(_buttonStyleApplier, (Graphic[])currentTexts);
+            _texts.SetValue(_buttonStyleApplier, currentTexts);
+            _foregrounds.SetValue(_buttonStyleApplier, (Graphic[])currentTexts);
         }
+
         public void Initialize(IModMenu menu)
         {
             Menu = menu;
@@ -106,7 +110,6 @@ namespace OWML.ModHelper.Menus
             replacement.Index = index;
             return replacement;
         }
-
 
         public void Show()
         {

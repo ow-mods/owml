@@ -9,27 +9,30 @@ namespace OWML.ModHelper.Menus
 {
     public class ModComboInput : ModInput<string>, IModComboInput
     {
-
-        private string _value;
-        private Vector3 scale;
-        private UIStyleManager styleManager;
-        private HorizontalLayoutGroup _layoutGroup;
         public IModLayoutButton Button { get; }
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
+
+        private string _value;
+        private Vector3 _scale;
+        private UIStyleManager _styleManager;
+        private HorizontalLayoutGroup _layoutGroup;
+        private readonly static int fontSize = 36;
+        private readonly static Vector2 normalPivot = new Vector2(0.5f, 0.5f);
+        private readonly static float scaleDown = 0.75f;
 
         public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
             ToggleElement = element;
             InputMenu = inputMenu;
-            scale = element.GetValue<Button>("_buttonTrue").transform.localScale;
+            _scale = element.GetValue<Button>("_buttonTrue").transform.localScale;
             Button = new ModLayoutButton(element.GetValue<Button>("_buttonTrue"), menu);
             Button.OnClick += Open;
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
             _layoutGroup = Button.LayoutGroup;
             ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
-            styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
+            _styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
 
             var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
             layoutGroup.childControlWidth = true;
@@ -39,57 +42,63 @@ namespace OWML.ModHelper.Menus
 
         private void UpdateLayout(string currentCombination)
         {
-            int cnt = _layoutGroup.transform.childCount;
-            for (int i = cnt - 1; i >= 0; i--)
+            int childCount = _layoutGroup.transform.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
+            {
                 GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
-            string[] str = currentCombination.Split('/');
-            for (int i = 0; i < str.Length; i++)
-			{
-                string[] st = str[i].Split('+');
-                for (int j = 0; j < st.Length; j++)
-				{
-                    Texture2D tex;
-                    if (st[j].Contains("Xbox_"))
+            }
+            string[] individualCombos = currentCombination.Split('/');
+            for (int i = 0; i < individualCombos.Length; i++)
+            {
+                string[] keyStrings = individualCombos[i].Split('+');
+                for (int j = 0; j < keyStrings.Length; j++)
+                {
+                    Texture2D keyTexture;
+                    if (keyStrings[j].Contains("Xbox_"))
                     {
-                        tex = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), st[j].Substring(5)));
+                        keyTexture = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), keyStrings[j].Substring(5)));
                     }
                     else
                     {
-                        tex = InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), st[j]));
+                        keyTexture = InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), keyStrings[j]));
                     }
-                    Sprite spr = Sprite.Create(tex, new Rect(0f, 0f, (float)tex.width, (float)tex.height), new Vector2(0.5f, 0.5f));
-                    GameObject gameObject = new GameObject("ButtonImage", new Type[] { typeof(RectTransform) });
-                    Image pic = gameObject.AddComponent<Image>();
-                    pic.sprite = spr;
-                    pic.SetLayoutDirty();
-                    gameObject.AddComponent<LayoutElement>();
-                    gameObject.transform.SetParent(_layoutGroup.transform);
-                    gameObject.transform.localScale = scale;
-                    ((RectTransform)gameObject.transform).sizeDelta = new Vector2((float)tex.width*0.75f, (float)tex.height * 0.75f);
-                    ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
-                    if (j<st.Length-1)
+                    var keySprite = Sprite.Create(keyTexture, new Rect(0f, 0f, (float)keyTexture.width, (float)keyTexture.height), normalPivot);
+                    var keyObject = new GameObject("ButtonImage", new Type[] { typeof(RectTransform) });
+                    var keyPicture = keyObject.AddComponent<Image>();
+                    keyPicture.sprite = keySprite;
+                    keyPicture.SetLayoutDirty();
+                    keyObject.AddComponent<LayoutElement>();
+                    keyObject.transform.SetParent(_layoutGroup.transform);
+                    keyObject.transform.localScale = _scale;
+                    ((RectTransform)keyObject.transform).sizeDelta = new Vector2((float)keyTexture.width * scaleDown, (float)keyTexture.height * scaleDown);
+                    ((RectTransform)keyObject.transform).pivot = normalPivot;
+                    if (j < keyStrings.Length - 1)
+                    {
                         AddText("+");
+                    }
                 }
-                if (i < str.Length - 1)
+                if (i < individualCombos.Length - 1)
+                {
                     AddText("/");
+                }
             }
             Button.UpdateState();
-		}
+        }
 
         private void AddText(string txt)
-		{
-            GameObject gameObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
-            Text text = gameObject.AddComponent<Text>();
+        {
+            var textObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
+            var text = textObject.AddComponent<Text>();
             text.text = txt;
-            text.fontSize = 36;
-            text.font = styleManager.GetMenuFont();
-            text.color = styleManager.GetButtonForegroundMenuColor(UIElementState.NORMAL);
+            text.fontSize = fontSize;
+            text.font = _styleManager.GetMenuFont();
+            text.color = _styleManager.GetButtonForegroundMenuColor(UIElementState.NORMAL);
             text.alignment = TextAnchor.MiddleCenter;
-            gameObject.AddComponent<LayoutElement>();
-            gameObject.transform.SetParent(_layoutGroup.transform);
-            gameObject.transform.localScale = scale;
-            ((RectTransform)gameObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)gameObject.transform).sizeDelta.y * 0.75f);
-            ((RectTransform)gameObject.transform).pivot = new Vector2(0.5f, 0.5f);
+            textObject.AddComponent<LayoutElement>();
+            textObject.transform.SetParent(_layoutGroup.transform);
+            textObject.transform.localScale = _scale;
+            ((RectTransform)textObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)textObject.transform).sizeDelta.y * scaleDown);
+            ((RectTransform)textObject.transform).pivot = normalPivot;
         }
 
         protected void Open()

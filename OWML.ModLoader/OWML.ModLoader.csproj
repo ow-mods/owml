@@ -90,6 +90,10 @@
       <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
       <Name>OWML.ModHelper.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj">
+      <Project>{be89bac0-91ff-4558-b093-79328d18ab30}</Project>
+      <Name>OWML.ModHelper.Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj">
       <Project>{b874cc24-8340-4238-ac9d-1bfb41186bb5}</Project>
       <Name>OWML.ModHelper.Menus</Name>

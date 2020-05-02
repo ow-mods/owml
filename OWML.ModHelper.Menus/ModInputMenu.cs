@@ -13,7 +13,6 @@ namespace OWML.ModHelper.Menus
         public event Action OnCancel;
 
         private PopupInputMenu _inputMenu;
-
         private IModLogger _logger;
         private IModConsole _console;
 
@@ -89,6 +88,5 @@ namespace OWML.ModHelper.Menus
             _inputMenu.OnPopupConfirm -= OnPopupConfirm;
             _inputMenu.OnPopupCancel -= OnPopupCancel;
         }
-
     }
 }
