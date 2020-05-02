@@ -1,6 +1,5 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using OWML.Common;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -17,10 +16,10 @@ namespace OWML.ModHelper.Menus
         private Vector3 _scale;
         private UIStyleManager _styleManager;
         private HorizontalLayoutGroup _layoutGroup;
-        private readonly static int fontSize = 36;
-        private readonly static Vector2 normalPivot = new Vector2(0.5f, 0.5f);
-        private readonly static float scaleDown = 0.75f;
-        private readonly static string xboxPrefix = "xbox_";
+        private static readonly int fontSize = 36;
+        private static readonly Vector2 normalPivot = new Vector2(0.5f, 0.5f);
+        private static readonly float scaleDown = 0.75f;
+        private static readonly string xboxPrefix = "xbox_";
 
         public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
@@ -43,16 +42,16 @@ namespace OWML.ModHelper.Menus
 
         private void UpdateLayout(string currentCombination)
         {
-            int childCount = _layoutGroup.transform.childCount;
-            for (int i = childCount - 1; i >= 0; i--)
+            var childCount = _layoutGroup.transform.childCount;
+            for (var i = childCount - 1; i >= 0; i--)
             {
                 GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
             }
             string[] individualCombos = currentCombination.Split('/');
-            for (int i = 0; i < individualCombos.Length; i++)
+            for (var i = 0; i < individualCombos.Length; i++)
             {
-                string[] keyStrings = individualCombos[i].Split('+');
-                for (int j = 0; j < keyStrings.Length; j++)
+                var keyStrings = individualCombos[i].Split('+');
+                for (var j = 0; j < keyStrings.Length; j++)
                 {
                     Texture2D keyTexture;
                     if (keyStrings[j].Contains(xboxPrefix))

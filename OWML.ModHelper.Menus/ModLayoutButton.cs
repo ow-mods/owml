@@ -3,7 +3,6 @@ using System.Reflection;
 using OWML.Common.Menus;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 namespace OWML.ModHelper.Menus
 {
@@ -56,9 +55,9 @@ namespace OWML.ModHelper.Menus
 
         public void UpdateState()
         {
-            Text[] currentTexts = Button.gameObject.GetComponentsInChildren<Text>();
+            var currentTexts = Button.gameObject.GetComponentsInChildren<Text>();
             _texts.SetValue(_buttonStyleApplier, currentTexts);
-            _foregrounds.SetValue(_buttonStyleApplier, (Graphic[])currentTexts);
+            _foregrounds.SetValue(_buttonStyleApplier, currentTexts);
         }
 
         public void Initialize(IModMenu menu)

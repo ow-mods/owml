@@ -5,6 +5,7 @@ using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
+using OWML.ModHelper.Input;
 using UnityEngine;
 
 namespace OWML.ModLoader

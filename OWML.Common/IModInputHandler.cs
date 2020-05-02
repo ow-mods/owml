@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-namespace OWML.Common
+﻿namespace OWML.Common
 {
-	public enum RegistrationCode
-	{
-		InvalidCombination = -1,
-		CombinationTooLong = -2,
-		CombinationTaken = -3,
-		AllNormal = 1
-	}
-
 	public interface IModInputHandler
 	{
 		RegistrationCode RegisterCombination(IModInputCombination combo);

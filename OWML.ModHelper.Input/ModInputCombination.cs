@@ -1,62 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using OWML.Common;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
 {
-	public class ModInputCombination : IModInputCombination
-	{
-		private bool _pressed = false, _first = false;
-		private float _firstPressed = 0f, _lastPressed = 0f;
-		private List<KeyCode> _singles = new List<KeyCode>();
-		internal string Combo { get; private set; }
+    public class ModInputCombination : IModInputCombination
+    {
+        public float LastPressedMoment => _lastPressedMoment;
+        public float PressDuration => _lastPressedMoment - _firstPressedMoment;
 
-		public ModInputCombination(string combination)
-		{
-			Combo = combination;
-		}
+        internal string Combo { get; private set; }
 
-		public float GetLastPressedMoment() { return _lastPressed; }
+        private bool _isPressed = false, _isFirst = false;
+        private float _firstPressedMoment = 0f, _lastPressedMoment = 0f;
+        private List<KeyCode> _singles = new List<KeyCode>();
 
-		public float GetPressDuration() { return _lastPressed - _firstPressed; }
+        public ModInputCombination(string combination)
+        {
+            Combo = combination;
+        }
 
-		public bool IsFirst(bool keep = false)
-		{
-			if (_first)
-			{
-				_first = keep;
-				return true;
-			}
-			return false;
-		}
+        public bool IsFirst(bool keep = false)
+        {
+            if (_isFirst)
+            {
+                _isFirst = keep;
+                return true;
+            }
+            return false;
+        }
 
-		internal void SetPressed(bool state = true)
-		{
-			if (state)
-			{
-				if (!_pressed)
-				{
-					_first = true;
-					_firstPressed = Time.realtimeSinceStartup;
-				}
-				_lastPressed = Time.realtimeSinceStartup;
-			}
-			else
-			{
-				_first = true;
-			}
-			_pressed = state;
-		}
+        internal void SetPressed(bool isPressed = true)
+        {
+            if (isPressed)
+            {
+                if (!_isPressed)
+                {
+                    _isFirst = true;
+                    _firstPressedMoment = Time.realtimeSinceStartup;
+                }
+                _lastPressedMoment = Time.realtimeSinceStartup;
+            }
+            else
+            {
+                _isFirst = true;
+            }
+            _isPressed = isPressed;
+        }
 
-		internal void AddSingle(KeyCode button) { _singles.Add(button); }
+        internal void AddSingle(KeyCode button) 
+        { 
+            _singles.Add(button); 
+        }
 
-		internal List<KeyCode> GetSingles() { return _singles; }
+        internal List<KeyCode> GetSingles() 
+        { 
+            return _singles; 
+        }
 
-		internal void ClearSingles() { _singles.Clear(); }
+        internal void ClearSingles() 
+        { 
+            _singles.Clear(); 
+        }
 
-		internal bool IsRelevant(float relevancyKeep) { return Time.realtimeSinceStartup - _lastPressed < relevancyKeep; }
-	}
+        internal bool IsRelevant(float relevancyKeep) 
+        { 
+            return Time.realtimeSinceStartup - _lastPressedMoment < relevancyKeep; 
+        }
+    }
 }

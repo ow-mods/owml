@@ -60,7 +60,7 @@ namespace TAIcheat
 			{
 				foreach (string key in inputs.Keys)
 				{
-					RegistrationCode code = ModHelper.InputHandler.UnregisterCombination(inputs[key]);
+					RegistrationCode code = ModHelper.Input.UnregisterCombination(inputs[key]);
 					if (code < 0)
 					{
 						if (code == RegistrationCode.InvalidCombination)
@@ -81,7 +81,7 @@ namespace TAIcheat
 				{
 					ModInputCombination tempc = new ModInputCombination(config.GetSettingsValue<string>(name));
 					inputs.Add(name, tempc);
-					RegistrationCode code = ModHelper.InputHandler.RegisterCombination(tempc);
+					RegistrationCode code = ModHelper.Input.RegisterCombination(tempc);
 					if (code < 0)
 					{
 						if (code == RegistrationCode.InvalidCombination)
@@ -284,7 +284,7 @@ namespace TAIcheat
 				{
 					Locator.GetPlayerTransform().GetComponent<PlayerResources>().SetDebugKillResources(false);
 				}*/
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(tele) Save probe's pos"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["(tele) Save probe's pos"]))
 				{
 					if (Locator.GetProbe().GetAnchor().IsAnchored())
 					{
@@ -294,7 +294,7 @@ namespace TAIcheat
 						this.COn = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(tele) Save RayCast pos"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["(tele) Save RayCast pos"]))
 				{
 					OWCamera activeCamera = Locator.GetActiveCamera();
 					Vector3 position = new Vector3((float)(activeCamera.pixelWidth - 1) / 2f, (float)(activeCamera.pixelHeight - 1) / 2f);
@@ -328,19 +328,19 @@ namespace TAIcheat
 						this.COn = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(tele) Save player's pos"]) && Locator.GetPlayerSectorDetector().GetLastEnteredSector() != null)
+				if (ModHelper.Input.IsNewlyPressed(inputs["(tele) Save player's pos"]) && Locator.GetPlayerSectorDetector().GetLastEnteredSector() != null)
 				{
 					_hasSetWarpPoint[relIndex] = true;
 					_relativeBody[relIndex] = Locator.GetPlayerSectorDetector().GetLastEnteredSector().GetOWRigidbody();
 					_relativeData[relIndex] = new RelativeLocationData(Locator.GetPlayerBody(), _relativeBody[relIndex], null);
 					this.COn = true;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(insp) Cycle through layers"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["(insp) Cycle through layers"]))
 				{
 					rayMask++;
 					rayMask %= 32;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(insp) RayCast"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["(insp) RayCast"]))
 				{
 					OWCamera activeCamera2 = Locator.GetActiveCamera();
 					Vector3 position2 = new Vector3((float)(activeCamera2.pixelWidth - 1) / 2f, (float)(activeCamera2.pixelHeight - 1) / 2f);
@@ -352,18 +352,18 @@ namespace TAIcheat
 						this.COn = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(tele) Cycle through pos"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["(tele) Cycle through pos"]))
 				{
 					this.COn = true;
 					relIndex++;
 					relIndex %= 10;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["(tele) Tele to saved pos"]) && _hasSetWarpPoint[relIndex])
+				if (ModHelper.Input.IsNewlyPressed(inputs["(tele) Tele to saved pos"]) && _hasSetWarpPoint[relIndex])
 				{
 					this.COn = true;
 					this._gotoWarpPointNextFrame = true;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Learn launchcode"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Learn launchcode"]))
 				{
 					if (PlayerData.IsLoaded())
 					{
@@ -371,7 +371,7 @@ namespace TAIcheat
 						this.COn = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle spacesuit"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle spacesuit"]))
 				{
 					if (!Locator.GetPlayerSuit().IsWearingSuit(true))
 					{
@@ -384,7 +384,7 @@ namespace TAIcheat
 						this.COff = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle HUD"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle HUD"]))
 				{
 					hiddenHUD = !hiddenHUD;
 					if (hiddenHUD)
@@ -400,7 +400,7 @@ namespace TAIcheat
 					}
 					GlobalMessenger.FireEvent("OnChangeGUIMode");
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle helmet"]) && Locator.GetPlayerSuit() && Locator.GetPlayerSuit().IsWearingSuit(true))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle helmet"]) && Locator.GetPlayerSuit() && Locator.GetPlayerSuit().IsWearingSuit(true))
 				{
 					if (Locator.GetPlayerSuit().IsWearingHelmet())
 					{
@@ -413,12 +413,12 @@ namespace TAIcheat
 						this.COn = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Destroy ship"]) && Locator.GetShipTransform())
+				if (ModHelper.Input.IsNewlyPressed(inputs["Destroy ship"]) && Locator.GetShipTransform())
 				{
 					UnityEngine.Object.Destroy(Locator.GetShipTransform().gameObject);
 					this.COn = true;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Damage ship"]) && Locator.GetShipTransform())
+				if (ModHelper.Input.IsNewlyPressed(inputs["Damage ship"]) && Locator.GetShipTransform())
 				{
 					ShipComponent[] componentsInChildren = Locator.GetShipTransform().GetComponentsInChildren<ShipComponent>();
 					for (int k = 0; k < componentsInChildren.Length; k++)
@@ -427,7 +427,7 @@ namespace TAIcheat
 					}
 					this.COn = true;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Fuel+heal"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Fuel+heal"]))
 				{
 					Locator.GetPlayerTransform().GetComponent<PlayerResources>().DebugRefillResources();
 					if (Locator.GetShipTransform())
@@ -440,22 +440,22 @@ namespace TAIcheat
 					}
 					this.COn = true;
 				}
-				if (ModHelper.InputHandler.IsPressed(inputs["Increase Ludicrous Speed"]))
+				if (ModHelper.Input.IsPressed(inputs["Increase Ludicrous Speed"]))
 				{
 					this.ludicrousMult *= 2f;
 					this.COn = true;
 				}
-				if (ModHelper.InputHandler.IsPressed(inputs["Decrease Ludicrous Speed"]))
+				if (ModHelper.Input.IsPressed(inputs["Decrease Ludicrous Speed"]))
 				{
 					this.ludicrousMult /= 2f;
 					this.COff = true;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Engage Ludicrous Speed"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Engage Ludicrous Speed"]))
 				{
 					this._engageLudicrousSpeed = true;
 					AudioSource.PlayClipAtPoint(Locator.GetAudioManager().GetAudioClipArray(global::AudioType.ToolProbeLaunch)[0], Locator.GetPlayerBody().transform.position);
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle superjetpack"]) && Locator.GetPlayerSuit().GetComponent<JetpackThrusterModel>())
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle superjetpack"]) && Locator.GetPlayerSuit().GetComponent<JetpackThrusterModel>())
 				{
 					if (!this.wasBoosted)
 					{
@@ -476,7 +476,7 @@ namespace TAIcheat
 						this.COff = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle PowerOverwhelming"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle PowerOverwhelming"]))
 				{
 					Locator.GetPlayerTransform().GetComponent<PlayerResources>().ToggleInvincibility();
 					Locator.GetDeathManager().ToggleInvincibility();
@@ -495,7 +495,7 @@ namespace TAIcheat
 						this.COff = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Learn all frequencies"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Learn all frequencies"]))
 				{
 					if (PlayerData.KnowsMultipleFrequencies())
 					{
@@ -536,18 +536,18 @@ namespace TAIcheat
 						}
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Reveal all facts"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Reveal all facts"]))
 				{
 					Locator.GetShipLogManager().RevealAllFacts(this._revealRumorsOnly);
 					this._revealRumorsOnly = false;
 					this.COn = true;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Cycle DebugHUD"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Cycle DebugHUD"]))
 				{
 					inputHUD++;
 					inputHUD %= 5;
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle player collision extra"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle player collision extra"]))
 				{
 					if (Locator.GetPlayerBody().GetRequiredComponent<Rigidbody>().detectCollisions)
 					{
@@ -560,7 +560,7 @@ namespace TAIcheat
 						this.COff = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle player collision"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle player collision"]))
 				{
 					foreach (Collider collider in Locator.GetPlayerBody().GetComponentsInChildren<Collider>())
 					{
@@ -578,7 +578,7 @@ namespace TAIcheat
 						}
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle ship collision extra"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle ship collision extra"]))
 				{
 					if (Locator.GetShipBody().GetRequiredComponent<Rigidbody>().detectCollisions)
 					{
@@ -591,7 +591,7 @@ namespace TAIcheat
 						this.COff = true;
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle ship collision"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle ship collision"]))
 				{
 					foreach (Collider collider2 in Locator.GetShipTransform().GetComponentsInChildren<Collider>())
 					{
@@ -609,7 +609,7 @@ namespace TAIcheat
 						}
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Disable nearby Anglerfishes"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Disable nearby Anglerfishes"]))
 				{
 					foreach (AnglerfishController anglerfishController in UnityEngine.Object.FindObjectsOfType<AnglerfishController>())
 					{
@@ -624,7 +624,7 @@ namespace TAIcheat
 						}
 					}
 				}
-				if (ModHelper.InputHandler.IsNewlyPressed(inputs["Toggle nearby Anglerfishes AI"]))
+				if (ModHelper.Input.IsNewlyPressed(inputs["Toggle nearby Anglerfishes AI"]))
 				{
 
 					foreach (AnglerfishController anglerfishController in UnityEngine.Object.FindObjectsOfType<AnglerfishController>())
@@ -641,7 +641,7 @@ namespace TAIcheat
 					}
 				}
 			}
-			if (ModHelper.InputHandler.IsNewlyPressed(inputs["Break all BH fragments"]))
+			if (ModHelper.Input.IsNewlyPressed(inputs["Break all BH fragments"]))
 			{
 				this.COn = true;
 				FragmentIntegrity[] array2 = UnityEngine.Object.FindObjectsOfType<FragmentIntegrity>();
@@ -650,22 +650,22 @@ namespace TAIcheat
 					array2[j].AddDamage(10000f);
 				}
 			}
-			if (ModHelper.InputHandler.IsNewlyPressed(inputs["Trigger Supernova"]))
+			if (ModHelper.Input.IsNewlyPressed(inputs["Trigger Supernova"]))
 			{
 				this.COn = true;
 				GlobalMessenger.FireEvent("TriggerSupernova");
 			}
-			if (ModHelper.InputHandler.IsNewlyPressed(inputs["Debug Vessel Warp"]))
+			if (ModHelper.Input.IsNewlyPressed(inputs["Debug Vessel Warp"]))
 			{
 				if (PlayerData.GetWarpedToTheEye()) PlayerData.SaveEyeCompletion();
 				else GlobalMessenger.FireEvent("DebugWarpVessel");
 				this.COn = true;
 			}
-			if (ModHelper.InputHandler.IsNewlyPressed(inputs["Timelapse"]))
+			if (ModHelper.Input.IsNewlyPressed(inputs["Timelapse"]))
 			{
 				Time.timeScale = 10f;
 			}
-			else if (Mathf.Abs(Time.timeScale - 1f) > 1e-4 && !ModHelper.InputHandler.IsPressed(inputs["Timelapse"]))
+			else if (Mathf.Abs(Time.timeScale - 1f) > 1e-4 && !ModHelper.Input.IsPressed(inputs["Timelapse"]))
 			{
 				Time.timeScale = 1f;
 			}

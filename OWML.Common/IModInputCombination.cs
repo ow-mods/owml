@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-namespace OWML.Common
+﻿namespace OWML.Common
 {
-	public interface IModInputCombination
-	{
-		float GetLastPressedMoment();
-		float GetPressDuration();
-		bool IsFirst(bool keep = false);
-	}
+    public interface IModInputCombination
+    {
+        float LastPressedMoment { get; }
+        float PressDuration { get; }
+        bool IsFirst(bool keep = false);
+    }
 }
