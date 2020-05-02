@@ -42,7 +42,10 @@ namespace OWML.Launcher
 
             CopyGameFiles();
 
-            ListenForOutput();
+            if (!CommandLineArguments.HasArgument("consolePort"))
+            {
+                ListenForOutput();
+            }
 
             var mods = _modFinder.GetMods();
 

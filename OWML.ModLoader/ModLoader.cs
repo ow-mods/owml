@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
@@ -26,7 +27,7 @@ namespace OWML.ModLoader
             }
             var logger = new ModLogger(owmlConfig, owmlManifest);
             logger.Log("Got config!");
-            var console = new ModSocketConsole(owmlConfig, logger, owmlManifest);
+            var console = GetConsole(owmlConfig, logger, owmlManifest);
             console.WriteLine("Mod loader has been initialized.");
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
@@ -34,6 +35,18 @@ namespace OWML.ModLoader
             var menus = new ModMenus(logger, console, events);
             var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper);
             owo.LoadMods();
+        }
+
+        private static IModConsole GetConsole(IOwmlConfig owmlConfig, IModLogger logger, IModManifest owmlManifest)
+        {
+            if (CommandLineArguments.HasArgument("consolePort"))
+            {
+                return new ModSocketConsole(logger, owmlManifest);
+            }
+            else
+            {
+                return new ModConsole(owmlConfig, logger, owmlManifest);
+            }
         }
 
         private static T GetJsonObject<T>(string path)

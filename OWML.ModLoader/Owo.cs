@@ -85,7 +85,7 @@ namespace OWML.ModLoader
         private IModHelper CreateModHelper(IModData modData)
         {
             var logger = new ModLogger(_owmlConfig, modData.Manifest);
-            var console = new ModSocketConsole(_owmlConfig, _logger, modData.Manifest);
+            var console = GetConsole(_owmlConfig, _logger, modData.Manifest);
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(console, modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
@@ -109,6 +109,18 @@ namespace OWML.ModLoader
             {
                 _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
                 return null;
+            }
+        }
+
+        private static IModConsole GetConsole(IOwmlConfig owmlConfig, IModLogger logger, IModManifest owmlManifest)
+        {
+            if (CommandLineArguments.HasArgument("consolePort"))
+            {
+                return new ModSocketConsole(logger, owmlManifest);
+            }
+            else
+            {
+                return new ModConsole(owmlConfig, logger, owmlManifest);
             }
         }
 

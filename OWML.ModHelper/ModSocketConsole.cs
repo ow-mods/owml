@@ -11,9 +11,6 @@ namespace OWML.ModHelper
     {
         private const string LOCAL_HOST = "127.0.0.1";
 
-        [Obsolete("Use ModHelper.Console instead")]
-        public static ModSocketConsole Instance { get; private set; }
-
         public static event Action<IModManifest, string> OnConsole;
 
         private static Socket _socket;
@@ -21,12 +18,8 @@ namespace OWML.ModHelper
         private readonly IModLogger _logger;
         private readonly IModManifest _manifest;
 
-        public ModSocketConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
+        public ModSocketConsole(IModLogger logger, IModManifest manifest)
         {
-            if (manifest.Name == "OWML")
-            {
-                Instance = this;
-            }
             _logger = logger;
             _manifest = manifest;
             if (_socket == null)
@@ -34,7 +27,7 @@ namespace OWML.ModHelper
                 int port;
                 try
                 {
-                    port = int.Parse(GetArgument("owmmPort"));
+                    port = int.Parse(CommandLineArguments.GetArgument("consolePort"));
                 }
                 catch
                 {
@@ -49,20 +42,6 @@ namespace OWML.ModHelper
 
                 ModConsole.OnConsole += OnConsole;
             }
-        }
-
-        private string GetArgument(string name)
-        {
-            var arguments = Environment.GetCommandLineArgs();
-            for (var i = 0; i < arguments.Length; i++)
-            {
-                var argument = arguments[i];
-                if (argument == $"-{name}" && arguments.Length > i)
-                {
-                    return arguments[i + 1];
-                }
-            }
-            return null;
         }
 
         public void WriteLine(string s)
@@ -82,7 +61,7 @@ namespace OWML.ModHelper
         {
 
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
-            _socket.Send(bytes);
+            _socket?.Send(bytes);
         }
 
     }
