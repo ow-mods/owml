@@ -5,7 +5,7 @@ using System.Text;
 using OWML.Common;
 using UnityEngine;
 
-namespace OWML.ModHelper
+namespace OWML.ModHelper.Input
 {
 	public class ModInputCombination : IModInputCombination
 	{

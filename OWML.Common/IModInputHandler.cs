@@ -6,10 +6,18 @@ using UnityEngine;
 
 namespace OWML.Common
 {
+	public enum RegistrationCode
+	{
+		InvalidCombination = -1,
+		CombinationTooLong = -2,
+		CombinationTaken = -3,
+		AllNormal = 1
+	}
+
 	public interface IModInputHandler
 	{
-		int RegisterCombination(IModInputCombination combo);
-		int UnregisterCombination(IModInputCombination combo);
+		RegistrationCode RegisterCombination(IModInputCombination combo);
+		RegistrationCode UnregisterCombination(IModInputCombination combo);
 		bool IsPressed(IModInputCombination combo);
 		bool IsNewlyPressed(IModInputCombination combo, bool keep = false);
 		bool WasTapped(IModInputCombination combo);

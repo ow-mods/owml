@@ -6,7 +6,7 @@ using System.Text;
 using OWML.Common;
 using UnityEngine;
 
-namespace OWML.ModHelper
+namespace OWML.ModHelper.Input
 {
     public class ModInputHandler : IModInputHandler
     {
@@ -14,18 +14,26 @@ namespace OWML.ModHelper
         {
             public static void SingleAxisRemovePre(SingleAxisCommand __instance)
             {
-                ModInputHandler.Self.UnregisterGamesBinding(__instance);
+                ModInputHandler.Instance.UnregisterGamesBinding(__instance);
             }
 
             public static void DoubleAxisRemovePre(DoubleAxisCommand __instance)
             {
-                ModInputHandler.Self.UnregisterGamesBinding(__instance);
+                ModInputHandler.Instance.UnregisterGamesBinding(__instance);
             }
 
-            public static void SingleAxisUpdatePost(SingleAxisCommand __instance, ref float ____value, int ____axisDirection, KeyCode ____gamepadKeyCodePositive, KeyCode ____gamepadKeyCodeNegative, KeyCode ____keyPositive, KeyCode ____keyNegative)
+            public static void SingleAxisUpdatePost(
+                SingleAxisCommand __instance, 
+                ref float ____value, 
+                int ____axisDirection, 
+                KeyCode ____gamepadKeyCodePositive, 
+                KeyCode ____gamepadKeyCodeNegative, 
+                KeyCode ____keyPositive, 
+                KeyCode ____keyNegative
+            )
             {
                 KeyCode positiveKey, negativeKey;
-                ModInputHandler.Self.RegisterGamesBinding(__instance);
+                ModInputHandler.Instance.RegisterGamesBinding(__instance);
                 int axisDirection = 1;
                 if (OWInput.UsingGamepad())
                 {
@@ -38,34 +46,41 @@ namespace OWML.ModHelper
                     positiveKey = ____keyPositive;
                     negativeKey = ____keyNegative;
                 }
-                if (Input.GetKey(positiveKey) && ModInputHandler.Self.ShouldIgnore(positiveKey))
+                if (UnityEngine.Input.GetKey(positiveKey) && ModInputHandler.Instance.ShouldIgnore(positiveKey))
                 {
                     ____value -= 1f * axisDirection;
                 }
-                if (Input.GetKey(negativeKey) && ModInputHandler.Self.ShouldIgnore(negativeKey))
+                if (UnityEngine.Input.GetKey(negativeKey) && ModInputHandler.Instance.ShouldIgnore(negativeKey))
                 {
                     ____value += 1f * axisDirection;
                 }
             }
 
-            public static void DoubleAxisUpdatePost(DoubleAxisCommand __instance, ref Vector2 ____value, KeyCode ____keyboardXPos, KeyCode ____keyboardYPos, KeyCode ____keyboardXNeg, KeyCode ____keyboardYNeg)
+            public static void DoubleAxisUpdatePost(
+                DoubleAxisCommand __instance,
+                ref Vector2 ____value, 
+                KeyCode ____keyboardXPos, 
+                KeyCode ____keyboardYPos, 
+                KeyCode ____keyboardXNeg, 
+                KeyCode ____keyboardYNeg
+            )
             {
-                ModInputHandler.Self.RegisterGamesBinding(__instance);
+                ModInputHandler.Instance.RegisterGamesBinding(__instance);
                 if (!OWInput.UsingGamepad())
                 {
-                    if (Input.GetKey(____keyboardXPos) && ModInputHandler.Self.ShouldIgnore(____keyboardXPos))
+                    if (UnityEngine.Input.GetKey(____keyboardXPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardXPos))
                     {
                         ____value.x -= 1f;
                     }
-                    if (Input.GetKey(____keyboardXNeg) && ModInputHandler.Self.ShouldIgnore(____keyboardXNeg))
+                    if (UnityEngine.Input.GetKey(____keyboardXNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardXNeg))
                     {
                         ____value.x += 1f;
                     }
-                    if (Input.GetKey(____keyboardYPos) && ModInputHandler.Self.ShouldIgnore(____keyboardYPos))
+                    if (UnityEngine.Input.GetKey(____keyboardYPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardYPos))
                     {
                         ____value.y -= 1f;
                     }
-                    if (Input.GetKey(____keyboardYNeg) && ModInputHandler.Self.ShouldIgnore(____keyboardYNeg))
+                    if (UnityEngine.Input.GetKey(____keyboardYNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardYNeg))
                     {
                         ____value.y += 1f;
                     }
@@ -73,7 +88,7 @@ namespace OWML.ModHelper
             }
         }
 
-        internal static ModInputHandler Self { get; private set; }
+        internal static ModInputHandler Instance { get; private set; }
 
         private HashSet<IModInputCombination> _singlePressed = new HashSet<IModInputCombination>();
         private Dictionary<Int64, IModInputCombination> _comboRegistry = new Dictionary<Int64, IModInputCombination>();
@@ -89,6 +104,7 @@ namespace OWML.ModHelper
         private readonly static float _tapDuration = 0.1f;
         private readonly static int _minUsefulKey = 8;
         private readonly static int _maxUsefulKey = 350;
+        private readonly static int _maxComboLength = 7;
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
@@ -106,7 +122,7 @@ namespace OWML.ModHelper
             patcher.AddPrefix<DoubleAxisCommand>("ClearBinding", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisRemovePre));
             patcher.AddPostfix<SingleAxisCommand>("Update", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
             patcher.AddPostfix<DoubleAxisCommand>("Update", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
-            Self = this;
+            Instance = this;
         }
 
         private void UpdateCombo()
@@ -115,18 +131,18 @@ namespace OWML.ModHelper
             {
                 _lastUpdate = Time.realtimeSinceStartup;
                 Int64 hash = 0;
-                int[] keys = new int[7];
-                int t = 0;
+                int[] keys = new int[_maxComboLength];
+                int keysCount = 0;
                 bool countdownTrigger = false;
                 for (int code = _minUsefulKey; code < _maxUsefulKey; code++)
                 {
-                    if (Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && Input.GetKey((KeyCode)code))
+                    if (Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && UnityEngine.Input.GetKey((KeyCode)code))
                     {
-                        keys[t] = code;
-                        t++;
-                        if (t > 7)
+                        keys[keysCount] = code;
+                        keysCount++;
+                        if (keysCount > _maxComboLength)
                         {
-                            hash = -2;
+                            hash = (int)RegistrationCode.CombinationTooLong;
                             break;
                         }
                         hash = hash * _maxUsefulKey + code;
@@ -143,7 +159,7 @@ namespace OWML.ModHelper
                             _lastPressed.SetPressed(false);
                         _lastPressed = (ModInputCombination)combination;
                         _lastPressed.SetPressed();
-                        for (int i = 0; i < t; i++)
+                        for (int i = 0; i < keysCount; i++)
                             _timeout[keys[i]] = Time.realtimeSinceStartup;
                         return;
                     }
@@ -198,7 +214,7 @@ namespace OWML.ModHelper
             List<KeyCode> keys = ((ModInputCombination)combination).GetSingles();
             foreach (KeyCode key in keys)
             {
-                if (Input.GetKey(key) && (!ShouldIgnore(key) || _singlePressed.Contains(combination)))
+                if (UnityEngine.Input.GetKey(key) && (!ShouldIgnore(key) || _singlePressed.Contains(combination)))
                 {
                     _singlePressed.Add(combination);
                     _timeout[(int)key] = Time.realtimeSinceStartup;
@@ -247,12 +263,12 @@ namespace OWML.ModHelper
         private Int64 ParseCombination(string combo, bool forRemoval = false)
         {
             combo = combo.Trim().Replace("ctrl", "control");
-            int[] curcom = new int[7];
+            int[] thisCombination = new int[_maxComboLength];
             int i = 0;
             foreach (string key in combo.Split('+'))
             {
-                if (i > 6)
-                    return -2;
+                if (i >= _maxComboLength)
+                    return (int)RegistrationCode.CombinationTooLong;
                 KeyCode code;
                 if (key.Contains("xbox_"))
                 {
@@ -264,7 +280,7 @@ namespace OWML.ModHelper
                     }
                     else
                     {
-                        return -1;
+                        return (int)RegistrationCode.InvalidCombination;
                     }
                 }
                 else
@@ -286,35 +302,35 @@ namespace OWML.ModHelper
                 }
                 if (Enum.IsDefined(typeof(KeyCode), code))
                 {
-                    curcom[i] = (int)code;
+                    thisCombination[i] = (int)code;
                 }
                 else
                 {
-                    return -1;
+                    return (int)RegistrationCode.InvalidCombination;
                 }
                 i++;
             }
-            Array.Sort(curcom);
+            Array.Sort(thisCombination);
             Int64 hash = 0;
-            for (i = 0; i < 7; i++)
+            for (i = 0; i < _maxComboLength; i++)
             {
-                hash = hash * _maxUsefulKey + curcom[i];
+                hash = hash * _maxUsefulKey + thisCombination[i];
             }
             if (hash < _maxUsefulKey && _gameBindingCounter[hash] > 0)
             {
-                return -3;
+                return (int)RegistrationCode.CombinationTaken;
             }
-            return (_comboRegistry.ContainsKey(hash) && !forRemoval ? -3 : hash);
+            return (_comboRegistry.ContainsKey(hash) && !forRemoval ? (int)RegistrationCode.CombinationTaken : hash);
         }
 
-        public int RegisterCombination(IModInputCombination combination)
+        public RegistrationCode RegisterCombination(IModInputCombination combination)
         {
             var castCombo = (ModInputCombination)combination;
             castCombo.ClearSingles();
             if (castCombo == null || castCombo.Combo == null)
             {
                 _console.WriteLine("combination is null");
-                return -1;
+                return RegistrationCode.InvalidCombination;
             }
             string[] combs = castCombo.Combo.ToLower().Split('/');
             List<Int64> combos = new List<Int64>();
@@ -323,7 +339,7 @@ namespace OWML.ModHelper
                 Int64 hash = ParseCombination(comstr);
                 if (hash <= 0)
                 {
-                    return (int)hash;
+                    return (RegistrationCode)hash;
                 }
                 else
                 {
@@ -339,10 +355,10 @@ namespace OWML.ModHelper
                 }
             }
             _logger.Log("succesfully registered " + castCombo.Combo);
-            return 1;
+            return RegistrationCode.AllNormal;
         }
 
-        public int UnregisterCombination(IModInputCombination combination)
+        public RegistrationCode UnregisterCombination(IModInputCombination combination)
         {
             var castCombo = (ModInputCombination)combination;
             if (_comboRegistry.ContainsValue(combination))
@@ -350,16 +366,16 @@ namespace OWML.ModHelper
                 if (combination == null || castCombo.Combo == null)
                 {
                     _console.WriteLine("combination is null");
-                    return -1;
+                    return RegistrationCode.InvalidCombination;
                 }
                 string[] individualCombos = castCombo.Combo.ToLower().Split('/');
                 List<Int64> hashes = new List<Int64>();
                 foreach (string comboString in individualCombos)
                 {
                     Int64 hash = ParseCombination(comboString, true);
-                    if (hash <= 0 && hash > -3)
+                    if (hash <= 0)
                     {
-                        return (int)hash;
+                        return (RegistrationCode)hash;
                     }
                     else
                     {
@@ -371,11 +387,11 @@ namespace OWML.ModHelper
                     _comboRegistry.Remove(comb);
                 }
                 _logger.Log("succesfully unregistered " + castCombo.Combo);
-                return -3;
+                return RegistrationCode.AllNormal;
             }
             else
             {
-                return 1;
+                return RegistrationCode.InvalidCombination;
             }
         }
 
@@ -436,5 +452,6 @@ namespace OWML.ModHelper
                 _gameBindingRegistry.Remove(binding);
             }
         }
+
     }
 }

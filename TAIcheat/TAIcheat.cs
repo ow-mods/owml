@@ -1,6 +1,7 @@
 ﻿using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Input;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,12 +60,17 @@ namespace TAIcheat
 			{
 				foreach (string key in inputs.Keys)
 				{
-					int code = ModHelper.InputHandler.UnregisterCombination(inputs[key]);
-					if (code > -3)
+					RegistrationCode code = ModHelper.InputHandler.UnregisterCombination(inputs[key]);
+					if (code < 0)
 					{
-						if (code == -1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": invalid combo!");
-						else if (code == -2) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": too long!");
-						else if (code == 1) ModHelper.Console.WriteLine("Failed to unregister \"" + name + "\": not registered!");
+						if (code == RegistrationCode.InvalidCombination)
+						{
+							ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
+						}
+						else if (code == RegistrationCode.CombinationTooLong)
+						{
+							ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
+						}
 					}
 				}
 			}
@@ -75,12 +81,21 @@ namespace TAIcheat
 				{
 					ModInputCombination tempc = new ModInputCombination(config.GetSettingsValue<string>(name));
 					inputs.Add(name, tempc);
-					int code = ModHelper.InputHandler.RegisterCombination(tempc);
+					RegistrationCode code = ModHelper.InputHandler.RegisterCombination(tempc);
 					if (code < 0)
 					{
-						if (code == -1) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
-						else if (code == -2) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
-						else if (code == -3) ModHelper.Console.WriteLine("Failed to register \"" + name + "\": already in use!");
+						if (code == RegistrationCode.InvalidCombination)
+						{
+							ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
+						}
+						else if (code == RegistrationCode.CombinationTooLong)
+						{
+							ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
+						}
+						else if (code == RegistrationCode.CombinationTaken)
+						{
+							ModHelper.Console.WriteLine("Failed to register \"" + name + "\": already in use!");
+						}
 					}
 				}
 			}
