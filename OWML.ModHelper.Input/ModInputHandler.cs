@@ -23,12 +23,12 @@ namespace OWML.ModHelper.Input
             }
 
             public static void SingleAxisUpdatePost(
-                SingleAxisCommand __instance, 
-                ref float ____value, 
-                int ____axisDirection, 
-                KeyCode ____gamepadKeyCodePositive, 
-                KeyCode ____gamepadKeyCodeNegative, 
-                KeyCode ____keyPositive, 
+                SingleAxisCommand __instance,
+                ref float ____value,
+                int ____axisDirection,
+                KeyCode ____gamepadKeyCodePositive,
+                KeyCode ____gamepadKeyCodeNegative,
+                KeyCode ____keyPositive,
                 KeyCode ____keyNegative
             )
             {
@@ -58,10 +58,10 @@ namespace OWML.ModHelper.Input
 
             public static void DoubleAxisUpdatePost(
                 DoubleAxisCommand __instance,
-                ref Vector2 ____value, 
-                KeyCode ____keyboardXPos, 
-                KeyCode ____keyboardYPos, 
-                KeyCode ____keyboardXNeg, 
+                ref Vector2 ____value,
+                KeyCode ____keyboardXPos,
+                KeyCode ____keyboardYPos,
+                KeyCode ____keyboardXNeg,
                 KeyCode ____keyboardYNeg
             )
             {
@@ -105,6 +105,7 @@ namespace OWML.ModHelper.Input
         private readonly static int _minUsefulKey = 8;
         private readonly static int _maxUsefulKey = 350;
         private readonly static int _maxComboLength = 7;
+        private readonly static string xboxPrefix = "xbox_";
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
@@ -232,12 +233,14 @@ namespace OWML.ModHelper.Input
 
         private bool WasTapped_Single(IModInputCombination combination)
         {
-            return (!IsPressed_Single(combination)) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < _tapKeep) && (combination.GetPressDuration() < _tapDuration);
+            return (!IsPressed_Single(combination)) && ((ModInputCombination)combination).IsRelevant(_tapKeep)
+                && (combination.GetPressDuration() < _tapDuration);
         }
 
         private bool IsNewlyReleased_Single(IModInputCombination combination, bool keep = false)
         {
-            return (!IsPressed_Single(combination)) && combination.IsFirst(keep) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < _tapKeep);
+            return (!IsPressed_Single(combination)) && combination.IsFirst(keep)
+                && ((ModInputCombination)combination).IsRelevant(_tapKeep);
         }
 
         public bool IsPressed(IModInputCombination combination)
@@ -252,55 +255,70 @@ namespace OWML.ModHelper.Input
 
         public bool WasTapped(IModInputCombination combination)
         {
-            return (!(IsPressed_Combo(combination) || IsPressed_Single(combination))) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < _tapKeep) && (combination.GetPressDuration() < _tapDuration);
+            return (!(IsPressed_Combo(combination) || IsPressed_Single(combination)))
+                && ((ModInputCombination)combination).IsRelevant(_tapKeep)
+                && (combination.GetPressDuration() < _tapDuration);
         }
 
         public bool WasNewlyReleased(IModInputCombination combination, bool keep = false)
         {
-            return (!(IsPressed_Combo(combination) || IsPressed_Single(combination))) && (Time.realtimeSinceStartup - combination.GetLastPressedMoment() < _tapKeep);
+            return (!(IsPressed_Combo(combination) || IsPressed_Single(combination)))
+                && ((ModInputCombination)combination).IsRelevant(_tapKeep);
+        }
+
+        private KeyCode StringToKeyCode(string key)
+        {
+            if (key.Contains(xboxPrefix))
+            {
+                string xboxKey = key.Substring(xboxPrefix.Length);
+                var xboxCode = (XboxButton)Enum.Parse(typeof(XboxButton), xboxKey, true);
+                if (Enum.IsDefined(typeof(XboxButton), xboxCode))
+                {
+                    return InputTranslator.GetKeyCode(xboxCode, false);
+                }
+                else
+                {
+                    return KeyCode.None;
+                }
+            }
+            else
+            {
+                string changedKey = key;
+                if (key == "control" || key == "ctrl")
+                {
+                    return KeyCode.LeftControl;
+                }
+                else if (key == "shift")
+                {
+                    return KeyCode.LeftShift;
+                }
+                else if (key == "alt")
+                {
+                    return KeyCode.LeftAlt;
+                }
+                KeyCode code = (KeyCode)Enum.Parse(typeof(KeyCode), changedKey, true);
+                if (Enum.IsDefined(typeof(KeyCode), code))
+                {
+                    return code;
+                }
+                else
+                {
+                    return KeyCode.None;
+                }
+            }
         }
 
         private Int64 ParseCombination(string combo, bool forRemoval = false)
         {
-            combo = combo.Trim().Replace("ctrl", "control");
+            combo = combo.Trim();
             int[] thisCombination = new int[_maxComboLength];
             int i = 0;
             foreach (string key in combo.Split('+'))
             {
                 if (i >= _maxComboLength)
                     return (int)RegistrationCode.CombinationTooLong;
-                KeyCode code;
-                if (key.Contains("xbox_"))
-                {
-                    string xboxKey = key.Substring(5);
-                    var xboxCode = (XboxButton)Enum.Parse(typeof(XboxButton), xboxKey, true);
-                    if (Enum.IsDefined(typeof(XboxButton), xboxCode))
-                    {
-                        code = InputTranslator.GetKeyCode(xboxCode, false);
-                    }
-                    else
-                    {
-                        return (int)RegistrationCode.InvalidCombination;
-                    }
-                }
-                else
-                {
-                    string changedKey = key;
-                    if (key == "control")
-                    {
-                        changedKey = "leftcontrol";
-                    }
-                    else if (key == "shift")
-                    {
-                        changedKey = "leftshift";
-                    }
-                    else if (key == "alt")
-                    {
-                        changedKey = "leftalt";
-                    }
-                    code = (KeyCode)Enum.Parse(typeof(KeyCode), changedKey, true);
-                }
-                if (Enum.IsDefined(typeof(KeyCode), code))
+                KeyCode code = StringToKeyCode(key);
+                if (code != KeyCode.None)
                 {
                     thisCombination[i] = (int)code;
                 }

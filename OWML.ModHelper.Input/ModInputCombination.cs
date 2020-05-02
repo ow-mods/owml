@@ -56,5 +56,7 @@ namespace OWML.ModHelper.Input
 		internal List<KeyCode> GetSingles() { return _singles; }
 
 		internal void ClearSingles() { _singles.Clear(); }
+
+		internal bool IsRelevant(float relevancyKeep) { return Time.realtimeSinceStartup - _lastPressed < relevancyKeep; }
 	}
 }

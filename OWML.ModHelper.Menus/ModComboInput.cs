@@ -20,6 +20,7 @@ namespace OWML.ModHelper.Menus
         private readonly static int fontSize = 36;
         private readonly static Vector2 normalPivot = new Vector2(0.5f, 0.5f);
         private readonly static float scaleDown = 0.75f;
+        private readonly static string xboxPrefix = "xbox_";
 
         public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
@@ -54,9 +55,9 @@ namespace OWML.ModHelper.Menus
                 for (int j = 0; j < keyStrings.Length; j++)
                 {
                     Texture2D keyTexture;
-                    if (keyStrings[j].Contains("Xbox_"))
+                    if (keyStrings[j].Contains(xboxPrefix))
                     {
-                        keyTexture = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), keyStrings[j].Substring(5)));
+                        keyTexture = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), keyStrings[j].Substring(xboxPrefix.Length)));
                     }
                     else
                     {
