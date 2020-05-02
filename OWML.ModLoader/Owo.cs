@@ -114,7 +114,7 @@ namespace OWML.ModLoader
 
         private static IModConsole GetConsole(IOwmlConfig owmlConfig, IModLogger logger, IModManifest owmlManifest)
         {
-            if (CommandLineArguments.HasArgument("consolePort"))
+            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
                 return new ModSocketConsole(logger, owmlManifest);
             }

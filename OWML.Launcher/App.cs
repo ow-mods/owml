@@ -42,7 +42,7 @@ namespace OWML.Launcher
 
             CopyGameFiles();
 
-            if (!CommandLineArguments.HasArgument("consolePort"))
+            if (!CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
                 ListenForOutput();
             }

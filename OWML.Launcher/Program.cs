@@ -26,7 +26,7 @@ namespace OWML.Launcher
 
         private static IModConsole GetWriter(IModManifest owmlManifest)
         {
-            if (CommandLineArguments.HasArgument("consolePort"))
+            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
                 return new ModSocketConsole(null, owmlManifest);
             }

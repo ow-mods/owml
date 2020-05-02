@@ -9,7 +9,7 @@ namespace OWML.ModHelper
 {
     public class ModSocketConsole : IModConsole
     {
-        private const string LOCAL_HOST = "127.0.0.1";
+        private const string LocalHost = "127.0.0.1";
 
         public static event Action<IModManifest, string> OnConsole;
 
@@ -27,18 +27,18 @@ namespace OWML.ModHelper
                 int port;
                 try
                 {
-                    port = int.Parse(CommandLineArguments.GetArgument("consolePort"));
+                    port = int.Parse(CommandLineArguments.GetArgument(Constants.ConsolePortArgument));
                 }
                 catch
                 {
-                    _logger?.Log("Error: Missing mod manager console port argument");
+                    _logger?.Log("Error: Missing or incorrectly formatted console port argument");
                     return;
                 }
 
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPAddress ipAdd = IPAddress.Parse(LOCAL_HOST);
-                IPEndPoint remoteEP = new IPEndPoint(ipAdd, port);
-                _socket.Connect(remoteEP);
+                IPAddress ipAddress = IPAddress.Parse(LocalHost);
+                IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
+                _socket.Connect(endPoint);
 
                 ModConsole.OnConsole += OnConsole;
             }
