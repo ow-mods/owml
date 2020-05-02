@@ -9,6 +9,8 @@ namespace OWML.ModHelper
 {
     public class ModSocketConsole : IModConsole
     {
+        private const string LOCAL_HOST = "127.0.0.1";
+
         [Obsolete("Use ModHelper.Console instead")]
         public static ModSocketConsole Instance { get; private set; }
 
@@ -41,8 +43,7 @@ namespace OWML.ModHelper
                 }
 
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                var localHost = "127.0.0.1";
-                IPAddress ipAdd = IPAddress.Parse(localHost);
+                IPAddress ipAdd = IPAddress.Parse(LOCAL_HOST);
                 IPEndPoint remoteEP = new IPEndPoint(ipAdd, port);
                 _socket.Connect(remoteEP);
 
@@ -52,7 +53,7 @@ namespace OWML.ModHelper
 
         private string GetArgument(string name)
         {
-            var arguments = System.Environment.GetCommandLineArgs();
+            var arguments = Environment.GetCommandLineArgs();
             for (var i = 0; i < arguments.Length; i++)
             {
                 var argument = arguments[i];
