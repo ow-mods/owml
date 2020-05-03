@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Interaction
                 var dependencies = new List<IModBehaviour>();
                 foreach (var dependency in _modList)
                 { 
-                    if (dependency.ModHelper.Manifest.Dependencies.Any() && dependency.ModHelper.Manifest.Dependencies.Contains(mod.ModHelper.Manifest.UniqueName))
+                    if (dependency.ModHelper.Manifest.Dependencies.Contains(mod.ModHelper.Manifest.UniqueName))
                     {
                         dependants.Add(dependency);
                     }
@@ -38,14 +38,17 @@ namespace OWML.ModHelper.Interaction
                         dependencies.Add(dependency);
                     }
                 }
-                _dependantDict.Add(mod.ModHelper.Manifest.UniqueName, dependants);
-                _dependencyDict.Add(mod.ModHelper.Manifest.UniqueName, dependencies);
+                _dependantDict[mod.ModHelper.Manifest.UniqueName] = dependants;
+                _dependencyDict[mod.ModHelper.Manifest.UniqueName] = dependencies;
             }
         }
 
         public IList<IModBehaviour> GetDependants(string dependencyUniqueName)
         {
-            RegenDicts();
+            if (_dependantDict.Count != _modList.Count)
+            {
+                RegenDicts();
+            }
             return _dependantDict[dependencyUniqueName];
         }
 

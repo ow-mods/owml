@@ -8,6 +8,7 @@ namespace OWML.ModLoader
     public class ModSorter
     {
         private readonly IModConsole _console;
+
         public ModSorter(IModConsole console)
         {
             _console = console;
@@ -58,10 +59,7 @@ namespace OWML.ModLoader
 
             sortedList.Reverse();
 
-            var returnList = new List<IModData>();
-            sortedList.ForEach(mod => returnList.Add(modDict[mod]));
-
-            return returnList;
+            return sortedList.Select(mod => modDict[mod]).ToList();
         }
 
         // Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
