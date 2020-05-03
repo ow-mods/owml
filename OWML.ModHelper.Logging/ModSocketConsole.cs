@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.ModHelper.Logging
 {
     public class ModSocketConsole : IModConsole
     {
@@ -40,7 +40,7 @@ namespace OWML.ModHelper
                 IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
                 _socket.Connect(endPoint);
 
-                ModConsole.OnConsole += OnConsole;
+                // TODO: ModConsole.OnConsole += OnConsole;
             }
         }
 

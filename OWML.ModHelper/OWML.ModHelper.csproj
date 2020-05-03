@@ -71,7 +71,6 @@
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="ModSocketConsole.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModConsole.cs" />

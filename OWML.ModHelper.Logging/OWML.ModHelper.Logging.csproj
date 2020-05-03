@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6A215200-7519-4D57-B140-0E0973EE2345}</ProjectGuid>
+    <ProjectGuid>{133E8D45-7B68-456C-B860-52986090C64B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.Nuget</RootNamespace>
-    <AssemblyName>OWML</AssemblyName>
+    <RootNamespace>OWML.ModHelper.Logging</RootNamespace>
+    <AssemblyName>OWML.ModHelper.Logging</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio-Unity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OWML.ModHelper.Assets\NAudio-Unity\NAudio-Unity.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModSocketConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,33 +47,6 @@
       <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj">
-      <Project>{a62856bd-d06c-4f2c-86e8-91c6fdf8f8d5}</Project>
-      <Name>OWML.ModHelper.Assets</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
-      <Project>{b771615e-6b51-44f8-b862-d7543c12c0ff}</Project>
-      <Name>OWML.ModHelper.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Logging\OWML.ModHelper.Logging.csproj">
-      <Project>{133e8d45-7b68-456c-b860-52986090c64b}</Project>
-      <Name>OWML.ModHelper.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj">
-      <Project>{b874cc24-8340-4238-ac9d-1bfb41186bb5}</Project>
-      <Name>OWML.ModHelper.Menus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
-      <Project>{cb57bab8-d70e-4fce-9bf1-328a924173a7}</Project>
-      <Name>OWML.ModHelper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="OWML.Nuget.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
