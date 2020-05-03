@@ -10,15 +10,12 @@ namespace OWML.Common
         public static string GetArgument(string name)
         {
             var arguments = Environment.GetCommandLineArgs();
-            for (var i = 0; i < arguments.Length; i++)
+            var keyIndex = Array.IndexOf(arguments, $"-{name}");
+            if (keyIndex == -1 || keyIndex >= arguments.Length - 1)
             {
-                var argument = arguments[i];
-                if (argument == $"-{name}" && arguments.Length > i)
-                {
-                    return arguments[i + 1];
-                }
+                return null;
             }
-            return null;
+            return arguments[keyIndex + 1];
         }
 
         public static bool HasArgument(string name)
