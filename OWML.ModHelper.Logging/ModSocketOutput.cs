@@ -7,7 +7,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper.Logging
 {
-    public class ModSocketConsole : IModConsole
+    public class ModSocketOutput : IModConsole
     {
         private const string LocalHost = "127.0.0.1";
 
@@ -18,7 +18,7 @@ namespace OWML.ModHelper.Logging
         private readonly IModLogger _logger;
         private readonly IModManifest _manifest;
 
-        public ModSocketConsole(IModLogger logger, IModManifest manifest)
+        public ModSocketOutput(IModLogger logger, IModManifest manifest)
         {
             _logger = logger;
             _manifest = manifest;

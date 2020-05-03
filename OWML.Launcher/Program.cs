@@ -29,7 +29,7 @@ namespace OWML.Launcher
         {
             if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
-                return new ModSocketConsole(null, owmlManifest);
+                return new ModSocketOutput(null, owmlManifest);
             }
             else
             {

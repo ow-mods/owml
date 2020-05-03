@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModSocketConsole.cs" />
+    <Compile Include="ModFileOutput.cs" />
+    <Compile Include="ModLogger.cs" />
+    <Compile Include="ModSocketOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

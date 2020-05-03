@@ -117,11 +117,11 @@ namespace OWML.ModLoader
         {
             if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
-                return new ModSocketConsole(logger, owmlManifest);
+                return new ModSocketOutput(logger, owmlManifest);
             }
             else
             {
-                return new ModConsole(owmlConfig, logger, owmlManifest);
+                return new ModFileOutput(owmlConfig, logger, owmlManifest);
             }
         }
 

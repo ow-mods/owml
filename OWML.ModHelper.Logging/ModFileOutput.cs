@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.ModHelper.Logging
 {
-    public class ModConsole : IModConsole
+    public class ModFileOutput : IModConsole
     {
         [Obsolete("Use ModHelper.Console instead")]
-        public static ModConsole Instance { get; private set; }
+        public static ModFileOutput Instance { get; private set; }
 
-        public static event Action<IModManifest, string> OnConsole; 
+        public static event Action<IModManifest, string> OnConsole;
 
         private static FileStream _writer;
 
         private readonly IModLogger _logger;
         private readonly IModManifest _manifest;
 
-        public ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
+        public ModFileOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {
             if (manifest.Name == "OWML")
             {
