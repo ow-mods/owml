@@ -40,7 +40,8 @@ namespace OWML.ModHelper.Logging
                 IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
                 _socket.Connect(endPoint);
 
-                // TODO: ModConsole.OnConsole += OnConsole;
+                // TODO: Not sure how I should deal with this.
+                // ModConsole.OnConsole += OnConsole;
             }
         }
 

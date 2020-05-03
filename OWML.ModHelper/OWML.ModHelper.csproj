@@ -90,6 +90,10 @@
       <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
       <Name>OWML.ModHelper.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Logging\OWML.ModHelper.Logging.csproj">
+      <Project>{133e8d45-7b68-456c-b860-52986090c64b}</Project>
+      <Name>OWML.ModHelper.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

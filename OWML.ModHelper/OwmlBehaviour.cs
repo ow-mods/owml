@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.ModHelper.Logging;
 using UnityEngine;
 
 namespace OWML.ModHelper
@@ -12,7 +13,7 @@ namespace OWML.ModHelper
 
         private void OnApplicationQuit()
         {
-            // TODO: ModConsole.Instance.WriteLine(Constants.QuitKeyPhrase);
+            Output.GetOwmlOutput().WriteLine(Constants.QuitKeyPhrase);
         }
     }
 }

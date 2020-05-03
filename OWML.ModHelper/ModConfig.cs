@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using OWML.ModHelper.Logging;
 
 namespace OWML.ModHelper
 {
@@ -21,7 +22,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                // TODO: ModConsole.Instance.WriteLine("Error: setting not found: " + key);
+                Output.GetOwmlOutput().WriteLine("Error: setting not found: " + key);
                 return default;
             }
 
@@ -34,7 +35,7 @@ namespace OWML.ModHelper
             }
             catch (InvalidCastException)
             {
-                // TODO: ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
+                Output.GetOwmlOutput().WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
                 return default;
             }
         }
@@ -43,7 +44,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                // TODO: ModConsole.Instance.WriteLine("Error: setting not found: " + key);
+                Output.GetOwmlOutput().WriteLine("Error: setting not found: " + key);
                 return;
             }
 
