@@ -22,23 +22,26 @@ namespace OWML.ModHelper.Logging
         {
             _logger = logger;
             _manifest = manifest;
-            if (_socket == null)
+
+            if (_socket != null)
             {
-                var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
-                if (!int.TryParse(consolePortArgument, out var port))
-                {
-                    _logger?.Log("Error: Missing or incorrectly formatted console port argument");
-                    return;
-                }
-
-                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPAddress ipAddress = IPAddress.Parse(LocalHost);
-                IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-                _socket.Connect(endPoint);
-
-                // TODO: Not sure how I should deal with this.
-                // ModConsole.OnConsole += OnConsole;
+                return;
             }
+
+            var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
+            if (!int.TryParse(consolePortArgument, out var port))
+            {
+                _logger?.Log("Error: Missing or incorrectly formatted console port argument");
+                return;
+            }
+
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPAddress ipAddress = IPAddress.Parse(LocalHost);
+            IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
+            _socket.Connect(endPoint);
+
+            // TODO: Not sure how I should deal with this.
+            // ModConsole.OnConsole += OnConsole;
         }
 
         public void WriteLine(string s)
