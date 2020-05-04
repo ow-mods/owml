@@ -28,7 +28,7 @@ namespace OWML.ModHelper
         public string ModFolderPath { get; set; }
 
         [JsonProperty("appIds")]
-        public Dictionary<string,string> AppIds { get; private set; }
+        public Dictionary<string, string> AppIds { get; private set; }
 
         [JsonIgnore]
         public string AssemblyPath => ModFolderPath + Filename;

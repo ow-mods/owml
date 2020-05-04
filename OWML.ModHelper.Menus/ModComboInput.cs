@@ -8,6 +8,11 @@ namespace OWML.ModHelper.Menus
 {
     public class ModComboInput : ModInput<string>, IModComboInput
     {
+        private const int FontSize = 36;
+        private const float ScaleDown = 0.75f;
+        private const string XboxPrefix = "xbox_";
+        private static readonly Vector2 normalPivot = new Vector2(0.5f, 0.5f);
+
         public IModLayoutButton Button { get; }
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
@@ -16,10 +21,6 @@ namespace OWML.ModHelper.Menus
         private Vector3 _scale;
         private UIStyleManager _styleManager;
         private HorizontalLayoutGroup _layoutGroup;
-        private static readonly int fontSize = 36;
-        private static readonly Vector2 normalPivot = new Vector2(0.5f, 0.5f);
-        private static readonly float scaleDown = 0.75f;
-        private static readonly string xboxPrefix = "xbox_";
 
         public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
@@ -54,9 +55,9 @@ namespace OWML.ModHelper.Menus
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
                     Texture2D keyTexture;
-                    if (keyStrings[j].Contains(xboxPrefix))
+                    if (keyStrings[j].Contains(XboxPrefix))
                     {
-                        keyTexture = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), keyStrings[j].Substring(xboxPrefix.Length)));
+                        keyTexture = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), keyStrings[j].Substring(XboxPrefix.Length)));
                     }
                     else
                     {
@@ -70,7 +71,7 @@ namespace OWML.ModHelper.Menus
                     keyObject.AddComponent<LayoutElement>();
                     keyObject.transform.SetParent(_layoutGroup.transform);
                     keyObject.transform.localScale = _scale;
-                    ((RectTransform)keyObject.transform).sizeDelta = new Vector2((float)keyTexture.width * scaleDown, (float)keyTexture.height * scaleDown);
+                    ((RectTransform)keyObject.transform).sizeDelta = new Vector2((float)keyTexture.width * ScaleDown, (float)keyTexture.height * ScaleDown);
                     ((RectTransform)keyObject.transform).pivot = normalPivot;
                     if (j < keyStrings.Length - 1)
                     {
@@ -90,14 +91,14 @@ namespace OWML.ModHelper.Menus
             var textObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
             var text = textObject.AddComponent<Text>();
             text.text = txt;
-            text.fontSize = fontSize;
+            text.fontSize = FontSize;
             text.font = _styleManager.GetMenuFont();
             text.color = _styleManager.GetButtonForegroundMenuColor(UIElementState.NORMAL);
             text.alignment = TextAnchor.MiddleCenter;
             textObject.AddComponent<LayoutElement>();
             textObject.transform.SetParent(_layoutGroup.transform);
             textObject.transform.localScale = _scale;
-            ((RectTransform)textObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)textObject.transform).sizeDelta.y * scaleDown);
+            ((RectTransform)textObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)textObject.transform).sizeDelta.y * ScaleDown);
             ((RectTransform)textObject.transform).pivot = normalPivot;
         }
 

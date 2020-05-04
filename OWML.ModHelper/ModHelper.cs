@@ -18,7 +18,7 @@ namespace OWML.ModHelper
         public IOwmlConfig OwmlConfig { get; }
         public IModInputHandler Input { get; }
 
-        public ModHelper(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events, 
+        public ModHelper(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events,
             IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest, IModConfig config, IOwmlConfig owmlConfig, IModInputHandler inputHandler)
         {
             Logger = logger;

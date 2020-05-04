@@ -58,25 +58,27 @@ namespace OWML.ModHelper.Input
         )
         {
             ModInputHandler.Instance.RegisterGamesBinding(__instance);
-            if (!OWInput.UsingGamepad())
+            if (OWInput.UsingGamepad())
             {
-                if (UnityEngine.Input.GetKey(____keyboardXPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardXPos))
-                {
-                    ____value.x -= 1f;
-                }
-                if (UnityEngine.Input.GetKey(____keyboardXNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardXNeg))
-                {
-                    ____value.x += 1f;
-                }
-                if (UnityEngine.Input.GetKey(____keyboardYPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardYPos))
-                {
-                    ____value.y -= 1f;
-                }
-                if (UnityEngine.Input.GetKey(____keyboardYNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardYNeg))
-                {
-                    ____value.y += 1f;
-                }
+                return;
             }
+            if (UnityEngine.Input.GetKey(____keyboardXPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardXPos))
+            {
+                ____value.x -= 1f;
+            }
+            if (UnityEngine.Input.GetKey(____keyboardXNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardXNeg))
+            {
+                ____value.x += 1f;
+            }
+            if (UnityEngine.Input.GetKey(____keyboardYPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardYPos))
+            {
+                ____value.y -= 1f;
+            }
+            if (UnityEngine.Input.GetKey(____keyboardYNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardYNeg))
+            {
+                ____value.y += 1f;
+            }
+
         }
     }
 }

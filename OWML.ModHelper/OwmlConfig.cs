@@ -19,7 +19,7 @@ namespace OWML.ModHelper
 
         [JsonIgnore]
         public string PluginsPath => $"{DataPath}/Plugins";
-        
+
         [JsonProperty("owmlPath")]
         public string OWMLPath { get; set; }
 
