@@ -38,12 +38,11 @@ namespace OWML.Launcher
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
-            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
-
             LocateGamePath();
 
             CopyGameFiles();
 
+            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
             if (!hasPortArgument)
             {
                 ListenForOutput();

@@ -34,8 +34,8 @@ namespace OWML.ModHelper.Logging
             }
 
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ipAddress = IPAddress.Parse(LocalHost);
-            IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
+            var ipAddress = IPAddress.Parse(LocalHost);
+            var endPoint = new IPEndPoint(ipAddress, port);
             _socket.Connect(endPoint);
         }
 
@@ -54,7 +54,6 @@ namespace OWML.ModHelper.Logging
 
         private static void InternalWriteLine(string message)
         {
-
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             _socket?.Send(bytes);
         }
