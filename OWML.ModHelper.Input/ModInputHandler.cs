@@ -106,19 +106,19 @@ namespace OWML.ModHelper.Input
             }
         }
 
-        private bool IsPressedExact(IModInputCombination combination)
+        public bool IsPressedExact(IModInputCombination combination)
         {
             UpdateCombo();
             return _lastPressed == combination;
         }
 
-        private bool IsNewlyPressedExact(IModInputCombination combination, bool keep = false)
+        public bool IsNewlyPressedExact(IModInputCombination combination, bool keep = false)
         {
             UpdateCombo();
             return _lastPressed == combination && combination.IsFirst(keep);
         }
 
-        private bool WasTappedExact(IModInputCombination combination, bool keep = false)
+        public bool WasTappedExact(IModInputCombination combination, bool keep = false)
         {
             UpdateCombo();
             return combination != _lastPressed
@@ -126,7 +126,7 @@ namespace OWML.ModHelper.Input
                 && combination.IsFirst(keep);
         }
 
-        private bool IsNewlyReleasedExact(IModInputCombination combination, bool keep = false)
+        public bool WasNewlyReleasedExact(IModInputCombination combination, bool keep = false)
         {
             UpdateCombo();
             return _lastPressed != combination && combination.IsFirst(keep);
