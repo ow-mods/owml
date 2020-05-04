@@ -9,6 +9,7 @@ namespace OWML.ModHelper.Logging
     public static class Output
     {
         public static IModConsole OwmlOutput { get; private set; }
+        public static event Action<IModManifest, string> OnWrite;
 
         public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest)
         {
@@ -33,6 +34,11 @@ namespace OWML.ModHelper.Logging
                 }
             }
             return output;
+        }
+
+        internal static void CallWriteCallback(IModManifest manifest, string text)
+        {
+            OnWrite?.Invoke(manifest, text);
         }
     }
 }

@@ -11,8 +11,6 @@ namespace OWML.ModHelper.Logging
     {
         private const string LocalHost = "127.0.0.1";
 
-        public static event Action<IModManifest, string> OnConsole;
-
         private static Socket _socket;
 
         private readonly IModLogger _logger;
@@ -44,7 +42,7 @@ namespace OWML.ModHelper.Logging
         public void WriteLine(string s)
         {
             _logger.Log(s);
-            OnConsole?.Invoke(_manifest, s);
+            Output.CallWriteCallback(_manifest, s);
             var message = $"{_manifest.Name};;{s}";
             InternalWriteLine(message);
         }
