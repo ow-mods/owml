@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Logging
             var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
             if (!int.TryParse(consolePortArgument, out var port))
             {
-                _logger?.Log("Error: Missing or incorrectly formatted console port argument");
+                _logger.Log("Error: Missing or incorrectly formatted console port argument");
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace OWML.ModHelper.Logging
 
         public void WriteLine(string s)
         {
-            _logger?.Log(s);
+            _logger.Log(s);
             OnConsole?.Invoke(_manifest, s);
             var message = $"{_manifest.Name};;{s}";
             InternalWriteLine(message);

@@ -15,7 +15,7 @@ namespace OWML.Launcher
         {
             var owmlConfig = GetOwmlConfig();
             var owmlManifest = GetOwmlManifest();
-            var writer = GetWriter(owmlManifest);
+            var writer = new OutputWriter();
             var modFinder = new ModFinder(owmlConfig, writer);
             var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);
@@ -23,18 +23,6 @@ namespace OWML.Launcher
             var vrPatcher = new VRPatcher(owmlConfig, writer);
             var app = new App(owmlConfig, owmlManifest, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher);
             app.Run(args);
-        }
-
-        private static IModConsole GetWriter(IModManifest owmlManifest)
-        {
-            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
-            {
-                return new ModSocketOutput(null, owmlManifest);
-            }
-            else
-            {
-                return new OutputWriter();
-            }
         }
 
         private static IOwmlConfig GetOwmlConfig()

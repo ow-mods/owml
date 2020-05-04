@@ -38,11 +38,13 @@ namespace OWML.Launcher
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
+            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
+
             LocateGamePath();
 
             CopyGameFiles();
 
-            if (!CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
+            if (!hasPortArgument)
             {
                 ListenForOutput();
             }
@@ -54,6 +56,11 @@ namespace OWML.Launcher
             PatchGame(mods);
 
             StartGame(args);
+
+            if (hasPortArgument)
+            {
+                ExitConsole();
+            }
 
             Console.ReadLine();
         }
@@ -154,6 +161,11 @@ namespace OWML.Launcher
             {
                 _writer.WriteLine("Error while starting game: " + ex.Message);
             }
+        }
+
+        private void ExitConsole()
+        {
+            Environment.Exit(0);
         }
 
     }
