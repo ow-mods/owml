@@ -39,9 +39,6 @@ namespace OWML.ModHelper.Logging
             IPAddress ipAddress = IPAddress.Parse(LocalHost);
             IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
             _socket.Connect(endPoint);
-
-            // TODO: Not sure how I should deal with this.
-            // ModConsole.OnConsole += OnConsole;
         }
 
         public void WriteLine(string s)
