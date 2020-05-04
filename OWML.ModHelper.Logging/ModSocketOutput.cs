@@ -24,12 +24,8 @@ namespace OWML.ModHelper.Logging
             _manifest = manifest;
             if (_socket == null)
             {
-                int port;
-                try
-                {
-                    port = int.Parse(CommandLineArguments.GetArgument(Constants.ConsolePortArgument));
-                }
-                catch
+                var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
+                if (!int.TryParse(consolePortArgument, out var port))
                 {
                     _logger?.Log("Error: Missing or incorrectly formatted console port argument");
                     return;
