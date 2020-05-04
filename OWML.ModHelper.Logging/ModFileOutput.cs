@@ -12,10 +12,7 @@ namespace OWML.ModHelper.Logging
         public static ModFileOutput Instance { get; private set; }
 
         [Obsolete("Use ModHelper.Logging.Output.OnWrite instead")]
-        public static event Action<IModManifest, string> OnConsole {
-            add { Output.OnWrite += value; }
-            remove { Output.OnWrite -= value; }
-        }
+        public static event Action<IModManifest, string> OnConsole;
 
         private static FileStream _writer;
 
@@ -39,6 +36,7 @@ namespace OWML.ModHelper.Logging
         public void WriteLine(string s)
         {
             _logger.Log(s);
+            OnConsole?.Invoke(_manifest, s);
             Output.CallWriteCallback(_manifest, s);
             var message = $"[{_manifest.Name}]: {s}";
             InternalWriteLine(message);
