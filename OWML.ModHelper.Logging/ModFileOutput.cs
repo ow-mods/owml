@@ -6,43 +6,27 @@ using OWML.Common;
 
 namespace OWML.ModHelper.Logging
 {
-    public class ModFileOutput : IModConsole
+    public class ModFileOutput : ModConsole
     {
-        [Obsolete("Use ModHelper.Console instead")]
-        public static ModFileOutput Instance { get; private set; }
-
-        [Obsolete("Use ModHelper.Logging.Output.OnWrite instead")]
-        public static event Action<IModManifest, string> OnConsole;
-
         private static FileStream _writer;
 
-        private readonly IModLogger _logger;
-        private readonly IModManifest _manifest;
-
-        public ModFileOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest)
+        public ModFileOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
-            if (manifest.Name == "OWML")
-            {
-                Instance = this;
-            }
-            _logger = logger;
-            _manifest = manifest;
             if (_writer == null)
             {
                 _writer = File.Open(config.OutputFilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             }
         }
 
-        public void WriteLine(string s)
+        public override void WriteLine(string s)
         {
             _logger.Log(s);
-            OnConsole?.Invoke(_manifest, s);
-            Output.CallWriteCallback(_manifest, s);
+            CallWriteCallback(_manifest, s);
             var message = $"[{_manifest.Name}]: {s}";
             InternalWriteLine(message);
         }
 
-        public void WriteLine(params object[] objects)
+        public override void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }

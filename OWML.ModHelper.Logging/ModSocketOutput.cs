@@ -7,20 +7,14 @@ using OWML.Common;
 
 namespace OWML.ModHelper.Logging
 {
-    public class ModSocketOutput : IModConsole
+    public class ModSocketOutput : ModConsole
     {
         private const string LocalHost = "127.0.0.1";
 
         private static Socket _socket;
 
-        private readonly IModLogger _logger;
-        private readonly IModManifest _manifest;
-
-        public ModSocketOutput(IModLogger logger, IModManifest manifest)
+        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
-            _logger = logger;
-            _manifest = manifest;
-
             if (_socket != null)
             {
                 return;
@@ -39,15 +33,15 @@ namespace OWML.ModHelper.Logging
             _socket.Connect(endPoint);
         }
 
-        public void WriteLine(string s)
+        public override void WriteLine(string s)
         {
             _logger.Log(s);
-            Output.CallWriteCallback(_manifest, s);
+            CallWriteCallback(_manifest, s);
             var message = $"{_manifest.Name};;{s}";
             InternalWriteLine(message);
         }
 
-        public void WriteLine(params object[] objects)
+        public override void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
@@ -57,6 +51,5 @@ namespace OWML.ModHelper.Logging
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             _socket?.Send(bytes);
         }
-
     }
 }

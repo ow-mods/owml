@@ -13,7 +13,7 @@ namespace OWML.ModHelper
 
         private void OnApplicationQuit()
         {
-            Output.OwmlOutput.WriteLine(Constants.QuitKeyPhrase);
+            ModConsole.Instance.WriteLine(Constants.QuitKeyPhrase);
         }
     }
 }
