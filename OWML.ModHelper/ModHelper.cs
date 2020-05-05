@@ -32,7 +32,6 @@ namespace OWML.ModHelper
             Config = config;
             OwmlConfig = owmlConfig;
             Input = inputHandler;
-
         }
 
     }

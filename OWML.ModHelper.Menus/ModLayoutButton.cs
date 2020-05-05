@@ -37,7 +37,7 @@ namespace OWML.ModHelper.Menus
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();
             target.raycastTarget = true;
-            target.color = new Color(255, 255, 255, 0);//transparent
+            target.color = Color.clear;
             LayoutGroup = layoutObject.AddComponent<HorizontalLayoutGroup>();
             Initialize(menu);
             _buttonStyleApplier = Button.GetComponent<UIStyleApplier>();

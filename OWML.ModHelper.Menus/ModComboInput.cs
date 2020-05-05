@@ -11,7 +11,7 @@ namespace OWML.ModHelper.Menus
         private const int FontSize = 36;
         private const float ScaleDown = 0.75f;
         private const string XboxPrefix = "xbox_";
-        private static readonly Vector2 normalPivot = new Vector2(0.5f, 0.5f);
+        private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
 
         public IModLayoutButton Button { get; }
         protected readonly IModInputMenu InputMenu;
@@ -48,31 +48,13 @@ namespace OWML.ModHelper.Menus
             {
                 GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
             }
-            string[] individualCombos = currentCombination.Split('/');
+            var individualCombos = currentCombination.Split('/');
             for (var i = 0; i < individualCombos.Length; i++)
             {
                 var keyStrings = individualCombos[i].Split('+');
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    Texture2D keyTexture;
-                    if (keyStrings[j].Contains(XboxPrefix))
-                    {
-                        keyTexture = InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), keyStrings[j].Substring(XboxPrefix.Length)));
-                    }
-                    else
-                    {
-                        keyTexture = InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), keyStrings[j]));
-                    }
-                    var keySprite = Sprite.Create(keyTexture, new Rect(0f, 0f, (float)keyTexture.width, (float)keyTexture.height), normalPivot);
-                    var keyObject = new GameObject("ButtonImage", new Type[] { typeof(RectTransform) });
-                    var keyPicture = keyObject.AddComponent<Image>();
-                    keyPicture.sprite = keySprite;
-                    keyPicture.SetLayoutDirty();
-                    keyObject.AddComponent<LayoutElement>();
-                    keyObject.transform.SetParent(_layoutGroup.transform);
-                    keyObject.transform.localScale = _scale;
-                    ((RectTransform)keyObject.transform).sizeDelta = new Vector2((float)keyTexture.width * ScaleDown, (float)keyTexture.height * ScaleDown);
-                    ((RectTransform)keyObject.transform).pivot = normalPivot;
+                    AddKeySign(keyStrings[j]);
                     if (j < keyStrings.Length - 1)
                     {
                         AddText("+");
@@ -84,6 +66,24 @@ namespace OWML.ModHelper.Menus
                 }
             }
             Button.UpdateState();
+        }
+
+        private void AddKeySign(string key)
+        {
+            var keyTexture = key.Contains(XboxPrefix) ?
+                InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), key.Substring(XboxPrefix.Length))) :
+                InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key));    
+            var keySprite = Sprite.Create(keyTexture, new Rect(0f, 0f, (float)keyTexture.width, (float)keyTexture.height), NormalPivot);
+            var keyObject = new GameObject("ButtonImage", new Type[] { typeof(RectTransform) });
+            var keyPicture = keyObject.AddComponent<Image>();
+            keyPicture.sprite = keySprite;
+            keyPicture.SetLayoutDirty();
+            keyObject.AddComponent<LayoutElement>();
+            keyObject.transform.SetParent(_layoutGroup.transform);
+            keyObject.transform.localScale = _scale;
+            ((RectTransform)keyObject.transform).sizeDelta = 
+                new Vector2((float)keyTexture.width * ScaleDown, (float)keyTexture.height * ScaleDown);
+            ((RectTransform)keyObject.transform).pivot = NormalPivot;
         }
 
         private void AddText(string txt)
@@ -99,7 +99,7 @@ namespace OWML.ModHelper.Menus
             textObject.transform.SetParent(_layoutGroup.transform);
             textObject.transform.localScale = _scale;
             ((RectTransform)textObject.transform).sizeDelta = new Vector2(text.preferredWidth, ((RectTransform)textObject.transform).sizeDelta.y * ScaleDown);
-            ((RectTransform)textObject.transform).pivot = normalPivot;
+            ((RectTransform)textObject.transform).pivot = NormalPivot;
         }
 
         protected void Open()

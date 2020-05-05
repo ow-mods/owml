@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using OWML.Common;
 using UnityEngine;
+using System.Security.Policy;
 
 namespace OWML.ModHelper.Input
 {
@@ -18,21 +19,21 @@ namespace OWML.ModHelper.Input
 
         internal static ModInputHandler Instance { get; private set; }
 
-        private HashSet<IModInputCombination> _singlePressed = new HashSet<IModInputCombination>();
+        private HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
         private Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
         private HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
         private float[] _timeout = new float[MaxUsefulKey];
         private int[] _gameBindingCounter = new int[MaxUsefulKey];
-        private ModInputCombination _lastPressed;
-        private float _lastUpdate;
+        private ModInputCombination _currentCombination;
+        private float _lastCombinationUpdate;
         private float _lastSingleUpdate;
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
         internal bool ShouldIgnore(KeyCode code)
         {
-            UpdateCombo();
-            return _lastPressed != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
+            UpdateCurrentCombination();
+            return _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
         }
 
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher)
@@ -46,18 +47,13 @@ namespace OWML.ModHelper.Input
             Instance = this;
         }
 
-        private void UpdateCombo()
+        private long HashFromKeyboard()
         {
-            if (Time.realtimeSinceStartup - _lastUpdate < Time.unscaledDeltaTime / 2)
-            {
-                return;
-            }
-            _lastUpdate = Time.realtimeSinceStartup;
             long hash = 0;
             var keysCount = 0;
-            var countdownTrigger = true;
             var keys = new int[MaxComboLength];
-            for (int code = MinUsefulKey; code < MaxUsefulKey; code++)
+            var countdownTrigger = true;
+            for (var code = MinUsefulKey; code < MaxUsefulKey; code++)
             {
                 if (!(Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && UnityEngine.Input.GetKey((KeyCode)code)))
                 {
@@ -67,8 +63,7 @@ namespace OWML.ModHelper.Input
                 keysCount++;
                 if (keysCount > MaxComboLength)
                 {
-                    hash = (int)RegistrationCode.CombinationTooLong;
-                    break;
+                    return (int)RegistrationCode.CombinationTooLong;
                 }
                 hash = hash * MaxUsefulKey + code;
                 if (Time.realtimeSinceStartup - _timeout[code] > Cooldown)
@@ -76,86 +71,121 @@ namespace OWML.ModHelper.Input
                     countdownTrigger = false;
                 }
             }
+            if (countdownTrigger)
+            {
+                hash = -hash;
+            }
+            return hash;
+        }
+
+        private IModInputCombination CombinationFromKeyboard()
+        {
+            var countdownTrigger = false;
+            var hash = HashFromKeyboard();
+            if (hash < 0)
+            {
+                countdownTrigger = true;
+                hash = -hash;
+            }
             if (!_comboRegistry.ContainsKey(hash))
             {
-                if (_lastPressed != null)
-                {
-                    _lastPressed.SetPressed(false);
-                }
-                _lastPressed = null;
-                return;
+                return null;
             }
+
             var combination = _comboRegistry[hash];
-            if (!(combination == _lastPressed) && countdownTrigger)
+            if (!(combination == _currentCombination) && countdownTrigger)
+            {
+                return null;
+            }
+
+            if (hash < 350)
+            {
+                return combination;
+            }
+            while (hash > 0)
+            {
+                _timeout[hash % MaxUsefulKey] = Time.realtimeSinceStartup;
+                hash /= MaxUsefulKey;
+            }
+            return combination;
+        }
+
+        private void UpdateCurrentCombination()
+        {
+            if (Time.realtimeSinceStartup - _lastCombinationUpdate < Time.unscaledDeltaTime / 2)
             {
                 return;
             }
-            if (_lastPressed != null && _lastPressed != combination)
+            _lastCombinationUpdate = Time.realtimeSinceStartup;
+            var combination = CombinationFromKeyboard();
+            if (_currentCombination != null && _currentCombination != combination)
             {
-                _lastPressed.SetPressed(false);
+                _currentCombination.SetPressed(false);
             }
-            _lastPressed = (ModInputCombination)combination;
-            _lastPressed.SetPressed();
-            if (keysCount > 1)
+            if (combination == null)
             {
+                _currentCombination = null;
                 return;
             }
-            for (var i = 0; i < keysCount; i++)
-            {
-                _timeout[keys[i]] = Time.realtimeSinceStartup;
-            }
+            _currentCombination = (ModInputCombination)combination;
+            _currentCombination.SetPressed();
         }
 
         public bool IsPressedExact(IModInputCombination combination)
         {
-            UpdateCombo();
-            return _lastPressed == combination;
+            UpdateCurrentCombination();
+            return _currentCombination == combination;
         }
 
         public bool IsNewlyPressedExact(IModInputCombination combination, bool keep = false)
         {
-            UpdateCombo();
-            return _lastPressed == combination && combination.IsFirst(keep);
+            UpdateCurrentCombination();
+            return _currentCombination == combination && combination.IsFirst(keep);
         }
 
         public bool WasTappedExact(IModInputCombination combination, bool keep = false)
         {
-            UpdateCombo();
-            return combination != _lastPressed
+            UpdateCurrentCombination();
+            return combination != _currentCombination
                 && (combination.PressDuration < TapDuration)
                 && combination.IsFirst(keep);
         }
 
         public bool WasNewlyReleasedExact(IModInputCombination combination, bool keep = false)
         {
-            UpdateCombo();
-            return _lastPressed != combination && combination.IsFirst(keep);
+            UpdateCurrentCombination();
+            return _currentCombination != combination && combination.IsFirst(keep);
+        }
+
+        private void UpdateSinglesPressed()
+        {
+            if (!(Time.realtimeSinceStartup - _lastSingleUpdate > Time.unscaledDeltaTime / 2))
+            {
+                return;
+            }
+            _lastSingleUpdate = Time.realtimeSinceStartup;
+            var toRemove = new List<IModInputCombination>();
+            foreach (var combo in _singlesPressed)
+            {
+                if (!IsPressed(combo))
+                {
+                    ((ModInputCombination)combo).SetPressed(false);
+                    toRemove.Add(combo);
+                }
+            }
+            foreach (var combo in toRemove)
+            {
+                _singlesPressed.Remove(combo);
+            }
         }
 
         private bool IsPressedSingle(IModInputCombination combination)
         {
-            if (Time.realtimeSinceStartup - _lastSingleUpdate > Time.unscaledDeltaTime / 2)
-            {
-                _lastSingleUpdate = Time.realtimeSinceStartup;
-                var toRemove = new List<IModInputCombination>();
-                foreach (var combo in _singlePressed)
-                {
-                    if (!IsPressed(combo))
-                    {
-                        ((ModInputCombination)combo).SetPressed(false);
-                        toRemove.Add(combo);
-                    }
-                }
-                foreach (var combo in toRemove)
-                {
-                    _singlePressed.Remove(combo);
-                }
-            }
             foreach (var key in ((ModInputCombination)combination).GetSingles())
             {
                 if (UnityEngine.Input.GetKey(key) && !ShouldIgnore(key))
                 {
-                    _singlePressed.Add(combination);
+                    _singlesPressed.Add(combination);
                     ((ModInputCombination)combination).SetPressed();
                     return true;
                 }
@@ -176,7 +206,7 @@ namespace OWML.ModHelper.Input
         public bool WasTapped(IModInputCombination combination, bool keep = false)
         {
             return (!(IsPressedExact(combination) || IsPressedSingle(combination)))
-                && (combination.PressDuration < TapDuration) 
+                && (combination.PressDuration < TapDuration)
                 && combination.IsFirst(keep);
         }
 
@@ -186,91 +216,108 @@ namespace OWML.ModHelper.Input
                 && combination.IsFirst(keep);
         }
 
-        private KeyCode StringToKeyCode(string key)
+        private KeyCode StringToKeyCodeKeyboard(string keyboardKey)
         {
-            key = key.Trim();
-            if (key.Contains(XboxPrefix))
-            {
-                var xboxKey = key.Substring(XboxPrefix.Length);
-                var xboxCode = (XboxButton)Enum.Parse(typeof(XboxButton), xboxKey, true);
-                if (Enum.IsDefined(typeof(XboxButton), xboxCode))
-                {
-                    return InputTranslator.GetKeyCode(xboxCode, false);
-                }
-                return KeyCode.None;
-            }
-            var changedKey = key;
-            if (key == "control" || key == "ctrl")
+            if (keyboardKey == "control" || keyboardKey == "ctrl")
             {
                 return KeyCode.LeftControl;
             }
-            if (key == "shift")
+            if (keyboardKey == "shift")
             {
                 return KeyCode.LeftShift;
             }
-            if (key == "alt")
+            if (keyboardKey == "alt")
             {
                 return KeyCode.LeftAlt;
             }
-            var code = (KeyCode)Enum.Parse(typeof(KeyCode), changedKey, true);
-            if (Enum.IsDefined(typeof(KeyCode), code))
-            {
-                return code;
-            }
-            return KeyCode.None;
+            var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
+            return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
         }
 
-        private long ParseCombination(string combo, bool forRemoval = false)
+        private KeyCode StringToKeyCodeXbox(string xboxKey)
         {
-            var thisCombination = new int[MaxComboLength];
-            var i = 0;
-            foreach (var key in combo.Trim().ToLower().Split('+'))
+            var xboxCode = (XboxButton)Enum.Parse(typeof(XboxButton), xboxKey, true);
+            return (Enum.IsDefined(typeof(XboxButton), xboxCode)) ?
+                InputTranslator.GetKeyCode(xboxCode, false) : KeyCode.None;
+        }
+
+        private KeyCode StringToKeyCode(string key)
+        {
+            key = key.Trim();
+            if (!key.Contains(XboxPrefix))
             {
-                if (i >= MaxComboLength)
-                {
-                    return (int)RegistrationCode.CombinationTooLong;
-                }
+                return StringToKeyCodeKeyboard(key);
+            }
+            return StringToKeyCodeXbox(key.Substring(XboxPrefix.Length));
+        }
+
+        private int[] StringToKeyArray(string stringCombination)
+        {
+
+            var keyCombination = new int[MaxComboLength];
+            var i = 0;
+            foreach (var key in stringCombination.Trim().ToLower().Split('+'))
+            {
                 KeyCode code = StringToKeyCode(key);
                 if (code == KeyCode.None)
                 {
-                    return (int)RegistrationCode.InvalidCombination;
+                    keyCombination[0] = (int)RegistrationCode.InvalidCombination;
+                    return keyCombination;
                 }
-                thisCombination[i] = (int)code;
+                if (i >= MaxComboLength)
+                {
+                    keyCombination[0] = (int)RegistrationCode.CombinationTooLong;
+                    return keyCombination;
+                }
+                keyCombination[i] = (int)code;
                 i++;
             }
-            Array.Sort(thisCombination);
+            Array.Sort(keyCombination);
+            return keyCombination;
+        }
+
+        private long StringToHash(string stringCombination, bool forRemoval = false)
+        {
+            var keyCombination = StringToKeyArray(stringCombination);
+            if (keyCombination[0] < 0)
+                return keyCombination[0];
             long hash = 0;
-            for (i = 0; i < MaxComboLength; i++)
+            for (var i = 0; i < MaxComboLength; i++)
             {
-                hash = hash * MaxUsefulKey + thisCombination[i];
+                hash = hash * MaxUsefulKey + keyCombination[i];
             }
-            if (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0)
+            if (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0 && !forRemoval)
             {
                 return (int)RegistrationCode.CombinationTaken;
             }
             return (_comboRegistry.ContainsKey(hash) && !forRemoval ? (int)RegistrationCode.CombinationTaken : hash);
         }
 
-        private RegistrationCode SwapCombination(ModInputCombination combination, bool toUnregister)
+        private List<long> StringToHashes(string combinations, bool forRemoval = false)
         {
-            if (combination == null || combination.Combo == null)
-            {
-                _logger.Log("combination is null");
-                return RegistrationCode.InvalidCombination;
-            }
-            if (!_comboRegistry.ContainsValue(combination) && toUnregister)
-            {
-                return RegistrationCode.InvalidCombination;
-            }
             var hashes = new List<long>();
-            foreach (var combo in combination.Combo.ToLower().Split('/'))
+            foreach (var combo in combinations.Split('/'))
             {
-                var hash = ParseCombination(combo, toUnregister);
+                var hash = StringToHash(combo, forRemoval);
+                hashes.Add(hash);
                 if (hash <= 0)
                 {
-                    return (RegistrationCode)hash;
+                    return hashes;
                 }
-                hashes.Add(hash);
+            }
+            return hashes;
+        }
+
+        private RegistrationCode SwapCombination(ModInputCombination combination, bool toUnregister)
+        {
+            if ((combination?.Combo == null) || (!_comboRegistry.ContainsValue(combination) && toUnregister))
+            {
+                return RegistrationCode.InvalidCombination;
+            }
+            var hashes = StringToHashes(combination.Combo.ToLower(), toUnregister);
+            if (hashes[hashes.Count - 1] <= 0)
+            {
+                return (RegistrationCode)hashes[hashes.Count - 1];
             }
             combination.ClearSingles();
             foreach (long hash in hashes)
@@ -286,7 +333,7 @@ namespace OWML.ModHelper.Input
                     combination.AddSingle((KeyCode)hash);
                 }
             }
-            _logger.Log("succesfully registered " + combination.Combo);
+            _logger.Log($"succesfully {(toUnregister ? "un" : "")}registered " + combination.Combo);
             return RegistrationCode.AllNormal;
         }
 
@@ -320,9 +367,13 @@ namespace OWML.ModHelper.Input
                 }
             }
             if (toUnregister)
+            {
                 _gameBindingRegistry.Remove(binding);
+            }
             else
+            {
                 _gameBindingRegistry.Add(binding);
+            }
         }
 
         internal void RegisterGamesBinding(InputCommand binding)
