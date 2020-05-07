@@ -1,4 +1,6 @@
 ﻿using OWML.Common;
+using OWML.ModHelper.Events;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OWML.ModHelper
@@ -18,5 +20,14 @@ namespace OWML.ModHelper
         {
         }
 
+        public IList<IModBehaviour> GetDependants()
+        {
+            return ModHelper.Interaction.GetDependants(ModHelper.Manifest.UniqueName);
+        }
+
+        public IList<IModBehaviour> GetDependencies()
+        {
+            return ModHelper.Interaction.GetDependencies(ModHelper.Manifest.UniqueName);
+        }
     }
 }
