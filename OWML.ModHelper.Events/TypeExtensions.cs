@@ -67,5 +67,11 @@ namespace OWML.ModHelper.Events
             method?.Invoke(obj, parameters);
         }
 
+        public static T Invoke<T>(this object obj, string name, params object[] parameters)
+        {
+            var type = obj.GetType();
+            var method = type.GetAnyMethod(name);
+            return (T)method?.Invoke(obj, parameters);
+        }
     }
 }

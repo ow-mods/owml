@@ -15,5 +15,6 @@ namespace OWML.Common
         IModConfig Config { get; }
         IOwmlConfig OwmlConfig { get; }
         IModInputHandler Input { get; }
+        IModInteraction Interaction { get; }
     }
 }

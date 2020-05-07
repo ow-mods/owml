@@ -38,7 +38,6 @@
     <Reference Include="OW.Unity.Dlls, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\OW.Unity.Dlls.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
@@ -75,6 +74,7 @@
     <Compile Include="IModAsset.cs" />
     <Compile Include="IModInputCombination.cs" />
     <Compile Include="IModInputHandler.cs" />
+    <Compile Include="IModInteraction.cs" />
     <Compile Include="Menus\IModLayoutButton.cs" />
     <Compile Include="Menus\IModComboInput.cs" />
     <Compile Include="Menus\InputType.cs" />
