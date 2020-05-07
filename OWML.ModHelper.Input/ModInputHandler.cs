@@ -71,11 +71,7 @@ namespace OWML.ModHelper.Input
                     countdownTrigger = false;
                 }
             }
-            if (countdownTrigger)
-            {
-                hash = -hash;
-            }
-            return hash;
+            return countdownTrigger ? -hash : hash; 
         }
 
         private IModInputCombination CombinationFromKeyboard()
@@ -98,7 +94,7 @@ namespace OWML.ModHelper.Input
                 return null;
             }
 
-            if (hash < 350)
+            if (hash < MaxUsefulKey)
             {
                 return combination;
             }
@@ -280,7 +276,9 @@ namespace OWML.ModHelper.Input
         {
             var keyCombination = StringToKeyArray(stringCombination);
             if (keyCombination[0] < 0)
+            {
                 return keyCombination[0];
+            }
             long hash = 0;
             for (var i = 0; i < MaxComboLength; i++)
             {
