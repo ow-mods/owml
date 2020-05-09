@@ -15,22 +15,10 @@ namespace OWML.ModHelper.Logging
 
         public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
-            if (_socket != null)
+            if (_socket == null)
             {
-                return;
+                CreateSocket();
             }
-
-            var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
-            if (!int.TryParse(consolePortArgument, out var port))
-            {
-                _logger.Log("Error: Missing or incorrectly formatted console port argument");
-                return;
-            }
-
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            var ipAddress = IPAddress.Parse(LocalHost);
-            var endPoint = new IPEndPoint(ipAddress, port);
-            _socket.Connect(endPoint);
         }
 
         public override void WriteLine(string s)
@@ -46,7 +34,22 @@ namespace OWML.ModHelper.Logging
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
-        private static void InternalWriteLine(string message)
+        private void CreateSocket()
+        {
+            var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
+            if (!int.TryParse(consolePortArgument, out var port))
+            {
+                _logger.Log("Error: Missing or incorrectly formatted console port argument");
+                return;
+            }
+
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            var ipAddress = IPAddress.Parse(LocalHost);
+            var endPoint = new IPEndPoint(ipAddress, port);
+            _socket.Connect(endPoint);
+        }
+
+        private void InternalWriteLine(string message)
         {
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             _socket?.Send(bytes);
