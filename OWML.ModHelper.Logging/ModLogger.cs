@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Logging
             Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
-        private static void LogInternal(string message)
+        private void LogInternal(string message)
         {
             File.AppendAllText(_config.LogFilePath, $"{DateTime.Now}: {message}{Environment.NewLine}");
         }
