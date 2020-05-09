@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Logging
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
-        private void InternalWriteLine(string message)
+        private static void InternalWriteLine(string message)
         {
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             _writer.Write(bytes, 0, bytes.Length);

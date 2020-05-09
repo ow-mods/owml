@@ -33,7 +33,7 @@ namespace OWML.ModHelper.Logging
             }
         }
 
-        internal void CallWriteCallback(IModManifest manifest, string text)
+        internal static void CallWriteCallback(IModManifest manifest, string text)
         {
             OnConsole?.Invoke(manifest, text);
         }
