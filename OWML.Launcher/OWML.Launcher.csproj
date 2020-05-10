@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="OutputListener.cs" />
-    <Compile Include="OutputWriter.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

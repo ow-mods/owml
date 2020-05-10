@@ -2,7 +2,7 @@
 using System.Linq;
 using OWML.Common;
 
-namespace OWML.Launcher
+namespace OWML.ModHelper.Logging
 {
     public class OutputWriter : IModConsole
     {

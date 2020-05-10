@@ -38,17 +38,5 @@ namespace OWML.ModHelper
         {
             OnConsole?.Invoke(manifest, text);
         }
-
-        public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest)
-        {
-            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
-            {
-                return new ModSocketOutput(owmlConfig, logger, manifest);
-            }
-            else
-            {
-                return new ModFileOutput(owmlConfig, logger, manifest);
-            }
-        }
     }
 }
