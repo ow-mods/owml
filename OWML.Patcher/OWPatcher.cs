@@ -43,7 +43,8 @@ namespace OWML.Patcher
                 "System.Runtime.Serialization.dll",
                 "0Harmony.dll",
                 "NAudio-Unity.dll",
-                "OWML.Manifest.json"
+                "OWML.Manifest.json",
+                "OWML.ModHelper.Interaction.dll"
             };
             foreach (var filename in filesToCopy)
             {

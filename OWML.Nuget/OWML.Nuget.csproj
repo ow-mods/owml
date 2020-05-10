@@ -62,6 +62,10 @@
       <Project>{133e8d45-7b68-456c-b860-52986090c64b}</Project>
       <Name>OWML.ModHelper.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Interaction\OWML.ModHelper.Interaction.csproj">
+      <Project>{3212c570-d4c3-4083-a3db-616f80ba5dab}</Project>
+      <Name>OWML.ModHelper.Interaction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj">
       <Project>{b874cc24-8340-4238-ac9d-1bfb41186bb5}</Project>
       <Name>OWML.ModHelper.Menus</Name>

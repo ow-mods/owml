@@ -30,11 +30,12 @@ namespace OWML.ModLoader
             logger.Log("Got config!");
             var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest);
             console.WriteLine("Mod loader has been initialized.");
+            var modSorter = new ModSorter(console);
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
             var events = new ModEvents(logger, console, harmonyHelper);
             var menus = new ModMenus(logger, console, events);
-            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper);
+            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, modSorter);
             owo.LoadMods();
         }
 
