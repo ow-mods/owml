@@ -11,14 +11,13 @@ namespace OWML.ModHelper.Logging
             {
                 return new ModSocketOutput(owmlConfig, logger, manifest);
             }
-            else if (logger == null)
+
+            if (logger == null)
             {
                 return new OutputWriter();
             }
-            else
-            {
-                return new ModFileOutput(owmlConfig, logger, manifest);
-            }
+
+            return new ModFileOutput(owmlConfig, logger, manifest);
         }
     }
 }
