@@ -1,7 +1,6 @@
 ﻿using OWML.Common;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace OWML.ModHelper.Interaction
 {

@@ -11,7 +11,7 @@ namespace OWML.ModHelper
         public static ModLogger Instance { get; private set; }
 
         public static event Action<IModManifest, string> OnLog;
-
+        
 
         private static IOwmlConfig _config;
         private readonly IModManifest _manifest;

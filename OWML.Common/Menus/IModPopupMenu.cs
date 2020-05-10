@@ -19,8 +19,5 @@ namespace OWML.Common.Menus
         IModPopupMenu Copy(string title);
         void Initialize(Menu menu);
         void Initialize(Menu menu, LayoutGroup layoutGroup);
-
-        [Obsolete("Use Copy instead")]
-        IModPopupMenu CreateCopy(string name);
     }
 }

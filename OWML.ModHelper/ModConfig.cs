@@ -59,11 +59,5 @@ namespace OWML.ModHelper
             }
         }
 
-        [Obsolete("Use GetSettingsValue instead")]
-        public T GetSetting<T>(string key)
-        {
-            return GetSettingsValue<T>(key);
-        }
-
     }
 }

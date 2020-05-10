@@ -45,12 +45,6 @@ namespace OWML.ModHelper.Events
             PatchEvent<T>(ev);
         }
 
-        [Obsolete("Use Subscribe instead")]
-        public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
-        {
-            Subscribe<T>(ev);
-        }
-
         private void SubscribeToEvent<T>(Common.Events ev)
         {
             var type = typeof(T);
