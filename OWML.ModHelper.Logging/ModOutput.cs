@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using OWML.Common;
-using OWML.ModHelper.Logging;
 
 namespace OWML.ModHelper
 {
