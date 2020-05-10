@@ -5,7 +5,7 @@ namespace OWML.Common
 {
     public interface IModEvents
     {
-        Action<MonoBehaviour, Events> OnEvent { get; set; }
+        event Action<MonoBehaviour, Events> OnEvent;
 
         void Subscribe<T>(Events ev) where T : MonoBehaviour;
 

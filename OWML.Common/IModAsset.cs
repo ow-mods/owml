@@ -4,6 +4,6 @@ namespace OWML.Common
 {
     public interface IModAsset<T>
     {
-        Action<T> OnLoaded { get; set; }
+        event Action<T> OnLoaded;
     }
 }

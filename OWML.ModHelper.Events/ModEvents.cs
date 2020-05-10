@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Events
 {
     public class ModEvents : IModEvents
     {
-        public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
+        public event Action<MonoBehaviour, Common.Events> OnEvent;
 
         private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
         private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Events>>();

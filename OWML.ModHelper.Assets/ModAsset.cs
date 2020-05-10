@@ -6,7 +6,7 @@ namespace OWML.ModHelper.Assets
 {
     public class ModAsset<T> : MonoBehaviour, IModAsset<T>
     {
-        public Action<T> OnLoaded { get; set; }
+        public event Action<T> OnLoaded;
 
         public T Asset { get; private set; }
 
