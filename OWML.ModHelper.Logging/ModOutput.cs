@@ -10,8 +10,7 @@ namespace OWML.ModHelper
 {
     public abstract class ModOutput : IModConsole
     {
-        [Obsolete("Use ModHelper.Console instead")]
-        public static ModOutput Instance { get; private set; }
+        public static ModOutput OwmlOutput { get; private set; }
 
         public static event Action<IModManifest, string> OnConsole;
 
@@ -30,7 +29,7 @@ namespace OWML.ModHelper
 
             if (manifest.Name == "OWML")
             {
-                Instance = this;
+                OwmlOutput = this;
             }
         }
 
