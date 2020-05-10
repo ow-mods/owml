@@ -7,7 +7,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper.Logging
 {
-    public class ModSocketOutput : ModConsole
+    public class ModSocketOutput : ModOutput
     {
         private const string LocalHost = "127.0.0.1";
 
