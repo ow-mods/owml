@@ -4,8 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using OWML.Common;
+using OWML.ModHelper.Logging;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.ModHelper
 {
     public abstract class ModConsole : IModConsole
     {
