@@ -16,13 +16,8 @@ namespace OWML.ModLoader
         public IList<IModData> SortMods(IList<IModData> mods)
         {
             var modDict = new Dictionary<string, IModData>();
-            var modList = new List<string>();
+            var modList = mods.Select(mod => mod.Manifest.UniqueName).ToList();
             var set = new HashSet<Edge>();
-
-            foreach (var mod in mods)
-            {
-                modList.Add(mod.Manifest.UniqueName);
-            }
 
             foreach (var mod in mods)
             {
@@ -43,7 +38,6 @@ namespace OWML.ModLoader
                 }
             }
 
-
             var sortedList = TopologicalSort(
                 new HashSet<string>(modList),
                 new HashSet<Edge>(set)
@@ -63,7 +57,7 @@ namespace OWML.ModLoader
 
         // Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
 
-        static List<string> TopologicalSort(HashSet<string> nodes, HashSet<Edge> edges)
+        private static List<string> TopologicalSort(HashSet<string> nodes, HashSet<Edge> edges)
         {
             var sortedList = new List<string>();
 
@@ -89,26 +83,19 @@ namespace OWML.ModLoader
                 }
             }
 
-            if (edges.Any())
-            {
-                // This will be caught and handled in the caller method
-                return null;
-            }
-            else
-            {
-                return sortedList;
-            }
+            return edges.Any() ? null : sortedList;
         }
     }
 
-    public class Edge
+    internal class Edge
     {
-        public string First { get; private set; }
-        public string Second { get; private set; }
+        public string First { get; }
+        public string Second { get; }
+
         internal Edge(string first, string second)
         {
-            this.First = first;
-            this.Second = second;
+            First = first;
+            Second = second;
         }
     }
 }

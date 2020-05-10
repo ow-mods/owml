@@ -14,10 +14,10 @@ namespace OWML.ModHelper.Interaction
         {
             _modList = list;
 
-            RegenDicts();
+            RegenerateDictionaries();
         }
 
-        private void RegenDicts()
+        private void RegenerateDictionaries()
         {
             _dependantDict = new Dictionary<string, List<IModBehaviour>>();
             _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
@@ -46,7 +46,7 @@ namespace OWML.ModHelper.Interaction
         {
             if (_dependantDict.Count != _modList.Count)
             {
-                RegenDicts();
+                RegenerateDictionaries();
             }
             return _dependantDict[dependencyUniqueName];
         }
@@ -55,7 +55,7 @@ namespace OWML.ModHelper.Interaction
         {
             if (_dependantDict.Count != _modList.Count)
             {
-                RegenDicts();
+                RegenerateDictionaries();
             }
             return _dependencyDict[uniqueName];
         }

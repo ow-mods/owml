@@ -107,7 +107,7 @@ namespace OWML.Launcher
                    File.Exists($"{gamePath}/OuterWilds.exe");
         }
 
-        public class EpicManifest
+        internal class EpicManifest
         {
             [JsonProperty("InstallLocation")]
             public string InstallLocation { get; set; }

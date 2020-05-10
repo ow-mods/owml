@@ -22,7 +22,7 @@ namespace OWML.ModLoader
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly ModSorter _sorter;
 
-        List<IModBehaviour> _modList = new List<IModBehaviour>();
+        private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, ModSorter sorter)
@@ -49,9 +49,9 @@ namespace OWML.ModLoader
             var priorityMods = _modFinder.GetMods().Where(mod => mod.Manifest.PriorityLoad).ToList();
             var sortedPriority = _sorter.SortMods(priorityMods);
 
-            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName);
+            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName).ToList();
 
-            var sortedMods = Enumerable.Concat(sortedPriority, sortedNormal);
+            var sortedMods = sortedPriority.Concat(sortedNormal);
 
             foreach (var mod in sortedMods)
             {

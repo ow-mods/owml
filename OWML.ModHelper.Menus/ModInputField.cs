@@ -11,7 +11,7 @@ namespace OWML.ModHelper.Menus
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
 
-        public ModInputField(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu) : base(toggle, menu)
+        protected ModInputField(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu) : base(toggle, menu)
         {
             ToggleElement = toggle;
             InputMenu = inputMenu;
@@ -22,11 +22,12 @@ namespace OWML.ModHelper.Menus
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
 
-            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            var parent = Button.Button.transform.parent;
+            var layoutGroup = parent.parent.GetComponent<HorizontalLayoutGroup>();
             layoutGroup.childControlWidth = true;
             layoutGroup.childForceExpandWidth = true;
 
-            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
+            parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
         protected abstract void Open();

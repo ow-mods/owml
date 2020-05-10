@@ -54,17 +54,12 @@ namespace OWML.ModHelper.Events
                 return;
             }
             var property = type.GetAnyProperty(name);
-            if (property != null)
-            {
-                property.SetValue(obj, value, null);
-            }
+            property?.SetValue(obj, value, null);
         }
 
         public static void Invoke(this object obj, string name, params object[] parameters)
         {
-            var type = obj.GetType();
-            var method = type.GetAnyMethod(name);
-            method?.Invoke(obj, parameters);
+            Invoke<object>(obj, name, parameters);
         }
 
         public static T Invoke<T>(this object obj, string name, params object[] parameters)
