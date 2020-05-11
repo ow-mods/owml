@@ -9,8 +9,8 @@ namespace OWML.ModHelper.Menus
 {
     public class ModPopupMenu : ModMenu, IModPopupMenu
     {
-        public Action OnOpen { get; set; }
-        public Action OnClose { get; set; }
+        public event Action OnOpen;
+        public event Action OnClose;
 
         public bool IsOpen { get; private set; }
 

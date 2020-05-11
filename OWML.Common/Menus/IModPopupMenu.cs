@@ -5,8 +5,8 @@ namespace OWML.Common.Menus
 {
     public interface IModPopupMenu : IModMenu
     {
-        Action OnOpen { get; set; }
-        Action OnClose { get; set; }
+        event Action OnOpen;
+        event Action OnClose;
 
         bool IsOpen { get; }
         string Title { get; set; }

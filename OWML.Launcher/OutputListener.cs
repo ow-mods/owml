@@ -10,7 +10,7 @@ namespace OWML.Launcher
     {
         private const int ReadLength = 119;
 
-        public Action<string> OnOutput;
+        public event Action<string> OnOutput;
 
         private readonly IOwmlConfig _config;
         private FileStream _reader;
