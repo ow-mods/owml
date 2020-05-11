@@ -39,12 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModOutput.cs" />
-    <Compile Include="ModFileOutput.cs" />
-    <Compile Include="ModLogger.cs" />
-    <Compile Include="ModSocketOutput.cs" />
-    <Compile Include="OutputFactory.cs" />
-    <Compile Include="OutputWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,6 @@ using OWML.Common.Menus;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Logging;
 using OWML.ModHelper.Interaction;
 using UnityEngine;
 

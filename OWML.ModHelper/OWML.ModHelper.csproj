@@ -74,6 +74,12 @@
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
+    <Compile Include="ModFileOutput.cs" />
+    <Compile Include="ModLogger.cs" />
+    <Compile Include="ModOutput.cs" />
+    <Compile Include="ModSocketOutput.cs" />
+    <Compile Include="OutputFactory.cs" />
+    <Compile Include="OutputWriter.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModHelper.cs" />
@@ -92,10 +98,6 @@
     <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
       <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
       <Name>OWML.ModHelper.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Logging\OWML.ModHelper.Logging.csproj">
-      <Project>{133e8d45-7b68-456c-b860-52986090c64b}</Project>
-      <Name>OWML.ModHelper.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -71,10 +71,6 @@
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Logging\OWML.ModHelper.Logging.csproj">
-      <Project>{133E8D45-7B68-456C-B860-52986090C64B}</Project>
-      <Name>OWML.ModHelper.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
       <Name>OWML.ModHelper</Name>

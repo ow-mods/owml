@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using OWML.Common;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.ModHelper
 {
     public class ModFileOutput : ModOutput
     {

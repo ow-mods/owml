@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.ModHelper.Logging;
 
 namespace OWML.ModHelper
 {

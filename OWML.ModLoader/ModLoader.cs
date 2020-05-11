@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Logging;
 using OWML.ModHelper.Menus;
 using UnityEngine;
 
