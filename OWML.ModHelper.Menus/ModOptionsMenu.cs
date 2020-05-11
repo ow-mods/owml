@@ -14,16 +14,14 @@ namespace OWML.ModHelper.Menus
         public IModTabMenu InputTab { get; private set; }
         public IModTabMenu GraphicsTab { get; private set; }
 
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
         public new TabbedMenu Menu { get; private set; }
 
         private List<IModTabMenu> _tabMenus;
 
-        public ModOptionsMenu(IModLogger logger, IModConsole console) : base(logger, console)
+        public ModOptionsMenu(IModConsole console) : base(console)
         {
-            _logger = logger;
             _console = console;
         }
 
@@ -36,7 +34,7 @@ namespace OWML.ModHelper.Menus
             _tabMenus = new List<IModTabMenu>();
             foreach (var tabButton in tabButtons)
             {
-                var tabMenu = new ModTabMenu(_logger, _console, this);
+                var tabMenu = new ModTabMenu(_console, this);
                 tabMenu.Initialize(tabButton);
                 _tabMenus.Add(tabMenu);
             }
