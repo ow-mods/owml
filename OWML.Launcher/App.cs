@@ -134,7 +134,7 @@ namespace OWML.Launcher
                 _writer.WriteLine(line);
                 if (line.EndsWith(Constants.QuitKeyPhrase))
                 {
-                    Environment.Exit(0);
+                    ExitConsole();
                 }
             }
         }
