@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OWML.Common
 {
@@ -10,8 +9,5 @@ namespace OWML.Common
         Dictionary<string, object> Settings { get; set; }
         T GetSettingsValue<T>(string key);
         void SetSettingsValue(string key, object value);
-
-        [Obsolete("Use GetSettingsValue instead")]
-        T GetSetting<T>(string key);
     }
 }

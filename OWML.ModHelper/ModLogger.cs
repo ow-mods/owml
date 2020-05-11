@@ -12,7 +12,6 @@ namespace OWML.ModHelper
 
         public static event Action<IModManifest, string> OnLog;
 
-
         private static IOwmlConfig _config;
         private readonly IModManifest _manifest;
 
