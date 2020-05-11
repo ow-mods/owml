@@ -13,14 +13,9 @@ namespace OWML.ModHelper.Menus
         public IModButton OptionsButton { get; private set; }
         public IModButton QuitButton { get; private set; }
 
-        private readonly IModLogger _logger;
-        private readonly IModConsole _console;
-
-        public ModPauseMenu(IModLogger logger, IModConsole console) : base(logger, console)
+        public ModPauseMenu(IModConsole console) : base(console)
         {
-            _logger = logger;
-            _console = console;
-            OptionsMenu = new ModOptionsMenu(logger, console);
+            OptionsMenu = new ModOptionsMenu(console);
         }
 
         public void Initialize(SettingsManager settingsManager)
