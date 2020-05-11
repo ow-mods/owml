@@ -6,7 +6,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper
 {
-    public class ModFileOutput : ModOutput
+    public class ModFileOutput : ModConsole
     {
         private static FileStream _writer;
 

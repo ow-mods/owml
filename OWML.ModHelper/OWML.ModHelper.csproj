@@ -76,7 +76,7 @@
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModFileOutput.cs" />
     <Compile Include="ModLogger.cs" />
-    <Compile Include="ModOutput.cs" />
+    <Compile Include="ModConsole.cs" />
     <Compile Include="ModSocketOutput.cs" />
     <Compile Include="OutputFactory.cs" />
     <Compile Include="OutputWriter.cs" />

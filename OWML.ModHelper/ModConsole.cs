@@ -3,9 +3,10 @@ using OWML.Common;
 
 namespace OWML.ModHelper
 {
-    public abstract class ModOutput : IModConsole
+    public abstract class ModConsole : IModConsole
     {
-        public static ModOutput OwmlOutput { get; private set; }
+        [Obsolete("Use ModHelper.Console instead")]
+        public static ModConsole Instance { get; private set; }
 
         public static event Action<IModManifest, string> OnConsole;
 
@@ -16,7 +17,7 @@ namespace OWML.ModHelper
         public abstract void WriteLine(string s);
         public abstract void WriteLine(params object[] s);
 
-        public ModOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest)
+        public ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {
             _logger = logger;
             _manifest = manifest;
@@ -24,7 +25,7 @@ namespace OWML.ModHelper
 
             if (manifest.Name == "OWML")
             {
-                OwmlOutput = this;
+                Instance = this;
             }
         }
 

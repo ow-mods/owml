@@ -7,7 +7,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper
 {
-    public class ModSocketOutput : ModOutput
+    public class ModSocketOutput : ModConsole
     {
         private const string LocalHost = "127.0.0.1";
         private const string NameMessageSeparator = ";;";
