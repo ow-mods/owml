@@ -19,14 +19,9 @@ namespace OWML.ModHelper.Menus
 
         private TitleAnimationController _anim;
 
-        private readonly IModLogger _logger;
-        private readonly IModConsole _console;
-
-        public ModMainMenu(IModLogger logger, IModConsole console) : base(logger, console)
+        public ModMainMenu(IModConsole console) : base(console)
         {
-            _logger = logger;
-            _console = console;
-            OptionsMenu = new ModOptionsMenu(logger, console);
+            OptionsMenu = new ModOptionsMenu(console);
         }
 
         public void Initialize(TitleScreenManager titleScreenManager)

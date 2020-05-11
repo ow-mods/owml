@@ -12,18 +12,12 @@ namespace OWML.ModHelper.Menus
         public IModsMenu ModsMenu { get; }
         public IModInputMenu InputMenu { get; }
 
-        private readonly IModLogger _logger;
-        private readonly IModConsole _console;
-
-        public ModMenus(IModLogger logger, IModConsole console, IModEvents events)
+        public ModMenus(IModConsole console, IModEvents events)
         {
-            _logger = logger;
-            _console = console;
-
-            MainMenu = new ModMainMenu(logger, console);
-            PauseMenu = new ModPauseMenu(logger, console);
-            ModsMenu = new ModsMenu(logger, console, this);
-            InputMenu = new ModInputMenu(logger, console);
+            MainMenu = new ModMainMenu(console);
+            PauseMenu = new ModPauseMenu(console);
+            ModsMenu = new ModsMenu(console, this);
+            InputMenu = new ModInputMenu(console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);

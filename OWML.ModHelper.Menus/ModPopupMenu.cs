@@ -21,12 +21,10 @@ namespace OWML.ModHelper.Menus
             set => _title.text = value;
         }
 
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        public ModPopupMenu(IModLogger logger, IModConsole console) : base(logger, console)
+        public ModPopupMenu(IModConsole console) : base(console)
         {
-            _logger = logger;
             _console = console;
         }
 
@@ -97,7 +95,7 @@ namespace OWML.ModHelper.Menus
                 return null;
             }
             var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
-            var modMenu = new ModPopupMenu(_logger, _console);
+            var modMenu = new ModPopupMenu(_console);
             modMenu.Initialize(menu);
             return modMenu;
         }
