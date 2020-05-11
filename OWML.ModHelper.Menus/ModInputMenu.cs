@@ -14,13 +14,8 @@ namespace OWML.ModHelper.Menus
 
         private PopupInputMenu _inputMenu;
 
-        private IModLogger _logger;
-        private IModConsole _console;
-
-        public ModInputMenu(IModLogger logger, IModConsole console) : base(logger, console)
+        public ModInputMenu(IModConsole console) : base(console)
         {
-            _logger = logger;
-            _console = console;
         }
 
         public void Initialize(PopupInputMenu menu)
@@ -54,7 +49,7 @@ namespace OWML.ModHelper.Menus
             var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK");
             var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
             var cancelPrompt = new ScreenPrompt(cancelCommand, "Cancel");
-            _inputMenu.SetUpPopup(message, InputLibrary.confirm2, cancelCommand, okPrompt, cancelPrompt, true, true);
+            _inputMenu.SetUpPopup(message, InputLibrary.confirm2, cancelCommand, okPrompt, cancelPrompt);
             _inputMenu.SetInputFieldPlaceholderText("");
             _inputMenu.GetInputField().text = value;
             _inputMenu.GetValue<Text>("_labelText").text = message;

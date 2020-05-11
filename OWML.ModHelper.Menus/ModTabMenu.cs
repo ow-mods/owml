@@ -8,7 +8,6 @@ namespace OWML.ModHelper.Menus
 {
     public class ModTabMenu : ModPopupMenu, IModTabMenu
     {
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly IModTabbedMenu _optionsMenu;
 
@@ -21,9 +20,8 @@ namespace OWML.ModHelper.Menus
             set => _text.text = value;
         }
 
-        public ModTabMenu(IModLogger logger, IModConsole console, IModTabbedMenu optionsMenu) : base(logger, console)
+        public ModTabMenu(IModConsole console, IModTabbedMenu optionsMenu) : base(console)
         {
-            _logger = logger;
             _console = console;
             _optionsMenu = optionsMenu;
         }
@@ -53,7 +51,7 @@ namespace OWML.ModHelper.Menus
             _text = tabButton.GetComponentInChildren<Text>();
             var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
             tabButton.SetValue("_tabbedMenu", menu);
-            var modMenu = new ModTabMenu(_logger, _console, _optionsMenu);
+            var modMenu = new ModTabMenu(_console, _optionsMenu);
             modMenu.Initialize(tabButton);
             return modMenu;
         }

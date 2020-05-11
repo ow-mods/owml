@@ -1,5 +1,4 @@
 ﻿using OWML.Common;
-using OWML.ModHelper.Events;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -10,7 +10,6 @@ namespace OWML.ModHelper.Menus
 {
     public class ModsMenu : ModPopupMenu, IModsMenu
     {
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
@@ -18,9 +17,8 @@ namespace OWML.ModHelper.Menus
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
 
-        public ModsMenu(IModLogger logger, IModConsole console, IModMenus menus) : base(logger, console)
+        public ModsMenu(IModConsole console, IModMenus menus) : base(console)
         {
-            _logger = logger;
             _console = console;
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
@@ -28,7 +26,7 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(_logger, _console, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(_console, modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
