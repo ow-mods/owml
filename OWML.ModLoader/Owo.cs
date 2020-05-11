@@ -49,9 +49,8 @@ namespace OWML.ModLoader
             var priorityMods = _modFinder.GetMods().Where(mod => mod.Manifest.PriorityLoad).ToList();
             var sortedPriority = _sorter.SortMods(priorityMods);
 
-            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName);
-
-            var sortedMods = Enumerable.Concat(sortedPriority, sortedNormal);
+            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName).ToList();
+            var sortedMods = sortedPriority.Concat(sortedNormal);
 
             foreach (var mod in sortedMods)
             {
@@ -114,7 +113,8 @@ namespace OWML.ModLoader
             var events = new ModEvents(logger, console, _harmonyHelper);
             var interaction = new ModInteraction(_modList);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
-                events, assets, storage, _menus, modData.Manifest, modData.Config, _owmlConfig, interaction);
+                events, assets, storage, _menus, modData.Manifest, modData.Config,
+                _owmlConfig, interaction);
         }
 
         private IModBehaviour InitializeMod(Type modType, IModHelper helper)
