@@ -52,7 +52,7 @@ namespace OWML.ModHelper
             if (value is JObject obj)
             {
                 obj["value"] = "" + val;
-            } 
+            }
             else
             {
                 Settings[key] = val;
