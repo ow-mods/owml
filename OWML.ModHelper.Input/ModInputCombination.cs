@@ -10,14 +10,18 @@ namespace OWML.ModHelper.Input
         public float PressDuration => LastPressedMoment - _firstPressedMoment;
 
         internal string Combo { get; }
+        internal string ModName { get; }
+        internal string Name { get; }
 
         private bool _isPressed;
         private bool _isFirst;
         private float _firstPressedMoment;
         private List<KeyCode> _singles = new List<KeyCode>();
 
-        public ModInputCombination(string combination)
+        internal ModInputCombination(IModManifest mod, string name, string combination)
         {
+            ModName = mod.Name;
+            Name = name;
             Combo = combination;
         }
 

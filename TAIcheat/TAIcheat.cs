@@ -60,48 +60,21 @@ namespace TAIcheat
             {
                 foreach (string key in inputs.Keys)
                 {
-                    RegistrationCode code = ModHelper.Input.UnregisterCombination(inputs[key]);
-                    if (code < 0)
-                    {
-                        if (code == RegistrationCode.InvalidCombination)
-                        {
-                            ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
-                        }
-                        else if (code == RegistrationCode.CombinationTooLong)
-                        {
-                            ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
-                        }
-                    }
+                    ModHelper.Input.UnregisterCombination(inputs[key]);
                 }
             }
-            inputs = new Dictionary<string, ModInputCombination>();
+            inputs = new Dictionary<string, IModInputCombination>();
             foreach (string name in config.Settings.Keys)
             {
                 if (config.GetSettingsValue<string>(name) != null)
                 {
-                    ModInputCombination tempc = new ModInputCombination(config.GetSettingsValue<string>(name));
-                    inputs.Add(name, tempc);
-                    RegistrationCode code = ModHelper.Input.RegisterCombination(tempc);
-                    if (code < 0)
-                    {
-                        if (code == RegistrationCode.InvalidCombination)
-                        {
-                            ModHelper.Console.WriteLine("Failed to register \"" + name + "\": invalid combo!");
-                        }
-                        else if (code == RegistrationCode.CombinationTooLong)
-                        {
-                            ModHelper.Console.WriteLine("Failed to register \"" + name + "\": too long!");
-                        }
-                        else if (code == RegistrationCode.CombinationTaken)
-                        {
-                            ModHelper.Console.WriteLine("Failed to register \"" + name + "\": already in use!");
-                        }
-                    }
+                    var combination = ModHelper.Input.RegisterCombination(this, name, config.GetSettingsValue<string>(name));
+                    inputs.Add(name, combination);
                 }
             }
         }
 
-        Dictionary<string, ModInputCombination> inputs;
+        Dictionary<string, IModInputCombination> inputs;
 
         private void LateUpdate()
         {

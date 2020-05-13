@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Input
         internal static ModInputHandler Instance { get; private set; }
 
         private HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
-        private Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
+        private Dictionary<long, ModInputCombination> _comboRegistry = new Dictionary<long, ModInputCombination>();
         private HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
         private float[] _timeout = new float[MaxUsefulKey];
         private int[] _gameBindingCounter = new int[MaxUsefulKey];
@@ -335,14 +335,56 @@ namespace OWML.ModHelper.Input
             return RegistrationCode.AllNormal;
         }
 
-        public RegistrationCode RegisterCombination(IModInputCombination combination)
+        private List<ModInputCombination> GetCollisions(string combination)
         {
-            return SwapCombination((ModInputCombination)combination, false);
+            List<ModInputCombination> combos = new List<ModInputCombination>();
+            var hashes = StringToHashes(combination.ToLower(), true);
+            foreach (long hash in hashes)
+            {
+                if (_comboRegistry.ContainsKey(hash))
+                {
+                    combos.Add(_comboRegistry[hash]);
+                }
+            }
+            return combos;
         }
 
-        public RegistrationCode UnregisterCombination(IModInputCombination combination)
+        public ModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
         {
-            return SwapCombination((ModInputCombination)combination, true);
+            var combo = new ModInputCombination(mod.ModHelper.Manifest, name, combination);
+            var code = SwapCombination(combo, false);
+            if (code == RegistrationCode.InvalidCombination)
+            {
+                _console.WriteLine("Failed to register \"" + mod.ModHelper.Manifest.Name + "." + name + "\": invalid combo!");
+            }
+            else if (code == RegistrationCode.CombinationTooLong)
+            {
+                _console.WriteLine("Failed to register \"" + mod.ModHelper.Manifest.Name + "." + name + "\": too long!");
+            }
+            else if (code == RegistrationCode.CombinationTaken)
+            {
+                _console.WriteLine("Failed to register \"" + mod.ModHelper.Manifest.Name + "." + name + "\": already in use by following mods:");
+                var collisions = GetCollisions(combination);
+                foreach (ModInputCombination collision in collisions)
+                {
+                    _console.WriteLine(collision.ModName + "." + collision.Name);
+                }
+            }
+            return combo;
+        }
+
+        public void UnregisterCombination(IModInputCombination combination)
+        {
+            var castComboination = (ModInputCombination)combination;
+            var code = SwapCombination(castComboination, true);
+            if (code == RegistrationCode.InvalidCombination)
+            {
+                _console.WriteLine("Failed to unregister \"" + castComboination.ModName + "." + castComboination.Name + "\": invalid combo!");
+            }
+            else if (code == RegistrationCode.CombinationTooLong)
+            {
+                _console.WriteLine("Failed to unregister \"" + castComboination.ModName + "." + castComboination.Name + "\": too long!");
+            }
         }
 
         internal void SwapGamesBinding(InputCommand binding, bool toUnregister)
