@@ -11,7 +11,7 @@ namespace OWML.ModHelper
         [Obsolete("Use ModHelper.Console instead")]
         public static ModConsole Instance { get; private set; }
 
-        public static event Action<IModManifest, string> OnConsole;
+        public static event Action<IModManifest, string> OnConsole; 
 
         private static FileStream _writer;
 

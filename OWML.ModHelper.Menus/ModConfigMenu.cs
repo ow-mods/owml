@@ -13,7 +13,6 @@ namespace OWML.ModHelper.Menus
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
 
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private readonly IModStorage _storage;
 
@@ -23,9 +22,8 @@ namespace OWML.ModHelper.Menus
         private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
-        public ModConfigMenu(IModLogger logger, IModConsole console, IModData modData, IModBehaviour mod) : base(logger, console)
+        public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) : base(console)
         {
-            _logger = logger;
             _console = console;
             ModData = modData;
             Mod = mod;

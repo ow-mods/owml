@@ -2,14 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("TAIcheat")]
+[assembly: AssemblyTitle("OWML.ModInteraction")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TAIcheat")]
+[assembly: AssemblyProduct("OWML.ModInteraction")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +17,8 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("999b196e-ecfe-4ac2-84d8-efbca6b0c2c4")]
+
+[assembly: Guid("3212c570-d4c3-4083-a3db-616f80ba5dab")]
 
 // Version information for an assembly consists of the following four values:
 //

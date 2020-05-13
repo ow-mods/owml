@@ -23,13 +23,11 @@ namespace OWML.ModHelper.Menus
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
-        private readonly IModLogger _logger;
         private readonly IModConsole _console;
         private LayoutGroup _layoutGroup;
 
-        public ModMenu(IModLogger logger, IModConsole console)
+        public ModMenu(IModConsole console)
         {
-            _logger = logger;
             _console = console;
         }
 
