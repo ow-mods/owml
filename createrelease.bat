@@ -23,7 +23,6 @@ copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Events.dll" "Release\OWML.ModHelper.Ev
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Assets.dll" "Release\OWML.ModHelper.Assets.dll"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Interaction.dll" "Release\OWML.ModHelper.Interaction.dll"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Menus.dll" "Release\OWML.ModHelper.Menus.dll"
-copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Logging.dll" "Release\OWML.ModHelper.Logging.dll"
 copy "OWML.Nuget\bin\Debug\0Harmony.dll" "Release\0Harmony.dll"
 copy "OWML.Nuget\bin\Debug\Newtonsoft.Json.dll" "Release\Newtonsoft.Json.dll"
 

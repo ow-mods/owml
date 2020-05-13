@@ -38,7 +38,6 @@ namespace OWML.Patcher
                 "OWML.ModHelper.Events.dll",
                 "OWML.ModHelper.Assets.dll",
                 "OWML.ModHelper.Menus.dll",
-                "OWML.ModHelper.Logging.dll",
                 "Newtonsoft.Json.dll",
                 "System.Runtime.Serialization.dll",
                 "0Harmony.dll",
