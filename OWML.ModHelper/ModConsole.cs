@@ -17,7 +17,7 @@ namespace OWML.ModHelper
         public abstract void WriteLine(string s);
         public abstract void WriteLine(params object[] s);
 
-        public ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
+        protected ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {
             Logger = logger;
             Manifest = manifest;
