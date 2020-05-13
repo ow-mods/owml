@@ -349,7 +349,7 @@ namespace OWML.ModHelper.Input
             return combos;
         }
 
-        public ModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
+        public IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
         {
             var combo = new ModInputCombination(mod.ModHelper.Manifest, name, combination);
             var code = SwapCombination(combo, false);
