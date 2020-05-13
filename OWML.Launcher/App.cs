@@ -42,7 +42,11 @@ namespace OWML.Launcher
 
             CopyGameFiles();
 
-            ListenForOutput();
+            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
+            if (!hasPortArgument)
+            {
+                ListenForOutput();
+            }
 
             var mods = _modFinder.GetMods();
 
@@ -51,6 +55,11 @@ namespace OWML.Launcher
             PatchGame(mods);
 
             StartGame(args);
+
+            if (hasPortArgument)
+            {
+                ExitConsole();
+            }
 
             Console.ReadLine();
         }
@@ -125,7 +134,7 @@ namespace OWML.Launcher
                 _writer.WriteLine(line);
                 if (line.EndsWith(Constants.QuitKeyPhrase))
                 {
-                    Environment.Exit(0);
+                    ExitConsole();
                 }
             }
         }
@@ -151,6 +160,11 @@ namespace OWML.Launcher
             {
                 _writer.WriteLine("Error while starting game: " + ex.Message);
             }
+        }
+
+        private void ExitConsole()
+        {
+            Environment.Exit(0);
         }
 
     }
