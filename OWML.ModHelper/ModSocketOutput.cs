@@ -24,9 +24,9 @@ namespace OWML.ModHelper
 
         public override void WriteLine(string s)
         {
-            _logger?.Log(s);
-            CallWriteCallback(_manifest, s);
-            var message = $"{_manifest.Name}{NameMessageSeparator}{s}";
+            Logger?.Log(s);
+            CallWriteCallback(Manifest, s);
+            var message = $"{Manifest.Name}{NameMessageSeparator}{s}";
             InternalWriteLine(message);
         }
 
@@ -40,7 +40,7 @@ namespace OWML.ModHelper
             var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
             if (!int.TryParse(consolePortArgument, out var port))
             {
-                _logger?.Log("Error: Missing or incorrectly formatted console port argument");
+                Logger?.Log("Error: Missing or incorrectly formatted console port argument");
                 return;
             }
 

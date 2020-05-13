@@ -10,18 +10,18 @@ namespace OWML.ModHelper
 
         public static event Action<IModManifest, string> OnConsole;
 
-        protected readonly IModLogger _logger;
-        protected readonly IModManifest _manifest;
-        protected readonly IOwmlConfig _owmlConfig;
+        protected readonly IModLogger Logger;
+        protected readonly IModManifest Manifest;
+        protected readonly IOwmlConfig OwmlConfig;
 
         public abstract void WriteLine(string s);
         public abstract void WriteLine(params object[] s);
 
         public ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {
-            _logger = logger;
-            _manifest = manifest;
-            _owmlConfig = config;
+            Logger = logger;
+            Manifest = manifest;
+            OwmlConfig = config;
 
             if (manifest.Name == "OWML")
             {

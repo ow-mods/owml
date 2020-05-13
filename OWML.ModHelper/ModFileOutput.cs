@@ -20,9 +20,9 @@ namespace OWML.ModHelper
 
         public override void WriteLine(string s)
         {
-            _logger.Log(s);
-            CallWriteCallback(_manifest, s);
-            var message = $"[{_manifest.Name}]: {s}";
+            Logger.Log(s);
+            CallWriteCallback(Manifest, s);
+            var message = $"[{Manifest.Name}]: {s}";
             InternalWriteLine(message);
         }
 
