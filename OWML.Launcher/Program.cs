@@ -14,7 +14,7 @@ namespace OWML.Launcher
         {
             var owmlConfig = GetOwmlConfig();
             var owmlManifest = GetOwmlManifest();
-            var writer = new OutputWriter();
+            var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
             var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);

@@ -41,7 +41,9 @@
     <Reference Include="OW.Unity.Dlls, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\OW.Unity.Dlls.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.5\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
@@ -75,11 +77,15 @@
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
+    <Compile Include="Logging\ModFileOutput.cs" />
+    <Compile Include="Logging\ModLogger.cs" />
+    <Compile Include="Logging\ModConsole.cs" />
+    <Compile Include="Logging\ModSocketOutput.cs" />
+    <Compile Include="Logging\OutputFactory.cs" />
+    <Compile Include="Logging\OutputWriter.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
-    <Compile Include="ModConsole.cs" />
     <Compile Include="ModHelper.cs" />
-    <Compile Include="ModLogger.cs" />
     <Compile Include="ModManifest.cs" />
     <Compile Include="ModStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
