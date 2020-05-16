@@ -127,18 +127,14 @@ namespace OWML.ModHelper.Input
 
         public void SetPressed(bool isPressed = true)
         {
+            IsFirst = isPressed != _isPressed;
             if (isPressed)
             {
-                if (!_isPressed)
+                if (IsFirst)
                 {
-                    IsFirst = true;
                     _firstPressedMoment = Time.realtimeSinceStartup;
                 }
                 LastPressedMoment = Time.realtimeSinceStartup;
-            }
-            else
-            {
-                IsFirst = true;
             }
             _isPressed = isPressed;
         }

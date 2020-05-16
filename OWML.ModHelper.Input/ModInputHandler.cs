@@ -109,7 +109,7 @@ namespace OWML.ModHelper.Input
 
         private void UpdateCurrentCombination()
         {
-            if (_lastCombinationUpdate != Time.frameCount)
+            if (_lastCombinationUpdate == Time.frameCount)
             {
                 return;
             }
@@ -142,27 +142,24 @@ namespace OWML.ModHelper.Input
 
         public bool IsNewlyPressedExact(IModInputCombination combination)
         {
-            UpdateCurrentCombination();
-            return _currentCombination == combination && combination.IsFirst;
+            return IsPressedExact(combination) && combination.IsFirst;
         }
 
         public bool WasTappedExact(IModInputCombination combination)
         {
-            UpdateCurrentCombination();
-            return combination != _currentCombination
+            return !IsPressedExact(combination)
                 && (combination.PressDuration < TapDuration)
                 && combination.IsFirst;
         }
 
         public bool WasNewlyReleasedExact(IModInputCombination combination)
         {
-            UpdateCurrentCombination();
-            return _currentCombination != combination && combination.IsFirst;
+            return !IsPressedExact(combination) && combination.IsFirst;
         }
 
         private void UpdateSinglesPressed()
         {
-            if (_lastSingleUpdate != Time.frameCount)
+            if (_lastSingleUpdate == Time.frameCount)
             {
                 return;
             }
@@ -189,6 +186,10 @@ namespace OWML.ModHelper.Input
         private bool IsPressedSingle(IModInputCombination combination)
         {
             UpdateSinglesPressed();
+            if (_currentCombination == combination)
+            {
+                return true;
+            }
             foreach (var key in combination.Singles)
             {
                 if (UnityEngine.Input.GetKey(key) && !ShouldIgnore(key))
