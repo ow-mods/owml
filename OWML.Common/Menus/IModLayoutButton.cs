@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.Common.Menus
@@ -25,5 +26,8 @@ namespace OWML.Common.Menus
         void Hide();
 
         void SetControllerCommand(SingleAxisCommand inputCommand);
+
+        void AddText(string text);
+        void AddPicture(Texture2D texture, float scale = 1.0f);
     }
 }
