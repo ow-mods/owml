@@ -286,10 +286,10 @@ namespace OWML.ModHelper.Input
                 var collisions = GetCollisions(combo.Hashes);
                 foreach (string collision in collisions)
                 {
-                    _console.WriteLine(collision);
+                    _console.WriteLine("\"" + collision + "\"");
                 }
             }
-            _logger.Log($"succesfully registered " + mod.ModHelper.Manifest.Name + "." + name);
+            _logger.Log($"succesfully registered \"" + mod.ModHelper.Manifest.Name + "." + name + "\"");
             return combo;
         }
 
@@ -304,7 +304,7 @@ namespace OWML.ModHelper.Input
             {
                 _console.WriteLine("Failed to unregister \"" + combination.ModName + "." + combination.Name + "\": too long!");
             }
-            _logger.Log($"succesfully unregistered " + combination.ModName + "." + combination.Name);
+            _logger.Log($"succesfully unregistered \"" + combination.ModName + "." + combination.Name + "\"");
         }
 
         internal void SwapGamesBinding(InputCommand binding, bool toUnregister)
