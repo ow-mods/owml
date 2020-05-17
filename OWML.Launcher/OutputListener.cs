@@ -22,10 +22,6 @@ namespace OWML.Launcher
 
         public void Start()
         {
-            if (!Directory.Exists("Logs"))
-            {
-                Directory.CreateDirectory("Logs");
-            }
             File.WriteAllText(_config.OutputFilePath, "");
             _reader = File.Open(_config.OutputFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             Task.Run(Work);
