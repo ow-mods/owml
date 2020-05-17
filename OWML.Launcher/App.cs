@@ -42,6 +42,8 @@ namespace OWML.Launcher
 
             CopyGameFiles();
 
+            CreateLogsDirectory();
+
             var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
             if (!hasPortArgument)
             {
@@ -167,5 +169,12 @@ namespace OWML.Launcher
             Environment.Exit(0);
         }
 
+        private void CreateLogsDirectory()
+        {
+            if (!Directory.Exists("Logs"))
+            {
+                Directory.CreateDirectory("Logs");
+            }
+        }
     }
 }
