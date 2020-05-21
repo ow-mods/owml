@@ -31,10 +31,10 @@ namespace OWML.ModHelper.Input
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        internal bool ShouldIgnore(KeyCode code)
+        internal bool IsPressedAndIgnored(KeyCode code)
         {
             UpdateCurrentCombination();
-            return _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
+            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
         }
 
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher)
@@ -48,11 +48,10 @@ namespace OWML.ModHelper.Input
             Instance = this;
         }
 
-        private long HashFromKeyboard()
+        private long? HashFromKeyboard()
         {
             long hash = 0;
             var keysCount = 0;
-            var keys = new int[MaxComboLength];
             var countdownTrigger = true;
             for (var code = MinUsefulKey; code < MaxUsefulKey; code++)
             {
@@ -60,11 +59,10 @@ namespace OWML.ModHelper.Input
                 {
                     continue;
                 }
-                keys[keysCount] = code;
                 keysCount++;
                 if (keysCount > MaxComboLength)
                 {
-                    return (int)RegistrationCode.CombinationTooLong;
+                    return null;
                 }
                 hash = hash * MaxUsefulKey + code;
                 if (Time.realtimeSinceStartup - _timeout[code] > Cooldown)
@@ -78,7 +76,12 @@ namespace OWML.ModHelper.Input
         private IModInputCombination CombinationFromKeyboard()
         {
             var countdownTrigger = false;
-            var hash = HashFromKeyboard();
+            var nullableHash = HashFromKeyboard();
+            if (nullableHash == null)
+            {
+                return null;
+            }
+            long hash = (long)nullableHash;
             if (hash < 0)
             {
                 countdownTrigger = true;
@@ -114,15 +117,15 @@ namespace OWML.ModHelper.Input
                 return;
             }
             _lastCombinationUpdate = Time.frameCount;
-            foreach (IModInputCombination combo in _toResetOnNextFrame)
+            foreach (var combo in _toResetOnNextFrame)
             {
-                combo.SetPressed(false);
+                combo.InternalSetPressed(false);
             }
             _toResetOnNextFrame.Clear();
             var combination = CombinationFromKeyboard();
             if (_currentCombination != null && _currentCombination != combination)
             {
-                _currentCombination.SetPressed(false);
+                _currentCombination.InternalSetPressed(false);
                 _toResetOnNextFrame.Add(_currentCombination);
             }
             if (combination == null)
@@ -131,22 +134,34 @@ namespace OWML.ModHelper.Input
                 return;
             }
             _currentCombination = combination;
-            _currentCombination.SetPressed();
+            _currentCombination.InternalSetPressed();
         }
 
         public bool IsPressedExact(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             UpdateCurrentCombination();
             return _currentCombination == combination;
         }
 
         public bool IsNewlyPressedExact(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return IsPressedExact(combination) && combination.IsFirst;
         }
 
         public bool WasTappedExact(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return !IsPressedExact(combination)
                 && (combination.PressDuration < TapDuration)
                 && combination.IsFirst;
@@ -154,6 +169,10 @@ namespace OWML.ModHelper.Input
 
         public bool WasNewlyReleasedExact(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return !IsPressedExact(combination) && combination.IsFirst;
         }
 
@@ -173,7 +192,7 @@ namespace OWML.ModHelper.Input
                 }
                 if (!IsPressed(combo))
                 {
-                    combo.SetPressed(false);
+                    combo.InternalSetPressed(false);
                     _toResetOnNextFrame.Add(combo);
                 }
             }
@@ -192,10 +211,10 @@ namespace OWML.ModHelper.Input
             }
             foreach (var key in combination.Singles)
             {
-                if (UnityEngine.Input.GetKey(key) && !ShouldIgnore(key))
+                if (UnityEngine.Input.GetKey(key) && !IsPressedAndIgnored(key))
                 {
                     _singlesPressed.Add(combination);
-                    combination.SetPressed();
+                    combination.InternalSetPressed();
                     return true;
                 }
             }
@@ -204,22 +223,38 @@ namespace OWML.ModHelper.Input
 
         public bool IsPressed(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return IsPressedExact(combination) || IsPressedSingle(combination);
         }
 
         public bool IsNewlyPressed(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return IsPressed(combination) && combination.IsFirst;
         }
 
         public bool WasTapped(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return (!IsPressed(combination)) && (combination.PressDuration < TapDuration)
                 && combination.IsFirst;
         }
 
         public bool WasNewlyReleased(IModInputCombination combination)
         {
+            if (combination == null)
+            {
+                return false;
+            }
             return (!IsPressed(combination)) && combination.IsFirst;
         }
 
@@ -258,7 +293,7 @@ namespace OWML.ModHelper.Input
             {
                 if (_comboRegistry.ContainsKey(hash))
                 {
-                    combos.Add(_comboRegistry[hash].ModName + "." + _comboRegistry[hash].Name);
+                    combos.Add(_comboRegistry[hash].FullName);
                 }
                 if (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0)
                 {
@@ -271,40 +306,50 @@ namespace OWML.ModHelper.Input
         public IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
         {
             var combo = new ModInputCombination(mod.ModHelper.Manifest, name, combination);
-            var code = SwapCombination(combo, false);
-            if (code == RegistrationCode.InvalidCombination)
+            switch (SwapCombination(combo, false))
             {
-                _console.WriteLine("Failed to register \"" + mod.ModHelper.Manifest.Name + "." + name + "\": invalid combo!");
+                case RegistrationCode.InvalidCombination:
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": invalid combination!");
+                    return null;
+                case RegistrationCode.CombinationTooLong:
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": too long!");
+                    return null;
+                case RegistrationCode.CombinationTaken:
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": already in use by following mods:");
+                    var collisions = GetCollisions(combo.Hashes);
+                    foreach (string collision in collisions)
+                    {
+                        _console.WriteLine($"\"{collision}\"");
+                    }
+                    return null;
+                case RegistrationCode.AllNormal:
+                    return combo;
+                default:
+                    return null;
             }
-            else if (code == RegistrationCode.CombinationTooLong)
-            {
-                _console.WriteLine("Failed to register \"" + mod.ModHelper.Manifest.Name + "." + name + "\": too long!");
-            }
-            else if (code == RegistrationCode.CombinationTaken)
-            {
-                _console.WriteLine("Failed to register \"" + mod.ModHelper.Manifest.Name + "." + name + "\": already in use by following mods:");
-                var collisions = GetCollisions(combo.Hashes);
-                foreach (string collision in collisions)
-                {
-                    _console.WriteLine("\"" + collision + "\"");
-                }
-            }
-            _logger.Log($"succesfully registered \"" + mod.ModHelper.Manifest.Name + "." + name + "\"");
-            return combo;
         }
 
         public void UnregisterCombination(IModInputCombination combination)
         {
-            var code = SwapCombination(combination, true);
-            if (code == RegistrationCode.InvalidCombination)
+            if (combination == null)
             {
-                _console.WriteLine("Failed to unregister \"" + combination.ModName + "." + combination.Name + "\": invalid combo!");
+                _console.WriteLine("Failed to unregister: null combination!");
+                return;
             }
-            else if (code == RegistrationCode.CombinationTooLong)
+            switch (SwapCombination(combination, true))
             {
-                _console.WriteLine("Failed to unregister \"" + combination.ModName + "." + combination.Name + "\": too long!");
+                case RegistrationCode.InvalidCombination:
+                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": invalid combination!");
+                    return;
+                case RegistrationCode.CombinationTooLong:
+                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": too long!");
+                    return;
+                case RegistrationCode.AllNormal:
+                    _logger.Log($"succesfully unregistered \"{combination.FullName}\"");
+                    return;
+                default:
+                    return;
             }
-            _logger.Log($"succesfully unregistered \"" + combination.ModName + "." + combination.Name + "\"");
         }
 
         internal void SwapGamesBinding(InputCommand binding, bool toUnregister)

@@ -17,6 +17,7 @@ namespace OWML.ModHelper.Input
         public float PressDuration => LastPressedMoment - _firstPressedMoment;
         public string ModName { get; }
         public string Name { get; }
+        public string FullName => ModName + "." + Name;
         public ReadOnlyCollection<KeyCode> Singles => _singles.AsReadOnly();
         public ReadOnlyCollection<long> Hashes => _hashes.AsReadOnly();
 
@@ -59,12 +60,11 @@ namespace OWML.ModHelper.Input
 
         private int[] StringToKeyArray(string stringCombination)
         {
-
             var keyCombination = new int[MaxComboLength];
             var i = 0;
             foreach (var key in stringCombination.Trim().ToLower().Split('+'))
             {
-                KeyCode code = StringToKeyCode(key);
+                var code = StringToKeyCode(key);
                 if (code == KeyCode.None)
                 {
                     keyCombination[0] = (int)RegistrationCode.InvalidCombination;
@@ -125,7 +125,7 @@ namespace OWML.ModHelper.Input
             _hashes = StringToHashes(combination);
         }
 
-        public void SetPressed(bool isPressed = true)
+        public void InternalSetPressed(bool isPressed = true)
         {
             IsFirst = isPressed != _isPressed;
             if (isPressed)

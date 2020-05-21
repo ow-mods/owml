@@ -38,11 +38,11 @@ namespace OWML.ModHelper.Input
                 positiveKey = ____keyPositive;
                 negativeKey = ____keyNegative;
             }
-            if (UnityEngine.Input.GetKey(positiveKey) && ModInputHandler.Instance.ShouldIgnore(positiveKey))
+            if (ModInputHandler.Instance.IsPressedAndIgnored(positiveKey))
             {
                 ____value -= 1f * axisDirection;
             }
-            if (UnityEngine.Input.GetKey(negativeKey) && ModInputHandler.Instance.ShouldIgnore(negativeKey))
+            if (ModInputHandler.Instance.IsPressedAndIgnored(negativeKey))
             {
                 ____value += 1f * axisDirection;
             }
@@ -62,19 +62,19 @@ namespace OWML.ModHelper.Input
             {
                 return;
             }
-            if (UnityEngine.Input.GetKey(____keyboardXPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardXPos))
+            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardXPos))
             {
                 ____value.x -= 1f;
             }
-            if (UnityEngine.Input.GetKey(____keyboardXNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardXNeg))
+            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardXNeg))
             {
                 ____value.x += 1f;
             }
-            if (UnityEngine.Input.GetKey(____keyboardYPos) && ModInputHandler.Instance.ShouldIgnore(____keyboardYPos))
+            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardYPos))
             {
                 ____value.y -= 1f;
             }
-            if (UnityEngine.Input.GetKey(____keyboardYNeg) && ModInputHandler.Instance.ShouldIgnore(____keyboardYNeg))
+            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardYNeg))
             {
                 ____value.y += 1f;
             }

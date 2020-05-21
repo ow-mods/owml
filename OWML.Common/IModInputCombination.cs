@@ -10,10 +10,11 @@ namespace OWML.Common
         float PressDuration { get; }
         string ModName { get; }
         string Name { get; }
+        string FullName { get; }
         ReadOnlyCollection<KeyCode> Singles { get; }
         ReadOnlyCollection<long> Hashes { get; }
         bool IsFirst { get; }
-        [Obsolete("For internal use")]
-        void SetPressed(bool isPressed = true);
+
+        void InternalSetPressed(bool isPressed = true);
     }
 }

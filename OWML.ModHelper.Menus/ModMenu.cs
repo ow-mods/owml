@@ -173,10 +173,12 @@ namespace OWML.ModHelper.Menus
         {
             return ComboInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
         }
+
         public IModComboInput AddComboInput(IModComboInput input)
         {
             return AddComboInput(input, input.Index);
         }
+
         public IModComboInput AddComboInput(IModComboInput input, int index)
         {
             ComboInputs.Add(input);
