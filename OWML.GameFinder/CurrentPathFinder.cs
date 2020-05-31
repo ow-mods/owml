@@ -2,9 +2,9 @@
 
 namespace OWML.GameFinder
 {
-    public class CurrentPathValidator : BaseFinder
+    public class CurrentPathFinder : BaseFinder
     {
-        public CurrentPathValidator(IOwmlConfig config, IModConsole writer) : base(config, writer)
+        public CurrentPathFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
         {
         }
 

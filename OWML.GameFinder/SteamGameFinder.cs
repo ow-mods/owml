@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using Gameloop.Vdf;
 using Microsoft.Win32;
 using OWML.Common;
 
@@ -11,7 +11,7 @@ namespace OWML.GameFinder
         private const string RegistryName = "SteamPath";
         private const string GameLocation = "steamapps/common/Outer Wilds";
         private const string LibraryFoldersPath = "steamapps/libraryfolders.vdf";
-        private const string LibrarySearchPattern = "\"{n}\"\t\t\"";
+        private const int MaxLibraryCount = 10;
         
         public SteamGameFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
         {
@@ -38,19 +38,16 @@ namespace OWML.GameFinder
                 return null;
             }
             var libraryFoldersContent = File.ReadAllText(libraryFoldersFile);
-            for (var i = 1; i < 10; i++)
+            var libraryFoldersVdf = VdfConvert.Deserialize(libraryFoldersContent);
+            for (var i = 1; i < MaxLibraryCount; i++)
             {
-                var libraryStart = LibrarySearchPattern.Replace("{n}", i.ToString());
-                var startIndex = libraryFoldersContent.IndexOf(libraryStart, StringComparison.Ordinal);
-                if (startIndex < 0)
+                var libraryName = i.ToString();
+                var libraryPath = libraryFoldersVdf.Value[libraryName]?.ToString();
+                if (string.IsNullOrEmpty(libraryPath))
                 {
                     Writer.WriteLine("Game not found in custom Steam library.");
                     return null;
                 }
-                var afterStartIndex = startIndex + libraryStart.Length;
-                var endIndex = libraryFoldersContent.IndexOf('\"', afterStartIndex);
-                var length = endIndex - afterStartIndex;
-                var libraryPath = libraryFoldersContent.Substring(afterStartIndex, length);
                 var gamePath = $"{libraryPath}/{GameLocation}";
                 if (IsValidGamePath(gamePath))
                 {
