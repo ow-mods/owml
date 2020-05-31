@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using OWML.Common;
+using OWML.GameFinder;
 using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
