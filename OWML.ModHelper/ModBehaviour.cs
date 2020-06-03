@@ -8,11 +8,14 @@ namespace OWML.ModHelper
     {
         public IModHelper ModHelper { get; private set; }
 
+        public object Api { get; private set; }
+
         public void Init(IModHelper modHelper)
         {
             ModHelper = modHelper;
             Configure(modHelper.Config);
             DontDestroyOnLoad(gameObject);
+            Api = GetApi();
         }
 
         public virtual void Configure(IModConfig config)
@@ -28,5 +31,7 @@ namespace OWML.ModHelper
         {
             return ModHelper.Interaction.GetDependencies(ModHelper.Manifest.UniqueName);
         }
+
+        public virtual object GetApi() => null;
     }
 }
