@@ -17,6 +17,7 @@ copy "OWML.Launcher\bin\Debug\System.Runtime.Serialization.dll" "Release\System.
 
 copy "OWML.Nuget\bin\Debug\NAudio-Unity.dll" "Release\NAudio-Unity.dll"
 copy "OWML.Nuget\bin\Debug\OWML.Common.dll" "Release\OWML.Common.dll"
+copy "OWML.Nuget\bin\Debug\OWML.Common.xml" "Release\OWML.Common.xml"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.dll" "Release\OWML.ModHelper.dll"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Events.dll" "Release\OWML.ModHelper.Events.dll"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Assets.dll" "Release\OWML.ModHelper.Assets.dll"
