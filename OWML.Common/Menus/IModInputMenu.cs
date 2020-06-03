@@ -1,5 +1,7 @@
 ﻿using System;
 
+#pragma warning disable 1591
+
 namespace OWML.Common.Menus
 {
     public interface IModInputMenu : IModMenu

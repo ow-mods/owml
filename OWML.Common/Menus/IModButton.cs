@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine.UI;
 
+#pragma warning disable 1591
+
 namespace OWML.Common.Menus
 {
     public interface IModButton
