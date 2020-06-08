@@ -7,25 +7,25 @@ namespace OWML.Common
     /// </summary>
     public interface IModHelper
     {
-        /// <summary>Handler for logging to file.</summary>
+        /// <summary>Helper for logging to file.</summary>
         IModLogger Logger { get; }
 
-        /// <summary>Handler for logging to console.</summary>
+        /// <summary>Helper for logging to console.</summary>
         IModConsole Console { get; }
 
-        /// <summary>Handler for subscribing to events.</summary>
+        /// <summary>Helper for subscribing to events.</summary>
         IModEvents Events { get; }
 
-        /// <summary>Handler for patching methods.</summary>
+        /// <summary>Helper for patching methods.</summary>
         IHarmonyHelper HarmonyHelper { get; }
 
-        /// <summary>Handler for loading assets.</summary>
+        /// <summary>Helper for loading assets.</summary>
         IModAssets Assets { get; }
 
-        /// <summary>Handler for loading / saving JSON files.</summary>
+        /// <summary>Helper for loading / saving JSON files.</summary>
         IModStorage Storage { get; }
 
-        /// <summary>Handler for making menus.</summary>
+        /// <summary>Helper for making menus.</summary>
         IModMenus Menus { get; }
 
         /// <summary>The mod manifest.</summary>
@@ -37,7 +37,7 @@ namespace OWML.Common
         /// <summary>OWML's config.</summary>
         IOwmlConfig OwmlConfig { get; }
 
-        /// <summary>Handler for interacting between mods.</summary>
+        /// <summary>Helper for interacting between mods.</summary>
         IModInteraction Interaction { get; }
     }
 }

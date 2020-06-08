@@ -2,7 +2,7 @@
 
 namespace OWML.Common
 {
-    /// <summary>Per-mod handler for interaction between mods.</summary>
+    /// <summary>Per-mod helper for interaction between mods.</summary>
     public interface IModInteraction
     {
         /// <summary>Returns list of mods that depend on the given mod.</summary>

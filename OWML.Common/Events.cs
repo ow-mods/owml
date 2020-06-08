@@ -5,28 +5,28 @@
     /// </summary>
     public enum Events
     {
-        /// <summary>Called before the Awake() method.</summary>
+        /// <summary>Called before MonoBehaviour.Awake().</summary>
         BeforeAwake = 0,
 
-        /// <summary>Called after the Awake() method.</summary>
+        /// <summary>Called after MonoBehaviour.Awake().</summary>
         AfterAwake = 1,
 
-        /// <summary>Called before the Start() method.</summary>
+        /// <summary>Called before MonoBehaviour.Start().</summary>
         BeforeStart = 2,
 
-        /// <summary>Called after the Start() method.</summary>
+        /// <summary>Called after MonoBehaviour.Start().</summary>
         AfterStart = 3,
 
-        /// <summary>Called before the OnEnable() method.</summary>
+        /// <summary>Called before MonoBehaviour.OnEnable().</summary>
         BeforeEnable = 4,
 
-        /// <summary>Called after the OnEnable() method.</summary>
+        /// <summary>Called after MonoBehaviour.OnEnable().</summary>
         AfterEnable = 5,
 
-        /// <summary>Called before the OnDisable() method.</summary>
+        /// <summary>Called before MonoBehaviour.OnDisable().</summary>
         BeforeDisable = 6,
 
-        /// <summary>Called after the OnDisable() method.</summary>
+        /// <summary>Called after MonoBehaviour.OnDisable().</summary>
         AfterDisable = 7
     }
 }

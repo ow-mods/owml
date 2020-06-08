@@ -3,7 +3,7 @@
 namespace OWML.Common
 {
     /// <summary>
-    /// Handler for finding mods.
+    /// Helper for finding mods.
     /// </summary>
     public interface IModFinder
     {

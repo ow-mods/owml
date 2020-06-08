@@ -1,7 +1,7 @@
 ﻿namespace OWML.Common
 {
     /// <summary>
-    /// Handler for writing to the console.
+    /// Helper for writing to the console.
     /// </summary>
     public interface IModConsole
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace OWML.Common
 {
     /// <summary>
-    /// Handler for subscribing to game events.
+    /// Helper for subscribing to game events.
     /// </summary>
     public interface IModEvents
     {

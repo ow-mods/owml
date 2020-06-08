@@ -3,7 +3,7 @@
 namespace OWML.Common
 {
     /// <summary>
-    /// Handler for loading assets.
+    /// Helper for loading assets.
     /// </summary>
     public interface IModAssets
     {
