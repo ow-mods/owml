@@ -286,7 +286,7 @@ namespace OWML.ModHelper.Input
             return RegistrationCode.AllNormal;
         }
 
-        private List<string> GetCollisions(ReadOnlyCollection<long> hashes)
+        public List<string> GetCollisions(ReadOnlyCollection<long> hashes)
         {
             List<string> combos = new List<string>();
             foreach (long hash in hashes)

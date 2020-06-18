@@ -1,4 +1,6 @@
-﻿namespace OWML.Common
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+namespace OWML.Common
 {
     public interface IModInputHandler
     {
@@ -12,5 +14,6 @@
         bool IsNewlyPressed(IModInputCombination combo);
         bool WasTapped(IModInputCombination combo);
         bool WasNewlyReleased(IModInputCombination combo);
+        List<string> GetCollisions(ReadOnlyCollection<long> hashes);
     }
 }

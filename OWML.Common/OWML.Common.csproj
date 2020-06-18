@@ -41,6 +41,8 @@
     <Compile Include="IModInputCombination.cs" />
     <Compile Include="IModInputHandler.cs" />
     <Compile Include="IModInteraction.cs" />
+    <Compile Include="Menus\ILayoutManager.cs" />
+    <Compile Include="Menus\IModInputCombinationElement.cs" />
     <Compile Include="Menus\IModLayoutButton.cs" />
     <Compile Include="Menus\IModComboInput.cs" />
     <Compile Include="Menus\InputType.cs" />

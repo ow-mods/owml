@@ -75,6 +75,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LayoutManager.cs" />
+    <Compile Include="ModInputCombinationElement.cs" />
+    <Compile Include="ModInputCombinationElementMenu.cs" />
+    <Compile Include="ModInputCombinationMenu.cs" />
+    <Compile Include="ModInputCombinationPopup.cs" />
     <Compile Include="ModLayoutButton.cs" />
     <Compile Include="ModButton.cs" />
     <Compile Include="ModConfigMenu.cs" />
@@ -104,6 +109,10 @@
     <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
       <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
       <Name>OWML.ModHelper.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj">
+      <Project>{be89bac0-91ff-4558-b093-79328d18ab30}</Project>
+      <Name>OWML.ModHelper.Input</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{cb57bab8-d70e-4fce-9bf1-328a924173a7}</Project>

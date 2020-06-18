@@ -23,8 +23,9 @@ namespace OWML.ModHelper.Menus
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
+        protected LayoutGroup layoutGroup;
+
         private readonly IModConsole _console;
-        private LayoutGroup _layoutGroup;
 
         public ModMenu(IModConsole console)
         {
@@ -41,7 +42,7 @@ namespace OWML.ModHelper.Menus
         public virtual void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
             Menu = menu;
-            _layoutGroup = layoutGroup;
+            this.layoutGroup = layoutGroup;
             Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
             LayoutButtons = new List<IModLayoutButton>();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
@@ -94,13 +95,14 @@ namespace OWML.ModHelper.Menus
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
-            transform.parent = _layoutGroup.transform;
+            transform.parent = layoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
             button.Button.transform.localScale = scale;
             return button;
         }
+
         public IModLayoutButton AddLayoutButton(IModLayoutButton button)
         {
             return AddLayoutButton(button, button.Index);
@@ -110,7 +112,7 @@ namespace OWML.ModHelper.Menus
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
-            transform.parent = _layoutGroup.transform;
+            transform.parent = layoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             LayoutButtons.Add(button);
@@ -207,7 +209,7 @@ namespace OWML.ModHelper.Menus
         {
             var transform = input.Element.transform;
             var scale = transform.localScale;
-            transform.parent = _layoutGroup.transform;
+            transform.parent = layoutGroup.transform;
             input.Index = index;
             input.Initialize(this);
             input.Element.transform.localScale = scale;

@@ -7,10 +7,9 @@ namespace OWML.Common.Menus
     public interface IModLayoutButton
     {
         event Action OnClick;
-        HorizontalLayoutGroup LayoutGroup { get; }
+        ILayoutManager Layout { get; }
         int Index { get; set; }
         Button Button { get; }
-        void UpdateState();
         void Initialize(IModMenu menu);
 
         IModLayoutButton Copy();
@@ -26,8 +25,5 @@ namespace OWML.Common.Menus
         void Hide();
 
         void SetControllerCommand(SingleAxisCommand inputCommand);
-
-        void AddText(string text);
-        void AddPicture(Texture2D texture, float scale = 1.0f);
     }
 }

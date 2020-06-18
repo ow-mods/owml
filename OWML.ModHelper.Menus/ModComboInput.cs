@@ -26,7 +26,7 @@ namespace OWML.ModHelper.Menus
             Button.OnClick += Open;
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
-            _layoutGroup = Button.LayoutGroup;
+            _layoutGroup = (HorizontalLayoutGroup)Button.Layout.LayoutGroup;
             ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
 
             var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
@@ -37,11 +37,7 @@ namespace OWML.ModHelper.Menus
 
         private void UpdateLayout(string currentCombination)
         {
-            var childCount = _layoutGroup.transform.childCount;
-            for (var i = childCount - 1; i >= 0; i--)
-            {
-                GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
-            }
+            Button.Layout.Clear();
             var individualCombos = currentCombination.Split('/');
             for (var i = 0; i < individualCombos.Length; i++)
             {
@@ -51,20 +47,20 @@ namespace OWML.ModHelper.Menus
                     AddKeySign(keyStrings[j]);
                     if (j < keyStrings.Length - 1)
                     {
-                        Button.AddText("+");
+                        Button.Layout.AddText("+");
                     }
                 }
                 if (i < individualCombos.Length - 1)
                 {
-                    Button.AddText("/");
+                    Button.Layout.AddText("/");
                 }
             }
-            Button.UpdateState();
+            Button.Layout.UpdateState();
         }
 
         private void AddKeySign(string key)
         {
-            Button.AddPicture(
+            Button.Layout.AddPicture(
                 key.Contains(XboxPrefix) ?
                 InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), key.Substring(XboxPrefix.Length))) :
                 InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
