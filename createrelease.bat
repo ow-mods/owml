@@ -14,6 +14,8 @@ copy "OWML.Patcher\VR\*" "Release\VR\"
 copy "OWML.Patcher\VR\BsPatch.dll" "Release\BsPatch.dll"
 copy "OWML.Patcher\VR\ICSharpCode.SharpZipLib.dll" "Release\ICSharpCode.SharpZipLib.dll"
 copy "OWML.Launcher\bin\Debug\System.Runtime.Serialization.dll" "Release\System.Runtime.Serialization.dll"
+copy "OWML.GameFinder\bin\Debug\OWML.GameFinder.dll" "Release\OWML.GameFinder.dll"
+copy "OWML.GameFinder\bin\Debug\Gameloop.Vdf.dll" "Release\Gameloop.Vdf.dll"
 
 copy "OWML.Nuget\bin\Debug\NAudio-Unity.dll" "Release\NAudio-Unity.dll"
 copy "OWML.Nuget\bin\Debug\OWML.Common.dll" "Release\OWML.Common.dll"

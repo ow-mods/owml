@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using OWML.Common;
+using OWML.GameFinder;
 using OWML.Patcher;
 
 namespace OWML.Launcher
