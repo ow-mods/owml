@@ -634,13 +634,16 @@ namespace TAIcheat
                 else GlobalMessenger.FireEvent("DebugWarpVessel");
                 this.COn = true;
             }
-            if (ModHelper.Input.IsNewlyPressed(inputs["Timelapse"]))
+            if (Mathf.Abs(Time.timeScale - 1f) < 1e-4 || Mathf.Abs(Time.timeScale - 10f) < 1e-4)
             {
-                Time.timeScale = 10f;
-            }
-            else if (Mathf.Abs(Time.timeScale - 1f) > 1e-4 && !ModHelper.Input.IsPressed(inputs["Timelapse"]))
-            {
-                Time.timeScale = 1f;
+                if (ModHelper.Input.IsNewlyPressed(inputs["Timelapse"]))
+                {
+                    Time.timeScale = 10f;
+                }
+                else if (Mathf.Abs(Time.timeScale - 1f) > 1e-4 && !ModHelper.Input.IsPressed(inputs["Timelapse"]))
+                {
+                    Time.timeScale = 1f;
+                }
             }
 
             if (this.COn)

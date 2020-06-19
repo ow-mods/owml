@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace OWML.ModHelper.Input
 {
@@ -17,44 +18,34 @@ namespace OWML.ModHelper.Input
         public static void SingleAxisUpdatePost(
             SingleAxisCommand __instance,
             ref float ____value,
-            int ____axisDirection,
-            KeyCode ____gamepadKeyCodePositive,
-            KeyCode ____gamepadKeyCodeNegative,
-            KeyCode ____keyPositive,
-            KeyCode ____keyNegative
+            List<KeyCode> ____posKeyCodes,
+            List<KeyCode> ____negKeyCodes
         )
         {
-            KeyCode positiveKey, negativeKey;
             ModInputHandler.Instance.RegisterGamesBinding(__instance);
-            int axisDirection = 1;
-            if (OWInput.UsingGamepad())
+            foreach (var key in ____posKeyCodes)
             {
-                axisDirection = ____axisDirection;
-                positiveKey = ____gamepadKeyCodePositive;
-                negativeKey = ____gamepadKeyCodeNegative;
+                if (ModInputHandler.Instance.IsPressedAndIgnored(key))
+                {
+                    ____value = 0f;
+                }
             }
-            else
+            foreach (var key in ____negKeyCodes)
             {
-                positiveKey = ____keyPositive;
-                negativeKey = ____keyNegative;
-            }
-            if (ModInputHandler.Instance.IsPressedAndIgnored(positiveKey))
-            {
-                ____value -= 1f * axisDirection;
-            }
-            if (ModInputHandler.Instance.IsPressedAndIgnored(negativeKey))
-            {
-                ____value += 1f * axisDirection;
+                if (ModInputHandler.Instance.IsPressedAndIgnored(key))
+                {
+                    ____value = 0f;
+                }
             }
         }
 
         public static void DoubleAxisUpdatePost(
             DoubleAxisCommand __instance,
             ref Vector2 ____value,
-            KeyCode ____keyboardXPos,
-            KeyCode ____keyboardYPos,
-            KeyCode ____keyboardXNeg,
-            KeyCode ____keyboardYNeg
+            List<KeyCode> ____posXKeyCodes,
+            List<KeyCode> ____negXKeyCodes,
+            List<KeyCode> ____posYKeyCodes,
+            List<KeyCode> ____negYKeyCodes
         )
         {
             ModInputHandler.Instance.RegisterGamesBinding(__instance);
@@ -62,23 +53,34 @@ namespace OWML.ModHelper.Input
             {
                 return;
             }
-            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardXPos))
+            foreach (var key in ____posXKeyCodes)
             {
-                ____value.x -= 1f;
+                if (ModInputHandler.Instance.IsPressedAndIgnored(key))
+                {
+                    ____value.x = 0f;
+                }
             }
-            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardXNeg))
+            foreach (var key in ____negXKeyCodes)
             {
-                ____value.x += 1f;
+                if (ModInputHandler.Instance.IsPressedAndIgnored(key))
+                {
+                    ____value.x = 0f;
+                }
             }
-            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardYPos))
+            foreach (var key in ____posYKeyCodes)
             {
-                ____value.y -= 1f;
+                if (ModInputHandler.Instance.IsPressedAndIgnored(key))
+                {
+                    ____value.y = 0f;
+                }
             }
-            if (ModInputHandler.Instance.IsPressedAndIgnored(____keyboardYNeg))
+            foreach (var key in ____negYKeyCodes)
             {
-                ____value.y += 1f;
+                if (ModInputHandler.Instance.IsPressedAndIgnored(key))
+                {
+                    ____value.y = 0f;
+                }
             }
-
         }
     }
 }

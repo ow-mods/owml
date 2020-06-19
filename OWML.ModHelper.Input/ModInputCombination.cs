@@ -44,11 +44,28 @@ namespace OWML.ModHelper.Input
             return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
         }
 
+        private KeyCode StringToKeyCodeGamepad(string gamepadKey)
+        {
+            var gamepadcodeCode = (JoystickButton)Enum.Parse(typeof(JoystickButton), gamepadKey, true);
+            return (Enum.IsDefined(typeof(JoystickButton), gamepadcodeCode)) ?
+                InputTranslator.GetButtonKeyCode(gamepadcodeCode) : KeyCode.None;
+        }
+
         private KeyCode StringToKeyCodeXbox(string xboxKey)
         {
-            var xboxCode = (XboxButton)Enum.Parse(typeof(XboxButton), xboxKey, true);
-            return (Enum.IsDefined(typeof(XboxButton), xboxCode)) ?
-                InputTranslator.GetKeyCode(xboxCode, false) : KeyCode.None;
+            switch (xboxKey[0])
+            {
+                case 'A':
+                    return InputTranslator.GetButtonKeyCode(JoystickButton.FaceDown);
+                case 'B':
+                    return InputTranslator.GetButtonKeyCode(JoystickButton.FaceRight);
+                case 'X':
+                    return InputTranslator.GetButtonKeyCode(JoystickButton.FaceLeft);
+                case 'Y':
+                    return InputTranslator.GetButtonKeyCode(JoystickButton.FaceUp);
+                default:
+                    return StringToKeyCodeGamepad(xboxKey);
+            }
         }
 
         private KeyCode StringToKeyCode(string key)
