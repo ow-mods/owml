@@ -12,13 +12,23 @@ namespace OWML.ModHelper.Menus
         private const string XboxPrefix = "xbox_";
 
         public IModLayoutButton Button { get; }
-        protected readonly IModInputMenu InputMenu;
+        //protected readonly IModInputMenu InputMenu;
+        protected readonly IModInputCombinationMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
 
         private string _value;
         private HorizontalLayoutGroup _layoutGroup;
+        public override string Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                UpdateLayout(value);
+            }
+        }
 
-        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu) : base(element, menu)
         {
             ToggleElement = element;
             InputMenu = inputMenu;
@@ -91,9 +101,10 @@ namespace OWML.ModHelper.Menus
 
         protected void Open()
         {
+            InputMenu.Combination = _value;
             InputMenu.OnConfirm += OnConfirm;
-            InputMenu.OnCancel += OnCancel;
-            InputMenu.Open(InputType.Text, _value);
+            InputMenu.OnClose += OnCancel;
+            InputMenu.Open();
         }
 
         private void OnConfirm(string text)
@@ -105,17 +116,7 @@ namespace OWML.ModHelper.Menus
         private void OnCancel()
         {
             InputMenu.OnConfirm -= OnConfirm;
-            InputMenu.OnCancel -= OnCancel;
-        }
-
-        public override string Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                UpdateLayout(value);
-            }
+            InputMenu.OnClose -= OnCancel;
         }
 
         public IModComboInput Copy()

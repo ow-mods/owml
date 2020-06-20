@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 
 namespace OWML.ModHelper.Menus
 {
-    class ModInputCombinationElementMenu : ModMenu
+    public class ModInputCombinationElementMenu : ModMenu
     {
         private const int MaxUsefulKey = 350;
 
@@ -76,9 +76,13 @@ namespace OWML.ModHelper.Menus
 
             _inputMenu.EnableMenu(true, value);
 
-            var okCommand = new SingleAxisCommand(XboxButton.Start, KeyCode.None);
+            var okCommand = new SingleAxisCommand();
+            var okBinding = new InputBinding(JoystickButton.Start);
+            okCommand.SetInputs(okBinding, null);
             var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK");
-            var cancelCommand = new SingleAxisCommand(XboxButton.Select,KeyCode.None);
+            var cancelCommand = new SingleAxisCommand();
+            var cancelBinding = new InputBinding(JoystickButton.Select);
+            cancelCommand.SetInputs(cancelBinding, null);
             var cancelPrompt = new ScreenPrompt(cancelCommand, "Cancel");
             var resetPrompt = new ScreenPrompt("Reset");
             _inputMenu.SetUpPopup(message, okCommand, cancelCommand, null, okPrompt, cancelPrompt, resetPrompt);

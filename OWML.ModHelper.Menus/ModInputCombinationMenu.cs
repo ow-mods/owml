@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.ModHelper.Input;
+using OWML.ModHelper.Events;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    class ModInputCombinationMenu : ModPopupMenu
+    public class ModInputCombinationMenu : ModPopupMenu, IModInputCombinationMenu
     {
+        public event Action<string> OnConfirm;
+
         public List<IModInputCombinationElement> CombinationElements { get; private set; }
 
         public string Combination {
@@ -32,26 +35,64 @@ namespace OWML.ModHelper.Menus
                 CombinationElements.Clear();
                 foreach (var combination in value.Split('/'))
                 {
-                    CombinationElements.Add(_combinationElementTemplate.Copy(combination));
+                    AddCombinationElement(combination);
+                    //CombinationElements.Add(_combinationElementTemplate.Copy(combination));
                 }
+                _console.WriteLine("Successfuly updated menu's combination");
             }
         }
 
         private IModInputCombinationElement _combinationElementTemplate;
 
-        public ModInputCombinationMenu(IModInputCombinationElement combinationElementTemplate, IModConsole console):base(console)
+        public ModInputCombinationMenu(IModConsole console):base(console)
         {
             CombinationElements = new List<IModInputCombinationElement>();
+        }
+
+        public void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate)
+        {
             _combinationElementTemplate = combinationElementTemplate;
+
+            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>().Single(x => x.name == "RebindingModeBlocker");
+            blocker.gameObject.SetActive(false);
+
+            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>();
+            labelPanel.gameObject.SetActive(false);
+
+            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
+            Initialize(menu, layoutGroup);
+
+            var saveButton = GetButton("UIElement-SaveAndExit");
+            var resetButton = GetButton("UIElement-ResetToDefaultsButton");
+            var cancelButton = GetButton("UIElement-DiscardChangesButton");
+
+            saveButton.OnClick += OnSave;
+            resetButton.OnClick += OnClear;
+            cancelButton.OnClick += Close;
+
+            saveButton.SetControllerCommand(InputLibrary.confirm);
+            cancelButton.SetControllerCommand(InputLibrary.cancel);
+            resetButton.SetControllerCommand(InputLibrary.setDefaults);
+
+            resetButton.Title = "Clear";
+
+            GetButton("UIElement-CancelOutOfRebinding").Hide();
+            GetButton("UIElement-KeyRebinder").Hide();
+
+            for (int i = 0; i < layoutGroup.transform.childCount; i++)
+            {
+                layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
+            }
         }
 
-        public IModInputCombinationElement AddCombinationElement(IModInputCombinationElement element)
+        private void AddCombinationElement(string combination)
         {
-            return AddCombinationElement(element, element.Index);
+            AddCombinationElement(combination, CombinationElements.Count);
         }
 
-        public IModInputCombinationElement AddCombinationElement(IModInputCombinationElement element, int index)
+        private void AddCombinationElement(string combination, int index)
         {
+            var element = _combinationElementTemplate.Copy(combination);
             var transform = element.Toggle.transform;
             var scale = transform.localScale;
             transform.parent = layoutGroup.transform;
@@ -59,7 +100,17 @@ namespace OWML.ModHelper.Menus
             element.Initialize(this);
             CombinationElements.Add(element);
             element.Toggle.transform.localScale = scale;
-            return element;
+        }
+
+        private void OnSave()
+        {
+            OnConfirm?.Invoke(Combination);
+            Close();
+        }
+
+        private void OnClear()
+        {
+            Combination = "";
         }
     }
 }

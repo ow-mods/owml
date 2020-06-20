@@ -8,7 +8,6 @@ namespace OWML.ModHelper.Menus
 {
     public class ModTabMenu : ModPopupMenu, IModTabMenu
     {
-        private readonly IModConsole _console;
         private readonly IModTabbedMenu _optionsMenu;
 
         public TabButton TabButton { get; private set; }
@@ -22,7 +21,6 @@ namespace OWML.ModHelper.Menus
 
         public ModTabMenu(IModConsole console, IModTabbedMenu optionsMenu) : base(console)
         {
-            _console = console;
             _optionsMenu = optionsMenu;
         }
 

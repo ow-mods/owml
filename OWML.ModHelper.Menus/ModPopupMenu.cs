@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Menus
             set => _title.text = value;
         }
 
-        private readonly IModConsole _console;
+        protected readonly IModConsole _console;
 
         public ModPopupMenu(IModConsole console) : base(console)
         {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace OWML.ModHelper.Menus
 {
-    class LayoutManager : ILayoutManager
+    public class LayoutManager : ILayoutManager
     {
         private const int FontSize = 36;
         private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);

@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace OWML.ModHelper.Menus
 {
-    class ModInputCombinationElement : ModToggleInput, IModInputCombinationElement
+    public class ModInputCombinationElement : ModToggleInput, IModInputCombinationElement
     {
         private const float ScaleDown = 0.75f;
         private const string XboxPrefix = "xbox_";
@@ -28,7 +28,9 @@ namespace OWML.ModHelper.Menus
         private string _combination;
         private readonly GameObject _layoutObject;
 
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, string combination) : base(toggle, menu)
+        private static ModInputCombinationElementMenu _popupMenu;
+
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, ModInputCombinationElementMenu popupMenu, string combination) : base(toggle, menu)
         {
             _combination = combination;
             _layoutObject = toggle.transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
@@ -51,6 +53,7 @@ namespace OWML.ModHelper.Menus
             Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
                 toggle.GetComponent<UIStyleApplier>(), scale, constantElements);
             UpdateContents();
+            _popupMenu = popupMenu;
         }
 
         private void UpdateContents()
@@ -68,18 +71,55 @@ namespace OWML.ModHelper.Menus
             Layout.UpdateState();
         }
 
+        private Texture2D GetGamepadButtonTexture(string key)
+        {
+            return ButtonPromptLibrary.SharedInstance.GetButtonTexture((JoystickButton)Enum.Parse(typeof(JoystickButton), key));
+        }
+
+        private Texture2D GetXboxButtonTexture(string xboxKey)
+        {
+            switch (xboxKey[0])
+            {
+                case 'A':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceDown);
+                case 'B':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceRight);
+                case 'X':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceLeft);
+                case 'Y':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceUp);
+                default:
+                    return GetGamepadButtonTexture(xboxKey);
+            }
+        }
+
         private void AddKeySign(string key)
         {
             Layout.AddPictureAt(
                 key.Contains(XboxPrefix) ?
-                InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), key.Substring(XboxPrefix.Length))) :
-                InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
+                GetXboxButtonTexture(key.Substring(XboxPrefix.Length)) :
+                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
                 , Layout.ChildCount - 1, ScaleDown);
         }
 
         private void OnEditClick()
         {
+            _popupMenu.OnConfirm += OnPopupMenuConfirm;
+            _popupMenu.OnCancel += OnPopupMenuCancel;
+            _popupMenu.Open(_combination);
+        }
 
+        private void OnPopupMenuCancel()
+        {
+            _popupMenu.OnConfirm -= OnPopupMenuConfirm;
+            _popupMenu.OnCancel -= OnPopupMenuCancel;
+        }
+
+        private void OnPopupMenuConfirm(string combination)
+        {
+            OnPopupMenuCancel();
+            _combination = combination;
+            UpdateContents();
         }
 
         public void DestroySelf()
@@ -104,7 +144,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = GameObject.Instantiate(Toggle);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModInputCombinationElement(copy, Menu, combination);
+            return new ModInputCombinationElement(copy, Menu, _popupMenu, combination);
         }
     }
 }

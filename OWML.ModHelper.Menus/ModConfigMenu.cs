@@ -13,7 +13,6 @@ namespace OWML.ModHelper.Menus
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
 
-        private readonly IModConsole _console;
         private readonly IModStorage _storage;
 
         private IModToggleInput _toggleTemplate;
@@ -24,7 +23,6 @@ namespace OWML.ModHelper.Menus
 
         public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) : base(console)
         {
-            _console = console;
             ModData = modData;
             Mod = mod;
             _storage = new ModStorage(console, modData.Manifest);
