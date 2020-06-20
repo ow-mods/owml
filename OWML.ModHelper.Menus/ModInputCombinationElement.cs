@@ -30,7 +30,7 @@ namespace OWML.ModHelper.Menus
 
         private static ModInputCombinationElementMenu _popupMenu;
 
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, ModInputCombinationElementMenu popupMenu, string combination) : base(toggle, menu)
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, ModInputCombinationElementMenu popupMenu, string combination = "") : base(toggle, menu)
         {
             _combination = combination;
             _layoutObject = toggle.transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
@@ -59,13 +59,16 @@ namespace OWML.ModHelper.Menus
         private void UpdateContents()
         {
             Layout.Clear();
-            var keyStrings = _combination.Split('+');
-            for (var j = 0; j < keyStrings.Length; j++)
+            if (_combination != "")
             {
-                AddKeySign(keyStrings[j]);
-                if (j < keyStrings.Length - 1)
+                var keyStrings = _combination.Split('+');
+                for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    Layout.AddTextAt("+", Layout.ChildCount - 1);
+                    AddKeySign(keyStrings[j]);
+                    if (j < keyStrings.Length - 1)
+                    {
+                        Layout.AddTextAt("+", Layout.ChildCount - 1);
+                    }
                 }
             }
             Layout.UpdateState();

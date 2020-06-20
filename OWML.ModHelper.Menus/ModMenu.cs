@@ -25,7 +25,7 @@ namespace OWML.ModHelper.Menus
 
         protected LayoutGroup layoutGroup;
 
-        private readonly IModConsole _console;
+        protected readonly IModConsole _console;
 
         public ModMenu(IModConsole console)
         {

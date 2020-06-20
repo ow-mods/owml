@@ -23,7 +23,7 @@ namespace OWML.ModHelper.Menus
         private PopupMenu _popup;
         private IModInputHandler _inputHandler;
 
-        public ModInputCombinationElementMenu(IModConsole console, ModInputHandler inputHandler) : base(console)
+        public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler) : base(console)
         {
             _inputHandler = inputHandler;
         }
