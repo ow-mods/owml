@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Linq;
 using OWML.Common;
 using UnityEngine;
 using System.Security.Policy;
@@ -15,6 +16,7 @@ namespace OWML.ModHelper.Input
         private const int MinUsefulKey = 8;
         private const int MaxUsefulKey = 350;
         private const int MaxComboLength = 7;
+        private const int KeyDiff = 20;
         private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
 
         internal static ModInputHandler Instance { get; private set; }
@@ -34,17 +36,25 @@ namespace OWML.ModHelper.Input
         internal bool IsPressedAndIgnored(KeyCode code)
         {
             UpdateCurrentCombination();
-            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
+            var intKey = (int)code;
+            while (intKey >= MaxUsefulKey)
+            {
+                intKey -= KeyDiff;
+            }
+            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[intKey] < Cooldown;
         }
 
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher)
         {
             _console = console;
             _logger = logger;
-            patcher.AddPrefix<SingleAxisCommand>("ClearBinding", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisRemovePre));
-            patcher.AddPrefix<DoubleAxisCommand>("ClearBinding", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisRemovePre));
-            patcher.AddPostfix<SingleAxisCommand>("Update", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
-            patcher.AddPostfix<DoubleAxisCommand>("Update", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
+            foreach (var method in typeof(SingleAxisCommand).GetMethods().Where(x => x.Name == "SetInputs"))
+            {
+                patcher.AddPrefix(method, typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisRemovePre));
+            }
+            patcher.AddPrefix<DoubleAxisCommand>("SetInputs", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisRemovePre));
+            patcher.AddPostfix<SingleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
+            patcher.AddPostfix<DoubleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
             Instance = this;
         }
 
@@ -362,12 +372,20 @@ namespace OWML.ModHelper.Input
                 typeof(SingleAxisCommand).GetFields(NonPublic) : typeof(DoubleAxisCommand).GetFields(NonPublic);
             foreach (var field in fields)
             {
-                if (field.FieldType == typeof(KeyCode))
+                if (field.FieldType == typeof(List<KeyCode>))
                 {
-                    var key = (KeyCode)(field.GetValue(binding));
-                    if (key != KeyCode.None)
+                    var keys = (List<KeyCode>)(field.GetValue(binding));
+                    foreach (var key in keys)
                     {
-                        _gameBindingCounter[(int)key] += toUnregister ? -1 : 1;
+                        if (key != KeyCode.None)
+                        {
+                            var intKey = (int)key;
+                            while (intKey >= MaxUsefulKey)
+                            {
+                                intKey -= KeyDiff;
+                            }
+                            _gameBindingCounter[intKey] += toUnregister ? -1 : 1;
+                        }
                     }
                 }
             }

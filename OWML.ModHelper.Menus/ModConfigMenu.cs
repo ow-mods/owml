@@ -64,6 +64,11 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
+            for (int i = 0; i < layoutGroup.transform.childCount; i++)
+            {
+                layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
+            }
+
             AddInputs();
         }
 

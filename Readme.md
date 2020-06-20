@@ -110,12 +110,18 @@ Feature requests, bug reports and PRs are welcome on GitHub.
 
 ## Credits
 
+Authors:
+* [AmazingAlek](https://github.com/amazingalek)
+* [Raicuparta](https://github.com/Raicuparta/)
+* [Mister_Nebula](https://github.com/misternebula)
+* [TAImatem](https://github.com/TAImatem)
+
+Special thanks to:
 * [Outer Wilds](http://www.outerwilds.com)
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * Inspired by [SMAPI](https://smapi.io)
 * Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
-* [TAImatem](https://github.com/TAImatem) and [Raicuparta](https://github.com/Raicuparta/) for research
 
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)
@@ -125,3 +131,4 @@ Dependencies:
 * [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
 * [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
 * [BsDiff](https://github.com/LogosBible/bsdiff.net)
+* [Gameloop.Vdf](https://github.com/shravan2x/Gameloop.Vdf)

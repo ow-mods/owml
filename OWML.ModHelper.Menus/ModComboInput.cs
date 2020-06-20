@@ -58,12 +58,34 @@ namespace OWML.ModHelper.Menus
             Button.Layout.UpdateState();
         }
 
+        private Texture2D GetGamepadButtonTexture(string key)
+        {
+            return ButtonPromptLibrary.SharedInstance.GetButtonTexture((JoystickButton)Enum.Parse(typeof(JoystickButton), key));
+        }
+
+        private Texture2D GetXboxButtonTexture(string xboxKey)
+        {
+            switch (xboxKey[0])
+            {
+                case 'A':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceDown);
+                case 'B':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceRight);
+                case 'X':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceLeft);
+                case 'Y':
+                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceUp);
+                default:
+                    return GetGamepadButtonTexture(xboxKey);
+            }
+        }
+
         private void AddKeySign(string key)
         {
             Button.Layout.AddPicture(
                 key.Contains(XboxPrefix) ?
-                InputTranslator.GetButtonTexture((XboxButton)Enum.Parse(typeof(XboxButton), key.Substring(XboxPrefix.Length))) :
-                InputTranslator.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
+                GetXboxButtonTexture(key.Substring(XboxPrefix.Length)) :
+                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
                 , ScaleDown);
         }
 
