@@ -8,9 +8,6 @@ namespace OWML.ModHelper.Menus
 {
     public class ModLayoutButton : IModLayoutButton
     {
-        private const int FontSize = 36;
-        private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
-
         public event Action OnClick;
         public Button Button { get; }
         public IModMenu Menu { get; private set; }

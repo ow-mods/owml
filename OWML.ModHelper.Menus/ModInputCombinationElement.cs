@@ -45,6 +45,7 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childControlHeight = false;
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
+            layoutGroup.spacing = 0f;
             var constantElements = new List<Graphic>();
             constantElements.Add(toggle.transform.GetChild(1).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Graphic>());
             toggle.transform.GetChild(1).GetChild(0).GetChild(1).GetChild(1).gameObject.SetActive(false);
@@ -131,6 +132,7 @@ namespace OWML.ModHelper.Menus
             Layout.UpdateState();
             Title = "";
             Toggle.gameObject.SetActive(false);
+            GameObject.Destroy(Toggle.gameObject);
             (Menu as IModInputCombinationMenu)?.CombinationElements.Remove(this);
         }
 

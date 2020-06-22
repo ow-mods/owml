@@ -35,11 +35,9 @@ namespace OWML.ModHelper.Menus
             }
             set
             {
-                CombinationElements.ForEach(x => x.DestroySelf());
-                foreach (var element in CombinationElements)
+                for (int i = CombinationElements.Count() - 1; i >= 0; i--)
                 {
-                    element.DestroySelf();
-                    GameObject.Destroy(element.Toggle);
+                    CombinationElements[i].DestroySelf();
                 }
                 CombinationElements.Clear();
                 foreach (var combination in value.Split('/'))
@@ -92,6 +90,8 @@ namespace OWML.ModHelper.Menus
             {
                 buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults,"Add Alternative"));
             }
+
+            Title = "Edit Combination";
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();

@@ -39,9 +39,9 @@ namespace OWML.ModHelper.Menus
             _layoutGroup = (HorizontalLayoutGroup)Button.Layout.LayoutGroup;
             ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
 
-            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
-            layoutGroup.childControlWidth = true;
-            layoutGroup.childForceExpandWidth = true;
+            var parentLayoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            parentLayoutGroup.childControlWidth = true;
+            parentLayoutGroup.childForceExpandWidth = true;
             Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
