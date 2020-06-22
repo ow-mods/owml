@@ -19,7 +19,8 @@ namespace OWML.Patcher
         {
             "cacc71fcb141d936f1b59e57bf10dc52e8edb3481988379f7d95ecb65c4d3c90",
             "d3979abb3b0d2468c3e03e2ee862d5297f5885bd9fc8f3b16cb16805e010d097",
-            "7ed2c835ec6653009d29b6b7fa9dc36cd754f64b2f359f7ca635ec6cd4ad8c32"
+            "7ed2c835ec6653009d29b6b7fa9dc36cd754f64b2f359f7ca635ec6cd4ad8c32",
+            "014b0d9b82b20c191ded4d7268975157129ffdb1ca12a30a92a425c783b30e22"
         };
 
         public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
