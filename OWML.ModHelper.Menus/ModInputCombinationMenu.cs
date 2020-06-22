@@ -12,6 +12,7 @@ namespace OWML.ModHelper.Menus
     public class ModInputCombinationMenu : ModPopupMenu, IModInputCombinationMenu
     {
         public event Action<string> OnConfirm;
+        public event Action OnCancel;
 
         public List<IModInputCombinationElement> CombinationElements { get; private set; }
 
@@ -75,7 +76,7 @@ namespace OWML.ModHelper.Menus
 
             saveButton.OnClick += OnSave;
             resetButton.OnClick += OnAdd;
-            cancelButton.OnClick += Close;
+            cancelButton.OnClick += OnExit;
 
             saveButton.SetControllerCommand(InputLibrary.confirm);
             cancelButton.SetControllerCommand(InputLibrary.cancel);
@@ -116,8 +117,21 @@ namespace OWML.ModHelper.Menus
 
         private void OnSave()
         {
-            ModConsole.Instance.WriteLine($"Invoking OnConfirms");
+            try
+            {
+                ModConsole.Instance.WriteLine($"Invoking OnConfirms: {OnConfirm.GetInvocationList()}");
+            }
+            catch (Exception ex)
+            {
+                ModConsole.Instance.WriteLine($"OnConfirm is null");
+            }
             OnConfirm?.Invoke(Combination);
+            Close();
+        }
+
+        private void OnExit()
+        {
+            OnCancel?.Invoke();
             Close();
         }
 

@@ -101,9 +101,10 @@ namespace OWML.ModHelper.Menus
 
         protected void Open()
         {
+            ModConsole.Instance.WriteLine($"Opening Combo Menu");
             InputMenu.Combination = _value;
             InputMenu.OnConfirm += OnConfirm;
-            InputMenu.OnClose += OnCancel;
+            InputMenu.OnCancel += OnCancel;
             InputMenu.Open();
         }
 
@@ -116,6 +117,7 @@ namespace OWML.ModHelper.Menus
 
         private void OnCancel()
         {
+            ModConsole.Instance.WriteLine($"unsubscribing from Combo Menu");
             InputMenu.OnConfirm -= OnConfirm;
             InputMenu.OnClose -= OnCancel;
         }

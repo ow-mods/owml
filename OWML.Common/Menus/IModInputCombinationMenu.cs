@@ -7,7 +7,9 @@ namespace OWML.Common.Menus
 {
     public interface IModInputCombinationMenu : IModPopupMenu
     {
+        event Action OnCancel;
         event Action<string> OnConfirm;
+        List<IModInputCombinationElement> CombinationElements { get; }
         string Combination { get; set; }
     }
 }

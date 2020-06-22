@@ -131,6 +131,7 @@ namespace OWML.ModHelper.Menus
             Layout.UpdateState();
             Title = "";
             Toggle.gameObject.SetActive(false);
+            (Menu as IModInputCombinationMenu)?.CombinationElements.Remove(this);
         }
 
         private void OnDeleteClick()
