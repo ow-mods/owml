@@ -121,14 +121,6 @@ namespace OWML.ModHelper.Menus
 
         private void OnSave()
         {
-            try
-            {
-                ModConsole.Instance.WriteLine($"Invoking OnConfirms: {OnConfirm.GetInvocationList()}");
-            }
-            catch (Exception ex)
-            {
-                ModConsole.Instance.WriteLine($"OnConfirm is null");
-            }
             OnConfirm?.Invoke(Combination);
             Close();
         }

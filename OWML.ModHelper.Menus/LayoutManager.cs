@@ -98,6 +98,7 @@ namespace OWML.ModHelper.Menus
                 if (!(_constantGraphics.Contains(LayoutGroup.transform.GetChild(i).gameObject.GetComponent<Graphic>())
                     || _backingGraphics.Contains(LayoutGroup.transform.GetChild(i).gameObject.GetComponent<Graphic>())))
                 {
+                    LayoutGroup.transform.GetChild(i).gameObject.SetActive(false);
                     GameObject.Destroy(LayoutGroup.transform.GetChild(i).gameObject);
                 }
             }
