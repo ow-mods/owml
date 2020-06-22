@@ -106,9 +106,10 @@ namespace OWML.ModHelper.Menus
         protected override void Update()
         {
             base.Update();
-            if (this._resetCommand != null && OWInput.IsNewlyPressed(this._resetCommand, InputMode.All))
+            if (_resetCommand != null && OWInput.IsNewlyPressed(_resetCommand, InputMode.All))
             {
-                this.InvokeReset();
+                InvokeReset();
+                OnPopupReset.Invoke();
             }
             List<KeyCode> currentlyPressedKeys = new List<KeyCode>();
             for (var code = MinUsefulKey; code < MaxUsefulKey; code++)

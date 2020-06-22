@@ -71,23 +71,27 @@ namespace OWML.ModHelper.Menus
             Initialize(menu, layoutGroup);
 
             var saveButton = GetButton("UIElement-SaveAndExit");
-            var resetButton = GetButton("UIElement-ResetToDefaultsButton");
+            var addButton = GetButton("UIElement-ResetToDefaultsButton");
             var cancelButton = GetButton("UIElement-DiscardChangesButton");
 
             saveButton.OnClick += OnSave;
-            resetButton.OnClick += OnAdd;
+            addButton.OnClick += OnAdd;
             cancelButton.OnClick += OnExit;
 
             saveButton.SetControllerCommand(InputLibrary.confirm);
             cancelButton.SetControllerCommand(InputLibrary.cancel);
-            resetButton.SetControllerCommand(InputLibrary.setDefaults);
+            addButton.SetControllerCommand(InputLibrary.setDefaults);
 
-            var localText = resetButton.Button.gameObject.GetComponentInChildren<LocalizedText>();
+            var localText = addButton.Button.gameObject.GetComponentInChildren<LocalizedText>(true);
             if (localText)
             {
                 GameObject.Destroy(localText);
             }
-            resetButton.Title = "Add Alternative";
+            var buttonWithHotkey = addButton.Button.gameObject.GetComponentInChildren<ButtonWithHotkeyImageElement>(true);
+            if (buttonWithHotkey)
+            {
+                buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults,"Add Alternative"));
+            }
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
