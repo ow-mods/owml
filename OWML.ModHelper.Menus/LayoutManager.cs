@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using OWML.Common.Menus;
 using System.Collections.Generic;
+using OWML.ModHelper.Events;
 
 namespace OWML.ModHelper.Menus
 {
@@ -21,6 +22,20 @@ namespace OWML.ModHelper.Menus
         private readonly FieldInfo _foregrounds;
         private readonly Vector3 _scale;
         private readonly HashSet<Graphic> _constantGraphics = new HashSet<Graphic>();
+        private readonly HashSet<Graphic> _backingGraphics = new HashSet<Graphic>();
+
+        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, UIStyleApplier styleApplier, Vector3 scale, List<Graphic> constantGraphics, List<Graphic> backingGraphics) : this(layout, styleManager, styleApplier, scale, constantGraphics)
+        {
+            backingGraphics.ForEach(x => _backingGraphics.Add(x));
+            var backGraphics = new Graphic[backingGraphics.Count];
+            int i = 0;
+            foreach (var graphic in backingGraphics)
+            {
+                backGraphics[i] = graphic;
+                i++;
+            }
+            styleApplier.SetValue("_backgroundGraphics", backGraphics);
+        }
 
         public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, UIStyleApplier styleApplier, Vector3 scale, List<Graphic> constantGraphics) : this(layout, styleManager, styleApplier, scale)
         {
@@ -39,13 +54,29 @@ namespace OWML.ModHelper.Menus
             _texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
             _foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);
             UpdateState();
+            if (styleApplier.GetValue<Graphic[]>("_foregroundGraphics") == null)
+            {
+                styleApplier.SetValue("_foregroundGraphics", new Graphic[0]);
+            }
+            if (styleApplier.GetValue<Graphic[]>("_backgroundGraphics") == null)
+            {
+                styleApplier.SetValue("_backgroundGraphics", new Graphic[0]);
+            }
+            if (styleApplier.GetValue<Graphic[]>("_onOffGraphics") == null)
+            {
+                styleApplier.SetValue("_onOffGraphics", new Graphic[0]);
+            }
+            if (styleApplier.GetValue<UIStyleApplier.OnOffGraphic[]>("_onOffGraphicList") == null)
+            {
+                styleApplier.SetValue("_onOffGraphicList", new UIStyleApplier.OnOffGraphic[0]);
+            }
         }
 
         public void UpdateState()
         {
             var currentTexts = LayoutGroup.gameObject.GetComponentsInChildren<Text>();
             _texts.SetValue(_styleApplier, currentTexts);
-            Graphic[] currentGraphics = new Graphic[currentTexts.Length + _constantGraphics.Count];
+            var currentGraphics = new Graphic[currentTexts.Length + _constantGraphics.Count];
             int i;
             for (i = 0; i < currentTexts.Length; i++)
             {
@@ -64,7 +95,8 @@ namespace OWML.ModHelper.Menus
             var childCount = LayoutGroup.transform.childCount;
             for (var i = childCount - 1; i >= 0; i--)
             {
-                if (!_constantGraphics.Contains(LayoutGroup.transform.GetChild(i).gameObject.GetComponent<Graphic>()))
+                if (!(_constantGraphics.Contains(LayoutGroup.transform.GetChild(i).gameObject.GetComponent<Graphic>())
+                    || _backingGraphics.Contains(LayoutGroup.transform.GetChild(i).gameObject.GetComponent<Graphic>())))
                 {
                     GameObject.Destroy(LayoutGroup.transform.GetChild(i).gameObject);
                 }

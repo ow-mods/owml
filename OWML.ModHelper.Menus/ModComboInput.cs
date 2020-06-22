@@ -109,8 +109,9 @@ namespace OWML.ModHelper.Menus
 
         private void OnConfirm(string text)
         {
-            OnCancel();
+            ModConsole.Instance.WriteLine($"Updating combination to {text}");
             Value = text;
+            OnCancel();
         }
 
         private void OnCancel()

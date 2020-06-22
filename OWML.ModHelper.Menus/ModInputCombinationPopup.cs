@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
 
         private SubmitAction _resetAction;
         private ButtonWithHotkeyImageElement _resetButton;
-        private List<KeyCode> _combination;
+        private List<KeyCode> _combination = new List<KeyCode>();
         protected SingleAxisCommand _resetCommand;
 
         private JoystickButton XboxButtonToJoystickButton(string xboxKey)
@@ -99,7 +99,7 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void InvokeReset()
         {
-            _combination = new List<KeyCode>();
+            _combination.Clear();
             UpdateContents();
         }
 
@@ -137,7 +137,7 @@ namespace OWML.ModHelper.Menus
                 ((int)key) >= MinGamepadKey ?
                 ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, OWInput.GetActivePadConfig())) :
                 ButtonPromptLibrary.SharedInstance.GetButtonTexture(key)
-                , Layout.ChildCount - 1, ScaleDown);
+                , Layout.ChildCount, ScaleDown);
         }
 
         private void UpdateContents()
@@ -157,12 +157,22 @@ namespace OWML.ModHelper.Menus
 
         public void EnableMenu(bool value, string currentCombination)
         {
-            _combination = new List<KeyCode>();
-            foreach (var key in currentCombination.Split('+'))
+            if (value)
             {
-                _combination.Add(key.Contains(XboxPrefix) ?
-                    InputTranslator.GetButtonKeyCode(XboxButtonToJoystickButton(key.Substring(XboxPrefix.Length))) :
-                    (KeyCode)Enum.Parse(typeof(KeyCode), key));
+                _combination.Clear();
+                foreach (var key in currentCombination.Split('+'))
+                {
+                    if (key != "")
+                    {
+                        _combination.Add(key.Contains(XboxPrefix) ?
+                            InputTranslator.GetButtonKeyCode(XboxButtonToJoystickButton(key.Substring(XboxPrefix.Length))) :
+                            (KeyCode)Enum.Parse(typeof(KeyCode), key));
+                    }
+                }
+            }
+            if (value && !_initialized)
+            {
+                InitializeMenu();
             }
             base.EnableMenu(value);
             UpdateContents();
@@ -207,8 +217,9 @@ namespace OWML.ModHelper.Menus
             _selectOnActivate = defaultSelectable;
             _resetAction = resetAction;
             _resetButton = resetButton;
+            _initialized = false;
             Layout = layout;
-            base.InitializeMenu();
+            this.InitializeMenu();
         }
     }
 }

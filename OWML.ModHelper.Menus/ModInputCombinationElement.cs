@@ -129,8 +129,8 @@ namespace OWML.ModHelper.Menus
         {
             Layout.Clear();
             Layout.UpdateState();
-            GameObject.Destroy(Toggle.gameObject);
-            Layout = null;
+            Title = "";
+            Toggle.gameObject.SetActive(false);
         }
 
         private void OnDeleteClick()

@@ -39,29 +39,37 @@ namespace OWML.ModHelper.Menus
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _popup = parentCopy.transform.GetChild(0).GetComponent<PopupMenu>();
             var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);
-            var menuTransform = originalMenu.transform.GetChild(1).GetChild(2);
+            var menuTransform = originalMenu.GetComponentInChildren<VerticalLayoutGroup>(true).transform;
             _inputMenu = originalMenu.gameObject.AddComponent<ModInputCombinationPopup>();
-            var resetButtonObject = GameObject.Instantiate(menuTransform.GetChild(2).GetChild(0).gameObject);
+            var buttonsTransform = menuTransform.GetComponentInChildren<HorizontalLayoutGroup>(true).transform;
+            var resetButtonObject = GameObject.Instantiate(buttonsTransform.GetChild(0).gameObject);
             resetButtonObject.name = "UIElement-ButtonReset";
-            resetButtonObject.transform.SetParent(menuTransform.GetChild(2));
+            resetButtonObject.transform.SetParent(buttonsTransform);
             resetButtonObject.transform.SetSiblingIndex(1);
+            resetButtonObject.transform.localScale = buttonsTransform.GetChild(0).localScale;
             var resetAction = resetButtonObject.GetComponent<SubmitAction>();
             var resetButton = resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>();
-            var inputObject = menuTransform.GetChild(1).gameObject;
+            var inputObject = menuTransform.GetComponentInChildren<InputField>(true).gameObject;
             GameObject.Destroy(inputObject.GetComponent<TabbedNavigation>());
             GameObject.Destroy(inputObject.GetComponent<InputField>());
             var inputSelectable = inputObject.AddComponent<Selectable>();
-            var layoutObject = inputObject.transform.GetChild(3).gameObject;
-            GameObject.Destroy(layoutObject.GetComponent<Text>());
-            layoutObject.name = "Combination";
+            var layoutObject = inputObject.transform.GetChild(0).gameObject;
+            GameObject.Destroy(inputObject.transform.GetChild(3).GetComponent<Text>());
+            //layoutObject.name = "Combination";
             var layoutGroupNew = layoutObject.AddComponent<HorizontalLayoutGroup>();
+            layoutGroupNew.childControlWidth = false;
+            layoutGroupNew.childForceExpandWidth = false;
+            //var foregrounds = new List<Graphic>();
+           // foregrounds.Add(inputObject.transform.GetChild(0).GetComponent<Image>());
+            inputObject.transform.GetChild(1).GetComponent<Image>().color = Color.clear;
             var layout = new LayoutManager(layoutGroupNew, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                layoutObject.AddComponent<UIStyleApplier>(), layoutObject.transform.localScale);
+                layoutObject.AddComponent<UIStyleApplier>(), resetButtonObject.transform.localScale/*, foregrounds*/);
             GameObject.Destroy(inputObject.transform.GetChild(2).gameObject);//destroy text
             GameObject.Destroy(menuTransform.GetChild(2).GetChild(0).GetComponent<TabbedNavigation>());
             GameObject.Destroy(menuTransform.GetChild(2).GetChild(1).GetComponent<TabbedNavigation>());
             GameObject.Destroy(menuTransform.GetChild(2).GetChild(2).GetComponent<TabbedNavigation>());
             _inputMenu.Initialize(originalMenu, inputSelectable, resetAction, resetButton, layout);
+            GameObject.Destroy(originalMenu);
             GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
         }
@@ -79,11 +87,11 @@ namespace OWML.ModHelper.Menus
             var okCommand = new SingleAxisCommand();
             var okBinding = new InputBinding(JoystickButton.Start);
             okCommand.SetInputs(okBinding, null);
-            var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK");
+            var okPrompt = new ScreenPrompt("OK");
             var cancelCommand = new SingleAxisCommand();
             var cancelBinding = new InputBinding(JoystickButton.Select);
             cancelCommand.SetInputs(cancelBinding, null);
-            var cancelPrompt = new ScreenPrompt(cancelCommand, "Cancel");
+            var cancelPrompt = new ScreenPrompt("Cancel");
             var resetPrompt = new ScreenPrompt("Reset");
             _inputMenu.SetUpPopup(message, okCommand, cancelCommand, null, okPrompt, cancelPrompt, resetPrompt);
             _inputMenu.GetValue<Text>("_labelText").text = message;
@@ -103,7 +111,7 @@ namespace OWML.ModHelper.Menus
             if (collisions.Count > 0)
             {
                 _popup.EnableMenu(true);
-                _popup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null, 
+                _popup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
                 _popup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
                 return false;

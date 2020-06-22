@@ -21,10 +21,13 @@ namespace OWML.ModHelper.Menus
                 string result = "";
                 for (int i = 0; i < CombinationElements.Count; i++)
                 {
-                    result += CombinationElements[i].Title;
-                    if (i<CombinationElements.Count-1)
+                    if (CombinationElements[i].Title != "")
                     {
-                        result += "/";
+                        result += CombinationElements[i].Title;
+                        if (i < CombinationElements.Count - 1)
+                        {
+                            result += "/";
+                        }
                     }
                 }
                 return result;
@@ -32,13 +35,17 @@ namespace OWML.ModHelper.Menus
             set
             {
                 CombinationElements.ForEach(x => x.DestroySelf());
+                foreach (var element in CombinationElements)
+                {
+                    element.DestroySelf();
+                    GameObject.Destroy(element.Toggle);
+                }
                 CombinationElements.Clear();
                 foreach (var combination in value.Split('/'))
                 {
                     AddCombinationElement(combination);
                     //CombinationElements.Add(_combinationElementTemplate.Copy(combination));
                 }
-                _console.WriteLine("Successfuly updated menu's combination");
             }
         }
 
@@ -67,14 +74,19 @@ namespace OWML.ModHelper.Menus
             var cancelButton = GetButton("UIElement-DiscardChangesButton");
 
             saveButton.OnClick += OnSave;
-            resetButton.OnClick += OnClear;
+            resetButton.OnClick += OnAdd;
             cancelButton.OnClick += Close;
 
             saveButton.SetControllerCommand(InputLibrary.confirm);
             cancelButton.SetControllerCommand(InputLibrary.cancel);
             resetButton.SetControllerCommand(InputLibrary.setDefaults);
 
-            resetButton.Title = "Clear";
+            var localText = resetButton.Button.gameObject.GetComponentInChildren<LocalizedText>();
+            if (localText)
+            {
+                GameObject.Destroy(localText);
+            }
+            resetButton.Title = "Add Alternative";
 
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
@@ -104,13 +116,14 @@ namespace OWML.ModHelper.Menus
 
         private void OnSave()
         {
+            ModConsole.Instance.WriteLine($"Invoking OnConfirms");
             OnConfirm?.Invoke(Combination);
             Close();
         }
 
-        private void OnClear()
+        private void OnAdd()
         {
-            Combination = "";
+            AddCombinationElement("");
         }
     }
 }
