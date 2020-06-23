@@ -1,11 +1,8 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Xml.Serialization;
 
 namespace OWML.ModHelper.Menus
 {

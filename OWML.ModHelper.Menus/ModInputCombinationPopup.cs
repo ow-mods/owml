@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace OWML.ModHelper.Menus
 {
@@ -156,17 +157,8 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(PopupMenu oldPopupMenu, Selectable defaultSelectable, SubmitAction resetAction, ButtonWithHotkeyImageElement resetButton, ILayoutManager layout)
         {
-            _labelText = oldPopupMenu.GetValue<Text>("_labelText");
-            _cancelAction = oldPopupMenu.GetValue<SubmitAction>("_cancelAction");
-            _okAction = oldPopupMenu.GetValue<SubmitAction>("_okAction");
-            _cancelButton = oldPopupMenu.GetValue<ButtonWithHotkeyImageElement>("_cancelButton");
-            _confirmButton = oldPopupMenu.GetValue<ButtonWithHotkeyImageElement>("_confirmButton");
-            _rootCanvas = oldPopupMenu.GetValue<Canvas>("_rootCanvas");
-            _menuActivationRoot = oldPopupMenu.GetValue<GameObject>("_menuActivationRoot");
-            _startEnabled = oldPopupMenu.GetValue<bool>("_startEnabled");
-            _selectableItemsRoot = oldPopupMenu.GetValue<GameObject>("_selectableItemsRoot");
-            _tooltipDisplay = oldPopupMenu.GetValue<TooltipDisplay>("_tooltipDisplay");
-            _addToMenuStackManager = oldPopupMenu.GetValue<bool>("_addToMenuStackManager");
+            var fields = typeof(PopupMenu).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            Array.ForEach<FieldInfo>(fields, field => field.SetValue(this, field.GetValue(oldPopupMenu)));
             _selectOnActivate = defaultSelectable;
             _resetAction = resetAction;
             _resetButton = resetButton;

@@ -2,9 +2,6 @@
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
-using OWML.Common.Menus;
-using System.Collections.Generic;
-using OWML.ModHelper.Events;
 
 namespace OWML.ModHelper.Menus
 {

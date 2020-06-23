@@ -8,10 +8,6 @@ namespace OWML.ModHelper.Input
 {
     public class ModInputCombination : IModInputCombination
     {
-        private const int MaxUsefulKey = 350;
-        private const int MaxComboLength = 7;
-        private const string XboxPrefix = "xbox_";
-
         public float LastPressedMoment { get; private set; }
         public bool IsFirst { get; private set; }
         public float PressDuration => LastPressedMoment - _firstPressedMoment;
@@ -39,10 +35,10 @@ namespace OWML.ModHelper.Input
                     return hashes;
                 }
                 hashes.Add(hash);
-                if (hash < MaxUsefulKey)
+                if (hash < ModInputLibrary.MaxUsefulKey)
                 {
                     _singles.Add((KeyCode)hash);
-                }    
+                }
             }
             return hashes;
         }

@@ -13,9 +13,6 @@ namespace OWML.ModHelper.Input
     {
         private const float Cooldown = 0.05f;
         private const float TapDuration = 0.1f;
-        private const int MinUsefulKey = 8;
-        private const int MaxUsefulKey = 350;
-        private const int MaxComboLength = 7;
         private const int KeyDiff = 20;
         private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -25,8 +22,8 @@ namespace OWML.ModHelper.Input
         private Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
         private HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
         private HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
-        private float[] _timeout = new float[MaxUsefulKey];
-        private int[] _gameBindingCounter = new int[MaxUsefulKey];
+        private float[] _timeout = new float[ModInputLibrary.MaxUsefulKey];
+        private int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
         private IModInputCombination _currentCombination;
         private int _lastSingleUpdate;
         private int _lastCombinationUpdate;
@@ -37,7 +34,7 @@ namespace OWML.ModHelper.Input
         {
             UpdateCurrentCombination();
             var intKey = (int)code;
-            while (intKey >= MaxUsefulKey)
+            while (intKey >= ModInputLibrary.MaxUsefulKey)
             {
                 intKey -= KeyDiff;
             }
@@ -63,18 +60,18 @@ namespace OWML.ModHelper.Input
             long hash = 0;
             var keysCount = 0;
             var countdownTrigger = true;
-            for (var code = MinUsefulKey; code < MaxUsefulKey; code++)
+            for (var code = ModInputLibrary.MinUsefulKey; code < ModInputLibrary.MaxUsefulKey; code++)
             {
                 if (!(Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && UnityEngine.Input.GetKey((KeyCode)code)))
                 {
                     continue;
                 }
                 keysCount++;
-                if (keysCount > MaxComboLength)
+                if (keysCount > ModInputLibrary.MaxComboLength)
                 {
                     return null;
                 }
-                hash = hash * MaxUsefulKey + code;
+                hash = hash * ModInputLibrary.MaxUsefulKey + code;
                 if (Time.realtimeSinceStartup - _timeout[code] > Cooldown)
                 {
                     countdownTrigger = false;
@@ -108,14 +105,14 @@ namespace OWML.ModHelper.Input
                 return null;
             }
 
-            if (hash < MaxUsefulKey)
+            if (hash < ModInputLibrary.MaxUsefulKey)
             {
                 return combination;
             }
             while (hash > 0)
             {
-                _timeout[hash % MaxUsefulKey] = Time.realtimeSinceStartup;
-                hash /= MaxUsefulKey;
+                _timeout[hash % ModInputLibrary.MaxUsefulKey] = Time.realtimeSinceStartup;
+                hash /= ModInputLibrary.MaxUsefulKey;
             }
             return combination;
         }
@@ -278,7 +275,7 @@ namespace OWML.ModHelper.Input
             {
                 foreach (long hash in combination.Hashes)
                 {
-                    if (_comboRegistry.ContainsKey(hash) || (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0))
+                    if (_comboRegistry.ContainsKey(hash) || (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0))
                     {
                         return RegistrationCode.CombinationTaken;
                     }
@@ -305,7 +302,7 @@ namespace OWML.ModHelper.Input
                 {
                     combos.Add(_comboRegistry[hash].FullName);
                 }
-                else if (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0)
+                else if (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0)
                 {
                     combos.Add("Outer Wilds." + Enum.GetName(typeof(KeyCode), (KeyCode)hash));
                 }
@@ -396,7 +393,7 @@ namespace OWML.ModHelper.Input
                         if (key != KeyCode.None)
                         {
                             var intKey = (int)key;
-                            while (intKey >= MaxUsefulKey)
+                            while (intKey >= ModInputLibrary.MaxUsefulKey)
                             {
                                 intKey -= KeyDiff;
                             }
