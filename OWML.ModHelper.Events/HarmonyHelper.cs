@@ -59,7 +59,7 @@ namespace OWML.ModHelper.Events
             AddPrefix(GetMethod<T>(methodName), patchType, patchMethodName);
         }
 
-        public void AddPrefix(MethodInfo original, Type patchType, string patchMethodName)
+        public void AddPrefix(MethodBase original, Type patchType, string patchMethodName)
         {
             var prefix = patchType.GetAnyMethod(patchMethodName);
             if (prefix == null)
@@ -75,7 +75,7 @@ namespace OWML.ModHelper.Events
             AddPostfix(GetMethod<T>(methodName), patchType, patchMethodName);
         }
 
-        public void AddPostfix(MethodInfo original, Type patchType, string patchMethodName)
+        public void AddPostfix(MethodBase original, Type patchType, string patchMethodName)
         {
             var postfix = patchType.GetAnyMethod(patchMethodName);
             if (postfix == null)
@@ -91,7 +91,7 @@ namespace OWML.ModHelper.Events
             EmptyMethod(GetMethod<T>(methodName));
         }
 
-        public void EmptyMethod(MethodInfo methodInfo)
+        public void EmptyMethod(MethodBase methodInfo)
         {
             Transpile(methodInfo, typeof(Patches), nameof(Patches.EmptyMethod));
         }
@@ -101,7 +101,7 @@ namespace OWML.ModHelper.Events
             Transpile(GetMethod<T>(methodName), patchType, patchMethodName);
         }
 
-        public void Transpile(MethodInfo original, Type patchType, string patchMethodName)
+        public void Transpile(MethodBase original, Type patchType, string patchMethodName)
         {
             var patchMethod = patchType.GetAnyMethod(patchMethodName);
             if (patchMethod == null)
@@ -112,7 +112,7 @@ namespace OWML.ModHelper.Events
             Patch(original, null, null, patchMethod);
         }
 
-        private void Patch(MethodInfo original, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
+        private void Patch(MethodBase original, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
         {
             if (original == null)
             {
