@@ -25,7 +25,7 @@ namespace OWML.ModHelper
 
         private void Update()
         {
-            if (_inputCommand != null && _button != null && OWInput.IsPressed(_inputCommand, InputMode.Menu))
+            if (_inputCommand != null && _button != null && OWInput.IsNewlyPressed(_inputCommand, InputMode.Menu))
             {
                 _button.onClick.Invoke();
             }
