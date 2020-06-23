@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OWML.Common;
+using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
-using System.CodeDom;
 using OWML.ModHelper.Input;
-using System.Collections.ObjectModel;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModInputCombinationElementMenu : ModMenu
+    public class ModInputCombinationElementMenu : ModMenu, IModInputCombinationElementMenu
     {
-        private const int MaxUsefulKey = 350;
-
         public event Action<string> OnConfirm;
         public event Action OnCancel;
 
         private ModInputCombinationPopup _inputMenu;
-        private PopupMenu _popup;
+        private PopupMenu _twoButtonPopup;
         private IModInputHandler _inputHandler;
 
         public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler) : base(console)
@@ -29,7 +24,7 @@ namespace OWML.ModHelper.Menus
         }
 
         public void Initialize(PopupInputMenu menu)
-        {
+        {//make more understandable
             if (Menu != null)
             {
                 return;
@@ -37,11 +32,15 @@ namespace OWML.ModHelper.Menus
             var parent = menu.transform.parent.gameObject;
             var parentCopy = GameObject.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
-            _popup = parentCopy.transform.GetChild(0).GetComponent<PopupMenu>();
-            var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);
-            var menuTransform = originalMenu.GetComponentInChildren<VerticalLayoutGroup>(true).transform;
+            _twoButtonPopup = parentCopy.transform.GetChild(0).GetComponent<PopupMenu>();
+            var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);//InputField-Popup
+            var menuTransform = originalMenu.GetComponentInChildren<VerticalLayoutGroup>(true).transform;//InputFieldElements
             _inputMenu = originalMenu.gameObject.AddComponent<ModInputCombinationPopup>();
             var buttonsTransform = menuTransform.GetComponentInChildren<HorizontalLayoutGroup>(true).transform;
+            foreach (var button in buttonsTransform.GetComponentsInChildren<Button>())
+            {
+                button.navigation = new Navigation() { mode = Navigation.Mode.None };
+            }
             var resetButtonObject = GameObject.Instantiate(buttonsTransform.GetChild(0).gameObject);
             resetButtonObject.name = "UIElement-ButtonReset";
             resetButtonObject.transform.SetParent(buttonsTransform);
@@ -55,15 +54,12 @@ namespace OWML.ModHelper.Menus
             var inputSelectable = inputObject.AddComponent<Selectable>();
             var layoutObject = inputObject.transform.GetChild(0).gameObject;
             GameObject.Destroy(inputObject.transform.GetChild(3).GetComponent<Text>());
-            //layoutObject.name = "Combination";
             var layoutGroupNew = layoutObject.AddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childControlWidth = false;
             layoutGroupNew.childForceExpandWidth = false;
-            //var foregrounds = new List<Graphic>();
-           // foregrounds.Add(inputObject.transform.GetChild(0).GetComponent<Image>());
             inputObject.transform.GetChild(1).GetComponent<Image>().color = Color.clear;
             var layout = new LayoutManager(layoutGroupNew, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                layoutObject.AddComponent<UIStyleApplier>(), resetButtonObject.transform.localScale/*, foregrounds*/);
+                layoutObject.AddComponent<ModUIStyleApplier>(), resetButtonObject.transform.localScale);
             GameObject.Destroy(inputObject.transform.GetChild(2).gameObject);//destroy text
             GameObject.Destroy(menuTransform.GetChild(2).GetChild(0).GetComponent<TabbedNavigation>());
             GameObject.Destroy(menuTransform.GetChild(2).GetChild(1).GetComponent<TabbedNavigation>());
@@ -99,21 +95,13 @@ namespace OWML.ModHelper.Menus
 
         private bool OnPopupValidate()
         {
-            var Codes = _inputMenu.KeyCodes;
-            long hash = 0;
-            foreach (var code in Codes)
-            {
-                hash = hash * MaxUsefulKey + (long)code;
-            }
-            var hashes = new List<long>();
-            hashes.Add(hash);
-            var collisions = _inputHandler.GetCollisions(hashes.AsReadOnly()); //probably should do it directly with string instead
+            var collisions = _inputHandler.GetCollisions(_inputMenu.Combination); //probably should do it directly with string instead
             if (collisions.Count > 0)
             {
-                _popup.EnableMenu(true);
-                _popup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
+                _twoButtonPopup.EnableMenu(true);
+                _twoButtonPopup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-                _popup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
+                _twoButtonPopup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
                 return false;
             }
             return true;

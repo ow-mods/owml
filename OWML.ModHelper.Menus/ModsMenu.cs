@@ -16,14 +16,12 @@ namespace OWML.ModHelper.Menus
 
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
-        private IModInputHandler _inputHandler;
         private PopupInputMenu _inputMenu;
 
-        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
+        public ModsMenu(IModConsole console, IModMenus menus) : base(console)
         {
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
-            _inputHandler = inputHandler;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
@@ -93,7 +91,7 @@ namespace OWML.ModHelper.Menus
             var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
             var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
             var modInputCombinationMenu = new ModInputCombinationMenu(_console);
-            var modInputCombinationElementTemplate = new ModInputCombinationElement(toggleTemplate.Copy().Toggle, modInputCombinationMenu, ((ModMenus)_menus).InputCombinationMenu);
+            var modInputCombinationElementTemplate = new ModInputCombinationElement(toggleTemplate.Copy().Toggle, modInputCombinationMenu, _menus.InputCombinationMenu);
             modInputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
             foreach (var modConfigMenu in _modConfigMenus)
             {

@@ -1,15 +1,14 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModComboInput : ModInput<string>, IModComboInput
     {
         private const float ScaleDown = 0.75f;
-        private const string XboxPrefix = "xbox_";
 
         public IModLayoutButton Button { get; }
         //protected readonly IModInputMenu InputMenu;
@@ -68,34 +67,10 @@ namespace OWML.ModHelper.Menus
             Button.Layout.UpdateState();
         }
 
-        private Texture2D GetGamepadButtonTexture(string key)
-        {
-            return ButtonPromptLibrary.SharedInstance.GetButtonTexture((JoystickButton)Enum.Parse(typeof(JoystickButton), key));
-        }
-
-        private Texture2D GetXboxButtonTexture(string xboxKey)
-        {
-            switch (xboxKey[0])
-            {
-                case 'A':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceDown);
-                case 'B':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceRight);
-                case 'X':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceLeft);
-                case 'Y':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceUp);
-                default:
-                    return GetGamepadButtonTexture(xboxKey);
-            }
-        }
-
         private void AddKeySign(string key)
         {
             Button.Layout.AddPicture(
-                key.Contains(XboxPrefix) ?
-                GetXboxButtonTexture(key.Substring(XboxPrefix.Length)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
+                ModInputLibrary.KeyTexture(key)
                 , ScaleDown);
         }
 

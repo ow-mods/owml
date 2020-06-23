@@ -14,6 +14,6 @@ namespace OWML.Common
         bool IsNewlyPressed(IModInputCombination combo);
         bool WasTapped(IModInputCombination combo);
         bool WasNewlyReleased(IModInputCombination combo);
-        List<string> GetCollisions(ReadOnlyCollection<long> hashes);
+        List<string> GetCollisions(string combinations);
     }
 }

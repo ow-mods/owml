@@ -17,32 +17,22 @@ namespace OWML.ModHelper.Menus
         public int ChildCount => LayoutGroup.transform.childCount;
 
         private readonly UIStyleManager _styleManager;
-        private readonly UIStyleApplier _styleApplier;
-        private readonly FieldInfo _texts;
-        private readonly FieldInfo _foregrounds;
+        private readonly ModUIStyleApplier _styleApplier;
         private readonly Vector3 _scale;
         private readonly HashSet<Graphic> _constantGraphics = new HashSet<Graphic>();
         private readonly HashSet<Graphic> _backingGraphics = new HashSet<Graphic>();
 
-        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, UIStyleApplier styleApplier, Vector3 scale, List<Graphic> constantGraphics, List<Graphic> backingGraphics) : this(layout, styleManager, styleApplier, scale, constantGraphics)
+        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics) : this(layout, styleManager, styleApplier, scale, constantGraphics)
         {
-            backingGraphics.ForEach(x => _backingGraphics.Add(x));
-            var backGraphics = new Graphic[backingGraphics.Count];
-            int i = 0;
-            foreach (var graphic in backingGraphics)
-            {
-                backGraphics[i] = graphic;
-                i++;
-            }
-            styleApplier.SetValue("_backgroundGraphics", backGraphics);
+            styleApplier.SetBackround(backGraphics);
         }
 
-        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, UIStyleApplier styleApplier, Vector3 scale, List<Graphic> constantGraphics) : this(layout, styleManager, styleApplier, scale)
+        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale, Graphic[] constantGraphics) : this(layout, styleManager, styleApplier, scale)
         {
-            constantGraphics.ForEach(x => _constantGraphics.Add(x));
+            Array.ForEach(constantGraphics, element => _constantGraphics.Add(element));
         }
 
-        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, UIStyleApplier styleApplier, Vector3 scale)
+        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale)
         {
             _scale = scale;
             _styleManager = styleManager;
@@ -50,44 +40,23 @@ namespace OWML.ModHelper.Menus
             LayoutGroup = layout;
             LayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             LayoutGroup.transform.localPosition = Vector3.zero;
-            ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f);//center
-            _texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
-            _foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);
+            ((RectTransform)LayoutGroup.transform).pivot = NormalPivot;
             UpdateState();
-            if (styleApplier.GetValue<Graphic[]>("_foregroundGraphics") == null)
-            {
-                styleApplier.SetValue("_foregroundGraphics", new Graphic[0]);
-            }
-            if (styleApplier.GetValue<Graphic[]>("_backgroundGraphics") == null)
-            {
-                styleApplier.SetValue("_backgroundGraphics", new Graphic[0]);
-            }
-            if (styleApplier.GetValue<Graphic[]>("_onOffGraphics") == null)
-            {
-                styleApplier.SetValue("_onOffGraphics", new Graphic[0]);
-            }
-            if (styleApplier.GetValue<UIStyleApplier.OnOffGraphic[]>("_onOffGraphicList") == null)
-            {
-                styleApplier.SetValue("_onOffGraphicList", new UIStyleApplier.OnOffGraphic[0]);
-            }
         }
 
         public void UpdateState()
         {
             var currentTexts = LayoutGroup.gameObject.GetComponentsInChildren<Text>();
-            _texts.SetValue(_styleApplier, currentTexts);
-            var currentGraphics = new Graphic[currentTexts.Length + _constantGraphics.Count];
-            int i;
-            for (i = 0; i < currentTexts.Length; i++)
-            {
-                currentGraphics[i] = currentTexts[i];
-            }
+            _styleApplier.SetTexts(currentTexts);
+            Graphic[] currentGraphics = currentTexts;
+            Array.Resize<Graphic>(ref currentGraphics, currentTexts.Length + _constantGraphics.Count);
+            int i = currentTexts.Length;
             foreach (var graphic in _constantGraphics)
             {
                 currentGraphics[i] = graphic;
                 i++;
             }
-            _foregrounds.SetValue(_styleApplier, currentGraphics);
+            _styleApplier.SetForeground(currentGraphics);
         }
 
         public void Clear()
@@ -125,6 +94,7 @@ namespace OWML.ModHelper.Menus
             ((RectTransform)textObject.transform).pivot = NormalPivot;
             textObject.transform.SetSiblingIndex(index);
         }
+
         public void AddPicture(Texture2D texture, float scale = 1.0f)
         {
             AddPictureAt(texture, LayoutGroup.transform.childCount, scale);

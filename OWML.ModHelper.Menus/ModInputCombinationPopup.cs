@@ -1,4 +1,6 @@
 ﻿using OWML.Common;
+using OWML.Common.Menus;
+using OWML.ModHelper.Input;
 using OWML.ModHelper.Events;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +12,8 @@ namespace OWML.ModHelper.Menus
 {
     public class ModInputCombinationPopup:PopupMenu
     {
-        private const float ScaleDown = 0.75f;
-        private const string XboxPrefix = "xbox_";
-        private const int MinUsefulKey = 8;
-        private const int MinGamepadKey = 330;
-        private const int MaxUsefulKey = 350;
-
-        public LayoutManager Layout { get; private set; }
-        public event ModInputCombinationPopup.PopupResetEvent OnPopupReset;
-        public delegate bool PopupResetEvent();
+        public ILayoutManager Layout { get; private set; }
+        public event Action OnPopupReset;
         public string Combination
         {
             get
@@ -26,9 +21,7 @@ namespace OWML.ModHelper.Menus
                 string result = "";
                 for (var j = 0; j < _combination.Count; j++)
                 {
-                    result += ((int)_combination[j]) >= MinGamepadKey ?
-                        XboxPrefix + JoystickButtonToXboxButton(InputTranslator.ConvertKeyCodeToButton(_combination[j], OWInput.GetActivePadConfig())) :
-                        _combination[j].ToString();
+                    result += ModInputLibrary.KeyCodeToString(_combination[j]);
                     if (j < _combination.Count - 1)
                     {
                         result += "+";
@@ -43,40 +36,6 @@ namespace OWML.ModHelper.Menus
         private ButtonWithHotkeyImageElement _resetButton;
         private List<KeyCode> _combination = new List<KeyCode>();
         protected SingleAxisCommand _resetCommand;
-
-        private JoystickButton XboxButtonToJoystickButton(string xboxKey)
-        {
-            switch (xboxKey[0])
-            {
-                case 'A':
-                    return JoystickButton.FaceDown;
-                case 'B':
-                    return JoystickButton.FaceRight;
-                case 'X':
-                    return JoystickButton.FaceLeft;
-                case 'Y':
-                    return JoystickButton.FaceUp;
-                default:
-                    return (JoystickButton)Enum.Parse(typeof(JoystickButton), xboxKey);
-            }
-        }
-
-        private string JoystickButtonToXboxButton(JoystickButton key)
-        {
-            switch (key)
-            {
-                case JoystickButton.FaceDown:
-                    return "A";
-                case JoystickButton.FaceRight:
-                    return "B";
-                case JoystickButton.FaceLeft:
-                    return "X";
-                case JoystickButton.FaceUp:
-                    return "Y";
-                default:
-                    return key.ToString();
-            }
-        }
 
         protected override void InitializeMenu()
         {
@@ -112,7 +71,7 @@ namespace OWML.ModHelper.Menus
                 OnPopupReset.Invoke();
             }
             List<KeyCode> currentlyPressedKeys = new List<KeyCode>();
-            for (var code = MinUsefulKey; code < MaxUsefulKey; code++)
+            for (var code = ModInputLibrary.MinUsefulKey; code < ModInputLibrary.MaxUsefulKey; code++)
             {
                 if (!(Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && UnityEngine.Input.GetKey((KeyCode)code)))
                 {
@@ -134,11 +93,7 @@ namespace OWML.ModHelper.Menus
 
         private void AddKeySign(KeyCode key)
         {
-            Layout.AddPictureAt(
-                ((int)key) >= MinGamepadKey ?
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, OWInput.GetActivePadConfig())) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(key)
-                , Layout.ChildCount, ScaleDown);
+            Layout.AddPictureAt(ModInputLibrary.KeyTexture(key), Layout.ChildCount, ModInputLibrary.ScaleDown);
         }
 
         private void UpdateContents()
@@ -155,7 +110,6 @@ namespace OWML.ModHelper.Menus
             Layout.UpdateState();
         }
 
-
         public void EnableMenu(bool value, string currentCombination)
         {
             if (value)
@@ -165,9 +119,7 @@ namespace OWML.ModHelper.Menus
                 {
                     if (key != "")
                     {
-                        _combination.Add(key.Contains(XboxPrefix) ?
-                            InputTranslator.GetButtonKeyCode(XboxButtonToJoystickButton(key.Substring(XboxPrefix.Length))) :
-                            (KeyCode)Enum.Parse(typeof(KeyCode), key));
+                        _combination.Add(ModInputLibrary.StringToKeyCode(key));
                     }
                 }
             }
@@ -202,7 +154,7 @@ namespace OWML.ModHelper.Menus
             base.SetUpPopupCommands(okCommand, cancelCommand, okPrompt, cancelPrompt);
         }
 
-        public void Initialize(PopupMenu oldPopupMenu, Selectable defaultSelectable, SubmitAction resetAction, ButtonWithHotkeyImageElement resetButton, LayoutManager layout)
+        public void Initialize(PopupMenu oldPopupMenu, Selectable defaultSelectable, SubmitAction resetAction, ButtonWithHotkeyImageElement resetButton, ILayoutManager layout)
         {
             _labelText = oldPopupMenu.GetValue<Text>("_labelText");
             _cancelAction = oldPopupMenu.GetValue<SubmitAction>("_cancelAction");

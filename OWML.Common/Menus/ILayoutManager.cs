@@ -6,8 +6,8 @@ namespace OWML.Common.Menus
     public interface ILayoutManager
     {
         LayoutGroup LayoutGroup { get; }
-
         int ChildCount { get; }
+
         void UpdateState();
         void Clear();
         void AddText(string text);

@@ -76,12 +76,17 @@
     <Compile Include="ModInputCombination.cs" />
     <Compile Include="ModInputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ModInputLibrary.cs" />
     <Compile Include="RegistrationCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
+      <Project>{b771615e-6b51-44f8-b862-d7543c12c0ff}</Project>
+      <Name>OWML.ModHelper.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

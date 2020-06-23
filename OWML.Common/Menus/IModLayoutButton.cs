@@ -7,9 +7,11 @@ namespace OWML.Common.Menus
     public interface IModLayoutButton
     {
         event Action OnClick;
+        Button Button { get; }
+        IModMenu Menu { get; }
         ILayoutManager Layout { get; }
         int Index { get; set; }
-        Button Button { get; }
+
         void Initialize(IModMenu menu);
 
         IModLayoutButton Copy();

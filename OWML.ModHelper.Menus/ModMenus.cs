@@ -11,13 +11,13 @@ namespace OWML.ModHelper.Menus
         public IModPauseMenu PauseMenu { get; }
         public IModsMenu ModsMenu { get; }
         public IModInputMenu InputMenu { get; }
-        public ModInputCombinationElementMenu InputCombinationMenu { get; }
+        public IModInputCombinationElementMenu InputCombinationMenu { get; }
 
         public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler)
         {
             MainMenu = new ModMainMenu(console);
             PauseMenu = new ModPauseMenu(console);
-            ModsMenu = new ModsMenu(console, this, inputHandler);
+            ModsMenu = new ModsMenu(console, this);
             InputMenu = new ModInputMenu(console);
             InputCombinationMenu = new ModInputCombinationElementMenu(console, inputHandler);
 

@@ -42,8 +42,8 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childControlHeight = false;
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
-            Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(), 
-                Button.GetComponent<UIStyleApplier>(), scale);
+            Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
+                ModUIStyleApplier.ReplaceStyleApplier(Button.gameObject), scale);
         }
 
         public void Initialize(IModMenu menu)

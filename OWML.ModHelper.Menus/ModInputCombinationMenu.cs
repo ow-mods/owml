@@ -22,6 +22,13 @@ namespace OWML.ModHelper.Menus
                 string result = "";
                 for (int i = 0; i < CombinationElements.Count; i++)
                 {
+                    while (i < CombinationElements.Count && CombinationElements[i].Title == "")
+                    {
+                        CombinationElements[i].DestroySelf();
+                    }
+                }
+                for (int i = 0; i < CombinationElements.Count; i++)
+                {
                     if (CombinationElements[i].Title != "")
                     {
                         result += CombinationElements[i].Title;
@@ -35,15 +42,11 @@ namespace OWML.ModHelper.Menus
             }
             set
             {
-                for (int i = CombinationElements.Count() - 1; i >= 0; i--)
-                {
-                    CombinationElements[i].DestroySelf();
-                }
+                CombinationElements.ForEach(element => element.Destroy());
                 CombinationElements.Clear();
                 foreach (var combination in value.Split('/'))
                 {
                     AddCombinationElement(combination);
-                    //CombinationElements.Add(_combinationElementTemplate.Copy(combination));
                 }
             }
         }
@@ -81,12 +84,12 @@ namespace OWML.ModHelper.Menus
             addButton.SetControllerCommand(InputLibrary.setDefaults);
 
             var localText = addButton.Button.gameObject.GetComponentInChildren<LocalizedText>(true);
-            if (localText)
+            if (localText != null)
             {
                 GameObject.Destroy(localText);
             }
             var buttonWithHotkey = addButton.Button.gameObject.GetComponentInChildren<ButtonWithHotkeyImageElement>(true);
-            if (buttonWithHotkey)
+            if (buttonWithHotkey != null)
             {
                 buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults,"Add Alternative"));
             }

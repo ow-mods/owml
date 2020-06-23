@@ -1,5 +1,6 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Input;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,6 @@ namespace OWML.ModHelper.Menus
     public class ModInputCombinationElement : ModToggleInput, IModInputCombinationElement
     {
         private const float ScaleDown = 0.75f;
-        private const string XboxPrefix = "xbox_";
 
         public ILayoutManager Layout { get; private set; }
 
@@ -28,9 +28,9 @@ namespace OWML.ModHelper.Menus
         private string _combination;
         private readonly GameObject _layoutObject;
 
-        private static ModInputCombinationElementMenu _popupMenu;
+        private static IModInputCombinationElementMenu _popupMenu;
 
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, ModInputCombinationElementMenu popupMenu, string combination = "") : base(toggle, menu)
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, IModInputCombinationElementMenu popupMenu, string combination = "") : base(toggle, menu)
         {
             _combination = combination;
             _layoutObject = toggle.transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
@@ -46,13 +46,10 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
             layoutGroup.spacing = 0f;
-            var constantElements = new List<Graphic>();
-            constantElements.Add(toggle.transform.GetChild(1).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Graphic>());
-            toggle.transform.GetChild(1).GetChild(0).GetChild(1).GetChild(1).gameObject.SetActive(false);
-            constantElements.Add(toggle.transform.GetChild(1).GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<Graphic>());
-            constantElements.Add(toggle.transform.GetChild(1).GetChild(0).GetChild(1).GetChild(2).gameObject.GetComponent<Graphic>());
+            var constantGraphics = _layoutObject.GetComponentsInChildren<Graphic>(true);
+            _layoutObject.transform.GetChild(1).gameObject.SetActive(false);
             Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                toggle.GetComponent<UIStyleApplier>(), scale, constantElements);
+                ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject), scale, constantGraphics);
             UpdateContents();
             _popupMenu = popupMenu;
         }
@@ -75,34 +72,10 @@ namespace OWML.ModHelper.Menus
             Layout.UpdateState();
         }
 
-        private Texture2D GetGamepadButtonTexture(string key)
-        {
-            return ButtonPromptLibrary.SharedInstance.GetButtonTexture((JoystickButton)Enum.Parse(typeof(JoystickButton), key));
-        }
-
-        private Texture2D GetXboxButtonTexture(string xboxKey)
-        {
-            switch (xboxKey[0])
-            {
-                case 'A':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceDown);
-                case 'B':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceRight);
-                case 'X':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceLeft);
-                case 'Y':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceUp);
-                default:
-                    return GetGamepadButtonTexture(xboxKey);
-            }
-        }
-
         private void AddKeySign(string key)
         {
             Layout.AddPictureAt(
-                key.Contains(XboxPrefix) ?
-                GetXboxButtonTexture(key.Substring(XboxPrefix.Length)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
+               ModInputLibrary.KeyTexture(key)
                 , Layout.ChildCount - 1, ScaleDown);
         }
 
@@ -126,13 +99,18 @@ namespace OWML.ModHelper.Menus
             UpdateContents();
         }
 
-        public void DestroySelf()
+        public void Destroy()
         {
             Layout.Clear();
             Layout.UpdateState();
             Title = "";
             Toggle.gameObject.SetActive(false);
             GameObject.Destroy(Toggle.gameObject);
+        }
+
+        public void DestroySelf()
+        {
+            Destroy();
             (Menu as IModInputCombinationMenu)?.CombinationElements.Remove(this);
         }
 

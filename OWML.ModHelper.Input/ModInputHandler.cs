@@ -296,7 +296,7 @@ namespace OWML.ModHelper.Input
             return RegistrationCode.AllNormal;
         }
 
-        public List<string> GetCollisions(ReadOnlyCollection<long> hashes)
+        private List<string> GetCollisions(ReadOnlyCollection<long> hashes)
         {
             List<string> combos = new List<string>();
             foreach (long hash in hashes)
@@ -305,12 +305,28 @@ namespace OWML.ModHelper.Input
                 {
                     combos.Add(_comboRegistry[hash].FullName);
                 }
-                if (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0)
+                else if (hash < MaxUsefulKey && _gameBindingCounter[hash] > 0)
                 {
                     combos.Add("Outer Wilds." + Enum.GetName(typeof(KeyCode), (KeyCode)hash));
                 }
             }
             return combos;
+        }
+
+        public List<string> GetCollisions(string combinations)
+        {
+            var hashes = new List<long>();
+            foreach (var combo in combinations.Split('/'))
+            {
+                var hash = ModInputLibrary.StringToHash(combo);
+                if (hash <= 0)
+                {
+                    var toReturn = new List<string>();
+                    toReturn.Add(((RegistrationCode)(-hash)).ToString());
+                }
+                hashes.Add(hash);
+            }
+            return GetCollisions(hashes.AsReadOnly());
         }
 
         public IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
