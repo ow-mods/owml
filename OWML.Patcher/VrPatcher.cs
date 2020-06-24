@@ -41,38 +41,18 @@ namespace OWML.Patcher
                 return;
             }
 
-            // Bytes that need to be inserted into the file.
-            var patchBytes = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 }.Concat(Encoding.ASCII.GetBytes("OpenVR"));
-
-            var fileBytes = File.ReadAllBytes(currentPath);
-
-            var fileSizeChange = 12;
-            // Start position of bytes that define file size.
-            var fileSizeStartIndex = 6;
-
-            var originalFileSize = BitConverter.ToInt32(fileBytes, fileSizeStartIndex);
-            var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange);
-
-            for (int i = 0; i < patchedFileSizeBytes.Length; i++)
-            {
-                fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
-            }
-
-            // Indexes of addresses that need to be shifted due to added bytes.
-            var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
-            foreach (var index in addressIndexes)
-            {
-                fileBytes[index] += (byte)fileSizeChange;
-            }
-
             // String that comes right before the bytes we want to patch.
             byte[] patchZoneBytes = Encoding.ASCII.GetBytes("Assets/Scenes/PostCreditScene.unity");
+
+            // Consider file already patched if this string is present.
             byte[] existingPatchBytes = Encoding.ASCII.GetBytes("OpenVR");
 
             var patchZoneMatch = 0;
             var existingPatchMatch = 0;
             var patchStartIndex = -1;
+            var isAlreadyPatched = false;
 
+            var fileBytes = File.ReadAllBytes(currentPath);
             for (var i = 0; i < fileBytes.Length; i++)
             {
                 var fileByte = fileBytes[i];
@@ -107,18 +87,41 @@ namespace OWML.Patcher
                     }
                     if (existingPatchMatch == existingPatchBytes.Length)
                     {
-                        _writer.WriteLine("Already patched! Abort!", i);
-                        patchStartIndex = -1;
+                        _writer.WriteLine("globalgamemanagers already patched");
+                        isAlreadyPatched = true;
 
                         break;
                     }
                 }
             }
 
-            if (patchStartIndex != -1)
+            if (patchStartIndex != -1 && !isAlreadyPatched)
             {
+                var fileSizeChange = 12;
+                // Start position of bytes that define file size.
+                var fileSizeStartIndex = 6;
+
+                var originalFileSize = BitConverter.ToInt32(fileBytes, fileSizeStartIndex);
+                var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange);
+
+                // TODO fix this
+                //for (int i = 0; i < patchedFileSizeBytes.Length; i++)
+                //{
+                //    fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
+                //}
+
+                // Indexes of addresses that need to be shifted due to added bytes.
+                var addressIndexes = new int[] { 0x7, 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+                foreach (var index in addressIndexes)
+                {
+                    fileBytes[index] += (byte)fileSizeChange;
+                }
+
                 var originalFirstPart = fileBytes.Take(patchStartIndex);
                 var originalSecondPart = fileBytes.Skip(patchStartIndex + 2);
+
+                // Bytes that need to be inserted into the file.
+                var patchBytes = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 }.Concat(Encoding.ASCII.GetBytes("OpenVR"));
 
                 var patchedBytes = originalFirstPart
                     .Concat(patchBytes)
