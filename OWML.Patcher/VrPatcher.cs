@@ -59,18 +59,29 @@ namespace OWML.Patcher
             var patchSecondPart = Encoding.ASCII.GetBytes("OpenVR");
             var patchBytes = patchFirstPart.Concat(patchSecondPart);
 
-            var incIndexes = new int[] { 0x7, 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+            var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
 
             var fileBytes = File.ReadAllBytes(currentPath);
+
+            var fileSizeChange = 12;
+
+            var fileSizeStart = 6;
+            var originalFileSize = BitConverter.ToInt32(fileBytes, fileSizeStart);
+            var patchedFileSize = BitConverter.GetBytes(originalFileSize + fileSizeChange);
+
+            for (int i = 0; i < patchedFileSize.Length; i++)
+            {
+                fileBytes[fileSizeStart + i] = patchedFileSize[i];
+            }
 
             _writer.WriteLine("fileBytes length", fileBytes.Length);
 
             var currentMatchLength = 0;
             for (var i = 0; i < fileBytes.Length; i++)
             {
-                if (incIndexes.Contains(i))
+                if (addressIndexes.Contains(i))
                 {
-                    fileBytes[i] += 12;
+                    fileBytes[i] += (byte)fileSizeChange;
                 }
 
                 var fileByte = fileBytes[i];
