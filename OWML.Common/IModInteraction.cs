@@ -8,7 +8,7 @@ namespace OWML.Common
         IList<IModBehaviour> GetDependants(string dependencyUniqueName);
         IList<IModBehaviour> GetDependencies(string uniqueName);
         IModBehaviour GetMod(string uniqueName);
-        T GetApi<T>(string uniqueName) where T : class;
+        TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class;
         bool ModExists(string uniqueName);
     }
 }

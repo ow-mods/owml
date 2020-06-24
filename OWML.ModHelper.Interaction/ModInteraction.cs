@@ -78,7 +78,7 @@ namespace OWML.ModHelper.Interaction
             return mod.Api;
         }
 
-        public TInterface GetApi<TInterface>(string uniqueName) where TInterface : class
+        public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
         {
             var inter = GetApi(uniqueName);
             if (inter == null)

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
+
+// Adapted from SMAPI code : https://github.com/Pathoschild/SMAPI/tree/c4a82418ac8b09a6965052f5c9173928457fba52/src/SMAPI/Framework/Reflection
 
 namespace OWML.ModHelper.Interaction
 {
     internal class InterfaceProxyBuilder
     {
-
         private readonly Type TargetType;
 
         private readonly Type ProxyType;
