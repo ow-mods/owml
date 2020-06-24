@@ -52,45 +52,56 @@ namespace OWML.Patcher
                 return;
             }
 
-            var currentChecksum = CalculateChecksum(currentPath);
-            _writer.WriteLine("Current checksum: " + currentChecksum);
+            var match = "Assets/Scenes/PostCreditScene.unity";
+            byte[] matchBytes = Encoding.ASCII.GetBytes(match);
 
-            var backupPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{currentChecksum}.bak";
-            if (!File.Exists(backupPath))
-            {
-                _writer.WriteLine("Taking backup of globalgamemanagers.");
-                File.Copy(currentPath, backupPath, true);
-            }
+            var patchFirstPart = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 };
+            var patchSecondPart = Encoding.ASCII.GetBytes("OpenVR");
+            var patchBytes = patchFirstPart.Concat(patchSecondPart);
 
-            var vrPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{currentChecksum}.vr";
-            if (enableVR && !File.Exists(vrPath))
+            var incIndexes = new int[] { 0x7, 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+
+            var fileBytes = File.ReadAllBytes(currentPath);
+
+            _writer.WriteLine("fileBytes length", fileBytes.Length);
+
+            var currentMatchLength = 0;
+            for (var i = 0; i < fileBytes.Length; i++)
             {
-                _writer.WriteLine("Patching globalgamemanagers for VR...");
-                if (PatchChecksums.Contains(currentChecksum))
+                if (incIndexes.Contains(i))
                 {
-                    var patchPath = $"{_owmlConfig.OWMLPath}VR/{currentChecksum}";
-                    ApplyPatch(currentPath, vrPath, patchPath);
+                    fileBytes[i] += 12;
+                }
+
+                var fileByte = fileBytes[i];
+                var matchByte = matchBytes[currentMatchLength];
+                if (fileByte == matchByte)
+                {
+                    currentMatchLength++;
                 }
                 else
                 {
-                    var patchedChecksum = PatchChecksums.FirstOrDefault(checksum =>
-                        CalculateChecksum($"{_owmlConfig.DataPath}/globalgamemanagers.{checksum}.vr") == currentChecksum);
-                    if (!string.IsNullOrEmpty(patchedChecksum))
-                    {
-                        _writer.WriteLine("Already patched! Original checksum: " + patchedChecksum);
-                        vrPath = $"{_owmlConfig.DataPath}/globalgamemanagers.{patchedChecksum}.vr";
-                    }
-                    else
-                    {
-                        _writer.WriteLine($"Error: invalid checksum: {currentChecksum}. " +
-                                          "VR patch for this version of Outer Wilds is not yet supported by OWML.");
-                        return;
-                    }
+                    currentMatchLength = 0;
+                }
+                if (currentMatchLength == matchBytes.Length)
+                {
+                    _writer.WriteLine("Found match ending in index", i);
+
+                    var startIndex = i + 6;
+
+                    var originalFirstPart = fileBytes.Take(startIndex);
+                    var originalSecondPart = fileBytes.Skip(startIndex + 2);
+
+                    var patchedBytes = originalFirstPart
+                        .Concat(patchBytes)
+                        .Concat(originalSecondPart)
+                        .ToArray();
+
+                    File.WriteAllBytes(currentPath + ".patched-rai", patchedBytes);
+
+                    break;
                 }
             }
-
-            var copyFrom = enableVR ? vrPath : backupPath;
-            File.Copy(copyFrom, currentPath, true);
         }
 
         private string CalculateChecksum(string filePath)
