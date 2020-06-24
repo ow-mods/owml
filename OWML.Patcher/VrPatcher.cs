@@ -12,7 +12,6 @@ namespace OWML.Patcher
     {
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
-        private readonly SHA256 _sha;
 
         private static readonly string[] PluginFilenames = { "openvr_api.dll", "OVRPlugin.dll" };
 
@@ -20,14 +19,13 @@ namespace OWML.Patcher
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
-            _sha = SHA256.Create();
         }
 
         public void PatchVR(bool enableVR)
         {
+            PatchGlobalManager();
             if (enableVR)
             {
-                PatchGlobalManager();
                 AddPluginFiles();
             }
             else
@@ -44,9 +42,6 @@ namespace OWML.Patcher
                 _writer.WriteLine("Error: can't find " + currentPath);
                 return;
             }
-
-            // String that comes right before the bytes we want to patch.
-            byte[] patchZoneBytes = Encoding.ASCII.GetBytes("Assets/Scenes/PostCreditScene.unity");
 
             // Bytes that need to be inserted into the file.
             var patchBytes = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 }.Concat(Encoding.ASCII.GetBytes("OpenVR"));
@@ -65,8 +60,6 @@ namespace OWML.Patcher
                 fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
             }
 
-            var currentMatchLength = 0;
-
             // Indexes of addresses that need to be shifted due to added bytes.
             var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
             foreach (var index in addressIndexes)
@@ -74,36 +67,67 @@ namespace OWML.Patcher
                 fileBytes[index] += (byte)fileSizeChange;
             }
 
+            // String that comes right before the bytes we want to patch.
+            byte[] patchZoneBytes = Encoding.ASCII.GetBytes("Assets/Scenes/PostCreditScene.unity");
+            byte[] existingPatchBytes = Encoding.ASCII.GetBytes("OpenVR");
+
+            var patchZoneMatch = 0;
+            var existingPatchMatch = 0;
+            var patchStartIndex = -1;
+
             for (var i = 0; i < fileBytes.Length; i++)
             {
                 var fileByte = fileBytes[i];
-                var matchByte = patchZoneBytes[currentMatchLength];
-                if (fileByte == matchByte)
+                if (patchStartIndex == -1)
                 {
-                    currentMatchLength++;
+                    var patchZoneByte = patchZoneBytes[patchZoneMatch];
+                    if (fileByte == patchZoneByte)
+                    {
+                        patchZoneMatch++;
+                    }
+                    else
+                    {
+                        patchZoneMatch = 0;
+                    }
+                    if (patchZoneMatch == patchZoneBytes.Length)
+                    {
+                        _writer.WriteLine("Found match ending in index", i);
+
+                        patchStartIndex = i + 6;
+                    }
                 }
                 else
                 {
-                    currentMatchLength = 0;
+                    var existingPatchByte = existingPatchBytes[existingPatchMatch];
+                    if (fileByte == existingPatchByte)
+                    {
+                        existingPatchMatch++;
+                    }
+                    else
+                    {
+                        existingPatchMatch = 0;
+                    }
+                    if (existingPatchMatch == existingPatchBytes.Length)
+                    {
+                        _writer.WriteLine("Already patched! Abort!", i);
+                        patchStartIndex = -1;
+
+                        break;
+                    }
                 }
-                if (currentMatchLength == patchZoneBytes.Length)
-                {
-                    _writer.WriteLine("Found match ending in index", i);
+            }
 
-                    var startIndex = i + 6;
+            if (patchStartIndex != -1)
+            {
+                var originalFirstPart = fileBytes.Take(patchStartIndex);
+                var originalSecondPart = fileBytes.Skip(patchStartIndex + 2);
 
-                    var originalFirstPart = fileBytes.Take(startIndex);
-                    var originalSecondPart = fileBytes.Skip(startIndex + 2);
+                var patchedBytes = originalFirstPart
+                    .Concat(patchBytes)
+                    .Concat(originalSecondPart)
+                    .ToArray();
 
-                    var patchedBytes = originalFirstPart
-                        .Concat(patchBytes)
-                        .Concat(originalSecondPart)
-                        .ToArray();
-
-                    File.WriteAllBytes(currentPath + ".patched-rai", patchedBytes);
-
-                    break;
-                }
+                File.WriteAllBytes(currentPath + ".patched-rai", patchedBytes);
             }
         }
 
