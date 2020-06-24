@@ -45,40 +45,39 @@ namespace OWML.Patcher
                 return;
             }
 
-            var match = "Assets/Scenes/PostCreditScene.unity";
-            byte[] matchBytes = Encoding.ASCII.GetBytes(match);
+            // String that comes right before the bytes we want to patch.
+            byte[] patchZoneBytes = Encoding.ASCII.GetBytes("Assets/Scenes/PostCreditScene.unity");
 
-            var patchFirstPart = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 };
-            var patchSecondPart = Encoding.ASCII.GetBytes("OpenVR");
-            var patchBytes = patchFirstPart.Concat(patchSecondPart);
-
-            var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+            // Bytes that need to be inserted into the file.
+            var patchBytes = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 }.Concat(Encoding.ASCII.GetBytes("OpenVR"));
 
             var fileBytes = File.ReadAllBytes(currentPath);
 
             var fileSizeChange = 12;
+            // Start position of bytes that define file size.
+            var fileSizeStartIndex = 6;
 
-            var fileSizeStart = 6;
-            var originalFileSize = BitConverter.ToInt32(fileBytes, fileSizeStart);
-            var patchedFileSize = BitConverter.GetBytes(originalFileSize + fileSizeChange);
+            var originalFileSize = BitConverter.ToInt32(fileBytes, fileSizeStartIndex);
+            var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange);
 
-            for (int i = 0; i < patchedFileSize.Length; i++)
+            for (int i = 0; i < patchedFileSizeBytes.Length; i++)
             {
-                fileBytes[fileSizeStart + i] = patchedFileSize[i];
+                fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
             }
 
-            _writer.WriteLine("fileBytes length", fileBytes.Length);
-
             var currentMatchLength = 0;
+
+            // Indexes of addresses that need to be shifted due to added bytes.
+            var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+            foreach (var index in addressIndexes)
+            {
+                fileBytes[index] += (byte)fileSizeChange;
+            }
+
             for (var i = 0; i < fileBytes.Length; i++)
             {
-                if (addressIndexes.Contains(i))
-                {
-                    fileBytes[i] += (byte)fileSizeChange;
-                }
-
                 var fileByte = fileBytes[i];
-                var matchByte = matchBytes[currentMatchLength];
+                var matchByte = patchZoneBytes[currentMatchLength];
                 if (fileByte == matchByte)
                 {
                     currentMatchLength++;
@@ -87,7 +86,7 @@ namespace OWML.Patcher
                 {
                     currentMatchLength = 0;
                 }
-                if (currentMatchLength == matchBytes.Length)
+                if (currentMatchLength == patchZoneBytes.Length)
                 {
                     _writer.WriteLine("Found match ending in index", i);
 
