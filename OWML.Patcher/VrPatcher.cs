@@ -50,6 +50,7 @@ namespace OWML.Patcher
             var patchZoneMatch = 0;
             var existingPatchMatch = 0;
             var patchStartIndex = -1;
+            var patchStartIndexOffset = 6;
             var isAlreadyPatched = false;
 
             var fileBytes = File.ReadAllBytes(currentPath);
@@ -71,7 +72,7 @@ namespace OWML.Patcher
                     {
                         _writer.WriteLine("Found match ending in index", i);
 
-                        patchStartIndex = i + 6;
+                        patchStartIndex = i + patchStartIndexOffset;
                     }
                 }
                 else
@@ -97,15 +98,16 @@ namespace OWML.Patcher
 
             if (patchStartIndex != -1 && !isAlreadyPatched)
             {
-                var fileSizeChange = 12;
-                // Start position of bytes that define file size.
+                // Boundaries of file size bytes.
                 var fileSizeStartIndex = 4;
+                var fileSizeEndIndex = fileSizeStartIndex + 4;
 
-                var originalFileSizeBytes = fileBytes.Take(fileSizeStartIndex + 4).Skip(fileSizeStartIndex).Reverse().ToArray();
+                var originalFileSizeBytes = fileBytes.Take(fileSizeEndIndex).Skip(fileSizeStartIndex).Reverse().ToArray();
                 var originalFileSize = BitConverter.ToInt32(originalFileSizeBytes, 0);
+
+                var fileSizeChange = 12;
                 var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange).Reverse().ToArray();
 
-                // TODO fix this
                 for (int i = 0; i < patchedFileSizeBytes.Length; i++)
                 {
                     fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
@@ -118,6 +120,7 @@ namespace OWML.Patcher
                     fileBytes[index] += (byte)fileSizeChange;
                 }
 
+                // Split the file in two parts. The patch bytes will be inserted between these parts.
                 var originalFirstPart = fileBytes.Take(patchStartIndex);
                 var originalSecondPart = fileBytes.Skip(patchStartIndex + 2);
 
