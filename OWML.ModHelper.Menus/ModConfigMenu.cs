@@ -72,8 +72,10 @@ namespace OWML.ModHelper.Menus
 
         public override void Open()
         {
+            var start = Time.realtimeSinceStartup;
             base.Open();
             UpdateUIValues();
+            _console.WriteLine($"Opened {ModData.Manifest.Name}'s Menu in {Time.realtimeSinceStartup - start} seconds");
         }
 
         private void AddInputs()

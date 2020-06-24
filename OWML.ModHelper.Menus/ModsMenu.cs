@@ -16,7 +16,6 @@ namespace OWML.ModHelper.Menus
 
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
-        private PopupInputMenu _inputMenu;
 
         public ModsMenu(IModConsole console, IModMenus menus) : base(console)
         {
@@ -41,7 +40,7 @@ namespace OWML.ModHelper.Menus
             return modConfigMenu;
         }
 
-        public void Initialize(IModMainMenu mainMenu, PopupInputMenu inputMenu)
+        public void Initialize(IModMainMenu mainMenu)
         {
             if (_modMenuTemplate == null)
             {
@@ -52,7 +51,6 @@ namespace OWML.ModHelper.Menus
             var modsMenu = CreateModsMenu(optionsMenu);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = mainMenu.Menu;
-            _inputMenu = inputMenu;
         }
 
         public void Initialize(IModPauseMenu pauseMenu)

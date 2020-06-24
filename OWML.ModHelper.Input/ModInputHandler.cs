@@ -6,6 +6,7 @@ using System.Linq;
 using OWML.Common;
 using UnityEngine;
 using System.Security.Policy;
+using System.ComponentModel;
 
 namespace OWML.ModHelper.Input
 {
@@ -13,7 +14,6 @@ namespace OWML.ModHelper.Input
     {
         private const float Cooldown = 0.05f;
         private const float TapDuration = 0.1f;
-        private const int KeyDiff = 20;
         private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
 
         internal static ModInputHandler Instance { get; private set; }
@@ -33,16 +33,13 @@ namespace OWML.ModHelper.Input
         internal bool IsPressedAndIgnored(KeyCode code)
         {
             UpdateCurrentCombination();
-            var intKey = (int)code;
-            while (intKey >= ModInputLibrary.MaxUsefulKey)
-            {
-                intKey -= KeyDiff;
-            }
-            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[intKey] < Cooldown;
+            code = ModInputLibrary.NormalizeKeyCode(code);
+            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
         }
 
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher)
         {
+            ModInputLibrary.FillTextureLibrary();
             _console = console;
             _logger = logger;
             foreach (var method in typeof(SingleAxisCommand).GetMethods().Where(x => x.Name == "SetInputs"))
@@ -392,12 +389,8 @@ namespace OWML.ModHelper.Input
                     {
                         if (key != KeyCode.None)
                         {
-                            var intKey = (int)key;
-                            while (intKey >= ModInputLibrary.MaxUsefulKey)
-                            {
-                                intKey -= KeyDiff;
-                            }
-                            _gameBindingCounter[intKey] += toUnregister ? -1 : 1;
+                            var normalizedKey = ModInputLibrary.NormalizeKeyCode(key);
+                            _gameBindingCounter[(int)normalizedKey] += toUnregister ? -1 : 1;
                         }
                     }
                 }

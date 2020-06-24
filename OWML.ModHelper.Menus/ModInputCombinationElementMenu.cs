@@ -105,6 +105,7 @@ namespace OWML.ModHelper.Menus
 
         private bool OnPopupValidate()
         {
+            _console.WriteLine($"Validating combination {_inputMenu.Combination}");
             var collisions = _inputHandler.GetCollisions(_inputMenu.Combination); //probably should do it directly with string instead
             if (collisions.Count > 0)
             {

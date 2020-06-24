@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
                 var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
                 InputMenu.Initialize(inputMenu);
                 InputCombinationMenu.Initialize(inputMenu);
-                ModsMenu.Initialize(MainMenu, inputMenu);
+                ModsMenu.Initialize(MainMenu);
             }
         }
 
