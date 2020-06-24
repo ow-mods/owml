@@ -99,19 +99,20 @@ namespace OWML.Patcher
             {
                 var fileSizeChange = 12;
                 // Start position of bytes that define file size.
-                var fileSizeStartIndex = 6;
+                var fileSizeStartIndex = 4;
 
-                var originalFileSize = BitConverter.ToInt32(fileBytes, fileSizeStartIndex);
-                var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange);
+                var originalFileSizeBytes = fileBytes.Take(fileSizeStartIndex + 4).Skip(fileSizeStartIndex).Reverse().ToArray();
+                var originalFileSize = BitConverter.ToInt32(originalFileSizeBytes, 0);
+                var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange).Reverse().ToArray();
 
                 // TODO fix this
-                //for (int i = 0; i < patchedFileSizeBytes.Length; i++)
-                //{
-                //    fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
-                //}
+                for (int i = 0; i < patchedFileSizeBytes.Length; i++)
+                {
+                    fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
+                }
 
                 // Indexes of addresses that need to be shifted due to added bytes.
-                var addressIndexes = new int[] { 0x7, 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+                var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
                 foreach (var index in addressIndexes)
                 {
                     fileBytes[index] += (byte)fileSizeChange;
