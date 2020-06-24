@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using BsDiff;
 using OWML.Common;
 
 namespace OWML.Patcher
