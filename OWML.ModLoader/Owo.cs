@@ -56,7 +56,7 @@ namespace OWML.ModLoader
             {
                 foreach (var dependency in mod.Manifest.Dependencies)
                 {
-                    if (!modNames.Contains(dependency))
+                    if (!modNames.Contains(dependency) && mod.Config.Enabled)
                     {
                         _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dependency}, but it's disabled!");
                     }
@@ -111,7 +111,7 @@ namespace OWML.ModLoader
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(console, modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
-            var interaction = new ModInteraction(_modList);
+            var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
                 events, assets, storage, _menus, modData.Manifest, modData.Config,
                 _owmlConfig, interaction);
