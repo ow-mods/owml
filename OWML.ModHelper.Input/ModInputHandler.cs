@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Input
         private const int MinUsefulKey = 8;
         private const int MaxUsefulKey = 350;
         private const int MaxComboLength = 7;
-        private const int KeyDiff = 20;
+        private const int GamePadKeyDiff = 20;
         private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
 
         internal static ModInputHandler Instance { get; private set; }
@@ -37,9 +37,9 @@ namespace OWML.ModHelper.Input
         {
             UpdateCurrentCombination();
             var intKey = (int)code;
-            while (intKey >= MaxUsefulKey)
+            if ((int)code >= MaxUsefulKey)
             {
-                intKey -= KeyDiff;
+                intKey -= ((intKey - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
             }
             return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[intKey] < Cooldown;
         }
@@ -380,9 +380,9 @@ namespace OWML.ModHelper.Input
                         if (key != KeyCode.None)
                         {
                             var intKey = (int)key;
-                            while (intKey >= MaxUsefulKey)
+                            if ((int)key >= MaxUsefulKey)
                             {
-                                intKey -= KeyDiff;
+                                intKey -= ((intKey - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
                             }
                             _gameBindingCounter[intKey] += toUnregister ? -1 : 1;
                         }

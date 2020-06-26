@@ -8,6 +8,7 @@ namespace OWML.ModHelper.Input
 {
     public class ModInputCombination : IModInputCombination
     {
+        private const int GamePadKeyDiff = 20;
         private const int MaxUsefulKey = 350;
         private const int MaxComboLength = 7;
         private const string XboxPrefix = "xbox_";
@@ -25,6 +26,13 @@ namespace OWML.ModHelper.Input
         private float _firstPressedMoment;
         private List<KeyCode> _singles = new List<KeyCode>();
         private List<long> _hashes = new List<long>();
+
+        internal ModInputCombination(IModManifest mod, string name, string combination)
+        {
+            ModName = mod.Name;
+            Name = name;
+            _hashes = StringToHashes(combination);
+        }
 
         private KeyCode StringToKeyCodeKeyboard(string keyboardKey)
         {
@@ -82,6 +90,10 @@ namespace OWML.ModHelper.Input
             foreach (var key in stringCombination.Trim().ToLower().Split('+'))
             {
                 var code = StringToKeyCode(key);
+                if ((int)code >= MaxUsefulKey)
+                {
+                    code -= (((int)code - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
+                }
                 if (code == KeyCode.None)
                 {
                     keyCombination[0] = (int)RegistrationCode.InvalidCombination;
@@ -133,13 +145,6 @@ namespace OWML.ModHelper.Input
                 }    
             }
             return hashes;
-        }
-
-        internal ModInputCombination(IModManifest mod, string name, string combination)
-        {
-            ModName = mod.Name;
-            Name = name;
-            _hashes = StringToHashes(combination);
         }
 
         public void InternalSetPressed(bool isPressed = true)

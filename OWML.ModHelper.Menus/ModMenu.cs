@@ -101,6 +101,7 @@ namespace OWML.ModHelper.Menus
             button.Button.transform.localScale = scale;
             return button;
         }
+
         public IModLayoutButton AddLayoutButton(IModLayoutButton button)
         {
             return AddLayoutButton(button, button.Index);

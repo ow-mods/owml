@@ -86,11 +86,11 @@ namespace OWML.ModHelper.Menus
 
         private void AddKeySign(string key)
         {
-            Button.AddPicture(
+            var texture =
                 key.Contains(XboxPrefix) ?
                 GetXboxButtonTexture(key.Substring(XboxPrefix.Length)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key))
-                , ScaleDown);
+                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key));
+            Button.AddPicture(texture, ScaleDown);
         }
 
         protected void Open()

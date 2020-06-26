@@ -190,6 +190,7 @@ namespace OWML.ModHelper.Menus
             comboInput.Element.name = key;
             comboInput.Show();
         }
+
         private void AddNumberInput(string key, int index)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
@@ -220,6 +221,5 @@ namespace OWML.ModHelper.Menus
             ModData.ResetConfig();
             UpdateUIValues();
         }
-
     }
 }
