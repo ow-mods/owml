@@ -13,28 +13,28 @@ namespace OWML.ModHelper.Menus
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
 
-        private readonly IModConsole _console;
         private readonly IModStorage _storage;
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
         private IModTextInput _textInputTemplate;
+        private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
         public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) : base(console)
         {
-            _console = console;
             ModData = modData;
             Mod = mod;
             _storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
             _textInputTemplate = textInputTemplate;
             _numberInputTemplate = numberInputTemplate;
+            _comboInputTemplate = comboInputTemplate;
 
             var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
@@ -72,8 +72,10 @@ namespace OWML.ModHelper.Menus
 
         public override void Open()
         {
+            var start = Time.realtimeSinceStartup;
             base.Open();
             UpdateUIValues();
+            _console.WriteLine($"Opened {ModData.Manifest.Name}'s Menu in {Time.realtimeSinceStartup - start} seconds");
         }
 
         private void AddInputs()
@@ -132,6 +134,11 @@ namespace OWML.ModHelper.Menus
                     AddToggleInput(key, obj, index);
                     return;
                 }
+                if (type == "input")
+                {
+                    AddComboInput(key, index);
+                    return;
+                }
 
                 _console.WriteLine("Error: unrecognized complex setting: " + value);
                 return;
@@ -177,6 +184,12 @@ namespace OWML.ModHelper.Menus
             textInput.Show();
         }
 
+        private void AddComboInput(string key, int index)
+        {
+            var comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
+            comboInput.Element.name = key;
+            comboInput.Show();
+        }
         private void AddNumberInput(string key, int index)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);

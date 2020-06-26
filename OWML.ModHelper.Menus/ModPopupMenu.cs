@@ -21,11 +21,8 @@ namespace OWML.ModHelper.Menus
             set => _title.text = value;
         }
 
-        private readonly IModConsole _console;
-
         public ModPopupMenu(IModConsole console) : base(console)
         {
-            _console = console;
         }
 
         public override void Initialize(Menu menu, LayoutGroup layoutGroup)

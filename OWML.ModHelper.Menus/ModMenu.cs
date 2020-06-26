@@ -16,13 +16,16 @@ namespace OWML.ModHelper.Menus
 
         public Menu Menu { get; protected set; }
         public List<IModButton> Buttons { get; private set; }
+        public List<IModLayoutButton> LayoutButtons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
+        public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
-        private readonly IModConsole _console;
-        private LayoutGroup _layoutGroup;
+        protected LayoutGroup layoutGroup;
+
+        protected readonly IModConsole _console;
 
         public ModMenu(IModConsole console)
         {
@@ -39,12 +42,14 @@ namespace OWML.ModHelper.Menus
         public virtual void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
             Menu = menu;
-            _layoutGroup = layoutGroup;
+            this.layoutGroup = layoutGroup;
             Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
+            LayoutButtons = new List<IModLayoutButton>();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
+            ComboInputs = new List<IModComboInput>();
         }
 
         public IModButton GetButton(string title)
@@ -90,10 +95,27 @@ namespace OWML.ModHelper.Menus
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
-            transform.parent = _layoutGroup.transform;
+            transform.parent = layoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
+            button.Button.transform.localScale = scale;
+            return button;
+        }
+
+        public IModLayoutButton AddLayoutButton(IModLayoutButton button)
+        {
+            return AddLayoutButton(button, button.Index);
+        }
+
+        public virtual IModLayoutButton AddLayoutButton(IModLayoutButton button, int index)
+        {
+            var transform = button.Button.transform;
+            var scale = transform.localScale;
+            transform.parent = layoutGroup.transform;
+            button.Index = index;
+            button.Initialize(this);
+            LayoutButtons.Add(button);
             button.Button.transform.localScale = scale;
             return button;
         }
@@ -149,6 +171,23 @@ namespace OWML.ModHelper.Menus
             return input;
         }
 
+        public IModComboInput GetComboInput(string title)
+        {
+            return ComboInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModComboInput AddComboInput(IModComboInput input)
+        {
+            return AddComboInput(input, input.Index);
+        }
+
+        public IModComboInput AddComboInput(IModComboInput input, int index)
+        {
+            ComboInputs.Add(input);
+            AddInput(input, index);
+            return input;
+        }
+
         public IModNumberInput GetNumberInput(string title)
         {
             return NumberInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
@@ -170,7 +209,7 @@ namespace OWML.ModHelper.Menus
         {
             var transform = input.Element.transform;
             var scale = transform.localScale;
-            transform.parent = _layoutGroup.transform;
+            transform.parent = layoutGroup.transform;
             input.Index = index;
             input.Initialize(this);
             input.Element.transform.localScale = scale;
@@ -192,6 +231,11 @@ namespace OWML.ModHelper.Menus
             if (textInput != null)
             {
                 return textInput.Value;
+            }
+            var comboInput = GetComboInput(key);
+            if (comboInput != null)
+            {
+                return comboInput.Value;
             }
             var numberInput = GetNumberInput(key);
             if (numberInput != null)
@@ -223,6 +267,13 @@ namespace OWML.ModHelper.Menus
             {
                 var val = value is JObject obj ? obj["value"] : value;
                 textInput.Value = Convert.ToString(val);
+                return;
+            }
+            var comboInput = GetComboInput(key);
+            if (comboInput != null)
+            {
+                var val = value is JObject obj ? obj["value"] : value;
+                comboInput.Value = Convert.ToString(val);
                 return;
             }
             var numberInput = GetNumberInput(key);

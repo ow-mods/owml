@@ -6,5 +6,6 @@
         IModPauseMenu PauseMenu { get; }
         IModsMenu ModsMenu { get; }
         IModInputMenu InputMenu { get; }
+        IModInputCombinationElementMenu InputCombinationMenu { get; }
     }
 }

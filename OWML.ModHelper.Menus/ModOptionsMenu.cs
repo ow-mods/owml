@@ -14,15 +14,12 @@ namespace OWML.ModHelper.Menus
         public IModTabMenu InputTab { get; private set; }
         public IModTabMenu GraphicsTab { get; private set; }
 
-        private readonly IModConsole _console;
-
         public new TabbedMenu Menu { get; private set; }
 
         private List<IModTabMenu> _tabMenus;
 
         public ModOptionsMenu(IModConsole console) : base(console)
         {
-            _console = console;
         }
 
         public void Initialize(TabbedMenu menu)

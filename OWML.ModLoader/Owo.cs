@@ -20,12 +20,13 @@ namespace OWML.ModLoader
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
+        private readonly IModInputHandler _inputHandler;
         private readonly ModSorter _sorter;
 
         List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
-            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, ModSorter sorter)
+            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, IModInputHandler inputHandler, ModSorter sorter)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -33,6 +34,7 @@ namespace OWML.ModLoader
             _owmlConfig = owmlConfig;
             _menus = menus;
             _harmonyHelper = harmonyHelper;
+            _inputHandler = inputHandler;
             _sorter = sorter;
         }
 
@@ -114,7 +116,7 @@ namespace OWML.ModLoader
             var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
                 events, assets, storage, _menus, modData.Manifest, modData.Config,
-                _owmlConfig, interaction);
+                _owmlConfig, _inputHandler, interaction);
         }
 
         private IModBehaviour InitializeMod(Type modType, IModHelper helper)

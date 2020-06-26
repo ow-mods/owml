@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Events
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly IModConsole _console;
         private readonly IModLogger _logger;
-        
+
         public ModEvents(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper)
         {
             _logger = logger;
