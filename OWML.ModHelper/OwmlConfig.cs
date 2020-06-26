@@ -8,6 +8,9 @@ namespace OWML.ModHelper
         [JsonProperty("gamePath")]
         public string GamePath { get; set; }
 
+        [JsonProperty("versionPriority")]
+        public string VersionPriority { get; private set; }
+
         [JsonProperty("verbose")]
         public bool Verbose { get; private set; }
 

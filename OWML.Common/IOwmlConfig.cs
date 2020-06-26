@@ -10,6 +10,7 @@
         string ModsPath { get; }
         string OutputFilePath { get; }
         string LogFilePath { get; }
+        string VersionPriority { get; }
         bool Verbose { get; }
     }
 }

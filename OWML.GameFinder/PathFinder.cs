@@ -16,11 +16,22 @@ namespace OWML.GameFinder
 
         public string FindGamePath()
         {
-            return FindPathWith<CurrentPathFinder>() ??
+            if (_config.VersionPriority.ToLower() == "steam")
+            {
+                return FindPathWith<CurrentPathFinder>() ??
+                   FindPathWith<DefaultLocationFinder>() ??
+                   FindPathWith<SteamGameFinder>() ??
+                   FindPathWith<EpicGameFinder>() ??
+                   FindPathWith<PromptGameFinder>();
+            }
+            else
+            {
+                return FindPathWith<CurrentPathFinder>() ??
                    FindPathWith<DefaultLocationFinder>() ??
                    FindPathWith<EpicGameFinder>() ??
                    FindPathWith<SteamGameFinder>() ??
                    FindPathWith<PromptGameFinder>();
+            }
         }
 
         private string FindPathWith<T>() where T : BaseFinder
