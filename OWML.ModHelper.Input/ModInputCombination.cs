@@ -18,7 +18,7 @@ namespace OWML.ModHelper.Input
         public float PressDuration => LastPressedMoment - _firstPressedMoment;
         public string ModName { get; }
         public string Name { get; }
-        public string FullName => ModName + "." + Name;
+        public string FullName => $"{ModName}.{Name}";
         public ReadOnlyCollection<KeyCode> Singles => _singles.AsReadOnly();
         public ReadOnlyCollection<long> Hashes => _hashes.AsReadOnly();
 

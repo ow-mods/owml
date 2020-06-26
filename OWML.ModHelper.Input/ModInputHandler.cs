@@ -33,17 +33,6 @@ namespace OWML.ModHelper.Input
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        internal bool IsPressedAndIgnored(KeyCode code)
-        {
-            UpdateCurrentCombination();
-            var intKey = (int)code;
-            if ((int)code >= MaxUsefulKey)
-            {
-                intKey -= ((intKey - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
-            }
-            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[intKey] < Cooldown;
-        }
-
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher)
         {
             _console = console;
@@ -56,6 +45,17 @@ namespace OWML.ModHelper.Input
             patcher.AddPostfix<SingleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
             patcher.AddPostfix<DoubleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
             Instance = this;
+        }
+
+        internal bool IsPressedAndIgnored(KeyCode code)
+        {
+            UpdateCurrentCombination();
+            var intKey = (int)code;
+            if ((int)code >= MaxUsefulKey)
+            {
+                intKey -= ((intKey - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
+            }
+            return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[intKey] < Cooldown;
         }
 
         private long? HashFromKeyboard()
