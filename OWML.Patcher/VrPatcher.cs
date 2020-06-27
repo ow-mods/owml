@@ -112,20 +112,6 @@ namespace OWML.Patcher
             }
         }
 
-        private void BackupFile(string path)
-        {
-            File.Copy(path, path + BackupSuffix, true);
-        }
-
-        private void RestoreFromBackup(string path)
-        {
-            var backupPath = path + BackupSuffix;
-            if (File.Exists(backupPath))
-            {
-                File.Copy(backupPath, path, true);
-            }
-        }
-
         private byte[] CreatePatchedFileBytes(byte[] fileBytes, int patchStartIndex)
         {
             // First byte is the number of elements in the array.
@@ -167,6 +153,20 @@ namespace OWML.Patcher
             foreach (var index in addressIndexes)
             {
                 fileBytes[index] += (byte)fileSizeChange;
+            }
+        }
+
+        private void BackupFile(string path)
+        {
+            File.Copy(path, path + BackupSuffix, true);
+        }
+
+        private void RestoreFromBackup(string path)
+        {
+            var backupPath = path + BackupSuffix;
+            if (File.Exists(backupPath))
+            {
+                File.Copy(backupPath, path, true);
             }
         }
 
