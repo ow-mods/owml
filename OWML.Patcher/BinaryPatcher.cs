@@ -24,6 +24,9 @@ namespace OWML.Patcher
         private const int FileSizeEndIndex = FileSizeStartIndex + 4;
         private const string FileName = "globalgamemanagers";
         private const string BackupSuffix = ".bak";
+        private const int BuildSettingsStartAddressIndex = 0x2CC;
+        private const int BuildSettingsSizeIndex = 0x2D0;
+        private const int BlockAddressOffset = 0x1000;
 
         public BinaryPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
@@ -49,7 +52,11 @@ namespace OWML.Patcher
             var isAlreadyPatched = false;
 
             var fileBytes = File.ReadAllBytes(_filePath);
-            for (var i = 0; i < fileBytes.Length; i++)
+
+            var buildSettingsStartAddress = BitConverter.ToInt32(fileBytes, BuildSettingsStartAddressIndex) + BlockAddressOffset;
+            var buildSettingsSize = BitConverter.ToInt32(fileBytes, BuildSettingsSizeIndex);
+
+            for (var i = buildSettingsStartAddress; i < buildSettingsStartAddress + buildSettingsSize; i++)
             {
                 var fileByte = fileBytes[i];
                 if (patchStartIndex == -1)
