@@ -11,7 +11,7 @@ namespace OWML.ModHelper
         [JsonProperty("verbose")]
         public bool Verbose { get; private set; }
 
-        [JsonProperty("combinations block input")]
+        [JsonProperty("combinationsBlockInput")]
         public bool BlockInput { get; private set; }
 
         [JsonIgnore]
