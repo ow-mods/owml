@@ -21,6 +21,8 @@ namespace OWML.Launcher
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
 
+        private const string VrArgument = " -vrmode openvr";
+
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
             OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
         {
@@ -173,7 +175,7 @@ namespace OWML.Launcher
                 var gameArgs = string.Join(" ", args);
                 if (enableVR)
                 {
-                    gameArgs += " -vrmode openvr";
+                    gameArgs += VrArgument;
                 }
                 Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", gameArgs);
             }
