@@ -120,7 +120,7 @@ Special thanks to:
 * [Outer Wilds](http://www.outerwilds.com)
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
-* Inspired by (and some code by) [SMAPI](https://smapi.io)
+* Inspired by (and some code from) [SMAPI](https://smapi.io)
 * Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 Dependencies:
