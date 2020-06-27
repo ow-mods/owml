@@ -7,12 +7,20 @@ namespace OWML.ModHelper.Interaction
     public class ModInteraction : IModInteraction
     {
         private readonly IList<IModBehaviour> _modList;
+
+        private readonly InterfaceProxyFactory _proxyFactory;
+
+        private readonly IModManifest _manifest;
+
         private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
+
         private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
 
-        public ModInteraction(IList<IModBehaviour> list)
+        public ModInteraction(IList<IModBehaviour> list, InterfaceProxyFactory proxyFactory, IModManifest manifest)
         {
             _modList = list;
+            _manifest = manifest;
+            _proxyFactory = proxyFactory;
             RegenerateDictionaries();
         }
 
@@ -25,7 +33,7 @@ namespace OWML.ModHelper.Interaction
                 var dependants = new List<IModBehaviour>();
                 var dependencies = new List<IModBehaviour>();
                 foreach (var dependency in _modList)
-                { 
+                {
                     if (dependency.ModHelper.Manifest.Dependencies.Contains(mod.ModHelper.Manifest.UniqueName))
                     {
                         dependants.Add(dependency);
@@ -64,10 +72,26 @@ namespace OWML.ModHelper.Interaction
             return _modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
         }
 
-        public T GetMod<T>(string uniqueName) where T : IModBehaviour
+        private object GetApi(string uniqueName)
         {
             var mod = GetMod(uniqueName);
-            return (T)mod;
+            return mod.Api;
+        }
+
+        public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
+        {
+            var inter = GetApi(uniqueName);
+            if (inter == null)
+            {
+                return null;
+            }
+
+            if (inter is TInterface castInter)
+            {
+                return castInter;
+            }
+
+            return _proxyFactory.CreateProxy<TInterface>(inter, _manifest.UniqueName, uniqueName);
         }
 
         public IList<IModBehaviour> GetMods()
