@@ -27,13 +27,6 @@ namespace OWML.LoadCustomAssets
             var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
             _cube = assetBundle.LoadAsset<GameObject>("Cube");
 
-            var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
-            gunSoundAsset.OnLoaded += OnGunSoundLoaded;
-            var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
-            duckAsset.OnLoaded += OnDuckLoaded;
-            var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
-            musicAsset.OnLoaded += OnMusicLoaded;
-
             ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
 
@@ -78,6 +71,13 @@ namespace OWML.LoadCustomAssets
                 _playerTransform = behaviour.transform;
                 _isStarted = true;
                 ToggleMusic(ModHelper.Config.GetSettingsValue<bool>("enableMusic"));
+
+                var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
+                gunSoundAsset.OnLoaded += OnGunSoundLoaded;
+                var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
+                duckAsset.OnLoaded += OnDuckLoaded;
+                var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
+                musicAsset.OnLoaded += OnMusicLoaded;
             }
         }
 

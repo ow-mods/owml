@@ -77,7 +77,8 @@ namespace OWML.ModLoader
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            if (type == LogType.Error || type == LogType.Exception)
+            if (new[] { LogType.Error, LogType.Exception }.Contains(type)
+                && message != "NoAxisName")
             {
                 _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
