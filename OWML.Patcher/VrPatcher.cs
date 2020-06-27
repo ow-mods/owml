@@ -7,6 +7,7 @@ namespace OWML.Patcher
     {
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
+        private readonly BinaryPatcher _binaryPatcher;
 
         private static readonly string[] PluginFilenames = { "openvr_api.dll", "OVRPlugin.dll" };
 
@@ -14,20 +15,19 @@ namespace OWML.Patcher
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
+            _binaryPatcher = new BinaryPatcher(_owmlConfig, _writer);
         }
 
         public void PatchVR(bool enableVR)
         {
-            var binaryPatcher = new BinaryPatcher(_owmlConfig, _writer);
-
             if (enableVR)
             {
-                binaryPatcher.Patch();
+                _binaryPatcher.Patch();
                 AddPluginFiles();
             }
             else
             {
-                binaryPatcher.RestoreFromBackup();
+                _binaryPatcher.RestoreFromBackup();
                 RemovePluginFiles();
             }
         }
