@@ -24,6 +24,7 @@ copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Events.dll" "Release\OWML.ModHelper.Ev
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Assets.dll" "Release\OWML.ModHelper.Assets.dll"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Interaction.dll" "Release\OWML.ModHelper.Interaction.dll"
 copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Menus.dll" "Release\OWML.ModHelper.Menus.dll"
+copy "OWML.Nuget\bin\Debug\OWML.ModHelper.Input.dll" "Release\OWML.ModHelper.Input.dll"
 copy "OWML.Nuget\bin\Debug\0Harmony.dll" "Release\0Harmony.dll"
 copy "OWML.Nuget\bin\Debug\Newtonsoft.Json.dll" "Release\Newtonsoft.Json.dll"
 
@@ -31,6 +32,11 @@ mkdir "Release\Mods\OWML.EnableDebugMode"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\OWML.EnableDebugMode.dll" "Release\Mods\OWML.EnableDebugMode\OWML.EnableDebugMode.dll"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\manifest.json" "Release\Mods\OWML.EnableDebugMode\manifest.json"
 copy "OWML.SampleMods\OWML.EnableDebugMode\bin\Debug\default-config.json" "Release\Mods\OWML.EnableDebugMode\default-config.json"
+
+mkdir "Release\Mods\TAIcheat"
+copy "TAIcheat\bin\Debug\TAIcheat.dll" "Release\Mods\TAIcheat\TAIcheat.dll"
+copy "TAIcheat\manifest.json" "Release\Mods\TAIcheat\manifest.json"
+copy "TAIcheat\default-config.json" "Release\Mods\TAIcheat\default-config.json"
 
 mkdir "Release\Mods\OWML.LoadCustomAssets"
 copy "OWML.SampleMods\OWML.LoadCustomAssets\bin\Debug\OWML.LoadCustomAssets.dll" "Release\Mods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.dll"

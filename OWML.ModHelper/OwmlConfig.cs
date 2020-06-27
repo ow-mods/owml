@@ -11,6 +11,9 @@ namespace OWML.ModHelper
         [JsonProperty("verbose")]
         public bool Verbose { get; private set; }
 
+        [JsonProperty("combinations block input")]
+        public bool BlockInput { get; private set; }
+
         [JsonIgnore]
         public string DataPath => $"{GamePath}/OuterWilds_Data";
 
@@ -19,7 +22,7 @@ namespace OWML.ModHelper
 
         [JsonIgnore]
         public string PluginsPath => $"{DataPath}/Plugins";
-        
+
         [JsonProperty("owmlPath")]
         public string OWMLPath { get; set; }
 

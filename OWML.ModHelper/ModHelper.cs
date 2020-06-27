@@ -16,10 +16,12 @@ namespace OWML.ModHelper
         public IModManifest Manifest { get; }
         public IModConfig Config { get; }
         public IOwmlConfig OwmlConfig { get; }
+        public IModInputHandler Input { get; }
         public IModInteraction Interaction { get; }
 
         public ModHelper(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper, IModEvents events, 
-            IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest, IModConfig config, IOwmlConfig owmlConfig, IModInteraction interaction)
+            IModAssets assets, IModStorage storage, IModMenus menus, IModManifest manifest, IModConfig config, 
+            IOwmlConfig owmlConfig, IModInputHandler inputHandler, IModInteraction interaction)
         {
             Logger = logger;
             Console = console;
@@ -31,6 +33,7 @@ namespace OWML.ModHelper
             Manifest = manifest;
             Config = config;
             OwmlConfig = owmlConfig;
+            Input = inputHandler;
             Interaction = interaction;
         }
 

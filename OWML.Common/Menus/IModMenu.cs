@@ -14,6 +14,8 @@ namespace OWML.Common.Menus
         IModButton GetButton(string title);
         IModButton AddButton(IModButton button);
         IModButton AddButton(IModButton button, int index);
+        IModLayoutButton AddLayoutButton(IModLayoutButton button);
+        IModLayoutButton AddLayoutButton(IModLayoutButton button, int index);
 
         List<IModToggleInput> ToggleInputs { get; }
         IModToggleInput GetToggleInput(string title);
