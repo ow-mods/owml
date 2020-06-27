@@ -95,20 +95,28 @@ namespace OWML.Patcher
                     }
                     if (existingPatchMatch == existingPatchBytes.Length)
                     {
-                        _writer.WriteLine("globalgamemanagers already patched");
                         isAlreadyPatched = true;
-
                         break;
                     }
                 }
             }
 
-            if (patchStartIndex != -1 && !isAlreadyPatched)
+            if (isAlreadyPatched)
+            {
+                _writer.WriteLine("globalgamemanagers already patched.");
+                return;
+            }
+
+            if (patchStartIndex == -1)
+            {
+                _writer.WriteLine("Error: could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
+            }
+            else
             {
                 BackupFile(filePath);
                 var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
                 File.WriteAllBytes(filePath, patchedBytes);
-                _writer.WriteLine("Patched globalgamemanagers");
+                _writer.WriteLine("Successfully patched globalgamemanagers.");
             }
         }
 
@@ -167,6 +175,7 @@ namespace OWML.Patcher
             if (File.Exists(backupPath))
             {
                 File.Copy(backupPath, path, true);
+                File.Delete(backupPath);
             }
         }
 
