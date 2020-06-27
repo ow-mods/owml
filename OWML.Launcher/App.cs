@@ -57,7 +57,7 @@ namespace OWML.Launcher
 
             ShowModList(mods);
 
-            var hasVrMod = GetHasVrMod(mods);
+            var hasVrMod = HasVrMod(mods);
             PatchGame(hasVrMod);
 
             StartGame(args, hasVrMod);
@@ -145,7 +145,7 @@ namespace OWML.Launcher
             }
         }
 
-        private bool GetHasVrMod(IList<IModData> mods)
+        private bool HasVrMod(IList<IModData> mods)
         {
             var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
             var hasVrMod = vrMod != null;
