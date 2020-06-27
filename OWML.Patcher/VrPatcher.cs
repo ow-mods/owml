@@ -16,8 +16,11 @@ namespace OWML.Patcher
         private static readonly int[] addressIndexes = { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
 
         private const string EnabledVRDevice = "OpenVR";
+        private const int RemovedBytes = 2;
         // String that comes right before the bytes we want to patch.
         private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity";
+        private const int FileSizeStartIndex = 4;
+        private const int FileSizeEndIndex = FileSizeStartIndex + 4;
 
         public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
@@ -99,21 +102,28 @@ namespace OWML.Patcher
 
             if (patchStartIndex != -1 && !isAlreadyPatched)
             {
-                // Boundaries of file size bytes.
-                var fileSizeStartIndex = 4;
-                var fileSizeEndIndex = fileSizeStartIndex + 4;
+                // First byte is the number of elements in the array.
+                var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
 
-                var originalFileSizeBytes = fileBytes.Take(fileSizeEndIndex).Skip(fileSizeStartIndex).Reverse().ToArray();
+                // Bytes that need to be inserted into the file.
+                var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
+
+                // Read file size from original file. Reversed due to big endianness.
+                var originalFileSizeBytes = fileBytes.Take(FileSizeEndIndex).Skip(FileSizeStartIndex).Reverse().ToArray();
                 var originalFileSize = BitConverter.ToInt32(originalFileSizeBytes, 0);
 
-                var fileSizeChange = 12;
-                var patchedFileSizeBytes = BitConverter.GetBytes(originalFileSize + fileSizeChange).Reverse().ToArray();
+                // Generate bytes for new patched file.
+                var fileSizeChange = patchBytes.Count() - RemovedBytes;
+                var patchedFileSize = originalFileSize + fileSizeChange;
+                var patchedFileSizeBytes = BitConverter.GetBytes(patchedFileSize).Reverse().ToArray();
 
+                // Overwrite original file size bytes with patched size.
                 for (int i = 0; i < patchedFileSizeBytes.Length; i++)
                 {
-                    fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
+                    fileBytes[FileSizeStartIndex + i] = patchedFileSizeBytes[i];
                 }
 
+                // Overwrite original file addresses with patched addresses.
                 foreach (var index in addressIndexes)
                 {
                     fileBytes[index] += (byte)fileSizeChange;
@@ -121,13 +131,7 @@ namespace OWML.Patcher
 
                 // Split the file in two parts. The patch bytes will be inserted between these parts.
                 var originalFirstPart = fileBytes.Take(patchStartIndex);
-                var originalSecondPart = fileBytes.Skip(patchStartIndex + 2);
-
-                // First byte is the number of elements in the array.
-                var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
-
-                // Bytes that need to be inserted into the file.
-                var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
+                var originalSecondPart = fileBytes.Skip(patchStartIndex + RemovedBytes);
 
                 var patchedBytes = originalFirstPart
                     .Concat(patchBytes)
