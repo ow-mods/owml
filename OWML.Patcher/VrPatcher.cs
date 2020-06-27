@@ -12,6 +12,12 @@ namespace OWML.Patcher
         private readonly IModConsole _writer;
 
         private static readonly string[] PluginFilenames = { "openvr_api.dll", "OVRPlugin.dll" };
+        // Indexes of addresses that need to be shifted due to added bytes.
+        private static readonly int[] addressIndexes = { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
+
+        private const string EnabledVRDevice = "OpenVR";
+        // String that comes right before the bytes we want to patch.
+        private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity";
 
         public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
@@ -41,11 +47,8 @@ namespace OWML.Patcher
                 return;
             }
 
-            // String that comes right before the bytes we want to patch.
-            byte[] patchZoneBytes = Encoding.ASCII.GetBytes("Assets/Scenes/PostCreditScene.unity");
-
-            // Consider file already patched if this string is present.
-            byte[] existingPatchBytes = Encoding.ASCII.GetBytes("OpenVR");
+            byte[] patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
+            byte[] existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
 
             var patchZoneMatch = 0;
             var existingPatchMatch = 0;
@@ -70,8 +73,6 @@ namespace OWML.Patcher
                     }
                     if (patchZoneMatch == patchZoneBytes.Length)
                     {
-                        _writer.WriteLine("Found match ending in index", i);
-
                         patchStartIndex = i + patchStartIndexOffset;
                     }
                 }
@@ -113,8 +114,6 @@ namespace OWML.Patcher
                     fileBytes[fileSizeStartIndex + i] = patchedFileSizeBytes[i];
                 }
 
-                // Indexes of addresses that need to be shifted due to added bytes.
-                var addressIndexes = new int[] { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
                 foreach (var index in addressIndexes)
                 {
                     fileBytes[index] += (byte)fileSizeChange;
@@ -124,8 +123,11 @@ namespace OWML.Patcher
                 var originalFirstPart = fileBytes.Take(patchStartIndex);
                 var originalSecondPart = fileBytes.Skip(patchStartIndex + 2);
 
+                // First byte is the number of elements in the array.
+                var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
+
                 // Bytes that need to be inserted into the file.
-                var patchBytes = new byte[] { 1, 0, 0, 0, 6, 0, 0, 0 }.Concat(Encoding.ASCII.GetBytes("OpenVR"));
+                var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
 
                 var patchedBytes = originalFirstPart
                     .Concat(patchBytes)
