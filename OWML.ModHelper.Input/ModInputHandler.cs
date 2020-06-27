@@ -414,7 +414,6 @@ namespace OWML.ModHelper.Input
 
         internal void UpdateGamesBindings()
         {
-            _console.WriteLine("Re-Registering game's bindings");
             Array.ForEach<int>(_gameBindingCounter, x => x = 0);
             _gameBindingRegistry.Clear();
             var inputCommands = typeof(InputLibrary).GetFields(BindingFlags.Public | BindingFlags.Static);
