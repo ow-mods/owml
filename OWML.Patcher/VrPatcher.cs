@@ -108,26 +108,7 @@ namespace OWML.Patcher
                 // Bytes that need to be inserted into the file.
                 var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
 
-                // Read file size from original file. Reversed due to big endianness.
-                var originalFileSizeBytes = fileBytes.Take(FileSizeEndIndex).Skip(FileSizeStartIndex).Reverse().ToArray();
-                var originalFileSize = BitConverter.ToInt32(originalFileSizeBytes, 0);
-
-                // Generate bytes for new patched file.
-                var fileSizeChange = patchBytes.Count() - RemovedBytes;
-                var patchedFileSize = originalFileSize + fileSizeChange;
-                var patchedFileSizeBytes = BitConverter.GetBytes(patchedFileSize).Reverse().ToArray();
-
-                // Overwrite original file size bytes with patched size.
-                for (int i = 0; i < patchedFileSizeBytes.Length; i++)
-                {
-                    fileBytes[FileSizeStartIndex + i] = patchedFileSizeBytes[i];
-                }
-
-                // Overwrite original file addresses with patched addresses.
-                foreach (var index in addressIndexes)
-                {
-                    fileBytes[index] += (byte)fileSizeChange;
-                }
+                PatchFileSize(fileBytes, patchBytes.Count());
 
                 // Split the file in two parts. The patch bytes will be inserted between these parts.
                 var originalFirstPart = fileBytes.Take(patchStartIndex);
@@ -139,6 +120,30 @@ namespace OWML.Patcher
                     .ToArray();
 
                 File.WriteAllBytes(currentPath + ".patched-rai", patchedBytes);
+            }
+        }
+
+        private void PatchFileSize(byte[] fileBytes, int patchSize)
+        {
+            // Read file size from original file. Reversed due to big endianness.
+            var originalFileSizeBytes = fileBytes.Take(FileSizeEndIndex).Skip(FileSizeStartIndex).Reverse().ToArray();
+            var originalFileSize = BitConverter.ToInt32(originalFileSizeBytes, 0);
+
+            // Generate bytes for new patched file.
+            var fileSizeChange = patchSize - RemovedBytes;
+            var patchedFileSize = originalFileSize + fileSizeChange;
+            var patchedFileSizeBytes = BitConverter.GetBytes(patchedFileSize).Reverse().ToArray();
+
+            // Overwrite original file size bytes with patched size.
+            for (int i = 0; i < patchedFileSizeBytes.Length; i++)
+            {
+                fileBytes[FileSizeStartIndex + i] = patchedFileSizeBytes[i];
+            }
+
+            // Shift addresses where necessary.
+            foreach (var index in addressIndexes)
+            {
+                fileBytes[index] += (byte)fileSizeChange;
             }
         }
 
