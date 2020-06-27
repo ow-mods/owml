@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OWML.Common;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OWML.Common;
 
 namespace OWML.Patcher
 {
@@ -22,6 +22,8 @@ namespace OWML.Patcher
         private const int PatchStartZoneOffset = 6;
         private const int FileSizeStartIndex = 4;
         private const int FileSizeEndIndex = FileSizeStartIndex + 4;
+        private const string FileName = "globalgamemanagers";
+        private const string BackupSuffix = ".bak";
 
         public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
@@ -31,23 +33,24 @@ namespace OWML.Patcher
 
         public void PatchVR(bool enableVR)
         {
-            PatchGlobalGameManagers();
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
             if (enableVR)
             {
+                PatchGlobalGameManagers(filePath);
                 AddPluginFiles();
             }
             else
             {
+                RestoreFromBackup(filePath);
                 RemovePluginFiles();
             }
         }
 
-        private void PatchGlobalGameManagers()
+        private void PatchGlobalGameManagers(string filePath)
         {
-            var currentPath = _owmlConfig.DataPath + "/globalgamemanagers";
-            if (!File.Exists(currentPath))
+            if (!File.Exists(filePath))
             {
-                _writer.WriteLine("Error: can't find " + currentPath);
+                _writer.WriteLine("Error: can't find " + filePath);
                 return;
             }
 
@@ -59,7 +62,7 @@ namespace OWML.Patcher
             var patchStartIndex = -1;
             var isAlreadyPatched = false;
 
-            var fileBytes = File.ReadAllBytes(currentPath);
+            var fileBytes = File.ReadAllBytes(filePath);
             for (var i = 0; i < fileBytes.Length; i++)
             {
                 var fileByte = fileBytes[i];
@@ -102,15 +105,25 @@ namespace OWML.Patcher
 
             if (patchStartIndex != -1 && !isAlreadyPatched)
             {
-                BackupFile(currentPath);
+                BackupFile(filePath);
                 var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
-                File.WriteAllBytes(currentPath, patchedBytes);
+                File.WriteAllBytes(filePath, patchedBytes);
+                _writer.WriteLine("Patched globalgamemanagers");
             }
         }
 
         private void BackupFile(string path)
         {
-            File.Copy(path, path + ".bak", true);
+            File.Copy(path, path + BackupSuffix, true);
+        }
+
+        private void RestoreFromBackup(string path)
+        {
+            var backupPath = path + BackupSuffix;
+            if (File.Exists(backupPath))
+            {
+                File.Copy(backupPath, path, true);
+            }
         }
 
         private byte[] CreatePatchedFileBytes(byte[] fileBytes, int patchStartIndex)
