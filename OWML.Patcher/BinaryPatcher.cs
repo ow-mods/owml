@@ -92,7 +92,7 @@ namespace OWML.Patcher
             byte[] existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
             var existingPatchMatch = 0;
 
-            for (var i = startIndex; i < startIndex + endIndex; i++)
+            for (var i = startIndex; i < endIndex; i++)
             {
                 var fileByte = fileBytes[i];
                 var existingPatchByte = existingPatchBytes[existingPatchMatch];
