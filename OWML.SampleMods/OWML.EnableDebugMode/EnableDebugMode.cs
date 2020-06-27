@@ -2,6 +2,7 @@
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace OWML.EnableDebugMode
 {
@@ -10,6 +11,27 @@ namespace OWML.EnableDebugMode
         private int _renderValue;
         private bool _isStarted;
         private PlayerSpawner _playerSpawner;
+        private Dictionary<string, IModInputCombination> _inputs;
+
+        public override void Configure(IModConfig config)
+        {
+            if (_inputs != null)
+            {
+                foreach (string key in _inputs.Keys)
+                {
+                    ModHelper.Input.UnregisterCombination(_inputs[key]);
+                }
+            }
+            _inputs = new Dictionary<string, IModInputCombination>();
+            foreach (string name in config.Settings.Keys)
+            {
+                if (config.GetSettingsValue<string>(name) != null)
+                {
+                    var combination = ModHelper.Input.RegisterCombination(this, name, config.GetSettingsValue<string>(name));
+                    _inputs.Add(name, combination);
+                }
+            }
+        }
 
         private void Start()
         {
@@ -36,44 +58,44 @@ namespace OWML.EnableDebugMode
                 return;
             }
 
-            if (Input.GetKeyDown(DebugKeyCode.cycleGUIMode))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Cycle GUI mode"]))
             {
                 CycleGUIMode();
             }
 
-            if (Input.GetKeyDown(DebugKeyCode.cometWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Interloper"]))
             {
                 WarpTo(SpawnLocation.Comet);
             }
-            if (Input.GetKeyDown(DebugKeyCode.hourglassTwinsWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Twins"]))
             {
                 WarpTo(SpawnLocation.HourglassTwin_1);
             }
-            if (Input.GetKeyDown(DebugKeyCode.homePlanetWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Timber Hearth"]))
             {
                 WarpTo(SpawnLocation.TimberHearth);
             }
-            if (Input.GetKeyDown(DebugKeyCode.brittleHollowWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Brittle Hollows"]))
             {
                 WarpTo(SpawnLocation.BrittleHollow);
             }
-            if (Input.GetKeyDown(DebugKeyCode.gasGiantWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Giants Deep"]))
             {
                 WarpTo(SpawnLocation.GasGiant);
             }
-            if (Input.GetKeyDown(DebugKeyCode.darkBrambleWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Dark Bramble"]))
             {
                 WarpTo(SpawnLocation.DarkBramble);
             }
-            if (Input.GetKeyDown(DebugKeyCode.shipWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Ship"]))
             {
                 WarpTo(SpawnLocation.Ship);
             }
-            if (Input.GetKeyDown(DebugKeyCode.quantumWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Quantum Moon"]))
             {
                 WarpTo(SpawnLocation.QuantumMoon);
             }
-            if (Input.GetKeyDown(DebugKeyCode.moonWarp))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Attlerock"]))
             {
                 WarpTo(SpawnLocation.LunarLookout);
             }

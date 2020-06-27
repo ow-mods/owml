@@ -5,16 +5,6 @@ namespace OWML.ModHelper.Input
 {
     internal class InputInterceptor
     {
-        public static void SingleAxisRemovePre(SingleAxisCommand __instance)
-        {
-            ModInputHandler.Instance.UnregisterGamesBinding(__instance);
-        }
-
-        public static void DoubleAxisRemovePre(DoubleAxisCommand __instance)
-        {
-            ModInputHandler.Instance.UnregisterGamesBinding(__instance);
-        }
-
         public static void SingleAxisUpdatePost(
             SingleAxisCommand __instance,
             ref float ____value,
@@ -22,7 +12,6 @@ namespace OWML.ModHelper.Input
             List<KeyCode> ____negKeyCodes
         )
         {
-            ModInputHandler.Instance.RegisterGamesBinding(__instance);
             foreach (var key in ____posKeyCodes)
             {
                 if (ModInputHandler.Instance.IsPressedAndIgnored(key))
@@ -48,7 +37,6 @@ namespace OWML.ModHelper.Input
             List<KeyCode> ____negYKeyCodes
         )
         {
-            ModInputHandler.Instance.RegisterGamesBinding(__instance);
             if (OWInput.UsingGamepad())
             {
                 return;

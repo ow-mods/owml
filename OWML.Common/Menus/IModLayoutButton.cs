@@ -11,7 +11,6 @@ namespace OWML.Common.Menus
         IModMenu Menu { get; }
         ILayoutManager Layout { get; }
         int Index { get; set; }
-
         void Initialize(IModMenu menu);
 
         IModLayoutButton Copy();

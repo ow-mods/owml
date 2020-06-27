@@ -3,6 +3,7 @@ using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace OWML.ModHelper.Menus
 {
@@ -11,7 +12,6 @@ namespace OWML.ModHelper.Menus
         private const float ScaleDown = 0.75f;
 
         public IModLayoutButton Button { get; }
-        //protected readonly IModInputMenu InputMenu;
         protected readonly IModInputCombinationMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
 
@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus
                 var keyStrings = individualCombos[i].Split('+');
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    AddKeySign(keyStrings[j]);
+                    Button.Layout.AddPicture(ModInputLibrary.KeyTexture(key), ScaleDown);
                     if (j < keyStrings.Length - 1)
                     {
                         Button.Layout.AddText("+");
@@ -65,13 +65,6 @@ namespace OWML.ModHelper.Menus
                 }
             }
             Button.Layout.UpdateState();
-        }
-
-        private void AddKeySign(string key)
-        {
-            Button.Layout.AddPicture(
-                ModInputLibrary.KeyTexture(key)
-                , ScaleDown);
         }
 
         protected void Open()
@@ -107,5 +100,6 @@ namespace OWML.ModHelper.Menus
             copy.Title = title;
             return copy;
         }
+        
     }
 }

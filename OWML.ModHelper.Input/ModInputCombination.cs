@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Input
         public float PressDuration => LastPressedMoment - _firstPressedMoment;
         public string ModName { get; }
         public string Name { get; }
-        public string FullName => ModName + "." + Name;
+        public string FullName => $"{ModName}.{Name}";
         public ReadOnlyCollection<KeyCode> Singles => _singles.AsReadOnly();
         public ReadOnlyCollection<long> Hashes => _hashes.AsReadOnly();
 
@@ -21,6 +21,13 @@ namespace OWML.ModHelper.Input
         private float _firstPressedMoment;
         private List<KeyCode> _singles = new List<KeyCode>();
         private List<long> _hashes = new List<long>();
+
+        internal ModInputCombination(IModManifest mod, string name, string combination)
+        {
+            ModName = mod.Name;
+            Name = name;
+            _hashes = StringToHashes(combination);
+        }
 
         private List<long> StringToHashes(string combinations)
         {
@@ -41,13 +48,6 @@ namespace OWML.ModHelper.Input
                 }
             }
             return hashes;
-        }
-
-        internal ModInputCombination(IModManifest mod, string name, string combination)
-        {
-            ModName = mod.Name;
-            Name = name;
-            _hashes = StringToHashes(combination);
         }
 
         public void InternalSetPressed(bool isPressed = true)

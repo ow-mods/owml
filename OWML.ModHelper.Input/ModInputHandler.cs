@@ -37,27 +37,31 @@ namespace OWML.ModHelper.Input
             return UnityEngine.Input.GetKey(code) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)code] < Cooldown;
         }
 
-        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher)
+        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events)
         {
             ModInputLibrary.FillTextureLibrary();
             _console = console;
             _logger = logger;
-            foreach (var method in typeof(SingleAxisCommand).GetMethods().Where(x => x.Name == "SetInputs"))
+
+            var listenerObject = new GameObject("GameBindingsChangeListener");
+            var listener = listenerObject.AddComponent<BindingChangeListener>();
+            listener.Initialize(this, events);
+
+            if (owmlConfig.BlockInput)
             {
-                patcher.AddPrefix(method, typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisRemovePre));
+                patcher.AddPostfix<SingleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
+                patcher.AddPostfix<DoubleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
             }
-            patcher.AddPrefix<DoubleAxisCommand>("SetInputs", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisRemovePre));
-            patcher.AddPostfix<SingleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
-            patcher.AddPostfix<DoubleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
             Instance = this;
         }
-
+        
         private long? HashFromKeyboard()
         {
             long hash = 0;
             var keysCount = 0;
             var countdownTrigger = true;
             for (var code = ModInputLibrary.MinUsefulKey; code < ModInputLibrary.MaxUsefulKey; code++)
+
             {
                 if (!(Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && UnityEngine.Input.GetKey((KeyCode)code)))
                 {
@@ -264,19 +268,10 @@ namespace OWML.ModHelper.Input
 
         private RegistrationCode SwapCombination(IModInputCombination combination, bool toUnregister)
         {
+            bool taken = false;
             if (combination.Hashes[0] <= 0)
             {
                 return (RegistrationCode)combination.Hashes[0];
-            }
-            if (!toUnregister)
-            {
-                foreach (long hash in combination.Hashes)
-                {
-                    if (_comboRegistry.ContainsKey(hash) || (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0))
-                    {
-                        return RegistrationCode.CombinationTaken;
-                    }
-                }
             }
             foreach (long hash in combination.Hashes)
             {
@@ -285,7 +280,16 @@ namespace OWML.ModHelper.Input
                     _comboRegistry.Remove(hash);
                     continue;
                 }
+                if (_comboRegistry.ContainsKey(hash) || (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0))
+                {
+                    taken = true;
+                    continue;
+                }
                 _comboRegistry.Add(hash, combination);
+            }
+            if (taken)
+            {
+                return RegistrationCode.CombinationTaken;
             }
             return RegistrationCode.AllNormal;
         }
@@ -374,7 +378,7 @@ namespace OWML.ModHelper.Input
 
         internal void SwapGamesBinding(InputCommand binding, bool toUnregister)
         {
-            if (_gameBindingRegistry.Contains(binding) ^ toUnregister)
+            if ((_gameBindingRegistry.Contains(binding) ^ toUnregister) || binding == null)
             {
                 return;
             }
@@ -413,6 +417,14 @@ namespace OWML.ModHelper.Input
         internal void UnregisterGamesBinding(InputCommand binding)
         {
             SwapGamesBinding(binding, true);
+        }
+        
+        internal void UpdateGamesBindings()
+        {
+            Array.ForEach<int>(_gameBindingCounter, x => x = 0);
+            _gameBindingRegistry.Clear();
+            var inputCommands = typeof(InputLibrary).GetFields(BindingFlags.Public | BindingFlags.Static);
+            Array.ForEach<FieldInfo>(inputCommands, field => RegisterGamesBinding(field.GetValue(null) as InputCommand));
         }
     }
 }
