@@ -19,6 +19,7 @@ namespace OWML.Patcher
         private const int RemovedBytes = 2;
         // String that comes right before the bytes we want to patch.
         private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity";
+        private const int PatchStartZoneOffset = 6;
         private const int FileSizeStartIndex = 4;
         private const int FileSizeEndIndex = FileSizeStartIndex + 4;
 
@@ -30,7 +31,7 @@ namespace OWML.Patcher
 
         public void PatchVR(bool enableVR)
         {
-            PatchGlobalManager();
+            PatchGlobalGameManagers();
             if (enableVR)
             {
                 AddPluginFiles();
@@ -41,7 +42,7 @@ namespace OWML.Patcher
             }
         }
 
-        private void PatchGlobalManager()
+        private void PatchGlobalGameManagers()
         {
             var currentPath = _owmlConfig.DataPath + "/globalgamemanagers";
             if (!File.Exists(currentPath))
@@ -56,7 +57,6 @@ namespace OWML.Patcher
             var patchZoneMatch = 0;
             var existingPatchMatch = 0;
             var patchStartIndex = -1;
-            var patchStartIndexOffset = 6;
             var isAlreadyPatched = false;
 
             var fileBytes = File.ReadAllBytes(currentPath);
@@ -76,7 +76,7 @@ namespace OWML.Patcher
                     }
                     if (patchZoneMatch == patchZoneBytes.Length)
                     {
-                        patchStartIndex = i + patchStartIndexOffset;
+                        patchStartIndex = i + PatchStartZoneOffset;
                     }
                 }
                 else
@@ -102,25 +102,29 @@ namespace OWML.Patcher
 
             if (patchStartIndex != -1 && !isAlreadyPatched)
             {
-                // First byte is the number of elements in the array.
-                var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
-
-                // Bytes that need to be inserted into the file.
-                var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
-
-                PatchFileSize(fileBytes, patchBytes.Count());
-
-                // Split the file in two parts. The patch bytes will be inserted between these parts.
-                var originalFirstPart = fileBytes.Take(patchStartIndex);
-                var originalSecondPart = fileBytes.Skip(patchStartIndex + RemovedBytes);
-
-                var patchedBytes = originalFirstPart
-                    .Concat(patchBytes)
-                    .Concat(originalSecondPart)
-                    .ToArray();
-
+                var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
                 File.WriteAllBytes(currentPath + ".patched-rai", patchedBytes);
             }
+        }
+
+        private byte[] CreatePatchedFileBytes(byte[] fileBytes, int patchStartIndex)
+        {
+            // First byte is the number of elements in the array.
+            var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
+
+            // Bytes that need to be inserted into the file.
+            var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
+
+            PatchFileSize(fileBytes, patchBytes.Count());
+
+            // Split the file in two parts. The patch bytes will be inserted between these parts.
+            var originalFirstPart = fileBytes.Take(patchStartIndex);
+            var originalSecondPart = fileBytes.Skip(patchStartIndex + RemovedBytes);
+
+            return originalFirstPart
+                .Concat(patchBytes)
+                .Concat(originalSecondPart)
+                .ToArray();
         }
 
         private void PatchFileSize(byte[] fileBytes, int patchSize)
