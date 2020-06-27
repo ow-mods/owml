@@ -102,9 +102,15 @@ namespace OWML.Patcher
 
             if (patchStartIndex != -1 && !isAlreadyPatched)
             {
+                BackupFile(currentPath);
                 var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
-                File.WriteAllBytes(currentPath + ".patched-rai", patchedBytes);
+                File.WriteAllBytes(currentPath, patchedBytes);
             }
+        }
+
+        private void BackupFile(string path)
+        {
+            File.Copy(path, path + ".bak", true);
         }
 
         private byte[] CreatePatchedFileBytes(byte[] fileBytes, int patchStartIndex)
