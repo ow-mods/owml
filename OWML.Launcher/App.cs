@@ -155,6 +155,14 @@ namespace OWML.Launcher
         {
             _owPatcher.PatchGame();
             _vrPatcher.PatchVR(enableVR);
+            try
+            {
+                _vrPatcher.PatchVR(enableVR);
+            }
+            catch (Exception ex)
+            {
+                _writer.WriteLine($"Error while applying VR patch: {ex}");
+            }
         }
 
         private void StartGame(string[] args, bool enableVR)
