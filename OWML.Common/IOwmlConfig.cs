@@ -11,5 +11,6 @@
         string OutputFilePath { get; }
         string LogFilePath { get; }
         bool Verbose { get; }
+        bool BlockInput { get; }
     }
 }

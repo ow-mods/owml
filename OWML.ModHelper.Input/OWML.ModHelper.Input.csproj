@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InputInterceptor.cs" />
+    <Compile Include="BindingChangeListener.cs" />
     <Compile Include="ModInputCombination.cs" />
     <Compile Include="ModInputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

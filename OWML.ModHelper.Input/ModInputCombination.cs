@@ -78,9 +78,9 @@ namespace OWML.ModHelper.Input
 
         private KeyCode StringToKeyCode(string key)
         {
-            key = key.Trim();
-            return key.Contains(XboxPrefix) ? StringToKeyCodeXbox(key.Substring(XboxPrefix.Length)) 
-                : StringToKeyCodeKeyboard(key);
+            var trimmedKey = key.Trim();
+            return trimmedKey.Contains(XboxPrefix) ? StringToKeyCodeXbox(trimmedKey.Substring(XboxPrefix.Length)) 
+                : StringToKeyCodeKeyboard(trimmedKey);
         }
 
         private int[] StringToKeyArray(string stringCombination)
