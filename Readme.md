@@ -130,5 +130,4 @@ Dependencies:
 * [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
 * [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
 * [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
-* [BsDiff](https://github.com/LogosBible/bsdiff.net)
 * [Gameloop.Vdf](https://github.com/shravan2x/Gameloop.Vdf)
