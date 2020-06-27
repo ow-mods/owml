@@ -151,9 +151,14 @@ namespace OWML.Patcher
             }
 
             // Shift addresses where necessary.
-            foreach (var index in _addressIndexes)
+            foreach (var startIndex in _addressIndexes)
             {
-                fileBytes[index] += (byte)fileSizeChange;
+                var address = BitConverter.ToInt32(fileBytes, startIndex);
+                var patchedAddressBytes = BitConverter.GetBytes(address + fileSizeChange);
+                for (int i = 0; i < patchedAddressBytes.Length; i++)
+                {
+                    fileBytes[startIndex + i] = patchedAddressBytes[i];
+                }
             }
         }
 
