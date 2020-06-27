@@ -39,60 +39,17 @@ namespace OWML.Patcher
         {
             if (!File.Exists(_filePath))
             {
-                _writer.WriteLine("Error: can't find " + _filePath);
-                return;
+                throw new FileNotFoundException(_filePath);
             }
-
-            byte[] patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
-            byte[] existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
-
-            var patchZoneMatch = 0;
-            var existingPatchMatch = 0;
-            var patchStartIndex = -1;
-            var isAlreadyPatched = false;
 
             var fileBytes = File.ReadAllBytes(_filePath);
 
-            var buildSettingsStartAddress = BitConverter.ToInt32(fileBytes, BuildSettingsStartAddressIndex) + BlockAddressOffset;
+            var buildSettingsStartIndex = BitConverter.ToInt32(fileBytes, BuildSettingsStartAddressIndex) + BlockAddressOffset;
             var buildSettingsSize = BitConverter.ToInt32(fileBytes, BuildSettingsSizeIndex);
+            var buildSettingsEndIndex = buildSettingsStartIndex + buildSettingsSize;
 
-            for (var i = buildSettingsStartAddress; i < buildSettingsStartAddress + buildSettingsSize; i++)
-            {
-                var fileByte = fileBytes[i];
-                if (patchStartIndex == -1)
-                {
-                    var patchZoneByte = patchZoneBytes[patchZoneMatch];
-                    if (fileByte == patchZoneByte)
-                    {
-                        patchZoneMatch++;
-                    }
-                    else
-                    {
-                        patchZoneMatch = 0;
-                    }
-                    if (patchZoneMatch == patchZoneBytes.Length)
-                    {
-                        patchStartIndex = i + PatchStartZoneOffset;
-                    }
-                }
-                else
-                {
-                    var existingPatchByte = existingPatchBytes[existingPatchMatch];
-                    if (fileByte == existingPatchByte)
-                    {
-                        existingPatchMatch++;
-                    }
-                    else
-                    {
-                        existingPatchMatch = 0;
-                    }
-                    if (existingPatchMatch == existingPatchBytes.Length)
-                    {
-                        isAlreadyPatched = true;
-                        break;
-                    }
-                }
-            }
+            var patchStartIndex = FindPatchStartIndex(fileBytes, buildSettingsStartIndex, buildSettingsEndIndex);
+            var isAlreadyPatched = FindExistingPatch(fileBytes, patchStartIndex, buildSettingsEndIndex);
 
             if (isAlreadyPatched)
             {
@@ -100,17 +57,59 @@ namespace OWML.Patcher
                 return;
             }
 
-            if (patchStartIndex == -1)
+            BackupFile(_filePath);
+            var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
+            File.WriteAllBytes(_filePath, patchedBytes);
+            _writer.WriteLine("Successfully patched globalgamemanagers.");
+        }
+
+        private int FindPatchStartIndex(byte[] fileBytes, int startIndex, int endIndex)
+        {
+            byte[] patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
+            var patchZoneMatch = 0;
+            for (var i = startIndex; i < endIndex; i++)
             {
-                _writer.WriteLine("Error: could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
+                var fileByte = fileBytes[i];
+                var patchZoneByte = patchZoneBytes[patchZoneMatch];
+                if (fileByte == patchZoneByte)
+                {
+                    patchZoneMatch++;
+                }
+                else
+                {
+                    patchZoneMatch = 0;
+                }
+                if (patchZoneMatch == patchZoneBytes.Length)
+                {
+                    return i + PatchStartZoneOffset;
+                }
             }
-            else
+            throw new Exception("Could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
+        }
+
+        private bool FindExistingPatch(byte[] fileBytes, int startIndex, int endIndex)
+        {
+            byte[] existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
+            var existingPatchMatch = 0;
+
+            for (var i = startIndex; i < startIndex + endIndex; i++)
             {
-                BackupFile(_filePath);
-                var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
-                File.WriteAllBytes(_filePath, patchedBytes);
-                _writer.WriteLine("Successfully patched globalgamemanagers.");
+                var fileByte = fileBytes[i];
+                var existingPatchByte = existingPatchBytes[existingPatchMatch];
+                if (fileByte == existingPatchByte)
+                {
+                    existingPatchMatch++;
+                }
+                else
+                {
+                    existingPatchMatch = 0;
+                }
+                if (existingPatchMatch == existingPatchBytes.Length)
+                {
+                    return true;
+                }
             }
+            return false;
         }
 
         private byte[] CreatePatchedFileBytes(byte[] fileBytes, int patchStartIndex)

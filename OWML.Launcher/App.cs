@@ -149,7 +149,14 @@ namespace OWML.Launcher
             var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
             var enableVR = vrMod != null;
             _writer.WriteLine(enableVR ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
-            _vrPatcher.PatchVR(enableVR);
+            try
+            {
+                _vrPatcher.PatchVR(enableVR);
+            }
+            catch (Exception ex)
+            {
+                _writer.WriteLine($"Error while applying VR patch: {ex}");
+            }
         }
 
         private void StartGame(string[] args)
