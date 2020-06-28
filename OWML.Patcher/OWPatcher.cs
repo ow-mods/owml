@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,6 +37,7 @@ namespace OWML.Patcher
                 "OWML.ModHelper.dll",
                 "OWML.ModHelper.Events.dll",
                 "OWML.ModHelper.Assets.dll",
+                "OWML.ModHelper.Input.dll",
                 "OWML.ModHelper.Menus.dll",
                 "Newtonsoft.Json.dll",
                 "System.Runtime.Serialization.dll",

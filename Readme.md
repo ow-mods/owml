@@ -96,7 +96,7 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Tested with all versions of Outer Wilds up to and including v1.0.6.
+* Tested with all versions of Outer Wilds up to and including v1.0.7.
 * Currently Windows only.
 
 ## Feedback
@@ -120,7 +120,7 @@ Special thanks to:
 * [Outer Wilds](http://www.outerwilds.com)
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
-* Inspired by [SMAPI](https://smapi.io)
+* Inspired by (and some code from) [SMAPI](https://smapi.io)
 * Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 Dependencies:
@@ -130,5 +130,4 @@ Dependencies:
 * [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
 * [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
 * [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
-* [BsDiff](https://github.com/LogosBible/bsdiff.net)
 * [Gameloop.Vdf](https://github.com/shravan2x/Gameloop.Vdf)
