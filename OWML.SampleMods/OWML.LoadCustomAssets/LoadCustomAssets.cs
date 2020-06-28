@@ -68,6 +68,7 @@ namespace OWML.LoadCustomAssets
             duck.AddComponent<SphereCollider>();
             duck.AddComponent<Rigidbody>();
             _duckBody = duck.AddComponent<OWRigidbody>();
+            duck.SetActive(false);
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
@@ -100,6 +101,7 @@ namespace OWML.LoadCustomAssets
         private void ShootDuck()
         {
             var duckBody = Instantiate(_duckBody);
+            duckBody.gameObject.SetActive(true);
 
             duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 2f);
             duckBody.SetRotation(_playerTransform.rotation);
