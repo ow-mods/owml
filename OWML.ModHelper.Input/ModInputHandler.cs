@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using UnityEngine;
-using System.Security.Policy;
 
 namespace OWML.ModHelper.Input
 {
@@ -21,12 +20,12 @@ namespace OWML.ModHelper.Input
 
         internal static ModInputHandler Instance { get; private set; }
 
-        private HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
-        private Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
-        private HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
-        private HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
-        private float[] _timeout = new float[MaxUsefulKey];
-        private int[] _gameBindingCounter = new int[MaxUsefulKey];
+        private readonly HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
+        private readonly Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
+        private readonly HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
+        private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
+        private readonly float[] _timeout = new float[MaxUsefulKey];
+        private readonly int[] _gameBindingCounter = new int[MaxUsefulKey];
         private IModInputCombination _currentCombination;
         private int _lastSingleUpdate;
         private int _lastCombinationUpdate;
@@ -94,7 +93,7 @@ namespace OWML.ModHelper.Input
             {
                 return null;
             }
-            long hash = (long)nullableHash;
+            var hash = (long)nullableHash;
             if (hash < 0)
             {
                 countdownTrigger = true;
@@ -106,7 +105,7 @@ namespace OWML.ModHelper.Input
             }
 
             var combination = _comboRegistry[hash];
-            if (!(combination == _currentCombination) && countdownTrigger)
+            if (combination != _currentCombination && countdownTrigger)
             {
                 return null;
             }
@@ -358,7 +357,7 @@ namespace OWML.ModHelper.Input
                     _console.WriteLine($"Failed to unregister \"{combination.FullName}\": too long!");
                     return;
                 case RegistrationCode.AllNormal:
-                    _logger.Log($"succesfully unregistered \"{combination.FullName}\"");
+                    _logger.Log($"Successfully unregistered \"{combination.FullName}\"");
                     return;
                 default:
                     return;
@@ -414,10 +413,9 @@ namespace OWML.ModHelper.Input
 
         internal void UpdateGamesBindings()
         {
-            Array.ForEach<int>(_gameBindingCounter, x => x = 0);
             _gameBindingRegistry.Clear();
             var inputCommands = typeof(InputLibrary).GetFields(BindingFlags.Public | BindingFlags.Static);
-            Array.ForEach<FieldInfo>(inputCommands, field => RegisterGamesBinding(field.GetValue(null) as InputCommand));
+            inputCommands.ToList().ForEach(field => RegisterGamesBinding(field.GetValue(null) as InputCommand));
         }
     }
 }

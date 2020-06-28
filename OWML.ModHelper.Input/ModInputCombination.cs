@@ -24,8 +24,8 @@ namespace OWML.ModHelper.Input
 
         private bool _isPressed;
         private float _firstPressedMoment;
-        private List<KeyCode> _singles = new List<KeyCode>();
-        private List<long> _hashes = new List<long>();
+        private readonly List<KeyCode> _singles = new List<KeyCode>();
+        private readonly List<long> _hashes;
 
         internal ModInputCombination(IModManifest mod, string name, string combination)
         {
@@ -54,9 +54,9 @@ namespace OWML.ModHelper.Input
 
         private KeyCode StringToKeyCodeGamepad(string gamepadKey)
         {
-            var gamepadcodeCode = (JoystickButton)Enum.Parse(typeof(JoystickButton), gamepadKey, true);
-            return (Enum.IsDefined(typeof(JoystickButton), gamepadcodeCode)) ?
-                InputTranslator.GetButtonKeyCode(gamepadcodeCode) : KeyCode.None;
+            var gamepadCode = (JoystickButton)Enum.Parse(typeof(JoystickButton), gamepadKey, true);
+            return Enum.IsDefined(typeof(JoystickButton), gamepadCode) ?
+                InputTranslator.GetButtonKeyCode(gamepadCode) : KeyCode.None;
         }
 
         private KeyCode StringToKeyCodeXbox(string xboxKey)
