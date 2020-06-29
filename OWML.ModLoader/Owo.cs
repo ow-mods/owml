@@ -113,7 +113,7 @@ namespace OWML.ModLoader
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(console, modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
-            var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);
+            var interaction = new ModInteraction(_modList, new InterfaceProxyFactory());
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
                 events, assets, storage, _menus, modData.Manifest, modData.Config,
                 _owmlConfig, _inputHandler, interaction);

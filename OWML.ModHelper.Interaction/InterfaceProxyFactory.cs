@@ -19,7 +19,7 @@ namespace OWML.ModHelper.Interaction
             _moduleBuilder = assemblyBuilder.DefineDynamicModule("OWMLInteraction.Proxies");
         }
 
-        public TInterface CreateProxy<TInterface>(object instance, string sourceModId, string targetModId) where TInterface : class
+        public TInterface CreateProxy<TInterface>(object instance) where TInterface : class
         {
             if (instance == null)
             {
@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Interaction
             }
 
             var targetType = instance.GetType();
-            var proxyTypeName = $"OWMLInteraction.Proxies.From<{sourceModId}_{typeof(TInterface).FullName}>_To<{targetModId}_{targetType.FullName}>";
+            var proxyTypeName = $"OWMLInteraction.Proxies.From<{typeof(TInterface).FullName}>_To<{targetType.FullName}>";
             if (!_builders.TryGetValue(proxyTypeName, out InterfaceProxyBuilder builder))
             {
                 builder = new InterfaceProxyBuilder(proxyTypeName, _moduleBuilder, typeof(TInterface), targetType);
