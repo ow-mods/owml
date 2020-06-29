@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Input
         {
             if ((int)key >= MaxUsefulKey)
             {
-                key -= (((int)key - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
+                key -= ((int)key - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff * GamePadKeyDiff;
             }
             return key;
         }
@@ -133,7 +133,7 @@ namespace OWML.ModHelper.Input
         {
             var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;
             key = NormalizeKeyCode(key);
-            return ((int)key) >= MinGamepadKey ?
+            return (int)key >= MinGamepadKey ?
                 XboxPrefix + JoystickButtonToXboxButton(InputTranslator.ConvertKeyCodeToButton(key, config)) :
                 key.ToString();
         }
@@ -154,7 +154,7 @@ namespace OWML.ModHelper.Input
                 {
                     continue;
                 }
-                var toStore = ((int)key) >= MinGamepadKey ?
+                var toStore = (int)key >= MinGamepadKey ?
                 ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, config)) :
                 ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
                 _loadedTextures.Add(keyName, toStore);
@@ -178,7 +178,7 @@ namespace OWML.ModHelper.Input
                 return _loadedTextures[keyName];
             }
             var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;
-            var toStore = ((int)key) >= MinGamepadKey ?
+            var toStore = (int)key >= MinGamepadKey ?
                 ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, config)) :
                 ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
             _loadedTextures.Add(keyName, toStore);
