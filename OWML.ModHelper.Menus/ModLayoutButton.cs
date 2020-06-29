@@ -14,7 +14,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnClick;
         public Button Button { get; }
         public IModMenu Menu { get; private set; }
-        public HorizontalLayoutGroup LayoutGroup { get; private set; }
+        public HorizontalLayoutGroup LayoutGroup { get; }
 
         private int _index;
         private readonly UIStyleManager _styleManager;
@@ -39,7 +39,7 @@ namespace OWML.ModHelper.Menus
             Button = button;
             Button.onClick.AddListener(() => OnClick?.Invoke());
             GameObject.Destroy(Button.GetComponentInChildren<Text>().gameObject);
-            var layoutObject = new GameObject("LayoutGroup", new Type[] { typeof(RectTransform) });
+            var layoutObject = new GameObject("LayoutGroup", typeof(RectTransform));
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();
             target.raycastTarget = true;
@@ -47,14 +47,14 @@ namespace OWML.ModHelper.Menus
             LayoutGroup = layoutObject.AddComponent<HorizontalLayoutGroup>();
             Initialize(menu);
             _buttonStyleApplier = Button.GetComponent<UIStyleApplier>();
-            _styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
+            _styleManager = GameObject.FindObjectOfType<UIStyleManager>();
             LayoutGroup.childControlWidth = false;
             LayoutGroup.childControlHeight = false;
             LayoutGroup.childForceExpandHeight = false;
             LayoutGroup.childForceExpandWidth = false;
             LayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             LayoutGroup.transform.localPosition = Vector3.zero;
-            ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f);//center
+            ((RectTransform)LayoutGroup.transform).pivot = new Vector2(0.5f, 0.5f); //center
             _texts = typeof(UIStyleApplier).GetField("_textItems", BindingFlags.NonPublic | BindingFlags.Instance);
             _foregrounds = typeof(UIStyleApplier).GetField("_foregroundGraphics", BindingFlags.NonPublic | BindingFlags.Instance);
             UpdateState();
@@ -134,7 +134,7 @@ namespace OWML.ModHelper.Menus
 
         public void AddText(string text)
         {
-            var textObject = new GameObject("Text", new Type[] { typeof(RectTransform) });
+            var textObject = new GameObject("Text", typeof(RectTransform));
             var textComponent = textObject.AddComponent<Text>();
             textComponent.text = text;
             textComponent.fontSize = FontSize;
@@ -150,16 +150,15 @@ namespace OWML.ModHelper.Menus
 
         public void AddPicture(Texture2D texture, float scale = 1.0f)
         {
-            var keySprite = Sprite.Create(texture, new Rect(0f, 0f, (float)texture.width, (float)texture.height), NormalPivot);
-            var keyObject = new GameObject("ButtonImage", new Type[] { typeof(RectTransform) });
+            var keySprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), NormalPivot);
+            var keyObject = new GameObject("ButtonImage", typeof(RectTransform));
             var keyPicture = keyObject.AddComponent<Image>();
             keyPicture.sprite = keySprite;
             keyPicture.SetLayoutDirty();
             keyObject.AddComponent<LayoutElement>();
             keyObject.transform.SetParent(LayoutGroup.transform);
             keyObject.transform.localScale = _scale;
-            ((RectTransform)keyObject.transform).sizeDelta =
-                new Vector2((float)texture.width * scale, (float)texture.height * scale);
+            ((RectTransform)keyObject.transform).sizeDelta = new Vector2(texture.width * scale, texture.height * scale);
             ((RectTransform)keyObject.transform).pivot = NormalPivot;
         }
     }

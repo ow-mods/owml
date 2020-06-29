@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using OWML.Common;
+﻿using OWML.Common;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -14,13 +11,13 @@ namespace OWML.ModHelper.Input
         internal void Initialize(ModInputHandler inputHandler, IModEvents events)
         {
             _inputHandler = inputHandler;
-            events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
+            events.Subscribe<TitleScreenManager>(Events.AfterStart);
             events.OnEvent += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterStart)
+            if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Events.AfterStart)
             {
                 _updateInputsNext = true;
             }
@@ -29,7 +26,7 @@ namespace OWML.ModHelper.Input
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-            GlobalMessenger.AddListener("KeyBindingsChanged", new Callback(PrepareForUpdate));
+            GlobalMessenger.AddListener("KeyBindingsChanged", PrepareForUpdate);
         }
 
         private void PrepareForUpdate()
