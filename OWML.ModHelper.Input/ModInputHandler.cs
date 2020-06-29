@@ -357,7 +357,7 @@ namespace OWML.ModHelper.Input
                 foreach (var key in keys.Where(x => x != KeyCode.None))
                 {
                     var intKey = (int)key;
-                    if ((int)key >= MaxUsefulKey)
+                    if (intKey >= MaxUsefulKey)
                     {
                         intKey -= (intKey - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff * GamePadKeyDiff;
                     }
