@@ -93,7 +93,7 @@ namespace OWML.ModHelper.Assets
             var meshFilter = modAsset.AddComponent<MeshFilter>();
             meshFilter.mesh = mesh;
             yield return new WaitForEndOfFrame();
-            modAsset.SetAsset(modAsset.gameObject);
+            modAsset.SetMeshFilter(meshFilter);
         }
 
         private IEnumerator LoadTexture(ObjectAsset modAsset, string imagePath)
@@ -111,6 +111,7 @@ namespace OWML.ModHelper.Assets
             }
             var meshRenderer = modAsset.AddComponent<MeshRenderer>();
             meshRenderer.material.mainTexture = texture;
+            modAsset.SetMeshRenderer(meshRenderer);
         }
 
         private IEnumerator LoadMesh(MeshAsset modAsset, string objectPath)
