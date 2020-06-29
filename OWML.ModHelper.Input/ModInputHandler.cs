@@ -51,6 +51,7 @@ namespace OWML.ModHelper.Input
             UpdateCurrentCombination();
             var cleanKey = ModInputLibrary.NormalizeKeyCode(key);
             return UnityEngine.Input.GetKey(cleanKey) && _currentCombination != null && Time.realtimeSinceStartup - _timeout[(int)cleanKey] < Cooldown;
+
         }
 
         private long? HashFromKeyboard()
