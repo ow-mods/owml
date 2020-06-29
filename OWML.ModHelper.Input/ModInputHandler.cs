@@ -295,8 +295,7 @@ namespace OWML.ModHelper.Input
                 var hash = ModInputLibrary.StringToHash(combo);
                 if (hash <= 0)
                 {
-                    var toReturn = new List<string>();
-                    toReturn.Add(((RegistrationCode)(-hash)).ToString());
+                    return new List<string> { ((RegistrationCode)(-hash)).ToString() };
                 }
                 hashes.Add(hash);
             }
