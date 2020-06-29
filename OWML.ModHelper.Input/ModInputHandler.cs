@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Input
         {
             UpdateCurrentCombination();
             var intKey = (int)code;
-            if ((int)code >= MaxUsefulKey)
+            if (intKey >= MaxUsefulKey)
             {
                 intKey -= (intKey - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff * GamePadKeyDiff;
             }
