@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Menus
         protected readonly TwoButtonToggleElement ToggleElement;
 
         private string _value;
-        private HorizontalLayoutGroup _layoutGroup;
+        private readonly HorizontalLayoutGroup _layoutGroup;
 
         public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
         {
@@ -27,12 +27,14 @@ namespace OWML.ModHelper.Menus
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
             _layoutGroup = Button.LayoutGroup;
-            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
 
-            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            var parent = Button.Button.transform.parent;
+            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)parent).sizeDelta.x * 2, ((RectTransform)parent).sizeDelta.y);
+
+            var layoutGroup = parent.parent.GetComponent<HorizontalLayoutGroup>();
             layoutGroup.childControlWidth = true;
             layoutGroup.childForceExpandWidth = true;
-            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
+            parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
         private void UpdateLayout(string currentCombination)

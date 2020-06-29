@@ -24,8 +24,8 @@ namespace OWML.ModHelper.Input
 
         private bool _isPressed;
         private float _firstPressedMoment;
-        private List<KeyCode> _singles = new List<KeyCode>();
-        private List<long> _hashes = new List<long>();
+        private readonly List<KeyCode> _singles = new List<KeyCode>();
+        private readonly List<long> _hashes;
 
         internal ModInputCombination(IModManifest mod, string name, string combination)
         {
@@ -36,17 +36,15 @@ namespace OWML.ModHelper.Input
 
         private KeyCode StringToKeyCodeKeyboard(string keyboardKey)
         {
-            if (keyboardKey == "control" || keyboardKey == "ctrl")
+            switch (keyboardKey)
             {
-                return KeyCode.LeftControl;
-            }
-            if (keyboardKey == "shift")
-            {
-                return KeyCode.LeftShift;
-            }
-            if (keyboardKey == "alt")
-            {
-                return KeyCode.LeftAlt;
+                case "control":
+                case "ctrl":
+                    return KeyCode.LeftControl;
+                case "shift":
+                    return KeyCode.LeftShift;
+                case "alt":
+                    return KeyCode.LeftAlt;
             }
             var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
             return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
@@ -54,9 +52,10 @@ namespace OWML.ModHelper.Input
 
         private KeyCode StringToKeyCodeGamepad(string gamepadKey)
         {
-            var gamepadcodeCode = (JoystickButton)Enum.Parse(typeof(JoystickButton), gamepadKey, true);
-            return (Enum.IsDefined(typeof(JoystickButton), gamepadcodeCode)) ?
-                InputTranslator.GetButtonKeyCode(gamepadcodeCode) : KeyCode.None;
+            var gamepadCode = (JoystickButton)Enum.Parse(typeof(JoystickButton), gamepadKey, true);
+            return Enum.IsDefined(typeof(JoystickButton), gamepadCode) ?
+                InputTranslator.GetButtonKeyCode(gamepadCode) :
+                KeyCode.None;
         }
 
         private KeyCode StringToKeyCodeXbox(string xboxKey)
@@ -79,8 +78,9 @@ namespace OWML.ModHelper.Input
         private KeyCode StringToKeyCode(string key)
         {
             var trimmedKey = key.Trim();
-            return trimmedKey.Contains(XboxPrefix) ? StringToKeyCodeXbox(trimmedKey.Substring(XboxPrefix.Length)) 
-                : StringToKeyCodeKeyboard(trimmedKey);
+            return trimmedKey.Contains(XboxPrefix) ?
+                StringToKeyCodeXbox(trimmedKey.Substring(XboxPrefix.Length)) :
+                StringToKeyCodeKeyboard(trimmedKey);
         }
 
         private int[] StringToKeyArray(string stringCombination)
@@ -92,7 +92,7 @@ namespace OWML.ModHelper.Input
                 var code = StringToKeyCode(key);
                 if ((int)code >= MaxUsefulKey)
                 {
-                    code -= (((int)code - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
+                    code -= ((int)code - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff * GamePadKeyDiff;
                 }
                 if (code == KeyCode.None)
                 {
@@ -142,7 +142,7 @@ namespace OWML.ModHelper.Input
                 if (hash < MaxUsefulKey)
                 {
                     _singles.Add((KeyCode)hash);
-                }    
+                }
             }
             return hashes;
         }

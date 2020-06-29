@@ -7,13 +7,9 @@ namespace OWML.ModHelper.Interaction
     public class ModInteraction : IModInteraction
     {
         private readonly IList<IModBehaviour> _modList;
-
         private readonly InterfaceProxyFactory _proxyFactory;
-
         private readonly IModManifest _manifest;
-
         private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
-
         private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
 
         public ModInteraction(IList<IModBehaviour> list, InterfaceProxyFactory proxyFactory, IModManifest manifest)
