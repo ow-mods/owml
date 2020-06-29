@@ -29,7 +29,7 @@ namespace OWML.EnableDebugMode
                 if (!string.IsNullOrEmpty(value))
                 {
                     var combination = ModHelper.Input.RegisterCombination(this, key, value);
-                    _inputs.Add(name, combination);
+                    _inputs.Add(key, combination);
                 }
             }
         }
