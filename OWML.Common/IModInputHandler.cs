@@ -2,8 +2,9 @@
 {
     public interface IModInputHandler
     {
-        IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination);
         IModInputTextures Textures { get; }
+
+        IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination);
         void UnregisterCombination(IModInputCombination combo);
         bool IsPressedExact(IModInputCombination combo);
         bool IsNewlyPressedExact(IModInputCombination combo);
