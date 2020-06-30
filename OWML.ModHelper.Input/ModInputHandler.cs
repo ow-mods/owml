@@ -395,7 +395,7 @@ namespace OWML.ModHelper.Input
         {
             SwapGamesBinding(binding, true);
         }
-        
+
         internal void UpdateGamesBindings()
         {
             _gameBindingRegistry.Clear();
