@@ -68,9 +68,10 @@ namespace OWML.ModHelper.Input
                     return KeyCode.LeftShift;
                 case "alt":
                     return KeyCode.LeftAlt;
+                default:
+                    var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
+                    return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
             }
-            var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
-            return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
         }
 
         private static KeyCode StringToKeyCodeGamepad(string xboxKey)
