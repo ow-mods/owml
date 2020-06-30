@@ -28,9 +28,14 @@ namespace OWML.ModHelper.Input
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
+        public IModInputTextures Textures { get; }
+
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events)
         {
-            ModInputLibrary.FillTextureLibrary();
+            var textures = new ModInputTextures();
+            textures.FillTextureLibrary();
+            Textures = textures;
+
             _console = console;
             _logger = logger;
 

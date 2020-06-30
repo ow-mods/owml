@@ -76,6 +76,7 @@
     <Compile Include="BindingChangeListener.cs" />
     <Compile Include="ModInputCombination.cs" />
     <Compile Include="ModInputHandler.cs" />
+    <Compile Include="ModInputTextures.cs" />
     <Compile Include="ModInputLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationCode.cs" />
