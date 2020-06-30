@@ -1,25 +1,25 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using OWML.Common;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModComboInput : ModInput<string>, IModComboInput
     {
-        private const float ScaleDown = 0.75f;
-        private const string XboxPrefix = "xbox_";
-
         public IModLayoutButton Button { get; }
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
 
         private string _value;
-        private HorizontalLayoutGroup _layoutGroup;
+        private readonly HorizontalLayoutGroup _layoutGroup;
+        private readonly IModInputHandler _inputHandler;
 
-        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu, IModInputHandler inputHandler) : base(element, menu)
         {
+            _inputHandler = inputHandler;
             ToggleElement = element;
             InputMenu = inputMenu;
             Button = new ModLayoutButton(element.GetValue<Button>("_buttonTrue"), menu);
@@ -27,12 +27,14 @@ namespace OWML.ModHelper.Menus
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
             _layoutGroup = Button.LayoutGroup;
-            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
 
-            var layoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            var parent = Button.Button.transform.parent;
+            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)parent).sizeDelta.x * 2, ((RectTransform)parent).sizeDelta.y);
+
+            var layoutGroup = parent.parent.GetComponent<HorizontalLayoutGroup>();
             layoutGroup.childControlWidth = true;
             layoutGroup.childForceExpandWidth = true;
-            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
+            parent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
         private void UpdateLayout(string currentCombination)
@@ -48,7 +50,7 @@ namespace OWML.ModHelper.Menus
                 var keyStrings = individualCombos[i].Split('+');
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    AddKeySign(keyStrings[j]);
+                    Button.AddPicture(_inputHandler.Textures.KeyTexture(keyStrings[j]), ModInputLibrary.ScaleDown);
                     if (j < keyStrings.Length - 1)
                     {
                         Button.AddText("+");
@@ -60,37 +62,6 @@ namespace OWML.ModHelper.Menus
                 }
             }
             Button.UpdateState();
-        }
-
-        private Texture2D GetGamepadButtonTexture(string key)
-        {
-            return ButtonPromptLibrary.SharedInstance.GetButtonTexture((JoystickButton)Enum.Parse(typeof(JoystickButton), key));
-        }
-
-        private Texture2D GetXboxButtonTexture(string xboxKey)
-        {
-            switch (xboxKey[0])
-            {
-                case 'A':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceDown);
-                case 'B':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceRight);
-                case 'X':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceLeft);
-                case 'Y':
-                    return ButtonPromptLibrary.SharedInstance.GetButtonTexture(JoystickButton.FaceUp);
-                default:
-                    return GetGamepadButtonTexture(xboxKey);
-            }
-        }
-
-        private void AddKeySign(string key)
-        {
-            var texture =
-                key.Contains(XboxPrefix) ?
-                GetXboxButtonTexture(key.Substring(XboxPrefix.Length)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key));
-            Button.AddPicture(texture, ScaleDown);
         }
 
         protected void Open()
@@ -126,7 +97,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = GameObject.Instantiate(ToggleElement);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModComboInput(copy, Menu, InputMenu);
+            return new ModComboInput(copy, Menu, InputMenu, _inputHandler);
         }
 
         public IModComboInput Copy(string title)

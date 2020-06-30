@@ -9,16 +9,19 @@ namespace OWML.ModHelper.Interaction
 {
     internal class InterfaceProxyBuilder
     {
-        private readonly Type TargetType;
-
-        private readonly Type ProxyType;
+        private readonly Type _targetType;
+        private readonly Type _proxyType;
 
         public InterfaceProxyBuilder(string name, ModuleBuilder moduleBuilder, Type interfaceType, Type targetType)
         {
             if (name == null)
+            {
                 throw new ArgumentNullException(nameof(name));
+            }
             if (targetType == null)
+            {
                 throw new ArgumentNullException(nameof(targetType));
+            }
 
             var proxyBuilder = moduleBuilder.DefineType(name, TypeAttributes.Public | TypeAttributes.Class);
             proxyBuilder.AddInterfaceImplementation(interfaceType);
@@ -31,20 +34,23 @@ namespace OWML.ModHelper.Interaction
             {
                 var targetMethod = targetType.GetMethod(proxyMethod.Name, proxyMethod.GetParameters().Select(a => a.ParameterType).ToArray());
                 if (targetMethod == null)
+                {
                     throw new InvalidOperationException($"The {interfaceType.FullName} interface defines method {proxyMethod.Name} which doesn't exist in the API.");
-
-                this.ProxyMethod(proxyBuilder, targetMethod, targetField);
+                }
+                ProxyMethod(proxyBuilder, targetMethod, targetField);
             }
 
-            this.TargetType = targetType;
-            this.ProxyType = proxyBuilder.CreateType();
+            _targetType = targetType;
+            _proxyType = proxyBuilder.CreateType();
         }
 
         public object CreateInstance(object targetInstance)
         {
-            var constructor = this.ProxyType.GetConstructor(new[] { this.TargetType });
+            var constructor = _proxyType.GetConstructor(new[] { _targetType });
             if (constructor == null)
-                throw new InvalidOperationException($"Couldn't find the constructor for generated proxy type '{this.ProxyType.Name}'."); // should never happen
+            {
+                throw new InvalidOperationException($"Couldn't find the constructor for generated proxy type '{_proxyType.Name}'."); // should never happen
+            }
             return constructor.Invoke(new[] { targetInstance });
         }
 
@@ -68,8 +74,10 @@ namespace OWML.ModHelper.Interaction
             il.Emit(OpCodes.Ldfld, instanceField);
 
             // invoke target method on instance
-            for (int i = 0; i < argTypes.Length; i++)
+            for (var i = 0; i < argTypes.Length; i++)
+            {
                 il.Emit(OpCodes.Ldarg, i + 1);
+            }
             il.Emit(OpCodes.Call, target);
 
             // return result
