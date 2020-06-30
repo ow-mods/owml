@@ -31,6 +31,7 @@ namespace OWML.ModHelper.Interaction
             }
 
             var targetType = instance.GetType();
+
             var proxyTypeName = $"OWMLInteraction.Proxies.From<{sourceModName}_{typeof(TInterface).FullName}>_To<{targetModName}_{targetType.FullName}>";
             if (!_builders.TryGetValue(proxyTypeName, out InterfaceProxyBuilder builder))
             {
