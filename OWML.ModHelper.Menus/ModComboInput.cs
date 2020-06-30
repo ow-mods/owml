@@ -3,14 +3,12 @@ using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using OWML.Common;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModComboInput : ModInput<string>, IModComboInput
     {
-        private const float ScaleDown = 0.75f;
-
         public IModLayoutButton Button { get; }
         protected readonly IModInputCombinationMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
@@ -27,8 +25,9 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu) : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu, IModInputHandler inputHandler) : base(element, menu)
         {
+            _inputHandler = inputHandler;
             ToggleElement = element;
             InputMenu = inputMenu;
             Button = new ModLayoutButton(element.GetValue<Button>("_buttonTrue"), menu);
@@ -53,7 +52,7 @@ namespace OWML.ModHelper.Menus
                 var keyStrings = individualCombos[i].Split('+');
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    Button.Layout.AddPicture(ModInputLibrary.KeyTexture(key), ScaleDown);
+                    Button.Layout.AddPicture(ModInputLibrary.KeyTexture(key), ModInputLibrary.ScaleDown);
                     if (j < keyStrings.Length - 1)
                     {
                         Button.Layout.AddText("+");
@@ -91,7 +90,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = GameObject.Instantiate(ToggleElement);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModComboInput(copy, Menu, InputMenu);
+            return new ModComboInput(copy, Menu, InputMenu, _inputHandler);
         }
 
         public IModComboInput Copy(string title)

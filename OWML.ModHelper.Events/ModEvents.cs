@@ -56,7 +56,7 @@ namespace OWML.ModHelper.Events
             var type = typeof(T);
             if (IsSubscribedTo(type, ev))
             {
-                _console.WriteLine($"Warning: already subscribed to {ev} of {type.Name}");
+                _logger.Log($"Already subscribed to {ev} of {type.Name}");
                 return;
             }
             AddToEventList(_subscribedEvents, type, ev);

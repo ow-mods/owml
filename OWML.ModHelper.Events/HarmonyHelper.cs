@@ -42,16 +42,21 @@ namespace OWML.ModHelper.Events
         private MethodInfo GetMethod<T>(string methodName)
         {
             var targetType = typeof(T);
+            MethodInfo result = null;
             try
             {
                 _logger.Log($"Getting method {methodName} of {targetType.Name}");
-                return targetType.GetAnyMethod(methodName);
+                result = targetType.GetAnyMethod(methodName);
             }
             catch (Exception ex)
             {
                 _console.WriteLine($"Exception while getting method {methodName} of {targetType.Name}: {ex}");
-                return null;
             }
+            if (result == null)
+            {
+                _console.WriteLine($"Error: Original method {methodName} of class {targetType} not found");
+            }
+            return result;
         }
 
         public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName)

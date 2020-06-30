@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Menus
             Button = button;
             Button.onClick.AddListener(() => OnClick?.Invoke());
             GameObject.Destroy(Button.GetComponentInChildren<Text>().gameObject);
-            var layoutObject = new GameObject("LayoutGroup", new Type[] { typeof(RectTransform) });
+            var layoutObject = new GameObject("LayoutGroup", typeof(RectTransform));
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();
             target.raycastTarget = true;

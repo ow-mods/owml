@@ -9,29 +9,34 @@ namespace OWML.ModHelper.Interaction
 {
     public class InterfaceProxyFactory
     {
-        private readonly ModuleBuilder ModuleBuilder;
-
-        private readonly IDictionary<string, InterfaceProxyBuilder> Builders = new Dictionary<string, InterfaceProxyBuilder>();
+        private readonly ModuleBuilder _moduleBuilder;
+        private readonly IDictionary<string, InterfaceProxyBuilder> _builders = new Dictionary<string, InterfaceProxyBuilder>();
 
         public InterfaceProxyFactory()
         {
-            var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName($"OWMLInteraction.Proxies, Version={this.GetType().Assembly.GetName().Version}, Culture=neutral"), AssemblyBuilderAccess.Run);
-            this.ModuleBuilder = assemblyBuilder.DefineDynamicModule("OWMLInteraction.Proxies");
+            var assemblyName = new AssemblyName($"OWMLInteraction.Proxies, Version={GetType().Assembly.GetName().Version}, Culture=neutral");
+            var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            _moduleBuilder = assemblyBuilder.DefineDynamicModule("OWMLInteraction.Proxies");
         }
 
-        public TInterface CreateProxy<TInterface>(object instance, string sourceModID, string targetModID) where TInterface : class
+        public TInterface CreateProxy<TInterface>(object instance, string sourceModName, string targetModName) where TInterface : class
         {
             if (instance == null)
+            {
                 throw new InvalidOperationException("Can't proxy access to a null API.");
+            }
             if (!typeof(TInterface).IsInterface)
+            {
                 throw new InvalidOperationException("The proxy type must be an interface, not a class.");
+            }
 
             var targetType = instance.GetType();
-            var proxyTypeName = $"OWMLInteraction.Proxies.From<{sourceModID}_{typeof(TInterface).FullName}>_To<{targetModID}_{targetType.FullName}>";
-            if (!this.Builders.TryGetValue(proxyTypeName, out InterfaceProxyBuilder builder))
+
+            var proxyTypeName = $"OWMLInteraction.Proxies.From<{sourceModName}_{typeof(TInterface).FullName}>_To<{targetModName}_{targetType.FullName}>";
+            if (!_builders.TryGetValue(proxyTypeName, out InterfaceProxyBuilder builder))
             {
-                builder = new InterfaceProxyBuilder(proxyTypeName, this.ModuleBuilder, typeof(TInterface), targetType);
-                this.Builders[proxyTypeName] = builder;
+                builder = new InterfaceProxyBuilder(proxyTypeName, _moduleBuilder, typeof(TInterface), targetType);
+                _builders[proxyTypeName] = builder;
             }
 
             return (TInterface)builder.CreateInstance(instance);

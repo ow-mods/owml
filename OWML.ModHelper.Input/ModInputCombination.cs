@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using OWML.Common;
 using UnityEngine;
@@ -19,8 +18,8 @@ namespace OWML.ModHelper.Input
 
         private bool _isPressed;
         private float _firstPressedMoment;
-        private List<KeyCode> _singles = new List<KeyCode>();
-        private List<long> _hashes = new List<long>();
+        private readonly List<KeyCode> _singles = new List<KeyCode>();
+        private readonly List<long> _hashes;
 
         internal ModInputCombination(IModManifest mod, string name, string combination)
         {

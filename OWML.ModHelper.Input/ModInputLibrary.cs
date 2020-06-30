@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -14,7 +13,14 @@ namespace OWML.ModHelper.Input
         public const int MaxComboLength = 7;
         public const int GamePadKeyDiff = 20;
 
-        private static Dictionary<string, Texture2D> loadedTextures/* = new Dictionary<string,Texture2D>()*/;
+        public static KeyCode NormalizeKeyCode(KeyCode key)
+        {
+            if ((int)key >= MaxUsefulKey)
+            {
+                key -= ((int)key - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff * GamePadKeyDiff;
+            }
+            return key;
+        }
 
         public static JoystickButton XboxButtonToJoystickButton(string xboxKey)
         {
@@ -53,45 +59,33 @@ namespace OWML.ModHelper.Input
 
         private static KeyCode StringToKeyCodeKeyboard(string keyboardKey)
         {
-            if (keyboardKey == "control" || keyboardKey == "ctrl")
+            switch (keyboardKey)
             {
-                return KeyCode.LeftControl;
+                case "control":
+                case "ctrl":
+                    return KeyCode.LeftControl;
+                case "shift":
+                    return KeyCode.LeftShift;
+                case "alt":
+                    return KeyCode.LeftAlt;
+                default:
+                    var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
+                    return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
             }
-            if (keyboardKey == "shift")
-            {
-                return KeyCode.LeftShift;
-            }
-            if (keyboardKey == "alt")
-            {
-                return KeyCode.LeftAlt;
-            }
-            var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
-            return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
+        }
+
+        private static KeyCode StringToKeyCodeGamepad(string xboxKey)
+        {
+            var gamepadCode = XboxButtonToJoystickButton(xboxKey);
+            return gamepadCode == JoystickButton.None ? KeyCode.None : NormalizeKeyCode(InputTranslator.GetButtonKeyCode(gamepadCode));
         }
 
         public static KeyCode StringToKeyCode(string key)
         {
-            return key.Contains(XboxPrefix) ?
-               NormalizeKeyCode(InputTranslator.GetButtonKeyCode(XboxButtonToJoystickButton(key.Substring(XboxPrefix.Length)))) :
-               StringToKeyCodeKeyboard(key);
-        }
-
-        public static KeyCode NormalizeKeyCode(KeyCode key)
-        {
-            if ((int)key >= MaxUsefulKey)
-            {
-                key -= (((int)key - MaxUsefulKey + GamePadKeyDiff) / GamePadKeyDiff) * GamePadKeyDiff;
-            }
-            return key;
-        }
-
-        public static string KeyCodeToString(KeyCode key)
-        {
-            var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;
-            key = NormalizeKeyCode(key);
-            return ((int)key) >= MinGamepadKey ?
-                XboxPrefix + JoystickButtonToXboxButton(InputTranslator.ConvertKeyCodeToButton(key, config)) :
-                key.ToString();
+            var trimmedKey = key.Trim();
+            return trimmedKey.Contains(XboxPrefix) ?
+               StringToKeyCodeGamepad(trimmedKey.Substring(XboxPrefix.Length)) :
+               StringToKeyCodeKeyboard(trimmedKey);
         }
 
         private static int[] StringToKeyArray(string stringCombination)
@@ -133,73 +127,13 @@ namespace OWML.ModHelper.Input
             return hash;
         }
 
-        public static void FillTextureLibrary()
+        public static string KeyCodeToString(KeyCode key)
         {
-            string keyName;
-            loadedTextures = new Dictionary<string, Texture2D>();
-            KeyCode key;
             var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;
-            int i = 0;
-            for (var code = MinUsefulKey; code < MaxUsefulKey; code++)
-            {
-                key = (KeyCode)code;
-                if (!Enum.IsDefined(typeof(KeyCode), key))
-                {
-                    continue;
-                }
-                keyName = KeyCodeToString(key);
-                if (loadedTextures.ContainsKey(keyName))
-                {
-                    continue;
-                }
-                var toStore = ((int)key) >= MinGamepadKey ?
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, config)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
-                loadedTextures.Add(keyName, toStore);
-                i++;
-            }
-        }
-
-        public static Texture2D KeyTexture(string key)
-        {
-            if (loadedTextures == null)
-            {
-                FillTextureLibrary();
-            }
-            if (loadedTextures.ContainsKey(key))
-            {
-                return loadedTextures[key];
-            }
-            else
-            {
-                var toStore = key.Contains(XboxPrefix) ?
-                   ButtonPromptLibrary.SharedInstance.GetButtonTexture(XboxButtonToJoystickButton(key.Substring(XboxPrefix.Length))) :
-                   ButtonPromptLibrary.SharedInstance.GetButtonTexture((KeyCode)Enum.Parse(typeof(KeyCode), key));
-                loadedTextures.Add(key, toStore);
-                return toStore;
-            }
-        }
-
-        public static Texture2D KeyTexture(KeyCode key)
-        {
-            if (loadedTextures == null)
-            {
-                FillTextureLibrary();
-            }
-            var keyName = KeyCodeToString(key);
-            if (loadedTextures.ContainsKey(keyName))
-            {
-                return loadedTextures[keyName];
-            }
-            else
-            {
-                var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;
-                var toStore = ((int)key) >= MinGamepadKey ?
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, config)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
-                loadedTextures.Add(keyName, toStore);
-                return toStore;
-            }
+            key = NormalizeKeyCode(key);
+            return (int)key >= MinGamepadKey ?
+                XboxPrefix + JoystickButtonToXboxButton(InputTranslator.ConvertKeyCodeToButton(key, config)) :
+                key.ToString();
         }
     }
 }

@@ -16,11 +16,13 @@ namespace OWML.ModHelper.Menus
 
         private Transform _modMenuTemplate;
         private IModButton _modButtonTemplate;
+        private readonly IModInputHandler _inputHandler;
 
-        public ModsMenu(IModConsole console, IModMenus menus) : base(console)
+        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
         {
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
+            _inputHandler = inputHandler;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
@@ -98,7 +100,7 @@ namespace OWML.ModHelper.Menus
                 modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
                 var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
                 textInputTemplate.Hide();
-                var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, modInputCombinationMenu);
+                var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, modInputCombinationMenu, _inputHandler);
                 comboInputTemplate.Hide();
                 var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
                 numberInputTemplate.Hide();

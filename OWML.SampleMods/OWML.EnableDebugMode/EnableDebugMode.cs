@@ -17,18 +17,19 @@ namespace OWML.EnableDebugMode
         {
             if (_inputs != null)
             {
-                foreach (string key in _inputs.Keys)
+                foreach (var key in _inputs.Keys)
                 {
                     ModHelper.Input.UnregisterCombination(_inputs[key]);
                 }
             }
             _inputs = new Dictionary<string, IModInputCombination>();
-            foreach (string name in config.Settings.Keys)
+            foreach (var key in config.Settings.Keys)
             {
-                if (config.GetSettingsValue<string>(name) != null)
+                var value = config.GetSettingsValue<string>(key);
+                if (!string.IsNullOrEmpty(value))
                 {
-                    var combination = ModHelper.Input.RegisterCombination(this, name, config.GetSettingsValue<string>(name));
-                    _inputs.Add(name, combination);
+                    var combination = ModHelper.Input.RegisterCombination(this, key, value);
+                    _inputs.Add(key, combination);
                 }
             }
         }
