@@ -69,10 +69,8 @@ namespace OWML.ModHelper.Input
                 case "alt":
                     return KeyCode.LeftAlt;
                 default:
-                {
                     var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
                     return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
-                }
             }
         }
 
