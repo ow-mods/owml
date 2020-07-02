@@ -21,8 +21,6 @@ namespace OWML.Launcher
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
 
-        private const string VrArgument = " -vrmode openvr";
-
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
             OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
         {
@@ -57,10 +55,9 @@ namespace OWML.Launcher
 
             ShowModList(mods);
 
-            var hasVrMod = HasVrMod(mods);
-            PatchGame(hasVrMod);
+            PatchGame(mods);
 
-            StartGame(args, hasVrMod);
+            StartGame(args);
 
             if (hasPortArgument)
             {
@@ -145,18 +142,13 @@ namespace OWML.Launcher
             }
         }
 
-        private bool HasVrMod(IList<IModData> mods)
-        {
-            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
-            var hasVrMod = vrMod != null;
-            _writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
-            return hasVrMod;
-        }
-
-        private void PatchGame(bool enableVR)
+        private void PatchGame(IList<IModData> mods)
         {
             _owPatcher.PatchGame();
-            _vrPatcher.PatchVR(enableVR);
+
+            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
+            var enableVR = vrMod != null;
+            _writer.WriteLine(enableVR ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             try
             {
                 _vrPatcher.PatchVR(enableVR);
@@ -167,17 +159,12 @@ namespace OWML.Launcher
             }
         }
 
-        private void StartGame(string[] args, bool enableVR)
+        private void StartGame(string[] args)
         {
             _writer.WriteLine("Starting game...");
             try
             {
-                var gameArgs = string.Join(" ", args);
-                if (enableVR)
-                {
-                    gameArgs += VrArgument;
-                }
-                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", gameArgs);
+                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));
             }
             catch (Exception ex)
             {
