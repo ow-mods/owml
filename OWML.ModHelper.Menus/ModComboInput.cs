@@ -15,6 +15,7 @@ namespace OWML.ModHelper.Menus
 
         private string _value;
         private HorizontalLayoutGroup _layoutGroup;
+        private readonly IModInputHandler _inputHandler;
         public override string Value
         {
             get => _value;
@@ -52,7 +53,7 @@ namespace OWML.ModHelper.Menus
                 var keyStrings = individualCombos[i].Split('+');
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    Button.Layout.AddPicture(ModInputLibrary.KeyTexture(key), ModInputLibrary.ScaleDown);
+                    Button.Layout.AddPicture(_inputHandler.Textures.KeyTexture(keyStrings[j]), ModInputLibrary.ScaleDown);
                     if (j < keyStrings.Length - 1)
                     {
                         Button.Layout.AddText("+");

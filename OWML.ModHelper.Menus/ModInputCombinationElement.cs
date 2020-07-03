@@ -24,11 +24,13 @@ namespace OWML.ModHelper.Menus
 
         private string _combination;
         private readonly GameObject _layoutObject;
+        private readonly IModInputHandler _inputHandler;
 
         private static IModInputCombinationElementMenu _popupMenu;
 
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, IModInputCombinationElementMenu popupMenu, string combination = "") : base(toggle, menu)
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") : base(toggle, menu)
         {
+            _inputHandler = inputHandler;
             _combination = combination;
             _layoutObject = toggle.transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
             var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
@@ -72,7 +74,7 @@ namespace OWML.ModHelper.Menus
         private void AddKeySign(string key)
         {
             Layout.AddPictureAt(
-               ModInputLibrary.KeyTexture(key)
+               _inputHandler.Textures.KeyTexture(key)
                 , Layout.ChildCount - 1, ScaleDown);
         }
 
@@ -125,7 +127,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = GameObject.Instantiate(Toggle);
             GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
-            return new ModInputCombinationElement(copy, Menu, _popupMenu, combination);
+            return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, combination);
         }
     }
 }

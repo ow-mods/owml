@@ -17,6 +17,7 @@ namespace OWML.ModHelper.Menus
         private ModInputCombinationPopup _inputMenu;
         private PopupMenu _twoButtonPopup;
         private IModInputHandler _inputHandler;
+        private SingleAxisCommand _cancelCommand;
 
         public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler) : base(console)
         {
@@ -74,7 +75,7 @@ namespace OWML.ModHelper.Menus
             var inputSelectable = inputObject.AddComponent<Selectable>();
             _inputMenu = originalMenu.gameObject.AddComponent<ModInputCombinationPopup>();
             _inputMenu.Initialize(originalMenu, inputSelectable, resetButtonObject.GetComponent<SubmitAction>(), 
-                resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), CreateLayoutManager(inputObject, resetButtonObject));
+                resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), CreateLayoutManager(inputObject, resetButtonObject), _inputHandler);
             GameObject.Destroy(originalMenu);
             GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
@@ -90,16 +91,22 @@ namespace OWML.ModHelper.Menus
 
             _inputMenu.EnableMenu(true, value);
 
-            var okCommand = new SingleAxisCommand();
-            var okBinding = new InputBinding(JoystickButton.Start);
-            okCommand.SetInputs(okBinding, null);
-            var okPrompt = new ScreenPrompt("OK");
-            var cancelCommand = new SingleAxisCommand();
-            var cancelBinding = new InputBinding(JoystickButton.Select);
-            cancelCommand.SetInputs(cancelBinding, null);
-            var cancelPrompt = new ScreenPrompt("Cancel");
+            var okCommand = InputLibrary.confirm;
+            var okPrompt = new ScreenPrompt(okCommand, "OK");
+            if (_cancelCommand == null)
+            {
+                _console.WriteLine("Creating new CancelAction");
+                _cancelCommand = new SingleAxisCommand();
+                var cancelBindingGmpd = new InputBinding(JoystickButton.Select);
+                var cancelBindingKbrd = new InputBinding(KeyCode.Escape);
+                _cancelCommand.SetInputs(cancelBindingGmpd, cancelBindingKbrd);
+                var commandObject = new GameObject();
+                var commandComponent = commandObject.AddComponent<ModCommandUpdater>();
+                commandComponent.Initialize(_cancelCommand);
+            }
+            var cancelPrompt = new ScreenPrompt(_cancelCommand, "Cancel");
             var resetPrompt = new ScreenPrompt("Reset");
-            _inputMenu.SetUpPopup(message, okCommand, cancelCommand, null, okPrompt, cancelPrompt, resetPrompt);
+            _inputMenu.SetUpPopup(message, okCommand, _cancelCommand, null, okPrompt, cancelPrompt, resetPrompt);
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
