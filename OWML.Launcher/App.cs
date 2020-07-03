@@ -142,15 +142,21 @@ namespace OWML.Launcher
             }
         }
 
+        private bool HasVrMod(IList<IModData> mods)
+        {
+            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
+            var hasVrMod = vrMod != null;
+            _writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
+            return hasVrMod;
+        }
+
         private void PatchGame(IList<IModData> mods)
         {
             _owPatcher.PatchGame();
 
-            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
-            var enableVR = vrMod != null;
-            _writer.WriteLine(enableVR ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             try
             {
+                var enableVR = HasVrMod(mods);
                 _vrPatcher.PatchVR(enableVR);
             }
             catch (Exception ex)
