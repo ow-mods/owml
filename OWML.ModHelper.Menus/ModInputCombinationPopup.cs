@@ -93,6 +93,11 @@ namespace OWML.ModHelper.Menus
                     InvokeOk();
                     return;
                 }
+                if (_resetCommand != null && _resetCommand.IsNewlyPressed())
+                {
+                    InvokeReset();
+                    return;
+                }
                 if (currentlyPressedKeys[0] == KeyCode.Mouse0 || currentlyPressedKeys[0] == KeyCode.Mouse1)
                 {
                     return;
@@ -114,6 +119,7 @@ namespace OWML.ModHelper.Menus
         public override void Activate()
         {
             base.Activate();
+            Locator.GetMenuInputModule().SelectOnNextUpdate(null); //unselect buttons
         }
 
         private void AddKeySign(KeyCode key)

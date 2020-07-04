@@ -82,7 +82,8 @@ namespace OWML.ModHelper.Menus
         {
             _popupMenu.OnConfirm += OnPopupMenuConfirm;
             _popupMenu.OnCancel += OnPopupMenuCancel;
-            _popupMenu.Open(_combination);
+            _popupMenu.Open(_combination, (Menu is IModInputCombinationMenu) ? (Menu as IModInputCombinationMenu).Title : "",
+                Menu as IModInputCombinationMenu, this);
         }
 
         private void OnPopupMenuCancel()

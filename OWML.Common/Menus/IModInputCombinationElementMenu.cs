@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OWML.Common.Menus
 {
@@ -11,6 +8,6 @@ namespace OWML.Common.Menus
         event Action OnCancel;
 
         void Initialize(PopupInputMenu menu);
-        void Open(string value);
+        void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null);
     }
 }

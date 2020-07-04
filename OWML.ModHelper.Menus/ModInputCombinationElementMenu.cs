@@ -18,6 +18,9 @@ namespace OWML.ModHelper.Menus
         private PopupMenu _twoButtonPopup;
         private IModInputHandler _inputHandler;
         private SingleAxisCommand _cancelCommand;
+        private string _comboName;
+        private IModInputCombinationMenu _combinationMenu;
+        private IModInputCombinationElement _element;
 
         public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler) : base(console)
         {
@@ -81,8 +84,11 @@ namespace OWML.ModHelper.Menus
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open(string value)
+        public void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
         {
+            _combinationMenu = combinationMenu;
+            _element = element;
+            _comboName = comboName;
             _inputMenu.OnPopupConfirm += OnPopupConfirm;
             _inputMenu.OnPopupCancel += OnPopupCancel;
             _inputMenu.OnPopupValidate += OnPopupValidate;
@@ -112,15 +118,32 @@ namespace OWML.ModHelper.Menus
 
         private bool OnPopupValidate()
         {
-            _console.WriteLine($"Validating combination {_inputMenu.Combination}");
-            var collisions = _inputHandler.GetCollisions(_inputMenu.Combination); //probably should do it directly with string instead
-            if (collisions.Count > 0)
+            var currentCombination = _inputMenu.Combination;
+            _console.WriteLine($"Validating combination {currentCombination}");
+            var collisions = _inputHandler.GetCollisions(currentCombination);
+            if (collisions.Count > 0 && collisions[0] != _comboName)
             {
                 _twoButtonPopup.EnableMenu(true);
                 _twoButtonPopup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
                 _twoButtonPopup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
                 return false;
+            }
+            if (_combinationMenu == null)
+            {
+                return true;
+            }
+            foreach (var element in _combinationMenu.CombinationElements)
+            {
+                _console.WriteLine($"Checking against current {element.Title}");
+                if (element.Title == currentCombination && element != _element)
+                {
+                    _twoButtonPopup.EnableMenu(true);
+                    _twoButtonPopup.SetUpPopup($"This combination already exist in this group", InputLibrary.confirm2, null,
+                        new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
+                    _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
+                    return false;
+                }
             }
             return true;
         }

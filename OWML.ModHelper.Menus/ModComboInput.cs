@@ -69,6 +69,7 @@ namespace OWML.ModHelper.Menus
 
         protected void Open()
         {
+            InputMenu.Title = Menu is IModConfigMenu ? $"{(Menu as IModConfigMenu).Title}.{Title}" : Title;
             InputMenu.Combination = _value;
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;
