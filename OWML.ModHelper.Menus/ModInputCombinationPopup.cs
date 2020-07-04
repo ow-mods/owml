@@ -81,25 +81,29 @@ namespace OWML.ModHelper.Menus
                 }
                 currentlyPressedKeys.Add((KeyCode)code);
             }
+            if (currentlyPressedKeys.Count == 1)
+            {
+                if (_cancelCommand != null && _cancelCommand.IsNewlyPressed())
+                {
+                    InvokeCancel();
+                    return;
+                }
+                if (_okCommand != null && _okCommand.IsNewlyPressed())
+                {
+                    InvokeOk();
+                    return;
+                }
+                if (currentlyPressedKeys[0] == KeyCode.Mouse0 || currentlyPressedKeys[0] == KeyCode.Mouse1)
+                {
+                    return;
+                }
+            }
             if (currentlyPressedKeys.Count < 8 && (currentlyPressedKeys.Count > _combination.Count 
                 || (currentlyPressedKeys.Count > 1 && _wasReleased)))
             {
                 _wasReleased = false;
                 _combination = currentlyPressedKeys;
                 UpdateContents();
-            }
-            if (currentlyPressedKeys.Count == 1)
-            {
-                //_okCommand.UpdateInputCommand();
-                //_cancelCommand.UpdateInputCommand();
-                if (this._cancelCommand != null && _cancelCommand.IsNewlyPressed())
-                {
-                    this.InvokeCancel();
-                }
-                else if (this._okCommand != null && _okCommand.IsNewlyPressed()/*OWInput.IsNewlyPressed(this._okCommand, InputMode.All)*/)
-                {
-                    this.InvokeOk();
-                }
             }
             if (currentlyPressedKeys.Count == 0)
             {
