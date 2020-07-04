@@ -48,6 +48,8 @@ namespace OWML.ModHelper.Menus
                 {
                     AddCombinationElement(combination);
                 }
+                SelectFirst();
+                UpdateNavigation();
             }
         }
 
