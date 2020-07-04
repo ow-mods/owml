@@ -298,11 +298,8 @@ namespace OWML.ModHelper.Menus
             Menu.SetSelectOnActivate(firstSelectable);
         }
 
-        public void UpdateNavigation()
+        protected void UpdateNavigation(List<Selectable> selectables)
         {
-            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
-                .Select(x => x.GetComponent<Selectable>())
-                .Where(x => x != null).ToList();
             for (var i = 0; i < selectables.Count; i++)
             {
                 var upIndex = (i - 1 + selectables.Count) % selectables.Count;
@@ -312,6 +309,14 @@ namespace OWML.ModHelper.Menus
                 navigation.selectOnDown = selectables[downIndex];
                 selectables[i].navigation = navigation;
             }
+        }
+
+        public void UpdateNavigation()
+        {
+            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
+                .Select(x => x.GetComponent<Selectable>())
+                .Where(x => x != null).ToList();
+            UpdateNavigation(selectables);
         }
 
     }

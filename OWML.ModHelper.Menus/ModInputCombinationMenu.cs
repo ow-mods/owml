@@ -16,6 +16,8 @@ namespace OWML.ModHelper.Menus
 
         public List<IModInputCombinationElement> CombinationElements { get; private set; }
 
+        private List<Selectable> _selectables;
+
         public string Combination {
             get
             {
@@ -42,6 +44,7 @@ namespace OWML.ModHelper.Menus
             }
             set
             {
+                _selectables = new List<Selectable>();
                 CombinationElements.ForEach(element => element.Destroy());
                 CombinationElements.Clear();
                 foreach (var combination in value.Split('/'))
@@ -49,7 +52,7 @@ namespace OWML.ModHelper.Menus
                     AddCombinationElement(combination);
                 }
                 SelectFirst();
-                UpdateNavigation();
+                UpdateNavigation(_selectables);
             }
         }
 
@@ -122,6 +125,7 @@ namespace OWML.ModHelper.Menus
             element.Initialize(this);
             CombinationElements.Add(element);
             element.Toggle.transform.localScale = scale;
+            _selectables.Add(element.Toggle.GetComponent<Selectable>());
         }
 
         private void OnSave()
@@ -139,6 +143,26 @@ namespace OWML.ModHelper.Menus
         private void OnAdd()
         {
             AddCombinationElement("");
+            var last = _selectables[_selectables.Count - 1];
+            if (_selectables.Count > 1)
+            {
+                var first = _selectables[0];
+                var prelast = _selectables[_selectables.Count - 2];
+
+                var navigation = first.navigation;
+                navigation.selectOnUp = last;
+                first.navigation = navigation;
+
+                navigation = prelast.navigation;
+                navigation.selectOnDown = last;
+                prelast.navigation = navigation;
+
+                navigation = last.navigation;
+                navigation.selectOnDown = first;
+                navigation.selectOnUp = prelast;
+                last.navigation = navigation;
+            }
+            Locator.GetMenuInputModule().SelectOnNextUpdate(last);
         }
     }
 }
