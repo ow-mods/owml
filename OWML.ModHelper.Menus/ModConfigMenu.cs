@@ -14,7 +14,7 @@ namespace OWML.ModHelper.Menus
         public IModBehaviour Mod { get; }
 
         private readonly IModConsole _console;
-        private readonly IModStorage _storage;
+        protected readonly IModStorage Storage;
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
@@ -27,7 +27,7 @@ namespace OWML.ModHelper.Menus
             _console = console;
             ModData = modData;
             Mod = mod;
-            _storage = new ModStorage(console, modData.Manifest);
+            Storage = new ModStorage(console, modData.Manifest);
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
@@ -78,7 +78,7 @@ namespace OWML.ModHelper.Menus
             UpdateUIValues();
         }
 
-        private void AddInputs()
+        protected virtual void AddInputs()
         {
             var index = 2;
             AddConfigInput("Enabled", ModData.Config.Enabled, index++);
@@ -91,7 +91,7 @@ namespace OWML.ModHelper.Menus
             UpdateNavigation();
         }
 
-        private void UpdateUIValues()
+        protected virtual void UpdateUIValues()
         {
             GetToggleInput("Enabled").Value = ModData.Config.Enabled;
             GetToggleInput("Requires VR").Value = ModData.Config.RequireVR;
@@ -101,7 +101,7 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        private void AddConfigInput(string key, object value, int index)
+        protected void AddConfigInput(string key, object value, int index)
         {
             if (value is bool)
             {
@@ -198,7 +198,7 @@ namespace OWML.ModHelper.Menus
             numberInput.Show();
         }
 
-        private void OnSave()
+        protected virtual void OnSave()
         {
             ModData.Config.Enabled = (bool)GetInputValue("Enabled");
             ModData.Config.RequireVR = (bool)GetInputValue("Requires VR");
@@ -208,15 +208,12 @@ namespace OWML.ModHelper.Menus
                 var value = GetInputValue(key);
                 ModData.Config.SetSettingsValue(key, value);
             }
-            _storage.Save(ModData.Config, "config.json");
-            if (Mod != null)
-            {
-                Mod.Configure(ModData.Config);
-            }
+            Storage.Save(ModData.Config, "config.json");
+            Mod?.Configure(ModData.Config);
             Close();
         }
 
-        private void OnReset()
+        protected virtual void OnReset()
         {
             ModData.ResetConfig();
             UpdateUIValues();
