@@ -10,6 +10,9 @@ namespace OWML.ModHelper.Menus
 {
     public class ModConfigMenu : ModPopupMenu, IModConfigMenu
     {
+        private const string EnabledTitle = "Enabled";
+        private const string RequiresVRTitle = "Requires VR";
+
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
 
@@ -30,7 +33,8 @@ namespace OWML.ModHelper.Menus
             Storage = new ModStorage(console, modData.Manifest);
         }
 
-        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate, IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
+        public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
+            IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
@@ -64,7 +68,7 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
-            for (int i = 0; i < layoutGroup.transform.childCount; i++)
+            for (var i = 0; i < layoutGroup.transform.childCount; i++)
             {
                 layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
             }
@@ -81,8 +85,8 @@ namespace OWML.ModHelper.Menus
         protected virtual void AddInputs()
         {
             var index = 2;
-            AddConfigInput("Enabled", ModData.Config.Enabled, index++);
-            AddConfigInput("Requires VR", ModData.Config.RequireVR, index++);
+            AddConfigInput(EnabledTitle, ModData.Config.Enabled, index++);
+            AddConfigInput(RequiresVRTitle, ModData.Config.RequireVR, index++);
             foreach (var setting in ModData.Config.Settings)
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
@@ -93,8 +97,8 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void UpdateUIValues()
         {
-            GetToggleInput("Enabled").Value = ModData.Config.Enabled;
-            GetToggleInput("Requires VR").Value = ModData.Config.RequireVR;
+            GetToggleInput(EnabledTitle).Value = ModData.Config.Enabled;
+            GetToggleInput(RequiresVRTitle).Value = ModData.Config.RequireVR;
             foreach (var setting in ModData.Config.Settings)
             {
                 SetInputValue(setting.Key, setting.Value);
@@ -200,8 +204,8 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnSave()
         {
-            ModData.Config.Enabled = (bool)GetInputValue("Enabled");
-            ModData.Config.RequireVR = (bool)GetInputValue("Requires VR");
+            ModData.Config.Enabled = (bool)GetInputValue(EnabledTitle);
+            ModData.Config.RequireVR = (bool)GetInputValue(RequiresVRTitle);
             var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
             foreach (var key in keys)
             {
