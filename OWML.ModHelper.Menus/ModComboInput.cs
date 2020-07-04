@@ -39,10 +39,9 @@ namespace OWML.ModHelper.Menus
 
         private void UpdateLayout(string currentCombination)
         {
-            var childCount = _layoutGroup.transform.childCount;
-            for (var i = childCount - 1; i >= 0; i--)
+            foreach (Transform child in _layoutGroup.transform)
             {
-                GameObject.Destroy(_layoutGroup.transform.GetChild(i).gameObject);
+                GameObject.Destroy(child.gameObject);
             }
             var individualCombos = currentCombination.Split('/');
             for (var i = 0; i < individualCombos.Length; i++)
