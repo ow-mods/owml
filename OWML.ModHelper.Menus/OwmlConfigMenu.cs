@@ -37,7 +37,7 @@ namespace OWML.ModHelper.Menus
             _config.GamePath = (string)GetInputValue(GamePathTitle);
             _config.Verbose = (bool)GetInputValue(VerboseModeTitle);
             _config.BlockInput = (bool)GetInputValue(BlockInputTitle);
-            Storage.Save(_config, "OWML.Config.json");
+            Storage.Save(_config, Constants.OwmlConfigFileName);
             Close();
         }
 

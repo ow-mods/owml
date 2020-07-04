@@ -43,14 +43,14 @@ namespace OWML.Patcher
                 "System.Runtime.Serialization.dll",
                 "0Harmony.dll",
                 "NAudio-Unity.dll",
-                "OWML.Manifest.json",
-                "OWML.ModHelper.Interaction.dll"
+                "OWML.ModHelper.Interaction.dll",
+                Constants.OwmlManifestFileName
             };
             foreach (var filename in filesToCopy)
             {
                 File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
             }
-            File.WriteAllText($"{_owmlConfig.ManagedPath}/OWML.Config.json", JsonConvert.SerializeObject(_owmlConfig));
+            File.WriteAllText($"{_owmlConfig.ManagedPath}/{Constants.OwmlConfigFileName}", JsonConvert.SerializeObject(_owmlConfig));
         }
 
         private void PatchAssembly()

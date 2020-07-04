@@ -27,14 +27,14 @@ namespace OWML.Launcher
 
         private static IOwmlConfig GetOwmlConfig()
         {
-            var config = GetJsonObject<OwmlConfig>("OWML.Config.json");
+            var config = GetJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
             config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
             return config;
         }
 
         private static IModManifest GetOwmlManifest()
         {
-            return GetJsonObject<ModManifest>("OWML.Manifest.json");
+            return GetJsonObject<ModManifest>(Constants.OwmlManifestFileName);
         }
 
         private static T GetJsonObject<T>(string filename)

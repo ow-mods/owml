@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
@@ -11,8 +12,8 @@ namespace OWML.ModLoader
 {
     public class ModLoader
     {
-        private static readonly string ConfigPath = $"{Application.dataPath}/Managed/OWML.Config.json";
-        private static readonly string ManifestPath = $"{Application.dataPath}/Managed/OWML.Manifest.json";
+        private static readonly string ConfigPath = $"{Application.dataPath}/Managed/{Constants.OwmlConfigFileName}";
+        private static readonly string ManifestPath = $"{Application.dataPath}/Managed/{Constants.OwmlManifestFileName}";
 
         public static void LoadMods()
         {
