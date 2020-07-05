@@ -17,7 +17,6 @@ namespace OWML.ModHelper.Menus
         public List<IModInputCombinationElement> CombinationElements { get; private set; }
 
         private List<Selectable> _selectables;
-        private int _lastSelected;
 
         public string Combination
         {
@@ -58,33 +57,6 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public Selectable Selected
-        {
-            get
-            {
-                foreach (var selectable in _selectables)
-                {
-                    if (selectable.GetComponent<TwoButtonToggleElement>().GetValue<bool>("_amISelected"))
-                    {
-                        return selectable;
-                    }
-                }
-                return _selectables[_lastSelected];
-            }
-            set
-            {
-                for (int i =0; i < _selectables.Count; i++)
-                {
-                    if (_selectables[i]==value)
-                    {
-                        _lastSelected = i;
-                        _selectables[i].Select();
-                        return;
-                    }
-                }
-            }
-        }
-
         private IModInputCombinationElement _combinationElementTemplate;
 
         public ModInputCombinationMenu(IModConsole console) : base(console)
@@ -94,7 +66,6 @@ namespace OWML.ModHelper.Menus
 
         public override void Open()
         {
-            _lastSelected = 0;
             base.Open();
         }
 
@@ -133,8 +104,6 @@ namespace OWML.ModHelper.Menus
             {
                 buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults, "Add Alternative"));
             }
-
-            Menu.OnActivateMenu += OnActivate;
 
             Title = "Edit Combination";
 
@@ -194,14 +163,6 @@ namespace OWML.ModHelper.Menus
             CombinationElements.Add(element);
             element.Toggle.transform.localScale = scale;
             _selectables.Add(element.Toggle.GetComponent<Selectable>());
-        }
-
-        private void OnActivate()
-        {
-            var selected = _selectables[0];
-            selected.Select();
-            Locator.GetMenuInputModule().SelectOnNextUpdate(selected);
-            Locator.GetMenuInputModule().SetValue("_nextSelectableSetToNull", false);
         }
 
         private void OnSave()

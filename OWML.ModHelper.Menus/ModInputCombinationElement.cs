@@ -108,10 +108,6 @@ namespace OWML.ModHelper.Menus
         private void OnEditClick()
         {
             EventSystem.current.SetSelectedGameObject(this.Toggle.gameObject);//make sure it gets selected after popup closes
-            if (Menu is IModInputCombinationMenu)
-            {
-                (Menu as IModInputCombinationMenu).Selected = this.Toggle.GetComponent<Selectable>();
-            }
 
             _popupMenu.OnConfirm += OnPopupMenuConfirm;
             _popupMenu.OnCancel += OnPopupMenuCancel;

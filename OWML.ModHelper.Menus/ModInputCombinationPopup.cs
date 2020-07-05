@@ -159,7 +159,6 @@ namespace OWML.ModHelper.Menus
                 InitializeMenu();
             }
             base.EnableMenu(value);
-            Locator.GetMenuInputModule().SelectOnNextUpdate(null); //unselect buttons
             UpdateContents();
         }
 
