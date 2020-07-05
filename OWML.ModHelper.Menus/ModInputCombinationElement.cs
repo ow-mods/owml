@@ -1,8 +1,10 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
+using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace OWML.ModHelper.Menus
 {
@@ -35,10 +37,27 @@ namespace OWML.ModHelper.Menus
             _layoutObject = toggle.transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
             var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
             var scale = toggle.transform.localScale;
+
+            var commandObject = new GameObject();
+            var commandComponent = commandObject.AddComponent<ModCommandListener>();
+            commandComponent.Initialize(InputLibrary.interact);
+            commandComponent.OnNewlyReleased += OnEditButton;
             YesButton.Title = "Edit";
-            YesButton.OnClick += () => OnEditClick();
+            YesButton.OnClick += OnEditClick;
+
+            var deleteCommand = new SingleAxisCommand();
+            var deleteBindingGmpd = new InputBinding(JoystickButton.FaceUp);
+            var deleteBindingKbrd = new InputBinding(KeyCode.Delete);
+            deleteCommand.SetInputs(deleteBindingGmpd, deleteBindingKbrd);
+            commandObject = new GameObject();
+            var updater = commandObject.AddComponent<ModCommandUpdater>();
+            updater.Initialize(deleteCommand);
+            commandComponent = commandObject.AddComponent<ModCommandListener>();
+            commandComponent.Initialize(deleteCommand);
+            commandComponent.OnNewlyReleased += OnDeleteButton;
             NoButton.Title = "Delete";
-            NoButton.OnClick += () => OnDeleteClick();
+            NoButton.OnClick += OnDeleteClick;
+
             Initialize(menu);
             layoutGroup.childControlWidth = false;
             layoutGroup.childControlHeight = false;
@@ -78,8 +97,22 @@ namespace OWML.ModHelper.Menus
                 , Layout.ChildCount - 1, ScaleDown);
         }
 
+        private void OnEditButton()
+        {
+            if (Toggle.GetValue<bool>("_amISelected"))
+            {
+                OnEditClick();
+            }    
+        }
+
         private void OnEditClick()
         {
+            EventSystem.current.SetSelectedGameObject(this.Toggle.gameObject);//make sure it gets selected after popup closes
+            if (Menu is IModInputCombinationMenu)
+            {
+                (Menu as IModInputCombinationMenu).Selected = this.Toggle.GetComponent<Selectable>();
+            }
+
             _popupMenu.OnConfirm += OnPopupMenuConfirm;
             _popupMenu.OnCancel += OnPopupMenuCancel;
             _popupMenu.Open(_combination, (Menu is IModInputCombinationMenu) ? (Menu as IModInputCombinationMenu).Title : "",
@@ -111,7 +144,15 @@ namespace OWML.ModHelper.Menus
         public void DestroySelf()
         {
             Destroy();
-            (Menu as IModInputCombinationMenu)?.CombinationElements.Remove(this);
+            (Menu as IModInputCombinationMenu)?.RemoveCombinationElement(this);
+        }
+
+        private void OnDeleteButton()
+        {
+            if (Toggle.GetValue<bool>("_amISelected"))
+            {
+                OnDeleteClick();
+            }
         }
 
         private void OnDeleteClick()

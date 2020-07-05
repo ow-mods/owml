@@ -101,7 +101,6 @@ namespace OWML.ModHelper.Menus
             var okPrompt = new ScreenPrompt(okCommand, "OK");
             if (_cancelCommand == null)
             {
-                _console.WriteLine("Creating new CancelAction");
                 _cancelCommand = new SingleAxisCommand();
                 var cancelBindingGmpd = new InputBinding(JoystickButton.Select);
                 var cancelBindingKbrd = new InputBinding(KeyCode.Escape);

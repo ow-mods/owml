@@ -17,8 +17,10 @@ namespace OWML.ModHelper.Menus
         public List<IModInputCombinationElement> CombinationElements { get; private set; }
 
         private List<Selectable> _selectables;
+        private int _lastSelected;
 
-        public string Combination {
+        public string Combination
+        {
             get
             {
                 string result = "";
@@ -56,11 +58,44 @@ namespace OWML.ModHelper.Menus
             }
         }
 
+        public Selectable Selected
+        {
+            get
+            {
+                foreach (var selectable in _selectables)
+                {
+                    if (selectable.GetComponent<TwoButtonToggleElement>().GetValue<bool>("_amISelected"))
+                    {
+                        return selectable;
+                    }
+                }
+                return _selectables[_lastSelected];
+            }
+            set
+            {
+                for (int i =0; i < _selectables.Count; i++)
+                {
+                    if (_selectables[i]==value)
+                    {
+                        _lastSelected = i;
+                        _selectables[i].Select();
+                        return;
+                    }
+                }
+            }
+        }
+
         private IModInputCombinationElement _combinationElementTemplate;
 
-        public ModInputCombinationMenu(IModConsole console):base(console)
+        public ModInputCombinationMenu(IModConsole console) : base(console)
         {
             CombinationElements = new List<IModInputCombinationElement>();
+        }
+
+        public override void Open()
+        {
+            _lastSelected = 0;
+            base.Open();
         }
 
         public void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate)
@@ -96,8 +131,10 @@ namespace OWML.ModHelper.Menus
             var buttonWithHotkey = addButton.Button.gameObject.GetComponentInChildren<ButtonWithHotkeyImageElement>(true);
             if (buttonWithHotkey != null)
             {
-                buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults,"Add Alternative"));
+                buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults, "Add Alternative"));
             }
+
+            Menu.OnActivateMenu += OnActivate;
 
             Title = "Edit Combination";
 
@@ -107,6 +144,37 @@ namespace OWML.ModHelper.Menus
             for (int i = 0; i < layoutGroup.transform.childCount; i++)
             {
                 layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        public void RemoveCombinationElement(IModInputCombinationElement element)
+        {
+            CombinationElements.Remove(element);
+            var selectable = element.Toggle.GetComponent<Selectable>();
+            for (int i = 0; i < _selectables.Count; i++)
+            {
+                if (selectable != _selectables[i])
+                {
+                    continue;
+                }
+                var upIndex = (i - 1 + _selectables.Count) % _selectables.Count;
+                var downIndex = (i + 1) % _selectables.Count;
+                var navigation = _selectables[upIndex].navigation;
+                navigation.selectOnDown = _selectables[downIndex];
+                _selectables[upIndex].navigation = navigation;
+                navigation = _selectables[downIndex].navigation;
+                navigation.selectOnUp = _selectables[upIndex];
+                _selectables[downIndex].navigation = navigation;
+                if (downIndex == 0)
+                {
+                    _selectables[upIndex].Select();
+                }
+                else
+                {
+                    _selectables[downIndex].Select();
+                }
+                _selectables.RemoveAt(i);
+                break;
             }
         }
 
@@ -126,6 +194,13 @@ namespace OWML.ModHelper.Menus
             CombinationElements.Add(element);
             element.Toggle.transform.localScale = scale;
             _selectables.Add(element.Toggle.GetComponent<Selectable>());
+        }
+
+        private void OnActivate()
+        {
+            var selected = _selectables[0];
+            selected.Select();
+            Locator.GetMenuInputModule().SelectOnNextUpdate(selected);
         }
 
         private void OnSave()
