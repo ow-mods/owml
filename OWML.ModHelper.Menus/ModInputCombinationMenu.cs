@@ -201,6 +201,7 @@ namespace OWML.ModHelper.Menus
             var selected = _selectables[0];
             selected.Select();
             Locator.GetMenuInputModule().SelectOnNextUpdate(selected);
+            Locator.GetMenuInputModule().SetValue("_nextSelectableSetToNull", false);
         }
 
         private void OnSave()
