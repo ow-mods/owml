@@ -15,10 +15,10 @@ namespace OWML.ModHelper.Menus
         private const string RequiresVRTitle = "Requires VR";
 
         public IModManifest Manifest { get; }
-        public IModConfig Config { get; }
-        public IModConfig DefaultConfig { get; }
         public IModBehaviour Mod { get; }
 
+        private readonly IModConfig _config;
+        private readonly IModConfig _defaultConfig;
         private readonly IModConsole _console;
         protected readonly IModStorage Storage;
 
@@ -32,9 +32,9 @@ namespace OWML.ModHelper.Menus
         {
             _console = console;
             Manifest = manifest;
-            Config = config;
-            DefaultConfig = defaultConfig;
             Mod = mod;
+            _config = config;
+            _defaultConfig = defaultConfig;
             Storage = new ModStorage(console, manifest);
         }
 
@@ -90,9 +90,9 @@ namespace OWML.ModHelper.Menus
         protected virtual void AddInputs()
         {
             var index = 2;
-            AddConfigInput(EnabledTitle, Config.Enabled, index++);
-            AddConfigInput(RequiresVRTitle, Config.RequireVR, index++);
-            foreach (var setting in Config.Settings)
+            AddConfigInput(EnabledTitle, _config.Enabled, index++);
+            AddConfigInput(RequiresVRTitle, _config.RequireVR, index++);
+            foreach (var setting in _config.Settings)
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
@@ -102,9 +102,9 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void UpdateUIValues()
         {
-            GetToggleInput(EnabledTitle).Value = Config.Enabled;
-            GetToggleInput(RequiresVRTitle).Value = Config.RequireVR;
-            foreach (var setting in Config.Settings)
+            GetToggleInput(EnabledTitle).Value = _config.Enabled;
+            GetToggleInput(RequiresVRTitle).Value = _config.RequireVR;
+            foreach (var setting in _config.Settings)
             {
                 SetInputValue(setting.Key, setting.Value);
             }
@@ -209,24 +209,24 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnSave()
         {
-            Config.Enabled = (bool)GetInputValue(EnabledTitle);
-            Config.RequireVR = (bool)GetInputValue(RequiresVRTitle);
-            var keys = Config.Settings.Select(x => x.Key).ToList();
+            _config.Enabled = (bool)GetInputValue(EnabledTitle);
+            _config.RequireVR = (bool)GetInputValue(RequiresVRTitle);
+            var keys = _config.Settings.Select(x => x.Key).ToList();
             foreach (var key in keys)
             {
                 var value = GetInputValue(key);
-                Config.SetSettingsValue(key, value);
+                _config.SetSettingsValue(key, value);
             }
-            Storage.Save(Config, "config.json");
-            Mod?.Configure(Config);
+            Storage.Save(_config, "config.json");
+            Mod?.Configure(_config);
             Close();
         }
 
         protected virtual void OnReset()
         {
-            Config.Enabled = DefaultConfig.Enabled;
-            Config.RequireVR = DefaultConfig.RequireVR;
-            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
+            _config.Enabled = _defaultConfig.Enabled;
+            _config.RequireVR = _defaultConfig.RequireVR;
+            _config.Settings = new Dictionary<string, object>(_defaultConfig.Settings);
             UpdateUIValues();
         }
 
