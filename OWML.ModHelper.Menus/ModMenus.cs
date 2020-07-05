@@ -13,7 +13,8 @@ namespace OWML.ModHelper.Menus
         public IModConfigMenu OwmlMenu { get; }
         public IModInputMenu InputMenu { get; }
 
-        public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler, IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
+        public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler,
+            IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
         {
             MainMenu = new ModMainMenu(console);
             PauseMenu = new ModPauseMenu(console);
@@ -28,17 +29,22 @@ namespace OWML.ModHelper.Menus
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(SettingsManager) && ev == Common.Events.AfterStart && behaviour.name == "PauseMenuManagers")
+            if (behaviour.GetType() == typeof(SettingsManager) &&
+                ev == Common.Events.AfterStart &&
+                behaviour.name == "PauseMenuManagers")
             {
                 var settingsManager = (SettingsManager)behaviour;
                 PauseMenu.Initialize(settingsManager);
                 ModsMenu.Initialize(PauseMenu);
             }
-            else if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterStart)
+            else if (behaviour.GetType() == typeof(TitleScreenManager) &&
+                     ev == Common.Events.AfterStart)
             {
                 var titleScreenManager = (TitleScreenManager)behaviour;
                 MainMenu.Initialize(titleScreenManager);
-                var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
+                var inputMenu = titleScreenManager
+                    .GetComponent<ProfileMenuManager>()
+                    .GetValue<PopupInputMenu>("_createProfileConfirmPopup");
                 InputMenu.Initialize(inputMenu);
                 ModsMenu.Initialize(MainMenu);
             }
