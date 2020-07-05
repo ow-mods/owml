@@ -28,11 +28,12 @@ namespace OWML.ModHelper.Menus
         private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
-        public ModConfigMenu(IModConsole console, IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModBehaviour mod) : base(console)
+        public ModConfigMenu(IModConsole console, IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModBehaviour mod) 
+            : base(console)
         {
-            _console = console;
             Manifest = manifest;
             Mod = mod;
+            _console = console;
             _config = config;
             _defaultConfig = defaultConfig;
             Storage = new ModStorage(console, manifest);
