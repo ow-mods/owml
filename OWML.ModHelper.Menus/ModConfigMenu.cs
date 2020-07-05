@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -13,7 +14,9 @@ namespace OWML.ModHelper.Menus
         private const string EnabledTitle = "Enabled";
         private const string RequiresVRTitle = "Requires VR";
 
-        public IModData ModData { get; }
+        public IModManifest Manifest { get; }
+        public IModConfig Config { get; }
+        public IModConfig DefaultConfig { get; }
         public IModBehaviour Mod { get; }
 
         private readonly IModConsole _console;
@@ -25,12 +28,14 @@ namespace OWML.ModHelper.Menus
         private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
 
-        public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) : base(console)
+        public ModConfigMenu(IModConsole console, IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModBehaviour mod) : base(console)
         {
             _console = console;
-            ModData = modData;
+            Manifest = manifest;
+            Config = config;
+            DefaultConfig = defaultConfig;
             Mod = mod;
-            Storage = new ModStorage(console, modData.Manifest);
+            Storage = new ModStorage(console, manifest);
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
@@ -51,7 +56,7 @@ namespace OWML.ModHelper.Menus
             var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>();
             labelPanel.gameObject.SetActive(false);
 
-            Title = ModData.Manifest.Name;
+            Title = Manifest.Name;
 
             var saveButton = GetButton("UIElement-SaveAndExit");
             var resetButton = GetButton("UIElement-ResetToDefaultsButton");
@@ -85,9 +90,9 @@ namespace OWML.ModHelper.Menus
         protected virtual void AddInputs()
         {
             var index = 2;
-            AddConfigInput(EnabledTitle, ModData.Config.Enabled, index++);
-            AddConfigInput(RequiresVRTitle, ModData.Config.RequireVR, index++);
-            foreach (var setting in ModData.Config.Settings)
+            AddConfigInput(EnabledTitle, Config.Enabled, index++);
+            AddConfigInput(RequiresVRTitle, Config.RequireVR, index++);
+            foreach (var setting in Config.Settings)
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
@@ -97,9 +102,9 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void UpdateUIValues()
         {
-            GetToggleInput(EnabledTitle).Value = ModData.Config.Enabled;
-            GetToggleInput(RequiresVRTitle).Value = ModData.Config.RequireVR;
-            foreach (var setting in ModData.Config.Settings)
+            GetToggleInput(EnabledTitle).Value = Config.Enabled;
+            GetToggleInput(RequiresVRTitle).Value = Config.RequireVR;
+            foreach (var setting in Config.Settings)
             {
                 SetInputValue(setting.Key, setting.Value);
             }
@@ -204,23 +209,26 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnSave()
         {
-            ModData.Config.Enabled = (bool)GetInputValue(EnabledTitle);
-            ModData.Config.RequireVR = (bool)GetInputValue(RequiresVRTitle);
-            var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
+            Config.Enabled = (bool)GetInputValue(EnabledTitle);
+            Config.RequireVR = (bool)GetInputValue(RequiresVRTitle);
+            var keys = Config.Settings.Select(x => x.Key).ToList();
             foreach (var key in keys)
             {
                 var value = GetInputValue(key);
-                ModData.Config.SetSettingsValue(key, value);
+                Config.SetSettingsValue(key, value);
             }
-            Storage.Save(ModData.Config, "config.json");
-            Mod?.Configure(ModData.Config);
+            Storage.Save(Config, "config.json");
+            Mod?.Configure(Config);
             Close();
         }
 
         protected virtual void OnReset()
         {
-            ModData.ResetConfig();
+            Config.Enabled = DefaultConfig.Enabled;
+            Config.RequireVR = DefaultConfig.RequireVR;
+            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
             UpdateUIValues();
         }
+
     }
 }

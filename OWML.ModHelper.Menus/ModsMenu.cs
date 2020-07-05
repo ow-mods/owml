@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(_console, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(_console, modData.Manifest, modData.Config, modData.DefaultConfig, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
@@ -97,7 +97,7 @@ namespace OWML.ModHelper.Menus
             options.AddTab(modsTab);
             foreach (var modConfigMenu in _modConfigMenus)
             {
-                var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
+                var modButton = _modButtonTemplate.Copy(modConfigMenu.Manifest.Name);
                 modButton.Button.enabled = true;
                 InitConfigMenu(modConfigMenu, options);
                 modButton.OnClick += () => modConfigMenu.Open();
