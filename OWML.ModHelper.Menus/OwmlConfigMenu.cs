@@ -9,10 +9,13 @@ namespace OWML.ModHelper.Menus
         private const string BlockInputTitle = "Block combination input";
 
         private readonly IOwmlConfig _config;
+        private readonly IOwmlConfig _defaultConfig;
 
-        public OwmlConfigMenu(IModConsole console, IModManifest manifest, IOwmlConfig config) : base(console, manifest, null, null, null)
+        public OwmlConfigMenu(IModConsole console, IModManifest manifest, IOwmlConfig config, IOwmlConfig defaultConfig) :
+            base(console, manifest, null, null, null)
         {
             _config = config;
+            _defaultConfig = defaultConfig;
         }
 
         protected override void AddInputs()
@@ -43,9 +46,9 @@ namespace OWML.ModHelper.Menus
 
         protected override void OnReset()
         {
-            _config.GamePath = "C:/Program Files/Epic Games/OuterWilds";
-            _config.Verbose = false;
-            _config.BlockInput = false;
+            _config.GamePath = _defaultConfig.GamePath;
+            _config.Verbose = _defaultConfig.Verbose;
+            _config.BlockInput = _defaultConfig.BlockInput;
             UpdateUIValues();
         }
 

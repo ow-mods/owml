@@ -57,6 +57,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="app.manifest" />
+    <None Include="OWML.DefaultConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="OWML.Manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

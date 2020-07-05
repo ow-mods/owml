@@ -13,6 +13,7 @@ namespace OWML.ModLoader
     public class ModLoader
     {
         private static readonly string ConfigPath = $"{Application.dataPath}/Managed/{Constants.OwmlConfigFileName}";
+        private static readonly string DefaultConfigPath = $"{Application.dataPath}/Managed/{Constants.OwmlDefaultConfigFileName}";
         private static readonly string ManifestPath = $"{Application.dataPath}/Managed/{Constants.OwmlManifestFileName}";
 
         public static void LoadMods()
@@ -20,6 +21,7 @@ namespace OWML.ModLoader
             var owmlGo = new GameObject();
             owmlGo.AddComponent<OwmlBehaviour>();
             var owmlConfig = GetJsonObject<OwmlConfig>(ConfigPath);
+            var owmlDefaultConfig = GetJsonObject<OwmlConfig>(DefaultConfigPath);
             var owmlManifest = GetJsonObject<ModManifest>(ManifestPath);
             if (owmlConfig == null || owmlManifest == null)
             {
@@ -35,7 +37,7 @@ namespace OWML.ModLoader
             var harmonyHelper = new HarmonyHelper(logger, console);
             var events = new ModEvents(logger, console, harmonyHelper);
             var inputHandler = new ModInputHandler(logger, console, harmonyHelper, owmlConfig, events);
-            var menus = new ModMenus(console, events, inputHandler, owmlManifest, owmlConfig);
+            var menus = new ModMenus(console, events, inputHandler, owmlManifest, owmlConfig, owmlDefaultConfig);
             var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter);
             owo.LoadMods();
         }
