@@ -5,7 +5,5 @@
         IModManifest Manifest { get; }
         IModConfig Config { get; }
         IModConfig DefaultConfig { get; }
-
-        void ResetConfig();
     }
 }

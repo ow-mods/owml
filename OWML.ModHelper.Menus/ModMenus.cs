@@ -13,12 +13,12 @@ namespace OWML.ModHelper.Menus
         public IModConfigMenu OwmlMenu { get; }
         public IModInputMenu InputMenu { get; }
 
-        public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler, IModData owmlData, IOwmlConfig owmlConfig)
+        public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler, IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
         {
             MainMenu = new ModMainMenu(console);
             PauseMenu = new ModPauseMenu(console);
             ModsMenu = new ModsMenu(console, this, inputHandler);
-            OwmlMenu = new OwmlConfigMenu(console, owmlData, owmlConfig);
+            OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
             InputMenu = new ModInputMenu(console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);

@@ -44,7 +44,8 @@ namespace OWML.Patcher
                 "0Harmony.dll",
                 "NAudio-Unity.dll",
                 "OWML.ModHelper.Interaction.dll",
-                Constants.OwmlManifestFileName
+                Constants.OwmlManifestFileName,
+                Constants.OwmlDefaultConfigFileName
             };
             foreach (var filename in filesToCopy)
             {
