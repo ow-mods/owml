@@ -138,11 +138,11 @@ namespace OWML.ModHelper.Menus
                     return;
                 }
 
-                _console.WriteLine("Error: unrecognized complex setting: " + value);
+                Console.WriteLine("Error: unrecognized complex setting: " + value);
                 return;
             }
 
-            _console.WriteLine("Error: unrecognized setting type: " + value.GetType());
+            Console.WriteLine("Error: unrecognized setting type: " + value.GetType());
         }
 
         private void AddToggleInput(string key, int index)
@@ -188,7 +188,7 @@ namespace OWML.ModHelper.Menus
             comboInput.Element.name = key;
             comboInput.Show();
         }
-        
+
         private void AddNumberInput(string key, int index)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);

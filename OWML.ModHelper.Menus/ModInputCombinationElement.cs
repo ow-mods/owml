@@ -30,14 +30,8 @@ namespace OWML.ModHelper.Menus
 
         private static IModInputCombinationElementMenu _popupMenu;
 
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") : base(toggle, menu)
+        private void SetupButtons()
         {
-            _inputHandler = inputHandler;
-            _combination = combination;
-            _layoutObject = toggle.transform.GetChild(1).GetChild(0).GetChild(1).gameObject;
-            var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
-            var scale = toggle.transform.localScale;
-
             var commandObject = new GameObject();
             var commandComponent = commandObject.AddComponent<ModCommandListener>();
             commandComponent.Initialize(InputLibrary.interact);
@@ -57,6 +51,20 @@ namespace OWML.ModHelper.Menus
             commandComponent.OnNewlyReleased += OnDeleteButton;
             NoButton.Title = "Delete";
             NoButton.OnClick += OnDeleteClick;
+        }
+
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu,
+            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") :
+            base(toggle, menu)
+        {
+            _inputHandler = inputHandler;
+            _combination = combination;
+            _layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>().transform.Find("LabelBlock").
+                GetComponentInChildren<HorizontalLayoutGroup>().gameObject;
+            var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
+            var scale = toggle.transform.localScale;
+
+            SetupButtons();
 
             Initialize(menu);
             layoutGroup.childControlWidth = false;
@@ -93,8 +101,8 @@ namespace OWML.ModHelper.Menus
         private void AddKeySign(string key)
         {
             Layout.AddPictureAt(
-               _inputHandler.Textures.KeyTexture(key)
-                , Layout.ChildCount - 1, ScaleDown);
+               _inputHandler.Textures.KeyTexture(key),
+               Layout.ChildCount - 1, ScaleDown);
         }
 
         private void OnEditButton()
@@ -102,7 +110,7 @@ namespace OWML.ModHelper.Menus
             if (Toggle.GetValue<bool>("_amISelected"))
             {
                 OnEditClick();
-            }    
+            }
         }
 
         private void OnEditClick()
@@ -111,8 +119,8 @@ namespace OWML.ModHelper.Menus
 
             _popupMenu.OnConfirm += OnPopupMenuConfirm;
             _popupMenu.OnCancel += OnPopupMenuCancel;
-            _popupMenu.Open(_combination, (Menu is IModInputCombinationMenu) ? (Menu as IModInputCombinationMenu).Title : "",
-                Menu as IModInputCombinationMenu, this);
+            var name = (Menu is IModInputCombinationMenu) ? (Menu as IModInputCombinationMenu).Title : "";
+            _popupMenu.Open(_combination, name, Menu as IModInputCombinationMenu, this);
         }
 
         private void OnPopupMenuCancel()

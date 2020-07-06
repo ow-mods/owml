@@ -6,6 +6,7 @@ using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
+using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
@@ -69,15 +70,18 @@ namespace OWML.ModHelper.Menus
 
             var inputObject = menuTransform.GetComponentInChildren<InputField>(true).gameObject;//InputField
             GameObject.Destroy(inputObject.GetComponent<InputField>());
-            for (int i = 3; i >= 1; i--)
+            foreach (Transform child in inputObject.transform)
             {
-                GameObject.Destroy(inputObject.transform.GetChild(i).gameObject);
+                if (child.name != "BorderImage")
+                {
+                    GameObject.Destroy(child.gameObject);
+                }
             }
 
             var resetButtonObject = CreateResetButton(buttonsTransform);
             var inputSelectable = inputObject.AddComponent<Selectable>();
             _inputMenu = originalMenu.gameObject.AddComponent<ModInputCombinationPopup>();
-            _inputMenu.Initialize(originalMenu, inputSelectable, resetButtonObject.GetComponent<SubmitAction>(), 
+            _inputMenu.Initialize(originalMenu, inputSelectable, resetButtonObject.GetComponent<SubmitAction>(),
                 resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), CreateLayoutManager(inputObject, resetButtonObject), _inputHandler);
             GameObject.Destroy(originalMenu);
             GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
@@ -118,7 +122,6 @@ namespace OWML.ModHelper.Menus
         private bool OnPopupValidate()
         {
             var currentCombination = _inputMenu.Combination;
-            _console.WriteLine($"Validating combination {currentCombination}");
             var collisions = _inputHandler.GetCollisions(currentCombination);
             if (collisions.Count > 0 && collisions[0] != _comboName)
             {
@@ -132,17 +135,15 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            foreach (var element in _combinationMenu.CombinationElements)
+            var elements = _combinationMenu.CombinationElements
+                .Where(element => element.Title == currentCombination && element != _element);
+            foreach (var element in elements)
             {
-                _console.WriteLine($"Checking against current {element.Title}");
-                if (element.Title == currentCombination && element != _element)
-                {
-                    _twoButtonPopup.EnableMenu(true);
-                    _twoButtonPopup.SetUpPopup($"This combination already exist in this group", InputLibrary.confirm2, null,
-                        new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-                    _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
-                    return false;
-                }
+                _twoButtonPopup.EnableMenu(true);
+                _twoButtonPopup.SetUpPopup($"This combination already exist in this group", InputLibrary.confirm2, null,
+                    new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
+                _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
+                return false;
             }
             return true;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
@@ -30,18 +31,7 @@ namespace OWML.ModHelper.Menus
                         CombinationElements[i].DestroySelf();
                     }
                 }
-                for (int i = 0; i < CombinationElements.Count; i++)
-                {
-                    if (CombinationElements[i].Title != "")
-                    {
-                        result += CombinationElements[i].Title;
-                        if (i < CombinationElements.Count - 1)
-                        {
-                            result += "/";
-                        }
-                    }
-                }
-                return result;
+                return string.Join("/", CombinationElements.Select(x => x.Title).ToArray());
             }
             set
             {
@@ -110,10 +100,51 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
-            for (int i = 0; i < layoutGroup.transform.childCount; i++)
+            foreach (Transform child in layoutGroup.transform)
             {
-                layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
+                child.gameObject.SetActive(false);
             }
+        }
+
+        private void RemoveFromNavigation(int index)
+        {
+            var upIndex = (index - 1 + _selectables.Count) % _selectables.Count;
+            var downIndex = (index + 1) % _selectables.Count;
+            var navigation = _selectables[upIndex].navigation;
+            navigation.selectOnDown = _selectables[downIndex];
+            _selectables[upIndex].navigation = navigation;
+            navigation = _selectables[downIndex].navigation;
+            navigation.selectOnUp = _selectables[upIndex];
+            _selectables[downIndex].navigation = navigation;
+            if (downIndex == 0)
+            {
+                _selectables[upIndex].Select();
+            }
+            else
+            {
+                _selectables[downIndex].Select();
+            }
+            _selectables.RemoveAt(index);
+        }
+
+        private void AddToNavigation(int index)
+        {
+            var current = _selectables[index];
+            var next = _selectables[(index + 1) % _selectables.Count];
+            var previous = _selectables[(_selectables.Count - 2 + _selectables.Count) % _selectables.Count];
+
+            var navigation = next.navigation;
+            navigation.selectOnUp = current;
+            next.navigation = navigation;
+
+            navigation = previous.navigation;
+            navigation.selectOnDown = current;
+            previous.navigation = navigation;
+
+            navigation = current.navigation;
+            navigation.selectOnDown = next;
+            navigation.selectOnUp = previous;
+            current.navigation = navigation;
         }
 
         public void RemoveCombinationElement(IModInputCombinationElement element)
@@ -126,23 +157,7 @@ namespace OWML.ModHelper.Menus
                 {
                     continue;
                 }
-                var upIndex = (i - 1 + _selectables.Count) % _selectables.Count;
-                var downIndex = (i + 1) % _selectables.Count;
-                var navigation = _selectables[upIndex].navigation;
-                navigation.selectOnDown = _selectables[downIndex];
-                _selectables[upIndex].navigation = navigation;
-                navigation = _selectables[downIndex].navigation;
-                navigation.selectOnUp = _selectables[upIndex];
-                _selectables[downIndex].navigation = navigation;
-                if (downIndex == 0)
-                {
-                    _selectables[upIndex].Select();
-                }
-                else
-                {
-                    _selectables[downIndex].Select();
-                }
-                _selectables.RemoveAt(i);
+                RemoveFromNavigation(i);
                 break;
             }
         }
@@ -157,7 +172,7 @@ namespace OWML.ModHelper.Menus
             var element = _combinationElementTemplate.Copy(combination);
             var transform = element.Toggle.transform;
             var scale = transform.localScale;
-            transform.parent = layoutGroup.transform;
+            transform.parent = LayoutGroup.transform;
             element.Index = index;
             element.Initialize(this);
             CombinationElements.Add(element);
@@ -180,26 +195,8 @@ namespace OWML.ModHelper.Menus
         private void OnAdd()
         {
             AddCombinationElement("");
-            var last = _selectables[_selectables.Count - 1];
-            if (_selectables.Count > 1)
-            {
-                var first = _selectables[0];
-                var prelast = _selectables[_selectables.Count - 2];
-
-                var navigation = first.navigation;
-                navigation.selectOnUp = last;
-                first.navigation = navigation;
-
-                navigation = prelast.navigation;
-                navigation.selectOnDown = last;
-                prelast.navigation = navigation;
-
-                navigation = last.navigation;
-                navigation.selectOnDown = first;
-                navigation.selectOnUp = prelast;
-                last.navigation = navigation;
-            }
-            Locator.GetMenuInputModule().SelectOnNextUpdate(last);
+            AddToNavigation(_selectables.Count - 1);
+            Locator.GetMenuInputModule().SelectOnNextUpdate(_selectables[_selectables.Count - 1]);
         }
     }
 }

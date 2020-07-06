@@ -27,16 +27,16 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(_console, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(Console, modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
         {
-            _console.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
+            Console.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                _console.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
+                Console.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
                 return null;
             }
             return modConfigMenu;
@@ -90,7 +90,7 @@ namespace OWML.ModHelper.Menus
             options.AddTab(modsTab);
             var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
             var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-            var modInputCombinationMenu = new ModInputCombinationMenu(_console);
+            var modInputCombinationMenu = new ModInputCombinationMenu(Console);
             var modInputCombinationElementTemplate = new ModInputCombinationElement(toggleTemplate.Copy().Toggle, modInputCombinationMenu, _menus.InputCombinationMenu, _inputHandler);
             modInputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
             foreach (var modConfigMenu in _modConfigMenus)

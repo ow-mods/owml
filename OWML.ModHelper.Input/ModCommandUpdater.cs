@@ -19,10 +19,7 @@ namespace OWML.ModHelper.Input
 
         private void Update()
         {
-            if (_command != null)
-            {
-                _command.UpdateInputCommand();
-            }
+            _command?.UpdateInputCommand();
         }
     }
 }

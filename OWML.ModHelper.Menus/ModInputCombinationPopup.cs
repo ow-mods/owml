@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
@@ -15,23 +16,8 @@ namespace OWML.ModHelper.Menus
     {
         public ILayoutManager Layout { get; private set; }
         public event Action OnPopupReset;
-        public string Combination
-        {
-            get
-            {
-                string result = "";
-                for (var j = 0; j < _combination.Count; j++)
-                {
-                    result += ModInputLibrary.KeyCodeToString(_combination[j]);
-                    if (j < _combination.Count - 1)
-                    {
-                        result += "+";
-                    }
-                }
-                return result;
-            }
-        }
         public ReadOnlyCollection<KeyCode> KeyCodes => _combination.AsReadOnly();
+        public string Combination => string.Join("+", _combination.Select(ModInputLibrary.KeyCodeToString).ToArray());
 
         private SubmitAction _resetAction;
         private ButtonWithHotkeyImageElement _resetButton;
@@ -43,19 +29,16 @@ namespace OWML.ModHelper.Menus
         protected override void InitializeMenu()
         {
             base.InitializeMenu();
-            if (this._resetAction != null)
+            if (_resetAction != null)
             {
-                this._resetAction.OnSubmitAction += this.InvokeReset;
+                _resetAction.OnSubmitAction += this.InvokeReset;
             }
         }
 
         public override void Deactivate()
         {
-            var component = this._resetAction.GetComponent<UIStyleApplier>();
-            if (component != null)
-            {
-                component.ChangeState(UIElementState.NORMAL, true);
-            }
+            var component = _resetAction.GetComponent<UIStyleApplier>();
+            component?.ChangeState(UIElementState.NORMAL, true);
             base.Deactivate();
         }
 
@@ -72,7 +55,7 @@ namespace OWML.ModHelper.Menus
                 InvokeReset();
                 OnPopupReset.Invoke();
             }
-            List<KeyCode> currentlyPressedKeys = new List<KeyCode>();
+            var currentlyPressedKeys = new List<KeyCode>();
             for (var code = ModInputLibrary.MinUsefulKey; code < ModInputLibrary.MaxUsefulKey; code++)
             {
                 if (!(Enum.IsDefined(typeof(KeyCode), (KeyCode)code) && UnityEngine.Input.GetKey((KeyCode)code)))
@@ -103,7 +86,7 @@ namespace OWML.ModHelper.Menus
                     return;
                 }
             }
-            if (currentlyPressedKeys.Count < 8 && (currentlyPressedKeys.Count > _combination.Count 
+            if (currentlyPressedKeys.Count < 8 && (currentlyPressedKeys.Count > _combination.Count
                 || (currentlyPressedKeys.Count > 1 && _wasReleased)))
             {
                 _wasReleased = false;
@@ -146,12 +129,9 @@ namespace OWML.ModHelper.Menus
             if (value)
             {
                 _combination.Clear();
-                foreach (var key in currentCombination.Split('+'))
+                foreach (var key in currentCombination.Split('+').Where(key => key != ""))
                 {
-                    if (key != "")
-                    {
-                        _combination.Add(ModInputLibrary.StringToKeyCode(key));
-                    }
+                    _combination.Add(ModInputLibrary.StringToKeyCode(key));
                 }
             }
             if (value && !_initialized)
@@ -167,7 +147,9 @@ namespace OWML.ModHelper.Menus
             this.EnableMenu(value, "");
         }
 
-        public void SetUpPopup(string message, SingleAxisCommand okCommand, SingleAxisCommand cancelCommand, SingleAxisCommand resetCommand, ScreenPrompt okPrompt, ScreenPrompt cancelPrompt, ScreenPrompt resetPrompt, bool closeMenuOnOk = true, bool setCancelButtonActive = true)
+        public void SetUpPopup(string message, SingleAxisCommand okCommand, SingleAxisCommand cancelCommand,
+            SingleAxisCommand resetCommand, ScreenPrompt okPrompt, ScreenPrompt cancelPrompt,
+            ScreenPrompt resetPrompt, bool closeMenuOnOk = true, bool setCancelButtonActive = true)
         {
             SetUpPopupCommandsShort(resetCommand, resetPrompt);
             base.SetUpPopup(message, okCommand, cancelCommand, okPrompt, cancelPrompt, closeMenuOnOk, setCancelButtonActive);
@@ -179,13 +161,15 @@ namespace OWML.ModHelper.Menus
             this._resetButton.SetPrompt(resetPrompt, InputMode.Menu);
         }
 
-        public virtual void SetUpPopupCommands(SingleAxisCommand okCommand, SingleAxisCommand cancelCommand, SingleAxisCommand resetCommand, ScreenPrompt okPrompt, ScreenPrompt cancelPrompt, ScreenPrompt resetPrompt)
+        public virtual void SetUpPopupCommands(SingleAxisCommand okCommand, SingleAxisCommand cancelCommand,
+            SingleAxisCommand resetCommand, ScreenPrompt okPrompt, ScreenPrompt cancelPrompt, ScreenPrompt resetPrompt)
         {
             SetUpPopupCommandsShort(resetCommand, resetPrompt);
             base.SetUpPopupCommands(okCommand, cancelCommand, okPrompt, cancelPrompt);
         }
 
-        public void Initialize(PopupMenu oldPopupMenu, Selectable defaultSelectable, SubmitAction resetAction, ButtonWithHotkeyImageElement resetButton, ILayoutManager layout, IModInputHandler inputHandler)
+        public void Initialize(PopupMenu oldPopupMenu, Selectable defaultSelectable, SubmitAction resetAction,
+            ButtonWithHotkeyImageElement resetButton, ILayoutManager layout, IModInputHandler inputHandler)
         {
             _inputHandler = inputHandler;
             var fields = typeof(PopupMenu).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
