@@ -6,6 +6,7 @@ using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
+using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
@@ -17,6 +18,10 @@ namespace OWML.ModHelper.Menus
         private ModInputCombinationPopup _inputMenu;
         private PopupMenu _twoButtonPopup;
         private IModInputHandler _inputHandler;
+        private SingleAxisCommand _cancelCommand;
+        private string _comboName;
+        private IModInputCombinationMenu _combinationMenu;
+        private IModInputCombinationElement _element;
 
         public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler) : base(console)
         {
@@ -65,23 +70,29 @@ namespace OWML.ModHelper.Menus
 
             var inputObject = menuTransform.GetComponentInChildren<InputField>(true).gameObject;//InputField
             GameObject.Destroy(inputObject.GetComponent<InputField>());
-            for (int i = 3; i >= 1; i--)
+            foreach (Transform child in inputObject.transform)
             {
-                GameObject.Destroy(inputObject.transform.GetChild(i).gameObject);
+                if (child.name != "BorderImage")
+                {
+                    GameObject.Destroy(child.gameObject);
+                }
             }
 
             var resetButtonObject = CreateResetButton(buttonsTransform);
             var inputSelectable = inputObject.AddComponent<Selectable>();
             _inputMenu = originalMenu.gameObject.AddComponent<ModInputCombinationPopup>();
-            _inputMenu.Initialize(originalMenu, inputSelectable, resetButtonObject.GetComponent<SubmitAction>(), 
-                resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), CreateLayoutManager(inputObject, resetButtonObject));
+            _inputMenu.Initialize(originalMenu, inputSelectable, resetButtonObject.GetComponent<SubmitAction>(),
+                resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), CreateLayoutManager(inputObject, resetButtonObject), _inputHandler);
             GameObject.Destroy(originalMenu);
             GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open(string value)
+        public void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
         {
+            _combinationMenu = combinationMenu;
+            _element = element;
+            _comboName = comboName;
             _inputMenu.OnPopupConfirm += OnPopupConfirm;
             _inputMenu.OnPopupCancel += OnPopupCancel;
             _inputMenu.OnPopupValidate += OnPopupValidate;
@@ -90,29 +101,48 @@ namespace OWML.ModHelper.Menus
 
             _inputMenu.EnableMenu(true, value);
 
-            var okCommand = new SingleAxisCommand();
-            var okBinding = new InputBinding(JoystickButton.Start);
-            okCommand.SetInputs(okBinding, null);
-            var okPrompt = new ScreenPrompt("OK");
-            var cancelCommand = new SingleAxisCommand();
-            var cancelBinding = new InputBinding(JoystickButton.Select);
-            cancelCommand.SetInputs(cancelBinding, null);
-            var cancelPrompt = new ScreenPrompt("Cancel");
+            var okCommand = InputLibrary.confirm;
+            var okPrompt = new ScreenPrompt(okCommand, "OK");
+            if (_cancelCommand == null)
+            {
+                _cancelCommand = new SingleAxisCommand();
+                var cancelBindingGmpd = new InputBinding(JoystickButton.Select);
+                var cancelBindingKbrd = new InputBinding(KeyCode.Escape);
+                _cancelCommand.SetInputs(cancelBindingGmpd, cancelBindingKbrd);
+                var commandObject = new GameObject();
+                var commandComponent = commandObject.AddComponent<ModCommandUpdater>();
+                commandComponent.Initialize(_cancelCommand);
+            }
+            var cancelPrompt = new ScreenPrompt(_cancelCommand, "Cancel");
             var resetPrompt = new ScreenPrompt("Reset");
-            _inputMenu.SetUpPopup(message, okCommand, cancelCommand, null, okPrompt, cancelPrompt, resetPrompt);
+            _inputMenu.SetUpPopup(message, okCommand, _cancelCommand, null, okPrompt, cancelPrompt, resetPrompt);
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
         private bool OnPopupValidate()
         {
-            _console.WriteLine($"Validating combination {_inputMenu.Combination}");
-            var collisions = _inputHandler.GetCollisions(_inputMenu.Combination); //probably should do it directly with string instead
-            if (collisions.Count > 0)
+            var currentCombination = _inputMenu.Combination;
+            var collisions = _inputHandler.GetCollisions(currentCombination);
+            if (collisions.Count > 0 && collisions[0] != _comboName)
             {
                 _twoButtonPopup.EnableMenu(true);
                 _twoButtonPopup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
                 _twoButtonPopup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
+                return false;
+            }
+            if (_combinationMenu == null)
+            {
+                return true;
+            }
+            var elements = _combinationMenu.CombinationElements
+                .Where(element => element.Title == currentCombination && element != _element);
+            foreach (var element in elements)
+            {
+                _twoButtonPopup.EnableMenu(true);
+                _twoButtonPopup.SetUpPopup($"This combination already exist in this group", InputLibrary.confirm2, null,
+                    new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
+                _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
                 return false;
             }
             return true;

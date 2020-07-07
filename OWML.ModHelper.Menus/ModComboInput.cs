@@ -15,6 +15,7 @@ namespace OWML.ModHelper.Menus
 
         private string _value;
         private HorizontalLayoutGroup _layoutGroup;
+        private readonly IModInputHandler _inputHandler;
         public override string Value
         {
             get => _value;
@@ -25,7 +26,8 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu, IModInputHandler inputHandler) : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu,
+            IModInputHandler inputHandler) : base(element, menu)
         {
             _inputHandler = inputHandler;
             ToggleElement = element;
@@ -35,12 +37,13 @@ namespace OWML.ModHelper.Menus
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
             _layoutGroup = (HorizontalLayoutGroup)Button.Layout.LayoutGroup;
-            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(((RectTransform)Button.Button.transform.parent).sizeDelta.x * 2, ((RectTransform)Button.Button.transform.parent).sizeDelta.y);
+            var myParent = (RectTransform)Button.Button.transform.parent;
+            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(myParent.sizeDelta.x * 2, myParent.sizeDelta.y);
 
-            var parentLayoutGroup = Button.Button.transform.parent.parent.GetComponent<HorizontalLayoutGroup>();
+            var parentLayoutGroup = myParent.parent.GetComponent<HorizontalLayoutGroup>();
             parentLayoutGroup.childControlWidth = true;
             parentLayoutGroup.childForceExpandWidth = true;
-            Button.Button.transform.parent.GetComponent<LayoutElement>().preferredWidth = 100;
+            myParent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
         private void UpdateLayout(string currentCombination)
@@ -52,7 +55,7 @@ namespace OWML.ModHelper.Menus
                 var keyStrings = individualCombos[i].Split('+');
                 for (var j = 0; j < keyStrings.Length; j++)
                 {
-                    Button.Layout.AddPicture(ModInputLibrary.KeyTexture(key), ModInputLibrary.ScaleDown);
+                    Button.Layout.AddPicture(_inputHandler.Textures.KeyTexture(keyStrings[j]), ModInputLibrary.ScaleDown);
                     if (j < keyStrings.Length - 1)
                     {
                         Button.Layout.AddText("+");
@@ -68,6 +71,7 @@ namespace OWML.ModHelper.Menus
 
         protected void Open()
         {
+            InputMenu.Title = Menu is IModConfigMenu ? $"{(Menu as IModConfigMenu).Title}.{Title}" : Title;
             InputMenu.Combination = _value;
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;
@@ -99,6 +103,6 @@ namespace OWML.ModHelper.Menus
             copy.Title = title;
             return copy;
         }
-        
+
     }
 }

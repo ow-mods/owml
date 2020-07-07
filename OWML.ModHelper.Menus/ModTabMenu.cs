@@ -49,7 +49,7 @@ namespace OWML.ModHelper.Menus
             _text = tabButton.GetComponentInChildren<Text>();
             var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
             tabButton.SetValue("_tabbedMenu", menu);
-            var modMenu = new ModTabMenu(_console, _optionsMenu);
+            var modMenu = new ModTabMenu(Console, _optionsMenu);
             modMenu.Initialize(tabButton);
             return modMenu;
         }

@@ -23,13 +23,12 @@ namespace OWML.ModHelper.Menus
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
-        protected LayoutGroup layoutGroup;
-
-        protected readonly IModConsole _console;
+        protected LayoutGroup LayoutGroup;
+        protected readonly IModConsole Console;
 
         public ModMenu(IModConsole console)
         {
-            _console = console;
+            Console = console;
         }
 
         public virtual void Initialize(Menu menu)
@@ -42,7 +41,7 @@ namespace OWML.ModHelper.Menus
         public virtual void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
             Menu = menu;
-            this.layoutGroup = layoutGroup;
+            this.LayoutGroup = layoutGroup;
             Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
             LayoutButtons = new List<IModLayoutButton>();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
@@ -57,7 +56,7 @@ namespace OWML.ModHelper.Menus
             var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                _console.WriteLine("Warning: no button found with title or name: " + title);
+                Console.WriteLine("Warning: no button found with title or name: " + title);
             }
             return button;
         }
@@ -74,7 +73,7 @@ namespace OWML.ModHelper.Menus
             var original = Buttons?.FirstOrDefault();
             if (original == null)
             {
-                _console.WriteLine("Warning: no buttons to copy");
+                Console.WriteLine("Warning: no buttons to copy");
                 return null;
             }
 
@@ -95,7 +94,7 @@ namespace OWML.ModHelper.Menus
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
-            transform.parent = layoutGroup.transform;
+            transform.parent = LayoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
@@ -112,7 +111,7 @@ namespace OWML.ModHelper.Menus
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
-            transform.parent = layoutGroup.transform;
+            transform.parent = LayoutGroup.transform;
             button.Index = index;
             button.Initialize(this);
             LayoutButtons.Add(button);
@@ -209,7 +208,7 @@ namespace OWML.ModHelper.Menus
         {
             var transform = input.Element.transform;
             var scale = transform.localScale;
-            transform.parent = layoutGroup.transform;
+            transform.parent = LayoutGroup.transform;
             input.Index = index;
             input.Initialize(this);
             input.Element.transform.localScale = scale;
@@ -242,7 +241,7 @@ namespace OWML.ModHelper.Menus
             {
                 return numberInput.Value;
             }
-            _console.WriteLine("Error: no input found with name " + key);
+            Console.WriteLine("Error: no input found with name " + key);
             return null;
         }
 
@@ -283,7 +282,7 @@ namespace OWML.ModHelper.Menus
                 numberInput.Value = Convert.ToSingle(val);
                 return;
             }
-            _console.WriteLine("Error: no input found with name " + key);
+            Console.WriteLine("Error: no input found with name " + key);
         }
 
         protected void InvokeOnInit()
@@ -298,11 +297,8 @@ namespace OWML.ModHelper.Menus
             Menu.SetSelectOnActivate(firstSelectable);
         }
 
-        public void UpdateNavigation()
+        protected void UpdateNavigation(List<Selectable> selectables)
         {
-            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
-                .Select(x => x.GetComponent<Selectable>())
-                .Where(x => x != null).ToList();
             for (var i = 0; i < selectables.Count; i++)
             {
                 var upIndex = (i - 1 + selectables.Count) % selectables.Count;
@@ -312,6 +308,14 @@ namespace OWML.ModHelper.Menus
                 navigation.selectOnDown = selectables[downIndex];
                 selectables[i].navigation = navigation;
             }
+        }
+
+        public void UpdateNavigation()
+        {
+            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
+                .Select(x => x.GetComponent<Selectable>())
+                .Where(x => x != null).ToList();
+            UpdateNavigation(selectables);
         }
 
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
@@ -12,5 +11,6 @@ namespace OWML.Common.Menus
         List<IModInputCombinationElement> CombinationElements { get; }
         string Combination { get; set; }
         void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate);
+        void RemoveCombinationElement(IModInputCombinationElement element);
     }
 }

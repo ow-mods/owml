@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
@@ -16,7 +17,10 @@ namespace OWML.ModHelper.Menus
 
         public List<IModInputCombinationElement> CombinationElements { get; private set; }
 
-        public string Combination {
+        private List<Selectable> _selectables;
+
+        public string Combination
+        {
             get
             {
                 string result = "";
@@ -27,35 +31,32 @@ namespace OWML.ModHelper.Menus
                         CombinationElements[i].DestroySelf();
                     }
                 }
-                for (int i = 0; i < CombinationElements.Count; i++)
-                {
-                    if (CombinationElements[i].Title != "")
-                    {
-                        result += CombinationElements[i].Title;
-                        if (i < CombinationElements.Count - 1)
-                        {
-                            result += "/";
-                        }
-                    }
-                }
-                return result;
+                return string.Join("/", CombinationElements.Select(x => x.Title).ToArray());
             }
             set
             {
+                _selectables = new List<Selectable>();
                 CombinationElements.ForEach(element => element.Destroy());
                 CombinationElements.Clear();
                 foreach (var combination in value.Split('/'))
                 {
                     AddCombinationElement(combination);
                 }
+                SelectFirst();
+                UpdateNavigation(_selectables);
             }
         }
 
         private IModInputCombinationElement _combinationElementTemplate;
 
-        public ModInputCombinationMenu(IModConsole console):base(console)
+        public ModInputCombinationMenu(IModConsole console) : base(console)
         {
             CombinationElements = new List<IModInputCombinationElement>();
+        }
+
+        public override void Open()
+        {
+            base.Open();
         }
 
         public void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate)
@@ -91,7 +92,7 @@ namespace OWML.ModHelper.Menus
             var buttonWithHotkey = addButton.Button.gameObject.GetComponentInChildren<ButtonWithHotkeyImageElement>(true);
             if (buttonWithHotkey != null)
             {
-                buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults,"Add Alternative"));
+                buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults, "Add Alternative"));
             }
 
             Title = "Edit Combination";
@@ -99,9 +100,65 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
-            for (int i = 0; i < layoutGroup.transform.childCount; i++)
+            foreach (Transform child in layoutGroup.transform)
             {
-                layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
+                child.gameObject.SetActive(false);
+            }
+        }
+
+        private void RemoveFromNavigation(int index)
+        {
+            var upIndex = (index - 1 + _selectables.Count) % _selectables.Count;
+            var downIndex = (index + 1) % _selectables.Count;
+            var navigation = _selectables[upIndex].navigation;
+            navigation.selectOnDown = _selectables[downIndex];
+            _selectables[upIndex].navigation = navigation;
+            navigation = _selectables[downIndex].navigation;
+            navigation.selectOnUp = _selectables[upIndex];
+            _selectables[downIndex].navigation = navigation;
+            if (downIndex == 0)
+            {
+                _selectables[upIndex].Select();
+            }
+            else
+            {
+                _selectables[downIndex].Select();
+            }
+            _selectables.RemoveAt(index);
+        }
+
+        private void AddToNavigation(int index)
+        {
+            var current = _selectables[index];
+            var next = _selectables[(index + 1) % _selectables.Count];
+            var previous = _selectables[(_selectables.Count - 2 + _selectables.Count) % _selectables.Count];
+
+            var navigation = next.navigation;
+            navigation.selectOnUp = current;
+            next.navigation = navigation;
+
+            navigation = previous.navigation;
+            navigation.selectOnDown = current;
+            previous.navigation = navigation;
+
+            navigation = current.navigation;
+            navigation.selectOnDown = next;
+            navigation.selectOnUp = previous;
+            current.navigation = navigation;
+        }
+
+        public void RemoveCombinationElement(IModInputCombinationElement element)
+        {
+            CombinationElements.Remove(element);
+            var selectable = element.Toggle.GetComponent<Selectable>();
+            for (int i = 0; i < _selectables.Count; i++)
+            {
+                if (selectable != _selectables[i])
+                {
+                    continue;
+                }
+                RemoveFromNavigation(i);
+                break;
             }
         }
 
@@ -115,11 +172,12 @@ namespace OWML.ModHelper.Menus
             var element = _combinationElementTemplate.Copy(combination);
             var transform = element.Toggle.transform;
             var scale = transform.localScale;
-            transform.parent = layoutGroup.transform;
+            transform.parent = LayoutGroup.transform;
             element.Index = index;
             element.Initialize(this);
             CombinationElements.Add(element);
             element.Toggle.transform.localScale = scale;
+            _selectables.Add(element.Toggle.GetComponent<Selectable>());
         }
 
         private void OnSave()
@@ -137,6 +195,8 @@ namespace OWML.ModHelper.Menus
         private void OnAdd()
         {
             AddCombinationElement("");
+            AddToNavigation(_selectables.Count - 1);
+            Locator.GetMenuInputModule().SelectOnNextUpdate(_selectables[_selectables.Count - 1]);
         }
     }
 }
