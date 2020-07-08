@@ -36,9 +36,8 @@ namespace OWML.ModHelper.Menus
             Button.OnClick += Open;
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
-            var layoutGroup = (HorizontalLayoutGroup)Button.Layout.LayoutGroup;
             var myParent = (RectTransform)Button.Button.transform.parent;
-            var rectTransform = (RectTransform)layoutGroup.transform;
+            var rectTransform = (RectTransform)Button.Layout.LayoutGroup.transform;
             rectTransform.sizeDelta = new Vector2(myParent.sizeDelta.x * 2, myParent.sizeDelta.y);
 
             var parentLayoutGroup = myParent.parent.GetComponent<HorizontalLayoutGroup>();
