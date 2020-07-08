@@ -26,6 +26,7 @@ namespace OWML.ModHelper.Menus
             Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics) : 
             this(layout, styleManager, styleApplier, scale, constantGraphics)
         {
+            Array.ForEach(backGraphics, element => _backingGraphics.Add(element));
             styleApplier.SetBackround(backGraphics);
         }
 
