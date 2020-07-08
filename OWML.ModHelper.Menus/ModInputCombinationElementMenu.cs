@@ -146,8 +146,8 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            var overlap = _combinationMenu.CombinationElements.
-                Any(element => element.Title == currentCombination && element != _element);
+            var overlap = _combinationMenu.CombinationElements
+                .Any(element => element.Title == currentCombination && element != _element);
             if (overlap)
             {
                 _twoButtonPopup.EnableMenu(true);
