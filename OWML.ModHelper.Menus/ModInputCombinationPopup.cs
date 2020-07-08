@@ -17,7 +17,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnPopupReset;
         public ReadOnlyCollection<KeyCode> KeyCodes => _combination.AsReadOnly();
         public string Combination => string.Join("+", _combination.Select(ModInputLibrary.KeyCodeToString).ToArray());
-        
+
         private SubmitAction _resetAction;
         private ButtonWithHotkeyImageElement _resetButton;
         private List<KeyCode> _combination = new List<KeyCode>();
