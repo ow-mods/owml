@@ -9,7 +9,8 @@ namespace OWML.Common.Menus
         event Action OnCancel;
         event Action<string> OnConfirm;
         List<IModInputCombinationElement> CombinationElements { get; }
-        string Combination { get; set; }
+        string GenerateCombination();
+        void FillMenu(string combination);
         void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate);
         void RemoveCombinationElement(IModInputCombinationElement element);
     }

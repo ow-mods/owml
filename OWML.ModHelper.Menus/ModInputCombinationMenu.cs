@@ -19,32 +19,26 @@ namespace OWML.ModHelper.Menus
 
         private List<Selectable> _selectables;
 
-        public string Combination
+        public string GenerateCombination()
         {
-            get
+            for (int i = 0; i < CombinationElements.Count; i++)
             {
-                string result = "";
-                for (int i = 0; i < CombinationElements.Count; i++)
+                while (i < CombinationElements.Count && CombinationElements[i].Title == "")
                 {
-                    while (i < CombinationElements.Count && CombinationElements[i].Title == "")
-                    {
-                        CombinationElements[i].DestroySelf();
-                    }
+                    CombinationElements[i].DestroySelf();
                 }
-                return string.Join("/", CombinationElements.Select(x => x.Title).ToArray());
             }
-            set
-            {
-                _selectables = new List<Selectable>();
-                CombinationElements.ForEach(element => element.Destroy());
-                CombinationElements.Clear();
-                foreach (var combination in value.Split('/'))
-                {
-                    AddCombinationElement(combination);
-                }
-                SelectFirst();
-                UpdateNavigation(_selectables);
-            }
+            return string.Join("/", CombinationElements.Select(x => x.Title).ToArray());
+        }
+
+        public void FillMenu(string combination)
+        {
+            _selectables = new List<Selectable>();
+            CombinationElements.ForEach(element => element.Destroy());
+            CombinationElements.Clear();
+            combination.Split('/').ToList().ForEach(part => AddCombinationElement(part));
+            SelectFirst();
+            UpdateNavigation(_selectables);
         }
 
         private IModInputCombinationElement _combinationElementTemplate;
@@ -63,13 +57,13 @@ namespace OWML.ModHelper.Menus
         {
             _combinationElementTemplate = combinationElementTemplate;
 
-            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>().Single(x => x.name == "RebindingModeBlocker");
+            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true).Single(x => x.name == "RebindingModeBlocker");
             blocker.gameObject.SetActive(false);
 
-            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>();
+            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>(true);
             labelPanel.gameObject.SetActive(false);
 
-            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
+            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true).Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
 
             var saveButton = GetButton("UIElement-SaveAndExit");
@@ -172,7 +166,7 @@ namespace OWML.ModHelper.Menus
             var element = _combinationElementTemplate.Copy(combination);
             var transform = element.Toggle.transform;
             var scale = transform.localScale;
-            transform.parent = LayoutGroup.transform;
+            transform.parent = Layout.transform;
             element.Index = index;
             element.Initialize(this);
             CombinationElements.Add(element);
@@ -182,7 +176,7 @@ namespace OWML.ModHelper.Menus
 
         private void OnSave()
         {
-            OnConfirm?.Invoke(Combination);
+            OnConfirm?.Invoke(GenerateCombination());
             Close();
         }
 

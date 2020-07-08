@@ -30,7 +30,7 @@ namespace OWML.ModHelper.Menus
             var scale = button.transform.localScale;
             Button = button;
             Button.onClick.AddListener(() => OnClick?.Invoke());
-            GameObject.Destroy(Button.GetComponentInChildren<Text>().gameObject);
+            GameObject.Destroy(Button.GetComponentInChildren<Text>(true).gameObject);
             var layoutObject = new GameObject("LayoutGroup", typeof(RectTransform));
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();

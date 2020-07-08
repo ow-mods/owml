@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Menus
             _tabMenus = new List<IModTabMenu>();
             foreach (var tabButton in tabButtons)
             {
-                var tabMenu = new ModTabMenu(Console, this);
+                var tabMenu = new ModTabMenu(OwmlConsole, this);
                 tabMenu.Initialize(tabButton);
                 _tabMenus.Add(tabMenu);
             }

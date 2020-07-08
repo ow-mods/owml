@@ -27,16 +27,16 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(Console, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
         {
-            Console.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
+            OwmlConsole.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                Console.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
+                OwmlConsole.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
                 return null;
             }
             return modConfigMenu;
@@ -85,12 +85,12 @@ namespace OWML.ModHelper.Menus
             var sliderTemplate = options.InputTab.SliderInputs[0];
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
-            modsTab.Menu.GetComponentsInChildren<Selectable>().ToList().ForEach(x => x.gameObject.SetActive(false));
+            modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
             var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
             var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-            var modInputCombinationMenu = new ModInputCombinationMenu(Console);
+            var modInputCombinationMenu = new ModInputCombinationMenu(OwmlConsole);
             var modInputCombinationElementTemplate = new ModInputCombinationElement(toggleTemplate.Copy().Toggle, modInputCombinationMenu, _menus.InputCombinationMenu, _inputHandler);
             modInputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
             foreach (var modConfigMenu in _modConfigMenus)

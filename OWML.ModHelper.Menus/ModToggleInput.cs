@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Menus
         public virtual IModToggleInput Copy()
         {
             var copy = GameObject.Instantiate(Toggle);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModToggleInput(copy, Menu);
         }
 

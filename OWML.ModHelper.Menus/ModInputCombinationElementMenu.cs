@@ -30,22 +30,22 @@ namespace OWML.ModHelper.Menus
 
         private GameObject CreateResetButton(Transform buttonsTransform)
         {
-            var resetButtonObject = GameObject.Instantiate(buttonsTransform.GetChild(0).gameObject);
+            var template = buttonsTransform.GetComponentInChildren<ButtonWithHotkeyImageElement>(true).gameObject;
+            var resetButtonObject = GameObject.Instantiate(template);
             resetButtonObject.name = "UIElement-ButtonReset";
             resetButtonObject.transform.SetParent(buttonsTransform);
             resetButtonObject.transform.SetSiblingIndex(1);
-            resetButtonObject.transform.localScale = buttonsTransform.GetChild(0).localScale;
+            resetButtonObject.transform.localScale = template.transform.localScale;
             return resetButtonObject;
         }
 
-        private LayoutManager CreateLayoutManager(GameObject inputObject, GameObject resetButtonObject)
+        private LayoutManager CreateLayoutManager(GameObject layoutObject, Transform scaleReference)
         {
-            var layoutObject = inputObject.transform.GetChild(0).gameObject;
             var layoutGroupNew = layoutObject.AddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childForceExpandWidth = false;
             layoutGroupNew.childControlWidth = false;
             return new LayoutManager(layoutGroupNew, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                layoutObject.AddComponent<ModUIStyleApplier>(), resetButtonObject.transform.localScale);
+                layoutObject.AddComponent<ModUIStyleApplier>(), scaleReference.localScale);
         }
 
         public void Initialize(PopupInputMenu menu)
@@ -56,17 +56,18 @@ namespace OWML.ModHelper.Menus
             }
             var parentCopy = GameObject.Instantiate(menu.transform.parent.gameObject);
             parentCopy.AddComponent<DontDestroyOnLoad>();
-            _twoButtonPopup = parentCopy.transform.GetChild(0).GetComponent<PopupMenu>();
+            _twoButtonPopup = parentCopy.transform.Find("TwoButton-Popup").GetComponent<PopupMenu>();
             var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);//InputField-Popup
             var menuTransform = originalMenu.GetComponentInChildren<VerticalLayoutGroup>(true).transform;//InputFieldElements
             var buttonsTransform = menuTransform.GetComponentInChildren<HorizontalLayoutGroup>(true).transform;
 
-            foreach (var button in buttonsTransform.GetComponentsInChildren<Button>())
-            {
-                button.navigation = new Navigation() { mode = Navigation.Mode.None };
-            }
-            Array.ForEach(menuTransform.GetComponentsInChildren<TabbedNavigation>(), navigation => GameObject.Destroy(navigation));
+            var buttons = buttonsTransform.GetComponentsInChildren<Button>(true).ToList();
+            buttons.ForEach(button => button.navigation = new Navigation() { mode = Navigation.Mode.None });
+            var tabbedNavigations = menuTransform.GetComponentsInChildren<TabbedNavigation>(true).ToList();
+            tabbedNavigations.ForEach(navigation => GameObject.Destroy(navigation));
 
+            var resetButtonObject = CreateResetButton(buttonsTransform);
+            LayoutManager layout = null;
 
             var inputObject = menuTransform.GetComponentInChildren<InputField>(true).gameObject;//InputField
             GameObject.Destroy(inputObject.GetComponent<InputField>());
@@ -76,13 +77,22 @@ namespace OWML.ModHelper.Menus
                 {
                     GameObject.Destroy(child.gameObject);
                 }
+                else
+                {
+                    layout = CreateLayoutManager(child.gameObject, resetButtonObject.transform);
+                }
             }
 
-            var resetButtonObject = CreateResetButton(buttonsTransform);
+            if (layout == null)
+            {
+                OwmlConsole.WriteLine("Error: failed to create layout, shutting down setup of Combination setting menu");
+                return;
+            }
+
             var inputSelectable = inputObject.AddComponent<Selectable>();
             _inputMenu = originalMenu.gameObject.AddComponent<ModInputCombinationPopup>();
             _inputMenu.Initialize(originalMenu, inputSelectable, resetButtonObject.GetComponent<SubmitAction>(),
-                resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), CreateLayoutManager(inputObject, resetButtonObject), _inputHandler);
+                resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>(), layout, _inputHandler);
             GameObject.Destroy(originalMenu);
             GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
