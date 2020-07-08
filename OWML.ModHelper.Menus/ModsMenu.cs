@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(_console, modData.Manifest, modData.Config, modData.DefaultConfig, mod));
+            _modConfigMenus.Add(new ModConfigMenu(_console, modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
