@@ -1,7 +1,6 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
-using OWML.ModHelper.Events;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,13 +17,13 @@ namespace OWML.ModHelper.Menus
         public event Action OnPopupReset;
         public ReadOnlyCollection<KeyCode> KeyCodes => _combination.AsReadOnly();
         public string Combination => string.Join("+", _combination.Select(ModInputLibrary.KeyCodeToString).ToArray());
-
+        
         private SubmitAction _resetAction;
         private ButtonWithHotkeyImageElement _resetButton;
         private List<KeyCode> _combination = new List<KeyCode>();
         private IModInputHandler _inputHandler;
         private bool _wasReleased = true;
-        protected SingleAxisCommand _resetCommand;
+        private SingleAxisCommand _resetCommand;
 
         protected override void InitializeMenu()
         {
@@ -46,7 +45,7 @@ namespace OWML.ModHelper.Menus
         {
             _combination.Clear();
             UpdateContents();
-            OnPopupReset();
+            OnPopupReset?.Invoke();
         }
 
         private bool CheckCommands(KeyCode key)
@@ -104,7 +103,7 @@ namespace OWML.ModHelper.Menus
         public override void Activate()
         {
             base.Activate();
-            Locator.GetMenuInputModule().SelectOnNextUpdate(null); //unselect buttons
+            Locator.GetMenuInputModule().SelectOnNextUpdate(null); // unselect buttons
         }
 
         private void AddKeySign(KeyCode key)
@@ -144,7 +143,7 @@ namespace OWML.ModHelper.Menus
 
         public override void EnableMenu(bool value)
         {
-            this.EnableMenu(value, "");
+            EnableMenu(value, "");
         }
 
         public void SetUpPopup(string message, SingleAxisCommand okCommand, SingleAxisCommand cancelCommand,
@@ -157,8 +156,8 @@ namespace OWML.ModHelper.Menus
 
         private void SetUpPopupCommandsShort(SingleAxisCommand resetCommand, ScreenPrompt resetPrompt)
         {
-            this._resetCommand = resetCommand;
-            this._resetButton.SetPrompt(resetPrompt, InputMode.Menu);
+            _resetCommand = resetCommand;
+            _resetButton.SetPrompt(resetPrompt);
         }
 
         public virtual void SetUpPopupCommands(SingleAxisCommand okCommand, SingleAxisCommand cancelCommand,
@@ -179,7 +178,7 @@ namespace OWML.ModHelper.Menus
             _resetButton = resetButton;
             _initialized = false;
             Layout = layout;
-            this.InitializeMenu();
+            InitializeMenu();
         }
     }
 }

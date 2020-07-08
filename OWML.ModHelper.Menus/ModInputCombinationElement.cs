@@ -12,9 +12,9 @@ namespace OWML.ModHelper.Menus
     {
         private const float ScaleDown = 0.75f;
 
-        public ILayoutManager Layout { get; private set; }
+        public ILayoutManager Layout { get; }
 
-        override public string Title
+        public override string Title
         {
             get => _combination;
             set
@@ -25,7 +25,6 @@ namespace OWML.ModHelper.Menus
         }
 
         private string _combination;
-        private readonly GameObject _layoutObject;
         private readonly IModInputHandler _inputHandler;
 
         private static IModInputCombinationElementMenu _popupMenu;
@@ -36,9 +35,9 @@ namespace OWML.ModHelper.Menus
         {
             _inputHandler = inputHandler;
             _combination = combination;
-            _layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>(true).transform.Find("LabelBlock").
-                GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
-            var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
+            var layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>(true).transform.Find("LabelBlock")
+                                     .GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
+            var layoutGroup = layoutObject.GetComponent<HorizontalLayoutGroup>();
             var scale = toggle.transform.localScale;
 
             SetupButtons();
@@ -49,9 +48,9 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
             layoutGroup.spacing = 0f;
-            var constantGraphics = _layoutObject.GetComponentsInChildren<Graphic>(true);
-            _layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
-            Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
+            var constantGraphics = layoutObject.GetComponentsInChildren<Graphic>(true);
+            layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
+            Layout = new LayoutManager(layoutGroup, GameObject.FindObjectOfType<UIStyleManager>(),
                 ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject), scale, constantGraphics);
             UpdateContents();
             _popupMenu = popupMenu;
@@ -67,9 +66,9 @@ namespace OWML.ModHelper.Menus
             YesButton.OnClick += OnEditClick;
 
             var deleteCommand = new SingleAxisCommand();
-            var deleteBindingGmpd = new InputBinding(JoystickButton.FaceUp);
-            var deleteBindingKbrd = new InputBinding(KeyCode.Delete);
-            deleteCommand.SetInputs(deleteBindingGmpd, deleteBindingKbrd);
+            var deleteBindingGamepad = new InputBinding(JoystickButton.FaceUp);
+            var deleteBindingKeyboard = new InputBinding(KeyCode.Delete);
+            deleteCommand.SetInputs(deleteBindingGamepad, deleteBindingKeyboard);
             commandObject = new GameObject();
             var updater = commandObject.AddComponent<ModCommandUpdater>();
             updater.Initialize(deleteCommand);
@@ -115,11 +114,11 @@ namespace OWML.ModHelper.Menus
 
         private void OnEditClick()
         {
-            EventSystem.current.SetSelectedGameObject(this.Toggle.gameObject);//make sure it gets selected after popup closes
+            EventSystem.current.SetSelectedGameObject(Toggle.gameObject); // make sure it gets selected after popup closes
 
             _popupMenu.OnConfirm += OnPopupMenuConfirm;
             _popupMenu.OnCancel += OnPopupMenuCancel;
-            var name = (Menu is IModInputCombinationMenu) ? (Menu as IModInputCombinationMenu).Title : "";
+            var name = Menu is IModInputCombinationMenu menu ? menu.Title : "";
             _popupMenu.Open(_combination, name, Menu as IModInputCombinationMenu, this);
         }
 
