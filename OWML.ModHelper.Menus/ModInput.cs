@@ -35,7 +35,7 @@ namespace OWML.ModHelper.Menus
         {
             Element = element;
             Menu = menu;
-            _text = element.GetComponentInChildren<Text>();
+            _text = element.GetComponentInChildren<Text>(true);
         }
 
         protected void InvokeOnChange(T value)

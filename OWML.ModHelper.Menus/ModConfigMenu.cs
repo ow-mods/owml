@@ -36,13 +36,13 @@ namespace OWML.ModHelper.Menus
             _numberInputTemplate = numberInputTemplate;
             _comboInputTemplate = comboInputTemplate;
 
-            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
+            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true).Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
 
-            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>().Single(x => x.name == "RebindingModeBlocker");
+            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true).Single(x => x.name == "RebindingModeBlocker");
             blocker.gameObject.SetActive(false);
 
-            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>();
+            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>(true);
             labelPanel.gameObject.SetActive(false);
 
             Title = ModData.Manifest.Name;
@@ -62,9 +62,9 @@ namespace OWML.ModHelper.Menus
             GetButton("UIElement-CancelOutOfRebinding").Hide();
             GetButton("UIElement-KeyRebinder").Hide();
 
-            for (int i = 0; i < layoutGroup.transform.childCount; i++)
+            foreach(Transform child in layoutGroup.transform)
             {
-                layoutGroup.transform.GetChild(i).gameObject.SetActive(false);
+                child.gameObject.SetActive(false);
             }
 
             AddInputs();
@@ -138,11 +138,11 @@ namespace OWML.ModHelper.Menus
                     return;
                 }
 
-                Console.WriteLine("Error: unrecognized complex setting: " + value);
+                OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
                 return;
             }
 
-            Console.WriteLine("Error: unrecognized setting type: " + value.GetType());
+            OwmlConsole.WriteLine("Error: unrecognized setting type: " + value.GetType());
         }
 
         private void AddToggleInput(string key, int index)

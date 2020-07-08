@@ -46,15 +46,35 @@ namespace OWML.ModHelper.Menus
         {
             _combination.Clear();
             UpdateContents();
+            OnPopupReset();
+        }
+
+        private bool CheckCommands(KeyCode key)
+        {
+            if (_cancelCommand != null && _cancelCommand.IsNewlyPressed())
+            {
+                InvokeCancel();
+                return true;
+            }
+            if (_okCommand != null && _okCommand.IsNewlyPressed())
+            {
+                InvokeOk();
+                return true;
+            }
+            if (_resetCommand != null && _resetCommand.IsNewlyPressed())
+            {
+                InvokeReset();
+                return true;
+            }
+            if (key == KeyCode.Mouse0 || key == KeyCode.Mouse1)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected override void Update()
         {
-            if (_resetCommand != null && OWInput.IsNewlyPressed(_resetCommand, InputMode.All))
-            {
-                InvokeReset();
-                OnPopupReset.Invoke();
-            }
             var currentlyPressedKeys = new List<KeyCode>();
             for (var code = ModInputLibrary.MinUsefulKey; code < ModInputLibrary.MaxUsefulKey; code++)
             {
@@ -64,27 +84,9 @@ namespace OWML.ModHelper.Menus
                 }
                 currentlyPressedKeys.Add((KeyCode)code);
             }
-            if (currentlyPressedKeys.Count == 1)
+            if (currentlyPressedKeys.Count == 1 && CheckCommands(currentlyPressedKeys[0]))
             {
-                if (_cancelCommand != null && _cancelCommand.IsNewlyPressed())
-                {
-                    InvokeCancel();
-                    return;
-                }
-                if (_okCommand != null && _okCommand.IsNewlyPressed())
-                {
-                    InvokeOk();
-                    return;
-                }
-                if (_resetCommand != null && _resetCommand.IsNewlyPressed())
-                {
-                    InvokeReset();
-                    return;
-                }
-                if (currentlyPressedKeys[0] == KeyCode.Mouse0 || currentlyPressedKeys[0] == KeyCode.Mouse1)
-                {
-                    return;
-                }
+                return;
             }
             if (currentlyPressedKeys.Count < 8 && (currentlyPressedKeys.Count > _combination.Count
                 || (currentlyPressedKeys.Count > 1 && _wasReleased)))
@@ -129,10 +131,8 @@ namespace OWML.ModHelper.Menus
             if (value)
             {
                 _combination.Clear();
-                foreach (var key in currentCombination.Split('+').Where(key => key != ""))
-                {
-                    _combination.Add(ModInputLibrary.StringToKeyCode(key));
-                }
+                var keys = currentCombination.Split('+').Where(key => key != "").ToList();
+                keys.ForEach(key => _combination.Add(ModInputLibrary.StringToKeyCode(key)));
             }
             if (value && !_initialized)
             {
@@ -172,8 +172,8 @@ namespace OWML.ModHelper.Menus
             ButtonWithHotkeyImageElement resetButton, ILayoutManager layout, IModInputHandler inputHandler)
         {
             _inputHandler = inputHandler;
-            var fields = typeof(PopupMenu).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            Array.ForEach<FieldInfo>(fields, field => field.SetValue(this, field.GetValue(oldPopupMenu)));
+            var fields = typeof(PopupMenu).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
+            fields.ForEach(field => field.SetValue(this, field.GetValue(oldPopupMenu)));
             _selectOnActivate = defaultSelectable;
             _resetAction = resetAction;
             _resetButton = resetButton;

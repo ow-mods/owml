@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
         public override void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
             base.Initialize(menu, layoutGroup);
-            _title = Menu.GetComponentInChildren<Text>();
+            _title = Menu.GetComponentInChildren<Text>(true);
             var localizedText = _title.GetComponent<LocalizedText>();
             if (localizedText != null)
             {
@@ -55,7 +55,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                Console.WriteLine("Warning: can't open menu, it doesn't exist.");
+                OwmlConsole.WriteLine("Warning: can't open menu, it doesn't exist.");
                 return;
             }
             SelectFirst();
@@ -66,7 +66,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                Console.WriteLine("Warning: can't close menu, it doesn't exist.");
+                OwmlConsole.WriteLine("Warning: can't close menu, it doesn't exist.");
                 return;
             }
             Menu.EnableMenu(false);
@@ -88,11 +88,11 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                Console.WriteLine("Warning: can't copy menu, it doesn't exist.");
+                OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
                 return null;
             }
             var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
-            var modMenu = new ModPopupMenu(Console);
+            var modMenu = new ModPopupMenu(OwmlConsole);
             modMenu.Initialize(menu);
             return modMenu;
         }
@@ -109,7 +109,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                Console.WriteLine("Warning: can't copy menu, it doesn't exist.");
+                OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
                 return null;
             }
             var menu = Copy();

@@ -30,6 +30,33 @@ namespace OWML.ModHelper.Menus
 
         private static IModInputCombinationElementMenu _popupMenu;
 
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu,
+            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") :
+            base(toggle, menu)
+        {
+            _inputHandler = inputHandler;
+            _combination = combination;
+            _layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>(true).transform.Find("LabelBlock").
+                GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
+            var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
+            var scale = toggle.transform.localScale;
+
+            SetupButtons();
+
+            Initialize(menu);
+            layoutGroup.childControlWidth = false;
+            layoutGroup.childControlHeight = false;
+            layoutGroup.childForceExpandHeight = false;
+            layoutGroup.childForceExpandWidth = false;
+            layoutGroup.spacing = 0f;
+            var constantGraphics = _layoutObject.GetComponentsInChildren<Graphic>(true);
+            _layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
+            Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
+                ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject), scale, constantGraphics);
+            UpdateContents();
+            _popupMenu = popupMenu;
+        }
+
         private void SetupButtons()
         {
             var commandObject = new GameObject();
@@ -51,33 +78,6 @@ namespace OWML.ModHelper.Menus
             commandComponent.OnNewlyReleased += OnDeleteButton;
             NoButton.Title = "Delete";
             NoButton.OnClick += OnDeleteClick;
-        }
-
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu,
-            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") :
-            base(toggle, menu)
-        {
-            _inputHandler = inputHandler;
-            _combination = combination;
-            _layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>().transform.Find("LabelBlock").
-                GetComponentInChildren<HorizontalLayoutGroup>().gameObject;
-            var layoutGroup = _layoutObject.GetComponent<HorizontalLayoutGroup>();
-            var scale = toggle.transform.localScale;
-
-            SetupButtons();
-
-            Initialize(menu);
-            layoutGroup.childControlWidth = false;
-            layoutGroup.childControlHeight = false;
-            layoutGroup.childForceExpandHeight = false;
-            layoutGroup.childForceExpandWidth = false;
-            layoutGroup.spacing = 0f;
-            var constantGraphics = _layoutObject.GetComponentsInChildren<Graphic>(true);
-            _layoutObject.transform.GetChild(1).gameObject.SetActive(false);
-            Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject), scale, constantGraphics);
-            UpdateContents();
-            _popupMenu = popupMenu;
         }
 
         private void UpdateContents()
@@ -172,7 +172,7 @@ namespace OWML.ModHelper.Menus
         public new IModInputCombinationElement Copy(string combination)
         {
             var copy = GameObject.Instantiate(Toggle);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, combination);
         }
     }

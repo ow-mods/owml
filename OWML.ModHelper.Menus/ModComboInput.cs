@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
         protected void Open()
         {
             InputMenu.Title = Menu is IModConfigMenu ? $"{(Menu as IModConfigMenu).Title}.{Title}" : Title;
-            InputMenu.Combination = _value;
+            InputMenu.FillMenu(_value);
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;
             InputMenu.Open();
@@ -93,7 +93,7 @@ namespace OWML.ModHelper.Menus
         public IModComboInput Copy()
         {
             var copy = GameObject.Instantiate(ToggleElement);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModComboInput(copy, Menu, InputMenu, _inputHandler);
         }
 
