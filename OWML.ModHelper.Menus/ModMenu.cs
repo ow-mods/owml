@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             _layoutGroup = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IModTitleButton>().Cast<IBaseButton>().ToList();
+            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IBaseButton>().ToList();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
@@ -68,7 +68,7 @@ namespace OWML.ModHelper.Menus
         [Obsolete("Use button.Duplicate instead")]
         public Button AddButton(string title, int index)
         {
-            var original = Buttons?.FirstOrDefault();
+            var original = Buttons?.OfType<IModTitleButton>().FirstOrDefault();
             if (original == null)
             {
                 _console.WriteLine("Warning: no buttons to copy");
