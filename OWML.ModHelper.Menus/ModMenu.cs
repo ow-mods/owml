@@ -15,8 +15,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
-        public List<IModTitleButton> Buttons { get; private set; }
-        public List<IModLayoutButton> LayoutButtons { get; private set; }
+        public List<IBaseButton> Buttons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
@@ -42,8 +41,7 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             _layoutGroup = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IModTitleButton>().ToList();
-            LayoutButtons = new List<IModLayoutButton>();
+            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IModTitleButton>().Cast<IBaseButton>().ToList();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
@@ -53,7 +51,7 @@ namespace OWML.ModHelper.Menus
 
         public IModTitleButton GetButton(string title)
         {
-            var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
+            var button = Buttons.OfType<IModTitleButton>().FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
                 _console.WriteLine("Warning: no button found with title or name: " + title);
@@ -85,12 +83,12 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
-        public IModTitleButton AddButton(IModTitleButton button)
+        public IBaseButton AddButton(IBaseButton button)
         {
             return AddButton(button, button.Index);
         }
 
-        public virtual IModTitleButton AddButton(IModTitleButton button, int index)
+        public virtual IBaseButton AddButton(IBaseButton button, int index)
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
@@ -98,23 +96,6 @@ namespace OWML.ModHelper.Menus
             button.Index = index;
             button.Initialize(this);
             Buttons.Add(button);
-            button.Button.transform.localScale = scale;
-            return button;
-        }
-
-        public IModLayoutButton AddLayoutButton(IModLayoutButton button)
-        {
-            return AddLayoutButton(button, button.Index);
-        }
-
-        public virtual IModLayoutButton AddLayoutButton(IModLayoutButton button, int index)
-        {
-            var transform = button.Button.transform;
-            var scale = transform.localScale;
-            transform.parent = _layoutGroup.transform;
-            button.Index = index;
-            button.Initialize(this);
-            LayoutButtons.Add(button);
             button.Button.transform.localScale = scale;
             return button;
         }

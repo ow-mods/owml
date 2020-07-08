@@ -52,11 +52,6 @@ namespace OWML.ModHelper.Menus
             };
         }
 
-        public override void AddToMenu(IBaseButton button)
-        {
-            Menu.AddLayoutButton((IModLayoutButton)button);
-        }
-
         public void UpdateState()
         {
             var currentTexts = Button.gameObject.GetComponentsInChildren<Text>();

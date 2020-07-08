@@ -27,9 +27,9 @@ namespace OWML.ModHelper.Menus
             var pauseMenu = pauseMenuManager.GetValue<Menu>("_pauseMenu");
             base.Initialize(pauseMenu);
 
-            ResumeButton = Buttons.Single(x => x.Button.name == "Button-Unpause");
-            OptionsButton = Buttons.Single(x => x.Button.name == "Button-Options");
-            QuitButton = Buttons.Single(x => x.Button.name == "Button-ExitToMainMenu");
+            ResumeButton = Buttons.OfType<IModTitleButton>().Single(x => x.Button.name == "Button-Unpause");
+            OptionsButton = Buttons.OfType<IModTitleButton>().Single(x => x.Button.name == "Button-Options");
+            QuitButton = Buttons.OfType<IModTitleButton>().Single(x => x.Button.name == "Button-ExitToMainMenu");
 
             InvokeOnInit();
         }

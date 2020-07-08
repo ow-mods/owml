@@ -23,7 +23,6 @@ namespace OWML.ModHelper.Menus
         }
 
         public abstract IBaseButton Copy();
-        public abstract void AddToMenu(IBaseButton button);
 
         protected BaseButton(Button button, IModMenu menu)
         {
@@ -47,7 +46,7 @@ namespace OWML.ModHelper.Menus
         public IBaseButton Duplicate()
         {
             var copy = Copy();
-            AddToMenu(copy);
+            Menu.AddButton(copy);
             return copy;
         }
 

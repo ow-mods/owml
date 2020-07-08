@@ -32,11 +32,6 @@ namespace OWML.ModHelper.Menus
             };
         }
 
-        public override void AddToMenu(IBaseButton button)
-        {
-            Menu.AddButton((IModTitleButton)button);
-        }
-
         public IModTitleButton Copy(string title)
         {
             var copy = (IModTitleButton)Copy();
