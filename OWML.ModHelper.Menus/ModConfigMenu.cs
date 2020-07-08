@@ -10,14 +10,14 @@ namespace OWML.ModHelper.Menus
         private const string EnabledTitle = "Enabled";
         private const string RequiresVRTitle = "Requires VR";
 
-        public IModBehaviour Mod { get; }
         public IModData ModData { get; }
+        public IModBehaviour Mod { get; }
         
         public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) 
             : base(console, modData.Manifest)
         {
-            Mod = mod;
             ModData = modData;
+            Mod = mod;
         }
         
         protected override void AddInputs()
@@ -65,6 +65,5 @@ namespace OWML.ModHelper.Menus
             ModData.Config.Settings = new Dictionary<string, object>(ModData.DefaultConfig.Settings);
             UpdateUIValues();
         }
-
     }
 }

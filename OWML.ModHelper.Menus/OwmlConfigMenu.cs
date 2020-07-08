@@ -6,7 +6,7 @@ namespace OWML.ModHelper.Menus
     {
         private const string GamePathTitle = "Game path";
         private const string VerboseModeTitle = "Verbose mode";
-        private const string BlockInputTitle = "Block combination input";
+        private const string BlockInputTitle = "Mod button combinations block game input";
 
         private readonly IOwmlConfig _config;
         private readonly IOwmlConfig _defaultConfig;
