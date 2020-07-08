@@ -4,12 +4,12 @@
     {
         IModTabbedMenu OptionsMenu { get; }
 
-        IModButton ResumeExpeditionButton { get; }
-        IModButton NewExpeditionButton { get; }
-        IModButton OptionsButton { get; }
-        IModButton ViewCreditsButton { get; }
-        IModButton SwitchProfileButton { get; }
-        IModButton QuitButton { get; }
+        IModTitleButton ResumeExpeditionButton { get; }
+        IModTitleButton NewExpeditionButton { get; }
+        IModTitleButton OptionsButton { get; }
+        IModTitleButton ViewCreditsButton { get; }
+        IModTitleButton SwitchProfileButton { get; }
+        IModTitleButton QuitButton { get; }
 
         void Initialize(TitleScreenManager titleScreenManager);
     }

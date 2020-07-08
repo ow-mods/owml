@@ -9,9 +9,9 @@ namespace OWML.ModHelper.Menus
     {
         public IModTabbedMenu OptionsMenu { get; }
 
-        public IModButton ResumeButton { get; private set; }
-        public IModButton OptionsButton { get; private set; }
-        public IModButton QuitButton { get; private set; }
+        public IModTitleButton ResumeButton { get; private set; }
+        public IModTitleButton OptionsButton { get; private set; }
+        public IModTitleButton QuitButton { get; private set; }
 
         public ModPauseMenu(IModConsole console) : base(console)
         {

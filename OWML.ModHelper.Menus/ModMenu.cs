@@ -15,7 +15,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
-        public List<IModButton> Buttons { get; private set; }
+        public List<IModTitleButton> Buttons { get; private set; }
         public List<IModLayoutButton> LayoutButtons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
@@ -42,7 +42,7 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             _layoutGroup = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
+            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IModTitleButton>().ToList();
             LayoutButtons = new List<IModLayoutButton>();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
@@ -51,7 +51,7 @@ namespace OWML.ModHelper.Menus
             ComboInputs = new List<IModComboInput>();
         }
 
-        public IModButton GetButton(string title)
+        public IModTitleButton GetButton(string title)
         {
             var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
@@ -77,7 +77,7 @@ namespace OWML.ModHelper.Menus
                 return null;
             }
 
-            var copy = original.Copy();
+            var copy = (IModTitleButton)original.Copy();
             copy.Title = title;
 
             AddButton(copy, index);
@@ -85,12 +85,12 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
-        public IModButton AddButton(IModButton button)
+        public IModTitleButton AddButton(IModTitleButton button)
         {
             return AddButton(button, button.Index);
         }
 
-        public virtual IModButton AddButton(IModButton button, int index)
+        public virtual IModTitleButton AddButton(IModTitleButton button, int index)
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;

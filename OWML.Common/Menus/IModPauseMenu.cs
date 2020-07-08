@@ -4,9 +4,9 @@
     {
         IModTabbedMenu OptionsMenu { get; }
 
-        IModButton ResumeButton { get; }
-        IModButton OptionsButton { get; }
-        IModButton QuitButton { get; }
+        IModTitleButton ResumeButton { get; }
+        IModTitleButton OptionsButton { get; }
+        IModTitleButton QuitButton { get; }
 
         void Initialize(SettingsManager settingsManager);
     }
