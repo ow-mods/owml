@@ -14,8 +14,8 @@ namespace OWML.ModHelper.Menus
         protected readonly TwoButtonToggleElement ToggleElement;
 
         private string _value;
-        private HorizontalLayoutGroup _layoutGroup;
         private readonly IModInputHandler _inputHandler;
+
         public override string Value
         {
             get => _value;
@@ -26,8 +26,8 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu,
-            IModInputHandler inputHandler) : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu, IModInputHandler inputHandler)
+            : base(element, menu)
         {
             _inputHandler = inputHandler;
             ToggleElement = element;
@@ -36,9 +36,9 @@ namespace OWML.ModHelper.Menus
             Button.OnClick += Open;
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
-            _layoutGroup = (HorizontalLayoutGroup)Button.Layout.LayoutGroup;
             var myParent = (RectTransform)Button.Button.transform.parent;
-            ((RectTransform)_layoutGroup.transform).sizeDelta = new Vector2(myParent.sizeDelta.x * 2, myParent.sizeDelta.y);
+            var rectTransform = (RectTransform)Button.Layout.LayoutGroup.transform;
+            rectTransform.sizeDelta = new Vector2(myParent.sizeDelta.x * 2, myParent.sizeDelta.y);
 
             var parentLayoutGroup = myParent.parent.GetComponent<HorizontalLayoutGroup>();
             parentLayoutGroup.childControlWidth = true;
@@ -71,7 +71,7 @@ namespace OWML.ModHelper.Menus
 
         protected void Open()
         {
-            InputMenu.Title = Menu is IModConfigMenu ? $"{(Menu as IModConfigMenu).Title}.{Title}" : Title;
+            InputMenu.Title = Menu is IModConfigMenu menu ? $"{menu.Title}.{Title}" : Title;
             InputMenu.FillMenu(_value);
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;

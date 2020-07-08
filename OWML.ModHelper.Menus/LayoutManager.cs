@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using OWML.Common.Menus;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
@@ -12,7 +11,7 @@ namespace OWML.ModHelper.Menus
         private const int FontSize = 36;
         private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
 
-        public LayoutGroup LayoutGroup { get; private set; }
+        public LayoutGroup LayoutGroup { get; }
         public int ChildCount => LayoutGroup.transform.childCount;
 
         private readonly UIStyleManager _styleManager;
@@ -22,15 +21,16 @@ namespace OWML.ModHelper.Menus
         private readonly HashSet<Graphic> _backingGraphics = new HashSet<Graphic>();
 
         public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
-            Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics) : 
-            this(layout, styleManager, styleApplier, scale, constantGraphics)
+            Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics)
+            : this(layout, styleManager, styleApplier, scale, constantGraphics)
         {
             backGraphics.ToList().ForEach(element => _backingGraphics.Add(element));
-            styleApplier.SetBackround(backGraphics);
+            styleApplier.SetBackground(backGraphics);
         }
 
         public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
-            Vector3 scale, Graphic[] constantGraphics) : this(layout, styleManager, styleApplier, scale)
+            Vector3 scale, Graphic[] constantGraphics)
+            : this(layout, styleManager, styleApplier, scale)
         {
             constantGraphics.ToList().ForEach(element => _constantGraphics.Add(element));
         }
@@ -43,7 +43,8 @@ namespace OWML.ModHelper.Menus
             LayoutGroup = layout;
             LayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             LayoutGroup.transform.localPosition = Vector3.zero;
-            ((RectTransform)LayoutGroup.transform).pivot = NormalPivot;
+            var rectTransform = (RectTransform)LayoutGroup.transform;
+            rectTransform.pivot = NormalPivot;
             UpdateState();
         }
 
@@ -51,27 +52,22 @@ namespace OWML.ModHelper.Menus
         {
             var currentTexts = LayoutGroup.gameObject.GetComponentsInChildren<Text>();
             _styleApplier.SetTexts(currentTexts);
-            Graphic[] currentGraphics = currentTexts;
-            Array.Resize<Graphic>(ref currentGraphics, currentTexts.Length + _constantGraphics.Count);
-            int i = currentTexts.Length;
-            foreach (var graphic in _constantGraphics)
-            {
-                currentGraphics[i] = graphic;
-                i++;
-            }
-            _styleApplier.SetForeground(currentGraphics);
+            var currentGraphics = currentTexts.Select(x => (Graphic)x).ToList();
+            currentGraphics.AddRange(_constantGraphics);
+            _styleApplier.SetForeground(currentGraphics.ToArray());
         }
 
         public void Clear()
         {
-            foreach(Transform child in LayoutGroup.transform)
+            foreach (Transform child in LayoutGroup.transform)
             {
-                if (!(_constantGraphics.Contains(child.gameObject.GetComponent<Graphic>())
-                    || _backingGraphics.Contains(child.gameObject.GetComponent<Graphic>())))
+                if (_constantGraphics.Contains(child.gameObject.GetComponent<Graphic>())
+                    || _backingGraphics.Contains(child.gameObject.GetComponent<Graphic>()))
                 {
-                    child.gameObject.SetActive(false);
-                    GameObject.Destroy(child.gameObject);
+                    continue;
                 }
+                child.gameObject.SetActive(false);
+                GameObject.Destroy(child.gameObject);
             }
         }
 
@@ -92,8 +88,9 @@ namespace OWML.ModHelper.Menus
             textObject.AddComponent<LayoutElement>();
             textObject.transform.SetParent(LayoutGroup.transform);
             textObject.transform.localScale = _scale;
-            ((RectTransform)textObject.transform).sizeDelta = new Vector2(textComponent.preferredWidth, ((RectTransform)textObject.transform).sizeDelta.y);
-            ((RectTransform)textObject.transform).pivot = NormalPivot;
+            var rectTransform = (RectTransform)textObject.transform;
+            rectTransform.sizeDelta = new Vector2(textComponent.preferredWidth, ((RectTransform)textObject.transform).sizeDelta.y);
+            rectTransform.pivot = NormalPivot;
             textObject.transform.SetSiblingIndex(index);
         }
 
@@ -105,16 +102,16 @@ namespace OWML.ModHelper.Menus
         public void AddPictureAt(Texture2D texture, int index, float scale = 1.0f)
         {
             var keySprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), NormalPivot);
-            var keyObject = new GameObject("ButtonImage", new Type[] { typeof(RectTransform) });
+            var keyObject = new GameObject("ButtonImage", typeof(RectTransform));
             var keyPicture = keyObject.AddComponent<Image>();
             keyPicture.sprite = keySprite;
             keyPicture.SetLayoutDirty();
             keyObject.AddComponent<LayoutElement>();
             keyObject.transform.SetParent(LayoutGroup.transform);
             keyObject.transform.localScale = _scale;
-            ((RectTransform)keyObject.transform).sizeDelta =
-                new Vector2(texture.width * scale, texture.height * scale);
-            ((RectTransform)keyObject.transform).pivot = NormalPivot;
+            var rectTransform = (RectTransform)keyObject.transform;
+            rectTransform.sizeDelta = new Vector2(texture.width * scale, texture.height * scale);
+            rectTransform.pivot = NormalPivot;
             keyObject.transform.SetSiblingIndex(index);
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +7,7 @@ namespace OWML.ModHelper.Menus
 {
     public class ModUIStyleApplier : UIStyleApplier
     {
-        public ModUIStyleApplier():base()
+        public ModUIStyleApplier()
         {
             ClearAllArrays();
         }
@@ -27,8 +27,8 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(UIStyleApplier oldStyleApplier)
         {
-            var fields = typeof(UIStyleApplier).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            Array.ForEach<FieldInfo>(fields, field => field.SetValue(this, field.GetValue(oldStyleApplier)));
+            var fields = typeof(UIStyleApplier).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
+            fields.ForEach(field => field.SetValue(this, field.GetValue(oldStyleApplier)));
         }
 
         public void ClearAllArrays()
@@ -50,19 +50,19 @@ namespace OWML.ModHelper.Menus
             _foregroundGraphics = foreground;
         }
 
-        public void SetBackround(Graphic[] background)
+        public void SetBackground(Graphic[] background)
         {
             _backgroundGraphics = background;
         }
 
-        public void SetOnOffGraphics(Graphic[] OnOffs)
+        public void SetOnOffGraphics(Graphic[] onOffs)
         {
-            _onOffGraphics = OnOffs;
+            _onOffGraphics = onOffs;
         }
 
-        public void SetOnOffExtended(OnOffGraphic[] OnOffs)
+        public void SetOnOffExtended(OnOffGraphic[] onOffs)
         {
-            _onOffGraphicList = OnOffs;
+            _onOffGraphicList = onOffs;
         }
 
         public void SetAsButton()

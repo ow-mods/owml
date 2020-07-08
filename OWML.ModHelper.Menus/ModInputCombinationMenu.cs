@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
@@ -15,13 +14,19 @@ namespace OWML.ModHelper.Menus
         public event Action<string> OnConfirm;
         public event Action OnCancel;
 
-        public List<IModInputCombinationElement> CombinationElements { get; private set; }
+        public List<IModInputCombinationElement> CombinationElements { get; }
 
         private List<Selectable> _selectables;
+        private IModInputCombinationElement _combinationElementTemplate;
+
+        public ModInputCombinationMenu(IModConsole console) : base(console)
+        {
+            CombinationElements = new List<IModInputCombinationElement>();
+        }
 
         public string GenerateCombination()
         {
-            for (int i = 0; i < CombinationElements.Count; i++)
+            for (var i = 0; i < CombinationElements.Count; i++)
             {
                 while (i < CombinationElements.Count && CombinationElements[i].Title == "")
                 {
@@ -36,21 +41,9 @@ namespace OWML.ModHelper.Menus
             _selectables = new List<Selectable>();
             CombinationElements.ForEach(element => element.Destroy());
             CombinationElements.Clear();
-            combination.Split('/').ToList().ForEach(part => AddCombinationElement(part));
+            combination.Split('/').ToList().ForEach(AddCombinationElement);
             SelectFirst();
             UpdateNavigation(_selectables);
-        }
-
-        private IModInputCombinationElement _combinationElementTemplate;
-
-        public ModInputCombinationMenu(IModConsole console) : base(console)
-        {
-            CombinationElements = new List<IModInputCombinationElement>();
-        }
-
-        public override void Open()
-        {
-            base.Open();
         }
 
         public void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate)
@@ -145,15 +138,8 @@ namespace OWML.ModHelper.Menus
         {
             CombinationElements.Remove(element);
             var selectable = element.Toggle.GetComponent<Selectable>();
-            for (int i = 0; i < _selectables.Count; i++)
-            {
-                if (selectable != _selectables[i])
-                {
-                    continue;
-                }
-                RemoveFromNavigation(i);
-                break;
-            }
+            var index = _selectables.IndexOf(selectable);
+            RemoveFromNavigation(index);
         }
 
         private void AddCombinationElement(string combination)

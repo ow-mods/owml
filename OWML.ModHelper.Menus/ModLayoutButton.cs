@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using OWML.Common.Menus;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +10,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnClick;
         public Button Button { get; }
         public IModMenu Menu { get; private set; }
-        public ILayoutManager Layout { get; private set; }
+        public ILayoutManager Layout { get; }
 
         private int _index;
 
@@ -42,8 +41,9 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childControlHeight = false;
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
-            Layout = new LayoutManager(layoutGroup, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                ModUIStyleApplier.ReplaceStyleApplier(Button.gameObject), scale);
+            var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
+            var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(Button.gameObject);
+            Layout = new LayoutManager(layoutGroup, styleManager, styleApplier, scale);
         }
 
         public void Initialize(IModMenu menu)
