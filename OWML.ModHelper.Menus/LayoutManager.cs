@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Reflection;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using OWML.Common.Menus;
 using System.Collections.Generic;
-using OWML.ModHelper.Events;
 
 namespace OWML.ModHelper.Menus
 {
@@ -26,14 +25,14 @@ namespace OWML.ModHelper.Menus
             Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics) : 
             this(layout, styleManager, styleApplier, scale, constantGraphics)
         {
-            Array.ForEach(backGraphics, element => _backingGraphics.Add(element));
+            backGraphics.ToList().ForEach(element => _backingGraphics.Add(element));
             styleApplier.SetBackround(backGraphics);
         }
 
         public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
             Vector3 scale, Graphic[] constantGraphics) : this(layout, styleManager, styleApplier, scale)
         {
-            Array.ForEach(constantGraphics, element => _constantGraphics.Add(element));
+            constantGraphics.ToList().ForEach(element => _constantGraphics.Add(element));
         }
 
         public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale)
