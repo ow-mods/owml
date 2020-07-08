@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Menus
         public IModMainMenu MainMenu { get; }
         public IModPauseMenu PauseMenu { get; }
         public IModsMenu ModsMenu { get; }
-        public IModConfigMenu OwmlMenu { get; }
+        public IBaseConfigMenu OwmlMenu { get; }
         public IModInputMenu InputMenu { get; }
 
         public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler,
