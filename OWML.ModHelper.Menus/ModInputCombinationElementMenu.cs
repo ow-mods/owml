@@ -146,9 +146,9 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            var elements = _combinationMenu.CombinationElements
-                .Where(element => element.Title == currentCombination && element != _element);
-            foreach (var element in elements)
+            var overlap = _combinationMenu.CombinationElements.
+                Count(element => element.Title == currentCombination && element != _element);
+            if (overlap > 0)
             {
                 _twoButtonPopup.EnableMenu(true);
                 _twoButtonPopup.SetUpPopup($"This combination already exist in this group", InputLibrary.confirm2, null,

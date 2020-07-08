@@ -10,8 +10,6 @@ namespace OWML.ModHelper.Menus
 {
     public class ModInputCombinationElement : ModToggleInput, IModInputCombinationElement
     {
-        private const float ScaleDown = 0.75f;
-
         public ILayoutManager Layout { get; }
 
         public override string Title
@@ -101,7 +99,7 @@ namespace OWML.ModHelper.Menus
         {
             Layout.AddPictureAt(
                _inputHandler.Textures.KeyTexture(key),
-               Layout.ChildCount - 1, ScaleDown);
+               Layout.ChildCount - 1, ModInputLibrary.ScaleDown);
         }
 
         private void OnEditButton()

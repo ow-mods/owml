@@ -15,7 +15,6 @@ namespace OWML.ModHelper.Menus
     {
         public ILayoutManager Layout { get; private set; }
         public event Action OnPopupReset;
-        public ReadOnlyCollection<KeyCode> KeyCodes => _combination.AsReadOnly();
         public string Combination => string.Join("+", _combination.Select(ModInputLibrary.KeyCodeToString).ToArray());
 
         private SubmitAction _resetAction;

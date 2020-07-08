@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using OWML.Common.Menus;
 using System.Collections.Generic;
@@ -24,6 +24,7 @@ namespace OWML.ModHelper.Menus
             Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics)
             : this(layout, styleManager, styleApplier, scale, constantGraphics)
         {
+            backGraphics.ToList().ForEach(element => _backingGraphics.Add(element));
             styleApplier.SetBackground(backGraphics);
         }
 
