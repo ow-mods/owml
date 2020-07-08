@@ -1,43 +1,26 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using OWML.Common.Menus;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModLayoutButton : IModLayoutButton
+    public class ModLayoutButton : BaseButton, IModLayoutButton
     {
         private const int FontSize = 36;
         private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
 
-        public event Action OnClick;
-        public Button Button { get; }
-        public IModMenu Menu { get; private set; }
         public HorizontalLayoutGroup LayoutGroup { get; }
 
-        private int _index;
         private readonly UIStyleManager _styleManager;
         private readonly UIStyleApplier _buttonStyleApplier;
         private readonly FieldInfo _texts;
         private readonly FieldInfo _foregrounds;
         private readonly Vector3 _scale;
 
-        public int Index
-        {
-            get => Button.transform.parent == null ? _index : Button.transform.GetSiblingIndex();
-            set
-            {
-                _index = value;
-                Button.transform.SetSiblingIndex(value);
-            }
-        }
-
-        public ModLayoutButton(Button button, IModMenu menu)
+        public ModLayoutButton(Button button, IModMenu menu) : base(button, menu)
         {
             _scale = button.transform.localScale;
-            Button = button;
-            Button.onClick.AddListener(() => OnClick?.Invoke());
             GameObject.Destroy(Button.GetComponentInChildren<Text>().gameObject);
             var layoutObject = new GameObject("LayoutGroup", typeof(RectTransform));
             layoutObject.transform.SetParent(button.transform);
@@ -45,7 +28,6 @@ namespace OWML.ModHelper.Menus
             target.raycastTarget = true;
             target.color = Color.clear;
             LayoutGroup = layoutObject.AddComponent<HorizontalLayoutGroup>();
-            Initialize(menu);
             _buttonStyleApplier = Button.GetComponent<UIStyleApplier>();
             _styleManager = GameObject.FindObjectOfType<UIStyleManager>();
             LayoutGroup.childControlWidth = false;
@@ -65,71 +47,6 @@ namespace OWML.ModHelper.Menus
             var currentTexts = Button.gameObject.GetComponentsInChildren<Text>();
             _texts.SetValue(_buttonStyleApplier, currentTexts);
             _foregrounds.SetValue(_buttonStyleApplier, currentTexts);
-        }
-
-        public void Initialize(IModMenu menu)
-        {
-            Menu = menu;
-        }
-
-        public IModLayoutButton Copy()
-        {
-            var button = GameObject.Instantiate(Button);
-            GameObject.Destroy(button.GetComponent<SubmitAction>());
-            return new ModLayoutButton(button, Menu)
-            {
-                Index = Index + 1
-            };
-        }
-
-        public IModLayoutButton Copy(int index)
-        {
-            var copy = Copy();
-            copy.Index = index;
-            return copy;
-        }
-
-        public IModLayoutButton Duplicate()
-        {
-            var copy = Copy();
-            Menu.AddLayoutButton(copy);
-            return copy;
-        }
-
-        public IModLayoutButton Duplicate(int index)
-        {
-            var dupe = Duplicate();
-            dupe.Index = index;
-            return dupe;
-        }
-
-        public IModLayoutButton Replace()
-        {
-            var duplicate = Duplicate();
-            Hide();
-            return duplicate;
-        }
-
-        public IModLayoutButton Replace(int index)
-        {
-            var replacement = Replace();
-            replacement.Index = index;
-            return replacement;
-        }
-
-        public void Show()
-        {
-            Button.gameObject.SetActive(true);
-        }
-
-        public void Hide()
-        {
-            Button.gameObject.SetActive(false);
-        }
-
-        public void SetControllerCommand(SingleAxisCommand inputCommand)
-        {
-            Button.gameObject.AddComponent<ControllerButton>().Init(inputCommand);
         }
 
         public void AddText(string text)
