@@ -22,19 +22,16 @@ namespace OWML.ModHelper.Menus
             _text = Button.GetComponentInChildren<Text>();
         }
 
-        public override IModButton Copy()
+        public new IModTitleButton Copy()
         {
-            var button = GameObject.Instantiate(Button);
-            GameObject.Destroy(button.GetComponent<SubmitAction>());
-            return new ModTitleButton(button, Menu)
-            {
-                Index = Index + 1
-            };
+            var button = (IModTitleButton)base.Copy();
+            button.Title = Title;
+            return button;
         }
 
         public IModTitleButton Copy(string title)
         {
-            var copy = (IModTitleButton)Copy();
+            var copy = Copy();
             copy.Title = title;
             return copy;
         }

@@ -4,6 +4,7 @@
     {
         string Title { get; set; }
 
+        new IModTitleButton Copy();
         IModTitleButton Copy(string title);
         IModTitleButton Copy(string title, int index);
 

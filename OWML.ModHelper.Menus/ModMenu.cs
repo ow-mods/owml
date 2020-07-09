@@ -78,7 +78,7 @@ namespace OWML.ModHelper.Menus
                 return null;
             }
 
-            var copy = (IModTitleButton)original.Copy();
+            var copy = original.Copy();
             copy.Title = title;
 
             AddButton(copy, index);

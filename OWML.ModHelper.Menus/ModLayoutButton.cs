@@ -42,16 +42,6 @@ namespace OWML.ModHelper.Menus
             UpdateState();
         }
 
-        public override IModButton Copy()
-        {
-            var button = GameObject.Instantiate(Button);
-            GameObject.Destroy(button.GetComponent<SubmitAction>());
-            return new ModLayoutButton(button, Menu)
-            {
-                Index = Index + 1
-            };
-        }
-
         public void UpdateState()
         {
             var currentTexts = Button.gameObject.GetComponentsInChildren<Text>();

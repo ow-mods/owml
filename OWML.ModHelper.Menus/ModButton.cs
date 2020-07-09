@@ -1,5 +1,6 @@
 ﻿using System;
 using OWML.Common.Menus;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -22,7 +23,14 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public abstract IModButton Copy();
+        public IModButton Copy()
+        {
+            var button = GameObject.Instantiate(Button);
+            GameObject.Destroy(button.GetComponent<SubmitAction>());
+            var modButton = (IModButton)Activator.CreateInstance(GetType(), button, Menu);
+            modButton.Index = Index + 1;
+            return modButton;
+        }
 
         protected ModButton(Button button, IModMenu menu)
         {
