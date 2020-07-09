@@ -15,7 +15,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
-        public List<IBaseButton> Buttons { get; private set; }
+        public List<IModButton> Buttons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
@@ -44,7 +44,7 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             _layoutGroup = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IBaseButton>().ToList();
+            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
@@ -86,12 +86,12 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
-        public IBaseButton AddButton(IBaseButton button)
+        public IModButton AddButton(IModButton button)
         {
             return AddButton(button, button.Index);
         }
 
-        public virtual IBaseButton AddButton(IBaseButton button, int index)
+        public virtual IModButton AddButton(IModButton button, int index)
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;

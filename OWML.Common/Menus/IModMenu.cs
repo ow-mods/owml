@@ -10,13 +10,13 @@ namespace OWML.Common.Menus
 
         Menu Menu { get; }
 
-        List<IBaseButton> Buttons { get; }
+        List<IModButton> Buttons { get; }
         List<IModTitleButton> TitleButtons { get; }
         List<IModLayoutButton> LayoutButtons { get; }
 
         IModTitleButton GetButton(string title);
-        IBaseButton AddButton(IBaseButton button);
-        IBaseButton AddButton(IBaseButton button, int index);
+        IModButton AddButton(IModButton button);
+        IModButton AddButton(IModButton button, int index);
 
         List<IModToggleInput> ToggleInputs { get; }
         IModToggleInput GetToggleInput(string title);

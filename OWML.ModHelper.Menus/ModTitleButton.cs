@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTitleButton : BaseButton, IModTitleButton
+    public class ModTitleButton : ModButton, IModTitleButton
     {
         private readonly Text _text;
         public string Title
@@ -22,7 +22,7 @@ namespace OWML.ModHelper.Menus
             _text = Button.GetComponentInChildren<Text>();
         }
 
-        public override IBaseButton Copy()
+        public override IModButton Copy()
         {
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());

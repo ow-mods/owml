@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModLayoutButton : BaseButton, IModLayoutButton
+    public class ModLayoutButton : ModButton, IModLayoutButton
     {
         private const int FontSize = 36;
         private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
@@ -42,7 +42,7 @@ namespace OWML.ModHelper.Menus
             UpdateState();
         }
 
-        public override IBaseButton Copy()
+        public override IModButton Copy()
         {
             var button = GameObject.Instantiate(Button);
             GameObject.Destroy(button.GetComponent<SubmitAction>());

@@ -75,7 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseButton.cs" />
+    <Compile Include="ModButton.cs" />
     <Compile Include="ModLayoutButton.cs" />
     <Compile Include="ModTitleButton.cs" />
     <Compile Include="ModConfigMenu.cs" />

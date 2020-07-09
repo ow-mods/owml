@@ -1,6 +1,6 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModTitleButton : IBaseButton
+    public interface IModTitleButton : IModButton
     {
         string Title { get; set; }
 

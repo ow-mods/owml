@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModLayoutButton : IBaseButton
+    public interface IModLayoutButton : IModButton
     {
         HorizontalLayoutGroup LayoutGroup { get; }
         void UpdateState();

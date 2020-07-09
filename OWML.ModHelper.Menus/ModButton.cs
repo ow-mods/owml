@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class BaseButton : IBaseButton
+    public abstract class ModButton : IModButton
     {
         public event Action OnClick;
 
@@ -22,9 +22,9 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public abstract IBaseButton Copy();
+        public abstract IModButton Copy();
 
-        protected BaseButton(Button button, IModMenu menu)
+        protected ModButton(Button button, IModMenu menu)
         {
             Button = button;
             Button.onClick.AddListener(() => OnClick?.Invoke());
@@ -36,35 +36,35 @@ namespace OWML.ModHelper.Menus
             Menu = menu;
         }
 
-        public IBaseButton Copy(int index)
+        public IModButton Copy(int index)
         {
             var copy = Copy();
             copy.Index = index;
             return copy;
         }
 
-        public IBaseButton Duplicate()
+        public IModButton Duplicate()
         {
             var copy = Copy();
             Menu.AddButton(copy);
             return copy;
         }
 
-        public IBaseButton Duplicate(int index)
+        public IModButton Duplicate(int index)
         {
             var dupe = Duplicate();
             dupe.Index = index;
             return dupe;
         }
 
-        public IBaseButton Replace()
+        public IModButton Replace()
         {
             var duplicate = Duplicate();
             Hide();
             return duplicate;
         }
 
-        public IBaseButton Replace(int index)
+        public IModButton Replace(int index)
         {
             var replacement = Replace();
             replacement.Index = index;
