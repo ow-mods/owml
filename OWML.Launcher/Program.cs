@@ -13,7 +13,7 @@ namespace OWML.Launcher
     {
         static void Main(string[] args)
         {
-            var owmlConfig = GetOwmlConfig();
+            var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
@@ -27,8 +27,17 @@ namespace OWML.Launcher
 
         private static IOwmlConfig GetOwmlConfig()
         {
-            var config = GetJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
+            var config = GetJsonObject<OwmlConfig>(Constants.OwmlConfigFileName) ?? 
+                         CreateOwmlConfig();
             config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+            return config;
+        }
+
+        private static IOwmlConfig CreateOwmlConfig()
+        {
+            var config = GetJsonObject<OwmlConfig>(Constants.OwmlDefaultConfigFileName);
+            var json = JsonConvert.SerializeObject(config, Formatting.Indented);
+            File.WriteAllText(Constants.OwmlConfigFileName, json);
             return config;
         }
 
@@ -39,6 +48,10 @@ namespace OWML.Launcher
 
         private static T GetJsonObject<T>(string filename)
         {
+            if (!File.Exists(filename))
+            {
+                return default(T);
+            }
             var json = File.ReadAllText(filename)
                 .Replace("\\\\", "/")
                 .Replace("\\", "/");
