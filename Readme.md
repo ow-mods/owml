@@ -7,7 +7,7 @@ OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds
 OWML does the following:
 1. Patches the game to make it call the mod loader.
 2. Starts the game.
-3. The mod loader loads and initializes installed mods.
+3. The mod loader aloads and initializes installed mods.
 
 ## Installation
 
