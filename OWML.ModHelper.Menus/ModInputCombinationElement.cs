@@ -33,14 +33,19 @@ namespace OWML.ModHelper.Menus
         {
             _inputHandler = inputHandler;
             _combination = combination;
-            var layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>(true).transform.Find("LabelBlock")
-                                     .GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
-            var layoutGroup = layoutObject.GetComponent<HorizontalLayoutGroup>();
+            Initialize(menu);
+            SetupButtons();
             var scale = toggle.transform.localScale;
 
-            SetupButtons();
+            var layoutObject = toggle.GetComponentInChildren<HorizontalLayoutGroup>(true).transform.Find("LabelBlock")?
+                                     .GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
+            if (layoutObject == null)
+            {
+                ModConsole.Instance.WriteLine("Error: Failed to setup an element for Combination editor");
+                return;
+            }
+            var layoutGroup = layoutObject.GetComponent<HorizontalLayoutGroup>();
 
-            Initialize(menu);
             layoutGroup.childControlWidth = false;
             layoutGroup.childControlHeight = false;
             layoutGroup.childForceExpandHeight = false;

@@ -35,7 +35,7 @@ namespace OWML.ModHelper.Menus
             Button = new ModLayoutButton(element.GetValue<Button>("_buttonTrue"), menu);
             Button.OnClick += Open;
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
-            noButton.transform.parent.gameObject.SetActive(false);
+            noButton?.transform.parent.gameObject.SetActive(false);
             var myParent = (RectTransform)Button.Button.transform.parent;
             var rectTransform = (RectTransform)Button.Layout.LayoutGroup.transform;
             rectTransform.sizeDelta = new Vector2(myParent.sizeDelta.x * 2, myParent.sizeDelta.y);

@@ -63,6 +63,12 @@ namespace OWML.ModHelper.Menus
             var addButton = GetButton("UIElement-ResetToDefaultsButton");
             var cancelButton = GetButton("UIElement-DiscardChangesButton");
 
+            if (saveButton == null || addButton == null || cancelButton == null)
+            {
+                Console.WriteLine("Error: Failed to setup combination menu");
+                return;
+            }
+
             saveButton.OnClick += OnSave;
             addButton.OnClick += OnAdd;
             cancelButton.OnClick += OnExit;
@@ -84,8 +90,8 @@ namespace OWML.ModHelper.Menus
 
             Title = "Edit Combination";
 
-            GetButton("UIElement-CancelOutOfRebinding").Hide();
-            GetButton("UIElement-KeyRebinder").Hide();
+            GetButton("UIElement-CancelOutOfRebinding")?.Hide();
+            GetButton("UIElement-KeyRebinder")?.Hide();
 
             foreach (Transform child in layoutGroup.transform)
             {

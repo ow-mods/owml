@@ -56,7 +56,12 @@ namespace OWML.ModHelper.Menus
             }
             var parentCopy = GameObject.Instantiate(menu.transform.parent.gameObject);
             parentCopy.AddComponent<DontDestroyOnLoad>();
-            _twoButtonPopup = parentCopy.transform.Find("TwoButton-Popup").GetComponent<PopupMenu>();
+            _twoButtonPopup = parentCopy.transform.Find("TwoButton-Popup")?.GetComponent<PopupMenu>();
+            if (_twoButtonPopup == null)
+            {
+                Console.WriteLine("Error: Failed to setup warning popup");
+            }
+
             var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true); // InputField-Popup
             var menuTransform = originalMenu.GetComponentInChildren<VerticalLayoutGroup>(true).transform; // InputFieldElements
             var buttonsTransform = menuTransform.GetComponentInChildren<HorizontalLayoutGroup>(true).transform;
@@ -85,7 +90,7 @@ namespace OWML.ModHelper.Menus
 
             if (layout == null)
             {
-                OwmlConsole.WriteLine("Error: failed to create layout, shutting down setup of Combination setting menu");
+                OwmlConsole.WriteLine("Error: failed to create combination visualizer in combination editor");
                 return;
             }
 
@@ -130,14 +135,25 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
+        private void RerouteToConsole(string message)
+        {
+            Console.WriteLine("Failed to create popup for a following message:");
+            Console.WriteLine(message);
+        }
+
         private bool OnPopupValidate()
         {
             var currentCombination = _inputMenu.Combination;
             var collisions = _inputHandler.GetCollisions(currentCombination);
             if (collisions.Count > 0 && collisions[0] != _comboName)
             {
+                if (_twoButtonPopup == null)
+                {
+                    RerouteToConsole($"This combination collides with \"{collisions[0]}\"");
+                    return false;
+                }
                 _twoButtonPopup.EnableMenu(true);
-                _twoButtonPopup.SetUpPopup($"this combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
+                _twoButtonPopup.SetUpPopup($"This combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
                 _twoButtonPopup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
                 return false;
@@ -150,8 +166,13 @@ namespace OWML.ModHelper.Menus
                 .Any(element => element.Title == currentCombination && element != _element);
             if (overlap)
             {
+                if (_twoButtonPopup == null)
+                {
+                    RerouteToConsole("This combination already exist in this group");
+                    return false;
+                }
                 _twoButtonPopup.EnableMenu(true);
-                _twoButtonPopup.SetUpPopup($"This combination already exist in this group", InputLibrary.confirm2, null,
+                _twoButtonPopup.SetUpPopup("This combination already exist in this group", InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
                 _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
                 return false;
