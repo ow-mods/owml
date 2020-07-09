@@ -6,7 +6,7 @@ namespace OWML.ModHelper.Menus
 {
     public abstract class ModInputField<T> : ModInput<T>
     {
-        public IModButton Button { get; }
+        public IModTitleButton Button { get; }
 
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Menus
             ToggleElement = toggle;
             InputMenu = inputMenu;
 
-            Button = new ModButton(toggle.GetValue<Button>("_buttonTrue"), menu);
+            Button = new ModTitleButton(toggle.GetValue<Button>("_buttonTrue"), menu);
             Button.OnClick += Open;
 
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");

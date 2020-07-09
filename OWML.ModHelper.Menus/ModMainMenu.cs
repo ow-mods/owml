@@ -10,12 +10,12 @@ namespace OWML.ModHelper.Menus
     {
         public IModTabbedMenu OptionsMenu { get; }
 
-        public IModButton ResumeExpeditionButton { get; private set; }
-        public IModButton NewExpeditionButton { get; private set; }
-        public IModButton OptionsButton { get; private set; }
-        public IModButton ViewCreditsButton { get; private set; }
-        public IModButton SwitchProfileButton { get; private set; }
-        public IModButton QuitButton { get; private set; }
+        public IModTitleButton ResumeExpeditionButton { get; private set; }
+        public IModTitleButton NewExpeditionButton { get; private set; }
+        public IModTitleButton OptionsButton { get; private set; }
+        public IModTitleButton ViewCreditsButton { get; private set; }
+        public IModTitleButton SwitchProfileButton { get; private set; }
+        public IModTitleButton QuitButton { get; private set; }
 
         private TitleAnimationController _anim;
 
@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
         public override IModButton AddButton(IModButton button, int index)
         {
             var modButton = base.AddButton(button, index);
-            var fadeControllers = Buttons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController
+            var fadeControllers = TitleButtons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController
             {
                 group = x.Button.GetComponent<CanvasGroup>()
             });

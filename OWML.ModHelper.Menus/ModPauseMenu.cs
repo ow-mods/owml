@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using OWML.Common;
+﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 
@@ -9,9 +8,9 @@ namespace OWML.ModHelper.Menus
     {
         public IModTabbedMenu OptionsMenu { get; }
 
-        public IModButton ResumeButton { get; private set; }
-        public IModButton OptionsButton { get; private set; }
-        public IModButton QuitButton { get; private set; }
+        public IModTitleButton ResumeButton { get; private set; }
+        public IModTitleButton OptionsButton { get; private set; }
+        public IModTitleButton QuitButton { get; private set; }
 
         public ModPauseMenu(IModConsole console) : base(console)
         {
@@ -27,9 +26,9 @@ namespace OWML.ModHelper.Menus
             var pauseMenu = pauseMenuManager.GetValue<Menu>("_pauseMenu");
             base.Initialize(pauseMenu);
 
-            ResumeButton = Buttons.Single(x => x.Button.name == "Button-Unpause");
-            OptionsButton = Buttons.Single(x => x.Button.name == "Button-Options");
-            QuitButton = Buttons.Single(x => x.Button.name == "Button-ExitToMainMenu");
+            ResumeButton = GetButton("Button-Unpause");
+            OptionsButton = GetButton("Button-Options");
+            QuitButton = GetButton("Button-ExitToMainMenu");
 
             InvokeOnInit();
         }
