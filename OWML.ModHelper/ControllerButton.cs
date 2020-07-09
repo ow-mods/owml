@@ -8,11 +8,15 @@ namespace OWML.ModHelper
     {
         private Button _button;
         private SingleAxisCommand _inputCommand;
+        private Menu _menu;
+        private Selectable _selectable;
 
-        public void Init(SingleAxisCommand inputCommand)
+        public void Init(SingleAxisCommand inputCommand, Menu menu, Selectable selectable)
         {
             _button = GetComponent<Button>();
             _inputCommand = inputCommand;
+            _menu = menu;
+            _selectable = selectable;
             var imageElement = GetComponent<ButtonWithHotkeyImageElement>();
             if (imageElement == null)
             {
@@ -25,7 +29,10 @@ namespace OWML.ModHelper
 
         private void Update()
         {
-            if (_inputCommand != null && _button != null && OWInput.IsNewlyPressed(_inputCommand, InputMode.Menu))
+            if (_inputCommand != null &&
+                _button != null &&
+                (_selectable == null || _selectable == _menu.GetLastSelected()) &&
+                OWInput.IsNewlyPressed(_inputCommand, InputMode.Menu))
             {
                 _button.onClick.Invoke();
             }

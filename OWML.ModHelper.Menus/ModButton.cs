@@ -91,7 +91,12 @@ namespace OWML.ModHelper.Menus
 
         public void SetControllerCommand(SingleAxisCommand inputCommand)
         {
-            Button.gameObject.AddComponent<ControllerButton>().Init(inputCommand);
+            SetControllerCommand(inputCommand, null);
+        }
+
+        public void SetControllerCommand(SingleAxisCommand inputCommand, Selectable selectable)
+        {
+            Button.gameObject.AddComponent<ControllerButton>().Init(inputCommand, Menu.Menu, selectable);
         }
 
     }

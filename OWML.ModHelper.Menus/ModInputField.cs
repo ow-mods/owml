@@ -11,13 +11,16 @@ namespace OWML.ModHelper.Menus
         protected readonly IModInputMenu InputMenu;
         protected readonly TwoButtonToggleElement ToggleElement;
 
-        protected ModInputField(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu) : base(toggle, menu)
+        protected ModInputField(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu)
+            : base(toggle, menu)
         {
             ToggleElement = toggle;
             InputMenu = inputMenu;
 
             Button = new ModTitleButton(toggle.GetValue<Button>("_buttonTrue"), menu);
             Button.OnClick += Open;
+            var selectable = toggle.GetComponent<Selectable>();
+            Button.SetControllerCommand(InputLibrary.menuConfirm, selectable);
 
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
