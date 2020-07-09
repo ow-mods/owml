@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModUIStyleApplier.cs" />
-    <Compile Include="LayoutManager.cs" />
+    <Compile Include="ModLayoutManager.cs" />
     <Compile Include="ModInputCombinationElement.cs" />
     <Compile Include="ModInputCombinationElementMenu.cs" />
     <Compile Include="ModInputCombinationMenu.cs" />

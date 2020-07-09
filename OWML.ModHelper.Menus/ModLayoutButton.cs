@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Menus
         public event Action OnClick;
         public Button Button { get; }
         public IModMenu Menu { get; private set; }
-        public ILayoutManager Layout { get; }
+        public IModLayoutManager Layout { get; }
 
         private int _index;
 
@@ -43,7 +43,7 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childForceExpandWidth = false;
             var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
             var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(Button.gameObject);
-            Layout = new LayoutManager(layoutGroup, styleManager, styleApplier, scale);
+            Layout = new ModLayoutManager(layoutGroup, styleManager, styleApplier, scale);
         }
 
         public void Initialize(IModMenu menu)

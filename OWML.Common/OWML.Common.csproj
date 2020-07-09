@@ -42,7 +42,7 @@
     <Compile Include="IModInputTextures.cs" />
     <Compile Include="IModInputHandler.cs" />
     <Compile Include="IModInteraction.cs" />
-    <Compile Include="Menus\ILayoutManager.cs" />
+    <Compile Include="Menus\IModLayoutManager.cs" />
     <Compile Include="Menus\IModInputCombinationElementMenu.cs" />
     <Compile Include="Menus\IModInputCombinationMenu.cs" />
     <Compile Include="Menus\IModInputCombinationElement.cs" />

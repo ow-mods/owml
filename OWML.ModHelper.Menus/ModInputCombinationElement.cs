@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Menus
 {
     public class ModInputCombinationElement : ModToggleInput, IModInputCombinationElement
     {
-        public ILayoutManager Layout { get; }
+        public IModLayoutManager Layout { get; }
 
         public override string Title
         {
@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus
             layoutGroup.spacing = 0f;
             var constantGraphics = layoutObject.GetComponentsInChildren<Graphic>(true);
             layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
-            Layout = new LayoutManager(layoutGroup, GameObject.FindObjectOfType<UIStyleManager>(),
+            Layout = new ModLayoutManager(layoutGroup, GameObject.FindObjectOfType<UIStyleManager>(),
                 ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject), scale, constantGraphics);
             UpdateContents();
             _popupMenu = popupMenu;

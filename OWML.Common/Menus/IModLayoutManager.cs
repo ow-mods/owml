@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface ILayoutManager
+    public interface IModLayoutManager
     {
         LayoutGroup LayoutGroup { get; }
         int ChildCount { get; }

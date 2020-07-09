@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
-    public class LayoutManager : ILayoutManager
+    public class ModLayoutManager : IModLayoutManager
     {
         private const int FontSize = 36;
         private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus
         private readonly HashSet<Graphic> _constantGraphics = new HashSet<Graphic>();
         private readonly HashSet<Graphic> _backingGraphics = new HashSet<Graphic>();
 
-        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
+        public ModLayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
             Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics)
             : this(layout, styleManager, styleApplier, scale, constantGraphics)
         {
@@ -28,14 +28,14 @@ namespace OWML.ModHelper.Menus
             styleApplier.SetBackground(backGraphics);
         }
 
-        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
+        public ModLayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
             Vector3 scale, Graphic[] constantGraphics)
             : this(layout, styleManager, styleApplier, scale)
         {
             constantGraphics.ToList().ForEach(element => _constantGraphics.Add(element));
         }
 
-        public LayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale)
+        public ModLayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale)
         {
             _scale = scale;
             _styleManager = styleManager;

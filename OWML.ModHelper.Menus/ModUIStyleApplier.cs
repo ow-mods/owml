@@ -12,19 +12,6 @@ namespace OWML.ModHelper.Menus
             ClearAllArrays();
         }
 
-        public void Initialize(bool isButton = false, bool isSecondary = false)
-        {
-            if (isButton)
-            {
-                SetAsButton();
-            }    
-            else
-            {
-                _buttonItem = isButton;
-                _secondaryMenuItem = isSecondary;
-            }
-        }
-
         public void Initialize(UIStyleApplier oldStyleApplier)
         {
             var fields = typeof(UIStyleApplier).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();

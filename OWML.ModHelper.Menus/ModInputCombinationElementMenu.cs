@@ -39,12 +39,12 @@ namespace OWML.ModHelper.Menus
             return resetButtonObject;
         }
 
-        private LayoutManager CreateLayoutManager(GameObject layoutObject, Transform scaleReference)
+        private ModLayoutManager CreateLayoutManager(GameObject layoutObject, Transform scaleReference)
         {
             var layoutGroupNew = layoutObject.AddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childForceExpandWidth = false;
             layoutGroupNew.childControlWidth = false;
-            return new LayoutManager(layoutGroupNew, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
+            return new ModLayoutManager(layoutGroupNew, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
                 layoutObject.AddComponent<ModUIStyleApplier>(), scaleReference.localScale);
         }
 
@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
             tabbedNavigations.ForEach(GameObject.Destroy);
 
             var resetButtonObject = CreateResetButton(buttonsTransform);
-            LayoutManager layout = null;
+            ModLayoutManager layout = null;
 
             var inputObject = menuTransform.GetComponentInChildren<InputField>(true).gameObject; // InputField
             GameObject.Destroy(inputObject.GetComponent<InputField>());
