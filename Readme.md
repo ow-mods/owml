@@ -23,7 +23,7 @@ With Vortex:
 
 Manual install:
 1. Download OWML and extract the zip file anywhere you want.
-2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
+2. [Download mods](asashttps://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
 
 ## Sample mod
