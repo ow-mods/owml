@@ -50,13 +50,16 @@ namespace OWML.ModHelper.Menus
         {
             _combinationElementTemplate = combinationElementTemplate;
 
-            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true).Single(x => x.name == "RebindingModeBlocker");
+            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true)
+                .Single(x => x.name == "RebindingModeBlocker");
             blocker.gameObject.SetActive(false);
 
-            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>(true);
+            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot")
+                .GetComponentInChildren<HorizontalLayoutGroup>(true);
             labelPanel.gameObject.SetActive(false);
 
-            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true).Single(x => x.name == "Content");
+            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true)
+                .Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
 
             var saveButton = GetButton("UIElement-SaveAndExit");
@@ -77,12 +80,14 @@ namespace OWML.ModHelper.Menus
             cancelButton.SetControllerCommand(InputLibrary.cancel);
             addButton.SetControllerCommand(InputLibrary.setDefaults);
 
-            var localText = addButton.Button.gameObject.GetComponentInChildren<LocalizedText>(true);
+            var localText = addButton.Button.gameObject
+                .GetComponentInChildren<LocalizedText>(true);
             if (localText != null)
             {
                 GameObject.Destroy(localText);
             }
-            var buttonWithHotkey = addButton.Button.gameObject.GetComponentInChildren<ButtonWithHotkeyImageElement>(true);
+            var buttonWithHotkey = addButton.Button.gameObject
+                .GetComponentInChildren<ButtonWithHotkeyImageElement>(true);
             if (buttonWithHotkey != null)
             {
                 buttonWithHotkey.SetPrompt(new ScreenPrompt(InputLibrary.setDefaults, "Add Alternative"));
