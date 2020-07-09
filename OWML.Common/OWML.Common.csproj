@@ -32,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommandLineArguments.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="IHarmonyHelper.cs" />
@@ -46,10 +45,11 @@
     <Compile Include="Menus\IModInputCombinationElementMenu.cs" />
     <Compile Include="Menus\IModInputCombinationMenu.cs" />
     <Compile Include="Menus\IModInputCombinationElement.cs" />
+    <Compile Include="Menus\IModButton.cs" />
     <Compile Include="Menus\IModLayoutButton.cs" />
     <Compile Include="Menus\IModComboInput.cs" />
     <Compile Include="Menus\InputType.cs" />
-    <Compile Include="Menus\IModButton.cs" />
+    <Compile Include="Menus\IModTitleButton.cs" />
     <Compile Include="IModConfig.cs" />
     <Compile Include="IModData.cs" />
     <Compile Include="Menus\IModConfigMenu.cs" />

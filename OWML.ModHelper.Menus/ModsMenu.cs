@@ -15,7 +15,7 @@ namespace OWML.ModHelper.Menus
         private readonly List<IModConfigMenu> _modConfigMenus;
 
         private Transform _modMenuTemplate;
-        private IModButton _modButtonTemplate;
+        private IModTitleButton _modButtonTemplate;
         private readonly IModInputHandler _inputHandler;
 
         public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
@@ -69,7 +69,7 @@ namespace OWML.ModHelper.Menus
             var remapControlsButton = mainMenu.OptionsMenu.InputTab.GetButton("UIElement-RemapControls");
             var buttonTemplate = GameObject.Instantiate(remapControlsButton.Button);
             buttonTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
-            _modButtonTemplate = new ModButton(buttonTemplate, mainMenu);
+            _modButtonTemplate = new ModTitleButton(buttonTemplate, mainMenu);
             _modButtonTemplate.Button.enabled = false;
 
             var submitActionMenu = remapControlsButton.Button.GetComponent<SubmitActionMenu>();

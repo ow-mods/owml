@@ -1,29 +1,10 @@
-﻿using System;
+using System;
 using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModLayoutButton
+    public interface IModLayoutButton : IModButton
     {
-        event Action OnClick;
-        Button Button { get; }
-        IModMenu Menu { get; }
         IModLayoutManager Layout { get; }
-        int Index { get; set; }
-        void Initialize(IModMenu menu);
-
-        IModLayoutButton Copy();
-        IModLayoutButton Copy(int index);
-
-        IModLayoutButton Duplicate();
-        IModLayoutButton Duplicate(int index);
-
-        IModLayoutButton Replace();
-        IModLayoutButton Replace(int index);
-
-        void Show();
-        void Hide();
-
-        void SetControllerCommand(SingleAxisCommand inputCommand);
     }
 }

@@ -83,6 +83,8 @@
     <Compile Include="ModInputCombinationPopup.cs" />
     <Compile Include="ModLayoutButton.cs" />
     <Compile Include="ModButton.cs" />
+    <Compile Include="ModLayoutButton.cs" />
+    <Compile Include="ModTitleButton.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInput.cs" />
     <Compile Include="ModInputMenu.cs" />

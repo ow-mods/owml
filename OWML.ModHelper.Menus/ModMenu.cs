@@ -16,12 +16,13 @@ namespace OWML.ModHelper.Menus
 
         public Menu Menu { get; protected set; }
         public List<IModButton> Buttons { get; private set; }
-        public List<IModLayoutButton> LayoutButtons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
+        public List<IModTitleButton> TitleButtons => Buttons.OfType<IModTitleButton>().ToList();
+        public List<IModLayoutButton> LayoutButtons => Buttons.OfType<IModLayoutButton>().ToList();
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -42,8 +43,7 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             Layout = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>(true).Select(x => new ModButton(x, this)).Cast<IModButton>().ToList();
-            LayoutButtons = new List<IModLayoutButton>();
+            Buttons = Menu.GetComponentsInChildren<Button>(true).Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList();
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
@@ -51,9 +51,9 @@ namespace OWML.ModHelper.Menus
             ComboInputs = new List<IModComboInput>();
         }
 
-        public IModButton GetButton(string title)
+        public IModTitleButton GetButton(string title)
         {
-            var button = Buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
+            var button = TitleButtons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
                 OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
@@ -70,7 +70,7 @@ namespace OWML.ModHelper.Menus
         [Obsolete("Use button.Duplicate instead")]
         public Button AddButton(string title, int index)
         {
-            var original = Buttons?.FirstOrDefault();
+            var original = TitleButtons?.FirstOrDefault();
             if (original == null)
             {
                 OwmlConsole.WriteLine("Warning: no buttons to copy");
@@ -101,24 +101,7 @@ namespace OWML.ModHelper.Menus
             button.Button.transform.localScale = scale;
             return button;
         }
-
-        public IModLayoutButton AddLayoutButton(IModLayoutButton button)
-        {
-            return AddLayoutButton(button, button.Index);
-        }
-
-        public virtual IModLayoutButton AddLayoutButton(IModLayoutButton button, int index)
-        {
-            var transform = button.Button.transform;
-            var scale = transform.localScale;
-            transform.parent = Layout.transform;
-            button.Index = index;
-            button.Initialize(this);
-            LayoutButtons.Add(button);
-            button.Button.transform.localScale = scale;
-            return button;
-        }
-
+        
         public IModToggleInput GetToggleInput(string title)
         {
             return ToggleInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
