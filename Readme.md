@@ -14,7 +14,7 @@ OWML does the following:
 With [Outer Wilds Mod Manager](https://github.com/Raicuparta/ow-mod-manager) (recommended):
 1. Download the [latest release of the Mod Manager](https://github.com/Raicuparta/ow-mod-manager/releases).
 2. Use the Mod Manager to install OWML and mods, and start the game.
-
+a
 With Vortex:
 1. Download OWML and extract the zip file.
 2. Put the OWML folder in ﻿the game's root folder, usually C:\Program Files\Epic Games\OuterWilds.
