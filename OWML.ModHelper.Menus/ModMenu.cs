@@ -22,6 +22,9 @@ namespace OWML.ModHelper.Menus
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
 
+        public List<IModTitleButton> TitleButtons => Buttons.OfType<IModTitleButton>().ToList();
+        public List<IModLayoutButton> LayoutButtons => Buttons.OfType<IModLayoutButton>().ToList();
+
         private readonly IModConsole _console;
         private LayoutGroup _layoutGroup;
 
@@ -51,7 +54,7 @@ namespace OWML.ModHelper.Menus
 
         public IModTitleButton GetButton(string title)
         {
-            var button = Buttons.OfType<IModTitleButton>().FirstOrDefault(x => x.Title == title || x.Button.name == title);
+            var button = TitleButtons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
                 _console.WriteLine("Warning: no button found with title or name: " + title);
@@ -68,7 +71,7 @@ namespace OWML.ModHelper.Menus
         [Obsolete("Use button.Duplicate instead")]
         public Button AddButton(string title, int index)
         {
-            var original = Buttons?.OfType<IModTitleButton>().FirstOrDefault();
+            var original = TitleButtons?.FirstOrDefault();
             if (original == null)
             {
                 _console.WriteLine("Warning: no buttons to copy");

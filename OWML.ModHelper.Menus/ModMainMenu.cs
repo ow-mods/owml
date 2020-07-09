@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
         public override IBaseButton AddButton(IBaseButton button, int index)
         {
             var modButton = base.AddButton(button, index);
-            var fadeControllers = Buttons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController
+            var fadeControllers = TitleButtons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController
             {
                 group = x.Button.GetComponent<CanvasGroup>()
             });

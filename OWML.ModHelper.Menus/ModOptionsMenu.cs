@@ -39,10 +39,10 @@ namespace OWML.ModHelper.Menus
                 _tabMenus.Add(tabMenu);
             }
 
-            GameplayTab = _tabMenus.Single(x => x.TabButton.name == "Button-GamePlay");
-            AudioTab = _tabMenus.Single(x => x.TabButton.name == "Button-Audio");
-            InputTab = _tabMenus.Single(x => x.TabButton.name == "Button-Input");
-            GraphicsTab = _tabMenus.Single(x => x.TabButton.name == "Button-Graphics");
+            GameplayTab = GetTab("Button-GamePlay");
+            AudioTab = GetTab("Button-Audio");
+            InputTab = GetTab("Button-Input");
+            GraphicsTab = GetTab("Button-Graphics");
 
             InvokeOnInit();
         }
@@ -75,6 +75,11 @@ namespace OWML.ModHelper.Menus
         public new IModTabbedMenu Copy()
         {
             return (IModTabbedMenu)base.Copy();
+        }
+
+        private IModTabMenu GetTab(string tabName)
+        {
+            return _tabMenus.Single(x => x.TabButton.name == tabName);
         }
 
     }
