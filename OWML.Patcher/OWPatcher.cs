@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using dnlib.DotNet.Emit;
 using dnpatch;
-using Newtonsoft.Json;
 using OWML.Common;
 
 namespace OWML.Patcher
@@ -45,13 +44,13 @@ namespace OWML.Patcher
                 "NAudio-Unity.dll",
                 "OWML.ModHelper.Interaction.dll",
                 Constants.OwmlManifestFileName,
+                Constants.OwmlConfigFileName,
                 Constants.OwmlDefaultConfigFileName
             };
             foreach (var filename in filesToCopy)
             {
                 File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
             }
-            File.WriteAllText($"{_owmlConfig.ManagedPath}/{Constants.OwmlConfigFileName}", JsonConvert.SerializeObject(_owmlConfig));
         }
 
         private void PatchAssembly()

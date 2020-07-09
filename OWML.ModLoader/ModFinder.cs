@@ -39,7 +39,7 @@ namespace OWML.ModLoader
 
         private IModData GetModData(IModManifest manifest)
         {
-            var storage = new ModStorage(_console, manifest);
+            var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>("config.json");
             var defaultConfig = storage.Load<ModConfig>("default-config.json");
             if (config == null && defaultConfig == null)

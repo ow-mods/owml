@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;
@@ -75,14 +74,8 @@ namespace OWML.Launcher
             if (gamePath != _owmlConfig.GamePath)
             {
                 _owmlConfig.GamePath = gamePath;
-                SaveConfig();
+                JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, _owmlConfig);
             }
-        }
-
-        private void SaveConfig()
-        {
-            var json = JsonConvert.SerializeObject(_owmlConfig);
-            File.WriteAllText(Constants.OwmlConfigFileName, json);
         }
 
         private void CopyGameFiles()

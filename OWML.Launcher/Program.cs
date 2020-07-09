@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using Newtonsoft.Json;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;
@@ -14,7 +12,7 @@ namespace OWML.Launcher
         static void Main(string[] args)
         {
             var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
-            owmlConfig.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+            SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
@@ -29,32 +27,25 @@ namespace OWML.Launcher
 
         private static IOwmlConfig GetOwmlConfig()
         {
-            return GetJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
+            return JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
         }
 
         private static IOwmlConfig CreateOwmlConfig()
         {
-            var config = GetJsonObject<OwmlConfig>(Constants.OwmlDefaultConfigFileName);
-            var json = JsonConvert.SerializeObject(config, Formatting.Indented);
-            File.WriteAllText(Constants.OwmlConfigFileName, json);
+            var config = JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlDefaultConfigFileName);
+            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, config);
             return config;
+        }
+
+        private static void SaveOwmlPath(IOwmlConfig owmlConfig)
+        {
+            owmlConfig.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
         }
 
         private static IModManifest GetOwmlManifest()
         {
-            return GetJsonObject<ModManifest>(Constants.OwmlManifestFileName);
-        }
-
-        private static T GetJsonObject<T>(string filename)
-        {
-            if (!File.Exists(filename))
-            {
-                return default(T);
-            }
-            var json = File.ReadAllText(filename)
-                .Replace("\\\\", "/")
-                .Replace("\\", "/");
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
         }
 
     }
