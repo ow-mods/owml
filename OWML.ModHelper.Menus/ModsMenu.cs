@@ -10,6 +10,9 @@ namespace OWML.ModHelper.Menus
 {
     public class ModsMenu : ModPopupMenu, IModsMenu
     {
+        private const string ModsButtonTitle = "MODS";
+        private const string OwmlButtonTitle = "OWML";
+
         private readonly IModConsole _console;
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
@@ -49,27 +52,28 @@ namespace OWML.ModHelper.Menus
             {
                 CreateModMenuTemplate(mainMenu);
             }
-            var modsButton = mainMenu.OptionsButton.Duplicate("MODS");
+            
+            var modsButton = mainMenu.OptionsButton.Duplicate(ModsButtonTitle);
             var optionsMenu = mainMenu.OptionsMenu;
             var modsMenu = CreateModsMenu(optionsMenu);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = mainMenu.Menu;
 
             InitConfigMenu(_menus.OwmlMenu, optionsMenu);
-            var owmlButton = modsButton.Duplicate("OWML");
+            var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
             owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
         public void Initialize(IModPauseMenu pauseMenu)
         {
-            var modsButton = pauseMenu.OptionsButton.Duplicate("MODS");
+            var modsButton = pauseMenu.OptionsButton.Duplicate(ModsButtonTitle);
             var optionsMenu = pauseMenu.OptionsMenu;
             var modsMenu = CreateModsMenu(optionsMenu);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = pauseMenu.Menu;
             
             InitConfigMenu(_menus.OwmlMenu, optionsMenu);
-            var owmlButton = modsButton.Duplicate("OWML");
+            var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
             owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
