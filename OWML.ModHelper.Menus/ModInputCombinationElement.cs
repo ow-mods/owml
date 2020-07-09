@@ -53,8 +53,9 @@ namespace OWML.ModHelper.Menus
             layoutGroup.spacing = 0f;
             var constantGraphics = layoutObject.GetComponentsInChildren<Graphic>(true);
             layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
-            Layout = new ModLayoutManager(layoutGroup, GameObject.FindObjectOfType<UIStyleManager>(),
-                ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject), scale, constantGraphics);
+            var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
+            var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject);
+            Layout = new LayoutManager(layoutGroup, styleManager, styleApplier, scale, constantGraphics);
             UpdateContents();
             _popupMenu = popupMenu;
         }

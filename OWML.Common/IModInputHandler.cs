@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-namespace OWML.Common
 
+namespace OWML.Common
 {
     public interface IModInputHandler
     {

@@ -44,8 +44,9 @@ namespace OWML.ModHelper.Menus
             var layoutGroupNew = layoutObject.AddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childForceExpandWidth = false;
             layoutGroupNew.childControlWidth = false;
-            return new ModLayoutManager(layoutGroupNew, MonoBehaviour.FindObjectOfType<UIStyleManager>(),
-                layoutObject.AddComponent<ModUIStyleApplier>(), scaleReference.localScale);
+            var styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
+            var styleApplier = layoutObject.AddComponent<ModUIStyleApplier>();
+            return new LayoutManager(layoutGroupNew, styleManager, styleApplier, scaleReference.localScale);
         }
 
         public void Initialize(PopupInputMenu menu)
@@ -164,20 +165,20 @@ namespace OWML.ModHelper.Menus
             }
             var overlap = _combinationMenu.CombinationElements
                 .Any(element => element.Title == currentCombination && element != _element);
-            if (overlap)
+            if (!overlap)
             {
-                if (_twoButtonPopup == null)
-                {
-                    RerouteToConsole("This combination already exist in this group");
-                    return false;
-                }
-                _twoButtonPopup.EnableMenu(true);
-                _twoButtonPopup.SetUpPopup("This combination already exist in this group", InputLibrary.confirm2, null,
-                    new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-                _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
+                return true;
+            }
+            if (_twoButtonPopup == null)
+            {
+                RerouteToConsole("This combination already exist in this group");
                 return false;
             }
-            return true;
+            _twoButtonPopup.EnableMenu(true);
+            _twoButtonPopup.SetUpPopup("This combination already exist in this group", InputLibrary.confirm2, null,
+                new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
+            _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
+            return false;
         }
 
         private void OnPopupConfirm()
