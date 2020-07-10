@@ -56,13 +56,13 @@ namespace OWML.ModHelper.Menus
             }
             if (_okCommand != null && _okCommand.IsNewlyPressed())
             {
-                _cancelCommand.BlockNextRelease();
+                _okCommand.BlockNextRelease();
                 InvokeOk();
                 return true;
             }
             if (_resetCommand != null && _resetCommand.IsNewlyPressed())
             {
-                _cancelCommand.BlockNextRelease();
+                _resetCommand.BlockNextRelease();
                 InvokeReset();
                 return true;
             }
