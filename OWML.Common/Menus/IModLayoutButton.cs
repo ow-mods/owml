@@ -1,6 +1,3 @@
-using System;
-using UnityEngine.UI;
-
 namespace OWML.Common.Menus
 {
     public interface IModLayoutButton : IModButton

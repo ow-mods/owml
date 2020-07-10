@@ -16,6 +16,8 @@ namespace OWML.ModHelper.Input
 
         internal static ModInputHandler Instance { get; private set; }
 
+        public IModInputTextures Textures { get; }
+
         private readonly HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
         private readonly Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
         private readonly HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
@@ -27,9 +29,7 @@ namespace OWML.ModHelper.Input
         private int _lastCombinationUpdate;
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
-
-        public IModInputTextures Textures { get; }
-
+        
         public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events)
         {
             var textures = new ModInputTextures();

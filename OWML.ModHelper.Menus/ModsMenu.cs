@@ -3,7 +3,6 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
