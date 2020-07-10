@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -12,32 +13,10 @@ namespace OWML.ModHelper.Input
         public event Action<SingleAxisCommand> OnTapped;
         public event Action<SingleAxisCommand> OnHeld;
 
-        private float _minPressDuration = 0.1f, _maxTapDuration = 0.1f;
-        private HashSet<SingleAxisCommand> _commands = new List<SingleAxisCommand>();
+        private readonly List<SingleAxisCommand> _commands = new List<SingleAxisCommand>();
 
-        public float MinimalPressDuration 
-        {
-            get
-            {
-                return _minPressDuration;
-            }
-            set
-            {
-                _minPressDuration = value;
-            }
-        }
-        
-        public float MaximalTapDuration 
-        {
-            get
-            {
-                return _maxTapDuration;
-            }
-            set
-            {
-                _maxTapDuration = value;
-            }
-        }
+        public float MinimalPressDuration { get; set; } = 0.1f;
+        public float MaximalTapDuration { get; set; } = 0.1f;
 
         public void AddToListener(SingleAxisCommand command)
         {
@@ -60,7 +39,7 @@ namespace OWML.ModHelper.Input
                 {
                     OnNewlyPressed?.Invoke(command);
                 }
-                if (command.IsNewlyHeld(_minPressDuration))
+                if (command.IsNewlyHeld(MinimalPressDuration))
                 {
                     OnNewlyHeld?.Invoke(command);
                 }
@@ -72,11 +51,11 @@ namespace OWML.ModHelper.Input
                 {
                     OnPressed?.Invoke(command);
                 }
-                if (command.IsHeld(_minPressDuration))
+                if (command.IsHeld(MinimalPressDuration))
                 {
                     OnHeld?.Invoke(command);
                 }
-                if (command.IsTapped(_maxTapDuration))
+                if (command.IsTapped(MaximalTapDuration))
                 {
                     OnTapped?.Invoke(command);
                 }
