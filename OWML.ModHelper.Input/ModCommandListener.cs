@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -13,7 +14,7 @@ namespace OWML.ModHelper.Input
         public event Action<SingleAxisCommand> OnHeld;
 
         private float _minPressDuration = 0.1f, _maxTapDuration = 0.1f;
-        private HashSet<SingleAxisCommand> _commands = new List<SingleAxisCommand>();
+        private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
 
         public float MinimalPressDuration 
         {
@@ -44,6 +45,14 @@ namespace OWML.ModHelper.Input
             if (!_commands.Contains(command))
             {
                 _commands.Add(command);
+            }
+        }
+
+        public void RemoveFromListener(SingleAxisCommand command)
+        {
+            if (_commands.Contains(command))
+            {
+                _commands.Remove(command);
             }
         }
 
