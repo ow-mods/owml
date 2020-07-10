@@ -136,10 +136,17 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
-        private void RerouteToConsole(string message)
+        private void ShowPopup(string message)
         {
-            Console.WriteLine("Failed to create popup with the following message:");
-            Console.WriteLine(message);
+            if (_twoButtonPopup == null)
+            {
+                Console.WriteLine("Failed to create popup for a following message:");
+                Console.WriteLine(message);
+            }
+            _twoButtonPopup.EnableMenu(true);
+            _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm2, null,
+                new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
+            _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
         private bool OnPopupValidate()
@@ -148,16 +155,7 @@ namespace OWML.ModHelper.Menus
             var collisions = _inputHandler.GetCollisions(currentCombination);
             if (collisions.Count > 0 && collisions[0] != _comboName)
             {
-                var collidesMessage = $"This combination collides with \"{collisions[0]}\"";
-                if (_twoButtonPopup == null)
-                {
-                    RerouteToConsole(collidesMessage);
-                    return false;
-                }
-                _twoButtonPopup.EnableMenu(true);
-                _twoButtonPopup.SetUpPopup(collidesMessage, InputLibrary.confirm2, null,
-                    new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-                _twoButtonPopup.GetValue<Text>("_labelText").text = collidesMessage;
+                ShowPopup($"This combination collides with \"{collisions[0]}\"");
                 return false;
             }
             if (_combinationMenu == null)
@@ -170,16 +168,7 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            var alreadyExistMessage = "This combination already exist in this group";
-            if (_twoButtonPopup == null)
-            {
-                RerouteToConsole(alreadyExistMessage);
-                return false;
-            }
-            _twoButtonPopup.EnableMenu(true);
-            _twoButtonPopup.SetUpPopup(alreadyExistMessage, InputLibrary.confirm2, null,
-                new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-            _twoButtonPopup.GetValue<Text>("_labelText").text = alreadyExistMessage;
+            ShowPopup("This combination already exist in this group");
             return false;
         }
 
