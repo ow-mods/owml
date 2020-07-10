@@ -14,9 +14,7 @@ namespace OWML.ModHelper.Menus
 
         private PopupInputMenu _inputMenu;
 
-        public ModInputMenu(IModConsole console) : base(console)
-        {
-        }
+        public ModInputMenu(IModConsole console) : base(console) { }
 
         public void Initialize(PopupInputMenu menu)
         {

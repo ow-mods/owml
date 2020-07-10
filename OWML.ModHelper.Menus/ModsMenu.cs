@@ -44,7 +44,7 @@ namespace OWML.ModHelper.Menus
             return modConfigMenu;
         }
 
-        public void Initialize(IModMainMenu mainMenu)
+        public void Initialize(IModOWMenu mainMenu)
         {
             if (_modMenuTemplate == null)
             {
@@ -62,20 +62,7 @@ namespace OWML.ModHelper.Menus
             owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
-        public void Initialize(IModPauseMenu pauseMenu)
-        {
-            var modsButton = pauseMenu.OptionsButton.Duplicate(ModsButtonTitle);
-            var optionsMenu = pauseMenu.OptionsMenu;
-            var modsMenu = CreateModsMenu(optionsMenu);
-            modsButton.OnClick += () => modsMenu.Open();
-            Menu = pauseMenu.Menu;
-            
-            InitConfigMenu(_menus.OwmlMenu, optionsMenu);
-            var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
-            owmlButton.OnClick += () => _menus.OwmlMenu.Open();
-        }
-
-        private void CreateModMenuTemplate(IModMainMenu mainMenu)
+        private void CreateModMenuTemplate(IModOWMenu mainMenu)
         {
             var remapControlsButton = mainMenu.OptionsMenu.InputTab.GetButton("UIElement-RemapControls");
             var buttonTemplate = GameObject.Instantiate(remapControlsButton.Button);
