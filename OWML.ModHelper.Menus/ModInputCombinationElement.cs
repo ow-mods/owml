@@ -55,7 +55,7 @@ namespace OWML.ModHelper.Menus
             layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
             var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
             var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject);
-            Layout = new LayoutManager(layoutGroup, styleManager, styleApplier, scale, constantGraphics);
+            Layout = new ModLayoutManager(layoutGroup, styleManager, styleApplier, scale, constantGraphics);
             UpdateContents();
             _popupMenu = popupMenu;
         }
@@ -64,7 +64,7 @@ namespace OWML.ModHelper.Menus
         {
             var commandObject = new GameObject();
             var commandComponent = commandObject.AddComponent<ModCommandListener>();
-            commandComponent.Initialize(InputLibrary.interact);
+            commandComponent.AddToListener(InputLibrary.interact);
             commandComponent.OnNewlyReleased += OnEditButton;
             YesButton.Title = "Edit";
             YesButton.OnClick += OnEditClick;
@@ -77,7 +77,7 @@ namespace OWML.ModHelper.Menus
             var updater = commandObject.AddComponent<ModCommandUpdater>();
             updater.Initialize(deleteCommand);
             commandComponent = commandObject.AddComponent<ModCommandListener>();
-            commandComponent.Initialize(deleteCommand);
+            commandComponent.AddToListener(deleteCommand);
             commandComponent.OnNewlyReleased += OnDeleteButton;
             NoButton.Title = "Delete";
             NoButton.OnClick += OnDeleteClick;
@@ -108,7 +108,7 @@ namespace OWML.ModHelper.Menus
                Layout.ChildCount - 1, ModInputLibrary.ScaleDown);
         }
 
-        private void OnEditButton()
+        private void OnEditButton(SingleAxisCommand command)
         {
             if (Toggle.GetValue<bool>("_amISelected"))
             {
@@ -154,7 +154,7 @@ namespace OWML.ModHelper.Menus
             (Menu as IModInputCombinationMenu)?.RemoveCombinationElement(this);
         }
 
-        private void OnDeleteButton()
+        private void OnDeleteButton(SingleAxisCommand command)
         {
             if (Toggle.GetValue<bool>("_amISelected"))
             {

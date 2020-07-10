@@ -46,7 +46,7 @@ namespace OWML.ModHelper.Menus
             layoutGroupNew.childControlWidth = false;
             var styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
             var styleApplier = layoutObject.AddComponent<ModUIStyleApplier>();
-            return new LayoutManager(layoutGroupNew, styleManager, styleApplier, scaleReference.localScale);
+            return new ModLayoutManager(layoutGroupNew, styleManager, styleApplier, scaleReference.localScale);
         }
 
         public void Initialize(PopupInputMenu menu)
