@@ -6,6 +6,5 @@
         void Destroy();
         void DestroySelf();
         new IModInputCombinationElement Copy(string combination);
-        new string Title { get; set; }
     }
 }
