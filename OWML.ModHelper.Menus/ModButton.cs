@@ -11,7 +11,10 @@ namespace OWML.ModHelper.Menus
 
         public Button Button { get; }
         public IModMenu Menu { get; private set; }
+        public bool IsSelected => _selectable != null && _selectable == Menu.Menu.GetLastSelected();
 
+        private readonly Selectable _selectable;
+        
         private int _index;
         public int Index
         {
@@ -23,6 +26,24 @@ namespace OWML.ModHelper.Menus
             }
         }
 
+        protected ModButton(Button button, IModMenu menu)
+        {
+            Button = button;
+            Button.onClick.AddListener(() => OnClick?.Invoke());
+            _selectable = Button.GetComponent<Selectable>();
+            Initialize(menu);
+        }
+
+        public void Initialize(IModMenu menu)
+        {
+            Menu = menu;
+        }
+
+        public void Click()
+        {
+            Button.onClick.Invoke();
+        }
+
         public IModButton Copy()
         {
             var button = GameObject.Instantiate(Button);
@@ -30,18 +51,6 @@ namespace OWML.ModHelper.Menus
             var modButton = (IModButton)Activator.CreateInstance(GetType(), button, Menu);
             modButton.Index = Index + 1;
             return modButton;
-        }
-
-        protected ModButton(Button button, IModMenu menu)
-        {
-            Button = button;
-            Button.onClick.AddListener(() => OnClick?.Invoke());
-            Initialize(menu);
-        }
-
-        public void Initialize(IModMenu menu)
-        {
-            Menu = menu;
         }
 
         public IModButton Copy(int index)

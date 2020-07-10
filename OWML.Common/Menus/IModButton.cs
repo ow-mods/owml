@@ -6,9 +6,13 @@ namespace OWML.Common.Menus
     public interface IModButton
     {
         event Action OnClick;
+
+        bool IsSelected { get; }
         int Index { get; set; }
         Button Button { get; }
+
         void Initialize(IModMenu menu);
+        void Click();
 
         IModButton Copy();
         IModButton Copy(int index);
