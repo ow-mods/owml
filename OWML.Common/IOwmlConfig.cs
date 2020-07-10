@@ -6,11 +6,11 @@
         string ManagedPath { get; }
         string PluginsPath { get; }
         string DataPath { get; }
-        string OWMLPath { get; }
+        string OWMLPath { get; set; }
         string ModsPath { get; }
         string OutputFilePath { get; }
         string LogFilePath { get; }
-        bool Verbose { get; }
-        bool BlockInput { get; }
+        bool Verbose { get; set; }
+        bool BlockInput { get; set; }
     }
 }

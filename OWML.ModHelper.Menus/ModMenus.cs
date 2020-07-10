@@ -10,14 +10,17 @@ namespace OWML.ModHelper.Menus
         public IModMainMenu MainMenu { get; }
         public IModPauseMenu PauseMenu { get; }
         public IModsMenu ModsMenu { get; }
+        public IBaseConfigMenu OwmlMenu { get; }
         public IModInputMenu InputMenu { get; }
         public IModInputCombinationElementMenu InputCombinationMenu { get; }
 
-        public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler)
+        public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler,
+            IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
         {
             MainMenu = new ModMainMenu(console);
             PauseMenu = new ModPauseMenu(console);
             ModsMenu = new ModsMenu(console, this, inputHandler);
+            OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
             InputMenu = new ModInputMenu(console);
             InputCombinationMenu = new ModInputCombinationElementMenu(console, inputHandler);
 
@@ -28,17 +31,22 @@ namespace OWML.ModHelper.Menus
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(SettingsManager) && ev == Common.Events.AfterStart && behaviour.name == "PauseMenuManagers")
+            if (behaviour.GetType() == typeof(SettingsManager) &&
+                ev == Common.Events.AfterStart &&
+                behaviour.name == "PauseMenuManagers")
             {
                 var settingsManager = (SettingsManager)behaviour;
                 PauseMenu.Initialize(settingsManager);
                 ModsMenu.Initialize(PauseMenu);
             }
-            else if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterStart)
+            else if (behaviour.GetType() == typeof(TitleScreenManager) &&
+                     ev == Common.Events.AfterStart)
             {
                 var titleScreenManager = (TitleScreenManager)behaviour;
                 MainMenu.Initialize(titleScreenManager);
-                var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
+                var inputMenu = titleScreenManager
+                    .GetComponent<ProfileMenuManager>()
+                    .GetValue<PopupInputMenu>("_createProfileConfirmPopup");
                 InputMenu.Initialize(inputMenu);
                 InputCombinationMenu.Initialize(inputMenu);
                 ModsMenu.Initialize(MainMenu);

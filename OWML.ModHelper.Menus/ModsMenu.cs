@@ -11,6 +11,9 @@ namespace OWML.ModHelper.Menus
 {
     public class ModsMenu : ModPopupMenu, IModsMenu
     {
+        private const string ModsButtonTitle = "MODS";
+        private const string OwmlButtonTitle = "OWML";
+
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
 
@@ -48,20 +51,29 @@ namespace OWML.ModHelper.Menus
             {
                 CreateModMenuTemplate(mainMenu);
             }
-            var modsButton = mainMenu.OptionsButton.Duplicate("MODS");
+            
+            var modsButton = mainMenu.OptionsButton.Duplicate(ModsButtonTitle);
             var optionsMenu = mainMenu.OptionsMenu;
             var modsMenu = CreateModsMenu(optionsMenu);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = mainMenu.Menu;
+
+            InitConfigMenu(_menus.OwmlMenu, optionsMenu);
+            var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
+            owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
         public void Initialize(IModPauseMenu pauseMenu)
         {
-            var modsButton = pauseMenu.OptionsButton.Duplicate("MODS");
+            var modsButton = pauseMenu.OptionsButton.Duplicate(ModsButtonTitle);
             var optionsMenu = pauseMenu.OptionsMenu;
             var modsMenu = CreateModsMenu(optionsMenu);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = pauseMenu.Menu;
+            
+            InitConfigMenu(_menus.OwmlMenu, optionsMenu);
+            var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
+            owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
         private void CreateModMenuTemplate(IModMainMenu mainMenu)
@@ -81,8 +93,6 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            var toggleTemplate = options.InputTab.ToggleInputs[0];
-            var sliderTemplate = options.InputTab.SliderInputs[0];
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
@@ -95,22 +105,30 @@ namespace OWML.ModHelper.Menus
             modInputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
             foreach (var modConfigMenu in _modConfigMenus)
             {
-                var modButton = _modButtonTemplate.Copy(modConfigMenu.ModData.Manifest.Name);
+                var modButton = _modButtonTemplate.Copy(modConfigMenu.Manifest.Name);
                 modButton.Button.enabled = true;
-                modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-                var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
-                textInputTemplate.Hide();
-                var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, modInputCombinationMenu, _inputHandler);
-                comboInputTemplate.Hide();
-                var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
-                numberInputTemplate.Hide();
-                modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, comboInputTemplate);
+                InitConfigMenu(modConfigMenu, options);
                 modButton.OnClick += () => modConfigMenu.Open();
                 modsTab.AddButton(modButton);
             }
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;
+        }
+
+        private void InitConfigMenu(IBaseConfigMenu modConfigMenu, IModTabbedMenu options)
+        {
+            var toggleTemplate = options.InputTab.ToggleInputs[0];
+            var sliderTemplate = options.InputTab.SliderInputs[0];
+            var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
+            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
+            var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+            textInputTemplate.Hide();
+            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu, _inputHandler);
+            comboInputTemplate.Hide();
+            var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+            numberInputTemplate.Hide();
+            modConfigMenu.Initialize(modMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, comboInputTemplate);
         }
 
     }
