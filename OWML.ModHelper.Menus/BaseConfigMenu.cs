@@ -12,7 +12,6 @@ namespace OWML.ModHelper.Menus
     {
         public IModManifest Manifest { get; }
 
-        private readonly IModConsole _console;
         protected readonly IModStorage Storage;
 
         private IModToggleInput _toggleTemplate;
@@ -28,7 +27,6 @@ namespace OWML.ModHelper.Menus
 
         protected BaseConfigMenu(IModConsole console, IModManifest manifest) : base(console)
         {
-            _console = console;
             Manifest = manifest;
             Storage = new ModStorage(console, manifest);
         }
@@ -121,11 +119,11 @@ namespace OWML.ModHelper.Menus
                     return;
                 }
 
-                _console.WriteLine("Error: unrecognized complex setting: " + value);
+                OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
                 return;
             }
 
-            _console.WriteLine("Error: unrecognized setting type: " + value.GetType());
+            OwmlConsole.WriteLine("Error: unrecognized setting type: " + value.GetType());
         }
 
         private void AddToggleInput(string key, int index)
