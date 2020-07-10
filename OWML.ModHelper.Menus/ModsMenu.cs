@@ -13,7 +13,6 @@ namespace OWML.ModHelper.Menus
         private const string ModsButtonTitle = "MODS";
         private const string OwmlButtonTitle = "OWML";
 
-        private readonly IModConsole _console;
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
 
@@ -23,7 +22,6 @@ namespace OWML.ModHelper.Menus
 
         public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
         {
-            _console = console;
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
             _inputHandler = inputHandler;
@@ -31,16 +29,16 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(_console, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
         {
-            _console.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
+            OwmlConsole.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                _console.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
+                OwmlConsole.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
                 return null;
             }
             return modConfigMenu;
