@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -12,14 +13,25 @@ namespace OWML.ModHelper.Input
         public event Action<SingleAxisCommand> OnTapped;
         public event Action<SingleAxisCommand> OnHeld;
 
-        private float _minPressDuration, _maxTapDuration;
-        private SingleAxisCommand _command;
+        public float MinimalPressDuration { get; set; } = 0.1f;
+        public float MaximalTapDuration { get; set; } = 0.1f;
 
-        public void Initialize(SingleAxisCommand command, float minPressDuration = 0.1f, float maxTapDuration = 0.1f)
+        private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
+
+        public void AddToListener(SingleAxisCommand command)
         {
-            _command = command;
-            _minPressDuration = minPressDuration;
-            _maxTapDuration = maxTapDuration;
+            if (!_commands.Contains(command))
+            {
+                _commands.Add(command);
+            }
+        }
+
+        public void RemoveFromListener(SingleAxisCommand command)
+        {
+            if (_commands.Contains(command))
+            {
+                _commands.Remove(command);
+            }
         }
 
         private void Start()
@@ -29,33 +41,32 @@ namespace OWML.ModHelper.Input
 
         private void Update()
         {
-            if (_command == null)
+            foreach (var command in _commands)
             {
-                return;
-            }
-            if (_command.IsNewlyPressed())
-            {
-                OnNewlyPressed?.Invoke(_command);
-            }
-            if (_command.IsNewlyHeld(_minPressDuration))
-            {
-                OnNewlyHeld?.Invoke(_command);
-            }
-            if (_command.IsNewlyReleased())
-            {
-                OnNewlyReleased?.Invoke(_command);
-            }
-            if (_command.IsPressed())
-            {
-                OnPressed?.Invoke(_command);
-            }
-            if (_command.IsHeld(_minPressDuration))
-            {
-                OnHeld?.Invoke(_command);
-            }
-            if (_command.IsTapped(_maxTapDuration))
-            {
-                OnTapped?.Invoke(_command);
+                if (command.IsNewlyPressed())
+                {
+                    OnNewlyPressed?.Invoke(command);
+                }
+                if (command.IsNewlyHeld(MinimalPressDuration))
+                {
+                    OnNewlyHeld?.Invoke(command);
+                }
+                if (command.IsNewlyReleased())
+                {
+                    OnNewlyReleased?.Invoke(command);
+                }
+                if (command.IsPressed())
+                {
+                    OnPressed?.Invoke(command);
+                }
+                if (command.IsHeld(MinimalPressDuration))
+                {
+                    OnHeld?.Invoke(command);
+                }
+                if (command.IsTapped(MaximalTapDuration))
+                {
+                    OnTapped?.Invoke(command);
+                }
             }
         }
     }
