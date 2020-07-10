@@ -148,15 +148,16 @@ namespace OWML.ModHelper.Menus
             var collisions = _inputHandler.GetCollisions(currentCombination);
             if (collisions.Count > 0 && collisions[0] != _comboName)
             {
+                var collidesMessage = $"This combination collides with \"{collisions[0]}\"";
                 if (_twoButtonPopup == null)
                 {
-                    RerouteToConsole($"This combination collides with \"{collisions[0]}\"");
+                    RerouteToConsole(collidesMessage);
                     return false;
                 }
                 _twoButtonPopup.EnableMenu(true);
-                _twoButtonPopup.SetUpPopup($"This combination collides with \"{collisions[0]}\"", InputLibrary.confirm2, null,
+                _twoButtonPopup.SetUpPopup(collidesMessage, InputLibrary.confirm2, null,
                     new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-                _twoButtonPopup.GetValue<Text>("_labelText").text = $"this combination collides with \"{collisions[0]}\"";
+                _twoButtonPopup.GetValue<Text>("_labelText").text = collidesMessage;
                 return false;
             }
             if (_combinationMenu == null)
@@ -169,15 +170,16 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
+            var alreadyExistMessage = "This combination already exist in this group";
             if (_twoButtonPopup == null)
             {
-                RerouteToConsole("This combination already exist in this group");
+                RerouteToConsole(alreadyExistMessage);
                 return false;
             }
             _twoButtonPopup.EnableMenu(true);
-            _twoButtonPopup.SetUpPopup("This combination already exist in this group", InputLibrary.confirm2, null,
+            _twoButtonPopup.SetUpPopup(alreadyExistMessage, InputLibrary.confirm2, null,
                 new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
-            _twoButtonPopup.GetValue<Text>("_labelText").text = $"This combination already exist in this group";
+            _twoButtonPopup.GetValue<Text>("_labelText").text = alreadyExistMessage;
             return false;
         }
 
