@@ -50,16 +50,19 @@ namespace OWML.ModHelper.Menus
         {
             if (_cancelCommand != null && _cancelCommand.IsNewlyPressed())
             {
+                _cancelCommand.BlockNextRelease();
                 InvokeCancel();
                 return true;
             }
             if (_okCommand != null && _okCommand.IsNewlyPressed())
             {
+                _cancelCommand.BlockNextRelease();
                 InvokeOk();
                 return true;
             }
             if (_resetCommand != null && _resetCommand.IsNewlyPressed())
             {
+                _cancelCommand.BlockNextRelease();
                 InvokeReset();
                 return true;
             }
