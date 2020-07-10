@@ -12,7 +12,8 @@ namespace OWML.ModHelper.Menus
         public IModsMenu ModsMenu { get; }
         public IBaseConfigMenu OwmlMenu { get; }
         public IModInputMenu InputMenu { get; }
-        public IModInputCombinationElementMenu InputCombinationMenu { get; }
+        public IModInputCombinationElementMenu InputCombinationElementMenu { get; }
+        public IModInputCombinationMenu InputCombinationMenu { get; }
 
         public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler,
             IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
@@ -22,7 +23,8 @@ namespace OWML.ModHelper.Menus
             ModsMenu = new ModsMenu(console, this, inputHandler);
             OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
             InputMenu = new ModInputMenu(console);
-            InputCombinationMenu = new ModInputCombinationElementMenu(console, inputHandler);
+            InputCombinationElementMenu = new ModInputCombinationElementMenu(console, inputHandler);
+            InputCombinationMenu = new ModInputCombinationMenu(console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
@@ -48,7 +50,7 @@ namespace OWML.ModHelper.Menus
                     .GetComponent<ProfileMenuManager>()
                     .GetValue<PopupInputMenu>("_createProfileConfirmPopup");
                 InputMenu.Initialize(inputMenu);
-                InputCombinationMenu.Initialize(inputMenu);
+                InputCombinationElementMenu.Initialize(inputMenu);
                 ModsMenu.Initialize(MainMenu);
             }
         }
