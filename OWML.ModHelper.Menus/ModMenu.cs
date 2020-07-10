@@ -101,7 +101,7 @@ namespace OWML.ModHelper.Menus
             button.Button.transform.localScale = scale;
             return button;
         }
-        
+
         public IModToggleInput GetToggleInput(string title)
         {
             return ToggleInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);

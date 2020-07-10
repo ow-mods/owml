@@ -138,7 +138,7 @@ namespace OWML.ModHelper.Menus
 
         private void RerouteToConsole(string message)
         {
-            Console.WriteLine("Failed to create popup for a following message:");
+            Console.WriteLine("Failed to create popup with the following message:");
             Console.WriteLine(message);
         }
 

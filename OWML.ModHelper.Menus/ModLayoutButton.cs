@@ -1,4 +1,3 @@
-using System;
 using OWML.Common.Menus;
 using UnityEngine;
 using UnityEngine.UI;

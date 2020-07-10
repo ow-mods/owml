@@ -26,13 +26,8 @@ namespace OWML.ModHelper.Menus
 
         public string GenerateCombination()
         {
-            for (var i = 0; i < CombinationElements.Count; i++)
-            {
-                while (i < CombinationElements.Count && CombinationElements[i].Title == "")
-                {
-                    CombinationElements[i].DestroySelf();
-                }
-            }
+            var toDestroy = CombinationElements.Where(x => x.Title == "").ToList();
+            toDestroy.ForEach(c => c.DestroySelf());
             return string.Join("/", CombinationElements.Select(x => x.Title).ToArray());
         }
 
