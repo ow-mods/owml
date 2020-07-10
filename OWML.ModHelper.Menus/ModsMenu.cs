@@ -100,7 +100,8 @@ namespace OWML.ModHelper.Menus
             options.AddTab(modsTab);
             var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
             var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
-            var modInputCombinationElementTemplate = new ModInputCombinationElement(options.InputTab.ToggleInputs[0].Copy().Toggle, _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
+            var modInputCombinationElementTemplate = new ModInputCombinationElement(options.InputTab.ToggleInputs[0].Copy().Toggle,
+                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
             _menus.InputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
             foreach (var modConfigMenu in _modConfigMenus)
             {
