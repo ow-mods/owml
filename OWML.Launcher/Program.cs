@@ -13,7 +13,8 @@ namespace OWML.Launcher
     {
         static void Main(string[] args)
         {
-            var owmlConfig = GetOwmlConfig();
+            var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
+            owmlConfig.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
@@ -21,24 +22,35 @@ namespace OWML.Launcher
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
             var vrPatcher = new VRPatcher(owmlConfig, writer);
-            var app = new App(owmlConfig, owmlManifest, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher);
+            var app = new App(owmlConfig, owmlManifest, writer, modFinder,
+                outputListener, pathFinder, owPatcher, vrPatcher);
             app.Run(args);
         }
 
         private static IOwmlConfig GetOwmlConfig()
         {
-            var config = GetJsonObject<OwmlConfig>("OWML.Config.json");
-            config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+            return GetJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
+        }
+
+        private static IOwmlConfig CreateOwmlConfig()
+        {
+            var config = GetJsonObject<OwmlConfig>(Constants.OwmlDefaultConfigFileName);
+            var json = JsonConvert.SerializeObject(config, Formatting.Indented);
+            File.WriteAllText(Constants.OwmlConfigFileName, json);
             return config;
         }
 
         private static IModManifest GetOwmlManifest()
         {
-            return GetJsonObject<ModManifest>("OWML.Manifest.json");
+            return GetJsonObject<ModManifest>(Constants.OwmlManifestFileName);
         }
 
         private static T GetJsonObject<T>(string filename)
         {
+            if (!File.Exists(filename))
+            {
+                return default(T);
+            }
             var json = File.ReadAllText(filename)
                 .Replace("\\\\", "/")
                 .Replace("\\", "/");

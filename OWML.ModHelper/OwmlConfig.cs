@@ -9,10 +9,10 @@ namespace OWML.ModHelper
         public string GamePath { get; set; }
 
         [JsonProperty("verbose")]
-        public bool Verbose { get; private set; }
+        public bool Verbose { get; set; }
 
         [JsonProperty("combinationsBlockInput")]
-        public bool BlockInput { get; private set; }
+        public bool BlockInput { get; set; }
 
         [JsonIgnore]
         public string DataPath => $"{GamePath}/OuterWilds_Data";

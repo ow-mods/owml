@@ -82,7 +82,7 @@ namespace OWML.Launcher
         private void SaveConfig()
         {
             var json = JsonConvert.SerializeObject(_owmlConfig);
-            File.WriteAllText("OWML.Config.json", json);
+            File.WriteAllText(Constants.OwmlConfigFileName, json);
         }
 
         private void CopyGameFiles()

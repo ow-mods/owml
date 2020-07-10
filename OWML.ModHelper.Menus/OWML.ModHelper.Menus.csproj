@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModButton.cs" />
+    <Compile Include="BaseConfigMenu.cs" />
     <Compile Include="ModLayoutButton.cs" />
     <Compile Include="ModTitleButton.cs" />
     <Compile Include="ModConfigMenu.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="ModInputMenu.cs" />
     <Compile Include="ModMenu.cs" />
     <Compile Include="ModOptionsMenu.cs" />
+    <Compile Include="OwmlConfigMenu.cs" />
     <Compile Include="ModPauseMenu.cs" />
     <Compile Include="ModPopupMenu.cs" />
     <Compile Include="ModsMenu.cs" />
