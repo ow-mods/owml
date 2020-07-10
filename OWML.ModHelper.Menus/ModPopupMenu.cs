@@ -21,9 +21,7 @@ namespace OWML.ModHelper.Menus
             set => _title.text = value;
         }
 
-        public ModPopupMenu(IModConsole console) : base(console)
-        {
-        }
+        public ModPopupMenu(IModConsole console) : base(console) { }
 
         public override void Initialize(Menu menu, LayoutGroup layoutGroup)
         {

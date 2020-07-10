@@ -18,9 +18,7 @@ namespace OWML.ModHelper.Menus
 
         private List<IModTabMenu> _tabMenus;
 
-        public ModOptionsMenu(IModConsole console) : base(console)
-        {
-        }
+        public ModOptionsMenu(IModConsole console) : base(console) { }
 
         public void Initialize(TabbedMenu menu)
         {
