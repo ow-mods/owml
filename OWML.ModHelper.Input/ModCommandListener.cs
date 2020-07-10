@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Input
         public event Action<SingleAxisCommand> OnTapped;
         public event Action<SingleAxisCommand> OnHeld;
 
-        private readonly List<SingleAxisCommand> _commands = new List<SingleAxisCommand>();
+        private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
 
         public float MinimalPressDuration { get; set; } = 0.1f;
         public float MaximalTapDuration { get; set; } = 0.1f;
@@ -23,6 +23,14 @@ namespace OWML.ModHelper.Input
             if (!_commands.Contains(command))
             {
                 _commands.Add(command);
+            }
+        }
+
+        public void RemoveFromListener(SingleAxisCommand command)
+        {
+            if (_commands.Contains(command))
+            {
+                _commands.Remove(command);
             }
         }
 
