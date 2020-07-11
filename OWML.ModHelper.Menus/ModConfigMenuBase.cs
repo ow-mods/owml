@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class BaseConfigMenu : ModPopupMenu, IBaseConfigMenu
+    public abstract class ModConfigMenuBase : ModPopupMenu, IModConfigMenuBase
     {
         public IModManifest Manifest { get; }
 
@@ -25,7 +25,7 @@ namespace OWML.ModHelper.Menus
         protected abstract void OnSave();
         protected abstract void OnReset();
 
-        protected BaseConfigMenu(IModConsole console, IModManifest manifest) : base(console)
+        protected ModConfigMenuBase(IModConsole console, IModManifest manifest) : base(console)
         {
             Manifest = manifest;
             Storage = new ModStorage(console, manifest);
