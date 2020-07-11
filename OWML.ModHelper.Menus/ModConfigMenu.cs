@@ -5,7 +5,7 @@ using OWML.Common.Menus;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModConfigMenu : BaseConfigMenu, IModConfigMenu
+    public class ModConfigMenu : ModConfigMenuBase, IModConfigMenu
     {
         private const string EnabledTitle = "Enabled";
         private const string RequiresVRTitle = "Requires VR";

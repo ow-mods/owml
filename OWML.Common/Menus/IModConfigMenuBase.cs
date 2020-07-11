@@ -1,6 +1,6 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IBaseConfigMenu : IModPopupMenu
+    public interface IModConfigMenuBase : IModPopupMenu
     {
         IModManifest Manifest { get; }
 
