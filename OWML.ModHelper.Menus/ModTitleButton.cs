@@ -7,7 +7,7 @@ namespace OWML.ModHelper.Menus
     public class ModTitleButton : ModButton, IModTitleButton
     {
         private readonly Text _text;
-        public string Title
+        public virtual string Title
         {
             get => _text != null ? _text.text : "";
             set
