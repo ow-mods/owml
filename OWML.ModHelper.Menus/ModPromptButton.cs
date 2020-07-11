@@ -10,10 +10,7 @@ namespace OWML.ModHelper.Menus
         private UITextType _textID;
         private readonly ButtonWithHotkeyImageElement _hotkeyButton;
 
-        public string DefaultTitle
-        {
-            get => UITextLibrary.GetString(_textID);
-        }
+        public string DefaultTitle => UITextLibrary.GetString(_textID);
         public ScreenPrompt Prompt
         {
             get => _prompt;
