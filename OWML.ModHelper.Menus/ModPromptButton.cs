@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModPromptButton : ModButton, IModPromptButton
+    public class ModPromptButton : ModTitleButton, IModPromptButton
     {
         private ScreenPrompt _prompt;
         private UITextType _textID;

@@ -51,9 +51,9 @@ namespace OWML.ModHelper.Menus
 
             Title = Manifest.Name;
 
-            var saveButton = GetButton("UIElement-SaveAndExit");
-            var resetButton = GetButton("UIElement-ResetToDefaultsButton");
-            var cancelButton = GetButton("UIElement-DiscardChangesButton");
+            var saveButton = GetTitleButton("UIElement-SaveAndExit");
+            var resetButton = GetTitleButton("UIElement-ResetToDefaultsButton");
+            var cancelButton = GetTitleButton("UIElement-DiscardChangesButton");
 
             saveButton.OnClick += OnSave;
             resetButton.OnClick += OnReset;
@@ -63,8 +63,8 @@ namespace OWML.ModHelper.Menus
             resetButton.SetControllerCommand(InputLibrary.setDefaults);
             cancelButton.SetControllerCommand(InputLibrary.cancel);
 
-            GetButton("UIElement-CancelOutOfRebinding").Hide();
-            GetButton("UIElement-KeyRebinder").Hide();
+            GetTitleButton("UIElement-CancelOutOfRebinding").Hide();
+            GetTitleButton("UIElement-KeyRebinder").Hide();
 
             foreach (Transform child in layoutGroup.transform)
             {

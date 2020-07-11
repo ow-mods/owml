@@ -64,7 +64,7 @@ namespace OWML.ModHelper.Menus
 
         private void CreateModMenuTemplate(IModOWMenu mainMenu)
         {
-            var remapControlsButton = mainMenu.OptionsMenu.InputTab.GetButton("UIElement-RemapControls");
+            var remapControlsButton = mainMenu.OptionsMenu.InputTab.GetTitleButton("UIElement-RemapControls");
             var buttonTemplate = GameObject.Instantiate(remapControlsButton.Button);
             buttonTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
             _modButtonTemplate = new ModTitleButton(buttonTemplate, mainMenu);

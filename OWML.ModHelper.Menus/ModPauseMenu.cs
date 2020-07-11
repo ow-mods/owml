@@ -26,9 +26,9 @@ namespace OWML.ModHelper.Menus
             var pauseMenu = pauseMenuManager.GetValue<Menu>("_pauseMenu");
             base.Initialize(pauseMenu);
 
-            ResumeButton = GetButton("Button-Unpause");
-            OptionsButton = GetButton("Button-Options");
-            QuitButton = GetButton("Button-ExitToMainMenu");
+            ResumeButton = GetTitleButton("Button-Unpause");
+            OptionsButton = GetTitleButton("Button-Options");
+            QuitButton = GetTitleButton("Button-ExitToMainMenu");
 
             InvokeOnInit();
         }
