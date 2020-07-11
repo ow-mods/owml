@@ -1,4 +1,5 @@
 ﻿using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
@@ -7,12 +8,15 @@ namespace OWML.ModHelper.Menus
     {
         public float Min { get; set; }
         public float Max { get; set; }
+        public override bool IsSelected => _uIStyleApplier?.GetValue<bool>("_selected") ?? false;
 
         private readonly SliderElement _element;
+        private readonly UIStyleApplier _uIStyleApplier;
 
         public ModSliderInput(SliderElement element, IModMenu menu) : base(element, menu)
         {
             _element = element;
+            _uIStyleApplier = element.GetComponent<UIStyleApplier>();
             element.OnValueChanged += () => InvokeOnChange(Value);
         }
 

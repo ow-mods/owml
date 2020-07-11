@@ -21,6 +21,7 @@ namespace OWML.ModHelper.Menus
                 Element.transform.SetSiblingIndex(value);
             }
         }
+        public abstract bool IsSelected { get; }
 
         private readonly Text _text;
         public virtual string Title

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModNumberInput : ModInputField<float>, IModNumberInput
+    public class ModNumberInput : ModFieldInput<float>, IModNumberInput
     {
         private float _value;
 

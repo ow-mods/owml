@@ -8,6 +8,7 @@ namespace OWML.Common.Menus
         event Action OnClick;
         int Index { get; set; }
         Button Button { get; }
+        bool IsSelected { get; }
         void Initialize(IModMenu menu);
 
         IModButton Copy();

@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModPopupInput.cs" />
     <Compile Include="ModUIStyleApplier.cs" />
     <Compile Include="ModLayoutManager.cs" />
     <Compile Include="ModInputCombinationElement.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="ModTabMenu.cs" />
     <Compile Include="ModSliderInput.cs" />
     <Compile Include="ModNumberInput.cs" />
-    <Compile Include="ModInputField.cs" />
+    <Compile Include="ModFieldInput.cs" />
     <Compile Include="ModComboInput.cs" />
     <Compile Include="ModTextInput.cs" />
     <Compile Include="ModToggleInput.cs" />

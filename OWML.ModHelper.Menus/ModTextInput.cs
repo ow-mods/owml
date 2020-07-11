@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTextInput : ModInputField<string>, IModTextInput
+    public class ModTextInput : ModFieldInput<string>, IModTextInput
     {
         private string _value;
 
