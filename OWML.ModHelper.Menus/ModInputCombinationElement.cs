@@ -110,7 +110,7 @@ namespace OWML.ModHelper.Menus
 
         private void OnEditButton(SingleAxisCommand command)
         {
-            if (Toggle.GetValue<bool>("_amISelected"))
+            if (IsSelected)
             {
                 OnEditClick();
             }
@@ -156,7 +156,7 @@ namespace OWML.ModHelper.Menus
 
         private void OnDeleteButton(SingleAxisCommand command)
         {
-            if (Toggle.GetValue<bool>("_amISelected"))
+            if (IsSelected)
             {
                 OnDeleteClick();
             }

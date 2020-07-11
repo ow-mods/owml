@@ -7,21 +7,20 @@ using OWML.Common;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModComboInput : ModInput<string>, IModComboInput
+    public class ModComboInput : ModMenuInput<string>, IModComboInput
     {
         public IModLayoutButton Button { get; }
         protected readonly IModInputCombinationMenu InputMenu;
-        protected readonly TwoButtonToggleElement ToggleElement;
 
-        private string _value;
+        private string _combination;
         private readonly IModInputHandler _inputHandler;
 
         public override string Value
         {
-            get => _value;
+            get => _combination;
             set
             {
-                _value = value;
+                _combination = value;
                 UpdateLayout(value);
             }
         }
@@ -30,20 +29,14 @@ namespace OWML.ModHelper.Menus
             : base(element, menu)
         {
             _inputHandler = inputHandler;
-            ToggleElement = element;
             InputMenu = inputMenu;
+
             Button = new ModLayoutButton(element.GetValue<Button>("_buttonTrue"), menu);
-            Button.OnClick += Open;
-            var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
-            noButton?.transform.parent.gameObject.SetActive(false);
+            Subscribe(Button);
+
             var myParent = (RectTransform)Button.Button.transform.parent;
             var rectTransform = (RectTransform)Button.Layout.LayoutGroup.transform;
             rectTransform.sizeDelta = new Vector2(myParent.sizeDelta.x * 2, myParent.sizeDelta.y);
-
-            var parentLayoutGroup = myParent.parent.GetComponent<HorizontalLayoutGroup>();
-            parentLayoutGroup.childControlWidth = true;
-            parentLayoutGroup.childForceExpandWidth = true;
-            myParent.GetComponent<LayoutElement>().preferredWidth = 100;
         }
 
         private void UpdateLayout(string currentCombination)
@@ -69,10 +62,10 @@ namespace OWML.ModHelper.Menus
             Button.Layout.UpdateState();
         }
 
-        protected void Open()
+        protected override void Open()
         {
             InputMenu.Title = Menu is IModConfigMenu menu ? $"{menu.Title}.{Title}" : Title;
-            InputMenu.FillMenu(_value);
+            InputMenu.FillMenu(_combination);
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;
             InputMenu.Open();

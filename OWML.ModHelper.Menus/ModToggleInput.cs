@@ -11,6 +11,7 @@ namespace OWML.ModHelper.Menus
         public IModTitleButton NoButton { get; }
 
         public TwoButtonToggleElement Toggle { get; }
+        public override bool IsSelected => Toggle.GetValue<bool>("_amISelected");
 
         public ModToggleInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
         {
