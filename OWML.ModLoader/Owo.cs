@@ -111,7 +111,7 @@ namespace OWML.ModLoader
             var logger = new ModLogger(_owmlConfig, modData.Manifest);
             var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest);
             var assets = new ModAssets(console, modData.Manifest);
-            var storage = new ModStorage(console, modData.Manifest);
+            var storage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
             var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,

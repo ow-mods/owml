@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
         protected ModConfigMenuBase(IModConsole console, IModManifest manifest) : base(console)
         {
             Manifest = manifest;
-            Storage = new ModStorage(console, manifest);
+            Storage = new ModStorage(manifest);
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,

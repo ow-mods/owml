@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using Newtonsoft.Json;
-using OWML.Common;
+﻿using OWML.Common;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
@@ -20,9 +17,9 @@ namespace OWML.ModLoader
         {
             var owmlGo = new GameObject();
             owmlGo.AddComponent<OwmlBehaviour>();
-            var owmlConfig = GetJsonObject<OwmlConfig>(ConfigPath);
-            var owmlDefaultConfig = GetJsonObject<OwmlConfig>(DefaultConfigPath);
-            var owmlManifest = GetJsonObject<ModManifest>(ManifestPath);
+            var owmlConfig = JsonHelper.LoadJsonObject<OwmlConfig>(ConfigPath);
+            var owmlDefaultConfig = JsonHelper.LoadJsonObject<OwmlConfig>(DefaultConfigPath);
+            var owmlManifest = JsonHelper.LoadJsonObject<ModManifest>(ManifestPath);
             if (owmlConfig == null || owmlManifest == null)
             {
                 // Everything is wrong and can't write to console...
@@ -40,19 +37,6 @@ namespace OWML.ModLoader
             var menus = new ModMenus(console, events, inputHandler, owmlManifest, owmlConfig, owmlDefaultConfig);
             var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter);
             owo.LoadMods();
-        }
-
-        private static T GetJsonObject<T>(string path)
-        {
-            try
-            {
-                var json = File.ReadAllText(path);
-                return JsonConvert.DeserializeObject<T>(json);
-            }
-            catch (Exception)
-            {
-                return default(T);
-            }
         }
 
     }
