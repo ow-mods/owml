@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Menus
     {
         public float Min { get; set; }
         public float Max { get; set; }
-        public override bool IsSelected => _uIStyleApplier.GetValue<bool>("_selected");
+        public override bool IsSelected => _uIStyleApplier?.GetValue<bool>("_selected") ?? false;
 
         private readonly SliderElement _element;
         private readonly UIStyleApplier _uIStyleApplier;

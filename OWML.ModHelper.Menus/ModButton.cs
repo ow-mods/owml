@@ -23,7 +23,7 @@ namespace OWML.ModHelper.Menus
                 Button.transform.SetSiblingIndex(value);
             }
         }
-        public bool IsSelected => _uIStyleApplier.GetValue<bool>("_selected");
+        public bool IsSelected => _uIStyleApplier?.GetValue<bool>("_selected") ?? false;
 
         private readonly UIStyleApplier _uIStyleApplier;
 
