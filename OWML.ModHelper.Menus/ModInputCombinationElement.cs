@@ -64,8 +64,11 @@ namespace OWML.ModHelper.Menus
         {
             var commandObject = new GameObject();
             var commandComponent = commandObject.AddComponent<ModCommandListener>();
-            commandComponent.AddToListener(InputLibrary.interact);
+            commandComponent.AddToListener(InputLibrary.select);
+            commandComponent.AddToListener(InputLibrary.enter);
+            commandComponent.AddToListener(InputLibrary.enter2);
             commandComponent.OnNewlyReleased += OnEditButton;
+            commandComponent.BlockNextRelease();
             YesButton.Title = "Edit";
             YesButton.OnClick += OnEditClick;
 
@@ -79,6 +82,7 @@ namespace OWML.ModHelper.Menus
             commandComponent = commandObject.AddComponent<ModCommandListener>();
             commandComponent.AddToListener(deleteCommand);
             commandComponent.OnNewlyReleased += OnDeleteButton;
+            commandComponent.BlockNextRelease();
             NoButton.Title = "Delete";
             NoButton.OnClick += OnDeleteClick;
         }
@@ -112,6 +116,7 @@ namespace OWML.ModHelper.Menus
         {
             if (IsSelected)
             {
+                ModConsole.Instance.WriteLine("Opening Menu");
                 OnEditClick();
             }
         }

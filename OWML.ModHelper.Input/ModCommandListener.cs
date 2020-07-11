@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using OWML.ModHelper.Events;
 
 namespace OWML.ModHelper.Input
 {
@@ -19,12 +20,16 @@ namespace OWML.ModHelper.Input
 
         private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
         private readonly HashSet<SingleAxisCommand> _toRemove = new HashSet<SingleAxisCommand>();
+        private readonly Dictionary<SingleAxisCommand, bool> _wasPressed = new Dictionary<SingleAxisCommand, bool>();
+        private readonly Dictionary<SingleAxisCommand, bool> _isPressed = new Dictionary<SingleAxisCommand, bool>();
 
         public void AddToListener(SingleAxisCommand command)
         {
             if (!_commands.Contains(command))
             {
                 _commands.Add(command);
+                _wasPressed.Add(command, false);
+                _isPressed.Add(command, false);
             }
         }
 
@@ -48,7 +53,12 @@ namespace OWML.ModHelper.Input
 
         private void Update()
         {
-            _toRemove.ToList().ForEach(command => _commands.Remove(command));
+            foreach (var command in _toRemove)
+            {
+                _commands.Remove(command);
+                _isPressed.Remove(command);
+                _wasPressed.Remove(command);
+            }
             _toRemove.Clear();
             foreach (var command in _commands)
             {
@@ -56,6 +66,7 @@ namespace OWML.ModHelper.Input
                 {
                     continue;
                 }
+                var blockFlag = command.GetValue<bool>("_blockNextRelease");
                 if (command.IsNewlyPressed())
                 {
                     OnNewlyPressed?.Invoke(command);
@@ -64,13 +75,19 @@ namespace OWML.ModHelper.Input
                 {
                     OnNewlyHeld?.Invoke(command);
                 }
-                if (command.IsNewlyReleased())
-                {
-                    OnNewlyReleased?.Invoke(command);
-                }
                 if (command.IsPressed())
                 {
                     OnPressed?.Invoke(command);
+                    _isPressed[command] = true;
+                }
+                else
+                {
+                    _wasPressed[command] = _isPressed[command];
+                    _isPressed[command] = false;
+                }
+                if (command.IsNewlyPressed())
+                {
+                    OnNewlyReleased?.Invoke(command);
                 }
                 if (command.IsHeld(MinimalPressDuration))
                 {
@@ -79,6 +96,17 @@ namespace OWML.ModHelper.Input
                 if (command.IsTapped(MaximalTapDuration))
                 {
                     OnTapped?.Invoke(command);
+                }
+                if (blockFlag)//damn you, Mobius Digital
+                {
+                    if (!(_wasPressed[command] || _isPressed[command]))
+                    {
+                        command.SetValue("_blockNextRelease", false);
+                    }
+                    else
+                    {
+                        command.SetValue("_blockNextRelease", true);
+                    }
                 }
             }
         }
