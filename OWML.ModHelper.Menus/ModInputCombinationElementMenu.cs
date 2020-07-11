@@ -68,7 +68,7 @@ namespace OWML.ModHelper.Menus
             var buttonsTransform = menuTransform.GetComponentInChildren<HorizontalLayoutGroup>(true).transform;
 
             var buttons = buttonsTransform.GetComponentsInChildren<Button>(true).ToList();
-            buttons.ForEach(button => button.navigation = new Navigation() { mode = Navigation.Mode.None });
+            buttons.ForEach(button => button.navigation = new Navigation { mode = Navigation.Mode.None });
             var tabbedNavigations = menuTransform.GetComponentsInChildren<TabbedNavigation>(true).ToList();
             tabbedNavigations.ForEach(GameObject.Destroy);
 

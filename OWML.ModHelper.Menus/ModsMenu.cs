@@ -102,7 +102,7 @@ namespace OWML.ModHelper.Menus
             return modsTab;
         }
 
-        private void InitConfigMenu(IBaseConfigMenu modConfigMenu, IModTabbedMenu options)
+        private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options)
         {
             var toggleTemplate = options.InputTab.ToggleInputs[0];
             var sliderTemplate = options.InputTab.SliderInputs[0];

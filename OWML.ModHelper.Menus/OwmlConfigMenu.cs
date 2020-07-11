@@ -2,7 +2,7 @@
 
 namespace OWML.ModHelper.Menus
 {
-    public class OwmlConfigMenu : BaseConfigMenu
+    public class OwmlConfigMenu : ModConfigMenuBase
     {
         private const string GamePathTitle = "Game path";
         private const string VerboseModeTitle = "Verbose mode";
