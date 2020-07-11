@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class ModMenuInput<T> : ModInput<T>
+    public abstract class ModPopupInput<T> : ModInput<T>
     {
         protected readonly TwoButtonToggleElement ToggleElement;
 
         public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
 
-        protected ModMenuInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
+        protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
         {
             ToggleElement = toggle;
 
