@@ -296,9 +296,9 @@ namespace OWML.ModHelper.Menus
             OnInit?.Invoke();
         }
 
-        public void SelectFirst()
+        public virtual void SelectFirst()
         {
-            var firstSelectable = Menu.GetComponentInChildren<Selectable>(true);
+            var firstSelectable = Menu.GetComponentInChildren<Selectable>();
             Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
             Menu.SetSelectOnActivate(firstSelectable);
         }
@@ -316,9 +316,9 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public void UpdateNavigation()
+        public virtual void UpdateNavigation()
         {
-            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>(true)
+            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
                 .Select(x => x.GetComponent<Selectable>())
                 .Where(x => x != null).ToList();
             UpdateNavigation(selectables);

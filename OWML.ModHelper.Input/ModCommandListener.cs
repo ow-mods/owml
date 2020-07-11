@@ -36,6 +36,11 @@ namespace OWML.ModHelper.Input
             }
         }
 
+        public void BlockNextRelease()
+        {
+            _commands.Where(x => x.IsPressed()).ToList().ForEach(x => x.BlockNextRelease());
+        }
+
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
