@@ -162,7 +162,7 @@ namespace OWML.ModHelper.Menus
         protected virtual void OnButton(SingleAxisCommand command)
         {
             command.ConsumeInput();
-            if ((command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease"))) 
+            if ((command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease")))
                 || command == InputLibrary.enter2)
             {
                 OnSave();
