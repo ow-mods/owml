@@ -7,7 +7,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModComboInput : ModMenuInput<string>, IModComboInput
+    public class ModComboInput : ModPopupInput<string>, IModComboInput
     {
         public IModLayoutButton Button { get; }
         protected readonly IModInputCombinationMenu InputMenu;
