@@ -75,9 +75,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModUIStyleApplier.cs" />
+    <Compile Include="ModLayoutManager.cs" />
+    <Compile Include="ModInputCombinationElement.cs" />
+    <Compile Include="ModInputCombinationElementMenu.cs" />
+    <Compile Include="ModInputCombinationMenu.cs" />
+    <Compile Include="ModInputCombinationPopup.cs" />
+    <Compile Include="ModLayoutButton.cs" />
     <Compile Include="ModButton.cs" />
     <Compile Include="BaseConfigMenu.cs" />
-    <Compile Include="ModLayoutButton.cs" />
     <Compile Include="ModTitleButton.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInput.cs" />

@@ -7,5 +7,7 @@
         IModsMenu ModsMenu { get; }
         IBaseConfigMenu OwmlMenu { get; }
         IModInputMenu InputMenu { get; }
+        IModInputCombinationElementMenu InputCombinationElementMenu { get; }
+        IModInputCombinationMenu InputCombinationMenu { get; }
     }
 }

@@ -81,9 +81,14 @@ namespace OWML.ModHelper.Menus
         {
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.Buttons.ForEach(x => x.Hide());
-            modsTab.Menu.GetComponentsInChildren<Selectable>().ToList().ForEach(x => x.gameObject.SetActive(false));
+            modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
+            var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
+            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
+            var modInputCombinationElementTemplate = new ModInputCombinationElement(options.InputTab.ToggleInputs[0].Copy().Toggle,
+                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
+            _menus.InputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.Manifest.Name);
@@ -105,7 +110,7 @@ namespace OWML.ModHelper.Menus
             var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
             var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             textInputTemplate.Hide();
-            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu, _inputHandler);
+            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler);
             comboInputTemplate.Hide();
             var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             numberInputTemplate.Hide();

@@ -41,6 +41,10 @@
     <Compile Include="IModInputTextures.cs" />
     <Compile Include="IModInputHandler.cs" />
     <Compile Include="IModInteraction.cs" />
+    <Compile Include="Menus\IModLayoutManager.cs" />
+    <Compile Include="Menus\IModInputCombinationElementMenu.cs" />
+    <Compile Include="Menus\IModInputCombinationMenu.cs" />
+    <Compile Include="Menus\IModInputCombinationElement.cs" />
     <Compile Include="Menus\IBaseConfigMenu.cs" />
     <Compile Include="Menus\IModButton.cs" />
     <Compile Include="Menus\IModLayoutButton.cs" />

@@ -25,7 +25,7 @@ namespace OWML.ModHelper.Menus
         public IModSliderInput Copy()
         {
             var copy = GameObject.Instantiate(_element);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModSliderInput(copy, Menu);
         }
 

@@ -26,7 +26,7 @@ namespace OWML.ModHelper.Menus
         public override void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
             base.Initialize(menu, layoutGroup);
-            _title = Menu.GetComponentInChildren<Text>();
+            _title = Menu.GetComponentInChildren<Text>(true);
             var localizedText = _title.GetComponent<LocalizedText>();
             if (localizedText != null)
             {

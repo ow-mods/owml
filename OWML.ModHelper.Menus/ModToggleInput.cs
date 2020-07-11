@@ -31,14 +31,14 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public IModToggleInput Copy()
+        public virtual IModToggleInput Copy()
         {
             var copy = GameObject.Instantiate(Toggle);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModToggleInput(copy, Menu);
         }
 
-        public IModToggleInput Copy(string title)
+        public virtual IModToggleInput Copy(string title)
         {
             var copy = Copy();
             copy.Title = title;

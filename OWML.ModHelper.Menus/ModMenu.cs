@@ -21,12 +21,11 @@ namespace OWML.ModHelper.Menus
         public List<IModTextInput> TextInputs { get; private set; }
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
-
         public List<IModTitleButton> TitleButtons => Buttons.OfType<IModTitleButton>().ToList();
         public List<IModLayoutButton> LayoutButtons => Buttons.OfType<IModLayoutButton>().ToList();
 
-        protected readonly IModConsole OwmlConsole;
         protected LayoutGroup Layout;
+        protected readonly IModConsole OwmlConsole;
 
         public ModMenu(IModConsole console)
         {
@@ -36,7 +35,7 @@ namespace OWML.ModHelper.Menus
         public virtual void Initialize(Menu menu)
         {
             var root = menu.GetValue<GameObject>("_selectableItemsRoot") ?? menu.GetValue<GameObject>("_menuActivationRoot");
-            var layoutGroup = root.GetComponent<LayoutGroup>() ?? root.GetComponentInChildren<LayoutGroup>();
+            var layoutGroup = root.GetComponent<LayoutGroup>() ?? root.GetComponentInChildren<LayoutGroup>(true);
             Initialize(menu, layoutGroup);
         }
 
@@ -44,9 +43,9 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             Layout = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>().Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList();
-            ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>().Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
-            SliderInputs = Menu.GetComponentsInChildren<SliderElement>().Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
+            Buttons = Menu.GetComponentsInChildren<Button>(true).Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList();
+            ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
+            SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();
@@ -65,7 +64,7 @@ namespace OWML.ModHelper.Menus
         [Obsolete("Use Buttons instead")]
         public List<Button> GetButtons()
         {
-            return Menu.GetComponentsInChildren<Button>().ToList();
+            return Menu.GetComponentsInChildren<Button>(true).ToList();
         }
 
         [Obsolete("Use button.Duplicate instead")]
@@ -276,16 +275,13 @@ namespace OWML.ModHelper.Menus
 
         public void SelectFirst()
         {
-            var firstSelectable = Menu.GetComponentInChildren<Selectable>();
+            var firstSelectable = Menu.GetComponentInChildren<Selectable>(true);
             Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
             Menu.SetSelectOnActivate(firstSelectable);
         }
 
-        public void UpdateNavigation()
+        protected void UpdateNavigation(List<Selectable> selectables)
         {
-            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
-                .Select(x => x.GetComponent<Selectable>())
-                .Where(x => x != null).ToList();
             for (var i = 0; i < selectables.Count; i++)
             {
                 var upIndex = (i - 1 + selectables.Count) % selectables.Count;
@@ -295,6 +291,14 @@ namespace OWML.ModHelper.Menus
                 navigation.selectOnDown = selectables[downIndex];
                 selectables[i].navigation = navigation;
             }
+        }
+
+        public void UpdateNavigation()
+        {
+            var selectables = Menu.GetComponentsInChildren<TooltipSelectable>(true)
+                .Select(x => x.GetComponent<Selectable>())
+                .Where(x => x != null).ToList();
+            UpdateNavigation(selectables);
         }
 
     }

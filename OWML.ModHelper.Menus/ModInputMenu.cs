@@ -82,6 +82,5 @@ namespace OWML.ModHelper.Menus
             _inputMenu.OnPopupConfirm -= OnPopupConfirm;
             _inputMenu.OnPopupCancel -= OnPopupCancel;
         }
-
     }
 }
