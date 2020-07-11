@@ -98,12 +98,6 @@ namespace OWML.ModHelper.Menus
             UpdateNavigation(Selectables);
         }
 
-        public override void Open()
-        {
-            CommandListener.BlockNextRelease();
-            base.Open();
-        }
-
         protected virtual void RemoveSelectable(Selectable selectable)
         {
             var index = Selectables.IndexOf(selectable);
@@ -129,9 +123,11 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void AddSelectable(Selectable selectable, int index)
         {
+            Selectables.Insert(index, selectable);
+
             var current = Selectables[index];
             var next = Selectables[(index + 1) % Selectables.Count];
-            var previous = Selectables[(Selectables.Count - 2 + Selectables.Count) % Selectables.Count];
+            var previous = Selectables[(index - 1 + Selectables.Count) % Selectables.Count];
 
             var navigation = next.navigation;
             navigation.selectOnUp = current;
@@ -145,8 +141,6 @@ namespace OWML.ModHelper.Menus
             navigation.selectOnDown = next;
             navigation.selectOnUp = previous;
             current.navigation = navigation;
-
-            Selectables.Insert(index, selectable);
         }
 
         protected virtual void AddSelectable(Selectable selectable)
@@ -157,6 +151,7 @@ namespace OWML.ModHelper.Menus
         protected virtual void OnActivateMenu()
         {
             CommandListener.gameObject.SetActive(true);
+            CommandListener.BlockNextRelease();
         }
 
         protected virtual void OnDeactivateMenu()
@@ -167,7 +162,8 @@ namespace OWML.ModHelper.Menus
         protected virtual void OnButton(SingleAxisCommand command)
         {
             command.ConsumeInput();
-            if ((command == InputLibrary.confirm && InputLibrary.enter.IsNewlyReleased()) || command == InputLibrary.enter2)
+            if ((command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease")))
+                || command == InputLibrary.enter2)
             {
                 OnSave();
             }
