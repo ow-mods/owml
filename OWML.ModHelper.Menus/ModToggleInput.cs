@@ -11,6 +11,7 @@ namespace OWML.ModHelper.Menus
         public IModTitleButton NoButton { get; }
 
         public TwoButtonToggleElement Toggle { get; }
+        public override bool IsSelected => Toggle.GetValue<bool>("_amISelected");
 
         public ModToggleInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
         {
@@ -31,14 +32,14 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public IModToggleInput Copy()
+        public virtual IModToggleInput Copy()
         {
             var copy = GameObject.Instantiate(Toggle);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModToggleInput(copy, Menu);
         }
 
-        public IModToggleInput Copy(string title)
+        public virtual IModToggleInput Copy(string title)
         {
             var copy = Copy();
             copy.Title = title;

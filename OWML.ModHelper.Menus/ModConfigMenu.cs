@@ -5,21 +5,21 @@ using OWML.Common.Menus;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModConfigMenu : BaseConfigMenu, IModConfigMenu
+    public class ModConfigMenu : ModConfigMenuBase, IModConfigMenu
     {
         private const string EnabledTitle = "Enabled";
         private const string RequiresVRTitle = "Requires VR";
 
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
-        
+
         public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) 
             : base(console, modData.Manifest)
         {
             ModData = modData;
             Mod = mod;
         }
-        
+
         protected override void AddInputs()
         {
             var index = 2;

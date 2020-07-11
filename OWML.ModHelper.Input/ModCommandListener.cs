@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -17,6 +18,7 @@ namespace OWML.ModHelper.Input
         public float MaximalTapDuration { get; set; } = 0.1f;
 
         private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
+        private readonly HashSet<SingleAxisCommand> _toRemove = new HashSet<SingleAxisCommand>();
 
         public void AddToListener(SingleAxisCommand command)
         {
@@ -28,9 +30,9 @@ namespace OWML.ModHelper.Input
 
         public void RemoveFromListener(SingleAxisCommand command)
         {
-            if (_commands.Contains(command))
+            if (_commands.Contains(command) && !_toRemove.Contains(command))
             {
-                _commands.Remove(command);
+                _toRemove.Add(command);
             }
         }
 
@@ -41,8 +43,14 @@ namespace OWML.ModHelper.Input
 
         private void Update()
         {
+            _toRemove.ToList().ForEach(command => _commands.Remove(command));
+            _toRemove.Clear();
             foreach (var command in _commands)
             {
+                if (_toRemove.Contains(command))
+                {
+                    continue;
+                }
                 if (command.IsNewlyPressed())
                 {
                     OnNewlyPressed?.Invoke(command);

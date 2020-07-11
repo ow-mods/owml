@@ -1,5 +1,6 @@
 ﻿using System;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,17 @@ namespace OWML.ModHelper.Menus
                 Button.transform.SetSiblingIndex(value);
             }
         }
+        public bool IsSelected => _uIStyleApplier?.GetValue<bool>("_selected") ?? false;
+
+        private readonly UIStyleApplier _uIStyleApplier;
+
+        protected ModButton(Button button, IModMenu menu)
+        {
+            _uIStyleApplier = button.GetComponent<UIStyleApplier>();
+            Button = button;
+            Button.onClick.AddListener(() => OnClick?.Invoke());
+            Initialize(menu);
+        }
 
         public IModButton Copy()
         {
@@ -30,13 +42,6 @@ namespace OWML.ModHelper.Menus
             var modButton = (IModButton)Activator.CreateInstance(GetType(), button, Menu);
             modButton.Index = Index + 1;
             return modButton;
-        }
-
-        protected ModButton(Button button, IModMenu menu)
-        {
-            Button = button;
-            Button.onClick.AddListener(() => OnClick?.Invoke());
-            Initialize(menu);
         }
 
         public void Initialize(IModMenu menu)

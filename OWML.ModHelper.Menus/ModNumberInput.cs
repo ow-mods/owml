@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModNumberInput : ModInputField<float>, IModNumberInput
+    public class ModNumberInput : ModFieldInput<float>, IModNumberInput
     {
         private float _value;
 
@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
         public IModNumberInput Copy()
         {
             var copy = GameObject.Instantiate(ToggleElement);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModNumberInput(copy, Menu, InputMenu);
         }
 

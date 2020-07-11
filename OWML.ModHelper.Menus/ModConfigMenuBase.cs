@@ -8,11 +8,10 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class BaseConfigMenu : ModPopupMenu, IBaseConfigMenu
+    public abstract class ModConfigMenuBase : ModPopupMenu, IModConfigMenuBase
     {
         public IModManifest Manifest { get; }
 
-        private readonly IModConsole _console;
         protected readonly IModStorage Storage;
 
         private IModToggleInput _toggleTemplate;
@@ -26,9 +25,8 @@ namespace OWML.ModHelper.Menus
         protected abstract void OnSave();
         protected abstract void OnReset();
 
-        protected BaseConfigMenu(IModConsole console, IModManifest manifest) : base(console)
+        protected ModConfigMenuBase(IModConsole console, IModManifest manifest) : base(console)
         {
-            _console = console;
             Manifest = manifest;
             Storage = new ModStorage(manifest);
         }
@@ -121,11 +119,11 @@ namespace OWML.ModHelper.Menus
                     return;
                 }
 
-                _console.WriteLine("Error: unrecognized complex setting: " + value);
+                OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
                 return;
             }
 
-            _console.WriteLine("Error: unrecognized setting type: " + value.GetType());
+            OwmlConsole.WriteLine("Error: unrecognized setting type: " + value.GetType());
         }
 
         private void AddToggleInput(string key, int index)

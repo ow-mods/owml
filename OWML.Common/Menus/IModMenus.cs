@@ -5,7 +5,9 @@
         IModMainMenu MainMenu { get; }
         IModPauseMenu PauseMenu { get; }
         IModsMenu ModsMenu { get; }
-        IBaseConfigMenu OwmlMenu { get; }
+        IModConfigMenuBase OwmlMenu { get; }
         IModInputMenu InputMenu { get; }
+        IModInputCombinationElementMenu InputCombinationElementMenu { get; }
+        IModInputCombinationMenu InputCombinationMenu { get; }
     }
 }

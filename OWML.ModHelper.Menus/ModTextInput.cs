@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTextInput : ModInputField<string>, IModTextInput
+    public class ModTextInput : ModFieldInput<string>, IModTextInput
     {
         private string _value;
 
@@ -44,7 +44,7 @@ namespace OWML.ModHelper.Menus
         public IModTextInput Copy()
         {
             var copy = GameObject.Instantiate(ToggleElement);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModTextInput(copy, Menu, InputMenu);
         }
 

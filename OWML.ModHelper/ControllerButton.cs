@@ -18,7 +18,7 @@ namespace OWML.ModHelper
             {
                 return;
             }
-            var textId = GetComponentInChildren<LocalizedText>().GetValue<UITextType>("_textID");
+            var textId = GetComponentInChildren<LocalizedText>(true).GetValue<UITextType>("_textID");
             var title = UITextLibrary.GetString(textId);
             imageElement.SetPrompt(new ScreenPrompt(inputCommand, title));
         }
