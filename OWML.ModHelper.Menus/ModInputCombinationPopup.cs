@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
             base.InitializeMenu();
             if (_resetAction != null)
             {
-                _resetAction.OnSubmitAction += this.InvokeReset;
+                _resetAction.OnSubmitAction += InvokeReset;
             }
         }
 
