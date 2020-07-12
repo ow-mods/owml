@@ -13,16 +13,6 @@ namespace OWML.ModHelper.Menus
 
         public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
 
-        private void SetupCommands()
-        {
-            var listenerObject = new GameObject();
-            CommandListener = listenerObject.AddComponent<ModCommandListener>();
-            CommandListener.AddToListener(InputLibrary.select);
-            CommandListener.AddToListener(InputLibrary.enter);
-            CommandListener.AddToListener(InputLibrary.enter2);
-            CommandListener.OnNewlyPressed += OnOpenCommand;
-        }
-
         protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
         {
             ToggleElement = toggle;
@@ -38,6 +28,16 @@ namespace OWML.ModHelper.Menus
             buttonParent.GetComponent<LayoutElement>().preferredWidth = 100;
 
             SetupCommands();
+        }
+
+        private void SetupCommands()
+        {
+            var listenerObject = new GameObject();
+            CommandListener = listenerObject.AddComponent<ModCommandListener>();
+            CommandListener.AddToListener(InputLibrary.select);
+            CommandListener.AddToListener(InputLibrary.enter);
+            CommandListener.AddToListener(InputLibrary.enter2);
+            CommandListener.OnNewlyPressed += OnOpenCommand;
         }
 
         protected void Subscribe(IModButton button)
