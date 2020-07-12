@@ -115,7 +115,6 @@ namespace OWML.ModHelper.Menus
         {
             if (IsSelected)
             {
-                ModConsole.Instance.WriteLine("Opening Menu");
                 OnEditClick();
             }
         }
