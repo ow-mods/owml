@@ -57,9 +57,9 @@ namespace OWML.ModHelper.Menus
                 .Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
 
-            var saveButton = GetButton("UIElement-SaveAndExit");
-            var addButton = GetButton("UIElement-ResetToDefaultsButton");
-            var cancelButton = GetButton("UIElement-DiscardChangesButton");
+            var saveButton = GetTitleButton("UIElement-SaveAndExit");
+            var addButton = GetTitleButton("UIElement-ResetToDefaultsButton");
+            var cancelButton = GetTitleButton("UIElement-DiscardChangesButton");
 
             if (saveButton == null || addButton == null || cancelButton == null)
             {
@@ -90,8 +90,8 @@ namespace OWML.ModHelper.Menus
 
             Title = "Edit Combination";
 
-            GetButton("UIElement-CancelOutOfRebinding")?.Hide();
-            GetButton("UIElement-KeyRebinder")?.Hide();
+            GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
+            GetTitleButton("UIElement-KeyRebinder")?.Hide();
 
             foreach (Transform child in layoutGroup.transform)
             {

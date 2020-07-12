@@ -23,6 +23,7 @@ namespace OWML.ModHelper.Menus
         public List<IModNumberInput> NumberInputs { get; private set; }
         public List<IModTitleButton> TitleButtons => Buttons.OfType<IModTitleButton>().ToList();
         public List<IModLayoutButton> LayoutButtons => Buttons.OfType<IModLayoutButton>().ToList();
+        public List<IModPromptButton> PromptButtons => Buttons.OfType<IModPromptButton>().ToList();
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -43,7 +44,13 @@ namespace OWML.ModHelper.Menus
         {
             Menu = menu;
             Layout = layoutGroup;
-            Buttons = Menu.GetComponentsInChildren<Button>(true).Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList();
+
+            var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>());
+            Buttons = promptButtons.Select(x => new ModPromptButton(x, this)).Cast<IModButton>().ToList();
+
+            var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
+            Buttons.AddRange(ordinaryButtons.Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList());
+
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
             TextInputs = new List<IModTextInput>();
@@ -51,9 +58,25 @@ namespace OWML.ModHelper.Menus
             ComboInputs = new List<IModComboInput>();
         }
 
+        [Obsolete("Use GetTitleButton instead")]
         public IModTitleButton GetButton(string title)
         {
-            var button = TitleButtons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
+            return GetTitleButton(title);
+        }
+
+        public IModTitleButton GetTitleButton(string title)
+        {
+            return GetTitleButton(title, TitleButtons);
+        }
+
+        public IModPromptButton GetPromptButton(string title)
+        {
+            return GetTitleButton(title, PromptButtons);
+        }
+
+        private T GetTitleButton<T>(string title, List<T> buttons) where T : IModTitleButton
+        {
+            var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
                 OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
