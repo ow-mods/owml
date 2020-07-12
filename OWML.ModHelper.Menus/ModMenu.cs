@@ -64,6 +64,16 @@ namespace OWML.ModHelper.Menus
             return GetTitleButton(title);
         }
 
+        public IModTitleButton GetTitleButton(string title)
+        {
+            return GetTitleButton(title, TitleButtons);
+        }
+
+        public IModPromptButton GetPromptButton(string title)
+        {
+            return GetTitleButton(title, PromptButtons);
+        }
+
         private T GetTitleButton<T>(string title, List<T> buttons) where T : IModTitleButton
         {
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
