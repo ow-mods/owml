@@ -3,6 +3,7 @@ using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
+using Object = UnityEngine.Object;
 using System;
 
 namespace OWML.ModHelper.Menus
@@ -24,7 +25,7 @@ namespace OWML.ModHelper.Menus
                 _hotkeyButton.SetPrompt(value);
                 if (_prompt.GetText() != DefaultTitle)
                 {
-                    UnityEngine.Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
@@ -41,7 +42,7 @@ namespace OWML.ModHelper.Menus
                 _prompt.SetText(value);
                 if (value != DefaultTitle)
                 {
-                    UnityEngine.Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
@@ -65,7 +66,7 @@ namespace OWML.ModHelper.Menus
             if (_commandListener!=null)
             {
                 _commandListener.gameObject.SetActive(false);
-                UnityEngine.Object.Destroy(_commandListener.gameObject);
+                Object.Destroy(_commandListener.gameObject);
             }
             var commandObject = new GameObject("PromptButton_Listener");
             _commandListener = commandObject.AddComponent<ModCommandListener>();
