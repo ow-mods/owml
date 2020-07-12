@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Menus
 
         private void SetupCommands()
         {
-            var listenerObject = new GameObject("CombinationMenu_Listener");
+            var listenerObject = new GameObject("ConfigurationMenu_Listener");
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
             CommandListener.AddToListener(InputLibrary.confirm);
             CommandListener.AddToListener(InputLibrary.enter2);//keypad's Enter
