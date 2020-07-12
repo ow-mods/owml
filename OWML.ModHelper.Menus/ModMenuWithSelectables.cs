@@ -19,7 +19,7 @@ namespace OWML.ModHelper.Menus
 
         protected ModMenuWithSelectables(IModConsole console) : base(console) { }
 
-        protected virtual void SetupCommands()
+        private void SetupCommands()
         {
             var listenerObject = new GameObject("CombinationMenu_Listener");
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
