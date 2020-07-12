@@ -16,8 +16,8 @@ namespace OWML.ModHelper.Menus
 
         private readonly List<SingleAxisCommand> _commands = new List<SingleAxisCommand>
         {
-            InputLibrary.select,
             InputLibrary.menuConfirm,
+            InputLibrary.enter,
             InputLibrary.enter2
         };
 
