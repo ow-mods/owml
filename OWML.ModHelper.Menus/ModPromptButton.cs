@@ -1,9 +1,6 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
-using UnityEngine;
-using OWML.ModHelper.Input;
-using System;
 
 namespace OWML.ModHelper.Menus
 {
@@ -12,7 +9,6 @@ namespace OWML.ModHelper.Menus
         private ScreenPrompt _prompt;
         private readonly UITextType _textId;
         private readonly ButtonWithHotkeyImageElement _hotkeyButton;
-        private ModCommandListener _commandListener;
 
         public string DefaultTitle => UITextLibrary.GetString(_textId);
         public ScreenPrompt Prompt
@@ -58,24 +54,5 @@ namespace OWML.ModHelper.Menus
             _textId = Button.GetComponentInChildren<LocalizedText>(true)?.GetValue<UITextType>("_textID") ?? UITextType.None;
         }
 
-        [Obsolete("Use Prompt and ModCommandListener instead")]
-        public override void SetControllerCommand(SingleAxisCommand inputCommand)
-        {
-            Prompt = new ScreenPrompt(inputCommand, DefaultTitle);
-            if (_commandListener!=null)
-            {
-                _commandListener.gameObject.SetActive(false);
-                UnityEngine.Object.Destroy(_commandListener.gameObject);
-            }
-            var commandObject = new GameObject("PromptButton_Listener");
-            _commandListener = commandObject.AddComponent<ModCommandListener>();
-            _commandListener.AddToListener(inputCommand);
-            _commandListener.OnNewlyPressed += OnControllerCommand;
-        }
-
-        private void OnControllerCommand(SingleAxisCommand command)
-        {
-            Button.onClick.Invoke();
-        }
     }
 }

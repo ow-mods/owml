@@ -93,12 +93,6 @@ namespace OWML.ModHelper.Menus
         {
             Button.gameObject.SetActive(false);
         }
-
-        [Obsolete("Use ModPromptButton and ModCommandListener instead")]
-        public virtual void SetControllerCommand(SingleAxisCommand inputCommand)
-        {
-            ModConsole.Instance.WriteLine("Error: incompatible Button type");
-        }
-
+        
     }
 }
