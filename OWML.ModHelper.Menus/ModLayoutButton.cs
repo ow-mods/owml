@@ -11,7 +11,7 @@ namespace OWML.ModHelper.Menus
         public ModLayoutButton(Button button, IModMenu menu) : base(button, menu)
         {
             var scale = button.transform.localScale;
-            GameObject.Destroy(Button.GetComponentInChildren<Text>(true).gameObject);
+            Object.Destroy(Button.GetComponentInChildren<Text>(true).gameObject);
             var layoutObject = new GameObject("LayoutGroup", typeof(RectTransform));
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();
@@ -24,7 +24,7 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childControlHeight = false;
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
-            var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
+            var styleManager = Object.FindObjectOfType<UIStyleManager>();
             var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(Button.gameObject);
             Layout = new ModLayoutManager(layoutGroup, styleManager, styleApplier, scale);
         }

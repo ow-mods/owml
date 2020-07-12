@@ -2,7 +2,7 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using UnityEngine;
+using Object = UnityEngine.Object;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Menus
             if (localizedText != null)
             {
                 Title = UITextLibrary.GetString(localizedText.GetValue<UITextType>("_textID"));
-                GameObject.Destroy(localizedText);
+                Object.Destroy(localizedText);
             }
             Menu.OnActivateMenu += OnActivateMenu;
             Menu.OnDeactivateMenu += OnDeactivateMenu;
@@ -89,7 +89,7 @@ namespace OWML.ModHelper.Menus
                 OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
                 return null;
             }
-            var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
+            var menu = Object.Instantiate(Menu, Menu.transform.parent);
             var modMenu = new ModPopupMenu(OwmlConsole);
             modMenu.Initialize(menu);
             return modMenu;

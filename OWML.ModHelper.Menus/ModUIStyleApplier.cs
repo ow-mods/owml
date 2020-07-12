@@ -77,7 +77,7 @@ namespace OWML.ModHelper.Menus
             if (oldUIStyleApplier != null)
             {
                 newUIStyleApplier.Initialize(oldUIStyleApplier);
-                GameObject.Destroy(oldUIStyleApplier);
+                Destroy(oldUIStyleApplier);
             }
             return newUIStyleApplier;
         }
