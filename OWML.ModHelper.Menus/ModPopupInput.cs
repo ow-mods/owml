@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus
             CommandListener.AddToListener(InputLibrary.select);
             CommandListener.AddToListener(InputLibrary.enter);
             CommandListener.AddToListener(InputLibrary.enter2);
-            CommandListener.OnNewlyPressed += OnButtonOpen;
+            CommandListener.OnNewlyPressed += OnOpenCommand;
         }
 
         protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
             button.OnClick += Open;
         }
 
-        protected virtual void OnButtonOpen(SingleAxisCommand command)
+        protected virtual void OnOpenCommand(SingleAxisCommand command)
         {
             if (IsSelected)
             {
