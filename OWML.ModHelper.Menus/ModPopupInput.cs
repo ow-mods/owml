@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Menus
 
         public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
 
-        protected virtual void SetupCommands()
+        private void SetupCommands()
         {
             var listenerObject = new GameObject();
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnOpenCommand(SingleAxisCommand command)
         {
-            if (IsSelected)
+            if (IsSelected && (command == InputLibrary.select || command == InputLibrary.enter || command == InputLibrary.enter2))
             {
                 command.ConsumeInput();
                 command.BlockNextRelease();
