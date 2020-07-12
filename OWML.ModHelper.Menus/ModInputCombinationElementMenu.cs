@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
 using System.Linq;
+using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
@@ -31,7 +32,7 @@ namespace OWML.ModHelper.Menus
         private GameObject CreateResetButton(Transform buttonsTransform)
         {
             var template = buttonsTransform.GetComponentInChildren<ButtonWithHotkeyImageElement>(true).gameObject;
-            var resetButtonObject = GameObject.Instantiate(template);
+            var resetButtonObject = Object.Instantiate(template);
             resetButtonObject.name = "UIElement-ButtonReset";
             resetButtonObject.transform.SetParent(buttonsTransform);
             resetButtonObject.transform.SetSiblingIndex(1);
@@ -44,7 +45,7 @@ namespace OWML.ModHelper.Menus
             var layoutGroupNew = layoutObject.AddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childForceExpandWidth = false;
             layoutGroupNew.childControlWidth = false;
-            var styleManager = MonoBehaviour.FindObjectOfType<UIStyleManager>();
+            var styleManager = Object.FindObjectOfType<UIStyleManager>();
             var styleApplier = layoutObject.AddComponent<ModUIStyleApplier>();
             return new ModLayoutManager(layoutGroupNew, styleManager, styleApplier, scaleReference.localScale);
         }
@@ -55,7 +56,7 @@ namespace OWML.ModHelper.Menus
             {
                 return;
             }
-            var parentCopy = GameObject.Instantiate(menu.transform.parent.gameObject);
+            var parentCopy = Object.Instantiate(menu.transform.parent.gameObject);
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _twoButtonPopup = parentCopy.transform.Find("TwoButton-Popup")?.GetComponent<PopupMenu>();
             if (_twoButtonPopup == null)
@@ -70,13 +71,13 @@ namespace OWML.ModHelper.Menus
             var buttons = buttonsTransform.GetComponentsInChildren<Button>(true).ToList();
             buttons.ForEach(button => button.navigation = new Navigation { mode = Navigation.Mode.None });
             var tabbedNavigations = menuTransform.GetComponentsInChildren<TabbedNavigation>(true).ToList();
-            tabbedNavigations.ForEach(GameObject.Destroy);
+            tabbedNavigations.ForEach(Object.Destroy);
 
             var resetButtonObject = CreateResetButton(buttonsTransform);
             ModLayoutManager layout = null;
 
             var inputObject = menuTransform.GetComponentInChildren<InputField>(true).gameObject; // InputField
-            GameObject.Destroy(inputObject.GetComponent<InputField>());
+            Object.Destroy(inputObject.GetComponent<InputField>());
             foreach (Transform child in inputObject.transform)
             {
                 if (child.name == "BorderImage")
@@ -85,7 +86,7 @@ namespace OWML.ModHelper.Menus
                 }
                 else
                 {
-                    GameObject.Destroy(child.gameObject);
+                    Object.Destroy(child.gameObject);
                 }
             }
 
@@ -100,8 +101,8 @@ namespace OWML.ModHelper.Menus
             var submitAction = resetButtonObject.GetComponent<SubmitAction>();
             var imageElement = resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>();
             _inputMenu.Initialize(originalMenu, inputSelectable, submitAction, imageElement, layout, _inputHandler);
-            GameObject.Destroy(originalMenu);
-            GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
+            Object.Destroy(originalMenu);
+            Object.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
         }
 

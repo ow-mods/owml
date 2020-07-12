@@ -12,7 +12,7 @@ namespace OWML.ModHelper.Menus
             get => _text != null ? _text.text : "";
             set
             {
-                GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 _text.text = value;
             }
         }

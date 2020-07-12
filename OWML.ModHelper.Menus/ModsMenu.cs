@@ -65,7 +65,7 @@ namespace OWML.ModHelper.Menus
         private void CreateModMenuTemplate(IModOWMenu mainMenu)
         {
             var remapControlsButton = mainMenu.OptionsMenu.InputTab.GetTitleButton("UIElement-RemapControls");
-            var buttonTemplate = GameObject.Instantiate(remapControlsButton.Button);
+            var buttonTemplate = Object.Instantiate(remapControlsButton.Button);
             buttonTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
             _modButtonTemplate = new ModTitleButton(buttonTemplate, mainMenu);
             _modButtonTemplate.Button.enabled = false;
@@ -73,7 +73,7 @@ namespace OWML.ModHelper.Menus
             var submitActionMenu = remapControlsButton.Button.GetComponent<SubmitActionMenu>();
             var rebindingMenu = submitActionMenu.GetValue<Menu>("_menuToOpen");
             var rebindingCanvas = rebindingMenu.transform.parent;
-            _modMenuTemplate = GameObject.Instantiate(rebindingCanvas);
+            _modMenuTemplate = Object.Instantiate(rebindingCanvas);
             _modMenuTemplate.gameObject.AddComponent<DontDestroyOnLoad>();
         }
 
@@ -85,7 +85,7 @@ namespace OWML.ModHelper.Menus
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
             var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
-            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
+            var modMenuCopy = Object.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
             var modInputCombinationElementTemplate = new ModInputCombinationElement(options.InputTab.ToggleInputs[0].Copy().Toggle,
                 _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
             _menus.InputCombinationMenu.Initialize(modMenuCopy, modInputCombinationElementTemplate);
@@ -107,7 +107,7 @@ namespace OWML.ModHelper.Menus
             var toggleTemplate = options.InputTab.ToggleInputs[0];
             var sliderTemplate = options.InputTab.SliderInputs[0];
             var modMenuTemplate = _modMenuTemplate.GetComponentInChildren<Menu>(true);
-            var modMenuCopy = GameObject.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
+            var modMenuCopy = Object.Instantiate(modMenuTemplate, _modMenuTemplate.transform);
             var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             textInputTemplate.Hide();
             var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler);

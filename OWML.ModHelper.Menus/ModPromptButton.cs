@@ -8,10 +8,10 @@ namespace OWML.ModHelper.Menus
     public class ModPromptButton : ModTitleButton, IModPromptButton
     {
         private ScreenPrompt _prompt;
-        private UITextType _textID;
+        private readonly UITextType _textId;
         private readonly ButtonWithHotkeyImageElement _hotkeyButton;
 
-        public string DefaultTitle => UITextLibrary.GetString(_textID);
+        public string DefaultTitle => UITextLibrary.GetString(_textId);
         public ScreenPrompt Prompt
         {
             get => _prompt;
@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Menus
                 _hotkeyButton.SetPrompt(value);
                 if (_prompt.GetText() != DefaultTitle)
                 {
-                    GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
@@ -38,7 +38,7 @@ namespace OWML.ModHelper.Menus
                 _prompt.SetText(value);
                 if (value != DefaultTitle)
                 {
-                    GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace OWML.ModHelper.Menus
                 return;
             }
             _prompt = _hotkeyButton.GetValue<ScreenPrompt>("_screenPrompt");
-            _textID = Button.GetComponentInChildren<LocalizedText>(true)?.GetValue<UITextType>("_textID") ?? UITextType.None;
+            _textId = Button.GetComponentInChildren<LocalizedText>(true)?.GetValue<UITextType>("_textID") ?? UITextType.None;
         }
     }
 }

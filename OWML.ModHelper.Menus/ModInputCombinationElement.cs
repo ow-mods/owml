@@ -52,7 +52,7 @@ namespace OWML.ModHelper.Menus
             layoutGroup.spacing = 0f;
             var constantGraphics = layoutObject.GetComponentsInChildren<Graphic>(true);
             layoutObject.transform.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
-            var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
+            var styleManager = Object.FindObjectOfType<UIStyleManager>();
             var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject);
             Layout = new ModLayoutManager(layoutGroup, styleManager, styleApplier, scale, constantGraphics);
             UpdateContents();
@@ -148,7 +148,7 @@ namespace OWML.ModHelper.Menus
             Layout.UpdateState();
             Title = "";
             Toggle.gameObject.SetActive(false);
-            GameObject.Destroy(Toggle.gameObject);
+            Object.Destroy(Toggle.gameObject);
         }
 
         public void DestroySelf()
@@ -177,8 +177,8 @@ namespace OWML.ModHelper.Menus
 
         public new IModInputCombinationElement Copy(string combination)
         {
-            var copy = GameObject.Instantiate(Toggle);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
+            var copy = Object.Instantiate(Toggle);
+            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, combination);
         }
     }

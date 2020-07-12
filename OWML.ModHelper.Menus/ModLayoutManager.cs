@@ -67,7 +67,7 @@ namespace OWML.ModHelper.Menus
                     continue;
                 }
                 child.gameObject.SetActive(false);
-                GameObject.Destroy(child.gameObject);
+                Object.Destroy(child.gameObject);
             }
         }
 
