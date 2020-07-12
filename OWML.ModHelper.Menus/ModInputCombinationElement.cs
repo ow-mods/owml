@@ -1,7 +1,6 @@
 ﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
-using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;

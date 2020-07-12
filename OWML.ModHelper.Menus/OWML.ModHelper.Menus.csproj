@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModMenuWithSelectables.cs" />
     <Compile Include="ModPromptButton.cs" />
     <Compile Include="ModPopupInput.cs" />
     <Compile Include="ModUIStyleApplier.cs" />

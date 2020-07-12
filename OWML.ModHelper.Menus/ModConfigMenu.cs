@@ -29,8 +29,8 @@ namespace OWML.ModHelper.Menus
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
             }
-            SelectFirst();
             UpdateNavigation();
+            SelectFirst();
         }
 
         protected override void UpdateUIValues()

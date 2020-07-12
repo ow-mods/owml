@@ -94,7 +94,7 @@ namespace OWML.ModHelper.Menus
                 var modButton = _modButtonTemplate.Copy(modConfigMenu.Manifest.Name);
                 modButton.Button.enabled = true;
                 InitConfigMenu(modConfigMenu, options);
-                modButton.OnClick += () => modConfigMenu.Open();
+                modButton.OnClick += modConfigMenu.Open;
                 modsTab.AddButton(modButton);
             }
             modsTab.UpdateNavigation();

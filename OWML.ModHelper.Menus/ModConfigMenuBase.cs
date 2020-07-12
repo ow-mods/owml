@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.ModHelper.Events;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class ModConfigMenuBase : ModPopupMenu, IModConfigMenuBase
+    public abstract class ModConfigMenuBase : ModMenuWithSelectables, IModConfigMenuBase
     {
         public IModManifest Manifest { get; }
 
@@ -22,8 +19,6 @@ namespace OWML.ModHelper.Menus
 
         protected abstract void AddInputs();
         protected abstract void UpdateUIValues();
-        protected abstract void OnSave();
-        protected abstract void OnReset();
 
         protected ModConfigMenuBase(IModConsole console, IModManifest manifest) : base(console)
         {
@@ -40,36 +35,9 @@ namespace OWML.ModHelper.Menus
             _numberInputTemplate = numberInputTemplate;
             _comboInputTemplate = comboInputTemplate;
 
-            var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>().Single(x => x.name == "Content");
-            Initialize(menu, layoutGroup);
-
-            var blocker = menu.GetComponentsInChildren<GraphicRaycaster>().Single(x => x.name == "RebindingModeBlocker");
-            blocker.gameObject.SetActive(false);
-
-            var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot").GetComponentInChildren<HorizontalLayoutGroup>();
-            labelPanel.gameObject.SetActive(false);
+            base.Initialize(menu);
 
             Title = Manifest.Name;
-
-            var saveButton = GetTitleButton("UIElement-SaveAndExit");
-            var resetButton = GetTitleButton("UIElement-ResetToDefaultsButton");
-            var cancelButton = GetTitleButton("UIElement-DiscardChangesButton");
-
-            saveButton.OnClick += OnSave;
-            resetButton.OnClick += OnReset;
-            cancelButton.OnClick += Close;
-
-            saveButton.SetControllerCommand(InputLibrary.confirm);
-            resetButton.SetControllerCommand(InputLibrary.setDefaults);
-            cancelButton.SetControllerCommand(InputLibrary.cancel);
-
-            GetTitleButton("UIElement-CancelOutOfRebinding").Hide();
-            GetTitleButton("UIElement-KeyRebinder").Hide();
-
-            foreach (Transform child in layoutGroup.transform)
-            {
-                child.gameObject.SetActive(false);
-            }
 
             AddInputs();
         }

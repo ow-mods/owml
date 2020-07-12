@@ -24,8 +24,8 @@ namespace OWML.ModHelper.Menus
             AddConfigInput(GamePathTitle, _config.GamePath, index++);
             AddConfigInput(VerboseModeTitle, _config.Verbose, index++);
             AddConfigInput(BlockInputTitle, _config.BlockInput, index++);
-            SelectFirst();
             UpdateNavigation();
+            SelectFirst();
         }
 
         protected override void UpdateUIValues()
