@@ -70,7 +70,7 @@ namespace OWML.ModHelper.Menus
         {
             var commandObject = new GameObject();
             var commandComponent = commandObject.AddComponent<ModCommandListener>();
-            _openCommands.ForEach(command => commandComponent.AddToListener(command));
+            _openCommands.ForEach(commandComponent.AddToListener);
             commandComponent.OnNewlyReleased += OnEditButton;
             commandComponent.BlockNextRelease();
             YesButton.Title = "Edit";

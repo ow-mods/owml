@@ -42,7 +42,7 @@ namespace OWML.ModHelper.Menus
         {
             var listenerObject = new GameObject();
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
-            _openCommands.ForEach(command => CommandListener.AddToListener(command));
+            _openCommands.ForEach(CommandListener.AddToListener);
             CommandListener.OnNewlyPressed += OnOpenCommand;
         }
 
