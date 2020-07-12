@@ -1,7 +1,7 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -54,6 +54,5 @@ namespace OWML.ModHelper.Menus
             _prompt = _hotkeyButton.GetValue<ScreenPrompt>("_screenPrompt");
             _textId = Button.GetComponentInChildren<LocalizedText>(true)?.GetValue<UITextType>("_textID") ?? UITextType.None;
         }
-
     }
 }
