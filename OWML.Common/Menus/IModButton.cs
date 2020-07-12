@@ -22,7 +22,5 @@ namespace OWML.Common.Menus
 
         void Show();
         void Hide();
-
-        void SetControllerCommand(SingleAxisCommand inputCommand);
     }
 }
