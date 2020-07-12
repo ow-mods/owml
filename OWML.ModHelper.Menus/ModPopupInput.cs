@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnOpenCommand(SingleAxisCommand command)
         {
-            if (IsSelected && _commands.Contains(command))
+            if (IsSelected && (command == InputLibrary.menuConfirm || command == InputLibrary.enter || command == InputLibrary.enter2))
             {
                 command.ConsumeInput();
                 command.BlockNextRelease();
