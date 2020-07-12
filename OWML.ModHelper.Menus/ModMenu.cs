@@ -64,16 +64,6 @@ namespace OWML.ModHelper.Menus
             return GetTitleButton(title);
         }
 
-        private T GetTitleButton<T>(string title, List<T> buttons) where T : IModTitleButton
-        {
-            var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
-            if (button == null)
-            {
-                OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
-            }
-            return button;
-        }
-
         public IModTitleButton GetTitleButton(string title)
         {
             return GetTitleButton(title, TitleButtons);
@@ -82,6 +72,16 @@ namespace OWML.ModHelper.Menus
         public IModPromptButton GetPromptButton(string title)
         {
             return GetTitleButton(title, PromptButtons);
+        }
+
+        private T GetTitleButton<T>(string title, List<T> buttons) where T : IModTitleButton
+        {
+            var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
+            if (button == null)
+            {
+                OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
+            }
+            return button;
         }
 
         [Obsolete("Use Buttons instead")]

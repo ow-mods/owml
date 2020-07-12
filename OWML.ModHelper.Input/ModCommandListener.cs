@@ -99,14 +99,8 @@ namespace OWML.ModHelper.Input
                 }
                 if (blockFlag)//damn you, Mobius Digital
                 {
-                    if (!(_wasPressed[command] || _isPressed[command]))
-                    {
-                        command.SetValue("_blockNextRelease", false);
-                    }
-                    else
-                    {
-                        command.SetValue("_blockNextRelease", true);
-                    }
+                    var toReblock = _wasPressed[command] || _isPressed[command];
+                    command.SetValue("_blockNextRelease", toReblock);
                 }
             }
         }
