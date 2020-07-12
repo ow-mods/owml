@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using System.Collections.Generic;
+using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
 using UnityEngine;
@@ -23,6 +24,12 @@ namespace OWML.ModHelper.Menus
 
         private string _combination;
         private readonly IModInputHandler _inputHandler;
+        private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
+        {
+            InputLibrary.menuConfirm,
+            InputLibrary.enter,
+            InputLibrary.enter2
+        };
 
         private static IModInputCombinationElementMenu _popupMenu;
 
@@ -63,9 +70,7 @@ namespace OWML.ModHelper.Menus
         {
             var commandObject = new GameObject();
             var commandComponent = commandObject.AddComponent<ModCommandListener>();
-            commandComponent.AddToListener(InputLibrary.select);
-            commandComponent.AddToListener(InputLibrary.enter);
-            commandComponent.AddToListener(InputLibrary.enter2);
+            _openCommands.ForEach(commandComponent.AddToListener);
             commandComponent.OnNewlyReleased += OnEditButton;
             commandComponent.BlockNextRelease();
             YesButton.Title = "Edit";

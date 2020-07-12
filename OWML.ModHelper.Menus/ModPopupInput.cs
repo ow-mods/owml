@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using System.Collections.Generic;
+using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using UnityEngine;
@@ -12,6 +13,13 @@ namespace OWML.ModHelper.Menus
         protected ModCommandListener CommandListener;
 
         public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
+
+        private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
+        {
+            InputLibrary.menuConfirm,
+            InputLibrary.enter,
+            InputLibrary.enter2
+        };
 
         protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
         {
@@ -34,9 +42,7 @@ namespace OWML.ModHelper.Menus
         {
             var listenerObject = new GameObject();
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
-            CommandListener.AddToListener(InputLibrary.select);
-            CommandListener.AddToListener(InputLibrary.enter);
-            CommandListener.AddToListener(InputLibrary.enter2);
+            _openCommands.ForEach(CommandListener.AddToListener);
             CommandListener.OnNewlyPressed += OnOpenCommand;
         }
 
@@ -47,7 +53,7 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnOpenCommand(SingleAxisCommand command)
         {
-            if (IsSelected && (command == InputLibrary.select || command == InputLibrary.enter || command == InputLibrary.enter2))
+            if (IsSelected && _openCommands.Contains(command))
             {
                 command.ConsumeInput();
                 command.BlockNextRelease();
