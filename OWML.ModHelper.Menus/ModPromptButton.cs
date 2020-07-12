@@ -1,6 +1,7 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
@@ -20,7 +21,7 @@ namespace OWML.ModHelper.Menus
                 _hotkeyButton.SetPrompt(value);
                 if (_prompt.GetText() != DefaultTitle)
                 {
-                    UnityEngine.Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
@@ -37,7 +38,7 @@ namespace OWML.ModHelper.Menus
                 _prompt.SetText(value);
                 if (value != DefaultTitle)
                 {
-                    UnityEngine.Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
