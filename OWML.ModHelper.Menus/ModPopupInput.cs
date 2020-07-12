@@ -35,7 +35,7 @@ namespace OWML.ModHelper.Menus
             var listenerObject = new GameObject();
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
             CommandListener.AddToListener(InputLibrary.select);
-            CommandListener.AddToListener(InputLibrary.enter);
+            CommandListener.AddToListener(InputLibrary.confirm);
             CommandListener.AddToListener(InputLibrary.enter2);
             CommandListener.OnNewlyPressed += OnOpenCommand;
         }
@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnOpenCommand(SingleAxisCommand command)
         {
-            if (IsSelected && (command == InputLibrary.select || command == InputLibrary.enter || command == InputLibrary.enter2))
+            if (IsSelected && (command == InputLibrary.select || command == InputLibrary.confirm || command == InputLibrary.enter2))
             {
                 command.ConsumeInput();
                 command.BlockNextRelease();

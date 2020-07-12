@@ -64,7 +64,7 @@ namespace OWML.ModHelper.Menus
             var commandObject = new GameObject();
             var commandComponent = commandObject.AddComponent<ModCommandListener>();
             commandComponent.AddToListener(InputLibrary.select);
-            commandComponent.AddToListener(InputLibrary.enter);
+            commandComponent.AddToListener(InputLibrary.confirm);
             commandComponent.AddToListener(InputLibrary.enter2);
             commandComponent.OnNewlyReleased += OnEditButton;
             commandComponent.BlockNextRelease();
