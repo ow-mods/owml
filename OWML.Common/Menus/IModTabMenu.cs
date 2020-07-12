@@ -6,6 +6,5 @@
         TabButton TabButton { get; }
         new IModTabMenu Copy();
         new IModTabMenu Copy(string title);
-        new string Title { get; set; }
     }
 }

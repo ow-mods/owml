@@ -25,12 +25,13 @@ namespace OWML.ModHelper.Input
 
         public void AddToListener(SingleAxisCommand command)
         {
-            if (!_commands.Contains(command))
+            if (_commands.Contains(command))
             {
-                _commands.Add(command);
-                _wasPressed.Add(command, false);
-                _isPressed.Add(command, false);
+                return;
             }
+            _commands.Add(command);
+            _wasPressed.Add(command, false);
+            _isPressed.Add(command, false);
         }
 
         public void RemoveFromListener(SingleAxisCommand command)
