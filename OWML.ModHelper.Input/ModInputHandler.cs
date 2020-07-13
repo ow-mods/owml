@@ -52,14 +52,14 @@ namespace OWML.ModHelper.Input
 
         internal bool IsPressedAndIgnored(KeyCode key)
         {
-            UpdateCurrentCombination();
+            UpdateCurrentCombinations();
             var cleanKey = ModInputLibrary.NormalizeKeyCode(key);
             return UnityEngine.Input.GetKey(cleanKey) &&
-                _currentCombinations.Count != 0 &&
+                _currentCombinations.Count > 0 &&
                 Time.realtimeSinceStartup - _timeout[(int)cleanKey] < Cooldown;
         }
 
-        private long? HashFromKeyboard()
+        private long? GetHashFromKeyboard()
         {
             long hash = 0;
             var keysCount = 0;
@@ -84,10 +84,10 @@ namespace OWML.ModHelper.Input
             return countdownTrigger ? -hash : hash;
         }
 
-        private HashSet<IModInputCombination> CombinationFromKeyboard()
+        private HashSet<IModInputCombination> GetCombinationsFromKeyboard()
         {
             var countdownTrigger = false;
-            var nullableHash = HashFromKeyboard();
+            var nullableHash = GetHashFromKeyboard();
             if (nullableHash == null)
             {
                 return new HashSet<IModInputCombination>();
@@ -121,7 +121,7 @@ namespace OWML.ModHelper.Input
             return combinations;
         }
 
-        private void UpdateCurrentCombination()
+        private void UpdateCurrentCombinations()
         {
             if (_lastCombinationUpdate == Time.frameCount)
             {
@@ -133,8 +133,8 @@ namespace OWML.ModHelper.Input
                 combo.InternalSetPressed(false);
             }
             _toResetOnNextFrame.Clear();
-            var combinations = CombinationFromKeyboard();
-            if (_currentCombinations.Count != 0 && !_currentCombinations.Equals(combinations))
+            var combinations = GetCombinationsFromKeyboard();
+            if (_currentCombinations.Count > 0 && !_currentCombinations.Equals(combinations))
             {
                 var toUnpress = _currentCombinations;
                 toUnpress.ExceptWith(combinations);
@@ -151,7 +151,7 @@ namespace OWML.ModHelper.Input
             {
                 return false;
             }
-            UpdateCurrentCombination();
+            UpdateCurrentCombinations();
             return _currentCombinations.Contains(combination);
         }
 
@@ -247,7 +247,7 @@ namespace OWML.ModHelper.Input
 
         private RegistrationCode SwapCombination(IModInputCombination combination, bool toUnregister)
         {
-            var taken = false;
+            var isTaken = false;
             if (combination.Hashes.Count == 0)
             {
                 return RegistrationCode.InvalidCombination;
@@ -269,7 +269,7 @@ namespace OWML.ModHelper.Input
                 }
                 if (_comboRegistry.ContainsKey(hash) || hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0)
                 {
-                    taken = true;
+                    isTaken = true;
                 }
                 if (!_comboRegistry.ContainsKey(hash))
                 {
@@ -277,7 +277,7 @@ namespace OWML.ModHelper.Input
                 }
                 _comboRegistry[hash].Add(combination);
             }
-            return taken ? RegistrationCode.CombinationTaken : RegistrationCode.AllNormal;
+            return isTaken ? RegistrationCode.CombinationTaken : RegistrationCode.AllNormal;
         }
 
         private List<string> GetCollisions(ReadOnlyCollection<long> hashes)
@@ -290,7 +290,7 @@ namespace OWML.ModHelper.Input
                     var toAdd = _comboRegistry[hash].Select(combination => combination.FullName).ToList();
                     toAdd.ForEach(combos.Add);
                 }
-                if (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0)//let's add both *shrug*
+                if (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0) // let's add both ¯\_(ツ)_/¯
                 {
                     combos.Add("Outer Wilds." + Enum.GetName(typeof(KeyCode), (KeyCode)hash));
                 }
@@ -298,28 +298,29 @@ namespace OWML.ModHelper.Input
             return combos;
         }
 
-        public List<string> GetWarnings(string combinations)
+        public List<string> GetWarningMessages(string combinations)
         {
             var hashes = new List<long>();
-            var errors = new List<string>();
+            var errorMessages = new List<string>();
             foreach (var combo in combinations.Split('/'))
             {
                 var hash = ModInputLibrary.StringToHash(combo);
                 if (hash <= 0)
                 {
-                    errors.Add(ModInputLibrary.ReadableMessage((RegistrationCode)(-hash)));
+                    errorMessages.Add(ModInputLibrary.GetReadableMessage((RegistrationCode)(-hash)));
                     continue;
                 }
                 hashes.Add(hash);
             }
-            var toReturn = GetCollisions(hashes.AsReadOnly()).Select(combination => "Collides with " + combination).ToList();
-            toReturn.AddRange(errors);
-            return toReturn;
+            var warningMessages = GetCollisions(hashes.AsReadOnly())
+                .Select(combination => $"Collides with {combination}").ToList();
+            warningMessages.AddRange(errorMessages);
+            return warningMessages;
         }
 
         public IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
         {
-            var combo = new ModInputCombination(mod.ModHelper.Manifest, name, combination);
+            var combo = new ModInputCombination(mod.ModHelper.Manifest, _console, name, combination);
             switch (SwapCombination(combo, false))
             {
                 case RegistrationCode.InvalidCombination:
@@ -388,7 +389,7 @@ namespace OWML.ModHelper.Input
 
         internal void UpdateGamesBindings()
         {
-            for (int i = ModInputLibrary.MinUsefulKey; i < ModInputLibrary.MaxUsefulKey; i++)
+            for (var i = ModInputLibrary.MinUsefulKey; i < ModInputLibrary.MaxUsefulKey; i++)
             {
                 _gameBindingCounter[i] = 0;
             }
