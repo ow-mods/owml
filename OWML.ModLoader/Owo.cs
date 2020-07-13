@@ -23,10 +23,11 @@ namespace OWML.ModLoader
         private readonly IModInputHandler _inputHandler;
         private readonly ModSorter _sorter;
 
-        List<IModBehaviour> _modList = new List<IModBehaviour>();
+        private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
-            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, IModInputHandler inputHandler, ModSorter sorter)
+            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
+            IModInputHandler inputHandler, ModSorter sorter)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -51,33 +52,36 @@ namespace OWML.ModLoader
             var priorityMods = _modFinder.GetMods().Where(mod => mod.Manifest.PriorityLoad).ToList();
             var sortedPriority = _sorter.SortMods(priorityMods);
 
-            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName).ToList();
+            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled)
+                .Select(mod => mod.Manifest.UniqueName).ToList();
             var sortedMods = sortedPriority.Concat(sortedNormal);
 
-            foreach (var mod in sortedMods)
+            foreach (var modData in sortedMods)
             {
-                var missingDependencyFlag = false;
-                if (mod.Config.Enabled)
+                var isMissingDependency = false;
+                if (modData.Config.Enabled)
                 {
-                    var missingDependencies = mod.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency));
+                    var missingDependencies = modData.Manifest.Dependencies
+                        .Where(dependency => !modNames.Contains(dependency));
                     foreach (var dependency in missingDependencies)
                     {
-                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!");
-                        missingDependencyFlag = true;
+                        _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, " +
+                                           "but it's disabled/missing!");
+                        isMissingDependency = true;
                     }
                 }
-                var modType = LoadMod(mod);
-                if (modType == null || missingDependencyFlag)
+                var modType = LoadMod(modData);
+                if (modType == null || isMissingDependency)
                 {
-                    _logger.Log(missingDependencyFlag ?
+                    _logger.Log(isMissingDependency ?
                         "Mod is missing its dependencies, skipping" :
                         "Mod type is null, skipping");
-                    _menus.ModsMenu.AddMod(mod, null);
+                    _menus.ModsMenu.AddMod(modData, null);
                     continue;
                 }
-                var helper = CreateModHelper(mod);
+                var helper = CreateModHelper(modData);
                 var initMod = InitializeMod(modType, helper);
-                _menus.ModsMenu.AddMod(mod, initMod);
+                _menus.ModsMenu.AddMod(modData, initMod);
                 _modList.Add(initMod);
             }
         }
