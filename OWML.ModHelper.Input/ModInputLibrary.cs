@@ -13,6 +13,23 @@ namespace OWML.ModHelper.Input
         public const int MaxComboLength = 7;
         public const int GamePadKeyDiff = 20;
 
+        internal static string ReadableMessage(RegistrationCode code)
+        {
+            switch (code)
+            {
+                case RegistrationCode.InvalidCombination:
+                    return "invalid combination";
+                case RegistrationCode.CombinationTooLong:
+                    return "combination is too long";
+                case RegistrationCode.CombinationTaken:
+                    return "similar combination already registered";
+                case RegistrationCode.AllNormal:
+                    return "correct combination";
+                default:
+                    return "unknown";
+            }
+        }
+
         public static KeyCode NormalizeKeyCode(KeyCode key)
         {
             if ((int)key >= MaxUsefulKey)

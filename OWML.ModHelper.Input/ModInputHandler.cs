@@ -307,7 +307,7 @@ namespace OWML.ModHelper.Input
                 var hash = ModInputLibrary.StringToHash(combo);
                 if (hash <= 0)
                 {
-                    errors.Add(((RegistrationCode)(-hash)).ToString());
+                    errors.Add(ModInputLibrary.ReadableMessage((RegistrationCode)(-hash)));
                     continue;
                 }
                 hashes.Add(hash);
