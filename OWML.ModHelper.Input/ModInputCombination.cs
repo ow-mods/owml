@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Input
         public float LastPressedMoment { get; private set; }
         public bool IsFirst { get; private set; }
         public float PressDuration => LastPressedMoment - _firstPressedMoment;
-        public string ModName { get; }
+        public string ModName => _manifest.Name;
         public string Name { get; }
         public string FullName => $"{ModName}.{Name}";
         public ReadOnlyCollection<KeyCode> Singles => _singles.AsReadOnly();
@@ -21,9 +21,13 @@ namespace OWML.ModHelper.Input
         private readonly List<KeyCode> _singles = new List<KeyCode>();
         private readonly List<long> _hashes;
 
-        internal ModInputCombination(IModManifest mod, string name, string combination)
+        private readonly IModManifest _manifest;
+        private readonly IModConsole _console;
+
+        internal ModInputCombination(IModManifest manifest, IModConsole console, string name, string combination)
         {
-            ModName = mod.Name;
+            _manifest = manifest;
+            _console = console;
             Name = name;
             _hashes = StringToHashes(combination);
         }
@@ -36,9 +40,9 @@ namespace OWML.ModHelper.Input
                 var hash = ModInputLibrary.StringToHash(combo);
                 if (hash <= 0)
                 {
-                    hashes.Clear();
-                    hashes.Add(hash);
-                    return hashes;
+                    _console.WriteLine($"Warning: Invalid part of combo in {FullName}: {combo}, " +
+                        ModInputLibrary.GetReadableMessage((RegistrationCode)hash));
+                    continue;
                 }
                 hashes.Add(hash);
                 if (hash < ModInputLibrary.MaxUsefulKey)

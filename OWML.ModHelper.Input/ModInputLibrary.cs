@@ -13,6 +13,23 @@ namespace OWML.ModHelper.Input
         public const int MaxComboLength = 7;
         public const int GamePadKeyDiff = 20;
 
+        internal static string GetReadableMessage(RegistrationCode code)
+        {
+            switch (code)
+            {
+                case RegistrationCode.InvalidCombination:
+                    return "contains invalid keys";
+                case RegistrationCode.CombinationTooLong:
+                    return "contains too many keys";
+                case RegistrationCode.CombinationTaken:
+                    return "similar combination already registered";
+                case RegistrationCode.AllNormal:
+                    return "correct combination";
+                default:
+                    return "unknown";
+            }
+        }
+
         public static KeyCode NormalizeKeyCode(KeyCode key)
         {
             if ((int)key >= MaxUsefulKey)
@@ -35,8 +52,7 @@ namespace OWML.ModHelper.Input
                 case 'y':
                     return JoystickButton.FaceUp;
                 default:
-                    var code = (JoystickButton)Enum.Parse(typeof(JoystickButton), xboxKey);
-                    return Enum.IsDefined(typeof(JoystickButton), code) ? code : JoystickButton.None;
+                    return KeyToKeycode(xboxKey, JoystickButton.None);
             }
         }
 
@@ -69,8 +85,20 @@ namespace OWML.ModHelper.Input
                 case "alt":
                     return KeyCode.LeftAlt;
                 default:
-                    var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
-                    return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
+                    return KeyToKeycode(keyboardKey, KeyCode.None);
+            }
+        }
+
+        private static T KeyToKeycode<T>(string keyboardKey, T defaultValue)
+        {
+            try
+            {
+                var code = (T)Enum.Parse(typeof(T), keyboardKey, true);
+                return Enum.IsDefined(typeof(T), code) ? code : defaultValue;
+            }
+            catch (Exception)
+            {
+                return defaultValue;
             }
         }
 

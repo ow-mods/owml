@@ -16,6 +16,6 @@ namespace OWML.Common
         bool IsNewlyPressed(IModInputCombination combo);
         bool WasTapped(IModInputCombination combo);
         bool WasNewlyReleased(IModInputCombination combo);
-        List<string> GetCollisions(string combinations);
+        List<string> GetWarningMessages(string combinations);
     }
 }
