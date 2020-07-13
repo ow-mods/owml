@@ -15,15 +15,15 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
-        public List<IModButton> Buttons { get; private set; }
+        public List<IModButtonBase> BaseButtons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
-        public List<IModTitleButton> TitleButtons => Buttons.OfType<IModTitleButton>().ToList();
-        public List<IModLayoutButton> LayoutButtons => Buttons.OfType<IModLayoutButton>().ToList();
-        public List<IModPromptButton> PromptButtons => Buttons.OfType<IModPromptButton>().ToList();
+        public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
+        public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
+        public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -46,10 +46,10 @@ namespace OWML.ModHelper.Menus
             Layout = layoutGroup;
 
             var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>());
-            Buttons = promptButtons.Select(x => new ModPromptButton(x, this)).Cast<IModButton>().ToList();
+            BaseButtons = promptButtons.Select(x => new ModPromptButton(x, this)).Cast<IModButtonBase>().ToList();
 
             var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
-            Buttons.AddRange(ordinaryButtons.Select(x => new ModTitleButton(x, this)).Cast<IModButton>().ToList());
+            BaseButtons.AddRange(ordinaryButtons.Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>().ToList());
 
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
@@ -59,14 +59,14 @@ namespace OWML.ModHelper.Menus
         }
 
         [Obsolete("Use GetTitleButton instead")]
-        public IModTitleButton GetButton(string title)
+        public IModButton GetButton(string title)
         {
             return GetTitleButton(title);
         }
 
-        public IModTitleButton GetTitleButton(string title)
+        public IModButton GetTitleButton(string title)
         {
-            return GetTitleButton(title, TitleButtons);
+            return GetTitleButton(title, Buttons);
         }
 
         public IModPromptButton GetPromptButton(string title)
@@ -74,7 +74,7 @@ namespace OWML.ModHelper.Menus
             return GetTitleButton(title, PromptButtons);
         }
 
-        private T GetTitleButton<T>(string title, List<T> buttons) where T : IModTitleButton
+        private T GetTitleButton<T>(string title, List<T> buttons) where T : IModButton
         {
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
@@ -93,7 +93,7 @@ namespace OWML.ModHelper.Menus
         [Obsolete("Use button.Duplicate instead")]
         public Button AddButton(string title, int index)
         {
-            var original = TitleButtons?.FirstOrDefault();
+            var original = Buttons?.FirstOrDefault();
             if (original == null)
             {
                 OwmlConsole.WriteLine("Warning: no buttons to copy");
@@ -108,19 +108,31 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
+        [Obsolete("use IModButtonBase")]
         public IModButton AddButton(IModButton button)
         {
             return AddButton(button, button.Index);
         }
 
+        [Obsolete("use IModButtonBase")]
         public virtual IModButton AddButton(IModButton button, int index)
+        {
+            return (IModButton)AddButton((IModButtonBase)button, index);
+        }
+
+        public IModButtonBase AddButton(IModButtonBase button)
+        {
+            return AddButton(button, button.Index);
+        }
+
+        public virtual IModButtonBase AddButton(IModButtonBase button, int index)
         {
             var transform = button.Button.transform;
             var scale = transform.localScale;
             transform.parent = Layout.transform;
             button.Index = index;
             button.Initialize(this);
-            Buttons.Add(button);
+            BaseButtons.Add(button);
             button.Button.transform.localScale = scale;
             return button;
         }
