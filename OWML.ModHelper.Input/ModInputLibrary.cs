@@ -18,9 +18,9 @@ namespace OWML.ModHelper.Input
             switch (code)
             {
                 case RegistrationCode.InvalidCombination:
-                    return "invalid combination";
+                    return "contains invalid keys";
                 case RegistrationCode.CombinationTooLong:
-                    return "combination is too long";
+                    return "contains too many keys";
                 case RegistrationCode.CombinationTaken:
                     return "similar combination already registered";
                 case RegistrationCode.AllNormal:
