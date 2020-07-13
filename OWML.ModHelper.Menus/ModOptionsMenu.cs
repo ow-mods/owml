@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Menus
 
             InvokeOnInit();
         }
-        
+
         public void AddTab(IModTabMenu tabMenu)
         {
             _tabMenus.Add(tabMenu);
