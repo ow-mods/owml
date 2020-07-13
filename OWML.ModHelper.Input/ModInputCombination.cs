@@ -36,9 +36,8 @@ namespace OWML.ModHelper.Input
                 var hash = ModInputLibrary.StringToHash(combo);
                 if (hash <= 0)
                 {
-                    hashes.Clear();
-                    hashes.Add(hash);
-                    return hashes;
+                    ModConsole.Instance.WriteLine($"Warning: Invalid part in {FullName}: {combo}, {(RegistrationCode)hash}");
+                    continue;
                 }
                 hashes.Add(hash);
                 if (hash < ModInputLibrary.MaxUsefulKey)

@@ -7,6 +7,7 @@ using UnityEngine;
 using OWML.ModHelper.Input;
 using System.Linq;
 using Object = UnityEngine.Object;
+using System.Collections.Generic;
 
 namespace OWML.ModHelper.Menus
 {
@@ -137,7 +138,7 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
-        private void ShowPopup(string message)
+        private void ShowWarningPopup(string message, bool addCancel = false, string OkMessage = "OK")
         {
             if (_twoButtonPopup == null)
             {
@@ -145,18 +146,22 @@ namespace OWML.ModHelper.Menus
                 Console.WriteLine(message);
             }
             _twoButtonPopup.EnableMenu(true);
-            _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm2, null,
-                new ScreenPrompt(InputLibrary.confirm2, "Ok"), new ScreenPrompt("Cancel"), true, false);
+            _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, addCancel ? InputLibrary.cancel : null,
+                new ScreenPrompt(InputLibrary.confirm, OkMessage), new ScreenPrompt("Cancel"), true, addCancel);
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
         private bool OnPopupValidate()
         {
             var currentCombination = _inputMenu.Combination;
-            var collisions = _inputHandler.GetCollisions(currentCombination);
-            if (collisions.Count > 0 && collisions[0] != _comboName)
+            var collisions = _inputHandler.GetWarnings(currentCombination);
+            collisions.Remove($"Collides with {_comboName}");
+            if (collisions.Count > 0)
             {
-                ShowPopup($"This combination collides with \"{collisions[0]}\"");
+                ShowWarningPopup($"This combination has following problems:\n{string.Join("\n", collisions.ToArray())}",
+                    true, "Save anyway");
+                _twoButtonPopup.OnPopupConfirm += OnForceConfirm;
+                _twoButtonPopup.OnPopupCancel += DisableWarningSubscription;
                 return false;
             }
             if (_combinationMenu == null)
@@ -169,8 +174,21 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            ShowPopup("This combination already exist in this group");
+            ShowWarningPopup("This combination already exist in this group");
             return false;
+        }
+
+        private void DisableWarningSubscription()
+        {
+            _twoButtonPopup.OnPopupConfirm -= OnForceConfirm;
+            _twoButtonPopup.OnPopupCancel -= DisableWarningSubscription;
+        }
+
+        private void OnForceConfirm()
+        {
+            DisableWarningSubscription();
+            _inputMenu.EnableMenu(false);
+            OnPopupConfirm();
         }
 
         private void OnPopupConfirm()
