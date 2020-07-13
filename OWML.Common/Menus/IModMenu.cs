@@ -55,7 +55,5 @@ namespace OWML.Common.Menus
         List<Button> GetButtons();
         [Obsolete("Use button.Duplicate instead")]
         Button AddButton(string title, int index);
-
-        void Initialize(Menu menu);
     }
 }
