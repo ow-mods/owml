@@ -7,8 +7,8 @@ namespace OWML.ModHelper.Menus
 {
     public class ModToggleInput : ModInput<bool>, IModToggleInput
     {
-        public IModTitleButton YesButton { get; }
-        public IModTitleButton NoButton { get; }
+        public IModButton YesButton { get; }
+        public IModButton NoButton { get; }
 
         public TwoButtonToggleElement Toggle { get; }
         public override bool IsSelected => Toggle.GetValue<bool>("_amISelected");

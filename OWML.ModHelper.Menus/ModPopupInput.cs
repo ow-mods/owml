@@ -46,7 +46,7 @@ namespace OWML.ModHelper.Menus
             CommandListener.OnNewlyPressed += OnOpenCommand;
         }
 
-        protected void Subscribe(IModButton button)
+        protected void Subscribe(IModButtonBase button)
         {
             button.OnClick += Open;
         }

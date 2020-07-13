@@ -2,6 +2,6 @@
 {
     public interface IModFieldInput<T> : IModInput<T>
     {
-        IModTitleButton Button { get; }
+        IModButton Button { get; }
     }
 }

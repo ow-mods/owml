@@ -2,7 +2,10 @@
 {
     public interface IModPauseMenu : IModPopupMenu, IModOWMenu
     {
-        IModTitleButton ResumeButton { get; }
+        IModTabbedMenu OptionsMenu { get; }
+        IModButton OptionsButton { get; }
+        IModButton QuitButton { get; }
+        IModButton ResumeButton { get; }
 
         void Initialize(SettingsManager settingsManager);
     }

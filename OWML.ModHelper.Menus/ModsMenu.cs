@@ -17,7 +17,7 @@ namespace OWML.ModHelper.Menus
         private readonly List<IModConfigMenu> _modConfigMenus;
 
         private Transform _modMenuTemplate;
-        private IModTitleButton _modButtonTemplate;
+        private IModButton _modButtonTemplate;
         private readonly IModInputHandler _inputHandler;
 
         public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
@@ -80,7 +80,7 @@ namespace OWML.ModHelper.Menus
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
             var modsTab = options.InputTab.Copy("MODS");
-            modsTab.Buttons.ForEach(x => x.Hide());
+            modsTab.BaseButtons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);

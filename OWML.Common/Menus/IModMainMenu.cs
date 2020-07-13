@@ -2,10 +2,13 @@
 {
     public interface IModMainMenu : IModOWMenu
     {
-        IModTitleButton ResumeExpeditionButton { get; }
-        IModTitleButton NewExpeditionButton { get; }
-        IModTitleButton ViewCreditsButton { get; }
-        IModTitleButton SwitchProfileButton { get; }
+        IModTabbedMenu OptionsMenu { get; }
+        IModButton OptionsButton { get; }
+        IModButton QuitButton { get; }
+        IModButton ResumeExpeditionButton { get; }
+        IModButton NewExpeditionButton { get; }
+        IModButton ViewCreditsButton { get; }
+        IModButton SwitchProfileButton { get; }
 
         void Initialize(TitleScreenManager titleScreenManager);
     }

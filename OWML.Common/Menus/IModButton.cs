@@ -3,23 +3,23 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModButton
+    public interface IModButton : IModButtonBase
     {
         event Action OnClick;
         int Index { get; set; }
         Button Button { get; }
-        bool IsSelected { get; }
         void Initialize(IModMenu menu);
+        string Title { get; set; }
 
-        IModButton Copy();
-        IModButton Copy(int index);
+        new IModButton Copy();
+        IModButton Copy(string title);
+        IModButton Copy(string title, int index);
 
-        IModButton Duplicate();
-        IModButton Duplicate(int index);
+        IModButton Duplicate(string title);
+        IModButton Duplicate(string title, int index);
 
-        IModButton Replace();
-        IModButton Replace(int index);
-
+        IModButton Replace(string title);
+        IModButton Replace(string title, int index);
         void Show();
         void Hide();
     }

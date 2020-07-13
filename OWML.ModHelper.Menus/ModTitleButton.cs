@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTitleButton : ModButton, IModTitleButton
+    public class ModTitleButton : ModButton, IModButton
     {
         private readonly Text _text;
         public virtual string Title
@@ -22,49 +22,49 @@ namespace OWML.ModHelper.Menus
             _text = Button.GetComponentInChildren<Text>();
         }
 
-        public new IModTitleButton Copy()
+        public new IModButton Copy()
         {
-            var button = (IModTitleButton)base.Copy();
+            var button = (IModButton)base.Copy();
             button.Title = Title;
             return button;
         }
 
-        public IModTitleButton Copy(string title)
+        public IModButton Copy(string title)
         {
             var copy = Copy();
             copy.Title = title;
             return copy;
         }
 
-        public IModTitleButton Copy(string title, int index)
+        public IModButton Copy(string title, int index)
         {
             var copy = Copy(title);
             copy.Index = index;
             return copy;
         }
 
-        public IModTitleButton Duplicate(string title)
+        public IModButton Duplicate(string title)
         {
-            var dupe = (IModTitleButton)Duplicate();
+            var dupe = (IModButton)Duplicate();
             dupe.Title = title;
             return dupe;
         }
 
-        public IModTitleButton Duplicate(string title, int index)
+        public IModButton Duplicate(string title, int index)
         {
             var dupe = Duplicate(title);
             dupe.Index = index;
             return dupe;
         }
 
-        public IModTitleButton Replace(string title)
+        public IModButton Replace(string title)
         {
-            var replacement = (IModTitleButton)Replace();
+            var replacement = (IModButton)Replace();
             replacement.Title = title;
             return replacement;
         }
 
-        public IModTitleButton Replace(string title, int index)
+        public IModButton Replace(string title, int index)
         {
             var replacement = Replace(title);
             replacement.Index = index;
