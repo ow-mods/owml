@@ -35,8 +35,15 @@ namespace OWML.ModHelper.Input
                 case 'y':
                     return JoystickButton.FaceUp;
                 default:
-                    var code = (JoystickButton)Enum.Parse(typeof(JoystickButton), xboxKey);
-                    return Enum.IsDefined(typeof(JoystickButton), code) ? code : JoystickButton.None;
+                    try
+                    {
+                        var code = (JoystickButton)Enum.Parse(typeof(JoystickButton), xboxKey);
+                        return Enum.IsDefined(typeof(JoystickButton), code) ? code : JoystickButton.None;
+                    }
+                    catch (Exception)
+                    {
+                        return JoystickButton.None;
+                    }
             }
         }
 
@@ -69,8 +76,15 @@ namespace OWML.ModHelper.Input
                 case "alt":
                     return KeyCode.LeftAlt;
                 default:
-                    var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
-                    return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
+                    try
+                    {
+                        var code = (KeyCode)Enum.Parse(typeof(KeyCode), keyboardKey, true);
+                        return Enum.IsDefined(typeof(KeyCode), code) ? code : KeyCode.None;
+                    }
+                    catch (Exception)
+                    {
+                        return KeyCode.None;
+                    }
             }
         }
 
