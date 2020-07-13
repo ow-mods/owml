@@ -108,18 +108,6 @@ namespace OWML.ModHelper.Menus
             return copy.Button;
         }
 
-        [Obsolete("use IModButtonBase")]
-        public IModButton AddButton(IModButton button)
-        {
-            return AddButton(button, button.Index);
-        }
-
-        [Obsolete("use IModButtonBase")]
-        public virtual IModButton AddButton(IModButton button, int index)
-        {
-            return (IModButton)AddButton((IModButtonBase)button, index);
-        }
-
         public IModButtonBase AddButton(IModButtonBase button)
         {
             return AddButton(button, button.Index);

@@ -20,8 +20,6 @@ namespace OWML.Common.Menus
         IModButton GetTitleButton(string title);
         IModPromptButton GetPromptButton(string title);
 
-        IModButton AddButton(IModButton button);
-        IModButton AddButton(IModButton button, int index);
         IModButtonBase AddButton(IModButtonBase button);
         IModButtonBase AddButton(IModButtonBase button, int index);
 

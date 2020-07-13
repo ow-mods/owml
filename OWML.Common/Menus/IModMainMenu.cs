@@ -2,9 +2,9 @@
 {
     public interface IModMainMenu : IModOWMenu
     {
-        IModTabbedMenu OptionsMenu { get; }
-        IModButton OptionsButton { get; }
-        IModButton QuitButton { get; }
+        new IModTabbedMenu OptionsMenu { get; }
+        new IModButton OptionsButton { get; }
+        new IModButton QuitButton { get; }
         IModButton ResumeExpeditionButton { get; }
         IModButton NewExpeditionButton { get; }
         IModButton ViewCreditsButton { get; }
