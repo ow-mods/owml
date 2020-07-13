@@ -20,7 +20,6 @@ namespace OWML.ModHelper.Input
 
         private readonly HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
         private readonly Dictionary<long, IModInputCombination> _comboRegistry = new Dictionary<long, IModInputCombination>();
-        private readonly HashSet<InputCommand> _gameBindingRegistry = new HashSet<InputCommand>();
         private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
         private readonly float[] _timeout = new float[ModInputLibrary.MaxUsefulKey];
         private readonly int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
@@ -357,9 +356,9 @@ namespace OWML.ModHelper.Input
             }
         }
 
-        internal void SwapGamesBinding(InputCommand binding, bool toUnregister)
+        internal void RegisterGamesBinding(InputCommand binding)
         {
-            if (_gameBindingRegistry.Contains(binding) ^ toUnregister || binding == null)
+            if (binding == null)
             {
                 return;
             }
@@ -372,34 +371,19 @@ namespace OWML.ModHelper.Input
                 foreach (var key in keys.Where(x => x != KeyCode.None))
                 {
                     var intKey = (int)ModInputLibrary.NormalizeKeyCode(key);
-                    _gameBindingCounter[intKey] += toUnregister ? -1 : 1;
+                    _gameBindingCounter[intKey]++;
                 }
             }
-            if (toUnregister)
-            {
-                _gameBindingRegistry.Remove(binding);
-            }
-            else
-            {
-                _gameBindingRegistry.Add(binding);
-            }
-        }
-
-        internal void RegisterGamesBinding(InputCommand binding)
-        {
-            SwapGamesBinding(binding, false);
-        }
-
-        internal void UnregisterGamesBinding(InputCommand binding)
-        {
-            SwapGamesBinding(binding, true);
         }
 
         internal void UpdateGamesBindings()
         {
-            _gameBindingRegistry.Clear();
-            var inputCommands = typeof(InputLibrary).GetFields(BindingFlags.Public | BindingFlags.Static);
-            inputCommands.ToList().ForEach(field => RegisterGamesBinding(field.GetValue(null) as InputCommand));
+            for (int i = ModInputLibrary.MinUsefulKey; i< ModInputLibrary.MaxUsefulKey; i++)
+            {
+                _gameBindingCounter[i] = 0;
+            }
+            var inputCommands = typeof(InputLibrary).GetFields(BindingFlags.Public | BindingFlags.Static).ToList();
+            inputCommands.ForEach(field => RegisterGamesBinding(field.GetValue(null) as InputCommand));
         }
     }
 }
