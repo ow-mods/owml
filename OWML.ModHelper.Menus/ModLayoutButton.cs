@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModLayoutButton : ModButton, IModLayoutButton
+    public class ModLayoutButton : ModButtonBase, IModLayoutButton
     {
         public IModLayoutManager Layout { get; }
 

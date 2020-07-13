@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class ModButton : IModButtonBase
+    public abstract class ModButtonBase : IModButtonBase
     {
         public event Action OnClick;
 
@@ -27,7 +27,7 @@ namespace OWML.ModHelper.Menus
 
         private readonly UIStyleApplier _uIStyleApplier;
 
-        protected ModButton(Button button, IModMenu menu)
+        protected ModButtonBase(Button button, IModMenu menu)
         {
             _uIStyleApplier = button.GetComponent<UIStyleApplier>();
             Button = button;

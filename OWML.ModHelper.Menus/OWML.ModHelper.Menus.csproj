@@ -85,7 +85,7 @@
     <Compile Include="ModInputCombinationMenu.cs" />
     <Compile Include="ModInputCombinationPopup.cs" />
     <Compile Include="ModLayoutButton.cs" />
-    <Compile Include="ModButton.cs" />
+    <Compile Include="ModButtonBase.cs" />
     <Compile Include="ModConfigMenuBase.cs" />
     <Compile Include="ModTitleButton.cs" />
     <Compile Include="ModConfigMenu.cs" />

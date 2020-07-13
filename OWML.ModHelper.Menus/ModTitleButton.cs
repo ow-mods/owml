@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTitleButton : ModButton, IModButton
+    public class ModTitleButton : ModButtonBase, IModButton
     {
         private readonly Text _text;
         public virtual string Title
