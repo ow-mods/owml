@@ -23,7 +23,7 @@ namespace OWML.ModHelper.Input
         private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
         private readonly float[] _timeout = new float[ModInputLibrary.MaxUsefulKey];
         private readonly int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
-        private HashSet<IModInputCombination> _currentCombinations;
+        private HashSet<IModInputCombination> _currentCombinations = new HashSet<IModInputCombination>();
         private int _lastSingleUpdate;
         private int _lastCombinationUpdate;
         private readonly IModLogger _logger;
