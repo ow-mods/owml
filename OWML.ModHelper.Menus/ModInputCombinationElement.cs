@@ -77,7 +77,7 @@ namespace OWML.ModHelper.Menus
             YesButton.OnClick += OnEditClick;
 
             var deleteCommand = new SingleAxisCommand();
-            var deleteBindingGamepad = new InputBinding(JoystickButton.FaceUp);
+            var deleteBindingGamepad = new InputBinding(JoystickButton.FaceLeft);
             var deleteBindingKeyboard = new InputBinding(KeyCode.Delete);
             deleteCommand.SetInputs(deleteBindingGamepad, deleteBindingKeyboard);
             commandObject = new GameObject();
