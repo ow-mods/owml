@@ -69,14 +69,9 @@ namespace OWML.ModLoader
                 var modType = LoadMod(mod);
                 if (modType == null || missingDependencyFlag)
                 {
-                    if (missingDependencyFlag)
-                    {
-                        _logger.Log("Mod is missing its dependencies, skipping");
-                    }
-                    else
-                    {
-                        _logger.Log("Mod type is null, skipping");
-                    }
+                    _logger.Log(missingDependencyFlag ?
+                        "Mod is missing its dependencies, skipping" :
+                        "Mod type is null, skipping");
                     _menus.ModsMenu.AddMod(mod, null);
                     continue;
                 }
