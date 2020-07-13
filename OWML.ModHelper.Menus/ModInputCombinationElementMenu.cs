@@ -7,7 +7,6 @@ using UnityEngine;
 using OWML.ModHelper.Input;
 using System.Linq;
 using Object = UnityEngine.Object;
-using System.Collections.Generic;
 
 namespace OWML.ModHelper.Menus
 {
@@ -104,7 +103,7 @@ namespace OWML.ModHelper.Menus
             _inputMenu.Initialize(originalMenu, inputSelectable, submitAction, imageElement, layout, _inputHandler);
             Object.Destroy(originalMenu);
             Object.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
-            Initialize((Menu)_inputMenu);
+            Initialize(_inputMenu);
         }
 
         public void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
@@ -138,7 +137,7 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
-        private void ShowWarningPopup(string message, bool addCancel = false, string OkMessage = "OK")
+        private void ShowWarningPopup(string message, bool addCancel = false, string okMessage = "OK")
         {
             if (_twoButtonPopup == null)
             {
@@ -147,14 +146,14 @@ namespace OWML.ModHelper.Menus
             }
             _twoButtonPopup.EnableMenu(true);
             _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, addCancel ? InputLibrary.cancel : null,
-                new ScreenPrompt(InputLibrary.confirm, OkMessage), new ScreenPrompt("Cancel"), true, addCancel);
+                new ScreenPrompt(InputLibrary.confirm, okMessage), new ScreenPrompt("Cancel"), true, addCancel);
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
         private bool OnPopupValidate()
         {
             var currentCombination = _inputMenu.Combination;
-            var collisions = _inputHandler.GetWarnings(currentCombination);
+            var collisions = _inputHandler.GetWarningMessages(currentCombination);
             collisions.Remove($"Collides with {_comboName}");
             if (collisions.Count > 0)
             {
