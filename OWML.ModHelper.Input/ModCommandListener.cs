@@ -86,7 +86,7 @@ namespace OWML.ModHelper.Input
                     _wasPressed[command] = _isPressed[command];
                     _isPressed[command] = false;
                 }
-                if (command.IsNewlyPressed())
+                if (command.IsNewlyReleased())
                 {
                     OnNewlyReleased?.Invoke(command);
                 }
