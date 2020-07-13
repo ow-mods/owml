@@ -60,7 +60,7 @@ namespace OWML.ModLoader
                 {
                     if (!modNames.Contains(dependency) && mod.Config.Enabled)
                     {
-                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dependency}, but it's disabled!");
+                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!");
                     }
                 }
                 var modType = LoadMod(mod);
