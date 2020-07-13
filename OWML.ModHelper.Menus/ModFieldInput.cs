@@ -6,7 +6,7 @@ namespace OWML.ModHelper.Menus
 {
     public abstract class ModFieldInput<T> : ModPopupInput<T>, IModFieldInput<T>
     {
-        public IModTitleButton Button { get; }
+        public IModButton Button { get; }
 
         protected readonly IModInputMenu InputMenu;
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public abstract class ModButton : IModButton
+    public abstract class ModButtonBase : IModButtonBase
     {
         public event Action OnClick;
 
@@ -27,7 +27,7 @@ namespace OWML.ModHelper.Menus
 
         private readonly UIStyleApplier _uIStyleApplier;
 
-        protected ModButton(Button button, IModMenu menu)
+        protected ModButtonBase(Button button, IModMenu menu)
         {
             _uIStyleApplier = button.GetComponent<UIStyleApplier>();
             Button = button;
@@ -35,11 +35,11 @@ namespace OWML.ModHelper.Menus
             Initialize(menu);
         }
 
-        public IModButton Copy()
+        public IModButtonBase Copy()
         {
             var button = Object.Instantiate(Button);
             Object.Destroy(button.GetComponent<SubmitAction>());
-            var modButton = (IModButton)Activator.CreateInstance(GetType(), button, Menu);
+            var modButton = (IModButtonBase)Activator.CreateInstance(GetType(), button, Menu);
             modButton.Index = Index + 1;
             return modButton;
         }
@@ -49,35 +49,35 @@ namespace OWML.ModHelper.Menus
             Menu = menu;
         }
 
-        public IModButton Copy(int index)
+        public IModButtonBase Copy(int index)
         {
             var copy = Copy();
             copy.Index = index;
             return copy;
         }
 
-        public IModButton Duplicate()
+        public IModButtonBase Duplicate()
         {
             var copy = Copy();
             Menu.AddButton(copy);
             return copy;
         }
 
-        public IModButton Duplicate(int index)
+        public IModButtonBase Duplicate(int index)
         {
             var dupe = Duplicate();
             dupe.Index = index;
             return dupe;
         }
 
-        public IModButton Replace()
+        public IModButtonBase Replace()
         {
             var duplicate = Duplicate();
             Hide();
             return duplicate;
         }
 
-        public IModButton Replace(int index)
+        public IModButtonBase Replace(int index)
         {
             var replacement = Replace();
             replacement.Index = index;

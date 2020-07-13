@@ -3,7 +3,7 @@
     public interface IModOWMenu : IModMenu
     {
         IModTabbedMenu OptionsMenu { get; }
-        IModTitleButton OptionsButton { get; }
-        IModTitleButton QuitButton { get; }
+        IModButton OptionsButton { get; }
+        IModButton QuitButton { get; }
     }
 }
