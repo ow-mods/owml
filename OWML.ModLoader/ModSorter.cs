@@ -56,10 +56,7 @@ namespace OWML.ModLoader
             }
 
             sortedList.Reverse();
-
-            var cleanList = sortedList.Where(modDict.ContainsKey);
-
-            return cleanList.Select(mod => modDict[mod]).ToList();
+            return sortedList.Where(modDict.ContainsKey).Select(mod => modDict[mod]).ToList();
         }
 
         // Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
