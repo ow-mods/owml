@@ -47,11 +47,14 @@ namespace OWML.ModHelper.Menus
             var modsButton = owMenu.OptionsButton.Duplicate(ModsButtonTitle);
             var options = owMenu.OptionsMenu;
 
-            var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
-            var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
-                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
-            var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
-            _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
+            if (_menus.InputCombinationMenu.Menu == null)
+            {
+                var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
+                var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
+                    _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
+                var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
+                _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
+            }
 
             var modsMenu = CreateModsMenu(options);
             modsButton.OnClick += () => modsMenu.Open();
