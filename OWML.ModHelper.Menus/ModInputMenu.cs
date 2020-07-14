@@ -2,7 +2,7 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using UnityEngine;
+using Object = UnityEngine.Object;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -14,9 +14,7 @@ namespace OWML.ModHelper.Menus
 
         private PopupInputMenu _inputMenu;
 
-        public ModInputMenu(IModConsole console) : base(console)
-        {
-        }
+        public ModInputMenu(IModConsole console) : base(console) { }
 
         public void Initialize(PopupInputMenu menu)
         {
@@ -25,10 +23,10 @@ namespace OWML.ModHelper.Menus
                 return;
             }
             var parent = menu.transform.parent.gameObject;
-            var parentCopy = GameObject.Instantiate(parent);
+            var parentCopy = Object.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _inputMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);
-            GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
+            Object.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
         }
 
@@ -84,6 +82,5 @@ namespace OWML.ModHelper.Menus
             _inputMenu.OnPopupConfirm -= OnPopupConfirm;
             _inputMenu.OnPopupCancel -= OnPopupCancel;
         }
-
     }
 }

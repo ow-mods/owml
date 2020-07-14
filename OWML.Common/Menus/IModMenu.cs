@@ -10,12 +10,20 @@ namespace OWML.Common.Menus
 
         Menu Menu { get; }
 
+        List<IModButtonBase> BaseButtons { get; }
         List<IModButton> Buttons { get; }
+        List<IModLayoutButton> LayoutButtons { get; }
+        List<IModPromptButton> PromptButtons { get; }
+
+        [Obsolete("Use GetTitleButton instead")]
         IModButton GetButton(string title);
+        IModButton GetTitleButton(string title);
+        IModPromptButton GetPromptButton(string title);
+
         IModButton AddButton(IModButton button);
         IModButton AddButton(IModButton button, int index);
-        IModLayoutButton AddLayoutButton(IModLayoutButton button);
-        IModLayoutButton AddLayoutButton(IModLayoutButton button, int index);
+        IModButtonBase AddButton(IModButtonBase button);
+        IModButtonBase AddButton(IModButtonBase button, int index);
 
         List<IModToggleInput> ToggleInputs { get; }
         IModToggleInput GetToggleInput(string title);

@@ -30,19 +30,19 @@ namespace OWML.ModHelper.Menus
             var menu = titleScreenManager.GetValue<Menu>("_mainMenu");
             Initialize(menu);
 
-            ResumeExpeditionButton = GetButton("Button-ResumeGame");
-            NewExpeditionButton = GetButton("Button-NewGame");
-            OptionsButton = GetButton("Button-Options");
-            ViewCreditsButton = GetButton("Button-Credits");
-            SwitchProfileButton = GetButton("Button-Profile");
-            QuitButton = GetButton("Button-Exit");
+            ResumeExpeditionButton = GetTitleButton("Button-ResumeGame");
+            NewExpeditionButton = GetTitleButton("Button-NewGame");
+            OptionsButton = GetTitleButton("Button-Options");
+            ViewCreditsButton = GetTitleButton("Button-Credits");
+            SwitchProfileButton = GetTitleButton("Button-Profile");
+            QuitButton = GetTitleButton("Button-Exit");
 
             var tabbedMenu = titleScreenManager.GetValue<TabbedMenu>("_optionsMenu");
             OptionsMenu.Initialize(tabbedMenu);
             InvokeOnInit();
         }
 
-        public override IModButton AddButton(IModButton button, int index)
+        public override IModButtonBase AddButton(IModButtonBase button, int index)
         {
             var modButton = base.AddButton(button, index);
             var fadeControllers = Buttons.OrderBy(x => x.Index).Select(x => new CanvasGroupFadeController

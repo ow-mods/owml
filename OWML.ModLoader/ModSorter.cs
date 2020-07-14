@@ -21,6 +21,11 @@ namespace OWML.ModLoader
 
             foreach (var mod in mods)
             {
+                if (modDict.ContainsKey(mod.Manifest.UniqueName))
+                {
+                    _console.WriteLine($"Error! {mod.Manifest.UniqueName} already exists in the mod sorter - ignoring duplicate.");
+                    continue;
+                }
                 modDict.Add(mod.Manifest.UniqueName, mod);
 
                 foreach (var dependency in mod.Manifest.Dependencies)
@@ -37,7 +42,7 @@ namespace OWML.ModLoader
                     }
                 }
             }
-            
+
             var sortedList = TopologicalSort(
                 new HashSet<string>(modList),
                 new HashSet<Edge>(set)
@@ -51,7 +56,7 @@ namespace OWML.ModLoader
             }
 
             sortedList.Reverse();
-            return sortedList.Select(mod => modDict[mod]).ToList();
+            return sortedList.Where(modDict.ContainsKey).Select(mod => modDict[mod]).ToList();
         }
 
         // Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f

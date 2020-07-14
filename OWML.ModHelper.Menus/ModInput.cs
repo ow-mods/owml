@@ -21,9 +21,10 @@ namespace OWML.ModHelper.Menus
                 Element.transform.SetSiblingIndex(value);
             }
         }
+        public abstract bool IsSelected { get; }
 
         private readonly Text _text;
-        public string Title
+        public virtual string Title
         {
             get => _text.text;
             set => _text.text = value;
@@ -35,7 +36,7 @@ namespace OWML.ModHelper.Menus
         {
             Element = element;
             Menu = menu;
-            _text = element.GetComponentInChildren<Text>();
+            _text = element.GetComponentInChildren<Text>(true);
         }
 
         protected void InvokeOnChange(T value)

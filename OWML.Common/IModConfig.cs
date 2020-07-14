@@ -8,6 +8,7 @@ namespace OWML.Common
         bool Enabled { get; set; }
         bool RequireVR { get; set; }
         Dictionary<string, object> Settings { get; set; }
+
         T GetSettingsValue<T>(string key);
         void SetSettingsValue(string key, object value);
 

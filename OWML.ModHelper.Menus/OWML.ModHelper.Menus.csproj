@@ -75,13 +75,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModMenuWithSelectables.cs" />
+    <Compile Include="ModPromptButton.cs" />
+    <Compile Include="ModPopupInput.cs" />
+    <Compile Include="ModUIStyleApplier.cs" />
+    <Compile Include="ModLayoutManager.cs" />
+    <Compile Include="ModInputCombinationElement.cs" />
+    <Compile Include="ModInputCombinationElementMenu.cs" />
+    <Compile Include="ModInputCombinationMenu.cs" />
+    <Compile Include="ModInputCombinationPopup.cs" />
     <Compile Include="ModLayoutButton.cs" />
-    <Compile Include="ModButton.cs" />
+    <Compile Include="ModButtonBase.cs" />
+    <Compile Include="ModConfigMenuBase.cs" />
+    <Compile Include="ModTitleButton.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModInput.cs" />
     <Compile Include="ModInputMenu.cs" />
     <Compile Include="ModMenu.cs" />
     <Compile Include="ModOptionsMenu.cs" />
+    <Compile Include="OwmlConfigMenu.cs" />
     <Compile Include="ModPauseMenu.cs" />
     <Compile Include="ModPopupMenu.cs" />
     <Compile Include="ModsMenu.cs" />
@@ -90,7 +102,7 @@
     <Compile Include="ModTabMenu.cs" />
     <Compile Include="ModSliderInput.cs" />
     <Compile Include="ModNumberInput.cs" />
-    <Compile Include="ModInputField.cs" />
+    <Compile Include="ModFieldInput.cs" />
     <Compile Include="ModComboInput.cs" />
     <Compile Include="ModTextInput.cs" />
     <Compile Include="ModToggleInput.cs" />

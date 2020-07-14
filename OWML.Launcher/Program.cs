@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using Newtonsoft.Json;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;
@@ -13,7 +11,8 @@ namespace OWML.Launcher
     {
         static void Main(string[] args)
         {
-            var owmlConfig = GetOwmlConfig();
+            var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
+            SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
@@ -21,28 +20,32 @@ namespace OWML.Launcher
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
             var vrPatcher = new VRPatcher(owmlConfig, writer);
-            var app = new App(owmlConfig, owmlManifest, writer, modFinder, outputListener, pathFinder, owPatcher, vrPatcher);
+            var app = new App(owmlConfig, owmlManifest, writer, modFinder,
+                outputListener, pathFinder, owPatcher, vrPatcher);
             app.Run(args);
         }
 
         private static IOwmlConfig GetOwmlConfig()
         {
-            var config = GetJsonObject<OwmlConfig>("OWML.Config.json");
-            config.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+            return JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
+        }
+
+        private static IOwmlConfig CreateOwmlConfig()
+        {
+            var config = JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlDefaultConfigFileName);
+            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, config);
             return config;
+        }
+
+        private static void SaveOwmlPath(IOwmlConfig owmlConfig)
+        {
+            owmlConfig.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
         }
 
         private static IModManifest GetOwmlManifest()
         {
-            return GetJsonObject<ModManifest>("OWML.Manifest.json");
-        }
-
-        private static T GetJsonObject<T>(string filename)
-        {
-            var json = File.ReadAllText(filename)
-                .Replace("\\\\", "/")
-                .Replace("\\", "/");
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
         }
 
     }

@@ -11,13 +11,13 @@ namespace OWML.ModHelper.Input
         internal void Initialize(ModInputHandler inputHandler, IModEvents events)
         {
             _inputHandler = inputHandler;
-            events.Subscribe<TitleScreenManager>(Events.AfterStart);
+            events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
             events.OnEvent += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Events.AfterStart)
+            if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterStart)
             {
                 _updateInputsNext = true;
             }

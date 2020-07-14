@@ -25,9 +25,10 @@ namespace OWML.ModHelper.Input
                 {
                     continue;
                 }
+                var button = InputTranslator.ConvertKeyCodeToButton(key, config);
                 var toStore = (int)key >= ModInputLibrary.MinGamepadKey ?
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, config)) :
-                ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
+                    ButtonPromptLibrary.SharedInstance.GetButtonTexture(button) :
+                    ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
                 _loadedTextures.Add(keyName, toStore);
             }
         }

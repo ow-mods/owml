@@ -1,10 +1,10 @@
 ﻿using OWML.Common.Menus;
 using System;
-using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModNumberInput : ModInputField<float>, IModNumberInput
+    public class ModNumberInput : ModFieldInput<float>, IModNumberInput
     {
         private float _value;
 
@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void Open()
         {
+            base.Open();
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;
             InputMenu.Open(InputType.Number, Value.ToString());
@@ -44,8 +45,8 @@ namespace OWML.ModHelper.Menus
 
         public IModNumberInput Copy()
         {
-            var copy = GameObject.Instantiate(ToggleElement);
-            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>());
+            var copy = Object.Instantiate(ToggleElement);
+            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModNumberInput(copy, Menu, InputMenu);
         }
 

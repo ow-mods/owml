@@ -4,7 +4,6 @@
     {
         void AddMod(IModData modData, IModBehaviour mod);
         IModConfigMenu GetModMenu(IModBehaviour modBehaviour);
-        void Initialize(IModMainMenu mainMenu);
-        void Initialize(IModPauseMenu pauseMenu);
+        void Initialize(IModOWMenu mainMenu);
     }
 }
