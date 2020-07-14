@@ -50,6 +50,10 @@ namespace OWML.ModHelper.Menus
 
         public void UpdateState()
         {
+            if (_styleApplier == null)
+            {
+                return;
+            }
             var currentTexts = LayoutGroup.gameObject.GetComponentsInChildren<Text>();
             _styleApplier.SetTexts(currentTexts);
             var currentGraphics = currentTexts.Select(x => (Graphic)x).ToList();
@@ -59,6 +63,10 @@ namespace OWML.ModHelper.Menus
 
         public void Clear()
         {
+            if (LayoutGroup == null)
+            {
+                return;
+            }
             foreach (Transform child in LayoutGroup.transform)
             {
                 if (_constantGraphics.Contains(child.gameObject.GetComponent<Graphic>())

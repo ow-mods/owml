@@ -82,6 +82,7 @@ namespace OWML.ModHelper.Menus
             }
             Menu.OnActivateMenu += OnActivateMenu;
             Menu.OnDeactivateMenu += OnDeactivateMenu;
+            UpdateNavigation();
         }
 
         public override void SelectFirst()
