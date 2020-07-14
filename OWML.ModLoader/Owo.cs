@@ -26,7 +26,8 @@ namespace OWML.ModLoader
         private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
-            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper, IModInputHandler inputHandler, ModSorter sorter)
+            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
+            IModInputHandler inputHandler, ModSorter sorter)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -51,28 +52,26 @@ namespace OWML.ModLoader
             var priorityMods = _modFinder.GetMods().Where(mod => mod.Manifest.PriorityLoad).ToList();
             var sortedPriority = _sorter.SortMods(priorityMods);
 
-            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled).Select(mod => mod.Manifest.UniqueName).ToList();
+            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled)
+                .Select(mod => mod.Manifest.UniqueName).ToList();
             var sortedMods = sortedPriority.Concat(sortedNormal);
 
-            foreach (var mod in sortedMods)
+            foreach (var modData in sortedMods)
             {
-                foreach (var dependency in mod.Manifest.Dependencies)
+                var missingDependencies = modData.Config.Enabled ?
+                    modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
+                    new List<string>();
+                missingDependencies.ForEach(dependency => _console.WriteLine(
+                    $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
+                var modType = LoadMod(modData);
+                if (modType == null || missingDependencies.Any())
                 {
-                    if (!modNames.Contains(dependency) && mod.Config.Enabled)
-                    {
-                        _console.WriteLine($"Error! {mod.Manifest.UniqueName} needs {dependency}, but it's disabled!");
-                    }
-                }
-                var modType = LoadMod(mod);
-                if (modType == null)
-                {
-                    _logger.Log("Mod type is null, skipping");
-                    _menus.ModsMenu.AddMod(mod, null);
+                    _menus.ModsMenu.AddMod(modData, null);
                     continue;
                 }
-                var helper = CreateModHelper(mod);
+                var helper = CreateModHelper(modData);
                 var initMod = InitializeMod(modType, helper);
-                _menus.ModsMenu.AddMod(mod, initMod);
+                _menus.ModsMenu.AddMod(modData, initMod);
                 _modList.Add(initMod);
             }
         }
