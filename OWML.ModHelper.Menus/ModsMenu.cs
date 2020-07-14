@@ -66,6 +66,7 @@ namespace OWML.ModHelper.Menus
             var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
             var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
                 _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
+            comboElementTemplate.Hide();
             var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
             _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
         }
