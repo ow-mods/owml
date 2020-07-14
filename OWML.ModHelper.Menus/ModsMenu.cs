@@ -43,18 +43,10 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(IModOWMenu owMenu)
         {
-            
             var modsButton = owMenu.OptionsButton.Duplicate(ModsButtonTitle);
             var options = owMenu.OptionsMenu;
 
-            if (_menus.InputCombinationMenu.Menu == null)
-            {
-                var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
-                var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
-                    _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
-                var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
-                _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
-            }
+            InitCombinationMenu(options);
 
             var modsMenu = CreateModsMenu(options);
             modsButton.OnClick += () => modsMenu.Open();
@@ -63,6 +55,19 @@ namespace OWML.ModHelper.Menus
             InitConfigMenu(_menus.OwmlMenu, options);
             var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
             owmlButton.OnClick += () => _menus.OwmlMenu.Open();
+        }
+
+        private void InitCombinationMenu(IModTabbedMenu options)
+        {
+            if (_menus.InputCombinationMenu.Menu != null)
+            {
+                return;
+            }
+            var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
+            var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
+                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
+            var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
+            _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
         }
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)

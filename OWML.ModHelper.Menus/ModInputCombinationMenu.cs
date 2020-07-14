@@ -53,24 +53,25 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate)
         {
-            if (Menu == null)
+            if (Menu != null)
             {
-                _combinationElementTemplate = combinationElementTemplate;
-                var canvasTransform = Object.Instantiate(menu.transform.parent.gameObject).transform;
-                foreach (Transform child in canvasTransform)
-                {
-                    Object.Destroy(child.gameObject);
-                }
-                menu.transform.SetParent(canvasTransform);
-                var toggleTransform = _combinationElementTemplate.Toggle.transform;
-                var oldScale = toggleTransform.localScale;
-                toggleTransform.SetParent(canvasTransform);
-                toggleTransform.localScale = oldScale;
-                canvasTransform.gameObject.AddComponent<DontDestroyOnLoad>();
-
-                base.Initialize(menu);
-                Title = "Edit Combination";
+                return;
             }
+            _combinationElementTemplate = combinationElementTemplate;
+            var canvasTransform = Object.Instantiate(menu.transform.parent.gameObject).transform;
+            foreach (Transform child in canvasTransform)
+            {
+                Object.Destroy(child.gameObject);
+            }
+            menu.transform.SetParent(canvasTransform);
+            var toggleTransform = _combinationElementTemplate.Toggle.transform;
+            var oldScale = toggleTransform.localScale;
+            toggleTransform.SetParent(canvasTransform);
+            toggleTransform.localScale = oldScale;
+            canvasTransform.gameObject.AddComponent<DontDestroyOnLoad>();
+
+            base.Initialize(menu);
+            Title = "Edit Combination";
         }
 
         public void RemoveCombinationElement(IModInputCombinationElement element)
