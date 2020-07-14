@@ -58,9 +58,9 @@ namespace OWML.ModLoader
 
             foreach (var modData in sortedMods)
             {
-                var missingDependencies = modData.Config.Enabled
-                    ? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
-                    : new List<string>();
+                var missingDependencies = modData.Config.Enabled ?
+                    modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
+                    new List<string>();
                 missingDependencies.ForEach(dependency => _console.WriteLine(
                     $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
                 var modType = LoadMod(modData);
