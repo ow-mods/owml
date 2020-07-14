@@ -58,24 +58,14 @@ namespace OWML.ModLoader
 
             foreach (var modData in sortedMods)
             {
-                var isMissingDependency = false;
-                if (modData.Config.Enabled)
-                {
-                    var missingDependencies = modData.Manifest.Dependencies
-                        .Where(dependency => !modNames.Contains(dependency));
-                    foreach (var dependency in missingDependencies)
-                    {
-                        _console.WriteLine($@"Error! {modData.Manifest.UniqueName} needs {dependency}, 
-                            but it's disabled/missing!");
-                        isMissingDependency = true;
-                    }
-                }
+                var missingDependencies = modData.Config.Enabled
+                    ? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
+                    : new List<string>();
+                missingDependencies.ForEach(dependency => _console.WriteLine(
+                    $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
                 var modType = LoadMod(modData);
-                if (modType == null || isMissingDependency)
+                if (modType == null || missingDependencies.Any())
                 {
-                    _logger.Log(isMissingDependency ?
-                        "Mod is missing its dependencies, skipping" :
-                        "Mod type is null, skipping");
                     _menus.ModsMenu.AddMod(modData, null);
                     continue;
                 }
