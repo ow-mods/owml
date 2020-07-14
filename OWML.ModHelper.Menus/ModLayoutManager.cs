@@ -63,7 +63,7 @@ namespace OWML.ModHelper.Menus
 
         public void Clear()
         {
-            if (LayoutGroup == null || LayoutGroup.transform == null)
+            if (LayoutGroup == null)
             {
                 return;
             }
