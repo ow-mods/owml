@@ -4,6 +4,7 @@ using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace OWML.ModHelper.Menus
 {
@@ -61,7 +62,9 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        protected abstract void Open();
-
+        protected virtual void Open()
+        {
+            EventSystem.current.SetSelectedGameObject(ToggleElement.gameObject); // make sure it gets selected after popup closes
+        }
     }
 }

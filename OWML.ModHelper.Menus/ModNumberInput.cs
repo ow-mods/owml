@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void Open()
         {
+            base.Open();
             InputMenu.OnConfirm += OnConfirm;
             InputMenu.OnCancel += OnCancel;
             InputMenu.Open(InputType.Number, Value.ToString());
