@@ -147,6 +147,10 @@ namespace OWML.ModHelper.Menus
 
         public void Destroy()
         {
+            if (Toggle == null)
+            {
+                return;
+            }
             Layout.Clear();
             Layout.UpdateState();
             Title = "";
