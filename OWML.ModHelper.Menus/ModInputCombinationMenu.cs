@@ -88,6 +88,7 @@ namespace OWML.ModHelper.Menus
         private void AddCombinationElement(string combination, int index)
         {
             var element = _combinationElementTemplate.Copy(combination);
+            element.Show();
             var transform = element.Toggle.transform;
             var scale = transform.localScale;
             transform.parent = Layout.transform;
