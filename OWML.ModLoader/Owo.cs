@@ -65,8 +65,8 @@ namespace OWML.ModLoader
                         .Where(dependency => !modNames.Contains(dependency));
                     foreach (var dependency in missingDependencies)
                     {
-                        _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, " +
-                                           "but it's disabled/missing!");
+                        _console.WriteLine($@"Error! {modData.Manifest.UniqueName} needs {dependency}, 
+                            but it's disabled/missing!");
                         isMissingDependency = true;
                     }
                 }
