@@ -75,6 +75,8 @@
     <Compile Include="ModEvents.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ModPlayerEvents.cs" />
+    <Compile Include="ModSceneEvents.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
