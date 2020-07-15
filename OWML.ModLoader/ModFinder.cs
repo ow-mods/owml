@@ -53,7 +53,7 @@ namespace OWML.ModLoader
             }
             else if (defaultConfig != null)
             {
-                config.MakeConfigConsistentWithDefaults(defaultConfig);
+                config.MakeConsistentWithDefaults(defaultConfig);
             }
             storage.Save(config, "config.json");
             return new ModData(manifest, config, defaultConfig);

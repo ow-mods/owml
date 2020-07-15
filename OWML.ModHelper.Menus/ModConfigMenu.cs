@@ -60,9 +60,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void OnReset()
         {
-            ModData.Config.Enabled = ModData.DefaultConfig.Enabled;
-            ModData.Config.RequireVR = ModData.DefaultConfig.RequireVR;
-            ModData.Config.Settings = new Dictionary<string, object>(ModData.DefaultConfig.Settings);
+            ModData.Config.ResetToDefaults(ModData.DefaultConfig);
             UpdateUIValues();
         }
     }
