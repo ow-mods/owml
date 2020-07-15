@@ -16,9 +16,9 @@ namespace OWML.ModHelper.Events
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour.GetType() == typeof(PlayerBody) && ev == Common.Events.AfterAwake)
+            if (behaviour is PlayerBody playerBody && ev == Common.Events.AfterAwake)
             {
-                OnPlayerAwake?.Invoke((PlayerBody)behaviour);
+                OnPlayerAwake?.Invoke(playerBody);
             }
         }
     }
