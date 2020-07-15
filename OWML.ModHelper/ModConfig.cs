@@ -66,7 +66,14 @@ namespace OWML.ModHelper
             return GetSettingsValue<T>(key);
         }
 
-        public void MakeConfigConsistentWithDefaults(IModConfig defaultConfig)
+        public void ResetToDefaults(IModConfig defaultConfig)
+        {
+            Enabled = defaultConfig.Enabled;
+            RequireVR = defaultConfig.RequireVR;
+            Settings = new Dictionary<string, object>(defaultConfig.Settings);
+        }
+
+        public void MakeConsistentWithDefaults(IModConfig defaultConfig)
         {
             if (defaultConfig == null)
             {
