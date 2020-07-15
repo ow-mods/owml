@@ -24,13 +24,13 @@ namespace OWML.ModLoader
                 _console.WriteLine("Warning: Mods folder not found!");
                 return new List<IModData>();
             }
-            var manifestFilenames = Directory.GetFiles(_config.ModsPath, "manifest.json", SearchOption.AllDirectories);
+            var manifestFilenames = Directory.GetFiles(_config.ModsPath, Constants.ModManifestFileName, SearchOption.AllDirectories);
             var mods = new List<IModData>();
             foreach (var manifestFilename in manifestFilenames)
             {
                 var json = File.ReadAllText(manifestFilename);
                 var manifest = JsonConvert.DeserializeObject<ModManifest>(json);
-                manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf("manifest.json"));
+                manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName));
                 var modData = GetModData(manifest);
                 mods.Add(modData);
             }
@@ -40,8 +40,8 @@ namespace OWML.ModLoader
         private IModData GetModData(IModManifest manifest)
         {
             var storage = new ModStorage(manifest);
-            var config = storage.Load<ModConfig>("config.json");
-            var defaultConfig = storage.Load<ModConfig>("default-config.json");
+            var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
+            var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName);
             if (config == null && defaultConfig == null)
             {
                 config = new ModConfig();
@@ -61,7 +61,7 @@ namespace OWML.ModLoader
                     }
                 }
             }
-            storage.Save(config, "config.json");
+            storage.Save(config, Constants.ModConfigFileName);
             return new ModData(manifest, config, defaultConfig);
         }
 

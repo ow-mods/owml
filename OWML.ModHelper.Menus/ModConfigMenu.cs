@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus
                 var value = GetInputValue(key);
                 ModData.Config.SetSettingsValue(key, value);
             }
-            Storage.Save(ModData.Config, "config.json");
+            Storage.Save(ModData.Config, Constants.ModConfigFileName);
             Mod?.Configure(ModData.Config);
             Close();
         }
