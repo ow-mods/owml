@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
@@ -80,12 +81,10 @@ namespace OWML.ModHelper
                 if (!defaultConfig.Settings.ContainsKey(setting.Key))
                 {
                     settingsCopy.Remove(setting.Key);
-                    continue;
                 }
                 else if (!IsSettingSameType(setting.Value, defaultConfig.Settings[setting.Key]))
                 {
                     settingsCopy[setting.Key] = defaultConfig.Settings[setting.Key];
-                    continue;
                 }
             }
             Settings = settingsCopy;
@@ -93,29 +92,15 @@ namespace OWML.ModHelper
 
         private void AddMissingDefaults(IModConfig defaultConfig)
         {
-            foreach (var defaultSetting in defaultConfig.Settings)
-            {
-                if (!Settings.ContainsKey(defaultSetting.Key))
-                {
-                    Settings.Add(defaultSetting.Key, defaultSetting.Value);
-                }
-            }
+            var missingSettings = defaultConfig.Settings.Where(s => !Settings.ContainsKey(s.Key)).ToList();
+            missingSettings.ForEach(setting => Settings.Add(setting.Key, setting.Value));
         }
 
         private bool IsSettingSameType(object settingValue1, object settingValue2)
         {
-            if (settingValue1.GetType() != settingValue2.GetType())
-            {
-                return false;
-            }
-            if (settingValue1 is JObject obj1 && settingValue2 is JObject obj2)
-            {
-                if ((string)obj1["type"] != (string)obj2["type"])
-                {
-                    return false;
-                }
-            }
-            return true;
+            return settingValue1.GetType() == settingValue2.GetType() &&
+                   (!(settingValue1 is JObject obj1) || !(settingValue2 is JObject obj2) ||
+                    (string)obj1["type"] == (string)obj2["type"]);
         }
     }
 }
