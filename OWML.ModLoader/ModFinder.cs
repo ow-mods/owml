@@ -53,17 +53,12 @@ namespace OWML.ModLoader
             }
             else if (defaultConfig != null)
             {
-                foreach (var setting in defaultConfig.Settings)
-                {
-                    if (!config.Settings.ContainsKey(setting.Key))
-                    {
-                        config.Settings.Add(setting.Key, setting.Value);
-                    }
-                }
+                config.MakeConfigConsistentWithDefaults(defaultConfig);
             }
+
+
             storage.Save(config, "config.json");
             return new ModData(manifest, config, defaultConfig);
         }
-
     }
 }

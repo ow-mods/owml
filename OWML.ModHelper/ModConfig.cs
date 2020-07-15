@@ -65,5 +65,57 @@ namespace OWML.ModHelper
             return GetSettingsValue<T>(key);
         }
 
+        private void AddMissingDefaults(IModConfig defaultConfig)
+        {
+            foreach (var defaultSetting in defaultConfig.Settings)
+            {
+                if (!Settings.ContainsKey(defaultSetting.Key))
+                {
+                    Settings.Add(defaultSetting.Key, defaultSetting.Value);
+                }
+            }
+        }
+
+        public void MakeConfigConsistentWithDefaults(IModConfig defaultConfig)
+        {
+            if (defaultConfig == null)
+            {
+                return;
+            }
+
+            AddMissingDefaults(defaultConfig);
+
+            var settingsCopy = new Dictionary<string, object>(Settings);
+            foreach (var setting in Settings)
+            {
+                if (!defaultConfig.Settings.ContainsKey(setting.Key))
+                {
+                    settingsCopy.Remove(setting.Key);
+                    continue;
+                }
+                else if (!IsSettingSameType(setting.Value, defaultConfig.Settings[setting.Key]))
+                {
+                    settingsCopy[setting.Key] = defaultConfig.Settings[setting.Key];
+                    continue;
+                }
+            }
+            Settings = settingsCopy;
+        }
+
+        private bool IsSettingSameType(object settingValue1, object settingValue2)
+        {
+            if (settingValue1.GetType() != settingValue2.GetType())
+            {
+                return false;
+            }
+            if (settingValue1 is JObject obj1 && settingValue2 is JObject obj2)
+            {
+                if ((string)obj1["type"] != (string)obj2["type"])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
