@@ -65,17 +65,6 @@ namespace OWML.ModHelper
             return GetSettingsValue<T>(key);
         }
 
-        private void AddMissingDefaults(IModConfig defaultConfig)
-        {
-            foreach (var defaultSetting in defaultConfig.Settings)
-            {
-                if (!Settings.ContainsKey(defaultSetting.Key))
-                {
-                    Settings.Add(defaultSetting.Key, defaultSetting.Value);
-                }
-            }
-        }
-
         public void MakeConfigConsistentWithDefaults(IModConfig defaultConfig)
         {
             if (defaultConfig == null)
@@ -100,6 +89,17 @@ namespace OWML.ModHelper
                 }
             }
             Settings = settingsCopy;
+        }
+
+        private void AddMissingDefaults(IModConfig defaultConfig)
+        {
+            foreach (var defaultSetting in defaultConfig.Settings)
+            {
+                if (!Settings.ContainsKey(defaultSetting.Key))
+                {
+                    Settings.Add(defaultSetting.Key, defaultSetting.Value);
+                }
+            }
         }
 
         private bool IsSettingSameType(object settingValue1, object settingValue2)
