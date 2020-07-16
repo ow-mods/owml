@@ -7,7 +7,7 @@ namespace OWML.ModHelper
     {
         public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest)
         {
-            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
+            if (owmlConfig.SocketPort != -1)
             {
                 return new ModSocketOutput(owmlConfig, logger, manifest);
             }

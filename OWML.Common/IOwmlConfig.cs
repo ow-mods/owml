@@ -12,5 +12,6 @@
         string LogFilePath { get; }
         bool Verbose { get; set; }
         bool BlockInput { get; set; }
+        int SocketPort { get; set; }
     }
 }

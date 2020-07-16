@@ -13,6 +13,7 @@ namespace OWML.Launcher
         {
             var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
             SaveOwmlPath(owmlConfig);
+            SaveConsolePort(owmlConfig);
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
@@ -23,6 +24,24 @@ namespace OWML.Launcher
             var app = new App(owmlConfig, owmlManifest, writer, modFinder,
                 outputListener, pathFinder, owPatcher, vrPatcher);
             app.Run(args);
+        }
+
+        private static void SaveConsolePort(IOwmlConfig owmlConfig)
+        {
+            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
+            {
+                var argument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
+                if (!int.TryParse(argument, out var port))
+                {
+                    return;
+                }
+                owmlConfig.SocketPort = port;
+            }
+            else
+            {
+                owmlConfig.SocketPort = -1;
+            }
+            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
         }
 
         private static IOwmlConfig GetOwmlConfig()

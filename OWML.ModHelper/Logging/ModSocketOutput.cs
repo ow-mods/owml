@@ -12,12 +12,16 @@ namespace OWML.ModHelper
         private const string LocalHost = "127.0.0.1";
         private const string NameMessageSeparator = ";;";
 
+        private int _port;
         private static Socket _socket;
 
         public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
             if (_socket == null)
             {
+                _port = config.SocketPort;
+                config.SocketPort = -1;
+                JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, config);
                 CreateSocket();
             }
         }
@@ -37,16 +41,9 @@ namespace OWML.ModHelper
 
         private void CreateSocket()
         {
-            var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
-            if (!int.TryParse(consolePortArgument, out var port))
-            {
-                Logger?.Log("Error: Missing or incorrectly formatted console port argument");
-                return;
-            }
-
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var ipAddress = IPAddress.Parse(LocalHost);
-            var endPoint = new IPEndPoint(ipAddress, port);
+            var endPoint = new IPEndPoint(ipAddress, _port);
             _socket.Connect(endPoint);
         }
 

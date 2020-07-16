@@ -34,5 +34,8 @@ namespace OWML.ModHelper
 
         [JsonIgnore]
         public string ModsPath => $"{OWMLPath}Mods";
+
+        [JsonProperty("socketPort")]
+        public int SocketPort { get; set; }
     }
 }
