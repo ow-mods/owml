@@ -5,9 +5,9 @@ namespace OWML.ModHelper
 {
     public class OutputFactory
     {
-        public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest)
+        public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest, bool launcher)
         {
-            if (owmlConfig.SocketPort != -1)
+            if (!launcher && owmlConfig.SocketPort != -1)
             {
                 return new ModSocketOutput(owmlConfig, logger, manifest);
             }

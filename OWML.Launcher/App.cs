@@ -34,7 +34,7 @@ namespace OWML.Launcher
             _vrPatcher = vrPatcher;
         }
 
-        public void Run(string[] args)
+        public void Run()
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
@@ -57,9 +57,9 @@ namespace OWML.Launcher
 
             PatchGame(mods);
 
-            StartGame(args);
+            StartGame();
 
-            if (hasPortArgument)
+            if (CommandLineArguments.HasArgument(Constants.CloseConsoleArgument))
             {
                 ExitConsole();
             }
@@ -159,12 +159,12 @@ namespace OWML.Launcher
             }
         }
 
-        private void StartGame(string[] args)
+        private void StartGame()
         {
             _writer.WriteLine("Starting game...");
             try
             {
-                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));
+                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");
             }
             catch (Exception ex)
             {

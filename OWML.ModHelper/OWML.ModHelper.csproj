@@ -76,12 +76,12 @@
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="JsonHelper.cs" />
+    <Compile Include="Logging\ModSocketOutput.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="Logging\ModFileOutput.cs" />
     <Compile Include="Logging\ModLogger.cs" />
     <Compile Include="Logging\ModConsole.cs" />
-    <Compile Include="Logging\ModSocketOutput.cs" />
     <Compile Include="Logging\OutputFactory.cs" />
     <Compile Include="Logging\OutputWriter.cs" />
     <Compile Include="OwmlBehaviour.cs" />
