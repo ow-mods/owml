@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Menus
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
 
-        public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod) 
+        public ModConfigMenu(IModConsole console, IModData modData, IModBehaviour mod)
             : base(console, modData.Manifest)
         {
             ModData = modData;
@@ -60,9 +60,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void OnReset()
         {
-            ModData.Config.Enabled = ModData.DefaultConfig.Enabled;
-            ModData.Config.RequireVR = ModData.DefaultConfig.RequireVR;
-            ModData.Config.Settings = new Dictionary<string, object>(ModData.DefaultConfig.Settings);
+            ModData.Config.ResetToDefaults(ModData.DefaultConfig);
             UpdateUIValues();
         }
     }
