@@ -63,7 +63,7 @@ namespace OWML.ModLoader
                     modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
                     new List<string>();
                 missingDependencies.ForEach(dependency => _console.WriteLine(
-                    $"Error - {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
+                    $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
                 var modType = LoadMod(modData);
                 if (modType == null || missingDependencies.Any())
                 {
@@ -81,7 +81,7 @@ namespace OWML.ModLoader
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                _console.WriteLine($"Unity error message: {message}. Stack trace: {stackTrace?.Trim()}");
+                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
@@ -101,7 +101,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error - Could not get {typeof(ModBehaviour)}: {ex.Message}");
+                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
                 return null;
             }
         }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OWML.Common
+﻿namespace OWML.Common
 {
     public interface IModConsole
     {

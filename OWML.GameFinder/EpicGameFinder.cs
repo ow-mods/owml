@@ -23,7 +23,7 @@ namespace OWML.GameFinder
             var appDataPath = (string)key?.GetValue(RegistryName);
             if (string.IsNullOrEmpty(appDataPath))
             {
-                Writer.WriteLine("EGS not found in registry.");
+                Writer.WriteLine("EGS not found in Registry.");
                 return null;
             }
             var manifestsPath = $"{appDataPath}{ManifestsFolder}";

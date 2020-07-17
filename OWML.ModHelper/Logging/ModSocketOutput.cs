@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Logging
     public class ModSocketOutput : ModConsole
     {
         private const string LocalHost = "127.0.0.1";
-        private const string MessageSeparator = ";;";
+        private const string NameMessageSeparator = ";;";
 
         private int _port;
         private static Socket _socket;
@@ -28,7 +28,10 @@ namespace OWML.ModHelper.Logging
 
         public override void WriteLine(string s)
         {
-            Console.WriteLine(s);
+            Logger?.Log(s); Console.WriteLine(s);
+            CallWriteCallback(Manifest, s);
+            var message = $"{Manifest.Name}{NameMessageSeparator}{s}";
+            InternalWriteLine(message);
         }
 
         public override void WriteLine(params object[] objects)

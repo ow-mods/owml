@@ -23,7 +23,7 @@ namespace OWML.GameFinder
             var steamPath = (string)key?.GetValue(RegistryName);
             if (string.IsNullOrEmpty(steamPath))
             {
-                Writer.WriteLine("Steam not found in registry.");
+                Writer.WriteLine("Steam not found in Registry.");
                 return null;
             }
             var defaultLocation = $"{steamPath}/{GameLocation}";

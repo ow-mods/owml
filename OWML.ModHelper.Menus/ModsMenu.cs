@@ -35,7 +35,7 @@ namespace OWML.ModHelper.Menus
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                OwmlConsole.WriteLine($"Error - Menu of {modBehaviour.ModHelper.Manifest.UniqueName} is null.");
+                OwmlConsole.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
                 return null;
             }
             return modConfigMenu;

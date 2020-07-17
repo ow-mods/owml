@@ -53,7 +53,7 @@ namespace OWML.Patcher
 
             if (isAlreadyPatched)
             {
-                _writer.WriteLine("globalgamemanagers is already patched.");
+                _writer.WriteLine("globalgamemanagers already patched.");
                 return;
             }
 
