@@ -21,7 +21,7 @@ namespace OWML.ModLoader
         {
             if (!Directory.Exists(_config.ModsPath))
             {
-                _console.WriteLine(MessageType.Warning, "Warning - Mods folder not found!");
+                _console.WriteLine("Warning - Mods folder not found!");
                 return new List<IModData>();
             }
             var manifestFilenames = Directory.GetFiles(_config.ModsPath, "manifest.json", SearchOption.AllDirectories);

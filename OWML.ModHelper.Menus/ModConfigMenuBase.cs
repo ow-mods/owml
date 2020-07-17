@@ -87,11 +87,11 @@ namespace OWML.ModHelper.Menus
                     return;
                 }
 
-                OwmlConsole.WriteLine(MessageType.Error, "Error - Unrecognized complex setting: " + value);
+                OwmlConsole.WriteLine("Error - Unrecognized complex setting: " + value);
                 return;
             }
 
-            OwmlConsole.WriteLine(MessageType.Error, "Error - unrecognized setting type: " + value.GetType());
+            OwmlConsole.WriteLine("Error - unrecognized setting type: " + value.GetType());
         }
 
         private void AddToggleInput(string key, int index)

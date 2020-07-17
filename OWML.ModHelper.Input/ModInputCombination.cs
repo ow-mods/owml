@@ -40,7 +40,7 @@ namespace OWML.ModHelper.Input
                 var hash = ModInputLibrary.StringToHash(combo);
                 if (hash <= 0)
                 {
-                    _console.WriteLine(MessageType.Warning, $"Warning - Invalid part of combo in {FullName}: {combo}, " +
+                    _console.WriteLine($"Warning - Invalid part of combo in {FullName}: {combo}, " +
                         ModInputLibrary.GetReadableMessage((RegistrationCode)hash));
                     continue;
                 }

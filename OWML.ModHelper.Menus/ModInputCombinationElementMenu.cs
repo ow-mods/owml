@@ -92,7 +92,7 @@ namespace OWML.ModHelper.Menus
 
             if (layout == null)
             {
-                OwmlConsole.WriteLine(MessageType.Error, "Error : Failed to create combination visualizer in combination editor.");
+                OwmlConsole.WriteLine("Error : Failed to create combination visualizer in combination editor.");
                 return;
             }
 

@@ -22,7 +22,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                ModConsole.Instance.WriteLine(MessageType.Error, "Error: setting not found: " + key);
+                ModConsole.Instance.WriteLine("Error: setting not found: " + key);
                 return default;
             }
 
@@ -35,7 +35,7 @@ namespace OWML.ModHelper
             }
             catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine(MessageType.Error, $"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
+                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
                 return default;
             }
         }
@@ -44,7 +44,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                ModConsole.Instance.WriteLine(MessageType.Error, "Error: setting not found: " + key);
+                ModConsole.Instance.WriteLine("Error: setting not found: " + key);
                 return;
             }
 

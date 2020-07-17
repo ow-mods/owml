@@ -26,46 +26,14 @@ namespace OWML.ModHelper.Logging
             }
         }
 
-        [Obsolete("Use ModSocketOutput.Writeline(MessageType type, string s) instead")]
         public override void WriteLine(string s)
         {
-            MessageType type;
-            if (s.ToLower().Contains("error") || s.ToLower().Contains("exception"))
-            {
-                type = MessageType.Error;
-            }
-            else if (s.ToLower().Contains("warning") || s.ToLower().Contains("disabled"))
-            {
-                type = MessageType.Warning;
-            }
-            else if (s.ToLower().Contains("success"))
-            {
-                type = MessageType.Success;
-            }
-            else
-            {
-                type = MessageType.Message;
-            }
-            WriteLine(type, s);
+            Console.WriteLine(s);
         }
 
-        [Obsolete("Use ModSocketOutput.Writeline(MessageType type, params object[] objects) instead")]
         public override void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
-        }
-
-        public override void WriteLine(MessageType type, string s)
-        {
-            Logger?.Log(s);
-            CallWriteCallback(Manifest, s);
-            var message = $"{type}{MessageSeparator}{Manifest.Name}{MessageSeparator}{s}";
-            InternalWriteLine(message);
-        }
-
-        public override void WriteLine(MessageType type, params object[] objects)
-        {
-            WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
         private void CreateSocket()

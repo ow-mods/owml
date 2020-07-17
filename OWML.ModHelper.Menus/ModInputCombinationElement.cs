@@ -46,7 +46,7 @@ namespace OWML.ModHelper.Menus
                                      .GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
             if (layoutObject == null)
             {
-                ModConsole.Instance.WriteLine(MessageType.Error, "Error: Failed to setup an element for Combination editor");
+                ModConsole.Instance.WriteLine("Error: Failed to setup an element for Combination editor");
                 return;
             }
             var layoutGroup = layoutObject.GetComponent<HorizontalLayoutGroup>();

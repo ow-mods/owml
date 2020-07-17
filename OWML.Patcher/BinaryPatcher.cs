@@ -53,14 +53,14 @@ namespace OWML.Patcher
 
             if (isAlreadyPatched)
             {
-                _writer.WriteLine(MessageType.Message, "globalgamemanagers is already patched.");
+                _writer.WriteLine("globalgamemanagers is already patched.");
                 return;
             }
 
             BackupFile(_filePath);
             var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
             File.WriteAllBytes(_filePath, patchedBytes);
-            _writer.WriteLine(MessageType.Message, "Successfully patched globalgamemanagers.");
+            _writer.WriteLine("Successfully patched globalgamemanagers.");
         }
 
         private int FindPatchStartIndex(byte[] fileBytes, int startIndex, int endIndex)

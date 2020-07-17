@@ -23,7 +23,7 @@ namespace OWML.ModLoader
             {
                 if (modDict.ContainsKey(mod.Manifest.UniqueName))
                 {
-                    _console.WriteLine(MessageType.Error, $"Error - {mod.Manifest.UniqueName} already exists in the mod sorter : Ignoring duplicate.");
+                    _console.WriteLine($"Error - {mod.Manifest.UniqueName} already exists in the mod sorter : Ignoring duplicate.");
                     continue;
                 }
                 modDict.Add(mod.Manifest.UniqueName, mod);
@@ -32,7 +32,7 @@ namespace OWML.ModLoader
                 {
                     if (mod.Manifest.PriorityLoad && !modList.Contains(dependency))
                     {
-                        _console.WriteLine(MessageType.Error, $"Error - {mod.Manifest.UniqueName} (priority load) depends on a normal mod : Removing from load...");
+                        _console.WriteLine($"Error - {mod.Manifest.UniqueName} (priority load) depends on a normal mod : Removing from load...");
                         modDict.Remove(mod.Manifest.UniqueName);
                         modList.Remove(mod.Manifest.UniqueName);
                     }
@@ -51,7 +51,7 @@ namespace OWML.ModLoader
             if (sortedList == null)
             {
                 // Sorting has failed, return the original mod list
-                _console.WriteLine(MessageType.Error, "Error - Cyclic dependency found. Returning original load order...");
+                _console.WriteLine("Error - Cyclic dependency found. Returning original load order...");
                 return mods;
             }
 

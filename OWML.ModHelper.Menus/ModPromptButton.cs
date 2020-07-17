@@ -50,7 +50,7 @@ namespace OWML.ModHelper.Menus
             _hotkeyButton = Button.GetComponent<ButtonWithHotkeyImageElement>();
             if (_hotkeyButton == null)
             {
-                ModConsole.Instance.WriteLine(MessageType.Error, "Error: can't setup ModPromptButton for this button");
+                ModConsole.Instance.WriteLine("Error: can't setup ModPromptButton for this button");
                 return;
             }
             _prompt = _hotkeyButton.GetValue<ScreenPrompt>("_screenPrompt");

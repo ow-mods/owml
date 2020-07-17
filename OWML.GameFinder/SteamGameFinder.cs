@@ -23,7 +23,7 @@ namespace OWML.GameFinder
             var steamPath = (string)key?.GetValue(RegistryName);
             if (string.IsNullOrEmpty(steamPath))
             {
-                Writer.WriteLine(MessageType.Message, "Steam not found in registry.");
+                Writer.WriteLine("Steam not found in registry.");
                 return null;
             }
             var defaultLocation = $"{steamPath}/{GameLocation}";
@@ -34,7 +34,7 @@ namespace OWML.GameFinder
             var libraryFoldersFile = $"{steamPath}/{LibraryFoldersPath}";
             if (!File.Exists(libraryFoldersFile))
             {
-                Writer.WriteLine(MessageType.Message, $"Steam library folders file not found: {libraryFoldersFile}");
+                Writer.WriteLine($"Steam library folders file not found: {libraryFoldersFile}");
                 return null;
             }
             var libraryFoldersContent = File.ReadAllText(libraryFoldersFile);
@@ -45,7 +45,7 @@ namespace OWML.GameFinder
                 var libraryPath = libraryFoldersVdf.Value[libraryName]?.ToString();
                 if (string.IsNullOrEmpty(libraryPath))
                 {
-                    Writer.WriteLine(MessageType.Message, "Game not found in custom Steam library.");
+                    Writer.WriteLine("Game not found in custom Steam library.");
                     return null;
                 }
                 var gamePath = $"{libraryPath}/{GameLocation}";
@@ -54,7 +54,7 @@ namespace OWML.GameFinder
                     return gamePath;
                 }
             }
-            Writer.WriteLine(MessageType.Message, "Game not found in Steam.");
+            Writer.WriteLine("Game not found in Steam.");
             return null;
         }
 

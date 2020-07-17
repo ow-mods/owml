@@ -36,7 +36,7 @@ namespace OWML.EnableDebugMode
 
         private void Start()
         {
-            ModHelper.Console.WriteLine(MessageType.Message, $"In {nameof(EnableDebugMode)}!");
+            ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
             ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
@@ -109,13 +109,13 @@ namespace OWML.EnableDebugMode
             {
                 _renderValue = 0;
             }
-            ModHelper.Console.WriteLine(MessageType.Message, "Render value: " + _renderValue);
+            ModHelper.Console.WriteLine("Render value: " + _renderValue);
             typeof(GUIMode).GetAnyField("_renderMode").SetValue(null, _renderValue);
         }
 
         private void WarpTo(SpawnLocation location)
         {
-            ModHelper.Console.WriteLine(MessageType.Message, $"Warping to {location}!");
+            ModHelper.Console.WriteLine($"Warping to {location}!");
             _playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
         }
 

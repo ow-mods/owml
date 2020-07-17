@@ -20,9 +20,9 @@ namespace OWML.LoadCustomAssets
 
         private void Start()
         {
-            ModHelper.Console.WriteLine(MessageType.Message, $"In {nameof(LoadCustomAssets)}!");
+            ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
             _saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
-            ModHelper.Console.WriteLine(MessageType.Message, "Ducks shot: " + _saveFile.NumberOfDucks);
+            ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
 
             var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
             _cube = assetBundle.LoadAsset<GameObject>("Cube");
@@ -53,18 +53,18 @@ namespace OWML.LoadCustomAssets
         private void OnMusicLoaded(AudioSource audio)
         {
             _music = audio;
-            ModHelper.Console.WriteLine(MessageType.Success, "Music loaded!");
+            ModHelper.Console.WriteLine("Music loaded!");
         }
 
         private void OnGunSoundLoaded(AudioSource audio)
         {
             _shootSound = audio;
-            ModHelper.Console.WriteLine(MessageType.Success, "Gun sound loaded!");
+            ModHelper.Console.WriteLine("Gun sound loaded!");
         }
 
         private void OnDuckLoaded(GameObject duck)
         {
-            ModHelper.Console.WriteLine(MessageType.Success, "Duck loaded!");
+            ModHelper.Console.WriteLine("Duck loaded!");
             duck.AddComponent<SphereCollider>();
             duck.AddComponent<Rigidbody>();
             _duckBody = duck.AddComponent<OWRigidbody>();
@@ -109,7 +109,7 @@ namespace OWML.LoadCustomAssets
             _shootSound.Play();
 
             _saveFile.NumberOfDucks++;
-            ModHelper.Console.WriteLine(MessageType.Message, "Ducks shot:", _saveFile.NumberOfDucks);
+            ModHelper.Console.WriteLine("Ducks shot:", _saveFile.NumberOfDucks);
             ModHelper.Storage.Save(_saveFile, "savefile.json");
         }
 
@@ -120,7 +120,7 @@ namespace OWML.LoadCustomAssets
 
         private void ToggleMusic(bool enable)
         {
-            ModHelper.Console.WriteLine(MessageType.Message, "ToggleMusic:", enable);
+            ModHelper.Console.WriteLine("ToggleMusic:", enable);
             if (_music == null)
             {
                 return;
