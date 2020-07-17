@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Logging
 
         public override void WriteLine(string s)
         {
-            Logger?.Log(s); Console.WriteLine(s);
+            Logger?.Log(s);
             CallWriteCallback(Manifest, s);
             var message = $"{Manifest.Name}{NameMessageSeparator}{s}";
             InternalWriteLine(message);
