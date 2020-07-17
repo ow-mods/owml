@@ -1,7 +1,7 @@
 ﻿using OWML.Common;
 
 
-namespace OWML.ModHelper
+namespace OWML.ModHelper.Logging
 {
     public class OutputFactory
     {

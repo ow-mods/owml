@@ -4,6 +4,7 @@ using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
 using OWML.ModHelper.Input;
 using UnityEngine;
+using OWML.ModHelper.Logging;
 
 namespace OWML.ModLoader
 {

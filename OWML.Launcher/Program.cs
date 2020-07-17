@@ -51,10 +51,9 @@ namespace OWML.Launcher
                 l.Stop();
                 Console.WriteLine("Creating listener on port " + port);
                 owmlConfig.SocketPort = port;
+                var socketListener = new SocketListener(port);
             }
             JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
-
-            var socketListener = new SocketListener(port);
         }
 
         private static IOwmlConfig GetOwmlConfig()
