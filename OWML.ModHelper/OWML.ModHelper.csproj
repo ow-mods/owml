@@ -79,7 +79,6 @@
     <Compile Include="Logging\ModSocketOutput.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="Logging\ModFileOutput.cs" />
     <Compile Include="Logging\ModLogger.cs" />
     <Compile Include="Logging\ModConsole.cs" />
     <Compile Include="Logging\OutputFactory.cs" />

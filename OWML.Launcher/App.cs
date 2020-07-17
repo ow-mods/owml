@@ -59,7 +59,7 @@ namespace OWML.Launcher
 
             StartGame();
 
-            if (CommandLineArguments.HasArgument(Constants.CloseConsoleArgument))
+            if (hasPortArgument)
             {
                 ExitConsole();
             }

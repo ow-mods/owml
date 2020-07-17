@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;
+using OWML.ModHelper.Logging;
 using OWML.ModLoader;
 using OWML.Patcher;
 
@@ -15,7 +18,7 @@ namespace OWML.Launcher
             SaveConsolePort(owmlConfig);
             SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
-            var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest, true);
+            var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
             var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);
@@ -41,9 +44,17 @@ namespace OWML.Launcher
             }
             else
             {
-                owmlConfig.SocketPort = -1;
+                Console.WriteLine("Creating port...");
+                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+                Console.WriteLine("Creating listener on port " + port);
+                owmlConfig.SocketPort = port;
             }
             JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
+
+            var socketListener = new SocketListener(port);
         }
 
         private static IOwmlConfig GetOwmlConfig()

@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.ModHelper.Logging
 {
     public class ModSocketOutput : ModConsole
     {

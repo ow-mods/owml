@@ -108,7 +108,7 @@ namespace OWML.ModLoader
         private IModHelper CreateModHelper(IModData modData)
         {
             var logger = new ModLogger(_owmlConfig, modData.Manifest);
-            var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest, false);
+            var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest);
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
