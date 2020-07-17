@@ -324,13 +324,13 @@ namespace OWML.ModHelper.Input
             switch (SwapCombination(combo, false))
             {
                 case RegistrationCode.InvalidCombination:
-                    _console.WriteLine($"Error - Failed to register \"{combo.FullName}\": invalid combination!");
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": invalid combination!");
                     return null;
                 case RegistrationCode.CombinationTooLong:
-                    _console.WriteLine($"Error - Failed to register \"{combo.FullName}\": too long!");
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": too long!");
                     return null;
                 case RegistrationCode.CombinationTaken:
-                    _console.WriteLine($"Error - Failed to register \"{combo.FullName}\": already in use by following mods:");
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": already in use by following mods:");
                     var collisions = GetCollisions(combo.Hashes);
                     foreach (var collision in collisions)
                     {
@@ -354,10 +354,10 @@ namespace OWML.ModHelper.Input
             switch (SwapCombination(combination, true))
             {
                 case RegistrationCode.InvalidCombination:
-                    _console.WriteLine($"Error - Failed to unregister \"{combination.FullName}\": invalid combination!");
+                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": invalid combination!");
                     return;
                 case RegistrationCode.CombinationTooLong:
-                    _console.WriteLine($"Error - Failed to unregister \"{combination.FullName}\": too long!");
+                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": too long!");
                     return;
                 case RegistrationCode.AllNormal:
                     _logger.Log($"Successfully unregistered \"{combination.FullName}\"");
