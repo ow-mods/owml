@@ -78,7 +78,6 @@ namespace OWML.ModHelper.Logging
 
         private void InternalWriteLine(string message)
         {
-            //var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             var bytes = Encoding.UTF8.GetBytes(message);
             _socket?.Send(bytes);
         }

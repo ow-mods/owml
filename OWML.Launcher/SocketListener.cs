@@ -28,7 +28,7 @@ namespace OWML.Launcher
 
                 server.Start();
 
-                Byte[] bytes = new Byte[256];
+                Byte[] bytes = new Byte[1024];
                 String data = null;
 
                 while (true)
