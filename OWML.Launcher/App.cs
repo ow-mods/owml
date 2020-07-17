@@ -16,19 +16,17 @@ namespace OWML.Launcher
         private readonly IModManifest _owmlManifest;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
-        private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
 
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
+            PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
             _writer = writer;
             _modFinder = modFinder;
-            _listener = listener;
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
@@ -45,11 +43,6 @@ namespace OWML.Launcher
 
             CreateLogsDirectory();
 
-            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
-            if (!hasPortArgument)
-            {
-                ListenForOutput();
-            }
 
             var mods = _modFinder.GetMods();
 
@@ -59,6 +52,7 @@ namespace OWML.Launcher
 
             StartGame();
 
+            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
             if (hasPortArgument)
             {
                 ExitConsole();
@@ -115,12 +109,6 @@ namespace OWML.Launcher
             return owmlVersionSplit.Length == modVersionSplit.Length &&
                    owmlVersionSplit[0] == modVersionSplit[0] &&
                    owmlVersionSplit[1] == modVersionSplit[1];
-        }
-
-        private void ListenForOutput()
-        {
-            _listener.OnOutput += OnOutput;
-            _listener.Start();
         }
 
         private void OnOutput(string s)

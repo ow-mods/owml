@@ -20,12 +20,11 @@ namespace OWML.Launcher
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
             var modFinder = new ModFinder(owmlConfig, writer);
-            var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
             var vrPatcher = new VRPatcher(owmlConfig, writer);
             var app = new App(owmlConfig, owmlManifest, writer, modFinder,
-                outputListener, pathFinder, owPatcher, vrPatcher);
+                pathFinder, owPatcher, vrPatcher);
             app.Run();
         }
 

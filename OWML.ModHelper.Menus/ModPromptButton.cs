@@ -2,6 +2,7 @@
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
+using OWML.ModHelper.Logging;
 
 namespace OWML.ModHelper.Menus
 {
