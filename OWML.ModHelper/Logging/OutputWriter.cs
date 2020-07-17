@@ -24,7 +24,7 @@ namespace OWML.ModHelper.Logging
             }
             else
             {
-                type = MessageType.Log;
+                type = MessageType.Message;
             }
             WriteLine(type, line);
         }
@@ -52,7 +52,7 @@ namespace OWML.ModHelper.Logging
                 case MessageType.Success:
                     Console.ForegroundColor = ConsoleColor.Green;
                     break;
-                case MessageType.Log:
+                case MessageType.Message:
                     break;
             }
             Console.WriteLine(line);

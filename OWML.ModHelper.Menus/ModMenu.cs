@@ -79,7 +79,7 @@ namespace OWML.ModHelper.Menus
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
+                OwmlConsole.WriteLine(MessageType.Warning, "Warning : No button found with title or name: " + title);
             }
             return button;
         }
@@ -259,7 +259,7 @@ namespace OWML.ModHelper.Menus
             {
                 return numberInput.Value;
             }
-            OwmlConsole.WriteLine("Error: no input found with name " + key);
+            OwmlConsole.WriteLine(MessageType.Error, "Error - No input found with name " + key);
             return null;
         }
 
@@ -300,7 +300,7 @@ namespace OWML.ModHelper.Menus
                 numberInput.Value = Convert.ToSingle(val);
                 return;
             }
-            OwmlConsole.WriteLine("Error: no input found with name " + key);
+            OwmlConsole.WriteLine(MessageType.Error, "Error - No input found with name " + key);
         }
 
         protected void InvokeOnInit()

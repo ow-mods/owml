@@ -30,7 +30,7 @@ namespace OWML.GameFinder
             {
                 return gamePath;
             }
-            Writer.WriteLine("Game not found in default locations.");
+            Writer.WriteLine(MessageType.Message, "Game not found in default locations.");
             return null;
         }
     }

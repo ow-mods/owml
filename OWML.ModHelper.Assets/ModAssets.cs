@@ -21,11 +21,11 @@ namespace OWML.ModHelper.Assets
         public AssetBundle LoadBundle(string filename)
         {
             var path = _manifest.ModFolderPath + filename;
-            _console.WriteLine("Loading asset bundle from " + path);
+            _console.WriteLine(MessageType.Message, "Loading asset bundle from " + path);
             var bundle = AssetBundle.LoadFromFile(path);
             if (bundle == null)
             {
-                _console.WriteLine("Bundle is null");
+                _console.WriteLine(MessageType.Error, "Error - Bundle is null!");
             }
             return bundle;
         }
@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Assets
         {
             var objectPath = _manifest.ModFolderPath + objectFilename;
             var imagePath = _manifest.ModFolderPath + imageFilename;
-            _console.WriteLine("Loading object from " + objectPath);
+            _console.WriteLine(MessageType.Message, "Loading object from " + objectPath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<ObjectAsset>();
@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Assets
         public IModAsset<MeshFilter> LoadMesh(string objectFilename)
         {
             var objectPath = _manifest.ModFolderPath + objectFilename;
-            _console.WriteLine("Loading mesh from " + objectPath);
+            _console.WriteLine(MessageType.Message, "Loading mesh from " + objectPath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<MeshAsset>();
@@ -61,7 +61,7 @@ namespace OWML.ModHelper.Assets
         public IModAsset<MeshRenderer> LoadTexture(string imageFilename)
         {
             var imagePath = _manifest.ModFolderPath + imageFilename;
-            _console.WriteLine("Loading texture from " + imagePath);
+            _console.WriteLine(MessageType.Message, "Loading texture from " + imagePath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<TextureAsset>();
@@ -74,7 +74,7 @@ namespace OWML.ModHelper.Assets
         public IModAsset<AudioSource> LoadAudio(string audioFilename)
         {
             var audioPath = _manifest.ModFolderPath + audioFilename;
-            _console.WriteLine("Loading audio from " + audioPath);
+            _console.WriteLine(MessageType.Message, "Loading audio from " + audioPath);
 
             var go = new GameObject();
             var modAsset = go.AddComponent<AudioAsset>();
@@ -107,7 +107,7 @@ namespace OWML.ModHelper.Assets
             }
             if (texture == null)
             {
-                _console.WriteLine("Texture is null");
+                _console.WriteLine(MessageType.Error, "Error - Texture is null!");
             }
             var meshRenderer = modAsset.AddComponent<MeshRenderer>();
             meshRenderer.material.mainTexture = texture;
@@ -119,7 +119,7 @@ namespace OWML.ModHelper.Assets
             var mesh = _objImporter.ImportFile(objectPath);
             if (mesh == null)
             {
-                _console.WriteLine("Mesh is null");
+                _console.WriteLine(MessageType.Error, "Error - Mesh is null!");
             }
             var meshFilter = modAsset.AddComponent<MeshFilter>();
             meshFilter.mesh = mesh;
@@ -138,7 +138,7 @@ namespace OWML.ModHelper.Assets
             }
             if (texture == null)
             {
-                _console.WriteLine("Texture is null");
+                _console.WriteLine(MessageType.Error, "Error - Texture is null!");
             }
             var meshRenderer = modAsset.AddComponent<MeshRenderer>();
             meshRenderer.material.mainTexture = texture;
@@ -173,7 +173,7 @@ namespace OWML.ModHelper.Assets
             }
             if (clip == null)
             {
-                _console.WriteLine("Audio is null");
+                _console.WriteLine(MessageType.Error, "Error - Audio is null!");
             }
             var audioSource = modAsset.AddComponent<AudioSource>();
             audioSource.clip = clip;

@@ -73,10 +73,10 @@ namespace OWML.Launcher
                     client.Close();
                 }
             }
-            catch (SocketException e)
+            catch (SocketException ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("SocketException: {0}", e);
+                Console.WriteLine("Error in socket listener : " + ex);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             finally

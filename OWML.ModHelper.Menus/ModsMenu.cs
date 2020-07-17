@@ -31,11 +31,11 @@ namespace OWML.ModHelper.Menus
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
         {
-            OwmlConsole.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
+            OwmlConsole.WriteLine(MessageType.Message, "Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                OwmlConsole.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
+                OwmlConsole.WriteLine(MessageType.Error, $"Error - Menu of {modBehaviour.ModHelper.Manifest.UniqueName} is null.");
                 return null;
             }
             return modConfigMenu;

@@ -44,7 +44,7 @@ namespace OWML.ModHelper.Logging
             }
             else
             {
-                type = MessageType.Log;
+                type = MessageType.Message;
             }
             WriteLine(type, s);
         }

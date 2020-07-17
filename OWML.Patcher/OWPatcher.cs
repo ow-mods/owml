@@ -67,20 +67,20 @@ namespace OWML.Patcher
 
             if (patchedInstructions.Count == 1)
             {
-                _writer.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
+                _writer.WriteLine(MessageType.Message, $"{PatchClass}.{PatchMethod} is already patched.");
                 return;
             }
 
             if (patchedInstructions.Count > 1)
             {
-                _writer.WriteLine($"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
+                _writer.WriteLine(MessageType.Message, $"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
                 foreach (var patchedInstruction in patchedInstructions)
                 {
                     instructions.Remove(patchedInstruction);
                 }
             }
 
-            _writer.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
+            _writer.WriteLine(MessageType.Message, $"Adding patch in {PatchClass}.{PatchMethod}.");
 
             var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
             instructions.Insert(instructions.Count - 1, newInstruction);
@@ -105,7 +105,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while patching: " + ex);
+                _writer.WriteLine(MessageType.Error, "Error while patching: " + ex);
                 throw;
             }
         }
@@ -118,7 +118,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while saving patched game assembly: " + ex);
+                _writer.WriteLine(MessageType.Error, "Error while saving patched game assembly: " + ex);
                 throw;
             }
         }

@@ -34,8 +34,8 @@ namespace OWML.Launcher
 
         public void Run()
         {
-            _writer.WriteLine(MessageType.Log, $"Started OWML v{_owmlManifest.Version}");
-            _writer.WriteLine(MessageType.Log, "For detailed log, see Logs/OWML.Log.txt");
+            _writer.WriteLine(MessageType.Message, $"Started OWML v{_owmlManifest.Version}");
+            _writer.WriteLine(MessageType.Message, "For detailed log, see Logs/OWML.Log.txt");
 
             LocateGamePath();
 
@@ -79,25 +79,27 @@ namespace OWML.Launcher
             {
                 File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
             }
-            _writer.WriteLine(MessageType.Log, "Game files copied.");
+            _writer.WriteLine(MessageType.Message, "Game files copied.");
         }
 
         private void ShowModList(IList<IModData> mods)
         {
             if (!mods.Any())
             {
-                _writer.WriteLine(MessageType.Warning, "Warning: found no mods.");
+                _writer.WriteLine(MessageType.Warning, "Warning - found no mods.");
                 return;
             }
-            _writer.WriteLine(MessageType.Log, "Found mods:");
+            _writer.WriteLine(MessageType.Message, "Found mods:");
             foreach (var modData in mods)
             {
                 var stateText = modData.Config.Enabled ? "" : "(disabled)";
-                _writer.WriteLine(MessageType.Log, $"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
+                var type = modData.Config.Enabled ? MessageType.Message : MessageType.Warning;
+
+                _writer.WriteLine(type, $"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
                 {
-                    _writer.WriteLine(MessageType.Warning, $"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                    _writer.WriteLine(MessageType.Warning, $"  Warning - made for old version of OWML: v{modData.Manifest.OWMLVersion}");
                 }
             }
         }
@@ -115,7 +117,7 @@ namespace OWML.Launcher
         {
             var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
             var hasVrMod = vrMod != null;
-            _writer.WriteLine(MessageType.Log, hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
+            _writer.WriteLine(MessageType.Message, hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             return hasVrMod;
         }
 
@@ -136,7 +138,7 @@ namespace OWML.Launcher
 
         private void StartGame()
         {
-            _writer.WriteLine(MessageType.Log, "Starting game...");
+            _writer.WriteLine(MessageType.Message, "Starting game...");
             try
             {
                 Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");
