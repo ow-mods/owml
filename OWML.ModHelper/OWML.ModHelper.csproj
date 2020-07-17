@@ -77,7 +77,6 @@
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="Logging\ModSocketOutput.cs" />
-    <Compile Include="Logging\SocketListener.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="Logging\ModLogger.cs" />

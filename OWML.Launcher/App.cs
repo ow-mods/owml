@@ -34,8 +34,8 @@ namespace OWML.Launcher
 
         public void Run()
         {
-            _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
-            _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
+            _writer.WriteLine(MessageType.Log, $"Started OWML v{_owmlManifest.Version}");
+            _writer.WriteLine(MessageType.Log, "For detailed log, see Logs/OWML.Log.txt");
 
             LocateGamePath();
 
@@ -64,7 +64,7 @@ namespace OWML.Launcher
         private void LocateGamePath()
         {
             var gamePath = _pathFinder.FindGamePath();
-            _writer.WriteLine("Game found in " + gamePath);
+            _writer.WriteLine(MessageType.Success, "Game found in " + gamePath);
             if (gamePath != _owmlConfig.GamePath)
             {
                 _owmlConfig.GamePath = gamePath;
@@ -79,25 +79,25 @@ namespace OWML.Launcher
             {
                 File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
             }
-            _writer.WriteLine("Game files copied.");
+            _writer.WriteLine(MessageType.Log, "Game files copied.");
         }
 
         private void ShowModList(IList<IModData> mods)
         {
             if (!mods.Any())
             {
-                _writer.WriteLine("Warning: found no mods.");
+                _writer.WriteLine(MessageType.Warning, "Warning: found no mods.");
                 return;
             }
-            _writer.WriteLine("Found mods:");
+            _writer.WriteLine(MessageType.Log, "Found mods:");
             foreach (var modData in mods)
             {
                 var stateText = modData.Config.Enabled ? "" : "(disabled)";
-                _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
+                _writer.WriteLine(MessageType.Log, $"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
                 {
-                    _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                    _writer.WriteLine(MessageType.Warning, $"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
                 }
             }
         }
@@ -111,24 +111,11 @@ namespace OWML.Launcher
                    owmlVersionSplit[1] == modVersionSplit[1];
         }
 
-        private void OnOutput(string s)
-        {
-            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                _writer.WriteLine(line);
-                if (line.EndsWith(Constants.QuitKeyPhrase))
-                {
-                    ExitConsole();
-                }
-            }
-        }
-
         private bool HasVrMod(IList<IModData> mods)
         {
             var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
             var hasVrMod = vrMod != null;
-            _writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
+            _writer.WriteLine(MessageType.Log, hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             return hasVrMod;
         }
 
@@ -143,20 +130,20 @@ namespace OWML.Launcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine($"Error while applying VR patch: {ex}");
+                _writer.WriteLine(MessageType.Error, $"Error while applying VR patch: {ex}");
             }
         }
 
         private void StartGame()
         {
-            _writer.WriteLine("Starting game...");
+            _writer.WriteLine(MessageType.Log, "Starting game...");
             try
             {
                 Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while starting game: " + ex.Message);
+                _writer.WriteLine(MessageType.Error, "Error while starting game: " + ex.Message);
             }
         }
 

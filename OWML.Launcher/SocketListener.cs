@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.Launcher
 {
     public class SocketListener
     {
@@ -14,7 +13,7 @@ namespace OWML.ModHelper.Logging
         public SocketListener(int port)
         {
             _port = port;
-            SetupListener();
+            new Task(SetupListener).Start();
         }
 
         private void SetupListener()
@@ -33,7 +32,7 @@ namespace OWML.ModHelper.Logging
 
                 while (true)
                 {
-                    Console.Write("Waiting for a connection... ");
+                    Console.WriteLine("Waiting for a connection... ");
 
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected!");
@@ -46,7 +45,7 @@ namespace OWML.ModHelper.Logging
 
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
-                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                        data = Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
                     }
 

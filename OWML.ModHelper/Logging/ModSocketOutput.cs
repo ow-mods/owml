@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Logging
     public class ModSocketOutput : ModConsole
     {
         private const string LocalHost = "127.0.0.1";
-        private const string NameMessageSeparator = ";;";
+        private const string MessageSeparator = ";;";
 
         private int _port;
         private static Socket _socket;
@@ -26,17 +26,29 @@ namespace OWML.ModHelper.Logging
             }
         }
 
+        [Obsolete("Use ModSocketOutput.Writeline(MessageType type, string s) instead")]
         public override void WriteLine(string s)
         {
-            Logger?.Log(s);
-            CallWriteCallback(Manifest, s);
-            var message = $"{Manifest.Name}{NameMessageSeparator}{s}";
-            InternalWriteLine(message);
+            WriteLine(MessageType.Log, s);
         }
 
+        [Obsolete("Use ModSocketOutput.Writeline(MessageType type, params object[] objects) instead")]
         public override void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+        }
+
+        public override void WriteLine(MessageType type, string s)
+        {
+            Logger?.Log(s);
+            CallWriteCallback(Manifest, s);
+            var message = $"{type}{MessageSeparator}{Manifest.Name}{MessageSeparator}{s}";
+            InternalWriteLine(message);
+        }
+
+        public override void WriteLine(MessageType type, params object[] objects)
+        {
+            WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
         private void CreateSocket()
@@ -49,7 +61,8 @@ namespace OWML.ModHelper.Logging
 
         private void InternalWriteLine(string message)
         {
-            var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
+            //var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
+            var bytes = Encoding.UTF8.GetBytes(message);
             _socket?.Send(bytes);
         }
     }

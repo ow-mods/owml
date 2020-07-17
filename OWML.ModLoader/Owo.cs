@@ -44,7 +44,7 @@ namespace OWML.ModLoader
         {
             if (_owmlConfig.Verbose)
             {
-                _console.WriteLine("Verbose mode is enabled");
+                _console.WriteLine(MessageType.Log, "Verbose mode is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var normalMods = _modFinder.GetMods().Where(mod => !mod.Manifest.PriorityLoad).ToList();
@@ -62,7 +62,7 @@ namespace OWML.ModLoader
                 var missingDependencies = modData.Config.Enabled ?
                     modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
                     new List<string>();
-                missingDependencies.ForEach(dependency => _console.WriteLine(
+                missingDependencies.ForEach(dependency => _console.WriteLine(MessageType.Error,
                     $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
                 var modType = LoadMod(modData);
                 if (modType == null || missingDependencies.Any())
@@ -81,7 +81,7 @@ namespace OWML.ModLoader
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
+                _console.WriteLine(MessageType.Error, $"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
@@ -101,7 +101,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
+                _console.WriteLine(MessageType.Error, $"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
                 return null;
             }
         }
@@ -133,7 +133,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
+                _console.WriteLine(MessageType.Error, $"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
                 return null;
             }
         }
