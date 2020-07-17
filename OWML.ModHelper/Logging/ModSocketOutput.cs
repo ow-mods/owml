@@ -29,7 +29,24 @@ namespace OWML.ModHelper.Logging
         [Obsolete("Use ModSocketOutput.Writeline(MessageType type, string s) instead")]
         public override void WriteLine(string s)
         {
-            WriteLine(MessageType.Log, s);
+            MessageType type;
+            if (s.ToLower().Contains("error") || s.ToLower().Contains("exception"))
+            {
+                type = MessageType.Error;
+            }
+            else if (s.ToLower().Contains("warning") || s.ToLower().Contains("disabled"))
+            {
+                type = MessageType.Warning;
+            }
+            else if (s.ToLower().Contains("success"))
+            {
+                type = MessageType.Success;
+            }
+            else
+            {
+                type = MessageType.Log;
+            }
+            WriteLine(type, s);
         }
 
         [Obsolete("Use ModSocketOutput.Writeline(MessageType type, params object[] objects) instead")]

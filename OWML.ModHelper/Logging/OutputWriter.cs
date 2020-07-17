@@ -9,7 +9,24 @@ namespace OWML.ModHelper.Logging
         [Obsolete("Use OutputWriter.Writeline( MessageType type, string line) instead")]
         public void WriteLine(string line)
         {
-            WriteLine(MessageType.Log, line);
+            MessageType type;
+            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
+            {
+                type = MessageType.Error;
+            }
+            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
+            {
+                type = MessageType.Warning;
+            }
+            else if (line.ToLower().Contains("success"))
+            {
+                type = MessageType.Success;
+            }
+            else
+            {
+                type = MessageType.Log;
+            }
+            WriteLine(type, line);
         }
 
         [Obsolete("Use OutputWriter.Writeline(params object[] objects, MessageType type) instead")]
