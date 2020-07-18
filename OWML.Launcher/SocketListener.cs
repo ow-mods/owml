@@ -52,21 +52,7 @@ namespace OWML.Launcher
                         data = Encoding.ASCII.GetString(bytes, 0, i);
 
                         var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
-                        switch (objects[0])
-                        {
-                            case "Error":
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                break;
-                            case "Success":
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                break;
-                            case "Warning":
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                break;
-                            case "Log":
-                                break;
-                        }
-                        Console.WriteLine("[" + objects[1] + "] : " + objects[2]);
+                        Console.WriteLine("[" + objects[0] + "] : " + objects[1]);
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
 
