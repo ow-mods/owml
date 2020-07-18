@@ -86,7 +86,7 @@ namespace OWML.Launcher
         {
             if (!mods.Any())
             {
-                _writer.WriteLine("Warning - found no mods.");
+                _writer.WriteLine("Warning: found no mods.");
                 return;
             }
             _writer.WriteLine("Found mods:");
@@ -98,7 +98,7 @@ namespace OWML.Launcher
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
                 {
-                    _writer.WriteLine($"  Warning - made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                    _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
                 }
             }
         }

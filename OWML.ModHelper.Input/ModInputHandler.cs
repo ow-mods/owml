@@ -348,7 +348,7 @@ namespace OWML.ModHelper.Input
         {
             if (combination == null)
             {
-                _console.WriteLine($"Failed to unregister: null combination!");
+                _console.WriteLine("Failed to unregister: null combination!");
                 return;
             }
             switch (SwapCombination(combination, true))
