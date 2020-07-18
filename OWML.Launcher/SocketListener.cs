@@ -22,20 +22,19 @@ namespace OWML.Launcher
             TcpListener server = null;
             try
             {
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+                var localAddress = IPAddress.Parse("127.0.0.1");
 
-                server = new TcpListener(localAddr, _port);
-
+                server = new TcpListener(localAddress, _port);
                 server.Start();
 
-                Byte[] bytes = new Byte[1024];
-                String data = null;
+                var bytes = new byte[1024];
+                string data = null;
 
                 while (true)
                 {
                     Console.WriteLine("Waiting for a connection... ");
 
-                    TcpClient client = server.AcceptTcpClient();
+                    var client = server.AcceptTcpClient();
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Console connected to socket!");
@@ -43,7 +42,7 @@ namespace OWML.Launcher
 
                     data = null;
 
-                    NetworkStream stream = client.GetStream();
+                    var stream = client.GetStream();
 
                     int i;
 
