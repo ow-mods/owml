@@ -134,7 +134,7 @@ namespace OWML.ModHelper.Menus
 
         private void AddSelectorInput(string key, JObject obj, int index)
         {
-            var options = ((JArray)obj["options"]).ToObject<string[]>();
+            var options = obj["options"].ToObject<string[]>();
             var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
             selector.Element.name = key;
             selector.Title = (string)obj["title"] ?? key;
