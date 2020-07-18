@@ -50,8 +50,13 @@ namespace OWML.Launcher
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         data = Encoding.ASCII.GetString(bytes, 0, i);
-
                         var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
+
+                        if (objects[1] == Constants.QuitKeyPhrase)
+                        {
+                            Environment.Exit(0);
+                        }
+                        
                         Console.WriteLine("[" + objects[0] + "] : " + objects[1]);
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
