@@ -78,6 +78,7 @@
     <Compile Include="ModMenuWithSelectables.cs" />
     <Compile Include="ModPromptButton.cs" />
     <Compile Include="ModPopupInput.cs" />
+    <Compile Include="ModSelectorInput.cs" />
     <Compile Include="ModUIStyleApplier.cs" />
     <Compile Include="ModLayoutManager.cs" />
     <Compile Include="ModInputCombinationElement.cs" />

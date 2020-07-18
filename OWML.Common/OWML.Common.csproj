@@ -54,6 +54,7 @@
     <Compile Include="Menus\IModComboInput.cs" />
     <Compile Include="Menus\IModOWMenu.cs" />
     <Compile Include="Menus\IModPromptButton.cs" />
+    <Compile Include="Menus\IModSelectorInput.cs" />
     <Compile Include="Menus\InputType.cs" />
     <Compile Include="Menus\IModButton.cs" />
     <Compile Include="IModConfig.cs" />

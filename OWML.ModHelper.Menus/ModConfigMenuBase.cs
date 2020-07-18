@@ -13,6 +13,7 @@ namespace OWML.ModHelper.Menus
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
+        private IModSelectorInput _selectorTemplate;
         private IModTextInput _textInputTemplate;
         private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
@@ -27,13 +28,15 @@ namespace OWML.ModHelper.Menus
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
-            IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
+            IModTextInput textInputTemplate, IModNumberInput numberInputTemplate,
+            IModComboInput comboInputTemplate, IModSelectorInput selectorTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
             _textInputTemplate = textInputTemplate;
             _numberInputTemplate = numberInputTemplate;
             _comboInputTemplate = comboInputTemplate;
+            _selectorTemplate = selectorTemplate;
 
             base.Initialize(menu);
 
@@ -81,6 +84,11 @@ namespace OWML.ModHelper.Menus
                     AddToggleInput(key, obj, index);
                     return;
                 }
+                if (type == "selector")
+                {
+                    AddSelectorInput(key, obj, index);
+                    return;
+                }
                 if (type == "input")
                 {
                     AddComboInput(key, index);
@@ -122,6 +130,16 @@ namespace OWML.ModHelper.Menus
             slider.Element.name = key;
             slider.Title = (string)obj["title"] ?? key;
             slider.Show();
+        }
+
+        private void AddSelectorInput(string key, JObject obj, int index)
+        {
+            var options = ((JArray)obj["options"]).ToObject<string[]>();
+            var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
+            selector.Element.name = key;
+            selector.Title = (string)obj["title"] ?? key;
+            selector.Initialize((int)obj["value"], options);
+            selector.Show();
         }
 
         private void AddTextInput(string key, int index)
