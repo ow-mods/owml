@@ -30,7 +30,14 @@ namespace OWML.ModHelper
 
             try
             {
-                var val = value is JObject obj ? obj["value"] : value;
+                var objectValue = value as JObject;
+                if (typeof(T) == typeof(string) && objectValue != null && objectValue["type"].ToObject<string>() == "selector")
+                {
+                    var index = (int)Convert.ChangeType(objectValue["value"], typeof(int));
+                    var options = objectValue["options"].ToObject<string[]>();
+                    return (T)(object)options[index];
+                }
+                var val = objectValue != null ? objectValue["value"] : value;
                 return (T)Convert.ChangeType(val, typeof(T));
             }
             catch (InvalidCastException)
