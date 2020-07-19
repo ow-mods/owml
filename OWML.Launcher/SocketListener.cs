@@ -22,46 +22,7 @@ namespace OWML.Launcher
             TcpListener server = null;
             try
             {
-                var localAddress = IPAddress.Parse("127.0.0.1");
-
-                server = new TcpListener(localAddress, _port);
-                server.Start();
-
-                var bytes = new byte[1024];
-                string data = null;
-
-                while (true)
-                {
-                    Console.WriteLine("Waiting for a connection... ");
-
-                    var client = server.AcceptTcpClient();
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Console connected to socket!");
-                    Console.ForegroundColor = ConsoleColor.Gray;
-
-                    data = null;
-
-                    var stream = client.GetStream();
-
-                    int i;
-
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        data = Encoding.ASCII.GetString(bytes, 0, i);
-                        var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
-
-                        if (objects[1] == Constants.QuitKeyPhrase)
-                        {
-                            Environment.Exit(0);
-                        }
-                        
-                        Console.WriteLine("[" + objects[0] + "] : " + objects[1]);
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                    }
-
-                    client.Close();
-                }
+                ListenToSocket(server);
             }
             catch (SocketException ex)
             {
@@ -73,6 +34,55 @@ namespace OWML.Launcher
             {
                 server.Stop();
             }
+        }
+
+        private void ListenToSocket(TcpListener server)
+        {
+            var localAddress = IPAddress.Parse("127.0.0.1");
+
+            server = new TcpListener(localAddress, _port);
+            server.Start();
+
+            var bytes = new byte[1024];
+            string data = null;
+
+            while (true)
+            {
+                Console.WriteLine("Waiting for a connection... ");
+
+                var client = server.AcceptTcpClient();
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Console connected to socket!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                data = null;
+
+                var stream = client.GetStream();
+
+                int i;
+
+                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                {
+                    PrintOutput(data, bytes, i);   
+                }
+
+                client.Close();
+            }
+        }
+
+        private void PrintOutput(string data, byte[] bytes, int count)
+        {
+            data = Encoding.ASCII.GetString(bytes, 0, count);
+            var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
+
+            if (objects[1] == Constants.QuitKeyPhrase)
+            {
+                Environment.Exit(0);
+            }
+
+            Console.WriteLine("[" + objects[0] + "] : " + objects[1]);
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }
