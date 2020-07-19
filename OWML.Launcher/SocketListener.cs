@@ -32,7 +32,7 @@ namespace OWML.Launcher
             }
             finally
             {
-                server.Stop();
+                server?.Stop();
             }
         }
 
@@ -44,7 +44,6 @@ namespace OWML.Launcher
             server.Start();
 
             var bytes = new byte[1024];
-            string data = null;
 
             while (true)
             {
