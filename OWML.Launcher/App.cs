@@ -147,7 +147,7 @@ namespace OWML.Launcher
 
             try
             {
-                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");
+                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));
             }
             catch (Exception ex)
             {

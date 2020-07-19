@@ -56,24 +56,22 @@ namespace OWML.Launcher
                 Console.WriteLine("Console connected to socket!");
                 Console.ForegroundColor = ConsoleColor.Gray;
 
-                data = null;
-
                 var stream = client.GetStream();
 
                 int i;
 
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    PrintOutput(data, bytes, i);   
+                    PrintOutput(bytes, i);   
                 }
 
                 client.Close();
             }
         }
 
-        private void PrintOutput(string data, byte[] bytes, int count)
+        private void PrintOutput(byte[] bytes, int count)
         {
-            data = Encoding.ASCII.GetString(bytes, 0, count);
+            var data = Encoding.ASCII.GetString(bytes, 0, count);
             var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
 
             if (objects[1] == Constants.QuitKeyPhrase)
