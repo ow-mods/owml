@@ -22,7 +22,7 @@ namespace OWML.Launcher
             TcpListener server = null;
             try
             {
-                ListenToSocket(server);
+                ListenToSocket(ref server);
             }
             catch (SocketException ex)
             {
@@ -36,7 +36,7 @@ namespace OWML.Launcher
             }
         }
 
-        private void ListenToSocket(TcpListener server)
+        private void ListenToSocket(ref TcpListener server)
         {
             var localAddress = IPAddress.Parse("127.0.0.1");
 
