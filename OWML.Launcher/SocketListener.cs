@@ -14,10 +14,10 @@ namespace OWML.Launcher
         public SocketListener(int port)
         {
             _port = port;
-            new Task(SetupListener).Start();
+            new Task(SetupSocketListener).Start();
         }
 
-        private void SetupListener()
+        private void SetupSocketListener()
         {
             TcpListener server = null;
             try

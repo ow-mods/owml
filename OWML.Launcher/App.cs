@@ -92,7 +92,6 @@ namespace OWML.Launcher
             foreach (var modData in mods)
             {
                 var stateText = modData.Config.Enabled ? "" : "(disabled)";
-
                 _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
