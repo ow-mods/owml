@@ -32,7 +32,7 @@ namespace OWML.Launcher
             _vrPatcher = vrPatcher;
         }
 
-        public void Run()
+        public void Run(string[] args)
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
             _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
@@ -43,14 +43,13 @@ namespace OWML.Launcher
 
             CreateLogsDirectory();
 
-
             var mods = _modFinder.GetMods();
 
             ShowModList(mods);
 
             PatchGame(mods);
 
-            StartGame();
+            StartGame(args);
 
             var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
             if (hasPortArgument)
@@ -135,9 +134,18 @@ namespace OWML.Launcher
             }
         }
 
-        private void StartGame()
+        private void StartGame(string[] args)
         {
             _writer.WriteLine("Starting game...");
+
+            if (args.Contains("-consolePort"))
+            {
+                var index = Array.FindIndex(args, x => x == "-consolePort");
+                var list = new List<string>(args);
+                list.RemoveRange(index, 2);
+                args = list.ToArray();
+            }
+
             try
             {
                 Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe");

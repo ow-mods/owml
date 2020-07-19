@@ -39,6 +39,5 @@ namespace OWML.ModLoader
             var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter);
             owo.LoadMods();
         }
-
     }
 }

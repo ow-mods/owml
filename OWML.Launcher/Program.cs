@@ -25,7 +25,7 @@ namespace OWML.Launcher
             var vrPatcher = new VRPatcher(owmlConfig, writer);
             var app = new App(owmlConfig, owmlManifest, writer, modFinder,
                 pathFinder, owPatcher, vrPatcher);
-            app.Run();
+            app.Run(args);
         }
 
         private static void SaveConsolePort(IOwmlConfig owmlConfig)
