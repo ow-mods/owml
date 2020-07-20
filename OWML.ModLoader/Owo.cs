@@ -23,7 +23,6 @@ namespace OWML.ModLoader
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly IModInputHandler _inputHandler;
         private readonly ModSorter _sorter;
-
         private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,

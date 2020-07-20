@@ -6,32 +6,73 @@ namespace OWML.ModHelper.Logging
 {
     public class OutputWriter : IModConsole
     {
+        [Obsolete("Use OutputWriter.Writeline( MessageType type, string line) instead")]
         public void WriteLine(string line)
         {
-            if (string.IsNullOrEmpty(line))
-            {
-                return;
-            }
+            MessageType type;
             if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                type = MessageType.Error;
             }
             else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                type = MessageType.Warning;
             }
             else if (line.ToLower().Contains("success"))
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                type = MessageType.Success;
             }
-            Console.WriteLine(line);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            else
+            {
+                type = MessageType.Message;
+            }
+            WriteLine(type, line);
         }
 
+        [Obsolete("Use OutputWriter.Writeline(params object[] objects, MessageType type) instead")]
         public void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
+        public void WriteLine(MessageType type, string line)
+        {
+            if (string.IsNullOrEmpty(line))
+            {
+                return;
+            }
+            switch (type)
+            {
+                case MessageType.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case MessageType.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case MessageType.Success:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case MessageType.Message:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+            }
+            Console.WriteLine(line);
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public void WriteLine(MessageType type, params object[] objects)
+        {
+            WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+        }
+
+        public void WriteLine(string sender, MessageType type, string line)
+        {
+            WriteLine(type, line);
+        }
+
+        public void WriteLine(string sender, MessageType type, params object[] objects)
+        {
+            WriteLine(type, objects);
+        }
     }
 }

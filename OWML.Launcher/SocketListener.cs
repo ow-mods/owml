@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using Newtonsoft.Json;
+using OWML.Common;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -47,8 +48,6 @@ namespace OWML.Launcher
 
             while (true)
             {
-                Console.WriteLine("Waiting for a connection... ");
-
                 var client = server.AcceptTcpClient();
 
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -70,15 +69,32 @@ namespace OWML.Launcher
 
         private void PrintOutput(byte[] bytes, int count)
         {
-            var data = Encoding.ASCII.GetString(bytes, 0, count);
-            var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
+            var json = Encoding.ASCII.GetString(bytes, 0, count);
 
-            if (objects[1] == Constants.QuitKeyPhrase)
+            var data = JsonConvert.DeserializeObject<SocketMessage>(json);
+
+            if (data.Message == Constants.QuitKeyPhrase)
             {
                 Environment.Exit(0);
             }
 
-            Console.WriteLine("[" + objects[0] + "] : " + objects[1]);
+            switch (data.Type)
+            {
+                case MessageType.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case MessageType.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case MessageType.Success:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case MessageType.Message:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+            }
+
+            Console.WriteLine("[" + data.Sender + "] : " + data.Message);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
     }

@@ -32,23 +32,22 @@ namespace OWML.Launcher
         {
             if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
-                Console.WriteLine("Port found in arguments - writing to config.");
                 var argument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
                 if (!int.TryParse(argument, out var port))
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error - Bad port.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     return;
                 }
                 owmlConfig.SocketPort = port;
             }
             else
             {
-                Console.WriteLine("Creating port...");
                 TcpListener l = new TcpListener(IPAddress.Loopback, 0);
                 l.Start();
                 int port = ((IPEndPoint)l.LocalEndpoint).Port;
                 l.Stop();
-                Console.WriteLine("Creating listener on port " + port);
                 owmlConfig.SocketPort = port;
                 var socketListener = new SocketListener(port);
             }
