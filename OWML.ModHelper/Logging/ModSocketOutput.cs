@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -51,7 +52,10 @@ namespace OWML.ModHelper.Logging
         [Obsolete("Use ModSocketOutput.Writeline(MessageType type, params object[] objects) instead")]
         public override void WriteLine(params object[] objects)
         {
-            WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+            if (CheckForParamsError(objects))
+            {
+                WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+            }
         }
 
         public override void WriteLine(string sender, MessageType type, string data)
@@ -94,6 +98,30 @@ namespace OWML.ModHelper.Logging
         public override void WriteLine(MessageType type, params object[] objects)
         {
             WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+        }
+
+        private bool CheckForParamsError(object[] objects)
+        {
+            if (objects[0].GetType() == typeof(MessageType))
+            {
+                var type = (MessageType)objects[0];
+                var list = new List<object>(objects);
+                list.Remove(0);
+                objects = list.ToArray();
+                WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+                return false;
+            }
+            else if (objects[0].GetType() == typeof(string) && objects[1].GetType() == typeof(MessageType))
+            {
+                var sender = (string)objects[0];
+                var type = (MessageType)objects[1];
+                var list = new List<object>(objects);
+                list.RemoveRange(0, 2);
+                objects = list.ToArray();
+                WriteLine(sender, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+                return false;
+            }
+            return true;
         }
 
         private void ConnectToSocket()
