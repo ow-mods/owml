@@ -48,11 +48,9 @@ namespace OWML.ModHelper
                 return;
             }
 
-            var value = Settings[key];
-
-            if (value is JObject obj)
+            if (Settings[key] is JObject setting)
             {
-                obj["value"] = "" + val;
+                setting["value"] = JToken.FromObject(val);
             }
             else
             {
