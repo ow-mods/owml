@@ -86,7 +86,8 @@ namespace OWML.ModHelper
             var toRemove = Settings.Keys.Except(defaultConfig.Settings.Keys).ToList();
             toRemove.ForEach(key => Settings.Remove(key));
 
-            foreach (var key in Settings.Keys)
+            var keysCopy = Settings.Keys.ToList();
+            foreach (var key in keysCopy)
             {
                 if (!IsSettingSameType(Settings[key], defaultConfig.Settings[key]))
                 {
@@ -105,9 +106,8 @@ namespace OWML.ModHelper
 
         private object ToNumber(object value)
         {
-            if (value is string)
+            if (value is string stringValue)
             {
-                var stringValue = value as string;
                 return stringValue.Contains('.') || stringValue.Contains('e') ?
                     Convert.ToDouble(stringValue) : Convert.ToInt64(stringValue);
             }
@@ -117,22 +117,24 @@ namespace OWML.ModHelper
         private void TryUpdate(string key, object userSetting, object modderSetting)
         {
             var userValue = GetSettingsValue<object>(key, userSetting);
-            var modderValue = GetSettingsValue<object>(key, modderSetting);
+            if (userValue is JValue userJValue)
+            {
+                userValue = userJValue.Value;
+            }
             bool isUpdateable = false;
             if (IsNumber(userSetting) && IsNumber(modderSetting))
             {
-                modderValue = ToNumber(modderValue);
                 userValue = ToNumber(userValue);
-                if ((modderValue is int || modderValue is long) && !(userValue is int || userValue is long))//if default is integral and current isn't
-                {
-                    userValue = Convert.ChangeType(Math.Round((double)userValue), modderValue.GetType());
-                }
                 isUpdateable = true;
             }
-            isUpdateable = (IsBoolean(userSetting) && IsBoolean(modderSetting)) ? true : isUpdateable;
+            if (IsBoolean(userSetting) && IsBoolean(modderSetting))
+            {
+                userValue = Convert.ToBoolean(userValue);
+                isUpdateable = true;
+            }
             Settings[key] = modderSetting;
             if (isUpdateable)
-            {
+            {   
                 SetSettingsValue(key, userValue);
             }
         }
