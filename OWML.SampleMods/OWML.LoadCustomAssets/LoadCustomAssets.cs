@@ -6,6 +6,12 @@ namespace OWML.LoadCustomAssets
 {
     public class LoadCustomAssets : ModBehaviour
     {
+        enum ABC
+        {
+            A,
+            B,
+            C
+        }
         private OWRigidbody _duckBody;
         private Transform _playerTransform;
         private OWRigidbody _playerBody;
@@ -48,7 +54,7 @@ namespace OWML.LoadCustomAssets
             var speed = config.GetSettingsValue<float>("speed");
             var power = config.GetSettingsValue<float>("power");
             var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
-            var selectedIndex = config.GetSettingsValue<int>("thing");
+            var selectedIndex = config.GetSettingsValue<ABC>("thing");
             var selectedString = config.GetSettingsValue<string>("thing");
             ModHelper.Console.WriteLine($"Selected index = {selectedIndex}, string = {selectedString}");
         }
