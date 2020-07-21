@@ -26,16 +26,19 @@ namespace OWML.ModHelper
                 return default;
             }
 
-            var value = Settings[key];
+            return GetSettingsValue<T>(key, Settings[key]);
+        }
 
+        private T GetSettingsValue<T>(string key, object setting)
+        {
             try
             {
-                var val = value is JObject obj ? obj["value"] : value;
+                var val = setting is JObject obj ? obj["value"] : setting;
                 return (T)Convert.ChangeType(val, typeof(T));
             }
             catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
+                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {typeof(T)}");
                 return default;
             }
         }
@@ -80,27 +83,88 @@ namespace OWML.ModHelper
                 return;
             }
 
-            AddMissingDefaults(defaultConfig);
+            var toRemove = Settings.Keys.Except(defaultConfig.Settings.Keys).ToList();
+            toRemove.ForEach(key => Settings.Remove(key));
 
-            var settingsCopy = new Dictionary<string, object>(Settings);
-            foreach (var setting in Settings)
+            foreach (var key in Settings.Keys)
             {
-                if (!defaultConfig.Settings.ContainsKey(setting.Key))
+                if (!IsSettingSameType(Settings[key], defaultConfig.Settings[key]))
                 {
-                    settingsCopy.Remove(setting.Key);
-                }
-                else if (!IsSettingSameType(setting.Value, defaultConfig.Settings[setting.Key]))
-                {
-                    settingsCopy[setting.Key] = defaultConfig.Settings[setting.Key];
+                    TryUpdate(key, Settings[key], defaultConfig.Settings[key]);
                 }
             }
-            Settings = settingsCopy;
+
+            AddMissingDefaults(defaultConfig);
         }
 
         private void AddMissingDefaults(IModConfig defaultConfig)
         {
             var missingSettings = defaultConfig.Settings.Where(s => !Settings.ContainsKey(s.Key)).ToList();
             missingSettings.ForEach(setting => Settings.Add(setting.Key, setting.Value));
+        }
+
+        private object ToNumber(object value)
+        {
+            if (value is string)
+            {
+                var stringValue = value as string;
+                return stringValue.Contains('.') || stringValue.Contains('e') ?
+                    Convert.ToDouble(stringValue) : Convert.ToInt64(stringValue);
+            }
+            else return value;
+        }
+
+        private void TryUpdate(string key, object userSetting, object modderSetting)
+        {
+            var userValue = GetSettingsValue<object>(key, userSetting);
+            var modderValue = GetSettingsValue<object>(key, modderSetting);
+            bool isUpdateable = false;
+            if (IsNumber(userSetting) && IsNumber(modderSetting))
+            {
+                modderValue = ToNumber(modderValue);
+                userValue = ToNumber(userValue);
+                if ((modderValue is int || modderValue is long) && !(userValue is int || userValue is long))//if default is integral and current isn't
+                {
+                    userValue = Convert.ChangeType(Math.Round((double)userValue), modderValue.GetType());
+                }
+                isUpdateable = true;
+            }
+            isUpdateable = (IsBoolean(userSetting) && IsBoolean(modderSetting)) ? true : isUpdateable;
+            Settings[key] = modderSetting;
+            if (isUpdateable)
+            {
+                SetSettingsValue(key, userValue);
+            }
+        }
+
+        private bool IsNumber(object setting)
+        {
+            if (setting is JObject settingObject)
+            {
+                switch ((string)settingObject["type"])//selector soon to be added, would rather keep it
+                {
+                    case "slider":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            return new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
+        }
+
+        private bool IsBoolean(object setting)
+        {
+            if (setting is JObject settingObject)
+            {
+                switch ((string)settingObject["type"])//I suppose it should be replaced with simple (*?*:*)
+                {
+                    case "toggle":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            return setting is bool;
         }
 
         private bool IsSettingSameType(object settingValue1, object settingValue2)
