@@ -1,6 +1,7 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -8,20 +9,23 @@ namespace OWML.ModHelper.Menus
     {
         public float Min { get; set; }
         public float Max { get; set; }
+        public bool HasValueText => _valueText != null;
         public override bool IsSelected => _uIStyleApplier?.GetValue<bool>("_selected") ?? false;
 
         private readonly SliderElement _element;
+        private readonly Text _valueText;
+
         private readonly UIStyleApplier _uIStyleApplier;
 
         public ModSliderInput(SliderElement element, IModMenu menu) : base(element, menu)
         {
             _element = element;
+            _valueText = GetValueText();
             _uIStyleApplier = element.GetComponent<UIStyleApplier>();
-            element.OnValueChanged += () => InvokeOnChange(Value);
+            element.OnValueChanged += OnValueChanged;
         }
 
-        public override float Value
-        {
+        public override float Value {
             get => ToRealNumber(_element.GetValue());
             set => _element.Initialize((int)ToFakeNumber(value));
         }
@@ -40,6 +44,22 @@ namespace OWML.ModHelper.Menus
             return copy;
         }
 
+        private Text GetValueText()
+        {
+            var slider = _element.GetComponentInChildren<Slider>();
+            if (slider != null)
+            {
+                return slider.GetComponentInChildren<Text>();
+            }
+            return null;
+        }
+
+        private void OnValueChanged()
+        {
+            InvokeOnChange(Value);
+            _valueText.text = Value.ToString();
+        }
+
         private float ToRealNumber(float fakeNumber)
         {
             return fakeNumber * (Max - Min) / 10;
@@ -49,6 +69,5 @@ namespace OWML.ModHelper.Menus
         {
             return realNumber * 10 / (Max - Min);
         }
-
     }
 }
