@@ -1,34 +1,46 @@
 ﻿using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModSelectorInput : ModInput<int>, IModSelectorInput
+    public class ModSelectorInput : ModInput<string>, IModSelectorInput
     {
         public override bool IsSelected => _element?.GetValue<bool>("_amISelected") ?? false;
 
         private readonly OptionsSelectorElement _element;
         private int _count;
+        private List<string> _options;
+
+        public override string Value
+        {
+            get => _options[_element.GetCurrentIndex()];
+            set => _element.Initialize(_options.IndexOf(value));
+        }
+
+        public int SelectedIndex
+        {
+            get => _element.GetCurrentIndex();
+            set => _element.Initialize((value % _count + _count) % _count);
+        }
 
         public ModSelectorInput(OptionsSelectorElement element, IModMenu menu) : base(element, menu)
         {
             _element = element;
             _count = element.GetValue<string[]>("_optionsList").Length;
-            element.OnValueChanged += InvokeOnChange;
+            element.OnValueChanged += value => InvokeOnChange(_options[value]);
         }
 
-        public void Initialize(int index, string[] options)
+        public void Initialize(string option, string[] options)
         {
             _count = options.Length;
-            index %= _count;
+            _options = options.ToList();
+            var index = _options.IndexOf(option);
+            index = Math.Max(index, 0);
             _element.Initialize(index, options);
-        }
-
-        public override int Value
-        {
-            get => _element.GetCurrentIndex();
-            set => _element.Initialize(value % _count);
         }
 
         public IModSelectorInput Copy()

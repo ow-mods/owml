@@ -22,7 +22,7 @@
     "thing": {
       "type": "selector",
       "options":  ["A", "B", "C"],
-      "value": 0
+      "value": "A"
     },
     "enableSuperMode": {
       "type": "toggle",

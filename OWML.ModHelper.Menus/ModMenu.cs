@@ -300,7 +300,7 @@ namespace OWML.ModHelper.Menus
             if (selector != null)
             {
                 var val = value is JObject obj ? obj["value"] : value;
-                selector.Value = Convert.ToInt32(val);
+                selector.Value = (string)val;
                 return;
             }
             var toggle = GetToggleInput(key);

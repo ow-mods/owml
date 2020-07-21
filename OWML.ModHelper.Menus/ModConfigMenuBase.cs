@@ -138,7 +138,7 @@ namespace OWML.ModHelper.Menus
             var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
             selector.Element.name = key;
             selector.Title = (string)obj["title"] ?? key;
-            selector.Initialize((int)obj["value"], options);
+            selector.Initialize((string)obj["value"], options);
             selector.Show();
         }
 

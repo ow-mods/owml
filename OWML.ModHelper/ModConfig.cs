@@ -31,11 +31,11 @@ namespace OWML.ModHelper
             try
             {
                 var objectValue = value as JObject;
-                if (typeof(T) == typeof(string) && objectValue != null && objectValue["type"].ToObject<string>() == "selector")
+                if (typeof(T) == typeof(int) && objectValue != null && objectValue["type"].ToObject<string>() == "selector")
                 {
-                    var index = (int)Convert.ChangeType(objectValue["value"], typeof(int));
-                    var options = objectValue["options"].ToObject<string[]>();
-                    return (T)(object)options[index];
+                    var selected = (string)objectValue["value"];
+                    var options = objectValue["options"].ToObject<List<string>>();
+                    return (T)(object)options.IndexOf(selected);
                 }
                 var val = objectValue != null ? objectValue["value"] : value;
                 return (T)Convert.ChangeType(val, typeof(T));

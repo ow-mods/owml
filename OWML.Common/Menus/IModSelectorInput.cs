@@ -1,8 +1,9 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModSelectorInput : IModInput<int>
+    public interface IModSelectorInput : IModInput<string>
     {
-        void Initialize(int index, string[] options);
+        int SelectedIndex { get; set; }
+        void Initialize(string option, string[] options);
         IModSelectorInput Copy();
         IModSelectorInput Copy(string title);
     }
