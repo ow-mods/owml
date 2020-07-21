@@ -40,7 +40,7 @@ namespace OWML.ModHelper
             }
         }
 
-        public void SetSettingsValue(string key, object val)
+        public void SetSettingsValue(string key, object value)
         {
             if (!Settings.ContainsKey(key))
             {
@@ -48,15 +48,13 @@ namespace OWML.ModHelper
                 return;
             }
 
-            var value = Settings[key];
-
-            if (value is JObject obj)
+            if (Settings[key] is JObject setting)
             {
-                obj["value"] = "" + val;
+                setting["value"] = JToken.FromObject(value);
             }
             else
             {
-                Settings[key] = val;
+                Settings[key] = value;
             }
         }
 
