@@ -51,11 +51,11 @@ namespace OWML.ModHelper
             {
                 return MessageType.Error;
             }
-            if (WarningList.Contains(line.ToLower()))
+            else if (WarningList.Contains(line.ToLower()))
             {
                 return MessageType.Warning;
             }
-            if (SuccessList.Contains(line.ToLower()))
+            else if (SuccessList.Contains(line.ToLower()))
             {
                 return MessageType.Success;
             }
