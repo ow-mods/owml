@@ -26,9 +26,6 @@ namespace OWML.Common
                 case MessageType.Info:
                     Console.ForegroundColor = ConsoleColor.Blue;
                     break;
-                case MessageType.Quit:
-                    Environment.Exit(0);
-                    break;
             }
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;

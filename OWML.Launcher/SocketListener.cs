@@ -69,6 +69,11 @@ namespace OWML.Launcher
 
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 
+            if (data.Type == MessageType.Quit)
+            {
+                Environment.Exit(0);
+            }
+
             ConsoleUtils.WriteByType(data.Type,
                 $"[{data.SenderName}-{data.SenderType}] : {data.Message}");
         }
