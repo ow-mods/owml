@@ -153,23 +153,20 @@ namespace OWML.ModHelper
             {
                 userValue = userJValue.Value;
             }
-            bool isUpdateable = false;
+            Settings[key] = modderSetting;
+
             if (IsNumber(userSetting) && IsNumber(modderSetting))
             {
-                userValue = Convert.ToDouble(userValue);
-                isUpdateable = true;
+                SetSettingsValue(key, Convert.ToDouble(userValue));
+                return true;
             }
+
             if (IsBoolean(userSetting) && IsBoolean(modderSetting))
             {
-                userValue = Convert.ToBoolean(userValue);
-                isUpdateable = true;
+                SetSettingsValue(key, Convert.ToBoolean(userValue));
+                return true;
             }
-            Settings[key] = modderSetting;
-            if (isUpdateable)
-            {   
-                SetSettingsValue(key, userValue);
-            }
-            return isUpdateable;
+            return false;
         }
 
         private bool IsNumber(object setting)
