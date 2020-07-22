@@ -102,17 +102,7 @@ namespace OWML.ModHelper
         {
             var missingSettings = defaultConfig.Settings.Where(s => !Settings.ContainsKey(s.Key)).ToList();
             missingSettings.ForEach(setting => Settings.Add(setting.Key, setting.Value));
-        }
-
-        private object ToNumber(object value)
-        {
-            if (value is string stringValue)
-            {
-                return stringValue.Contains('.') || stringValue.Contains('e') ?
-                    Convert.ToDouble(stringValue) : Convert.ToInt64(stringValue);
-            }
-            else return value;
-        }
+        }   
 
         private bool TryUpdate(string key, object userSetting, object modderSetting)
         {
@@ -124,7 +114,7 @@ namespace OWML.ModHelper
             bool isUpdateable = false;
             if (IsNumber(userSetting) && IsNumber(modderSetting))
             {
-                userValue = ToNumber(userValue);
+                userValue = Convert.ToDouble(userValue);
                 isUpdateable = true;
             }
             if (IsBoolean(userSetting) && IsBoolean(modderSetting))
@@ -144,30 +134,14 @@ namespace OWML.ModHelper
         {
             if (setting is JObject settingObject)
             {
-                switch ((string)settingObject["type"])//selector soon to be added, would rather keep it
-                {
-                    case "slider":
-                        return true;
-                    default:
-                        return false;
-                }
+                return settingObject["type"].ToString() == "slider";
             }
             return new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
         }
 
         private bool IsBoolean(object setting)
         {
-            if (setting is JObject settingObject)
-            {
-                switch ((string)settingObject["type"])//I suppose it should be replaced with simple (*?*:*)
-                {
-                    case "toggle":
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-            return setting is bool;
+            return setting is JObject settingObject ? settingObject["type"].ToString() == "toggle" : setting is bool;
         }
 
         private bool IsSettingSameType(object settingValue1, object settingValue2)
