@@ -26,9 +26,13 @@ namespace OWML.ModHelper
                 return default;
             }
 
-            var setting = Settings[key];
-            var type = typeof(T);
+            return GetSettingsValue<T>(key, Settings[key]);
+        }
 
+        private T GetSettingsValue<T>(string key, object setting)
+        {
+            var type = typeof(T);
+            
             try
             {
                 var value = setting is JObject objectValue ? objectValue["value"] : setting;
@@ -104,27 +108,79 @@ namespace OWML.ModHelper
                 return;
             }
 
-            AddMissingDefaults(defaultConfig);
+            var toRemove = Settings.Keys.Except(defaultConfig.Settings.Keys).ToList();
+            toRemove.ForEach(key => Settings.Remove(key));
 
-            var settingsCopy = new Dictionary<string, object>(Settings);
-            foreach (var setting in Settings)
+            var keysCopy = Settings.Keys.ToList();
+            foreach (var key in keysCopy)
             {
-                if (!defaultConfig.Settings.ContainsKey(setting.Key))
+                if (!IsSettingSameType(Settings[key], defaultConfig.Settings[key]))
                 {
-                    settingsCopy.Remove(setting.Key);
+                    TryUpdate(key, Settings[key], defaultConfig.Settings[key]);
                 }
-                else if (!IsSettingSameType(setting.Value, defaultConfig.Settings[setting.Key]))
+                else if (defaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
                 {
-                    settingsCopy[setting.Key] = defaultConfig.Settings[setting.Key];
+                    UpdateSelector(key, Settings[key], objectValue);
                 }
             }
-            Settings = settingsCopy;
+
+            AddMissingDefaults(defaultConfig);
+        }
+
+        private bool UpdateSelector(string key, object userSetting, JObject modderSetting)
+        {
+            var options = modderSetting["options"].ToObject<List<string>>();
+            var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
+            Settings[key] = modderSetting;
+            var isInOptions = options.Contains(userString);
+            if (isInOptions)
+            {
+                SetSettingsValue(key, userString);
+            }
+            return isInOptions;
         }
 
         private void AddMissingDefaults(IModConfig defaultConfig)
         {
             var missingSettings = defaultConfig.Settings.Where(s => !Settings.ContainsKey(s.Key)).ToList();
             missingSettings.ForEach(setting => Settings.Add(setting.Key, setting.Value));
+        }   
+
+        private bool TryUpdate(string key, object userSetting, object modderSetting)
+        {
+            var userValue = GetSettingsValue<object>(key, userSetting);
+            if (userValue is JValue userJValue)
+            {
+                userValue = userJValue.Value;
+            }
+            Settings[key] = modderSetting;
+
+            if (IsNumber(userSetting) && IsNumber(modderSetting))
+            {
+                SetSettingsValue(key, Convert.ToDouble(userValue));
+                return true;
+            }
+
+            if (IsBoolean(userSetting) && IsBoolean(modderSetting))
+            {
+                SetSettingsValue(key, Convert.ToBoolean(userValue));
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsNumber(object setting)
+        {
+            if (setting is JObject settingObject)
+            {
+                return settingObject["type"].ToString() == "slider";
+            }
+            return new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
+        }
+
+        private bool IsBoolean(object setting)
+        {
+            return setting is JObject settingObject ? settingObject["type"].ToString() == "toggle" : setting is bool;
         }
 
         private bool IsSettingSameType(object settingValue1, object settingValue2)
