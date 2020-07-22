@@ -15,12 +15,12 @@ namespace OWML.ModHelper.Logging
         protected readonly IOwmlConfig OwmlConfig;
 
         [Obsolete]
-        public abstract void WriteLine(string s);
+        public abstract void WriteLine(string line);
         [Obsolete]
-        public abstract void WriteLine(params object[] s);
+        public abstract void WriteLine(params object[] objects);
 
-        public abstract void WriteLine(MessageType type, string s);
-        public abstract void WriteLine(MessageType type, params object[] s);
+        public abstract void WriteLine(MessageType type, string line);
+        public abstract void WriteLine(MessageType type, params object[] objects);
 
         protected ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {

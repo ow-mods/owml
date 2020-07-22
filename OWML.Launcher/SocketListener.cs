@@ -70,7 +70,7 @@ namespace OWML.Launcher
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 
             ConsoleUtils.WriteByType(data.Type,
-                $"[{data.SenderName}-{data.SenderFile}] : {data.Message}");
+                $"[{data.SenderName}-{data.SenderType}] : {data.Message}");
         }
     }
 }

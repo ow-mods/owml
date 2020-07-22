@@ -5,11 +5,11 @@ namespace OWML.Common
     public interface IModConsole
     {
         [Obsolete]
-        void WriteLine(string s);
+        void WriteLine(string line);
         [Obsolete]
-        void WriteLine(params object[] s);
+        void WriteLine(params object[] objects);
 
-        void WriteLine(MessageType type, string s);
-        void WriteLine(MessageType type, params object[] s);
+        void WriteLine(MessageType type, string line);
+        void WriteLine(MessageType type, params object[] objects);
     }
 }

@@ -8,7 +8,7 @@ namespace OWML.Common
     public class SocketMessage
     {
         public string SenderName;
-        public string SenderFile;
+        public string SenderType;
         public MessageType Type;
         public string Message;
     }
