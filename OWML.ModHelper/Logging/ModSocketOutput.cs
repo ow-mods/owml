@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -44,10 +45,10 @@ namespace OWML.ModHelper.Logging
             {
                 type = MessageType.Message;
             }
-            var senderName = Manifest.Name;
-            var senderFile = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name;
-            WriteLine(senderName, senderFile, type, line);
+            var senderFile = GetCallingMethodName(new StackTrace());
+            WriteLine(senderFile, type, line);
         }
+
 
         public override void WriteLine(string line, MessageType type = MessageType.Message)
         {
@@ -57,7 +58,7 @@ namespace OWML.ModHelper.Logging
             var message = new SocketMessage
             {
                 SenderName = Manifest.Name,
-                SenderType = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name,
+                SenderType = GetCallingMethodName(new StackTrace()),
                 Type = type,
                 Message = line
             };
@@ -66,14 +67,14 @@ namespace OWML.ModHelper.Logging
             WriteToSocket(json);
         }
 
-        private void WriteLine(string senderName, string senderFile, MessageType type, string line)
+        private void WriteLine(string senderFile, MessageType type, string line)
         {
             Logger?.Log(line);
             CallWriteCallback(Manifest, line);
 
             var message = new SocketMessage
             {
-                SenderName = senderName,
+                SenderName = Manifest.Name,
                 SenderType = senderFile,
                 Type = type,
                 Message = line
@@ -81,6 +82,18 @@ namespace OWML.ModHelper.Logging
             var json = JsonConvert.SerializeObject(message);
 
             WriteToSocket(json);
+        }
+
+        private string GetCallingMethodName(StackTrace frame)
+        {
+            try
+            {
+                return frame.GetFrame(1).GetMethod().DeclaringType.Name;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         private void ConnectToSocket()
