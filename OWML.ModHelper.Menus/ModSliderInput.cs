@@ -54,9 +54,14 @@ namespace OWML.ModHelper.Menus
         private void OnValueChanged()
         {
             InvokeOnChange(Value);
+            UpdateValueText();
+        }
+
+        private void UpdateValueText()
+        {
             if (_valueText != null)
             {
-                _valueText.text = Value.ToString();
+                _valueText.text = string.Format("{0:0.#}", Value);
             }
         }
 
