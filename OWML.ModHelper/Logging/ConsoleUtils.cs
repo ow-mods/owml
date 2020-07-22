@@ -51,18 +51,15 @@ namespace OWML.ModHelper
             {
                 return MessageType.Error;
             }
-            else if (WarningList.Contains(line.ToLower()))
+            if (WarningList.Contains(line.ToLower()))
             {
                 return MessageType.Warning;
             }
-            else if (SuccessList.Contains(line.ToLower()))
+            if (SuccessList.Contains(line.ToLower()))
             {
                 return MessageType.Success;
             }
-            else
-            {
-                return MessageType.Message;
-            }
+            return MessageType.Message;
         }
     }
 }
