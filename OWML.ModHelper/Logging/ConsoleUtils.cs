@@ -1,10 +1,26 @@
 ﻿using OWML.Common;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace OWML.ModHelper
 {
     public static class ConsoleUtils
     {
+        public static readonly List<String> ErrorList = new List<String> {
+            "error",
+            "exception"
+        };
+
+        public static readonly List<String> WarningList = new List<String> {
+            "warning",
+            "disabled"
+        };
+
+        public static readonly List<String> SuccessList = new List<String> {
+            "success"
+        };
+
         public static void WriteByType(MessageType type, string line)
         {
             switch (type)
@@ -31,15 +47,15 @@ namespace OWML.ModHelper
 
         public static MessageType ContentsToType(string line)
         {
-            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
+            if (ErrorList.Contains(line.ToLower()))
             {
                 return MessageType.Error;
             }
-            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
+            if (WarningList.Contains(line.ToLower()))
             {
                 return MessageType.Warning;
             }
-            else if (line.ToLower().Contains("success"))
+            if (SuccessList.Contains(line.ToLower()))
             {
                 return MessageType.Success;
             }
