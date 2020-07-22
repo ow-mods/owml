@@ -27,9 +27,7 @@ namespace OWML.Launcher
             }
             catch (SocketException ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error in socket listener : " + ex);
-                Console.ForegroundColor = ConsoleColor.Gray;
+                ConsoleUtils.WriteLineWithColor(ConsoleColor.Red, $"Error in socket listener: {ex}");
             }
             finally
             {
@@ -39,7 +37,7 @@ namespace OWML.Launcher
 
         private void ListenToSocket(ref TcpListener server)
         {
-            var localAddress = IPAddress.Parse("127.0.0.1");
+            var localAddress = IPAddress.Parse(Constants.LocalAddress);
 
             server = new TcpListener(localAddress, _port);
             server.Start();
@@ -50,9 +48,7 @@ namespace OWML.Launcher
             {
                 var client = server.AcceptTcpClient();
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Console connected to socket!");
-                Console.ForegroundColor = ConsoleColor.Gray;
+                ConsoleUtils.WriteLineWithColor(ConsoleColor.Green, "Console connected to socket!");
 
                 var stream = client.GetStream();
 
@@ -73,30 +69,8 @@ namespace OWML.Launcher
 
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 
-            switch (data.Type)
-            {
-                case MessageType.Error:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case MessageType.Warning:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case MessageType.Success:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case MessageType.Message:
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    break;
-                case MessageType.Info:
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    break;
-                case MessageType.QuitPhrase:
-                    Environment.Exit(0);
-                    break;
-            }
-
-            Console.WriteLine($"[{data.Sender}] : {data.Message}");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            ConsoleUtils.WriteLineWithColor(ConsoleUtils.ConsoleColorFromMessageType(data.Type),
+                $"[{data.Sender}] : {data.Message}");
         }
     }
 }

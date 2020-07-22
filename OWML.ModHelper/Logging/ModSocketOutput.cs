@@ -11,9 +11,6 @@ namespace OWML.ModHelper.Logging
 {
     public class ModSocketOutput : ModConsole
     {
-        private const string LocalHost = "127.0.0.1";
-        private const string NameMessageSeparator = ";;";
-
         private int _port;
         private static Socket _socket;
 
@@ -143,7 +140,7 @@ namespace OWML.ModHelper.Logging
         private void ConnectToSocket()
         {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            var ipAddress = IPAddress.Parse(LocalHost);
+            var ipAddress = IPAddress.Parse(Constants.LocalAddress);
             var endPoint = new IPEndPoint(ipAddress, _port);
             _socket.Connect(endPoint);
         }

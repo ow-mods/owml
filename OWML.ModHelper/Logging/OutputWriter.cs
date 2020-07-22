@@ -41,26 +41,8 @@ namespace OWML.ModHelper.Logging
             {
                 return;
             }
-            switch (type)
-            {
-                case MessageType.Error:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case MessageType.Warning:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case MessageType.Success:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case MessageType.Message:
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    break;
-                case MessageType.Info:
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    break;
-            }
-            Console.WriteLine(line);
-            Console.ForegroundColor = ConsoleColor.Gray;
+
+            ConsoleUtils.WriteLineWithColor(ConsoleUtils.ConsoleColorFromMessageType(type), line);
         }
 
         public void WriteLine(MessageType type, params object[] objects)
