@@ -73,30 +73,24 @@ namespace OWML.ModHelper.Menus
 
             if (value is JObject obj)
             {
-                var type = (string)obj["type"];
-                if (type == "slider")
+                switch ((string)obj["type"])
                 {
-                    AddSliderInput(key, obj, index);
-                    return;
+                    case "slider":
+                        AddSliderInput(key, obj, index);
+                        return;
+                    case "toggle":
+                        AddToggleInput(key, obj, index);
+                        return;
+                    case "selector":
+                        AddSelectorInput(key, obj, index);
+                        return;
+                    case "input":
+                        AddComboInput(key, index);
+                        return;
+                    default:
+                        OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
+                        return;
                 }
-                if (type == "toggle")
-                {
-                    AddToggleInput(key, obj, index);
-                    return;
-                }
-                if (type == "selector")
-                {
-                    AddSelectorInput(key, obj, index);
-                    return;
-                }
-                if (type == "input")
-                {
-                    AddComboInput(key, index);
-                    return;
-                }
-
-                OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
-                return;
             }
 
             OwmlConsole.WriteLine("Error: unrecognized setting type: " + value.GetType());
