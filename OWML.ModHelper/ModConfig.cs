@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using UnityEngine.EventSystems;
 
 namespace OWML.ModHelper
 {
@@ -18,6 +19,21 @@ namespace OWML.ModHelper
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
 
+        private T ConvertToEnum<T>(object value)
+        {
+            var valueString = Convert.ToString(value);
+
+            try
+            {
+                return (T)Enum.Parse(typeof(T), valueString, true);
+            }
+            catch (ArgumentException ex)
+            {
+                ModConsole.Instance.WriteLine($"Error: Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
+                return default;
+            }
+        }
+
         public T GetSettingsValue<T>(string key)
         {
             if (!Settings.ContainsKey(key))
@@ -26,24 +42,21 @@ namespace OWML.ModHelper
                 return default;
             }
 
-            var value = Settings[key];
+            var setting = Settings[key];
+            var type = typeof(T);
 
             try
             {
-                var objectValue = value as JObject;
-                var type = typeof(T);
-                var val = (objectValue != null) ? objectValue["value"] : value;
-                if (type.IsEnum && objectValue != null && objectValue["type"].ToObject<string>() == "selector")
+                var value = setting is JObject objectValue ? objectValue["value"] : setting;
+                if (!type.IsEnum || value is int)
                 {
-                    var selected = Convert.ToString(val);
-                    var thisEnum = Enum.Parse(type, selected, true);
-                    return Enum.IsDefined(type, thisEnum) ? (T)thisEnum : default;
+                    return (T)Convert.ChangeType(value, type);
                 }
-                return (T)Convert.ChangeType(val, type);
+                return ConvertToEnum<T>(value);
             }
             catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
+                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}");
                 return default;
             }
         }
