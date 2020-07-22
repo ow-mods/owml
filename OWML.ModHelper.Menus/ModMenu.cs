@@ -18,6 +18,7 @@ namespace OWML.ModHelper.Menus
         public List<IModButtonBase> BaseButtons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
+        public List<IModSelectorInput> SelectorInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
@@ -53,6 +54,7 @@ namespace OWML.ModHelper.Menus
 
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
+            SelectorInputs = Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModSelectorInput>().ToList();
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();
@@ -171,6 +173,23 @@ namespace OWML.ModHelper.Menus
             return input;
         }
 
+        public IModSelectorInput GetSelectorInput(string title)
+        {
+            return SelectorInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModSelectorInput AddSelectorInput(IModSelectorInput input)
+        {
+            return AddSelectorInput(input, input.Index);
+        }
+
+        public IModSelectorInput AddSelectorInput(IModSelectorInput input, int index)
+        {
+            SelectorInputs.Add(input);
+            AddInput(input, index);
+            return input;
+        }
+
         public IModTextInput GetTextInput(string title)
         {
             return TextInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
@@ -239,6 +258,11 @@ namespace OWML.ModHelper.Menus
             {
                 return slider.Value;
             }
+            var selector = GetSelectorInput(key);
+            if (selector != null)
+            {
+                return selector.Value;
+            }
             var toggle = GetToggleInput(key);
             if (toggle != null)
             {
@@ -270,6 +294,13 @@ namespace OWML.ModHelper.Menus
             {
                 var val = value is JObject obj ? obj["value"] : value;
                 slider.Value = Convert.ToSingle(val);
+                return;
+            }
+            var selector = GetSelectorInput(key);
+            if (selector != null)
+            {
+                var val = value is JObject obj ? obj["value"] : value;
+                selector.Value = Convert.ToString(val);
                 return;
             }
             var toggle = GetToggleInput(key);

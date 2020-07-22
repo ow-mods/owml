@@ -19,6 +19,16 @@
       "min": 0,
       "max": 20
     },
+    "thing": {
+      "type": "selector",
+      "options": [ "A", "B", "C" ],
+      "value": "A"
+    },
+    "integer thing": {
+      "type": "selector",
+      "options": [ 5, 10, 15 ],
+      "value": 10
+    },
     "enableSuperMode": {
       "type": "toggle",
       "value": true,
