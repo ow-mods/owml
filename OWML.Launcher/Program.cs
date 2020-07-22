@@ -35,9 +35,7 @@ namespace OWML.Launcher
                 var argument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
                 if (!int.TryParse(argument, out var port))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error - Bad port.");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    ConsoleUtils.WriteLineWithColor(ConsoleColor.Red, "Error - Bad port.");
                     return;
                 }
                 owmlConfig.SocketPort = port;
