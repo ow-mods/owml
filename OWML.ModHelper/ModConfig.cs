@@ -4,7 +4,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using UnityEngine.EventSystems;
 
 namespace OWML.ModHelper
 {
