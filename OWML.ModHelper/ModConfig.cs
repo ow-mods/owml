@@ -21,6 +21,16 @@ namespace OWML.ModHelper
 
         private T ConvertToEnum<T>(object value)
         {
+            if (value is float || value is double)
+            {
+                var floatValue = Convert.ToDouble(value);
+                value = (long)Math.Round(floatValue);
+            }
+            if (value is int || value is long)
+            {
+                return (T)value;
+            }
+
             var valueString = Convert.ToString(value);
 
             try
@@ -48,18 +58,7 @@ namespace OWML.ModHelper
             try
             {
                 var value = setting is JObject objectValue ? objectValue["value"] : setting;
-
-                if (type.IsEnum && value is float || value is double)
-                {
-                    var floatValue = Convert.ToDouble(value);
-                    value = (long)Math.Round(floatValue);
-                }
-
-                if (!type.IsEnum || value is int || value is long)
-                {
-                    return type.IsEnum? (T)value : (T)Convert.ChangeType(value, type);
-                }
-                return ConvertToEnum<T>(value);
+                return type.IsEnum ? ConvertToEnum<T>(value) : (T)Convert.ChangeType(value, type);
             }
             catch (InvalidCastException)
             {
