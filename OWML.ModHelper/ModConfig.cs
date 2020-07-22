@@ -19,31 +19,6 @@ namespace OWML.ModHelper
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
 
-        private T ConvertToEnum<T>(object value)
-        {
-            if (value is float || value is double)
-            {
-                var floatValue = Convert.ToDouble(value);
-                value = (long)Math.Round(floatValue);
-            }
-            if (value is int || value is long)
-            {
-                return (T)value;
-            }
-
-            var valueString = Convert.ToString(value);
-
-            try
-            {
-                return (T)Enum.Parse(typeof(T), valueString, true);
-            }
-            catch (ArgumentException ex)
-            {
-                ModConsole.Instance.WriteLine($"Error: Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
-                return default;
-            }
-        }
-
         public T GetSettingsValue<T>(string key)
         {
             if (!Settings.ContainsKey(key))
@@ -63,6 +38,31 @@ namespace OWML.ModHelper
             catch (InvalidCastException)
             {
                 ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}");
+                return default;
+            }
+        }
+
+        private T ConvertToEnum<T>(object value)
+        {
+            if (value is float || value is double)
+            {
+                var floatValue = Convert.ToDouble(value);
+                return (T)(object)(long)Math.Round(floatValue);
+            }
+            if (value is int || value is long)
+            {
+                return (T)value;
+            }
+
+            var valueString = Convert.ToString(value);
+
+            try
+            {
+                return (T)Enum.Parse(typeof(T), valueString, true);
+            }
+            catch (ArgumentException ex)
+            {
+                ModConsole.Instance.WriteLine($"Error: Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
                 return default;
             }
         }
