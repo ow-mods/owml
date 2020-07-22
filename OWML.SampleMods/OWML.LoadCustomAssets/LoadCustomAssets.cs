@@ -7,6 +7,12 @@ namespace OWML.LoadCustomAssets
 {
     public class LoadCustomAssets : ModBehaviour
     {
+        enum ABC
+        {
+            A,
+            B,
+            C
+        }
         private OWRigidbody _duckBody;
         private Transform _playerTransform;
         private OWRigidbody _playerBody;
@@ -52,6 +58,10 @@ namespace OWML.LoadCustomAssets
             var speed = config.GetSettingsValue<float>("speed");
             var power = config.GetSettingsValue<float>("power");
             var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
+            var selectedEnum = config.GetSettingsValue<ABC>("thing");
+            var selectedString = config.GetSettingsValue<string>("thing");
+            var selectedInt = config.GetSettingsValue<int>("integer thing");
+            ModHelper.Console.WriteLine($"Selected enum = {selectedEnum}, string = {selectedString}");
         }
 
         private void OnMusicLoaded(AudioSource audio)

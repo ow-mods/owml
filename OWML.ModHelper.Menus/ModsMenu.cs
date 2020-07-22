@@ -95,6 +95,7 @@ namespace OWML.ModHelper.Menus
         {
             var toggleTemplate = options.InputTab.ToggleInputs[0];
             var sliderTemplate = options.InputTab.SliderInputs[0];
+            var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
             var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             textInputTemplate.Hide();
             var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler);
@@ -102,7 +103,8 @@ namespace OWML.ModHelper.Menus
             var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             numberInputTemplate.Hide();
             var rebindMenuCopy = options.RebindingMenu.Copy().Menu;
-            modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, comboInputTemplate);
+            modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate,
+                numberInputTemplate, comboInputTemplate, selectorTemplate);
         }
 
     }
