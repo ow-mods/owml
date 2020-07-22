@@ -32,18 +32,18 @@ namespace OWML.ModHelper
             {
                 var objectValue = value as JObject;
                 var type = typeof(T);
+                var val = (objectValue != null) ? objectValue["value"] : value;
                 if (type.IsEnum && objectValue != null && objectValue["type"].ToObject<string>() == "selector")
                 {
-                    var selected = (string)objectValue["value"];
+                    var selected = Convert.ToString(val);
                     var thisEnum = Enum.Parse(type, selected, true);
                     return Enum.IsDefined(type, thisEnum) ? (T)thisEnum : default;
                 }
-                var val = objectValue != null ? objectValue["value"] : value;
                 return (T)Convert.ChangeType(val, type);
             }
-            catch (InvalidCastException ex)
+            catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)} : {ex.Message};{ex.TargetSite}");
+                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {value.GetType()} to type {typeof(T)}");
                 return default;
             }
         }

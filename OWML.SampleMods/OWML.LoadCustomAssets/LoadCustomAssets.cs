@@ -54,9 +54,10 @@ namespace OWML.LoadCustomAssets
             var speed = config.GetSettingsValue<float>("speed");
             var power = config.GetSettingsValue<float>("power");
             var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
-            var selectedIndex = config.GetSettingsValue<ABC>("thing");
+            var selectedEnum = config.GetSettingsValue<ABC>("thing");
             var selectedString = config.GetSettingsValue<string>("thing");
-            ModHelper.Console.WriteLine($"Selected index = {selectedIndex}, string = {selectedString}");
+            var selectedInt = config.GetSettingsValue<int>("integer thing");
+            ModHelper.Console.WriteLine($"Selected enum = {selectedEnum}, string = {selectedString}");
         }
 
         private void OnMusicLoaded(AudioSource audio)
