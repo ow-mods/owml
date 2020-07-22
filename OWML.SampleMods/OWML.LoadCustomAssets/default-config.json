@@ -19,6 +19,12 @@
       "min": 0,
       "max": 20
     },
+    "decimals": {
+      "type": "slider",
+      "value": 10.54545,
+      "min": 0.545,
+      "max": 525.545845565
+    },
     "thing": {
       "type": "selector",
       "options": [ "A", "B", "C" ],

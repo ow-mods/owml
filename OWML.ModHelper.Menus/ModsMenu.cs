@@ -94,7 +94,7 @@ namespace OWML.ModHelper.Menus
         private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options)
         {
             var toggleTemplate = options.InputTab.ToggleInputs[0];
-            var sliderTemplate = options.InputTab.SliderInputs[0];
+            var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
             var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
             var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             textInputTemplate.Hide();
