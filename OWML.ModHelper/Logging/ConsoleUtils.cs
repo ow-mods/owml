@@ -22,7 +22,7 @@ namespace OWML.ModHelper
                     Console.ForegroundColor = ConsoleColor.Gray;
                     break;
                 case MessageType.Info:
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     break;
             }
             Console.WriteLine(line);

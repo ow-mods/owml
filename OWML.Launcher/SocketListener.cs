@@ -76,7 +76,7 @@ namespace OWML.Launcher
             }
 
             ConsoleUtils.WriteByType(data.Type,
-                $"[{data.SenderName}-{data.SenderType}] : {data.Message}");
+                $"[{data.SenderName}.{data.SenderType}] : {data.Message}");
         }
     }
 }

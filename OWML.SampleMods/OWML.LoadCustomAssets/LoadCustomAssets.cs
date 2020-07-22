@@ -1,5 +1,6 @@
 ﻿using OWML.Common;
 using OWML.ModHelper;
+using System;
 using UnityEngine;
 
 namespace OWML.LoadCustomAssets
@@ -38,6 +39,8 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.OnEvent += OnEvent;
 
             var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
+
+            TestLogging();
         }
 
         public override void Configure(IModConfig config)
@@ -48,6 +51,15 @@ namespace OWML.LoadCustomAssets
             var speed = config.GetSettingsValue<float>("speed");
             var power = config.GetSettingsValue<float>("power");
             var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
+        }
+
+        public void TestLogging()
+        {
+            ModHelper.Console.WriteLine(MessageType.Error, "Test Error");
+            ModHelper.Console.WriteLine(MessageType.Warning, "Test Warning");
+            ModHelper.Console.WriteLine(MessageType.Message, "Test Message");
+            ModHelper.Console.WriteLine(MessageType.Success, "Test Success");
+            ModHelper.Console.WriteLine(MessageType.Info, "Test Info");
         }
 
         private void OnMusicLoaded(AudioSource audio)
