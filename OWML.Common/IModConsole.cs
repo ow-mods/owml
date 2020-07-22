@@ -7,6 +7,6 @@ namespace OWML.Common
         [Obsolete]
         void WriteLine(params object[] objects);
 
-        void WriteLine(string line, MessageType type);
+        void WriteLine(string line, MessageType type = MessageType.Message);
     }
 }

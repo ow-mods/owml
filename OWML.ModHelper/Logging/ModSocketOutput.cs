@@ -45,29 +45,17 @@ namespace OWML.ModHelper.Logging
             {
                 type = MessageType.Message;
             }
-            var senderFile = GetCallingMethodName(new StackTrace());
-            WriteLine(senderFile, type, line);
+            var senderType = GetCallingMethodName(new StackTrace());
+            WriteLine(senderType, type, line);
         }
 
 
         public override void WriteLine(string line, MessageType type = MessageType.Message)
         {
-            Logger?.Log(line);
-            CallWriteCallback(Manifest, line);
-
-            var message = new SocketMessage
-            {
-                SenderName = Manifest.Name,
-                SenderType = GetCallingMethodName(new StackTrace()),
-                Type = type,
-                Message = line
-            };
-            var json = JsonConvert.SerializeObject(message);
-
-            WriteToSocket(json);
+            WriteLine(GetCallingMethodName(new StackTrace()), type, line);
         }
 
-        private void WriteLine(string senderFile, MessageType type, string line)
+        private void WriteLine(string senderType, MessageType type, string line)
         {
             Logger?.Log(line);
             CallWriteCallback(Manifest, line);
@@ -75,7 +63,7 @@ namespace OWML.ModHelper.Logging
             var message = new SocketMessage
             {
                 SenderName = Manifest.Name,
-                SenderType = senderFile,
+                SenderType = senderType,
                 Type = type,
                 Message = line
             };

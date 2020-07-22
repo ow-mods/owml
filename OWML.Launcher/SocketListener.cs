@@ -65,7 +65,7 @@ namespace OWML.Launcher
 
         private void PrintOutput(byte[] bytes, int count)
         {
-            var json = Encoding.ASCII.GetString(bytes, 0, count);
+            var json = Encoding.UTF8.GetString(bytes, 0, count);
 
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 

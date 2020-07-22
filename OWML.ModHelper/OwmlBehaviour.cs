@@ -13,7 +13,7 @@ namespace OWML.ModHelper
 
         private void OnApplicationQuit()
         {
-            ModConsole.Instance.WriteLine(MessageType.Quit, "RageAgainstTheDyingOfTheLight");
+            ModConsole.Instance.WriteLine("", MessageType.Quit);
         }
     }
 }
