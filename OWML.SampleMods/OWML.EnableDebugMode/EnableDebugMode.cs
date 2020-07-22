@@ -44,10 +44,9 @@ namespace OWML.EnableDebugMode
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            var type = behaviour.GetType();
-            if (type == typeof(PlayerSpawner) && ev == Events.AfterAwake)
+            if (behaviour is PlayerSpawner playerSpawner && ev == Events.AfterAwake)
             {
-                _playerSpawner = (PlayerSpawner)behaviour;
+                _playerSpawner = playerSpawner;
                 _isStarted = true;
             }
         }

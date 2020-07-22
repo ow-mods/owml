@@ -8,6 +8,9 @@ namespace OWML.ModHelper.Events
 {
     public class ModEvents : IModEvents
     {
+        public IModPlayerEvents Player { get; }
+        public IModSceneEvents Scenes { get; }
+
         public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
         private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
@@ -23,6 +26,9 @@ namespace OWML.ModHelper.Events
             _console = console;
             _harmonyHelper = harmonyHelper;
             Patches.OnEvent += OnPatchEvent;
+
+            Player = new ModPlayerEvents(this);
+            Scenes = new ModSceneEvents();
         }
 
         private void OnPatchEvent(MonoBehaviour behaviour, Common.Events ev)

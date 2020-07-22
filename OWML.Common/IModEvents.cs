@@ -5,6 +5,9 @@ namespace OWML.Common
 {
     public interface IModEvents
     {
+        IModPlayerEvents Player { get; }
+        IModSceneEvents Scenes { get; }
+
         Action<MonoBehaviour, Events> OnEvent { get; set; }
 
         void Subscribe<T>(Events ev) where T : MonoBehaviour;
