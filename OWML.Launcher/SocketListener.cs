@@ -27,7 +27,7 @@ namespace OWML.Launcher
             }
             catch (SocketException ex)
             {
-                ConsoleUtils.WriteLineWithColor(ConsoleColor.Red, $"Error in socket listener: {ex}");
+                ConsoleUtils.WriteByType(MessageType.Error, $"Error in socket listener: {ex}");
             }
             finally
             {
@@ -48,7 +48,7 @@ namespace OWML.Launcher
             {
                 var client = server.AcceptTcpClient();
 
-                ConsoleUtils.WriteLineWithColor(ConsoleColor.Green, "Console connected to socket!");
+                ConsoleUtils.WriteByType(MessageType.Success, "Console connected to socket!");
 
                 var stream = client.GetStream();
 
@@ -69,7 +69,7 @@ namespace OWML.Launcher
 
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 
-            ConsoleUtils.WriteLineWithColor(ConsoleUtils.ConsoleColorFromMessageType(data.Type),
+            ConsoleUtils.WriteByType(data.Type,
                 $"[{data.SenderName}-{data.SenderFile}] : {data.Message}");
         }
     }

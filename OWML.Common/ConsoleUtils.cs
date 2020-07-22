@@ -7,30 +7,29 @@ namespace OWML.Common
 {
     public static class ConsoleUtils
     {
-        public static ConsoleColor ConsoleColorFromMessageType(MessageType type)
+        public static void WriteByType(MessageType type, string line)
         {
             switch (type)
             {
                 case MessageType.Error:
-                    return ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
                 case MessageType.Warning:
-                    return ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
                 case MessageType.Success:
-                    return ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
                 case MessageType.Message:
-                    return ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
                 case MessageType.Info:
-                    return ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
                 case MessageType.Quit:
                     Environment.Exit(0);
                     break;
             }
-            return ConsoleColor.Gray;
-        }
-
-        public static void WriteLineWithColor(ConsoleColor color, string line)
-        {
-            Console.ForegroundColor = color;
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;
         }

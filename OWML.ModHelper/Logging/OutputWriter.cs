@@ -42,7 +42,7 @@ namespace OWML.ModHelper.Logging
                 return;
             }
 
-            ConsoleUtils.WriteLineWithColor(ConsoleUtils.ConsoleColorFromMessageType(type), line);
+            ConsoleUtils.WriteByType(type, line);
         }
 
         public void WriteLine(MessageType type, params object[] objects)
