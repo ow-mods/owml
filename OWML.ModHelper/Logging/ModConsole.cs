@@ -16,8 +16,10 @@ namespace OWML.ModHelper
 
         [Obsolete]
         public abstract void WriteLine(params object[] objects);
+        [Obsolete]
+        public abstract void WriteLine(string line);
 
-        public abstract void WriteLine(string line, MessageType type = MessageType.Message);
+        public abstract void WriteLine(MessageType type, string line);
 
         protected ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {

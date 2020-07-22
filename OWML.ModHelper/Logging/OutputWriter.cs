@@ -6,13 +6,19 @@ namespace OWML.ModHelper
 {
     public class OutputWriter : IModConsole
     {
-        [Obsolete("Use OutputWriter.Writeline(params object[] objects, MessageType type) instead")]
+        [Obsolete]
         public void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
-        public void WriteLine(string line, MessageType type = MessageType.Message)
+        [Obsolete]
+        public void WriteLine(string line)
+        {
+            WriteLine(MessageType.Message, line);
+        }
+
+        public void WriteLine(MessageType type, string line)
         {
             if (string.IsNullOrEmpty(line))
             {

@@ -28,5 +28,25 @@ namespace OWML.ModHelper
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
+
+        public static MessageType ContentsToType(string line)
+        {
+            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
+            {
+                return MessageType.Error;
+            }
+            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
+            {
+                return MessageType.Warning;
+            }
+            else if (line.ToLower().Contains("success"))
+            {
+                return MessageType.Success;
+            }
+            else
+            {
+                return MessageType.Message;
+            }
+        }
     }
 }

@@ -28,34 +28,23 @@ namespace OWML.ModHelper
         public override void WriteLine(params object[] objects)
         {
             var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
-            MessageType type;
-            if (line.ToLower().Contains("error") || line.ToLower().Contains("exception"))
-            {
-                type = MessageType.Error;
-            }
-            else if (line.ToLower().Contains("warning") || line.ToLower().Contains("disabled"))
-            {
-                type = MessageType.Warning;
-            }
-            else if (line.ToLower().Contains("success"))
-            {
-                type = MessageType.Success;
-            }
-            else
-            {
-                type = MessageType.Message;
-            }
-            var senderType = GetCallingMethodName(new StackTrace());
-            WriteLine(senderType, type, line);
+            var type = ConsoleUtils.ContentsToType(line);
+            WriteLine(type, line, GetCallingMethodName(new StackTrace()));
         }
 
-
-        public override void WriteLine(string line, MessageType type = MessageType.Message)
+        [Obsolete]
+        public override void WriteLine(string line)
         {
-            WriteLine(GetCallingMethodName(new StackTrace()), type, line);
+            var type = ConsoleUtils.ContentsToType(line);
+            WriteLine(type, line, GetCallingMethodName(new StackTrace()));
         }
 
-        private void WriteLine(string senderType, MessageType type, string line)
+        public override void WriteLine(MessageType type, string line)
+        {
+            WriteLine(type, line, GetCallingMethodName(new StackTrace()));
+        }
+
+        private void WriteLine(MessageType type, string line, string senderType)
         {
             Logger?.Log(line);
             CallWriteCallback(Manifest, line);
