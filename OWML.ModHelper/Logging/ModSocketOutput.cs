@@ -46,7 +46,8 @@ namespace OWML.ModHelper.Logging
             {
                 type = MessageType.Message;
             }
-            WriteLine(type, s);
+            var sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}";
+            WriteLine(sender, type, s);
         }
 
         [Obsolete("Use ModSocketOutput.Writeline(MessageType type, params object[] objects) instead")]
@@ -54,11 +55,46 @@ namespace OWML.ModHelper.Logging
         {
             if (CheckForParamsError(objects))
             {
-                WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+                var s = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
+                MessageType type;
+                if (s.ToLower().Contains("error") || s.ToLower().Contains("exception"))
+                {
+                    type = MessageType.Error;
+                }
+                else if (s.ToLower().Contains("warning") || s.ToLower().Contains("disabled"))
+                {
+                    type = MessageType.Warning;
+                }
+                else if (s.ToLower().Contains("success"))
+                {
+                    type = MessageType.Success;
+                }
+                else
+                {
+                    type = MessageType.Message;
+                }
+                var sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}";
+                WriteLine(sender, type, s);
             }
         }
 
-        public override void WriteLine(string sender, MessageType type, string data)
+        public override void WriteLine(MessageType type, string data)
+        {
+            Logger?.Log(data);
+            CallWriteCallback(Manifest, data);
+
+            var message = new SocketMessage
+            {
+                Sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}",
+                Type = type,
+                Message = data
+            };
+            var json = JsonConvert.SerializeObject(message);
+
+            WriteToSocket(json);
+        }
+
+        private void WriteLine(string sender, MessageType type, string data)
         {
             Logger?.Log(data);
             CallWriteCallback(Manifest, data);
@@ -74,30 +110,10 @@ namespace OWML.ModHelper.Logging
             WriteToSocket(json);
         }
 
-        public override void WriteLine(MessageType type, string data)
-        {
-            Logger?.Log(data);
-            CallWriteCallback(Manifest, data);
-
-            var message = new SocketMessage
-            {
-                Sender = Manifest.Name,
-                Type = type,
-                Message = data
-            };
-            var json = JsonConvert.SerializeObject(message);
-
-            WriteToSocket(json);
-        }
-
-        public override void WriteLine(string sender, MessageType type, params object[] objects)
-        {
-            WriteLine(sender, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
-        }
-
         public override void WriteLine(MessageType type, params object[] objects)
         {
-            WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+            var sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}";
+            WriteLine(sender, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
         private bool CheckForParamsError(object[] objects)

@@ -10,6 +10,8 @@ namespace OWML.Common
         Error,
         Warning,
         Message,
-        Success
+        Info,
+        Success,
+        QuitPhrase
     }
 }

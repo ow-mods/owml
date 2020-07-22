@@ -73,11 +73,6 @@ namespace OWML.Launcher
 
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 
-            if (data.Message == Constants.QuitKeyPhrase)
-            {
-                Environment.Exit(0);
-            }
-
             switch (data.Type)
             {
                 case MessageType.Error:
@@ -92,9 +87,15 @@ namespace OWML.Launcher
                 case MessageType.Message:
                     Console.ForegroundColor = ConsoleColor.Gray;
                     break;
+                case MessageType.Info:
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case MessageType.QuitPhrase:
+                    Environment.Exit(0);
+                    break;
             }
 
-            Console.WriteLine("[" + data.Sender + "] : " + data.Message);
+            Console.WriteLine($"[{data.Sender}] : {data.Message}");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
     }

@@ -55,6 +55,9 @@ namespace OWML.ModHelper.Logging
                 case MessageType.Message:
                     Console.ForegroundColor = ConsoleColor.Gray;
                     break;
+                case MessageType.Info:
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
             }
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -63,16 +66,6 @@ namespace OWML.ModHelper.Logging
         public void WriteLine(MessageType type, params object[] objects)
         {
             WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
-        }
-
-        public void WriteLine(string sender, MessageType type, string line)
-        {
-            WriteLine(type, line);
-        }
-
-        public void WriteLine(string sender, MessageType type, params object[] objects)
-        {
-            WriteLine(type, objects);
         }
     }
 }
