@@ -114,7 +114,7 @@ namespace OWML.ModHelper
             else return value;
         }
 
-        private void TryUpdate(string key, object userSetting, object modderSetting)
+        private bool TryUpdate(string key, object userSetting, object modderSetting)
         {
             var userValue = GetSettingsValue<object>(key, userSetting);
             if (userValue is JValue userJValue)
@@ -137,6 +137,7 @@ namespace OWML.ModHelper
             {   
                 SetSettingsValue(key, userValue);
             }
+            return isUpdateable;
         }
 
         private bool IsNumber(object setting)
