@@ -43,8 +43,9 @@ namespace OWML.ModHelper.Logging
             {
                 type = MessageType.Message;
             }
-            var sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}";
-            WriteLine(sender, type, s);
+            var senderName = Manifest.Name;
+            var senderFile = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name;
+            WriteLine(senderName, senderFile, type, s);
         }
 
         [Obsolete("Use ModSocketOutput.Writeline(MessageType type, params object[] objects) instead")]
@@ -70,8 +71,9 @@ namespace OWML.ModHelper.Logging
                 {
                     type = MessageType.Message;
                 }
-                var sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}";
-                WriteLine(sender, type, s);
+                var senderName = Manifest.Name;
+                var senderFile = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name;
+                WriteLine(senderName, senderFile, type, s);
             }
         }
 
@@ -82,7 +84,8 @@ namespace OWML.ModHelper.Logging
 
             var message = new SocketMessage
             {
-                Sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}",
+                SenderName = Manifest.Name,
+                SenderFile = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name,
                 Type = type,
                 Message = data
             };
@@ -91,14 +94,15 @@ namespace OWML.ModHelper.Logging
             WriteToSocket(json);
         }
 
-        private void WriteLine(string sender, MessageType type, string data)
+        private void WriteLine(string senderName, string senderFile, MessageType type, string data)
         {
             Logger?.Log(data);
             CallWriteCallback(Manifest, data);
 
             var message = new SocketMessage
             {
-                Sender = sender,
+                SenderName = senderName,
+                SenderFile = senderFile,
                 Type = type,
                 Message = data
             };
@@ -109,8 +113,9 @@ namespace OWML.ModHelper.Logging
 
         public override void WriteLine(MessageType type, params object[] objects)
         {
-            var sender = $"{Manifest.Name}-{(new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name}";
-            WriteLine(sender, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+            var senderName = Manifest.Name;
+            var senderFile = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().DeclaringType.Name;
+            WriteLine(senderName, senderFile, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
         private bool CheckForParamsError(object[] objects)
@@ -124,14 +129,15 @@ namespace OWML.ModHelper.Logging
                 WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
                 return false;
             }
-            else if (objects[0].GetType() == typeof(string) && objects[1].GetType() == typeof(MessageType))
+            else if (objects[0].GetType() == typeof(string) && objects[1].GetType() == typeof(string) && objects[2].GetType() == typeof(MessageType))
             {
-                var sender = (string)objects[0];
-                var type = (MessageType)objects[1];
+                var senderName = (string)objects[0];
+                var senderFile = (string)objects[1];
+                var type = (MessageType)objects[2];
                 var list = new List<object>(objects);
-                list.RemoveRange(0, 2);
+                list.RemoveRange(0, 3);
                 objects = list.ToArray();
-                WriteLine(sender, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+                WriteLine(senderName, senderFile, type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
                 return false;
             }
             return true;

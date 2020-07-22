@@ -70,7 +70,7 @@ namespace OWML.Launcher
             var data = JsonConvert.DeserializeObject<SocketMessage>(json);
 
             ConsoleUtils.WriteLineWithColor(ConsoleUtils.ConsoleColorFromMessageType(data.Type),
-                $"[{data.Sender}] : {data.Message}");
+                $"[{data.SenderName}-{data.SenderFile}] : {data.Message}");
         }
     }
 }
