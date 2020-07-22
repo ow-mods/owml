@@ -132,12 +132,12 @@ namespace OWML.ModHelper
             var options = modderSetting["options"].ToObject<List<string>>();
             var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
             Settings[key] = modderSetting;
-            if (options.Contains(userString))
+            var isInOptions = options.Contains(userString);
+            if (isInOptions)
             {
                 SetSettingsValue(key, userString);
-                return true;
             }
-            return false;
+            return isInOptions;
         }
 
         private void AddMissingDefaults(IModConfig defaultConfig)
