@@ -48,9 +48,16 @@ namespace OWML.ModHelper
             try
             {
                 var value = setting is JObject objectValue ? objectValue["value"] : setting;
-                if (!type.IsEnum || value is int)
+
+                if (type.IsEnum && value is float || value is double)
                 {
-                    return (T)Convert.ChangeType(value, type);
+                    var floatValue = Convert.ToDouble(value);
+                    value = (long)Math.Round(floatValue);
+                }
+
+                if (!type.IsEnum || value is int || value is long)
+                {
+                    return type.IsEnum? (T)value : (T)Convert.ChangeType(value, type);
                 }
                 return ConvertToEnum<T>(value);
             }
