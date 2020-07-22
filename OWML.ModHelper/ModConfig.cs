@@ -31,19 +31,46 @@ namespace OWML.ModHelper
 
         private T GetSettingsValue<T>(string key, object setting)
         {
+            var type = typeof(T);
+            
             try
             {
-                var val = setting is JObject obj ? obj["value"] : setting;
-                return (T)Convert.ChangeType(val, typeof(T));
+                var value = setting is JObject objectValue ? objectValue["value"] : setting;
+                return type.IsEnum ? ConvertToEnum<T>(value) : (T)Convert.ChangeType(value, type);
             }
             catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {typeof(T)}");
+                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}");
                 return default;
             }
         }
 
-        public void SetSettingsValue(string key, object val)
+        private T ConvertToEnum<T>(object value)
+        {
+            if (value is float || value is double)
+            {
+                var floatValue = Convert.ToDouble(value);
+                return (T)(object)(long)Math.Round(floatValue);
+            }
+            if (value is int || value is long)
+            {
+                return (T)value;
+            }
+
+            var valueString = Convert.ToString(value);
+
+            try
+            {
+                return (T)Enum.Parse(typeof(T), valueString, true);
+            }
+            catch (ArgumentException ex)
+            {
+                ModConsole.Instance.WriteLine($"Error: Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
+                return default;
+            }
+        }
+
+        public void SetSettingsValue(string key, object value)
         {
             if (!Settings.ContainsKey(key))
             {
@@ -51,15 +78,13 @@ namespace OWML.ModHelper
                 return;
             }
 
-            var value = Settings[key];
-
-            if (value is JObject obj)
+            if (Settings[key] is JObject setting)
             {
-                obj["value"] = "" + val;
+                setting["value"] = JToken.FromObject(value);
             }
             else
             {
-                Settings[key] = val;
+                Settings[key] = value;
             }
         }
 

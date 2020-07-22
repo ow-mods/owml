@@ -13,6 +13,7 @@ namespace OWML.ModHelper.Menus
 
         private IModToggleInput _toggleTemplate;
         private IModSliderInput _sliderTemplate;
+        private IModSelectorInput _selectorTemplate;
         private IModTextInput _textInputTemplate;
         private IModComboInput _comboInputTemplate;
         private IModNumberInput _numberInputTemplate;
@@ -27,13 +28,15 @@ namespace OWML.ModHelper.Menus
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
-            IModTextInput textInputTemplate, IModNumberInput numberInputTemplate, IModComboInput comboInputTemplate)
+            IModTextInput textInputTemplate, IModNumberInput numberInputTemplate,
+            IModComboInput comboInputTemplate, IModSelectorInput selectorTemplate)
         {
             _toggleTemplate = toggleTemplate;
             _sliderTemplate = sliderTemplate;
             _textInputTemplate = textInputTemplate;
             _numberInputTemplate = numberInputTemplate;
             _comboInputTemplate = comboInputTemplate;
+            _selectorTemplate = selectorTemplate;
 
             base.Initialize(menu);
 
@@ -70,25 +73,24 @@ namespace OWML.ModHelper.Menus
 
             if (value is JObject obj)
             {
-                var type = (string)obj["type"];
-                if (type == "slider")
+                switch ((string)obj["type"])
                 {
-                    AddSliderInput(key, obj, index);
-                    return;
+                    case "slider":
+                        AddSliderInput(key, obj, index);
+                        return;
+                    case "toggle":
+                        AddToggleInput(key, obj, index);
+                        return;
+                    case "selector":
+                        AddSelectorInput(key, obj, index);
+                        return;
+                    case "input":
+                        AddComboInput(key, index);
+                        return;
+                    default:
+                        OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
+                        return;
                 }
-                if (type == "toggle")
-                {
-                    AddToggleInput(key, obj, index);
-                    return;
-                }
-                if (type == "input")
-                {
-                    AddComboInput(key, index);
-                    return;
-                }
-
-                OwmlConsole.WriteLine("Error: unrecognized complex setting: " + value);
-                return;
             }
 
             OwmlConsole.WriteLine("Error: unrecognized setting type: " + value.GetType());
@@ -122,6 +124,16 @@ namespace OWML.ModHelper.Menus
             slider.Element.name = key;
             slider.Title = (string)obj["title"] ?? key;
             slider.Show();
+        }
+
+        private void AddSelectorInput(string key, JObject obj, int index)
+        {
+            var options = obj["options"].ToObject<string[]>();
+            var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
+            selector.Element.name = key;
+            selector.Title = (string)obj["title"] ?? key;
+            selector.Initialize((string)obj["value"], options);
+            selector.Show();
         }
 
         private void AddTextInput(string key, int index)
