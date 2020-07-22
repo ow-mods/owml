@@ -32,7 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ConsoleUtils.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="IHarmonyHelper.cs" />
@@ -85,7 +84,6 @@
     <Compile Include="Menus\IModToggleInput.cs" />
     <Compile Include="MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SocketMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">

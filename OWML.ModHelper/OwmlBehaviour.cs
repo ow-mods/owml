@@ -1,5 +1,4 @@
 ﻿using OWML.Common;
-using OWML.ModHelper.Logging;
 using UnityEngine;
 
 namespace OWML.ModHelper

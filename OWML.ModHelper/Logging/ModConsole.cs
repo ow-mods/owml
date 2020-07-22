@@ -1,7 +1,7 @@
 ﻿using System;
 using OWML.Common;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.ModHelper
 {
     public abstract class ModConsole : IModConsole
     {

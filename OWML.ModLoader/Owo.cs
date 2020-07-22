@@ -8,7 +8,6 @@ using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Interaction;
-using OWML.ModHelper.Logging;
 using UnityEngine;
 
 namespace OWML.ModLoader

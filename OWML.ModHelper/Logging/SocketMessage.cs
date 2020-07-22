@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OWML.Common;
 
-namespace OWML.Common
+namespace OWML.ModHelper
 {
     public class SocketMessage
     {

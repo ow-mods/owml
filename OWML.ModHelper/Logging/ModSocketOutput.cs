@@ -8,7 +8,7 @@ using System.Text;
 using Newtonsoft.Json;
 using OWML.Common;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.ModHelper
 {
     public class ModSocketOutput : ModConsole
     {

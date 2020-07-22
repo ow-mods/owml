@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;
-using OWML.ModHelper.Logging;
 using OWML.ModLoader;
 using OWML.Patcher;
 

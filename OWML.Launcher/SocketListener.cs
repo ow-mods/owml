@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OWML.Common;
+using OWML.ModHelper;
 using System;
 using System.Net;
 using System.Net.Sockets;
