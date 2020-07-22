@@ -12,6 +12,6 @@ namespace OWML.Common
         Message,
         Info,
         Success,
-        QuitPhrase
+        Quit
     }
 }

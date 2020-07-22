@@ -21,7 +21,7 @@ namespace OWML.Common
                     return ConsoleColor.Gray;
                 case MessageType.Info:
                     return ConsoleColor.Blue;
-                case MessageType.QuitPhrase:
+                case MessageType.Quit:
                     Environment.Exit(0);
                     break;
             }
