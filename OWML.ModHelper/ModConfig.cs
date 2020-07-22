@@ -118,9 +118,26 @@ namespace OWML.ModHelper
                 {
                     TryUpdate(key, Settings[key], defaultConfig.Settings[key]);
                 }
+                else if (defaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
+                {
+                    UpdateSelector(key, Settings[key], objectValue);
+                }
             }
 
             AddMissingDefaults(defaultConfig);
+        }
+
+        private bool UpdateSelector(string key, object userSetting, JObject modderSetting)
+        {
+            var options = modderSetting["options"].ToObject<List<string>>();
+            var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
+            Settings[key] = modderSetting;
+            if (options.Contains(userString))
+            {
+                SetSettingsValue(key, userString);
+                return true;
+            }
+            return false;
         }
 
         private void AddMissingDefaults(IModConfig defaultConfig)
