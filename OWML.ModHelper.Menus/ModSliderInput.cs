@@ -25,7 +25,8 @@ namespace OWML.ModHelper.Menus
             element.OnValueChanged += OnValueChanged;
         }
 
-        public override float Value {
+        public override float Value
+        {
             get => ToRealNumber(_element.GetValue());
             set => _element.Initialize((int)ToFakeNumber(value));
         }
