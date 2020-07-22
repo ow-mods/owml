@@ -129,7 +129,9 @@ namespace OWML.ModHelper.Logging
                 WriteLine(type, string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
                 return false;
             }
-            else if (objects[0].GetType() == typeof(string) && objects[1].GetType() == typeof(string) && objects[2].GetType() == typeof(MessageType))
+            else if (objects[0].GetType() == typeof(string) 
+                && objects[1].GetType() == typeof(string) 
+                && objects[2].GetType() == typeof(MessageType))
             {
                 var senderName = (string)objects[0];
                 var senderFile = (string)objects[1];
