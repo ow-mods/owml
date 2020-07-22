@@ -47,17 +47,16 @@ namespace OWML.ModHelper.Menus
         private Text GetValueText()
         {
             var slider = _element.GetComponentInChildren<Slider>();
-            if (slider != null)
-            {
-                return slider.GetComponentInChildren<Text>();
-            }
-            return null;
+            return slider?.GetComponentInChildren<Text>();
         }
 
         private void OnValueChanged()
         {
             InvokeOnChange(Value);
-            _valueText.text = Value.ToString();
+            if (_valueText != null)
+            {
+                _valueText.text = Value.ToString();
+            }
         }
 
         private float ToRealNumber(float fakeNumber)
