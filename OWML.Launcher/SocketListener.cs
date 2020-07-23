@@ -11,6 +11,7 @@ namespace OWML.Launcher
 {
     public class SocketListener
     {
+        private const int BufferSize = 1024;
         private static int _port;
 
         public SocketListener(int port)
@@ -43,7 +44,7 @@ namespace OWML.Launcher
             server = new TcpListener(localAddress, _port);
             server.Start();
 
-            var bytes = new byte[1024];
+            var bytes = new byte[BufferSize];
 
             while (true)
             {

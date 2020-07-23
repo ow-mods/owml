@@ -139,7 +139,7 @@ namespace OWML.Launcher
 
             if (args.Contains("-consolePort"))
             {
-                var index = Array.FindIndex(args, x => x == "-consolePort");
+                var index = Array.IndexOf(args, "-consolePort");
                 var list = new List<string>(args);
                 list.RemoveRange(index, 2);
                 args = list.ToArray();

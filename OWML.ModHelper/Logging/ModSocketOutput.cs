@@ -32,14 +32,13 @@ namespace OWML.ModHelper
             WriteLine(type, line, GetCallingMethodName(new StackTrace()));
         }
 
-        [Obsolete]
         public override void WriteLine(string line)
         {
-            var type = TypeFromContents(line);
+            var type = MessageType.Message;
             WriteLine(type, line, GetCallingMethodName(new StackTrace()));
         }
 
-        public override void WriteLine(MessageType type, string line)
+        public override void WriteLine(string line, MessageType type)
         {
             WriteLine(type, line, GetCallingMethodName(new StackTrace()));
         }
