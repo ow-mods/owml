@@ -69,11 +69,11 @@ namespace OWML.LoadCustomAssets
 
         public void TestLogging()
         {
-            ModHelper.Console.WriteLine(MessageType.Error, "Test Error");
-            ModHelper.Console.WriteLine(MessageType.Warning, "Test Warning");
-            ModHelper.Console.WriteLine(MessageType.Message, "Test Message");
-            ModHelper.Console.WriteLine(MessageType.Success, "Test Success");
-            ModHelper.Console.WriteLine(MessageType.Info, "Test Info");
+            ModHelper.Console.WriteLine("Test Error", MessageType.Error);
+            ModHelper.Console.WriteLine("Test Warning", MessageType.Warning);
+            ModHelper.Console.WriteLine("Test Message", MessageType.Message);
+            ModHelper.Console.WriteLine("Test Success", MessageType.Success);
+            ModHelper.Console.WriteLine("Test Info", MessageType.Info);
         }
 
         private void OnMusicLoaded(AudioSource audio)

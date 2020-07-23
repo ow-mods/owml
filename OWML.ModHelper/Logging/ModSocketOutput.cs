@@ -24,7 +24,7 @@ namespace OWML.ModHelper
             }
         }
 
-        [Obsolete]
+        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
         public override void WriteLine(params object[] objects)
         {
             var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
@@ -82,7 +82,7 @@ namespace OWML.ModHelper
 
         private void WriteToSocket(string message)
         {
-            var bytes = Encoding.UTF8.GetBytes(message);
+            var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             _socket?.Send(bytes);
         }
     }
