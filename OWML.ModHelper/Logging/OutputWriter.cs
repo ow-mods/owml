@@ -12,13 +12,12 @@ namespace OWML.ModHelper
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
         }
 
-        [Obsolete]
         public void WriteLine(string line)
         {
-            WriteLine(MessageType.Message, line);
+            WriteLine(line, MessageType.Message);
         }
 
-        public void WriteLine(MessageType type, string line)
+        public void WriteLine(string line, MessageType type)
         {
             if (string.IsNullOrEmpty(line))
             {
