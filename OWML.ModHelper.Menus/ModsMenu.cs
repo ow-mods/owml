@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
@@ -73,19 +74,27 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            var modsTab = options.InputTab.Copy("MODS");
+            var modsTab = options.GraphicsTab.Copy("MODS");
             modsTab.BaseButtons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
+            var firstDisabled = true;
+            _modConfigMenus.Reverse();
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = options.RebindingButton.Copy(modConfigMenu.Manifest.Name);
+                if (modConfigMenu.ModData.Config.Enabled && firstDisabled)
+                {
+                    modsTab.AddSeparator(modButton.Index, modButton.Button.transform.localScale, "DISABLED MODS");
+                    firstDisabled = false;
+                }
                 modButton.Button.enabled = true;
                 InitConfigMenu(modConfigMenu, options);
                 modButton.OnClick += modConfigMenu.Open;
                 modsTab.AddButton(modButton);
             }
+            modsTab.AddSeparator(0, options.RebindingButton.Button.transform.localScale, "ENABLED MODS");
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;

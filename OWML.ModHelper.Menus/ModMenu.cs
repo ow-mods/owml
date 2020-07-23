@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
+using Object = UnityEngine.Object;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,8 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMenu : IModMenu
     {
+        private const int FontSize = 36;
+
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
@@ -25,6 +28,7 @@ namespace OWML.ModHelper.Menus
         public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
         public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
         public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
+        public List<GameObject> Separators { get; private set; }
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -58,6 +62,7 @@ namespace OWML.ModHelper.Menus
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();
+            Separators = new List<GameObject>();
         }
 
         [Obsolete("Use GetTitleButton instead")]
@@ -249,6 +254,25 @@ namespace OWML.ModHelper.Menus
             input.Index = index;
             input.Initialize(this);
             input.Element.transform.localScale = scale;
+        }
+
+        public GameObject AddSeparator(int index, Vector3 scale, string title = "")
+        {
+            (Layout as VerticalLayoutGroup).childControlHeight = true;
+            var separator = new GameObject("Separator");
+            var layoutElement = separator.AddComponent<LayoutElement>();
+            var styleManager = Object.FindObjectOfType<UIStyleManager>();
+            var text = separator.AddComponent<Text>();
+            text.text = title;
+            text.font = styleManager.GetMenuFont();
+            text.color = styleManager.GetForegroundMenuColor(UIElementState.NORMAL);
+            text.fontSize = FontSize;
+            text.alignment = TextAnchor.LowerCenter;
+            separator.transform.SetParent(Layout.transform);
+            separator.transform.SetSiblingIndex(index);
+            separator.transform.localScale = scale;
+            layoutElement.minHeight = 70f;
+            return separator;
         }
 
         public object GetInputValue(string key)

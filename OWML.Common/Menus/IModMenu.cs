@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine;
 
 namespace OWML.Common.Menus
 {
@@ -49,6 +50,9 @@ namespace OWML.Common.Menus
         IModNumberInput GetNumberInput(string title);
         IModNumberInput AddNumberInput(IModNumberInput input);
         IModNumberInput AddNumberInput(IModNumberInput input, int index);
+
+        List<GameObject> Separators { get; }
+        GameObject AddSeparator(int index, Vector3 scale, string title = "");
 
         object GetInputValue(string key);
         void SetInputValue(string key, object value);
