@@ -1,8 +1,14 @@
-﻿namespace OWML.Common
+﻿using System;
+
+namespace OWML.Common
 {
     public interface IModConsole
     {
-        void WriteLine(string s);
-        void WriteLine(params object[] s);
+        [Obsolete]
+        void WriteLine(params object[] objects);
+        [Obsolete]
+        void WriteLine(string line);
+
+        void WriteLine(MessageType type, string line);
     }
 }

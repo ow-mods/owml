@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;
-using OWML.ModHelper.Logging;
 using OWML.ModLoader;
 using OWML.Patcher;
 
@@ -32,23 +31,20 @@ namespace OWML.Launcher
         {
             if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
             {
-                Console.WriteLine("Port found in arguments - writing to config.");
                 var argument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
                 if (!int.TryParse(argument, out var port))
                 {
-                    Console.WriteLine("Error - Bad port.");
+                    ConsoleUtils.WriteByType(MessageType.Error, "Error - Bad port.");
                     return;
                 }
                 owmlConfig.SocketPort = port;
             }
             else
             {
-                Console.WriteLine("Creating port...");
                 TcpListener l = new TcpListener(IPAddress.Loopback, 0);
                 l.Start();
                 int port = ((IPEndPoint)l.LocalEndpoint).Port;
                 l.Stop();
-                Console.WriteLine("Creating listener on port " + port);
                 owmlConfig.SocketPort = port;
                 var socketListener = new SocketListener(port);
             }

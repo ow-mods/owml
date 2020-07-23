@@ -1,4 +1,6 @@
-﻿using OWML.Common;
+﻿using Newtonsoft.Json;
+using OWML.Common;
+using OWML.ModHelper;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -26,9 +28,7 @@ namespace OWML.Launcher
             }
             catch (SocketException ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error in socket listener : " + ex);
-                Console.ForegroundColor = ConsoleColor.Gray;
+                ConsoleUtils.WriteByType(MessageType.Error, $"Error in socket listener: {ex}");
             }
             finally
             {
@@ -38,7 +38,7 @@ namespace OWML.Launcher
 
         private void ListenToSocket(ref TcpListener server)
         {
-            var localAddress = IPAddress.Parse("127.0.0.1");
+            var localAddress = IPAddress.Parse(Constants.LocalAddress);
 
             server = new TcpListener(localAddress, _port);
             server.Start();
@@ -47,13 +47,9 @@ namespace OWML.Launcher
 
             while (true)
             {
-                Console.WriteLine("Waiting for a connection... ");
-
                 var client = server.AcceptTcpClient();
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Console connected to socket!");
-                Console.ForegroundColor = ConsoleColor.Gray;
+                ConsoleUtils.WriteByType(MessageType.Success, "Console connected to socket!");
 
                 var stream = client.GetStream();
 
@@ -70,16 +66,17 @@ namespace OWML.Launcher
 
         private void PrintOutput(byte[] bytes, int count)
         {
-            var data = Encoding.ASCII.GetString(bytes, 0, count);
-            var objects = data.Split(new string[] { ";;" }, StringSplitOptions.None);
+            var json = Encoding.UTF8.GetString(bytes, 0, count);
 
-            if (objects[1] == Constants.QuitKeyPhrase)
+            var data = JsonConvert.DeserializeObject<SocketMessage>(json);
+
+            if (data.Type == MessageType.Quit)
             {
                 Environment.Exit(0);
             }
 
-            Console.WriteLine("[" + objects[0] + "] : " + objects[1]);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            ConsoleUtils.WriteByType(data.Type,
+                $"[{data.SenderName}.{data.SenderType}] : {data.Message}");
         }
     }
 }

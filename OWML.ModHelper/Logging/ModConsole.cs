@@ -1,7 +1,7 @@
 ﻿using System;
 using OWML.Common;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.ModHelper
 {
     public abstract class ModConsole : IModConsole
     {
@@ -14,8 +14,12 @@ namespace OWML.ModHelper.Logging
         protected readonly IModManifest Manifest;
         protected readonly IOwmlConfig OwmlConfig;
 
-        public abstract void WriteLine(string s);
-        public abstract void WriteLine(params object[] s);
+        [Obsolete]
+        public abstract void WriteLine(params object[] objects);
+        [Obsolete]
+        public abstract void WriteLine(string line);
+
+        public abstract void WriteLine(MessageType type, string line);
 
         protected ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
         {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using OWML.Common;
 
-namespace OWML.ModHelper.Logging
+namespace OWML.ModHelper
 {
     public class ModLogger : IModLogger
     {
