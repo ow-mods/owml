@@ -12,6 +12,9 @@ namespace OWML.ModLoader
         public IModManifest Manifest { get; }
         public IModConfig Config { get; private set; }
         public IModConfig DefaultConfig { get; private set; }
+        public bool Enabled => (Config != null && Config.Enabled)
+                 || (Config == null && DefaultConfig != null && DefaultConfig.Enabled)
+                 || (Config == null && DefaultConfig == null);
 
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
@@ -19,10 +22,6 @@ namespace OWML.ModLoader
             Config = config;
             DefaultConfig = defaultConfig;
         }
-
-        public bool Enabled => (Config != null && Config.Enabled)
-                 || (Config == null && DefaultConfig != null && DefaultConfig.Enabled)
-                 || (Config == null && DefaultConfig == null);
 
         internal void FixConfigs()
         {
