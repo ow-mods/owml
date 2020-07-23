@@ -7,20 +7,6 @@ namespace OWML.ModHelper
 {
     public static class ConsoleUtils
     {
-        public static readonly List<String> ErrorList = new List<String> {
-            "error",
-            "exception"
-        };
-
-        public static readonly List<String> WarningList = new List<String> {
-            "warning",
-            "disabled"
-        };
-
-        public static readonly List<String> SuccessList = new List<String> {
-            "success"
-        };
-
         public static void WriteByType(MessageType type, string line)
         {
             switch (type)
@@ -43,23 +29,6 @@ namespace OWML.ModHelper
             }
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;
-        }
-
-        public static MessageType ContentsToType(string line)
-        {
-            if (ErrorList.Contains(line.ToLower()))
-            {
-                return MessageType.Error;
-            }
-            if (WarningList.Contains(line.ToLower()))
-            {
-                return MessageType.Warning;
-            }
-            if (SuccessList.Contains(line.ToLower()))
-            {
-                return MessageType.Success;
-            }
-            return MessageType.Message;
         }
     }
 }
