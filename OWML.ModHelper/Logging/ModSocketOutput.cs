@@ -28,7 +28,7 @@ namespace OWML.ModHelper
         public override void WriteLine(params object[] objects)
         {
             var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
-            var type = TypeFromContents(line);
+            var type = MessageType.Message;
             WriteLine(type, line, GetCallingMethodName(new StackTrace()));
         }
 
@@ -84,28 +84,6 @@ namespace OWML.ModHelper
         {
             var bytes = Encoding.UTF8.GetBytes(message);
             _socket?.Send(bytes);
-        }
-
-        private MessageType TypeFromContents(string line)
-        {
-            if (Contains(line, "error", "exception"))
-            {
-                return MessageType.Error;
-            }
-            if (Contains(line, "warning", "disabled"))
-            {
-                return MessageType.Warning;
-            }
-            if (Contains(line, "success"))
-            {
-                return MessageType.Success;
-            }
-            return MessageType.Message;
-        }
-
-        private bool Contains(string line, params string[] keyWords)
-        {
-            return keyWords.Any(keyWord => line.ToLower().Contains(keyWord));
         }
     }
 }
