@@ -97,7 +97,6 @@ namespace OWML.ModHelper
         public void ResetToDefaults(IModConfig defaultConfig)
         {
             Enabled = defaultConfig.Enabled;
-            RequireVR = defaultConfig.RequireVR;
             Settings = new Dictionary<string, object>(defaultConfig.Settings);
         }
 
