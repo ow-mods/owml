@@ -80,25 +80,32 @@ namespace OWML.ModHelper.Menus
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
             var firstDisabled = true;
-            _modConfigMenus.Reverse();
-            var separator = new ModSeparator(modsTab);
+            /*if (_modConfigMenus.Count > 0 && _modConfigMenus[0].ModData.Config.Enabled)
+            {
+                OwmlConsole.WriteLine("reversed mods order");
+                _modConfigMenus.Reverse();
+            }*/
+            OwmlConsole.WriteLine(String.Join(" ", _modConfigMenus.Select(menu => $"{menu.ModData.Manifest.Name} ({menu.ModData.Config.Enabled});").ToArray()));
+            var separator = new ModSeparator(modsTab)
+            {
+                Title = "ENABLED MODS"
+            };
+            modsTab.AddSeparator(separator, 0);
             separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
+            int index = 1;
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = options.RebindingButton.Copy(modConfigMenu.Manifest.Name);
-                if (modConfigMenu.ModData.Config.Enabled && firstDisabled)
+                if (!modConfigMenu.ModData.Config.Enabled && firstDisabled)
                 {
-                    separator.Title = "DISABLED MODS";
-                    modsTab.AddSeparator(separator.Copy(), modButton.Index);
+                    modsTab.AddSeparator(separator.Copy("DISABLED MODS"), index++);
                     firstDisabled = false;
                 }
                 modButton.Button.enabled = true;
                 InitConfigMenu(modConfigMenu, options);
                 modButton.OnClick += modConfigMenu.Open;
-                modsTab.AddButton(modButton);
+                modsTab.AddButton(modButton, index++);
             }
-            separator.Title = "ENABLED MODS";
-            modsTab.AddSeparator(separator, 0);
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;
