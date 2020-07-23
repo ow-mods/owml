@@ -80,16 +80,7 @@ namespace OWML.ModHelper.Menus
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
             var firstDisabled = true;
-            /*if (_modConfigMenus.Count > 0 && _modConfigMenus[0].ModData.Config.Enabled)
-            {
-                OwmlConsole.WriteLine("reversed mods order");
-                _modConfigMenus.Reverse();
-            }*/
-            OwmlConsole.WriteLine(String.Join(" ", _modConfigMenus.Select(menu => $"{menu.ModData.Manifest.Name} ({menu.ModData.Config.Enabled});").ToArray()));
-            var separator = new ModSeparator(modsTab)
-            {
-                Title = "ENABLED MODS"
-            };
+            var separator = new ModSeparator(modsTab) { Title = "ENABLED MODS" };
             modsTab.AddSeparator(separator, 0);
             separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
             int index = 1;
