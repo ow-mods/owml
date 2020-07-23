@@ -39,7 +39,7 @@ namespace OWML.ModLoader
             storage.Save(Config, Constants.ModConfigFileName);
         }
 
-        internal void MakeConfigConsistentWithDefault()
+        private void MakeConfigConsistentWithDefault()
         {
             if (DefaultConfig == null)
             {
