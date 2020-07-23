@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using Object = UnityEngine.Object;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,8 +12,6 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMenu : IModMenu
     {
-        private const int FontSize = 36;
-
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
@@ -28,7 +25,7 @@ namespace OWML.ModHelper.Menus
         public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
         public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
         public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
-        public List<GameObject> Separators { get; private set; }
+        public List<IModSeparator> Separators { get; private set; }
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -62,7 +59,7 @@ namespace OWML.ModHelper.Menus
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();
-            Separators = new List<GameObject>();
+            Separators = new List<IModSeparator>();
         }
 
         [Obsolete("Use GetTitleButton instead")]
@@ -256,23 +253,26 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.localScale = scale;
         }
 
-        public GameObject AddSeparator(int index, Vector3 scale, string title = "")
+        public IModSeparator AddSeparator(IModSeparator separator)
         {
-            (Layout as VerticalLayoutGroup).childControlHeight = true;
-            var separator = new GameObject("Separator");
-            var layoutElement = separator.AddComponent<LayoutElement>();
-            var styleManager = Object.FindObjectOfType<UIStyleManager>();
-            var text = separator.AddComponent<Text>();
-            text.text = title;
-            text.font = styleManager.GetMenuFont();
-            text.color = styleManager.GetForegroundMenuColor(UIElementState.NORMAL);
-            text.fontSize = FontSize;
-            text.alignment = TextAnchor.LowerCenter;
-            separator.transform.SetParent(Layout.transform);
-            separator.transform.SetSiblingIndex(index);
-            separator.transform.localScale = scale;
-            layoutElement.minHeight = 70f;
+            return AddSeparator(separator, separator.Index);
+        }
+
+        public IModSeparator AddSeparator(IModSeparator separator, int index)
+        {
+            Separators.Add(separator);
+            var transform = separator.Element.transform;
+            var scale = transform.localScale;
+            transform.parent = Layout.transform;
+            separator.Index = index;
+            separator.Initialize(this);
+            transform.localScale = scale;
             return separator;
+        }
+
+        public IModSeparator GetSeparator(string title)
+        {
+            return Separators.FirstOrDefault(x => x.Title == title || x.Element.name == title);
         }
 
         public object GetInputValue(string key)

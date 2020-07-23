@@ -74,19 +74,22 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            var modsTab = options.GraphicsTab.Copy("MODS");
+            var modsTab = options.GameplayTab.Copy("MODS");
             modsTab.BaseButtons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
             var firstDisabled = true;
             _modConfigMenus.Reverse();
+            var separator = new ModSeparator(modsTab);
+            separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
             foreach (var modConfigMenu in _modConfigMenus)
             {
                 var modButton = options.RebindingButton.Copy(modConfigMenu.Manifest.Name);
                 if (modConfigMenu.ModData.Config.Enabled && firstDisabled)
                 {
-                    modsTab.AddSeparator(modButton.Index, modButton.Button.transform.localScale, "DISABLED MODS");
+                    separator.Title = "DISABLED MODS";
+                    modsTab.AddSeparator(separator.Copy(), modButton.Index);
                     firstDisabled = false;
                 }
                 modButton.Button.enabled = true;
@@ -94,7 +97,8 @@ namespace OWML.ModHelper.Menus
                 modButton.OnClick += modConfigMenu.Open;
                 modsTab.AddButton(modButton);
             }
-            modsTab.AddSeparator(0, options.RebindingButton.Button.transform.localScale, "ENABLED MODS");
+            separator.Title = "ENABLED MODS";
+            modsTab.AddSeparator(separator, 0);
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;

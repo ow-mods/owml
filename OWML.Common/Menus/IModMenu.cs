@@ -51,8 +51,10 @@ namespace OWML.Common.Menus
         IModNumberInput AddNumberInput(IModNumberInput input);
         IModNumberInput AddNumberInput(IModNumberInput input, int index);
 
-        List<GameObject> Separators { get; }
-        GameObject AddSeparator(int index, Vector3 scale, string title = "");
+        List<IModSeparator> Separators { get; }
+        IModSeparator AddSeparator(IModSeparator separator);
+        IModSeparator AddSeparator(IModSeparator separator, int index);
+        IModSeparator GetSeparator(string title);
 
         object GetInputValue(string key);
         void SetInputValue(string key, object value);
