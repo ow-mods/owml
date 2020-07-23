@@ -20,6 +20,10 @@ namespace OWML.ModLoader
             DefaultConfig = defaultConfig;
         }
 
+        public bool Enabled => (Config != null && Config.Enabled)
+                 || (Config == null && DefaultConfig != null && DefaultConfig.Enabled)
+                 || (Config == null && DefaultConfig == null);
+
         internal void FixConfigs()
         {
             var storage = new ModStorage(Manifest);
