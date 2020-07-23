@@ -88,7 +88,14 @@ namespace OWML.Launcher
             _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList(IList<IModData> mods)
+        private bool IsEnabled(IModData mod)
+        {
+            return (mod.Config != null && mod.Config.Enabled)
+                 || (mod.Config == null && mod.DefaultConfig != null && mod.DefaultConfig.Enabled)
+                 || (mod.Config == null && mod.DefaultConfig == null);
+        }
+
+        private void ShowModList(List<IModData> mods)
         {
             if (!mods.Any())
             {
@@ -98,7 +105,7 @@ namespace OWML.Launcher
             _writer.WriteLine("Found mods:");
             foreach (var modData in mods)
             {
-                var stateText = modData.Config.Enabled ? "" : "(disabled)";
+                var stateText = IsEnabled(modData) ? "" : "(disabled)";
                 _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
@@ -136,15 +143,15 @@ namespace OWML.Launcher
             }
         }
 
-        private bool HasVrMod(IList<IModData> mods)
+        private bool HasVrMod(List<IModData> mods)
         {
-            var vrMod = mods.FirstOrDefault(x => x.Manifest.RequireVR && x.Config.Enabled);
+            var vrMod = mods.FirstOrDefault(modData => modData.Manifest.RequireVR && IsEnabled(modData));
             var hasVrMod = vrMod != null;
             _writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             return hasVrMod;
         }
 
-        private void PatchGame(IList<IModData> mods)
+        private void PatchGame(List<IModData> mods)
         {
             _owPatcher.PatchGame();
 

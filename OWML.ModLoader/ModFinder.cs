@@ -17,7 +17,7 @@ namespace OWML.ModLoader
             _console = console;
         }
 
-        public IList<IModData> GetMods()
+        public List<IModData> GetMods()
         {
             if (!Directory.Exists(_config.ModsPath))
             {
@@ -48,20 +48,6 @@ namespace OWML.ModLoader
                     || (config == null && defaultConfig != null && defaultConfig.RequireVR);
                 storage.Save(manifest, Constants.ModManifestFileName);
             }
-            if (config == null && defaultConfig == null)
-            {
-                config = new ModConfig();
-                defaultConfig = new ModConfig();
-            }
-            else if (defaultConfig != null && config == null)
-            {
-                config = defaultConfig;
-            }
-            else if (defaultConfig != null)
-            {
-                config.MakeConsistentWithDefaults(defaultConfig);
-            }
-            storage.Save(config, Constants.ModConfigFileName);
             return new ModData(manifest, config, defaultConfig);
         }
     }
