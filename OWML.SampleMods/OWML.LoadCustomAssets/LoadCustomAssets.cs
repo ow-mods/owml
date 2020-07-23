@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using System.Collections.Generic;
+using OWML.Common;
 using OWML.ModHelper;
 using System;
 using UnityEngine;
@@ -7,6 +8,12 @@ namespace OWML.LoadCustomAssets
 {
     public class LoadCustomAssets : ModBehaviour
     {
+        enum ABC
+        {
+            A,
+            B,
+            C
+        }
         private OWRigidbody _duckBody;
         private Transform _playerTransform;
         private OWRigidbody _playerBody;
@@ -15,9 +22,11 @@ namespace OWML.LoadCustomAssets
         private SaveFile _saveFile;
         private GameObject _cube;
 
-        private bool _isStarted;
+        private bool _isInSolarSystem;
         private bool _isDucksEnabled;
         private bool _isCubesEnabled;
+
+        private readonly List<GameObject> _ducks = new List<GameObject>();
 
         private void Start()
         {
@@ -35,8 +44,9 @@ namespace OWML.LoadCustomAssets
             var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
             musicAsset.OnLoaded += OnMusicLoaded;
 
-            ModHelper.Events.Subscribe<PlayerBody>(Events.AfterAwake);
-            ModHelper.Events.OnEvent += OnEvent;
+            ModHelper.Events.Player.OnPlayerAwake += OnPlayerAwake;
+            ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
+            ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
 
             var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
 
@@ -51,6 +61,10 @@ namespace OWML.LoadCustomAssets
             var speed = config.GetSettingsValue<float>("speed");
             var power = config.GetSettingsValue<float>("power");
             var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
+            var selectedEnum = config.GetSettingsValue<ABC>("thing");
+            var selectedString = config.GetSettingsValue<string>("thing");
+            var selectedInt = config.GetSettingsValue<int>("integer thing");
+            ModHelper.Console.WriteLine($"Selected enum = {selectedEnum}, string = {selectedString}");
         }
 
         public void TestLogging()
@@ -83,20 +97,29 @@ namespace OWML.LoadCustomAssets
             duck.SetActive(false);
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Events ev)
+        private void OnPlayerAwake(PlayerBody playerBody)
         {
-            if (behaviour.GetType() == typeof(PlayerBody) && ev == Events.AfterAwake)
+            _playerBody = playerBody;
+            _playerTransform = playerBody.transform;
+        }
+
+        private void OnStartSceneChange(OWScene oldScene, OWScene newScene)
+        {
+            if (oldScene == OWScene.SolarSystem)
             {
-                _playerBody = (PlayerBody)behaviour;
-                _playerTransform = behaviour.transform;
-                _isStarted = true;
-                ToggleMusic(ModHelper.Config.GetSettingsValue<bool>("enableMusic"));
+                _ducks.ForEach(Destroy);
             }
+        }
+
+        private void OnCompleteSceneChange(OWScene oldScene, OWScene newScene)
+        {
+            _isInSolarSystem = newScene == OWScene.SolarSystem;
+            ToggleMusic(ModHelper.Config.GetSettingsValue<bool>("enableMusic"));
         }
 
         private void Update()
         {
-            if (!_isStarted || OWTime.IsPaused())
+            if (!_isInSolarSystem || OWTime.IsPaused())
             {
                 return;
             }
@@ -118,6 +141,8 @@ namespace OWML.LoadCustomAssets
             duckBody.SetPosition(_playerTransform.position + _playerTransform.forward * 2f);
             duckBody.SetRotation(_playerTransform.rotation);
             duckBody.SetVelocity(_playerBody.GetVelocity() + _playerTransform.forward * 10f);
+            _ducks.Add(duckBody.gameObject);
+
             _shootSound.Play();
 
             _saveFile.NumberOfDucks++;
@@ -137,11 +162,11 @@ namespace OWML.LoadCustomAssets
             {
                 return;
             }
-            if (enable && _isStarted)
+            if (enable && _isInSolarSystem)
             {
                 _music.Play();
             }
-            if (!enable)
+            else if (!enable || !_isInSolarSystem)
             {
                 _music.Stop();
             }
