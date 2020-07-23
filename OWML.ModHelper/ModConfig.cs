@@ -12,7 +12,7 @@ namespace OWML.ModHelper
         [JsonProperty("enabled")]
         public bool Enabled { get; set; } = true;
 
-        [JsonProperty("requireVR")]
+        [JsonProperty("requireVR"), Obsolete("Use ModManifest.RequireVR instead")]
         public bool RequireVR { get; set; } = false;
 
         [JsonProperty("settings")]
