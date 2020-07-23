@@ -37,7 +37,7 @@ namespace OWML.ModHelper
         public Dictionary<string, string> AppIds { get; private set; }
 
         [JsonProperty("requireVR")]
-        public bool RequireVR { get; set; }//set is to be made private once transition is over
+        public bool RequireVR { get; set; }
 
         [JsonIgnore]
         public string AssemblyPath => ModFolderPath + Filename;

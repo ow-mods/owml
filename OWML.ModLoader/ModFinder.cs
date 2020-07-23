@@ -42,11 +42,10 @@ namespace OWML.ModLoader
             var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
             var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName);
-            if (!manifest.RequireVR)//assume it wasn't present in manifest but present in config, to be removed
+            if (!manifest.RequireVR)
             {
                 manifest.RequireVR = (config != null && config.RequireVR)
                     || (config == null && defaultConfig != null && defaultConfig.RequireVR);
-                storage.Save(manifest, Constants.ModManifestFileName);
             }
             if (config == null && defaultConfig == null)
             {
