@@ -138,7 +138,7 @@ namespace OWML.Launcher
 
         private bool HasVrMod(List<IModData> mods)
         {
-            var vrMod = mods.FirstOrDefault(modData => modData.Manifest.RequireVR && modData.Enabled);
+            var vrMod = mods.FirstOrDefault(x => x.RequireVR && x.Config.Enabled);
             var hasVrMod = vrMod != null;
             _writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             return hasVrMod;
