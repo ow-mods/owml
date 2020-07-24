@@ -15,9 +15,9 @@ namespace OWML.ModHelper
 
         private static IOwmlConfig _config;
         private readonly IModManifest _manifest;
-        private static DateTime _startTime;
+        private static string _logFileName;
 
-        public ModLogger(IOwmlConfig config, IModManifest manifest, DateTime startTime)
+        public ModLogger(IOwmlConfig config, IModManifest manifest, string logFileName)
         {
             if (manifest.Name == "OWML")
             {
@@ -28,7 +28,7 @@ namespace OWML.ModHelper
                 _config = config;
             }
             _manifest = manifest;
-            _startTime = startTime;
+            _logFileName = logFileName;
         }
 
         public void Log(string s)
@@ -45,7 +45,7 @@ namespace OWML.ModHelper
 
         private static void LogInternal(string message)
         {
-            File.AppendAllText($"{_config.LogFilePath}{_startTime.ToString("dd-MM-yyyy-HH.mm.ss")}.txt", $"{DateTime.Now}: {message}{Environment.NewLine}");
+            File.AppendAllText(_logFileName, $"{DateTime.Now}: {message}{Environment.NewLine}");
         }
     }
 }
