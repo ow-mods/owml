@@ -56,10 +56,6 @@ namespace OWML.ModLoader
                 .Select(mod => mod.Manifest.UniqueName).ToList();
             var sortedMods = sortedPriority.Concat(sortedNormal);
 
-            var enabledMods = sortedMods.Where(mod => mod.Config.Enabled);
-            var disabledMods = sortedMods.Where(mod => !mod.Config.Enabled);
-            sortedMods = enabledMods.Concat(disabledMods);
-
             foreach (var modData in sortedMods)
             {
                 var missingDependencies = modData.Config.Enabled ?
