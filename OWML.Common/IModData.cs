@@ -5,5 +5,6 @@
         IModManifest Manifest { get; }
         IModConfig Config { get; }
         IModConfig DefaultConfig { get; }
+        bool RequireReload { get; }
     }
 }

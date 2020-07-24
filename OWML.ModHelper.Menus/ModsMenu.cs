@@ -59,6 +59,7 @@ namespace OWML.ModHelper.Menus
 
         private void InitCombinationMenu(IModTabbedMenu options)
         {
+            options.OnClose += () => OnDeactivateOptions(options);
             if (_menus.InputCombinationMenu.Menu != null)
             {
                 return;
@@ -107,5 +108,29 @@ namespace OWML.ModHelper.Menus
                 numberInputTemplate, comboInputTemplate, selectorTemplate);
         }
 
+        private void OnDeactivateOptions(IModTabbedMenu options)
+        {
+            if (!options.Menu.IsMenuEnabled())
+            {
+                if (_modConfigMenus.Any(ModMenu => ModMenu.ModData.RequireReload))
+                {
+                    _menus.MessagePopup.ShowMessage("Some changes you made to mod settings\n require game to be reloaded\n to take effect", true, "Close game", "Reload later");
+                    _menus.MessagePopup.OnConfirm += OnPopupConfirm;
+                    _menus.MessagePopup.OnCancel += UnsubscribeFromPopup;
+                }
+            }
+        }
+
+        private void OnPopupConfirm()
+        {
+            UnsubscribeFromPopup();
+            Application.Quit();
+        }
+
+        private void UnsubscribeFromPopup()
+        {
+            _menus.MessagePopup.OnConfirm -= OnPopupConfirm;
+            _menus.MessagePopup.OnCancel -= UnsubscribeFromPopup;
+        }
     }
 }
