@@ -37,7 +37,7 @@ namespace OWML.Launcher
         public void Run(string[] args)
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
-            _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
+            _writer.WriteLine("For detailed log, see Logs/OWML.Log.(Time).txt");
 
             LocateGamePath();
 
