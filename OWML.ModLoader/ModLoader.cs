@@ -30,7 +30,8 @@ namespace OWML.ModLoader
             var logger = new ModLogger(owmlConfig, owmlManifest, startTime);
             logger.Log("Got config!");
             var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest);
-            console.WriteLine($"Mod loader has been initialized at {startTime}");
+            console.WriteLine($"Mod loader has been initialized.");
+            console.WriteLine($"For detailed log, see Logs/OWML.Log.{startTime.ToString("dd-MM-yyyy-HH.mm.ss")}.txt");
             var modSorter = new ModSorter(console);
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
