@@ -7,7 +7,7 @@ namespace OWML.ModHelper.Menus
     public class ModSeparator : IModSeparator
     {
         private const int FontSize = 36;
-        private const float minimalHeight = 70f;
+        private const float MinimalHeight = 70f;
 
         public MonoBehaviour Element { get; }
         public LayoutElement LayoutElement { get; }
@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus
             _text.color = styleManager.GetForegroundMenuColor(UIElementState.NORMAL);
             _text.fontSize = FontSize;
             _text.alignment = TextAnchor.LowerCenter;
-            LayoutElement.minHeight = minimalHeight;
+            LayoutElement.minHeight = MinimalHeight;
         }
 
         public virtual void Initialize(IModMenu menu)

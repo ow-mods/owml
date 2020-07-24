@@ -79,27 +79,36 @@ namespace OWML.ModHelper.Menus
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
-            var firstDisabled = true;
-            var separator = new ModSeparator(modsTab) { Title = "ENABLED MODS" };
-            modsTab.AddSeparator(separator, 0);
-            separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
-            int index = 1;
-            foreach (var modConfigMenu in _modConfigMenus)
-            {
-                var modButton = options.RebindingButton.Copy(modConfigMenu.Manifest.Name);
-                if (!modConfigMenu.ModData.Config.Enabled && firstDisabled)
-                {
-                    modsTab.AddSeparator(separator.Copy("DISABLED MODS"), index++);
-                    firstDisabled = false;
-                }
-                modButton.Button.enabled = true;
-                InitConfigMenu(modConfigMenu, options);
-                modButton.OnClick += modConfigMenu.Open;
-                modsTab.AddButton(modButton, index++);
-            }
+
+            var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
+            var index = CreateBlockOfButtons(options, modsTab, enabledMods, 0, "ENABLED MODS");
+            var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
+            CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
+
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;
+        }
+
+        private int CreateBlockOfButtons(IModTabbedMenu options, IModTabMenu menu,
+            List<IModConfigMenu> configMenus, int index, string title)
+        {
+            if (configMenus.Count <= 0)
+            {
+                return index;
+            }
+            var separator = new ModSeparator(menu) { Title = title };
+            menu.AddSeparator(separator, index++);
+            separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
+            foreach (var modConfigMenu in configMenus)
+            {
+                var modButton = options.RebindingButton.Copy(modConfigMenu.Manifest.Name);
+                modButton.Button.enabled = true;
+                InitConfigMenu(modConfigMenu, options);
+                modButton.OnClick += modConfigMenu.Open;
+                menu.AddButton(modButton, index++);
+            }
+            return index;
         }
 
         private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options)
