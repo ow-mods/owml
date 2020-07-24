@@ -42,11 +42,6 @@ namespace OWML.ModLoader
             var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
             var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName);
-            if (!manifest.RequireVR)
-            {
-                manifest.RequireVR = (config != null && config.RequireVR)
-                    || (config == null && defaultConfig != null && defaultConfig.RequireVR);
-            }
             if (config == null && defaultConfig == null)
             {
                 config = new ModConfig();

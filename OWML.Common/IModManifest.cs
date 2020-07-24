@@ -15,6 +15,6 @@ namespace OWML.Common
         Dictionary<string, string> AppIds { get; }
         string[] Dependencies { get; }
         bool PriorityLoad { get; }
-        bool RequireVR { get; set; }
+        bool RequireVR { get; }
     }
 }
