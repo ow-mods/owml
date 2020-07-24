@@ -27,7 +27,7 @@ namespace OWML.ModLoader
                 // Everything is wrong and can't write to console...
                 return;
             }
-            var logFileName = $"{owmlConfig.OWMLPath}Logs/OWML/Log.{startTime}.txt";
+            var logFileName = $"{owmlConfig.OWMLPath}Logs/OWML.Log.{startTime}.txt";
             var logger = new ModLogger(owmlConfig, owmlManifest, logFileName);
             logger.Log("Got config!");
             var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest);
