@@ -116,9 +116,15 @@ namespace OWML.ModHelper.Menus
                 {
                     _menus.MessagePopup.ShowMessage("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
                     _menus.MessagePopup.OnConfirm += OnPopupConfirm;
-                    _menus.MessagePopup.OnCancel += UnsubscribeFromPopup;
+                    _menus.MessagePopup.OnCancel += OnPopupCancel;
                 }
             }
+        }
+
+        private void OnPopupCancel()
+        {
+            UnsubscribeFromPopup();
+            _modConfigMenus.ForEach(modMenu => modMenu.ModData.UpdateSnapshot());
         }
 
         private void OnPopupConfirm()
@@ -130,7 +136,7 @@ namespace OWML.ModHelper.Menus
         private void UnsubscribeFromPopup()
         {
             _menus.MessagePopup.OnConfirm -= OnPopupConfirm;
-            _menus.MessagePopup.OnCancel -= UnsubscribeFromPopup;
+            _menus.MessagePopup.OnCancel -= OnPopupCancel;
         }
     }
 }

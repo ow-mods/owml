@@ -20,5 +20,9 @@ namespace OWML.ModLoader
             DefaultConfig = defaultConfig;
         }
 
+        public void UpdateSnapshot()
+        {
+            _configSnapshot.Enabled = Config.Enabled;
+        }
     }
 }
