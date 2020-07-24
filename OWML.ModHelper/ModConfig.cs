@@ -93,11 +93,5 @@ namespace OWML.ModHelper
         {
             return GetSettingsValue<T>(key);
         }
-
-        public void ResetToDefaults(IModConfig defaultConfig)
-        {
-            Enabled = defaultConfig.Enabled;
-            Settings = new Dictionary<string, object>(defaultConfig.Settings);
-        }
     }
 }

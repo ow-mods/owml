@@ -47,7 +47,7 @@ namespace OWML.ModLoader
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var mods = _modFinder.GetMods();
-            mods.ForEach(mod => (mod as ModData).FixConfigs());
+            mods.ForEach(mod => mod.FixConfigs());
 
             var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
             var sortedNormal = _sorter.SortMods(normalMods);

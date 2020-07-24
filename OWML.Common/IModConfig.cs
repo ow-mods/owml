@@ -15,7 +15,5 @@ namespace OWML.Common
 
         [Obsolete("Use GetSettingsValue instead")]
         T GetSetting<T>(string key);
-
-        void ResetToDefaults(IModConfig defaultConfig);
     }
 }

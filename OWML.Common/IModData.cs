@@ -6,5 +6,8 @@
         IModConfig Config { get; }
         IModConfig DefaultConfig { get; }
         bool Enabled { get; }
+
+        void ResetConfigToDefaults();
+        void FixConfigs();
     }
 }

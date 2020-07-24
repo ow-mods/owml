@@ -23,7 +23,13 @@ namespace OWML.ModLoader
             DefaultConfig = defaultConfig;
         }
 
-        internal void FixConfigs()
+        public void ResetConfigToDefaults()
+        {
+            Config.Enabled = DefaultConfig.Enabled;
+            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
+        }
+
+        public void FixConfigs()
         {
             var storage = new ModStorage(Manifest);
             if (Config == null && DefaultConfig == null)
