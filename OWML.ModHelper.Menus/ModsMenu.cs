@@ -114,7 +114,7 @@ namespace OWML.ModHelper.Menus
             {
                 if (_modConfigMenus.Any(ModMenu => ModMenu.ModData.RequireReload))
                 {
-                    _menus.MessagePopup.ShowMessage("Some changes you made to mod settings\n require game to be reloaded\n to take effect", true, "Close game", "Reload later");
+                    _menus.MessagePopup.ShowMessage("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
                     _menus.MessagePopup.OnConfirm += OnPopupConfirm;
                     _menus.MessagePopup.OnCancel += UnsubscribeFromPopup;
                 }
