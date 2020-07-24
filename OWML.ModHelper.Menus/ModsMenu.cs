@@ -73,7 +73,6 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            options.OnClose += () => OnDeactivateOptions(options);
             var modsTab = options.InputTab.Copy("MODS");
             modsTab.BaseButtons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
@@ -90,14 +89,6 @@ namespace OWML.ModHelper.Menus
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;
-        }
-
-        protected void OnDeactivateOptions(IModTabbedMenu options)
-        {
-            if (!options.Menu.IsMenuEnabled())
-            {
-                OwmlConsole.WriteLine("MODS MENU CLOSED");
-            }
         }
 
         private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options)
