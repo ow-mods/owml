@@ -9,7 +9,6 @@
         string OWMLPath { get; set; }
         string ModsPath { get; }
         string OutputFilePath { get; }
-        string LogFilePath { get; }
         bool Verbose { get; set; }
         bool BlockInput { get; set; }
     }
