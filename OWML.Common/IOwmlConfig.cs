@@ -8,8 +8,8 @@
         string DataPath { get; }
         string OWMLPath { get; set; }
         string ModsPath { get; }
-        string OutputFilePath { get; }
         bool Verbose { get; set; }
         bool BlockInput { get; set; }
+        int SocketPort { get; set; }
     }
 }

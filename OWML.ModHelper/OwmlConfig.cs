@@ -27,9 +27,9 @@ namespace OWML.ModHelper
         public string OWMLPath { get; set; }
 
         [JsonIgnore]
-        public string OutputFilePath => $"{OWMLPath}Logs/OWML.Output.txt";
-
-        [JsonIgnore]
         public string ModsPath => $"{OWMLPath}Mods";
+
+        [JsonProperty("socketPort")]
+        public int SocketPort { get; set; }
     }
 }

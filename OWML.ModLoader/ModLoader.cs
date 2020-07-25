@@ -30,7 +30,7 @@ namespace OWML.ModLoader
             var logFileName = $"{owmlConfig.OWMLPath}Logs/OWML.Log.{startTime}.txt";
             var logger = new ModLogger(owmlConfig, owmlManifest, logFileName);
             logger.Log("Got config!");
-            var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest);
+            var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest, true);
             console.WriteLine("Mod loader has been initialized.");
             console.WriteLine($"For detailed log, see Logs/OWML.Log.{startTime}.txt");
             var modSorter = new ModSorter(console);
@@ -42,6 +42,5 @@ namespace OWML.ModLoader
             var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter, logFileName);
             owo.LoadMods();
         }
-
     }
 }
