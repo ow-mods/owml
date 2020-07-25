@@ -5,9 +5,6 @@ namespace OWML.ModHelper
 {
     public abstract class ModConsole : IModConsole
     {
-        [Obsolete("Use ModHelper.Console instead")]
-        public static ModConsole Instance { get; private set; }
-
         public static event Action<IModManifest, string> OnConsole;
 
         protected readonly IModLogger Logger;
@@ -25,11 +22,6 @@ namespace OWML.ModHelper
             Logger = logger;
             Manifest = manifest;
             OwmlConfig = config;
-
-            if (manifest.Name == "OWML")
-            {
-                Instance = this;
-            }
         }
 
         internal static void CallWriteCallback(IModManifest manifest, string text)

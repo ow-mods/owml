@@ -7,22 +7,14 @@ namespace OWML.ModHelper
 {
     public class ModLogger : IModLogger
     {
-        [Obsolete("Use ModHelper.Logger instead")]
-        public static ModLogger Instance { get; private set; }
-
         public static event Action<IModManifest, string> OnLog;
-
-
+        
         private static IOwmlConfig _config;
         private readonly IModManifest _manifest;
         private static string _logFileName;
 
         public ModLogger(IOwmlConfig config, IModManifest manifest, string logFileName)
         {
-            if (manifest.Name == "OWML")
-            {
-                Instance = this;
-            }
             if (_config == null)
             {
                 _config = config;
