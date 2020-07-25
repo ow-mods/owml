@@ -26,13 +26,13 @@ namespace OWML.ModLoader
         {
             Manifest = manifest;
             Config = config;
-            _configSnapshot = new ModConfig() { Enabled = config.Enabled };
             DefaultConfig = defaultConfig;
+            _configSnapshot = new ModConfig() { Enabled = Enabled };
         }
 
         public void UpdateSnapshot()
         {
-            _configSnapshot.Enabled = Config.Enabled;
+            _configSnapshot.Enabled = Enabled;
         }
 
         public void ResetConfigToDefaults()
@@ -58,6 +58,7 @@ namespace OWML.ModLoader
                 MakeConfigConsistentWithDefault();
             }
             storage.Save(Config, Constants.ModConfigFileName);
+            UpdateSnapshot();
         }
 
         private void MakeConfigConsistentWithDefault()
