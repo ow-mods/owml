@@ -3,6 +3,7 @@ using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
@@ -10,6 +11,7 @@ namespace OWML.ModHelper.Menus
     {
         public event Action OnConfirm;
         public event Action OnCancel;
+        public bool IsOpen { get; private set; }
 
         private PopupMenu _twoButtonPopup;
 
@@ -29,13 +31,24 @@ namespace OWML.ModHelper.Menus
             Menu = _twoButtonPopup;
         }
 
+        public IModMessagePopup Copy()
+        {
+            var newPopupObject = Object.Instantiate(_twoButtonPopup.gameObject);
+            newPopupObject.transform.SetParent(_twoButtonPopup.transform.parent);
+            newPopupObject.transform.localScale = _twoButtonPopup.transform.localScale;
+            var newPopup = new ModMessagePopup(OwmlConsole);
+            newPopup.Initialize(newPopupObject.GetComponent<PopupMenu>());
+            return newPopup;
+        }
+
         public void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
         {
-            if (_twoButtonPopup == null)
+            if (_twoButtonPopup == null || IsOpen)
             {
                 Console.WriteLine("Failed to create popup for a following message:");
                 Console.WriteLine(message);
             }
+            IsOpen = true;
             _twoButtonPopup.OnPopupConfirm += OnPopupConfirm;
             _twoButtonPopup.OnPopupCancel += OnPopupCancel;
             _twoButtonPopup.EnableMenu(true);
@@ -60,6 +73,7 @@ namespace OWML.ModHelper.Menus
         {
             _twoButtonPopup.OnPopupConfirm -= OnPopupConfirm;
             _twoButtonPopup.OnPopupCancel -= OnPopupCancel;
+            IsOpen = false;
         }
     }
 }
