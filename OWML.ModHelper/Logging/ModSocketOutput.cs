@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -14,7 +13,6 @@ namespace OWML.ModHelper
     {
         private readonly int _port;
         private static Socket _socket;
-        private static IModLogger _logger;
 
         public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
@@ -22,7 +20,6 @@ namespace OWML.ModHelper
             {
                 _port = config.SocketPort;
                 ConnectToSocket();
-                _logger = logger;
             }
         }
 
@@ -36,8 +33,7 @@ namespace OWML.ModHelper
 
         public override void WriteLine(string line)
         {
-            var type = MessageType.Message;
-            WriteLine(type, line, GetCallingType(new StackTrace()));
+            WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
         }
 
         public override void WriteLine(string line, MessageType type)

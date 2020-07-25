@@ -7,10 +7,13 @@ namespace OWML.ModHelper
     {
         [JsonProperty("senderName")]
         public string SenderName;
+
         [JsonProperty("senderType")]
         public string SenderType;
+
         [JsonProperty("type")]
         public MessageType Type;
+
         [JsonProperty("message")]
         public string Message;
     }
