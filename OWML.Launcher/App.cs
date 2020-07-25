@@ -37,7 +37,6 @@ namespace OWML.Launcher
         public void Run(string[] args)
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
-            _writer.WriteLine("For detailed log, see Logs/OWML.Log.txt");
 
             LocateGamePath();
 
@@ -138,7 +137,7 @@ namespace OWML.Launcher
 
         private bool HasVrMod(IList<IModData> mods)
         {
-            var vrMod = mods.FirstOrDefault(x => x.Config.RequireVR && x.Config.Enabled);
+            var vrMod = mods.FirstOrDefault(x => x.RequireVR && x.Config.Enabled);
             var hasVrMod = vrMod != null;
             _writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
             return hasVrMod;

@@ -12,7 +12,7 @@ namespace OWML.ModHelper
         [JsonProperty("enabled")]
         public bool Enabled { get; set; } = true;
 
-        [JsonProperty("requireVR")]
+        [JsonProperty("requireVR"), Obsolete("Use ModManifest.RequireVR instead")]
         public bool RequireVR { get; set; } = false;
 
         [JsonProperty("settings")]
@@ -97,7 +97,6 @@ namespace OWML.ModHelper
         public void ResetToDefaults(IModConfig defaultConfig)
         {
             Enabled = defaultConfig.Enabled;
-            RequireVR = defaultConfig.RequireVR;
             Settings = new Dictionary<string, object>(defaultConfig.Settings);
         }
 

@@ -9,6 +9,9 @@ namespace OWML.ModLoader
         public IModConfig Config { get; }
         public IModConfig DefaultConfig { get; }
         public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
+        public bool RequireVR => Manifest.RequireVR
+            || (Config != null && Config.RequireVR)
+            || (Config == null && DefaultConfig != null && DefaultConfig.RequireVR);
 
         private IModConfig _configSnapshot;
 
