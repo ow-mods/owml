@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModMessagePopup : ModMenu, IModMessagePopup
+    public class ModMessagePopup : ModTemporaryPopup, IModMessagePopup
     {
         public event Action OnConfirm;
         public event Action OnCancel;
@@ -17,7 +17,7 @@ namespace OWML.ModHelper.Menus
 
         public ModMessagePopup(IModConsole console) : base(console) { }
 
-        public void Initialize(PopupMenu popup)
+        internal void Initialize(PopupMenu popup)
         {
             if (Menu != null)
             {
@@ -31,17 +31,26 @@ namespace OWML.ModHelper.Menus
             Menu = _twoButtonPopup;
         }
 
-        public IModMessagePopup Copy()
+        internal override void DestroySelf()
+        {
+            Object.Destroy(_twoButtonPopup);
+            OnConfirm = null;
+            OnCancel = null;
+            _twoButtonPopup = null;
+        }
+
+        internal ModMessagePopup Copy()
         {
             var newPopupObject = Object.Instantiate(_twoButtonPopup.gameObject);
             newPopupObject.transform.SetParent(_twoButtonPopup.transform.parent);
             newPopupObject.transform.localScale = _twoButtonPopup.transform.localScale;
+            newPopupObject.transform.localPosition = _twoButtonPopup.transform.localPosition;
             var newPopup = new ModMessagePopup(OwmlConsole);
             newPopup.Initialize(newPopupObject.GetComponent<PopupMenu>());
             return newPopup;
         }
 
-        public void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
+        internal void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
         {
             if (_twoButtonPopup == null || IsOpen)
             {

@@ -29,10 +29,10 @@ namespace OWML.ModHelper.Menus
             InputLibrary.menuConfirm
         };
 
-        private static IModInputCombinationElementMenu _popupMenu;
+        private static IModPopupManager _popupManager;
 
         public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu,
-            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") :
+            IModPopupManager popupManager, IModInputHandler inputHandler, string combination = "") :
             base(toggle, menu)
         {
             _inputHandler = inputHandler;
@@ -61,7 +61,7 @@ namespace OWML.ModHelper.Menus
             var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(toggle.gameObject);
             Layout = new ModLayoutManager(layoutGroup, styleManager, styleApplier, scale, constantGraphics);
             UpdateContents();
-            _popupMenu = popupMenu;
+            _popupManager = popupManager;
         }
 
         private void SetupButtons()
@@ -125,22 +125,14 @@ namespace OWML.ModHelper.Menus
         private void OnEditClick()
         {
             EventSystem.current.SetSelectedGameObject(Toggle.gameObject); // make sure it gets selected after popup closes
-
-            _popupMenu.OnConfirm += OnPopupMenuConfirm;
-            _popupMenu.OnCancel += OnPopupMenuCancel;
             var name = Menu is IModInputCombinationMenu menu ? menu.Title : "";
-            _popupMenu.Open(_combination, name, Menu as IModInputCombinationMenu, this);
-        }
 
-        private void OnPopupMenuCancel()
-        {
-            _popupMenu.OnConfirm -= OnPopupMenuConfirm;
-            _popupMenu.OnCancel -= OnPopupMenuCancel;
+            var popup = _popupManager.CreateCombinationInput(_combination, name, Menu as IModInputCombinationMenu, this);
+            popup.OnConfirm += OnPopupMenuConfirm;
         }
 
         private void OnPopupMenuConfirm(string combination)
         {
-            OnPopupMenuCancel();
             _combination = combination;
             UpdateContents();
         }
@@ -186,7 +178,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(Toggle);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, combination);
+            return new ModInputCombinationElement(copy, Menu, _popupManager, _inputHandler, combination);
         }
     }
 }

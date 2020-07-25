@@ -8,28 +8,20 @@ namespace OWML.ModHelper.Menus
     {
         private float _value;
 
-        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu, inputMenu)
+        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager) : base(element, menu, popupManager)
         {
         }
 
         protected override void Open()
         {
             base.Open();
-            InputMenu.OnConfirm += OnConfirm;
-            InputMenu.OnCancel += OnCancel;
-            InputMenu.Open(InputType.Number, Value.ToString());
+            var popup = PopupManager.CreateInput(InputType.Number, Value.ToString());
+            popup.OnConfirm += OnConfirm;
         }
 
         private void OnConfirm(string text)
         {
-            OnCancel();
             Value = Convert.ToSingle(text);
-        }
-
-        private void OnCancel()
-        {
-            InputMenu.OnConfirm -= OnConfirm;
-            InputMenu.OnCancel -= OnCancel;
         }
 
         public override float Value
@@ -47,7 +39,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(ToggleElement);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModNumberInput(copy, Menu, InputMenu);
+            return new ModNumberInput(copy, Menu, PopupManager);
         }
 
         public IModNumberInput Copy(string title)

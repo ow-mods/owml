@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModInputMenu : ModMenu, IModInputMenu
+    public class ModInputMenu : ModTemporaryPopup, IModInputMenu
     {
         public event Action<string> OnConfirm;
         public event Action OnCancel;
@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Menus
 
         public ModInputMenu(IModConsole console) : base(console) { }
 
-        public void Initialize(PopupInputMenu menu)
+        internal void Initialize(PopupInputMenu menu)
         {
             if (Menu != null)
             {
@@ -30,7 +30,7 @@ namespace OWML.ModHelper.Menus
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open(InputType inputType, string value)
+        internal void Open(InputType inputType, string value)
         {
             _inputMenu.OnPopupConfirm += OnPopupConfirm;
             _inputMenu.OnPopupCancel += OnPopupCancel;
@@ -51,6 +51,25 @@ namespace OWML.ModHelper.Menus
             _inputMenu.SetInputFieldPlaceholderText("");
             _inputMenu.GetInputField().text = value;
             _inputMenu.GetValue<Text>("_labelText").text = message;
+        }
+
+        internal ModInputMenu Copy()
+        {
+            var newPopupObject = Object.Instantiate(_inputMenu.gameObject);
+            newPopupObject.transform.SetParent(_inputMenu.transform.parent);
+            newPopupObject.transform.localScale = _inputMenu.transform.localScale;
+            newPopupObject.transform.localPosition = _inputMenu.transform.localPosition;
+            var newPopup = new ModInputMenu(OwmlConsole);
+            newPopup.Initialize(newPopupObject.GetComponent<PopupInputMenu>());
+            return newPopup;
+        }
+
+        internal override void DestroySelf()
+        {
+            Object.Destroy(_inputMenu);
+            OnConfirm = null;
+            OnCancel = null;
+            _inputMenu = null;
         }
 
         private bool OnValidateNumber()

@@ -11,10 +11,8 @@ namespace OWML.ModHelper.Menus
         public IModPauseMenu PauseMenu { get; }
         public IModsMenu ModsMenu { get; }
         public IModConfigMenuBase OwmlMenu { get; }
-        public IModInputMenu InputMenu { get; }
-        public IModInputCombinationElementMenu InputCombinationElementMenu { get; }
         public IModInputCombinationMenu InputCombinationMenu { get; }
-        public IModMessagePopup MessagePopup { get; }
+        public IModPopupManager PopupManager { get; }
 
         public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler,
             IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
@@ -23,9 +21,7 @@ namespace OWML.ModHelper.Menus
             PauseMenu = new ModPauseMenu(console);
             ModsMenu = new ModsMenu(console, this, inputHandler);
             OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
-            InputMenu = new ModInputMenu(console);
-            InputCombinationElementMenu = new ModInputCombinationElementMenu(console, inputHandler);
-            MessagePopup = InputCombinationElementMenu.MessagePopup;
+            PopupManager = new ModPopupManager(console, inputHandler);
             InputCombinationMenu = new ModInputCombinationMenu(console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
@@ -51,8 +47,7 @@ namespace OWML.ModHelper.Menus
                 var inputMenu = titleScreenManager
                     .GetComponent<ProfileMenuManager>()
                     .GetValue<PopupInputMenu>("_createProfileConfirmPopup");
-                InputMenu.Initialize(inputMenu);
-                InputCombinationElementMenu.Initialize(inputMenu);
+                PopupManager.Initialize(inputMenu.transform.parent.gameObject);
                 ModsMenu.Initialize(MainMenu);
             }
         }
