@@ -7,8 +7,6 @@ namespace OWML.ModHelper
 {
     public class ModLogger : IModLogger
     {
-        public static event Action<IModManifest, string> OnLog;
-        
         private static IOwmlConfig _config;
         private readonly IModManifest _manifest;
         private static string _logFileName;
@@ -25,7 +23,6 @@ namespace OWML.ModHelper
 
         public void Log(string s)
         {
-            OnLog?.Invoke(_manifest, s);
             var message = $"[{_manifest.Name}]: {s}";
             LogInternal(message);
         }

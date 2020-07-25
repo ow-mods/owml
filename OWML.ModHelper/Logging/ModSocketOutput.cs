@@ -44,7 +44,6 @@ namespace OWML.ModHelper
         private void WriteLine(MessageType type, string line, string senderType)
         {
             Logger?.Log(line);
-            CallWriteCallback(Manifest, line);
 
             var message = new SocketMessage
             {
