@@ -28,7 +28,10 @@ namespace OWML.ModHelper.Menus
         public override float Value
         {
             get => ToRealNumber(_element.GetValue());
-            set => _element.Initialize((int)ToFakeNumber(value));
+            set {
+                _element.Initialize((int)ToFakeNumber(value));
+                UpdateValueText();
+            }
         }
 
         public IModSliderInput Copy()
