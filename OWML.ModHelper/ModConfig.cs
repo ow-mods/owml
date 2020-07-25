@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
@@ -13,7 +12,7 @@ namespace OWML.ModHelper
         public bool Enabled { get; set; } = true;
 
         [JsonProperty("requireVR"), Obsolete("Use ModManifest.RequireVR instead")]
-        public bool RequireVR { get; set; } = false;
+        public bool RequireVR { get; set; }
 
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
