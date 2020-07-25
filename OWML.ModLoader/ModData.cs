@@ -19,7 +19,7 @@ namespace OWML.ModLoader
             || (Config != null && Config.RequireVR)
             || (Config == null && DefaultConfig != null && DefaultConfig.RequireVR);
 
-    public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
+        public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
             Manifest = manifest;
             Config = config;
