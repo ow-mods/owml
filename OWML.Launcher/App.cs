@@ -16,19 +16,17 @@ namespace OWML.Launcher
         private readonly IModManifest _owmlManifest;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
-        private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
 
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
+            PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
             _writer = writer;
             _modFinder = modFinder;
-            _listener = listener;
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
@@ -44,12 +42,6 @@ namespace OWML.Launcher
 
             CreateLogsDirectory();
 
-            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
-            if (!hasPortArgument)
-            {
-                ListenForOutput();
-            }
-
             var mods = _modFinder.GetMods();
 
             ShowModList(mods);
@@ -58,6 +50,7 @@ namespace OWML.Launcher
 
             StartGame(args);
 
+            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
             if (hasPortArgument)
             {
                 ExitConsole();
@@ -116,25 +109,6 @@ namespace OWML.Launcher
                    owmlVersionSplit[1] == modVersionSplit[1];
         }
 
-        private void ListenForOutput()
-        {
-            _listener.OnOutput += OnOutput;
-            _listener.Start();
-        }
-
-        private void OnOutput(string s)
-        {
-            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                _writer.WriteLine(line);
-                if (line.EndsWith(Constants.QuitKeyPhrase))
-                {
-                    ExitConsole();
-                }
-            }
-        }
-
         private bool HasVrMod(List<IModData> mods)
         {
             var vrMod = mods.FirstOrDefault(x => x.RequireVR && x.Config.Enabled);
@@ -161,6 +135,15 @@ namespace OWML.Launcher
         private void StartGame(string[] args)
         {
             _writer.WriteLine("Starting game...");
+
+            if (args.Contains("-consolePort"))
+            {
+                var index = Array.IndexOf(args, "-consolePort");
+                var list = new List<string>(args);
+                list.RemoveRange(index, 2);
+                args = list.ToArray();
+            }
+
             try
             {
                 Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));

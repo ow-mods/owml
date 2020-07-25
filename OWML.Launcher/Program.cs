@@ -12,17 +12,36 @@ namespace OWML.Launcher
         static void Main(string[] args)
         {
             var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
+            SaveConsolePort(owmlConfig);
             SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
-            var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest);
+            var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest,
+                CommandLineArguments.HasArgument(Constants.ConsolePortArgument));
             var modFinder = new ModFinder(owmlConfig, writer);
-            var outputListener = new OutputListener(owmlConfig);
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
             var vrPatcher = new VRPatcher(owmlConfig, writer);
             var app = new App(owmlConfig, owmlManifest, writer, modFinder,
-                outputListener, pathFinder, owPatcher, vrPatcher);
+                pathFinder, owPatcher, vrPatcher);
             app.Run(args);
+        }
+
+        private static void SaveConsolePort(IOwmlConfig owmlConfig)
+        {
+            if (CommandLineArguments.HasArgument(Constants.ConsolePortArgument))
+            {
+                var argument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
+                if (!int.TryParse(argument, out var port))
+                {
+                    ConsoleUtils.WriteByType(MessageType.Error, "Error - Bad port.");
+                    return;
+                }
+                owmlConfig.SocketPort = port;
+            }
+            else
+            {
+                new SocketListener(owmlConfig).Init();
+            }
         }
 
         private static IOwmlConfig GetOwmlConfig()
