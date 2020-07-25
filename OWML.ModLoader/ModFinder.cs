@@ -17,7 +17,7 @@ namespace OWML.ModLoader
             _console = console;
         }
 
-        public IList<IModData> GetMods()
+        public List<IModData> GetMods()
         {
             if (!Directory.Exists(_config.ModsPath))
             {
@@ -42,20 +42,6 @@ namespace OWML.ModLoader
             var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
             var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName);
-            if (config == null && defaultConfig == null)
-            {
-                config = new ModConfig();
-                defaultConfig = new ModConfig();
-            }
-            else if (defaultConfig != null && config == null)
-            {
-                config = defaultConfig;
-            }
-            else if (defaultConfig != null)
-            {
-                config.MakeConsistentWithDefaults(defaultConfig);
-            }
-            storage.Save(config, Constants.ModConfigFileName);
             return new ModData(manifest, config, defaultConfig);
         }
     }
