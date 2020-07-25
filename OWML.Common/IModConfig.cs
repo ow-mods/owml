@@ -6,6 +6,7 @@ namespace OWML.Common
     public interface IModConfig
     {
         bool Enabled { get; set; }
+        [Obsolete("Use ModManifest.RequireVR instead")]
         bool RequireVR { get; set; }
         Dictionary<string, object> Settings { get; set; }
 
@@ -14,8 +15,5 @@ namespace OWML.Common
 
         [Obsolete("Use GetSettingsValue instead")]
         T GetSetting<T>(string key);
-
-        void MakeConsistentWithDefaults(IModConfig defaultConfig);
-        void ResetToDefaults(IModConfig defaultConfig);
     }
 }

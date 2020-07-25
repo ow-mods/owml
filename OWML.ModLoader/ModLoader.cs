@@ -4,6 +4,7 @@ using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
 using OWML.ModHelper.Input;
 using UnityEngine;
+using System;
 
 namespace OWML.ModLoader
 {
@@ -15,6 +16,7 @@ namespace OWML.ModLoader
 
         public static void LoadMods()
         {
+            var startTime = DateTime.Now.ToString("dd-MM-yyyy-HH.mm.ss");
             var owmlGo = new GameObject();
             owmlGo.AddComponent<OwmlBehaviour>();
             var owmlConfig = JsonHelper.LoadJsonObject<OwmlConfig>(ConfigPath);
@@ -25,17 +27,19 @@ namespace OWML.ModLoader
                 // Everything is wrong and can't write to console...
                 return;
             }
-            var logger = new ModLogger(owmlConfig, owmlManifest);
+            var logFileName = $"{owmlConfig.OWMLPath}Logs/OWML.Log.{startTime}.txt";
+            var logger = new ModLogger(owmlConfig, owmlManifest, logFileName);
             logger.Log("Got config!");
             var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest, true);
             console.WriteLine("Mod loader has been initialized.");
+            console.WriteLine($"For detailed log, see Logs/OWML.Log.{startTime}.txt");
             var modSorter = new ModSorter(console);
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
             var events = new ModEvents(logger, console, harmonyHelper);
             var inputHandler = new ModInputHandler(logger, console, harmonyHelper, owmlConfig, events);
             var menus = new ModMenus(console, events, inputHandler, owmlManifest, owmlConfig, owmlDefaultConfig);
-            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter);
+            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter, logFileName);
             owo.LoadMods();
         }
     }

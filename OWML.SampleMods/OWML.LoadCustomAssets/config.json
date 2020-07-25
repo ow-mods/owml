@@ -1,6 +1,5 @@
 {
   "enabled": true,
-  "requireVR": false,
   "settings": {
     "enableMusic": {
       "type": "toggle",

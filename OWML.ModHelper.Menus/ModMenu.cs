@@ -25,6 +25,7 @@ namespace OWML.ModHelper.Menus
         public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
         public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
         public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
+        public List<IModSeparator> Separators { get; private set; }
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -58,6 +59,7 @@ namespace OWML.ModHelper.Menus
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();
+            Separators = new List<IModSeparator>();
         }
 
         [Obsolete("Use GetTitleButton instead")]
@@ -249,6 +251,28 @@ namespace OWML.ModHelper.Menus
             input.Index = index;
             input.Initialize(this);
             input.Element.transform.localScale = scale;
+        }
+
+        public IModSeparator AddSeparator(IModSeparator separator)
+        {
+            return AddSeparator(separator, separator.Index);
+        }
+
+        public IModSeparator AddSeparator(IModSeparator separator, int index)
+        {
+            Separators.Add(separator);
+            var transform = separator.Element.transform;
+            var scale = transform.localScale;
+            transform.parent = Layout.transform;
+            separator.Index = index;
+            separator.Initialize(this);
+            transform.localScale = scale;
+            return separator;
+        }
+
+        public IModSeparator GetSeparator(string title)
+        {
+            return Separators.FirstOrDefault(x => x.Title == title || x.Element.name == title);
         }
 
         public object GetInputValue(string key)
