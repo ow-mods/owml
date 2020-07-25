@@ -68,11 +68,11 @@ namespace OWML.ModLoader
             {
                 if (!IsSettingSameType(Config.Settings[key], DefaultConfig.Settings[key]))
                 {
-                    wasCompatible &= TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]);
+                    wasCompatible = wasCompatible && TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]);
                 }
                 else if (DefaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
                 {
-                    wasCompatible &= UpdateSelector(key, Config.Settings[key], objectValue);
+                    wasCompatible = wasCompatible && UpdateSelector(key, Config.Settings[key], objectValue);
                 }
             }
 
