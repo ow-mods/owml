@@ -79,15 +79,17 @@ namespace OWML.ModLoader
             AddMissingDefaults(DefaultConfig);
         }
 
-        private void UpdateSelector(string key, object userSetting, JObject modSetting)
+        private bool UpdateSelector(string key, object userSetting, JObject modSetting)
         {
             var options = modSetting["options"].ToObject<List<string>>();
             var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
             Config.Settings[key] = modSetting;
-            if (options.Contains(userString))
+            var isInOptions = options.Contains(userString);
+            if (isInOptions)
             {
                 Config.SetSettingsValue(key, userString);
             }
+            return isInOptions;
         }
 
         private void AddMissingDefaults(IModConfig defaultConfig)
@@ -96,7 +98,7 @@ namespace OWML.ModLoader
             missingSettings.ForEach(setting => Config.Settings.Add(setting.Key, setting.Value));
         }
 
-        private void TryUpdate(string key, object userSetting, object modSetting)
+        private bool TryUpdate(string key, object userSetting, object modSetting)
         {
             var userValue = Config.GetSettingsValue<object>(key);
             if (userValue is JValue userJValue)
@@ -108,13 +110,15 @@ namespace OWML.ModLoader
             if (IsNumber(userSetting) && IsNumber(modSetting))
             {
                 Config.SetSettingsValue(key, Convert.ToDouble(userValue));
-                return;
+                return true;
             }
 
             if (IsBoolean(userSetting) && IsBoolean(modSetting))
             {
                 Config.SetSettingsValue(key, Convert.ToBoolean(userValue));
+                return true;
             }
+            return false;
         }
 
         private bool IsNumber(object setting)
