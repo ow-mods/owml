@@ -68,8 +68,17 @@ namespace OWML.ModHelper
             {
                 return frame.GetFrame(1).GetMethod().DeclaringType.Name;
             }
-            catch
+            catch (Exception ex)
             {
+                var message = new SocketMessage
+                {
+                    SenderName = "OWML",
+                    SenderType = "ModSocketOutput",
+                    Type = MessageType.Error,
+                    Message = ex.Message
+                };
+                WriteToSocket(JsonConvert.SerializeObject(message));
+
                 return "";
             }
         }
