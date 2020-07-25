@@ -42,7 +42,7 @@ namespace OWML.Launcher
             }
             else
             {
-                var socketListener = new SocketUtils(owmlConfig);
+                new SocketListener(owmlConfig).Init();
             }
         }
 
