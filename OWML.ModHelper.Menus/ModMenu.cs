@@ -47,7 +47,8 @@ namespace OWML.ModHelper.Menus
             Menu = menu;
             Layout = layoutGroup;
 
-            var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>());
+            var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
+                .Select(x => x.GetComponent<Button>()).ToList();
             BaseButtons = promptButtons.Select(x => new ModPromptButton(x, this)).Cast<IModButtonBase>().ToList();
 
             var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
