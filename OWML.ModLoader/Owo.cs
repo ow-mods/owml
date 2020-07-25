@@ -22,12 +22,13 @@ namespace OWML.ModLoader
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly IModInputHandler _inputHandler;
         private readonly ModSorter _sorter;
+        private readonly string _logFileName;
 
         private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
-            IModInputHandler inputHandler, ModSorter sorter)
+            IModInputHandler inputHandler, ModSorter sorter, string logFileName)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -37,6 +38,7 @@ namespace OWML.ModLoader
             _harmonyHelper = harmonyHelper;
             _inputHandler = inputHandler;
             _sorter = sorter;
+            _logFileName = logFileName;
         }
 
         public void LoadMods()
@@ -46,13 +48,16 @@ namespace OWML.ModLoader
                 _console.WriteLine("Verbose mode is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
-            var normalMods = _modFinder.GetMods().Where(mod => !mod.Manifest.PriorityLoad).ToList();
+            var mods = _modFinder.GetMods();
+            mods.ForEach(mod => mod.FixConfigs());
+
+            var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
             var sortedNormal = _sorter.SortMods(normalMods);
 
-            var priorityMods = _modFinder.GetMods().Where(mod => mod.Manifest.PriorityLoad).ToList();
+            var priorityMods = mods.Where(mod => mod.Manifest.PriorityLoad).ToList();
             var sortedPriority = _sorter.SortMods(priorityMods);
 
-            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled)
+            var modNames = mods.Where(mod => mod.Config.Enabled)
                 .Select(mod => mod.Manifest.UniqueName).ToList();
             var sortedMods = sortedPriority.Concat(sortedNormal);
 
@@ -107,7 +112,7 @@ namespace OWML.ModLoader
 
         private IModHelper CreateModHelper(IModData modData)
         {
-            var logger = new ModLogger(_owmlConfig, modData.Manifest);
+            var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
             var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest);
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(modData.Manifest);

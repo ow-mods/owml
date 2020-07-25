@@ -1,6 +1,5 @@
 {
   "enabled": false,
-  "requireVR": false,
   "settings": {
     "Cycle GUI mode": {
       "type": "input",

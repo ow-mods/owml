@@ -13,7 +13,6 @@ namespace OWML.Patcher
 
         // Indexes of addresses that need to be shifted due to added bytes.
         private static readonly int[] _addressIndexes = { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
-        private readonly string _filePath;
 
         private const string EnabledVRDevice = "OpenVR";
         private const int RemovedBytes = 2;
@@ -32,17 +31,17 @@ namespace OWML.Patcher
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
-            _filePath = $"{_owmlConfig.DataPath}/{FileName}";
         }
 
         public void Patch()
         {
-            if (!File.Exists(_filePath))
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
+            if (!File.Exists(filePath))
             {
-                throw new FileNotFoundException(_filePath);
+                throw new FileNotFoundException(filePath);
             }
 
-            var fileBytes = File.ReadAllBytes(_filePath);
+            var fileBytes = File.ReadAllBytes(filePath);
 
             var buildSettingsStartIndex = BitConverter.ToInt32(fileBytes, BuildSettingsStartAddressIndex) + BlockAddressOffset;
             var buildSettingsSize = BitConverter.ToInt32(fileBytes, BuildSettingsSizeIndex);
@@ -57,9 +56,9 @@ namespace OWML.Patcher
                 return;
             }
 
-            BackupFile(_filePath);
+            BackupFile(filePath);
             var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
-            File.WriteAllBytes(_filePath, patchedBytes);
+            File.WriteAllBytes(filePath, patchedBytes);
             _writer.WriteLine("Successfully patched globalgamemanagers.");
         }
 
@@ -168,10 +167,11 @@ namespace OWML.Patcher
 
         public void RestoreFromBackup()
         {
-            var backupPath = _filePath + BackupSuffix;
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
+            var backupPath = filePath + BackupSuffix;
             if (File.Exists(backupPath))
             {
-                File.Copy(backupPath, _filePath, true);
+                File.Copy(backupPath, filePath, true);
                 File.Delete(backupPath);
             }
         }

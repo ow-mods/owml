@@ -4,6 +4,6 @@ namespace OWML.Common
 {
     public interface IModFinder
     {
-        IList<IModData> GetMods();
+        List<IModData> GetMods();
     }
 }

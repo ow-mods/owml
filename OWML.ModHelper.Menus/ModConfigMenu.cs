@@ -8,7 +8,6 @@ namespace OWML.ModHelper.Menus
     public class ModConfigMenu : ModConfigMenuBase, IModConfigMenu
     {
         private const string EnabledTitle = "Enabled";
-        private const string RequiresVRTitle = "Requires VR";
 
         public IModData ModData { get; }
         public IModBehaviour Mod { get; }
@@ -24,7 +23,6 @@ namespace OWML.ModHelper.Menus
         {
             var index = 2;
             AddConfigInput(EnabledTitle, ModData.Config.Enabled, index++);
-            AddConfigInput(RequiresVRTitle, ModData.Config.RequireVR, index++);
             foreach (var setting in ModData.Config.Settings)
             {
                 AddConfigInput(setting.Key, setting.Value, index++);
@@ -36,7 +34,6 @@ namespace OWML.ModHelper.Menus
         protected override void UpdateUIValues()
         {
             GetToggleInput(EnabledTitle).Value = ModData.Config.Enabled;
-            GetToggleInput(RequiresVRTitle).Value = ModData.Config.RequireVR;
             foreach (var setting in ModData.Config.Settings)
             {
                 SetInputValue(setting.Key, setting.Value);
@@ -46,7 +43,6 @@ namespace OWML.ModHelper.Menus
         protected override void OnSave()
         {
             ModData.Config.Enabled = (bool)GetInputValue(EnabledTitle);
-            ModData.Config.RequireVR = (bool)GetInputValue(RequiresVRTitle);
             var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
             foreach (var key in keys)
             {
@@ -60,7 +56,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void OnReset()
         {
-            ModData.Config.ResetToDefaults(ModData.DefaultConfig);
+            ModData.ResetConfigToDefaults();
             UpdateUIValues();
         }
     }

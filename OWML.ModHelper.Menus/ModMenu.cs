@@ -18,12 +18,14 @@ namespace OWML.ModHelper.Menus
         public List<IModButtonBase> BaseButtons { get; private set; }
         public List<IModToggleInput> ToggleInputs { get; private set; }
         public List<IModSliderInput> SliderInputs { get; private set; }
+        public List<IModSelectorInput> SelectorInputs { get; private set; }
         public List<IModTextInput> TextInputs { get; private set; }
         public List<IModComboInput> ComboInputs { get; private set; }
         public List<IModNumberInput> NumberInputs { get; private set; }
         public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
         public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
         public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
+        public List<IModSeparator> Separators { get; private set; }
 
         protected LayoutGroup Layout;
         protected readonly IModConsole OwmlConsole;
@@ -53,9 +55,11 @@ namespace OWML.ModHelper.Menus
 
             ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
             SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
+            SelectorInputs = Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModSelectorInput>().ToList();
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();
+            Separators = new List<IModSeparator>();
         }
 
         [Obsolete("Use GetTitleButton instead")]
@@ -171,6 +175,23 @@ namespace OWML.ModHelper.Menus
             return input;
         }
 
+        public IModSelectorInput GetSelectorInput(string title)
+        {
+            return SelectorInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
+        public IModSelectorInput AddSelectorInput(IModSelectorInput input)
+        {
+            return AddSelectorInput(input, input.Index);
+        }
+
+        public IModSelectorInput AddSelectorInput(IModSelectorInput input, int index)
+        {
+            SelectorInputs.Add(input);
+            AddInput(input, index);
+            return input;
+        }
+
         public IModTextInput GetTextInput(string title)
         {
             return TextInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
@@ -232,12 +253,39 @@ namespace OWML.ModHelper.Menus
             input.Element.transform.localScale = scale;
         }
 
+        public IModSeparator AddSeparator(IModSeparator separator)
+        {
+            return AddSeparator(separator, separator.Index);
+        }
+
+        public IModSeparator AddSeparator(IModSeparator separator, int index)
+        {
+            Separators.Add(separator);
+            var transform = separator.Element.transform;
+            var scale = transform.localScale;
+            transform.parent = Layout.transform;
+            separator.Index = index;
+            separator.Initialize(this);
+            transform.localScale = scale;
+            return separator;
+        }
+
+        public IModSeparator GetSeparator(string title)
+        {
+            return Separators.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+        }
+
         public object GetInputValue(string key)
         {
             var slider = GetSliderInput(key);
             if (slider != null)
             {
                 return slider.Value;
+            }
+            var selector = GetSelectorInput(key);
+            if (selector != null)
+            {
+                return selector.Value;
             }
             var toggle = GetToggleInput(key);
             if (toggle != null)
@@ -270,6 +318,13 @@ namespace OWML.ModHelper.Menus
             {
                 var val = value is JObject obj ? obj["value"] : value;
                 slider.Value = Convert.ToSingle(val);
+                return;
+            }
+            var selector = GetSelectorInput(key);
+            if (selector != null)
+            {
+                var val = value is JObject obj ? obj["value"] : value;
+                selector.Value = Convert.ToString(val);
                 return;
             }
             var toggle = GetToggleInput(key);
