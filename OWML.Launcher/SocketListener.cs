@@ -58,14 +58,14 @@ namespace OWML.Launcher
 
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    PrintOutput(bytes, i);   
+                    ProcessMessage(bytes, i);   
                 }
 
                 client.Close();
             }
         }
 
-        private void PrintOutput(byte[] bytes, int count)
+        private void ProcessMessage(byte[] bytes, int count)
         {
             var json = Encoding.UTF8.GetString(bytes, 0, count);
 

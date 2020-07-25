@@ -12,8 +12,9 @@ namespace OWML.ModHelper
 {
     public class ModSocketOutput : ModConsole
     {
-        private int _port;
+        private readonly int _port;
         private static Socket _socket;
+        private static IModLogger _logger;
 
         public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
@@ -21,6 +22,7 @@ namespace OWML.ModHelper
             {
                 _port = config.SocketPort;
                 ConnectToSocket();
+                _logger = logger;
             }
         }
 
