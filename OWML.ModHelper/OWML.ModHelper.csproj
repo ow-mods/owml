@@ -76,15 +76,8 @@
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="JsonHelper.cs" />
-    <Compile Include="Logging\ConsoleUtils.cs" />
-    <Compile Include="Logging\ModSocketOutput.cs" />
-    <Compile Include="Logging\OwmlConsole.cs" />
-    <Compile Include="Logging\SocketMessage.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="Logging\ModLogger.cs" />
-    <Compile Include="Logging\ModConsole.cs" />
-    <Compile Include="Logging\OutputWriter.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModHelper.cs" />
@@ -99,6 +92,10 @@
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
+      <Project>{6F14D39C-5747-4149-BE4D-365B43918A0A}</Project>
+      <Name>OWML.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
       <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>

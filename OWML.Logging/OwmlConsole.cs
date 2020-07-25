@@ -1,6 +1,6 @@
 ﻿using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.Logging
 {
     public static class OwmlConsole
     {

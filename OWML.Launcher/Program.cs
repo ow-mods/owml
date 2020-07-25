@@ -1,6 +1,7 @@
 ﻿using System;
 using OWML.Common;
 using OWML.GameFinder;
+using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
