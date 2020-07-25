@@ -84,7 +84,6 @@
     <Compile Include="ModConfig.cs" />
     <Compile Include="Logging\ModLogger.cs" />
     <Compile Include="Logging\ModConsole.cs" />
-    <Compile Include="Logging\OutputFactory.cs" />
     <Compile Include="Logging\OutputWriter.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
