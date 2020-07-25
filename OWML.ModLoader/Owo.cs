@@ -48,13 +48,16 @@ namespace OWML.ModLoader
                 _console.WriteLine("Verbose mode is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
-            var normalMods = _modFinder.GetMods().Where(mod => !mod.Manifest.PriorityLoad).ToList();
+            var mods = _modFinder.GetMods();
+            mods.ForEach(mod => mod.FixConfigs());
+
+            var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
             var sortedNormal = _sorter.SortMods(normalMods);
 
-            var priorityMods = _modFinder.GetMods().Where(mod => mod.Manifest.PriorityLoad).ToList();
+            var priorityMods = mods.Where(mod => mod.Manifest.PriorityLoad).ToList();
             var sortedPriority = _sorter.SortMods(priorityMods);
 
-            var modNames = _modFinder.GetMods().Where(mod => mod.Config.Enabled)
+            var modNames = mods.Where(mod => mod.Config.Enabled)
                 .Select(mod => mod.Manifest.UniqueName).ToList();
             var sortedMods = sortedPriority.Concat(sortedNormal);
 
