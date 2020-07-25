@@ -31,18 +31,18 @@ namespace OWML.ModHelper
         {
             var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
             var type = MessageType.Message;
-            WriteLine(type, line, GetCallingMethodName(new StackTrace()));
+            WriteLine(type, line, GetCallingType(new StackTrace()));
         }
 
         public override void WriteLine(string line)
         {
             var type = MessageType.Message;
-            WriteLine(type, line, GetCallingMethodName(new StackTrace()));
+            WriteLine(type, line, GetCallingType(new StackTrace()));
         }
 
         public override void WriteLine(string line, MessageType type)
         {
-            WriteLine(type, line, GetCallingMethodName(new StackTrace()));
+            WriteLine(type, line, GetCallingType(new StackTrace()));
         }
 
         private void WriteLine(MessageType type, string line, string senderType)
@@ -62,7 +62,7 @@ namespace OWML.ModHelper
             WriteToSocket(json);
         }
 
-        private string GetCallingMethodName(StackTrace frame)
+        private string GetCallingType(StackTrace frame)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace OWML.ModHelper
                     SenderName = "OWML",
                     SenderType = "ModSocketOutput",
                     Type = MessageType.Error,
-                    Message = ex.Message
+                    Message = $"Error while getting calling type : {ex.Message}"
                 };
                 WriteToSocket(JsonConvert.SerializeObject(message));
 

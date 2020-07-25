@@ -42,14 +42,8 @@ namespace OWML.Launcher
             }
             else
             {
-                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                int port = ((IPEndPoint)l.LocalEndpoint).Port;
-                l.Stop();
-                owmlConfig.SocketPort = port;
-                var socketListener = new SocketListener(port);
+                var socketListener = new SocketUtils(owmlConfig);
             }
-            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
         }
 
         private static IOwmlConfig GetOwmlConfig()

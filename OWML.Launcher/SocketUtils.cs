@@ -9,23 +9,30 @@ using System.Threading.Tasks;
 
 namespace OWML.Launcher
 {
-    public class SocketListener
+    public class SocketUtils
     {
         private const int BufferSize = 1024;
         private static int _port;
+        private static TcpListener _server;
 
-        public SocketListener(int port)
+        public SocketUtils(IOwmlConfig config)
         {
-            _port = port;
+            var listener = new TcpListener(IPAddress.Loopback, 0);
+            listener.Start();
+            _port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            listener.Stop();
+            config.SocketPort = _port;
+            JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, config);
+
             new Task(SetupSocketListener).Start();
         }
 
         private void SetupSocketListener()
         {
-            TcpListener server = null;
+            _server = null;
             try
             {
-                ListenToSocket(ref server);
+                ListenToSocket(_server);
             }
             catch (SocketException ex)
             {
@@ -33,11 +40,11 @@ namespace OWML.Launcher
             }
             finally
             {
-                server?.Stop();
+                _server?.Stop();
             }
         }
 
-        private void ListenToSocket(ref TcpListener server)
+        private void ListenToSocket(TcpListener server)
         {
             var localAddress = IPAddress.Parse(Constants.LocalAddress);
 
