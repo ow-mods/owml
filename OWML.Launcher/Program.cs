@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
 using OWML.Common;
 using OWML.GameFinder;
 using OWML.ModHelper;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
 using OWML.ModHelper;
-using System;
 using UnityEngine;
 
 namespace OWML.LoadCustomAssets

@@ -35,10 +35,9 @@ namespace OWML.Launcher
 
         private void SetupSocketListener()
         {
-            _server = null;
             try
             {
-                ListenToSocket(_server);
+                ListenToSocket();
             }
             catch (SocketException ex)
             {
@@ -50,18 +49,18 @@ namespace OWML.Launcher
             }
         }
 
-        private void ListenToSocket(TcpListener server)
+        private void ListenToSocket()
         {
             var localAddress = IPAddress.Parse(Constants.LocalAddress);
 
-            server = new TcpListener(localAddress, _port);
-            server.Start();
+            _server = new TcpListener(localAddress, _port);
+            _server.Start();
 
             var bytes = new byte[BufferSize];
 
             while (true)
             {
-                var client = server.AcceptTcpClient();
+                var client = _server.AcceptTcpClient();
 
                 ConsoleUtils.WriteByType(MessageType.Success, "Console connected to socket!");
 
