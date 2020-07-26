@@ -45,7 +45,7 @@ namespace OWML.Launcher
                     return;
                 }
                 owmlConfig.SocketPort = port;
-                // todo shouldn't we actually **save** too?
+                JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
             }
             else
             {
