@@ -1,4 +1,5 @@
 ﻿using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
