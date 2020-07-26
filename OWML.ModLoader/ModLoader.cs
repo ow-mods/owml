@@ -30,7 +30,7 @@ namespace OWML.ModLoader
             var logFileName = $"{owmlConfig.OWMLPath}Logs/OWML.Log.{startTime}.txt";
             var logger = new ModLogger(owmlConfig, owmlManifest, logFileName);
             logger.Log("Got config!");
-            var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest, true, true);
+            var console = OutputFactory.CreateOutput(owmlConfig, logger, owmlManifest, true);
             console.WriteLine("Mod loader has been initialized.");
             console.WriteLine($"For detailed log, see Logs/OWML.Log.{startTime}.txt");
             var modSorter = new ModSorter(console);
