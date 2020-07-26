@@ -39,7 +39,7 @@ namespace OWML.EnableDebugMode
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
             ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
-            ModHelper.Events.OnEvent += OnEvent;
+            ModHelper.Events.OnEvent2 += OnEvent;
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
