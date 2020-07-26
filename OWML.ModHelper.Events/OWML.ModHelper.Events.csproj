@@ -71,7 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModTaskDelayer.cs" />
     <Compile Include="HarmonyHelper.cs" />
     <Compile Include="ModEvents.cs" />
     <Compile Include="Patches.cs" />

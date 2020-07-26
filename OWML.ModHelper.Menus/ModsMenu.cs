@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
@@ -17,7 +18,6 @@ namespace OWML.ModHelper.Menus
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
         private readonly IModInputHandler _inputHandler;
-        private ModTaskDelayer _taskDelayer;
 
         public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
         {
@@ -135,20 +135,14 @@ namespace OWML.ModHelper.Menus
             {
                 if (_modConfigMenus.Any(ModMenu => ModMenu.ModData.RequireReload))
                 {
-                    if (_taskDelayer == null)
-                    {
-                        var delayerObject = new GameObject();
-                        _taskDelayer = delayerObject.AddComponent<ModTaskDelayer>();
-                        _taskDelayer.OnNextUpdate += ShowReloadWarning;
-                        delayerObject.AddComponent<DontDestroyOnLoad>();
-                    }
-                    _taskDelayer.FireEventOnNextUpdate = true;
+                    _menus.MessagePopup.Menu.StartCoroutine(ShowReloadWarning());
                 }
             }
         }
 
-        private void ShowReloadWarning()
+        private IEnumerator ShowReloadWarning()
         {
+            yield return new WaitForEndOfFrame();
             _menus.MessagePopup.ShowMessage("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
             _menus.MessagePopup.OnConfirm += OnPopupConfirm;
             _menus.MessagePopup.OnCancel += OnPopupCancel;
