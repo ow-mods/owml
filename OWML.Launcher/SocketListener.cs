@@ -12,7 +12,7 @@ namespace OWML.Launcher
     public class SocketListener
     {
         private const string Separator = "\n--------------------------------";
-        private const int BufferSize = 1<<18;
+        private const int BufferSize = 262144;
         private static int _port;
         private static TcpListener _server;
         private static IOwmlConfig _config;
