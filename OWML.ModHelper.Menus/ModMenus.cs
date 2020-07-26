@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
-            events.OnEvent2 += OnEvent;
+            events.Event += OnEvent;
         }
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)

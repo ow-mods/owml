@@ -8,9 +8,9 @@ namespace OWML.Common
         IModPlayerEvents Player { get; }
         IModSceneEvents Scenes { get; }
 
-        event Action<MonoBehaviour, Events> OnEvent2;
+        event Action<MonoBehaviour, Events> Event;
 
-        [Obsolete("Use OnEvent2 instead.")]
+        [Obsolete("Use Event instead.")]
         Action<MonoBehaviour, Events> OnEvent { get; set; }
 
         void Subscribe<T>(Events ev) where T : MonoBehaviour;

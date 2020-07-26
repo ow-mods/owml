@@ -11,7 +11,7 @@ namespace OWML.ModHelper.Events
         public ModPlayerEvents(IModEvents events)
         {
             events.Subscribe<PlayerBody>(Common.Events.AfterAwake);
-            events.OnEvent2 += OnEvent;
+            events.Event += OnEvent;
         }
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)

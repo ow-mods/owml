@@ -11,9 +11,9 @@ namespace OWML.ModHelper.Events
         public IModPlayerEvents Player { get; }
         public IModSceneEvents Scenes { get; }
 
-        public event Action<MonoBehaviour, Common.Events> OnEvent2; // todo name
+        public event Action<MonoBehaviour, Common.Events> Event;
 
-        [Obsolete("Use OnEvent2 instead.")]
+        [Obsolete("Use Event instead.")]
         public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
         private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Events
             {
                 _logger.Log($"Got subscribed event: {ev} of {type.Name}");
                 OnEvent?.Invoke(behaviour, ev);
-                OnEvent2?.Invoke(behaviour, ev);
+                Event?.Invoke(behaviour, ev);
             }
             else
             {
