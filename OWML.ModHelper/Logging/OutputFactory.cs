@@ -5,11 +5,11 @@ namespace OWML.ModHelper
 {
     public class OutputFactory
     {
-        public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest, bool consolePortPresent, bool listenToUnity)
+        public static IModConsole CreateOutput(IOwmlConfig owmlConfig, IModLogger logger, IModManifest manifest, bool consolePortPresent)
         {
             if (consolePortPresent)
             {
-                return new ModSocketOutput(owmlConfig, logger, manifest, listenToUnity);
+                return new ModSocketOutput(owmlConfig, logger, manifest);
             }
 
             return new OutputWriter();

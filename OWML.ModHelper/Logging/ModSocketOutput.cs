@@ -15,7 +15,7 @@ namespace OWML.ModHelper
         private readonly int _port;
         private static Socket _socket;
 
-        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest, bool listenToUnity) : base(config, logger, manifest)
+        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
             if (_socket == null)
             {
@@ -23,7 +23,7 @@ namespace OWML.ModHelper
                 ConnectToSocket();
             }
 
-            if (config.Verbose && listenToUnity)
+            if (config.Verbose && manifest.Name == "OWML")
             {
                 WriteLine("Verbose mode is enabled", MessageType.Info);
                 Application.logMessageReceived += OnLogMessageReceived;
