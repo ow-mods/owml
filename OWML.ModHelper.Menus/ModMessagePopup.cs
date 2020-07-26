@@ -45,15 +45,18 @@ namespace OWML.ModHelper.Menus
         {
             if (_twoButtonPopup == null || IsOpen)
             {
-                Console.WriteLine("Failed to create popup for a following message:");
-                Console.WriteLine(message);
+                OwmlConsole.WriteLine("Failed to create popup for a following message:");
+                OwmlConsole.WriteLine(message);
             }
             IsOpen = true;
             _twoButtonPopup.OnPopupConfirm += OnPopupConfirm;
             _twoButtonPopup.OnPopupCancel += OnPopupCancel;
             _twoButtonPopup.EnableMenu(true);
-            _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, addCancel ? InputLibrary.cancel : null,
-                new ScreenPrompt(InputLibrary.confirm, okMessage), new ScreenPrompt(InputLibrary.cancel, cancelMessage), true, addCancel);
+            var cancelCommand = addCancel ? InputLibrary.cancel : null;
+            var okPrompt = new ScreenPrompt(InputLibrary.confirm, okMessage);
+            var cancelPrompt = new ScreenPrompt(InputLibrary.cancel, cancelMessage);
+            _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, cancelCommand, 
+                okPrompt, cancelPrompt, true, addCancel);
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 

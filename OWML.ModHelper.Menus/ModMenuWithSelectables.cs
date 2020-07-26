@@ -40,7 +40,7 @@ namespace OWML.ModHelper.Menus
 
             if (saveButton == null || resetButton == null || cancelButton == null)
             {
-                Console.WriteLine("Error: Failed to setup menu with selectables");
+                Console.WriteLine("Error - Failed to setup menu with selectables.");
                 return;
             }
 
@@ -163,7 +163,7 @@ namespace OWML.ModHelper.Menus
         protected virtual void OnButton(SingleAxisCommand command)
         {
             command.ConsumeInput();
-            if ((command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease")))
+            if (command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease"))
                 || command == InputLibrary.enter2)
             {
                 OnSave();

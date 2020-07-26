@@ -109,7 +109,7 @@ namespace OWML.ModHelper.Events
                     break;
 
                 default:
-                    _console.WriteLine("Error: unrecognized event: " + ev);
+                    _console.WriteLine($"Error - Unrecognized event: {ev}", MessageType.Error);
                     throw new ArgumentOutOfRangeException(nameof(ev), ev, null);
             }
         }

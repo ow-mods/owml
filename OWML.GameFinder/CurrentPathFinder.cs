@@ -14,7 +14,7 @@ namespace OWML.GameFinder
             {
                 return Config.GamePath;
             }
-            Writer.WriteLine($"Current game path is not valid: {Config.GamePath}");
+            Writer.WriteLine($"Current game path is not valid: {Config.GamePath}", MessageType.Error);
             return null;
         }
 
