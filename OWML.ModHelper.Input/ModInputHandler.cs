@@ -324,17 +324,17 @@ namespace OWML.ModHelper.Input
             switch (SwapCombination(combo, false))
             {
                 case RegistrationCode.InvalidCombination:
-                    _console.WriteLine($"Failed to register \"{combo.FullName}\": invalid combination!");
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": Invalid combination!", MessageType.Error);
                     return null;
                 case RegistrationCode.CombinationTooLong:
-                    _console.WriteLine($"Failed to register \"{combo.FullName}\": too long!");
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": Too long!", MessageType.Error);
                     return null;
                 case RegistrationCode.CombinationTaken:
-                    _console.WriteLine($"Failed to register \"{combo.FullName}\": already in use by following mods:");
+                    _console.WriteLine($"Failed to register \"{combo.FullName}\": Already in use by following mods:", MessageType.Error);
                     var collisions = GetCollisions(combo.Hashes);
                     foreach (var collision in collisions)
                     {
-                        _console.WriteLine($"\"{collision}\"");
+                        _console.WriteLine($"\"{collision}\"", MessageType.Error);
                     }
                     return null;
                 case RegistrationCode.AllNormal:
@@ -348,19 +348,19 @@ namespace OWML.ModHelper.Input
         {
             if (combination == null)
             {
-                _console.WriteLine("Failed to unregister: null combination!");
+                _console.WriteLine("Failed to unregister: Null combination!", MessageType.Error);
                 return;
             }
             switch (SwapCombination(combination, true))
             {
                 case RegistrationCode.InvalidCombination:
-                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": invalid combination!");
+                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": Invalid combination!", MessageType.Error);
                     return;
                 case RegistrationCode.CombinationTooLong:
-                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": too long!");
+                    _console.WriteLine($"Failed to unregister \"{combination.FullName}\": Too long!", MessageType.Error);
                     return;
                 case RegistrationCode.AllNormal:
-                    _logger.Log($"Successfully unregistered \"{combination.FullName}\"");
+                    _logger.Log($"Successfully unregistered \"{combination.FullName}\"", MessageType.Success);
                     return;
                 default:
                     return;
