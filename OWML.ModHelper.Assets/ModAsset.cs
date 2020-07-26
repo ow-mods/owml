@@ -6,6 +6,9 @@ namespace OWML.ModHelper.Assets
 {
     public class ModAsset<T> : MonoBehaviour, IModAsset<T>
     {
+        public event Action<T> OnCompleted;
+
+        [Obsolete("Use OnCompleted instead.")]
         public Action<T> OnLoaded { get; set; }
 
         public T Asset { get; private set; }
@@ -14,6 +17,7 @@ namespace OWML.ModHelper.Assets
         {
             Asset = asset;
             OnLoaded?.Invoke(asset);
+            OnCompleted?.Invoke(asset);
         }
 
         private void Start()
