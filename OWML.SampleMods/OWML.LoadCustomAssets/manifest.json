@@ -4,7 +4,7 @@
   "name": "LoadCustomAssets",
   "uniqueName": "Alek.LoadCustomAssets",
   "version": "0.6",
-  "owmlVersion": "0.5.1",
+  "owmlVersion": "0.6.0",
   "description": "A mod for testing loading of custom assets",
   "requireVR": false
 }
