@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Assets
     {
         public event Action<T> Loaded;
 
-        [Obsolete("Use OnCompleted instead.")]
+        [Obsolete("Use Loaded instead.")]
         public Action<T> OnLoaded { get; set; }
 
         public T Asset { get; private set; }
