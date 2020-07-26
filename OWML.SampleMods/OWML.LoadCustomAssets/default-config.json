@@ -1,6 +1,5 @@
 {
   "enabled": true,
-  "requireVR": false,
   "settings": {
     "enableMusic": true,
     "enableDucks": {
@@ -18,6 +17,22 @@
       "value": 10,
       "min": 0,
       "max": 20
+    },
+    "decimals": {
+      "type": "slider",
+      "value": 10.54545,
+      "min": 0.545,
+      "max": 525.545845565
+    },
+    "thing": {
+      "type": "selector",
+      "options": [ "A", "B", "C" ],
+      "value": "A"
+    },
+    "integer thing": {
+      "type": "selector",
+      "options": [ 5, 10, 15 ],
+      "value": 10
     },
     "enableSuperMode": {
       "type": "toggle",

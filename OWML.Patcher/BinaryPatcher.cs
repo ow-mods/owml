@@ -12,8 +12,7 @@ namespace OWML.Patcher
         private readonly IModConsole _writer;
 
         // Indexes of addresses that need to be shifted due to added bytes.
-        private static readonly int[] _addressIndexes = { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
-        private readonly string _filePath;
+        private readonly int[] _addressIndexes = { 0x2d0, 0x2e0, 0x2f4, 0x308, 0x31c, 0x330, 0x344, 0x358, 0x36c, 0x380 };
 
         private const string EnabledVRDevice = "OpenVR";
         private const int RemovedBytes = 2;
@@ -32,17 +31,17 @@ namespace OWML.Patcher
         {
             _owmlConfig = owmlConfig;
             _writer = writer;
-            _filePath = $"{_owmlConfig.DataPath}/{FileName}";
         }
 
         public void Patch()
         {
-            if (!File.Exists(_filePath))
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
+            if (!File.Exists(filePath))
             {
-                throw new FileNotFoundException(_filePath);
+                throw new FileNotFoundException(filePath);
             }
 
-            var fileBytes = File.ReadAllBytes(_filePath);
+            var fileBytes = File.ReadAllBytes(filePath);
 
             var buildSettingsStartIndex = BitConverter.ToInt32(fileBytes, BuildSettingsStartAddressIndex) + BlockAddressOffset;
             var buildSettingsSize = BitConverter.ToInt32(fileBytes, BuildSettingsSizeIndex);
@@ -57,15 +56,15 @@ namespace OWML.Patcher
                 return;
             }
 
-            BackupFile(_filePath);
+            BackupFile(filePath);
             var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
-            File.WriteAllBytes(_filePath, patchedBytes);
-            _writer.WriteLine("Successfully patched globalgamemanagers.");
+            File.WriteAllBytes(filePath, patchedBytes);
+            _writer.WriteLine("Successfully patched globalgamemanagers.", MessageType.Success);
         }
 
         private int FindPatchStartIndex(byte[] fileBytes, int startIndex, int endIndex)
         {
-            byte[] patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
+            var patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
             var patchZoneMatch = 0;
             for (var i = startIndex; i < endIndex; i++)
             {
@@ -89,7 +88,7 @@ namespace OWML.Patcher
 
         private bool FindExistingPatch(byte[] fileBytes, int startIndex, int endIndex)
         {
-            byte[] existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
+            var existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
             var existingPatchMatch = 0;
 
             for (var i = startIndex; i < endIndex; i++)
@@ -118,9 +117,9 @@ namespace OWML.Patcher
             var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
 
             // Bytes that need to be inserted into the file.
-            var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice));
+            var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice)).ToList();
 
-            PatchFileSize(fileBytes, patchBytes.Count());
+            PatchFileSize(fileBytes, patchBytes.Count);
 
             // Split the file in two parts. The patch bytes will be inserted between these parts.
             var originalFirstPart = fileBytes.Take(patchStartIndex);
@@ -144,7 +143,7 @@ namespace OWML.Patcher
             var patchedFileSizeBytes = BitConverter.GetBytes(patchedFileSize).Reverse().ToArray();
 
             // Overwrite original file size bytes with patched size.
-            for (int i = 0; i < patchedFileSizeBytes.Length; i++)
+            for (var i = 0; i < patchedFileSizeBytes.Length; i++)
             {
                 fileBytes[FileSizeStartIndex + i] = patchedFileSizeBytes[i];
             }
@@ -154,7 +153,7 @@ namespace OWML.Patcher
             {
                 var address = BitConverter.ToInt32(fileBytes, startIndex);
                 var patchedAddressBytes = BitConverter.GetBytes(address + fileSizeChange);
-                for (int i = 0; i < patchedAddressBytes.Length; i++)
+                for (var i = 0; i < patchedAddressBytes.Length; i++)
                 {
                     fileBytes[startIndex + i] = patchedAddressBytes[i];
                 }
@@ -168,10 +167,11 @@ namespace OWML.Patcher
 
         public void RestoreFromBackup()
         {
-            var backupPath = _filePath + BackupSuffix;
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
+            var backupPath = filePath + BackupSuffix;
             if (File.Exists(backupPath))
             {
-                File.Copy(backupPath, _filePath, true);
+                File.Copy(backupPath, filePath, true);
                 File.Delete(backupPath);
             }
         }

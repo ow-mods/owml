@@ -35,6 +35,11 @@ namespace OWML.Common.Menus
         IModSliderInput AddSliderInput(IModSliderInput input);
         IModSliderInput AddSliderInput(IModSliderInput input, int index);
 
+        List<IModSelectorInput> SelectorInputs { get; }
+        IModSelectorInput GetSelectorInput(string title);
+        IModSelectorInput AddSelectorInput(IModSelectorInput input);
+        IModSelectorInput AddSelectorInput(IModSelectorInput input, int index);
+
         List<IModTextInput> TextInputs { get; }
         IModTextInput GetTextInput(string title);
         IModTextInput AddTextInput(IModTextInput input);
@@ -44,6 +49,11 @@ namespace OWML.Common.Menus
         IModNumberInput GetNumberInput(string title);
         IModNumberInput AddNumberInput(IModNumberInput input);
         IModNumberInput AddNumberInput(IModNumberInput input, int index);
+
+        List<IModSeparator> Separators { get; }
+        IModSeparator AddSeparator(IModSeparator separator);
+        IModSeparator AddSeparator(IModSeparator separator, int index);
+        IModSeparator GetSeparator(string title);
 
         object GetInputValue(string key);
         void SetInputValue(string key, object value);

@@ -41,6 +41,9 @@
     <Compile Include="IModInputTextures.cs" />
     <Compile Include="IModInputHandler.cs" />
     <Compile Include="IModInteraction.cs" />
+    <Compile Include="IModPlayerEvents.cs" />
+    <Compile Include="IModSceneEvents.cs" />
+    <Compile Include="Menus\IModSeparator.cs" />
     <Compile Include="Menus\IModInputBase.cs" />
     <Compile Include="Menus\IModFieldInput.cs" />
     <Compile Include="Menus\IModMenuWithSelectables.cs" />
@@ -54,6 +57,7 @@
     <Compile Include="Menus\IModComboInput.cs" />
     <Compile Include="Menus\IModOWMenu.cs" />
     <Compile Include="Menus\IModPromptButton.cs" />
+    <Compile Include="Menus\IModSelectorInput.cs" />
     <Compile Include="Menus\InputType.cs" />
     <Compile Include="Menus\IModButton.cs" />
     <Compile Include="IModConfig.cs" />
@@ -82,6 +86,7 @@
     <Compile Include="Menus\IModNumberInput.cs" />
     <Compile Include="Menus\IModTextInput.cs" />
     <Compile Include="Menus\IModToggleInput.cs" />
+    <Compile Include="MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

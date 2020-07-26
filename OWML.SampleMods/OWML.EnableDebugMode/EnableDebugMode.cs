@@ -36,7 +36,7 @@ namespace OWML.EnableDebugMode
 
         private void Start()
         {
-            ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!");
+            ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
             ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
             ModHelper.Events.OnEvent += OnEvent;
@@ -44,10 +44,9 @@ namespace OWML.EnableDebugMode
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            var type = behaviour.GetType();
-            if (type == typeof(PlayerSpawner) && ev == Events.AfterAwake)
+            if (behaviour is PlayerSpawner playerSpawner && ev == Events.AfterAwake)
             {
-                _playerSpawner = (PlayerSpawner)behaviour;
+                _playerSpawner = playerSpawner;
                 _isStarted = true;
             }
         }

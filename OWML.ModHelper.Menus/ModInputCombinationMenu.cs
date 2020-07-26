@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
             var addButton = GetPromptButton("UIElement-ResetToDefaultsButton");
             if (addButton == null)
             {
-                Console.WriteLine("Error: Failed to setup combination menu");
+                Console.WriteLine("Error - Failed to setup combination menu");
                 return;
             }
             addButton.Title = "Add Alternative";

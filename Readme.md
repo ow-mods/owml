@@ -56,8 +56,8 @@ OWML is configured by OWML.Config.json:
 
 |Key|Description|
 |---|-----------|
-|gamePath|The path to the game files. OWML will try to locate the game automatically, set this manually if needed.|
-|verbose|If this is true, errors from all of the game will be displayed and logged. Intended for modders only.|
+|gamePath|The path to the game files. OWML will try to locate the game automatically.|
+|combinationsBlockInput|If this is true, mod input combinations will block game input.|
 
 Each mod is defined in a manifest.json file:
 
