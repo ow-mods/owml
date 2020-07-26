@@ -29,7 +29,7 @@ namespace OWML.LoadCustomAssets
 
         private void Start()
         {
-            ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
+            ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!", MessageType.Info);
             _saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
             ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
 
@@ -145,7 +145,7 @@ namespace OWML.LoadCustomAssets
             _shootSound.Play();
 
             _saveFile.NumberOfDucks++;
-            ModHelper.Console.WriteLine("Ducks shot:", _saveFile.NumberOfDucks);
+            ModHelper.Console.WriteLine($"Ducks shot: {_saveFile.NumberOfDucks}");
             ModHelper.Storage.Save(_saveFile, "savefile.json");
         }
 
@@ -156,7 +156,7 @@ namespace OWML.LoadCustomAssets
 
         private void ToggleMusic(bool enable)
         {
-            ModHelper.Console.WriteLine("ToggleMusic:", enable);
+            ModHelper.Console.WriteLine($"ToggleMusic: {enable}");
             if (_music == null)
             {
                 return;

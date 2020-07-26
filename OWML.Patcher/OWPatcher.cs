@@ -105,7 +105,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while patching: " + ex);
+                _writer.WriteLine($"Error while patching: {ex}", MessageType.Error);
                 throw;
             }
         }
@@ -118,7 +118,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while saving patched game assembly: " + ex);
+                _writer.WriteLine($"Error while saving patched game assembly: {ex}", MessageType.Error);
                 throw;
             }
         }
