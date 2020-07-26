@@ -8,9 +8,6 @@ namespace OWML.ModHelper
         [JsonProperty("gamePath")]
         public string GamePath { get; set; }
 
-        [JsonProperty("verbose")]
-        public bool Verbose { get; set; }
-
         [JsonProperty("combinationsBlockInput")]
         public bool BlockInput { get; set; }
 
@@ -27,9 +24,9 @@ namespace OWML.ModHelper
         public string OWMLPath { get; set; }
 
         [JsonIgnore]
-        public string OutputFilePath => $"{OWMLPath}Logs/OWML.Output.txt";
-
-        [JsonIgnore]
         public string ModsPath => $"{OWMLPath}Mods";
+
+        [JsonProperty("socketPort")]
+        public int SocketPort { get; set; }
     }
 }

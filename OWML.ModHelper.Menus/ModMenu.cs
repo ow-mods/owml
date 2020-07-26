@@ -47,7 +47,8 @@ namespace OWML.ModHelper.Menus
             Menu = menu;
             Layout = layoutGroup;
 
-            var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>());
+            var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
+                .Select(x => x.GetComponent<Button>()).ToList();
             BaseButtons = promptButtons.Select(x => new ModPromptButton(x, this)).Cast<IModButtonBase>().ToList();
 
             var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
@@ -83,7 +84,7 @@ namespace OWML.ModHelper.Menus
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
+                OwmlConsole.WriteLine("Warning - No button found with title or name: " + title, MessageType.Warning);
             }
             return button;
         }
@@ -307,7 +308,7 @@ namespace OWML.ModHelper.Menus
             {
                 return numberInput.Value;
             }
-            OwmlConsole.WriteLine("Error: no input found with name " + key);
+            OwmlConsole.WriteLine($"Error - No input found with name {key}", MessageType.Error);
             return null;
         }
 
@@ -355,7 +356,7 @@ namespace OWML.ModHelper.Menus
                 numberInput.Value = Convert.ToSingle(val);
                 return;
             }
-            OwmlConsole.WriteLine("Error: no input found with name " + key);
+            OwmlConsole.WriteLine("Error - No input found with name " + key, MessageType.Error);
         }
 
         protected void InvokeOnInit()

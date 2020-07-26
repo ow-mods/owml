@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
@@ -11,8 +10,8 @@ namespace OWML.ModHelper.Menus
 {
     public class ModsMenu : ModPopupMenu, IModsMenu
     {
-        private const string ModsButtonTitle = "MODS";
-        private const string OwmlButtonTitle = "OWML";
+        private const string ModsTitle = "MODS";
+        private const string OwmlTitle = "OWML";
 
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
@@ -37,7 +36,7 @@ namespace OWML.ModHelper.Menus
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                OwmlConsole.WriteLine($"Error: {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.");
+                OwmlConsole.WriteLine($"Error - {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.", MessageType.Error);
                 return null;
             }
             return modConfigMenu;
@@ -45,7 +44,7 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(IModOWMenu owMenu)
         {
-            var modsButton = owMenu.OptionsButton.Duplicate(ModsButtonTitle);
+            var modsButton = owMenu.OptionsButton.Duplicate(ModsTitle);
             var options = owMenu.OptionsMenu;
 
             InitCombinationMenu(options);
@@ -55,7 +54,7 @@ namespace OWML.ModHelper.Menus
             Menu = owMenu.Menu;
 
             InitConfigMenu(_menus.OwmlMenu, options);
-            var owmlButton = modsButton.Duplicate(OwmlButtonTitle);
+            var owmlButton = modsButton.Duplicate(OwmlTitle);
             owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
@@ -76,7 +75,7 @@ namespace OWML.ModHelper.Menus
 
         private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
         {
-            var modsTab = options.GameplayTab.Copy("MODS");
+            var modsTab = options.GameplayTab.Copy(ModsTitle);
             modsTab.BaseButtons.ForEach(x => x.Hide());
             modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
@@ -99,7 +98,10 @@ namespace OWML.ModHelper.Menus
             {
                 return index;
             }
-            var separator = new ModSeparator(menu) { Title = title };
+            var separator = new ModSeparator(menu)
+            {
+                Title = title
+            };
             menu.AddSeparator(separator, index++);
             separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
             foreach (var modConfigMenu in configMenus)
