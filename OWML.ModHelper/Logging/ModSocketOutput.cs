@@ -23,9 +23,8 @@ namespace OWML.ModHelper
                 ConnectToSocket();
             }
 
-            if (config.Verbose && manifest.Name == "OWML")
+            if (manifest.Name == "OWML")
             {
-                WriteLine("Verbose mode is enabled", MessageType.Info);
                 Application.logMessageReceived += OnLogMessageReceived;
             }
         }
