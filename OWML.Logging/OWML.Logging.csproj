@@ -47,7 +47,6 @@
     <Compile Include="ModLogger.cs" />
     <Compile Include="ModSocketOutput.cs" />
     <Compile Include="OutputWriter.cs" />
-    <Compile Include="OwmlConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketMessage.cs" />
   </ItemGroup>

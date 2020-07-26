@@ -66,7 +66,7 @@ namespace OWML.Logging
             {
                 var message = new SocketMessage
                 {
-                    SenderName = "OWML",
+                    SenderName = Constants.OwmlTitle,
                     SenderType = nameof(ModSocketOutput),
                     Type = MessageType.Error,
                     Message = $"Error while getting calling type : {ex.Message}"
