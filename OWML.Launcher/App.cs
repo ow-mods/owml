@@ -34,7 +34,7 @@ namespace OWML.Launcher
 
         public void Run(string[] args)
         {
-            _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
+            _writer.WriteLine($"Started OWML v{_owmlManifest.Version}", MessageType.Info);
 
             LocateGamePath();
 
@@ -84,18 +84,19 @@ namespace OWML.Launcher
         {
             if (!mods.Any())
             {
-                _writer.WriteLine("Warning: found no mods.");
+                _writer.WriteLine("Warning - No mods found.", MessageType.Warning);
                 return;
             }
             _writer.WriteLine("Found mods:");
             foreach (var modData in mods)
             {
                 var stateText = modData.Enabled ? "" : "(disabled)";
-                _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
+                var type = modData.Enabled ? MessageType.Message : MessageType.Warning;
+                _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}", type);
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
                 {
-                    _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                    _writer.WriteLine($"  Warning - Made for old version of OWML: v{modData.Manifest.OWMLVersion}", MessageType.Warning);
                 }
             }
         }
@@ -128,7 +129,7 @@ namespace OWML.Launcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine($"Error while applying VR patch: {ex}");
+                _writer.WriteLine($"Error while applying VR patch: {ex}", MessageType.Error);
             }
         }
 
@@ -150,7 +151,7 @@ namespace OWML.Launcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while starting game: " + ex.Message);
+                _writer.WriteLine($"Error while starting game: {ex.Message}", MessageType.Error);
             }
         }
 
