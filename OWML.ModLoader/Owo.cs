@@ -43,11 +43,6 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            if (_owmlConfig.Verbose)
-            {
-                _console.WriteLine("Verbose mode is enabled", MessageType.Info);
-                Application.logMessageReceived += OnLogMessageReceived;
-            }
             var mods = _modFinder.GetMods();
             var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
             if (changedSettings.Any())
@@ -84,14 +79,6 @@ namespace OWML.ModLoader
                 var initMod = InitializeMod(modType, helper);
                 _menus.ModsMenu.AddMod(modData, initMod);
                 _modList.Add(initMod);
-            }
-        }
-
-        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
-        {
-            if (type == LogType.Error || type == LogType.Exception)
-            {
-                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}", MessageType.Error);
             }
         }
 

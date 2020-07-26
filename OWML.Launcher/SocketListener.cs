@@ -98,10 +98,10 @@ namespace OWML.Launcher
                 {
                     data = JsonConvert.DeserializeObject<SocketMessage>(json);
                 }
-                catch (JsonReaderException ex)
+                catch (Exception ex)
                 {
                     ConsoleUtils.WriteByType(MessageType.Warning, $"Failed to process following message:{Separator}\n{json}{Separator}");
-                    ConsoleUtils.WriteByType(MessageType.Warning, $"Reason: {ex.Message}{Separator}");
+                    ConsoleUtils.WriteByType(MessageType.Warning, $"Reason: {ex.Message}");
                     continue;
                 }
 
