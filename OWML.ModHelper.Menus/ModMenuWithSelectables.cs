@@ -38,7 +38,7 @@ namespace OWML.ModHelper.Menus
 
             if (saveButton == null || resetButton == null || cancelButton == null)
             {
-                Console.WriteLine("Error: Failed to setup menu with selectables");
+                Console.WriteLine("Error - Failed to setup menu with selectables.");
                 return;
             }
 

@@ -62,7 +62,7 @@ namespace OWML.ModHelper.Menus
             _twoButtonPopup = parentCopy.transform.Find("TwoButton-Popup")?.GetComponent<PopupMenu>();
             if (_twoButtonPopup == null)
             {
-                Console.WriteLine("Error: Failed to setup warning popup");
+                Console.WriteLine("Error - Failed to setup warning popup.");
             }
 
             var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true); // InputField-Popup
@@ -93,7 +93,7 @@ namespace OWML.ModHelper.Menus
 
             if (layout == null)
             {
-                ModConsole.OwmlConsole.WriteLine("Error: failed to create combination visualizer in combination editor");
+                ModConsole.OwmlConsole.WriteLine("Error - Failed to create combination visualizer in combination editor.", MessageType.Error);
                 return;
             }
 

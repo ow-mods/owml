@@ -25,7 +25,7 @@ namespace OWML.ModHelper.Assets
             var bundle = AssetBundle.LoadFromFile(path);
             if (bundle == null)
             {
-                _console.WriteLine("Bundle is null");
+                _console.WriteLine("Error - Bundle is null.", MessageType.Error);
             }
             return bundle;
         }
@@ -107,7 +107,7 @@ namespace OWML.ModHelper.Assets
             }
             if (texture == null)
             {
-                _console.WriteLine("Texture is null");
+                _console.WriteLine("Error - Texture is null.", MessageType.Error);
             }
             var meshRenderer = modAsset.AddComponent<MeshRenderer>();
             meshRenderer.material.mainTexture = texture;
@@ -119,7 +119,7 @@ namespace OWML.ModHelper.Assets
             var mesh = _objImporter.ImportFile(objectPath);
             if (mesh == null)
             {
-                _console.WriteLine("Mesh is null");
+                _console.WriteLine("Error - Mesh is null.", MessageType.Error);
             }
             var meshFilter = modAsset.AddComponent<MeshFilter>();
             meshFilter.mesh = mesh;
@@ -138,7 +138,7 @@ namespace OWML.ModHelper.Assets
             }
             if (texture == null)
             {
-                _console.WriteLine("Texture is null");
+                _console.WriteLine("Error - Texture is null.", MessageType.Error);
             }
             var meshRenderer = modAsset.AddComponent<MeshRenderer>();
             meshRenderer.material.mainTexture = texture;
@@ -173,7 +173,7 @@ namespace OWML.ModHelper.Assets
             }
             if (clip == null)
             {
-                _console.WriteLine("Audio is null");
+                _console.WriteLine("Error - Audio is null.", MessageType.Error);
             }
             var audioSource = modAsset.AddComponent<AudioSource>();
             audioSource.clip = clip;

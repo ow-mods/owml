@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using OWML.Common;
 using OWML.Common.Menus;
 using OWML.Logging;
 using OWML.ModHelper.Events;
@@ -78,7 +79,7 @@ namespace OWML.ModHelper.Menus
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                ModConsole.OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
+                ModConsole.OwmlConsole.WriteLine("Warning - No button found with title or name: " + title, MessageType.Warning);
             }
             return button;
         }
@@ -302,7 +303,7 @@ namespace OWML.ModHelper.Menus
             {
                 return numberInput.Value;
             }
-            ModConsole.OwmlConsole.WriteLine("Error: no input found with name " + key);
+            ModConsole.OwmlConsole.WriteLine($"Error - No input found with name {key}", MessageType.Error);
             return null;
         }
 
@@ -350,7 +351,7 @@ namespace OWML.ModHelper.Menus
                 numberInput.Value = Convert.ToSingle(val);
                 return;
             }
-            ModConsole.OwmlConsole.WriteLine("Error: no input found with name " + key);
+            ModConsole.OwmlConsole.WriteLine("Error - No input found with name " + key, MessageType.Error);
         }
 
         protected void InvokeOnInit()

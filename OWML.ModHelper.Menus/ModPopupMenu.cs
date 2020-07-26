@@ -1,4 +1,5 @@
 ﻿using System;
+using OWML.Common;
 using OWML.Common.Menus;
 using OWML.Logging;
 using OWML.ModHelper.Events;
@@ -51,7 +52,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                ModConsole.OwmlConsole.WriteLine("Warning: can't open menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning - Can't open menu, it doesn't exist.", MessageType.Warning);
                 return;
             }
             SelectFirst();
@@ -62,7 +63,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                ModConsole.OwmlConsole.WriteLine("Warning: can't close menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning - Can't close menu, it doesn't exist.", MessageType.Warning);
                 return;
             }
             Menu.EnableMenu(false);
@@ -84,7 +85,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                ModConsole.OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning - Can't copy menu, it doesn't exist.", MessageType.Warning);
                 return null;
             }
             var menu = Object.Instantiate(Menu, Menu.transform.parent);
