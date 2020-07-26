@@ -22,19 +22,19 @@ namespace OWML.ModLoader
                                  Config != null && Config.RequireVR ||
                                  Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
 
-        private readonly IModConfig _configSnapshot;
+        private IModConfig _configSnapshot;
 
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
             Manifest = manifest;
             Config = config;
             DefaultConfig = defaultConfig;
-            _configSnapshot = config.Copy();
+            UpdateSnapshot();
         }
 
         public void UpdateSnapshot()
         {
-            _configSnapshot.Enabled = Enabled;
+            _configSnapshot = Config.Copy();
         }
 
         public void ResetConfigToDefaults()
