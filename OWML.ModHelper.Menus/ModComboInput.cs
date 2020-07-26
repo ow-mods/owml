@@ -81,7 +81,7 @@ namespace OWML.ModHelper.Menus
         private void OnCancel()
         {
             InputMenu.OnConfirm -= OnConfirm;
-            InputMenu.OnClose -= OnCancel;
+            InputMenu.OnClosed -= OnCancel;
         }
 
         public IModComboInput Copy()
