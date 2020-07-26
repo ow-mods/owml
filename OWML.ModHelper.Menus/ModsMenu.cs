@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
@@ -133,9 +132,9 @@ namespace OWML.ModHelper.Menus
         {
             if (!options.Menu.IsMenuEnabled())
             {
-                if (_modConfigMenus.Any(ModMenu => ModMenu.ModData.RequireReload))
+                if (_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
                 {
-                    _menus.MessagePopup.Menu.StartCoroutine(ShowReloadWarning());
+                    options.Menu.StartCoroutine(ShowReloadWarning());
                 }
             }
         }
