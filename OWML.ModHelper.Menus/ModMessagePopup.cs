@@ -55,7 +55,7 @@ namespace OWML.ModHelper.Menus
             var okPrompt = new ScreenPrompt(InputLibrary.confirm, okMessage);
             var cancelPrompt = new ScreenPrompt(InputLibrary.cancel, cancelMessage);
             _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, addCancel ? InputLibrary.cancel : null,
-               okPrompt, okPrompt, true, addCancel);
+               okPrompt, cancelPrompt, true, addCancel);
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
