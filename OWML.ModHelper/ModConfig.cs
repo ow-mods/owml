@@ -21,7 +21,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                OwmlConsole.WriteLine("Error: setting not found: " + key);
+                ModConsole.OwmlConsole.WriteLine("Error: setting not found: " + key);
                 return default;
             }
 
@@ -39,7 +39,7 @@ namespace OWML.ModHelper
             }
             catch (InvalidCastException)
             {
-                OwmlConsole.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}");
+                ModConsole.OwmlConsole.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}");
                 return default;
             }
         }
@@ -64,7 +64,7 @@ namespace OWML.ModHelper
             }
             catch (ArgumentException ex)
             {
-                OwmlConsole.WriteLine($"Error: Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
+                ModConsole.OwmlConsole.WriteLine($"Error: Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
                 return default;
             }
         }
@@ -73,7 +73,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                OwmlConsole.WriteLine("Error: setting not found: " + key);
+                ModConsole.OwmlConsole.WriteLine("Error: setting not found: " + key);
                 return;
             }
 

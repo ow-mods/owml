@@ -33,7 +33,6 @@ namespace OWML.ModLoader
             var console = new ModSocketOutput(owmlConfig, logger, owmlManifest);
             console.WriteLine("Mod loader has been initialized.");
             console.WriteLine($"For detailed log, see Logs/OWML.Log.{startTime}.txt");
-            OwmlConsole.Init(console);
             var modSorter = new ModSorter(console);
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);

@@ -11,7 +11,6 @@ namespace OWML.ModHelper.Menus
     public class ModsMenu : ModPopupMenu, IModsMenu
     {
         private const string ModsTitle = "MODS";
-        private const string OwmlTitle = "OWML";
 
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
@@ -53,7 +52,7 @@ namespace OWML.ModHelper.Menus
             Menu = owMenu.Menu;
 
             InitConfigMenu(_menus.OwmlMenu, options);
-            var owmlButton = modsButton.Duplicate(OwmlTitle);
+            var owmlButton = modsButton.Duplicate(Constants.OwmlTitle);
             owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 

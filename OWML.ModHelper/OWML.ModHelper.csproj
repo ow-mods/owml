@@ -78,7 +78,6 @@
     <Compile Include="JsonHelper.cs" />
     <Compile Include="Logging\ConsoleUtils.cs" />
     <Compile Include="Logging\ModSocketOutput.cs" />
-    <Compile Include="Logging\OwmlConsole.cs" />
     <Compile Include="Logging\SocketMessage.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />

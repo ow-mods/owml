@@ -5,6 +5,8 @@ namespace OWML.ModHelper
 {
     public abstract class ModConsole : IModConsole
     {
+        public static ModConsole OwmlConsole { get; private set; }
+
         protected readonly IModLogger Logger;
         protected readonly IModManifest Manifest;
         protected readonly IOwmlConfig OwmlConfig;
@@ -20,6 +22,11 @@ namespace OWML.ModHelper
             Logger = logger;
             Manifest = manifest;
             OwmlConfig = config;
+
+            if (Manifest.Name == Constants.OwmlTitle)
+            {
+                OwmlConsole = this;
+            }
         }
     }
 }

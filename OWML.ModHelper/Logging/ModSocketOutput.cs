@@ -67,8 +67,8 @@ namespace OWML.ModHelper
             {
                 var message = new SocketMessage
                 {
-                    SenderName = "OWML",
-                    SenderType = "ModSocketOutput",
+                    SenderName = Constants.OwmlTitle,
+                    SenderType = nameof(ModSocketOutput),
                     Type = MessageType.Error,
                     Message = $"Error while getting calling type : {ex.Message}"
                 };
