@@ -61,7 +61,7 @@ namespace OWML.Patcher
             }
             if (uncopiedFiles.Any())
             {
-                _writer.WriteLine("Warning - Failed to copy the following file(s) :", MessageType.Warning);
+                _writer.WriteLine("Warning - Failed to copy the following files:", MessageType.Warning);
                 uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
             }
         }
