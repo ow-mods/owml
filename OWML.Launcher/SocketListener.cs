@@ -89,7 +89,7 @@ namespace OWML.Launcher
             var jsons = message.Split('\n');
             foreach (var json in jsons)
             {
-                if (json == "")
+                if (string.IsNullOrWhiteSpace(json))
                 {
                     continue;
                 }
