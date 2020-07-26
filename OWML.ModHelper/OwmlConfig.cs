@@ -8,9 +8,6 @@ namespace OWML.ModHelper
         [JsonProperty("gamePath")]
         public string GamePath { get; set; }
 
-        [JsonProperty("verbose")]
-        public bool Verbose { get; set; }
-
         [JsonProperty("combinationsBlockInput")]
         public bool BlockInput { get; set; }
 
