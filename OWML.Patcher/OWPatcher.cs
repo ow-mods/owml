@@ -47,9 +47,16 @@ namespace OWML.Patcher
                 Constants.OwmlConfigFileName,
                 Constants.OwmlDefaultConfigFileName
             };
-            foreach (var filename in filesToCopy)
+            try
             {
-                File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
+                foreach (var filename in filesToCopy)
+                {
+                    File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
+                }
+            }
+            catch
+            {
+                _writer.WriteLine("Files in use - assuming already copied.");
             }
         }
 
