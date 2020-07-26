@@ -14,7 +14,7 @@ namespace OWML.ModHelper.Assets
     public class ObjImporter
     {
 
-        private struct meshStruct
+        private struct MeshStruct
         {
             public Vector3[] vertices;
             public Vector3[] normals;
@@ -32,8 +32,8 @@ namespace OWML.ModHelper.Assets
         // Use this for initialization
         public Mesh ImportFile(string filePath)
         {
-            var newMesh = createMeshStruct(filePath);
-            populateMeshStruct(ref newMesh);
+            var newMesh = CreateMeshStruct(filePath);
+            PopulateMeshStruct(ref newMesh);
 
             var newVerts = new Vector3[newMesh.faceData.Length];
             var newUVs = new Vector2[newMesh.faceData.Length];
@@ -53,12 +53,13 @@ namespace OWML.ModHelper.Assets
                 i++;
             }
 
-            var mesh = new Mesh();
-
-            mesh.vertices = newVerts;
-            mesh.uv = newUVs;
-            mesh.normals = newNormals;
-            mesh.triangles = newMesh.triangles;
+            var mesh = new Mesh
+            {
+                vertices = newVerts,
+                uv = newUVs,
+                normals = newNormals,
+                triangles = newMesh.triangles
+            };
 
             mesh.RecalculateBounds();
             //mesh.Optimize();
@@ -66,15 +67,17 @@ namespace OWML.ModHelper.Assets
             return mesh;
         }
 
-        private static meshStruct createMeshStruct(string filename)
+        private static MeshStruct CreateMeshStruct(string filename)
         {
             var triangles = 0;
             var vertices = 0;
             var vt = 0;
             var vn = 0;
             var face = 0;
-            var mesh = new meshStruct();
-            mesh.fileName = filename;
+            var mesh = new MeshStruct
+            {
+                fileName = filename
+            };
             var stream = File.OpenText(filename);
             var entireText = stream.ReadToEnd();
             stream.Close();
@@ -132,7 +135,7 @@ namespace OWML.ModHelper.Assets
             return mesh;
         }
 
-        private static void populateMeshStruct(ref meshStruct mesh)
+        private static void PopulateMeshStruct(ref MeshStruct mesh)
         {
             var stream = File.OpenText(mesh.fileName);
             var entireText = stream.ReadToEnd();
