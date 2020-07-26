@@ -11,6 +11,7 @@ namespace OWML.Launcher
 {
     public class SocketListener
     {
+        private const string Separator = "\n--------------------------------";
         private const int BufferSize = 1024;
         private static int _port;
         private static TcpListener _server;
@@ -43,6 +44,10 @@ namespace OWML.Launcher
             {
                 ConsoleUtils.WriteByType(MessageType.Error, $"Error in socket listener: {ex}");
             }
+            catch (Exception ex)
+            {
+                ConsoleUtils.WriteByType(MessageType.Error, $"Error while listening: {ex}");
+            }
             finally
             {
                 _server?.Stop();
@@ -73,23 +78,40 @@ namespace OWML.Launcher
                     ProcessMessage(bytes, i);   
                 }
 
+                ConsoleUtils.WriteByType(MessageType.Success, "Closing client!");
                 client.Close();
             }
         }
 
         private void ProcessMessage(byte[] bytes, int count)
         {
-            var json = Encoding.UTF8.GetString(bytes, 0, count);
-
-            var data = JsonConvert.DeserializeObject<SocketMessage>(json);
-
-            if (data.Type == MessageType.Quit)
+            var message = Encoding.UTF8.GetString(bytes, 0, count);
+            var jsons = message.Split('\n');
+            foreach (var json in jsons)
             {
-                Environment.Exit(0);
-            }
+                if (json == "")
+                {
+                    continue;
+                }
+                SocketMessage data;
+                try
+                {
+                    data = JsonConvert.DeserializeObject<SocketMessage>(json);
+                }
+                catch (JsonReaderException ex)
+                {
+                    ConsoleUtils.WriteByType(MessageType.Warning, $"Failed to process following message:{Separator}\n{json}{Separator}");
+                    ConsoleUtils.WriteByType(MessageType.Warning, $"Reason: {ex.Message}{Separator}");
+                    continue;
+                }
 
-            ConsoleUtils.WriteByType(data.Type,
-                $"[{data.SenderName}.{data.SenderType}] : {data.Message}");
+                if (data.Type == MessageType.Quit)
+                {
+                    Environment.Exit(0);
+                }
+                ConsoleUtils.WriteByType(data.Type,
+                    $"[{data.SenderName}.{data.SenderType}] : {data.Message}");
+            }
         }
     }
 }
