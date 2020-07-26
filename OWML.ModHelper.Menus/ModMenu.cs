@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,12 +28,6 @@ namespace OWML.ModHelper.Menus
         public List<IModSeparator> Separators { get; private set; }
 
         protected LayoutGroup Layout;
-        protected readonly IModConsole OwmlConsole;
-
-        public ModMenu(IModConsole console)
-        {
-            OwmlConsole = console;
-        }
 
         public virtual void Initialize(Menu menu)
         {
@@ -84,7 +78,7 @@ namespace OWML.ModHelper.Menus
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
+                ModConsole.OwmlConsole.WriteLine("Warning: no button found with title or name: " + title);
             }
             return button;
         }
@@ -101,7 +95,7 @@ namespace OWML.ModHelper.Menus
             var original = Buttons?.FirstOrDefault();
             if (original == null)
             {
-                OwmlConsole.WriteLine("Warning: no buttons to copy");
+                ModConsole.OwmlConsole.WriteLine("Warning: no buttons to copy");
                 return null;
             }
 
@@ -308,7 +302,7 @@ namespace OWML.ModHelper.Menus
             {
                 return numberInput.Value;
             }
-            OwmlConsole.WriteLine("Error: no input found with name " + key);
+            ModConsole.OwmlConsole.WriteLine("Error: no input found with name " + key);
             return null;
         }
 
@@ -356,7 +350,7 @@ namespace OWML.ModHelper.Menus
                 numberInput.Value = Convert.ToSingle(val);
                 return;
             }
-            OwmlConsole.WriteLine("Error: no input found with name " + key);
+            ModConsole.OwmlConsole.WriteLine("Error: no input found with name " + key);
         }
 
         protected void InvokeOnInit()

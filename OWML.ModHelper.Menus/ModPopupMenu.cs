@@ -1,6 +1,6 @@
 ﻿using System;
-using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper.Events;
 using Object = UnityEngine.Object;
 using UnityEngine.UI;
@@ -20,8 +20,6 @@ namespace OWML.ModHelper.Menus
             get => _title.text;
             set => _title.text = value;
         }
-
-        public ModPopupMenu(IModConsole console) : base(console) { }
 
         public override void Initialize(Menu menu, LayoutGroup layoutGroup)
         {
@@ -53,7 +51,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                OwmlConsole.WriteLine("Warning: can't open menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning: can't open menu, it doesn't exist.");
                 return;
             }
             SelectFirst();
@@ -64,7 +62,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                OwmlConsole.WriteLine("Warning: can't close menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning: can't close menu, it doesn't exist.");
                 return;
             }
             Menu.EnableMenu(false);
@@ -86,11 +84,11 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
                 return null;
             }
             var menu = Object.Instantiate(Menu, Menu.transform.parent);
-            var modMenu = new ModPopupMenu(OwmlConsole);
+            var modMenu = new ModPopupMenu();
             modMenu.Initialize(menu);
             return modMenu;
         }
@@ -107,7 +105,7 @@ namespace OWML.ModHelper.Menus
         {
             if (Menu == null)
             {
-                OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
+                ModConsole.OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
                 return null;
             }
             var menu = Copy();

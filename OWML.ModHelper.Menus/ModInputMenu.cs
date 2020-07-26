@@ -1,5 +1,4 @@
 ﻿using System;
-using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using Object = UnityEngine.Object;
@@ -13,8 +12,6 @@ namespace OWML.ModHelper.Menus
         public event Action OnCancel;
 
         private PopupInputMenu _inputMenu;
-
-        public ModInputMenu(IModConsole console) : base(console) { }
 
         public void Initialize(PopupInputMenu menu)
         {

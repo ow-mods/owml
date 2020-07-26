@@ -17,7 +17,6 @@ namespace OWML.ModLoader
     {
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
-        private readonly IModConsole _console;
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
@@ -27,13 +26,12 @@ namespace OWML.ModLoader
 
         private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
+        public Owo(IModFinder modFinder, IModLogger logger,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
             IModInputHandler inputHandler, ModSorter sorter, string logFileName)
         {
             _modFinder = modFinder;
             _logger = logger;
-            _console = console;
             _owmlConfig = owmlConfig;
             _menus = menus;
             _harmonyHelper = harmonyHelper;
@@ -46,7 +44,7 @@ namespace OWML.ModLoader
         {
             if (_owmlConfig.Verbose)
             {
-                _console.WriteLine("Verbose mode is enabled");
+                ModConsole.OwmlConsole.WriteLine("Verbose mode is enabled");
                 Application.logMessageReceived += OnLogMessageReceived;
             }
             var mods = _modFinder.GetMods();
@@ -67,7 +65,7 @@ namespace OWML.ModLoader
                 var missingDependencies = modData.Config.Enabled ?
                     modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
                     new List<string>();
-                missingDependencies.ForEach(dependency => _console.WriteLine(
+                missingDependencies.ForEach(dependency => ModConsole.OwmlConsole.WriteLine(
                     $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
                 var modType = LoadMod(modData);
                 if (modType == null || missingDependencies.Any())
@@ -86,7 +84,7 @@ namespace OWML.ModLoader
         {
             if (type == LogType.Error || type == LogType.Exception)
             {
-                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
+                ModConsole.OwmlConsole.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
@@ -106,7 +104,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
+                ModConsole.OwmlConsole.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
                 return null;
             }
         }
@@ -138,7 +136,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
+                ModConsole.OwmlConsole.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
                 return null;
             }
         }

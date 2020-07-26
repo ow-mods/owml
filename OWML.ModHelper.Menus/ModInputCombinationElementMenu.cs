@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
 using System.Linq;
+using OWML.Logging;
 using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
@@ -24,7 +25,7 @@ namespace OWML.ModHelper.Menus
         private IModInputCombinationMenu _combinationMenu;
         private IModInputCombinationElement _element;
 
-        public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler) : base(console)
+        public ModInputCombinationElementMenu(IModInputHandler inputHandler)
         {
             _inputHandler = inputHandler;
         }
@@ -92,7 +93,7 @@ namespace OWML.ModHelper.Menus
 
             if (layout == null)
             {
-                OwmlConsole.WriteLine("Error: failed to create combination visualizer in combination editor");
+                ModConsole.OwmlConsole.WriteLine("Error: failed to create combination visualizer in combination editor");
                 return;
             }
 

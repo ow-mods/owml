@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OWML.Common;
 using OWML.Common.Menus;
 using Object = UnityEngine.Object;
 using UnityEngine;
@@ -13,14 +12,9 @@ namespace OWML.ModHelper.Menus
     {
         public event Action<string> OnConfirm;
 
-        public List<IModInputCombinationElement> CombinationElements { get; }
+        public List<IModInputCombinationElement> CombinationElements { get; } = new List<IModInputCombinationElement>();
 
         private IModInputCombinationElement _combinationElementTemplate;
-
-        public ModInputCombinationMenu(IModConsole console) : base(console)
-        {
-            CombinationElements = new List<IModInputCombinationElement>();
-        }
 
         public string GenerateCombination()
         {
