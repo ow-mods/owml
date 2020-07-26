@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OWML.ModHelper
 {
-    public class TaskDelayer : MonoBehaviour
+    public class ModTaskDelayer : MonoBehaviour
     {
         private static List<Action> _actions = new List<Action>();
 

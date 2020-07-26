@@ -136,7 +136,7 @@ namespace OWML.ModHelper.Menus
             {
                 if (_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
                 {
-                    TaskDelayer.FireOnNextUpdate(ShowReloadWarning);
+                    ModTaskDelayer.FireOnNextUpdate(ShowReloadWarning);
                 }
             }
         }
