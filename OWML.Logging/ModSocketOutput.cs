@@ -23,7 +23,7 @@ namespace OWML.Logging
                 ConnectToSocket();
             }
 
-            if (config.Verbose && manifest.Name == "OWML")
+            if (config.Verbose && manifest.Name == Constants.OwmlTitle)
             {
                 WriteLine("Verbose mode is enabled", MessageType.Info);
                 Application.logMessageReceived += OnLogMessageReceived;
