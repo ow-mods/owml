@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus
         public IModInputMenu InputMenu { get; }
         public IModInputCombinationElementMenu InputCombinationElementMenu { get; }
         public IModInputCombinationMenu InputCombinationMenu { get; }
+        public IModMessagePopup MessagePopup { get; }
 
         public ModMenus(IModConsole console, IModEvents events, IModInputHandler inputHandler,
             IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
@@ -24,6 +25,7 @@ namespace OWML.ModHelper.Menus
             OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
             InputMenu = new ModInputMenu(console);
             InputCombinationElementMenu = new ModInputCombinationElementMenu(console, inputHandler);
+            MessagePopup = InputCombinationElementMenu.MessagePopup;
             InputCombinationMenu = new ModInputCombinationMenu(console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);

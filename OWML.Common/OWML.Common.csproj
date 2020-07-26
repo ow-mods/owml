@@ -46,6 +46,7 @@
     <Compile Include="Menus\IModSeparator.cs" />
     <Compile Include="Menus\IModInputBase.cs" />
     <Compile Include="Menus\IModFieldInput.cs" />
+    <Compile Include="Menus\IModMessagePopup.cs" />
     <Compile Include="Menus\IModMenuWithSelectables.cs" />
     <Compile Include="Menus\IModLayoutManager.cs" />
     <Compile Include="Menus\IModInputCombinationElementMenu.cs" />
