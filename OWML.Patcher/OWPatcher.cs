@@ -47,7 +47,7 @@ namespace OWML.Patcher
                 Constants.OwmlConfigFileName,
                 Constants.OwmlDefaultConfigFileName
             };
-            var fileCopyFailed = false;
+            var uncopiedFiles = new List<string>();
             foreach (var filename in filesToCopy)
             {
                 try
@@ -56,12 +56,13 @@ namespace OWML.Patcher
                 }
                 catch
                 {
-                    fileCopyFailed = true;
+                    uncopiedFiles.Add(filename);
                 }
             }
-            if (fileCopyFailed)
+            if (uncopiedFiles.Any())
             {
-                _writer.WriteLine("Error - Failed to copy one or more file/s.", MessageType.Error);
+                _writer.WriteLine("Warning - Failed to copy the following file(s) :", MessageType.Warning);
+                uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
             }
         }
 
