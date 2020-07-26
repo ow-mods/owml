@@ -47,16 +47,21 @@ namespace OWML.Patcher
                 Constants.OwmlConfigFileName,
                 Constants.OwmlDefaultConfigFileName
             };
-            try
+            var fileCopyFailed = false;
+            foreach (var filename in filesToCopy)
             {
-                foreach (var filename in filesToCopy)
+                try
                 {
                     File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
                 }
+                catch
+                {
+                    fileCopyFailed = true;
+                }
             }
-            catch
+            if (fileCopyFailed)
             {
-                _writer.WriteLine("Files in use - assuming already copied.");
+                _writer.WriteLine("Error - Failed to copy one or more file/s.", MessageType.Error);
             }
         }
 
