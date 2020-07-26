@@ -16,7 +16,7 @@ namespace OWML.Launcher
             SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
             var writer = OutputFactory.CreateOutput(owmlConfig, null, owmlManifest,
-                CommandLineArguments.HasArgument(Constants.ConsolePortArgument));
+                CommandLineArguments.HasArgument(Constants.ConsolePortArgument), false);
             var modFinder = new ModFinder(owmlConfig, writer);
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);

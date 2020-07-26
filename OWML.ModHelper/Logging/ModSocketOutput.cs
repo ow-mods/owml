@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json;
 using OWML.Common;
+using UnityEngine;
 
 namespace OWML.ModHelper
 {
@@ -14,12 +15,33 @@ namespace OWML.ModHelper
         private readonly int _port;
         private static Socket _socket;
 
-        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
+        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest, bool listenToUnity) : base(config, logger, manifest)
         {
             if (_socket == null)
             {
                 _port = config.SocketPort;
                 ConnectToSocket();
+            }
+
+            if (config.Verbose && listenToUnity)
+            {
+                WriteLine("Verbose mode is enabled", MessageType.Info);
+                Application.logMessageReceived += OnLogMessageReceived;
+            }
+        }
+
+        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
+        {
+            if (type == LogType.Error || type == LogType.Exception)
+            {
+                var socketMessage = new SocketMessage
+                {
+                    SenderName = "Unity",
+                    SenderType = type.ToString(),
+                    Type = MessageType.Error,
+                    Message = $"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}"
+                };
+                WriteToSocket(JsonConvert.SerializeObject(socketMessage));
             }
         }
 

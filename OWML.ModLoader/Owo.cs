@@ -43,11 +43,6 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            if (_owmlConfig.Verbose)
-            {
-                _console.WriteLine("Verbose mode is enabled", MessageType.Info);
-                Application.logMessageReceived += OnLogMessageReceived;
-            }
             var mods = _modFinder.GetMods();
             var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
             if (changedSettings.Any())
@@ -87,14 +82,6 @@ namespace OWML.ModLoader
             }
         }
 
-        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
-        {
-            if (type == LogType.Error || type == LogType.Exception)
-            {
-                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}", MessageType.Error);
-            }
-        }
-
         private Type LoadMod(IModData modData)
         {
             if (!modData.Config.Enabled)
@@ -119,7 +106,7 @@ namespace OWML.ModLoader
         private IModHelper CreateModHelper(IModData modData)
         {
             var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
-            var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest, true);
+            var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest, true, false);
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
