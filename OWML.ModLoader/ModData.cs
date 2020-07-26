@@ -21,15 +21,15 @@ namespace OWML.ModLoader
         public bool RequireVR => Manifest.RequireVR ||
                                  Config != null && Config.RequireVR ||
                                  Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
-
-        private IModConfig _configSnapshot;
+        
+        private readonly IModConfig _configSnapshot;
 
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
             Manifest = manifest;
             Config = config;
             DefaultConfig = defaultConfig;
-            _configSnapshot = new ModConfig() { Enabled = Enabled };
+            _configSnapshot = config.Copy();
         }
 
         public void UpdateSnapshot()
@@ -39,8 +39,7 @@ namespace OWML.ModLoader
 
         public void ResetConfigToDefaults()
         {
-            Config.Enabled = DefaultConfig.Enabled;
-            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
+            Config = DefaultConfig.Copy();
         }
 
         public bool FixConfigs()
