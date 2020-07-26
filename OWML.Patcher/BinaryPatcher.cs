@@ -59,7 +59,7 @@ namespace OWML.Patcher
             BackupFile(filePath);
             var patchedBytes = CreatePatchedFileBytes(fileBytes, patchStartIndex);
             File.WriteAllBytes(filePath, patchedBytes);
-            _writer.WriteLine("Successfully patched globalgamemanagers.");
+            _writer.WriteLine("Successfully patched globalgamemanagers.", MessageType.Success);
         }
 
         private int FindPatchStartIndex(byte[] fileBytes, int startIndex, int endIndex)

@@ -34,8 +34,9 @@ namespace OWML.ModLoader
             Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
         }
 
-        public void FixConfigs()
+        public bool FixConfigs()
         {
+            var settingsChanged = false;
             var storage = new ModStorage(Manifest);
             if (Config == null && DefaultConfig == null)
             {
@@ -48,18 +49,19 @@ namespace OWML.ModLoader
             }
             else if (DefaultConfig != null)
             {
-                MakeConfigConsistentWithDefault();
+                settingsChanged = !MakeConfigConsistentWithDefault();
             }
             storage.Save(Config, Constants.ModConfigFileName);
+            return settingsChanged;
         }
 
-        private void MakeConfigConsistentWithDefault()
+        private bool MakeConfigConsistentWithDefault()
         {
             if (DefaultConfig == null)
             {
-                return;
+                return true;
             }
-
+            var wasCompatible = true;
             var toRemove = Config.Settings.Keys.Except(DefaultConfig.Settings.Keys).ToList();
             toRemove.ForEach(key => Config.Settings.Remove(key));
 
@@ -68,15 +70,16 @@ namespace OWML.ModLoader
             {
                 if (!IsSettingSameType(Config.Settings[key], DefaultConfig.Settings[key]))
                 {
-                    TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]);
+                    wasCompatible = TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]) && wasCompatible;
                 }
                 else if (DefaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
                 {
-                    UpdateSelector(key, Config.Settings[key], objectValue);
+                    wasCompatible = UpdateSelector(key, Config.Settings[key], objectValue) && wasCompatible;
                 }
             }
 
             AddMissingDefaults(DefaultConfig);
+            return wasCompatible;
         }
 
         private bool UpdateSelector(string key, object userSetting, JObject modSetting)

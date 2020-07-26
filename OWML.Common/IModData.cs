@@ -9,6 +9,6 @@
         bool RequireVR { get; }
 
         void ResetConfigToDefaults();
-        void FixConfigs();
+        bool FixConfigs();
     }
 }
