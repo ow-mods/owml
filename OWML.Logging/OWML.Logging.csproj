@@ -82,6 +82,7 @@
     <Compile Include="OutputWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketMessage.cs" />
+    <Compile Include="UnityLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">

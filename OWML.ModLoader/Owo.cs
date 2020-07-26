@@ -42,6 +42,8 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
+            new UnityLogger().Start();
+
             var mods = _modFinder.GetMods();
             var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
             if (changedSettings.Any())
