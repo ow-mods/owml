@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
@@ -137,14 +136,13 @@ namespace OWML.ModHelper.Menus
             {
                 if (_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
                 {
-                    options.Menu.StartCoroutine(ShowReloadWarning());
+                    OwmlBehaviour.FireOnNextUpdate(ShowReloadWarning);
                 }
             }
         }
 
-        private IEnumerator ShowReloadWarning()
+        private void ShowReloadWarning()
         {
-            yield return new WaitForEndOfFrame();
             _menus.MessagePopup.ShowMessage("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
             _menus.MessagePopup.OnConfirm += OnPopupConfirm;
             _menus.MessagePopup.OnCancel += OnPopupCancel;
