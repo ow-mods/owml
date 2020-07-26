@@ -21,7 +21,7 @@ namespace OWML.ModLoader
         public bool RequireVR => Manifest.RequireVR ||
                                  Config != null && Config.RequireVR ||
                                  Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
-        
+
         private readonly IModConfig _configSnapshot;
 
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
