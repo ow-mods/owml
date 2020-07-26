@@ -32,17 +32,27 @@ namespace OWML.ModHelper
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            if (type == LogType.Error || type == LogType.Exception)
+            if (type != LogType.Error && type != LogType.Exception || IsIgnored(message))
             {
-                var socketMessage = new SocketMessage
-                {
-                    SenderName = "Unity",
-                    SenderType = type.ToString(),
-                    Type = MessageType.Error,
-                    Message = $"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}"
-                };
-                WriteToSocket(JsonConvert.SerializeObject(socketMessage));
+                return;
             }
+            var socketMessage = new SocketMessage
+            {
+                SenderName = "Unity",
+                SenderType = type.ToString(),
+                Type = MessageType.Error,
+                Message = $"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}"
+            };
+            WriteToSocket(JsonConvert.SerializeObject(socketMessage));
+        }
+
+        private bool IsIgnored(string message)
+        {
+            return new[]
+            {
+                "requires a value from JoystickButton0 to JoystickButton19",
+                "MISSING TEXTURE"
+            }.Contains(message);
         }
 
         [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
