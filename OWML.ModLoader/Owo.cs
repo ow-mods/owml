@@ -43,13 +43,15 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            if (_owmlConfig.Verbose)
-            {
-                _console.WriteLine("Verbose mode is enabled");
-                Application.logMessageReceived += OnLogMessageReceived;
-            }
+            new UnityLogger().Start();
+
             var mods = _modFinder.GetMods();
-            mods.ForEach(mod => mod.FixConfigs());
+            var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
+            if (changedSettings.Any())
+            {
+                _console.WriteLine("Warning - Settings of following mods changed:\n\t" + string.Join("\n\t", changedSettings),
+                    MessageType.Warning);
+            }
 
             var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
             var sortedNormal = _sorter.SortMods(normalMods);
@@ -67,7 +69,8 @@ namespace OWML.ModLoader
                     modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
                     new List<string>();
                 missingDependencies.ForEach(dependency => _console.WriteLine(
-                    $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!"));
+                    $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!",
+                    MessageType.Error));
                 var modType = LoadMod(modData);
                 if (modType == null || missingDependencies.Any())
                 {
@@ -78,14 +81,6 @@ namespace OWML.ModLoader
                 var initMod = InitializeMod(modType, helper);
                 _menus.ModsMenu.AddMod(modData, initMod);
                 _modList.Add(initMod);
-            }
-        }
-
-        private void OnLogMessageReceived(string message, string stackTrace, LogType type)
-        {
-            if (type == LogType.Error || type == LogType.Exception)
-            {
-                _console.WriteLine($"Unity log message: {message}. Stack trace: {stackTrace?.Trim()}");
             }
         }
 
@@ -105,7 +100,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}");
+                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}", MessageType.Error);
                 return null;
             }
         }
@@ -113,7 +108,7 @@ namespace OWML.ModLoader
         private IModHelper CreateModHelper(IModData modData)
         {
             var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
-            var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest);
+            var console = OutputFactory.CreateOutput(_owmlConfig, _logger, modData.Manifest, true);
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
@@ -137,7 +132,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}");
+                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}", MessageType.Error);
                 return null;
             }
         }

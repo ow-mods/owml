@@ -16,19 +16,17 @@ namespace OWML.Launcher
         private readonly IModManifest _owmlManifest;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
-        private readonly OutputListener _listener;
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
 
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            OutputListener listener, PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
+            PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
             _writer = writer;
             _modFinder = modFinder;
-            _listener = listener;
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
@@ -36,19 +34,13 @@ namespace OWML.Launcher
 
         public void Run(string[] args)
         {
-            _writer.WriteLine($"Started OWML v{_owmlManifest.Version}");
+            _writer.WriteLine($"Started OWML v{_owmlManifest.Version}", MessageType.Info);
 
             LocateGamePath();
 
             CopyGameFiles();
 
             CreateLogsDirectory();
-
-            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
-            if (!hasPortArgument)
-            {
-                ListenForOutput();
-            }
 
             var mods = _modFinder.GetMods();
 
@@ -58,6 +50,7 @@ namespace OWML.Launcher
 
             StartGame(args);
 
+            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
             if (hasPortArgument)
             {
                 ExitConsole();
@@ -91,18 +84,19 @@ namespace OWML.Launcher
         {
             if (!mods.Any())
             {
-                _writer.WriteLine("Warning: found no mods.");
+                _writer.WriteLine("Warning - No mods found.", MessageType.Warning);
                 return;
             }
             _writer.WriteLine("Found mods:");
             foreach (var modData in mods)
             {
                 var stateText = modData.Enabled ? "" : "(disabled)";
-                _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}");
+                var type = modData.Enabled ? MessageType.Message : MessageType.Warning;
+                _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}", type);
 
                 if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
                 {
-                    _writer.WriteLine($"  Warning: made for old version of OWML: v{modData.Manifest.OWMLVersion}");
+                    _writer.WriteLine($"  Warning - Made for old version of OWML: v{modData.Manifest.OWMLVersion}", MessageType.Warning);
                 }
             }
         }
@@ -114,25 +108,6 @@ namespace OWML.Launcher
             return owmlVersionSplit.Length == modVersionSplit.Length &&
                    owmlVersionSplit[0] == modVersionSplit[0] &&
                    owmlVersionSplit[1] == modVersionSplit[1];
-        }
-
-        private void ListenForOutput()
-        {
-            _listener.OnOutput += OnOutput;
-            _listener.Start();
-        }
-
-        private void OnOutput(string s)
-        {
-            var lines = s.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                _writer.WriteLine(line);
-                if (line.EndsWith(Constants.QuitKeyPhrase))
-                {
-                    ExitConsole();
-                }
-            }
         }
 
         private bool HasVrMod(List<IModData> mods)
@@ -154,20 +129,29 @@ namespace OWML.Launcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine($"Error while applying VR patch: {ex}");
+                _writer.WriteLine($"Error while applying VR patch: {ex}", MessageType.Error);
             }
         }
 
         private void StartGame(string[] args)
         {
             _writer.WriteLine("Starting game...");
+
+            if (args.Contains("-consolePort"))
+            {
+                var index = Array.IndexOf(args, "-consolePort");
+                var list = new List<string>(args);
+                list.RemoveRange(index, 2);
+                args = list.ToArray();
+            }
+
             try
             {
                 Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while starting game: " + ex.Message);
+                _writer.WriteLine($"Error while starting game: {ex.Message}", MessageType.Error);
             }
         }
 

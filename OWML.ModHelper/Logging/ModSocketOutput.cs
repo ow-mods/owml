@@ -1,56 +1,93 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Newtonsoft.Json;
 using OWML.Common;
 
 namespace OWML.ModHelper
 {
     public class ModSocketOutput : ModConsole
     {
-        private const string LocalHost = "127.0.0.1";
-        private const string NameMessageSeparator = ";;";
-
+        private readonly int _port;
         private static Socket _socket;
 
         public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
         {
             if (_socket == null)
             {
-                CreateSocket();
+                _port = config.SocketPort;
+                ConnectToSocket();
             }
         }
 
-        public override void WriteLine(string s)
-        {
-            Logger?.Log(s);
-            CallWriteCallback(Manifest, s);
-            var message = $"{Manifest.Name}{NameMessageSeparator}{s}";
-            InternalWriteLine(message);
-        }
-
+        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
         public override void WriteLine(params object[] objects)
         {
-            WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
+            var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
+            var type = MessageType.Message;
+            WriteLine(type, line, GetCallingType(new StackTrace()));
         }
 
-        private void CreateSocket()
+        public override void WriteLine(string line)
         {
-            var consolePortArgument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
-            if (!int.TryParse(consolePortArgument, out var port))
-            {
-                Logger?.Log("Error: Missing or incorrectly formatted console port argument");
-                return;
-            }
+            WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
+        }
 
+        public override void WriteLine(string line, MessageType type)
+        {
+            WriteLine(type, line, GetCallingType(new StackTrace()));
+        }
+
+        private void WriteLine(MessageType type, string line, string senderType)
+        {
+            Logger?.Log(line);
+            CallWriteCallback(Manifest, line);
+
+            var message = new SocketMessage
+            {
+                SenderName = Manifest.Name,
+                SenderType = senderType,
+                Type = type,
+                Message = line
+            };
+            var json = JsonConvert.SerializeObject(message);
+
+            WriteToSocket(json);
+        }
+
+        private string GetCallingType(StackTrace frame)
+        {
+            try
+            {
+                return frame.GetFrame(1).GetMethod().DeclaringType.Name;
+            }
+            catch (Exception ex)
+            {
+                var message = new SocketMessage
+                {
+                    SenderName = "OWML",
+                    SenderType = "ModSocketOutput",
+                    Type = MessageType.Error,
+                    Message = $"Error while getting calling type : {ex.Message}"
+                };
+                WriteToSocket(JsonConvert.SerializeObject(message));
+
+                return "";
+            }
+        }
+
+        private void ConnectToSocket()
+        {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            var ipAddress = IPAddress.Parse(LocalHost);
-            var endPoint = new IPEndPoint(ipAddress, port);
+            var ipAddress = IPAddress.Parse(Constants.LocalAddress);
+            var endPoint = new IPEndPoint(ipAddress, _port);
             _socket.Connect(endPoint);
         }
 
-        private void InternalWriteLine(string message)
+        private void WriteToSocket(string message)
         {
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
             _socket?.Send(bytes);

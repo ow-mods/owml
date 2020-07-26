@@ -29,7 +29,7 @@ namespace OWML.LoadCustomAssets
 
         private void Start()
         {
-            ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!");
+            ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!", MessageType.Info);
             _saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
             ModHelper.Console.WriteLine("Ducks shot: " + _saveFile.NumberOfDucks);
 
@@ -48,6 +48,8 @@ namespace OWML.LoadCustomAssets
             ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
 
             var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
+
+            TestLogging();
         }
 
         public override void Configure(IModConfig config)
@@ -62,6 +64,15 @@ namespace OWML.LoadCustomAssets
             var selectedString = config.GetSettingsValue<string>("thing");
             var selectedInt = config.GetSettingsValue<int>("integer thing");
             ModHelper.Console.WriteLine($"Selected enum = {selectedEnum}, string = {selectedString}");
+        }
+
+        public void TestLogging()
+        {
+            ModHelper.Console.WriteLine("Test Error", MessageType.Error);
+            ModHelper.Console.WriteLine("Test Warning", MessageType.Warning);
+            ModHelper.Console.WriteLine("Test Message", MessageType.Message);
+            ModHelper.Console.WriteLine("Test Success", MessageType.Success);
+            ModHelper.Console.WriteLine("Test Info", MessageType.Info);
         }
 
         private void OnMusicLoaded(AudioSource audio)
@@ -134,7 +145,7 @@ namespace OWML.LoadCustomAssets
             _shootSound.Play();
 
             _saveFile.NumberOfDucks++;
-            ModHelper.Console.WriteLine("Ducks shot:", _saveFile.NumberOfDucks);
+            ModHelper.Console.WriteLine($"Ducks shot: {_saveFile.NumberOfDucks}");
             ModHelper.Storage.Save(_saveFile, "savefile.json");
         }
 
@@ -145,7 +156,7 @@ namespace OWML.LoadCustomAssets
 
         private void ToggleMusic(bool enable)
         {
-            ModHelper.Console.WriteLine("ToggleMusic:", enable);
+            ModHelper.Console.WriteLine($"ToggleMusic: {enable}");
             if (_music == null)
             {
                 return;

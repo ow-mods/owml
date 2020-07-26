@@ -12,12 +12,14 @@ namespace OWML.ModLoader
         public IModManifest Manifest { get; }
         public IModConfig Config { get; private set; }
         public IModConfig DefaultConfig { get; private set; }
-        public bool Enabled => (Config != null && Config.Enabled)
-                 || (Config == null && DefaultConfig != null && DefaultConfig.Enabled)
-                 || (Config == null && DefaultConfig == null);
-        public bool RequireVR => Manifest.RequireVR
-            || (Config != null && Config.RequireVR)
-            || (Config == null && DefaultConfig != null && DefaultConfig.RequireVR);
+
+        public bool Enabled => Config != null && Config.Enabled ||
+                               Config == null && DefaultConfig != null && DefaultConfig.Enabled ||
+                               Config == null && DefaultConfig == null;
+
+        public bool RequireVR => Manifest.RequireVR ||
+                                 Config != null && Config.RequireVR ||
+                                 Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
 
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
@@ -32,8 +34,9 @@ namespace OWML.ModLoader
             Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
         }
 
-        public void FixConfigs()
+        public bool FixConfigs()
         {
+            var settingsChanged = false;
             var storage = new ModStorage(Manifest);
             if (Config == null && DefaultConfig == null)
             {
@@ -46,18 +49,19 @@ namespace OWML.ModLoader
             }
             else if (DefaultConfig != null)
             {
-                MakeConfigConsistentWithDefault();
+                settingsChanged = !MakeConfigConsistentWithDefault();
             }
             storage.Save(Config, Constants.ModConfigFileName);
+            return settingsChanged;
         }
 
-        private void MakeConfigConsistentWithDefault()
+        private bool MakeConfigConsistentWithDefault()
         {
             if (DefaultConfig == null)
             {
-                return;
+                return true;
             }
-
+            var wasCompatible = true;
             var toRemove = Config.Settings.Keys.Except(DefaultConfig.Settings.Keys).ToList();
             toRemove.ForEach(key => Config.Settings.Remove(key));
 
@@ -66,22 +70,23 @@ namespace OWML.ModLoader
             {
                 if (!IsSettingSameType(Config.Settings[key], DefaultConfig.Settings[key]))
                 {
-                    TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]);
+                    wasCompatible = TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]) && wasCompatible;
                 }
                 else if (DefaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
                 {
-                    UpdateSelector(key, Config.Settings[key], objectValue);
+                    wasCompatible = UpdateSelector(key, Config.Settings[key], objectValue) && wasCompatible;
                 }
             }
 
             AddMissingDefaults(DefaultConfig);
+            return wasCompatible;
         }
 
-        private bool UpdateSelector(string key, object userSetting, JObject modderSetting)
+        private bool UpdateSelector(string key, object userSetting, JObject modSetting)
         {
-            var options = modderSetting["options"].ToObject<List<string>>();
+            var options = modSetting["options"].ToObject<List<string>>();
             var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
-            Config.Settings[key] = modderSetting;
+            Config.Settings[key] = modSetting;
             var isInOptions = options.Contains(userString);
             if (isInOptions)
             {
@@ -96,22 +101,22 @@ namespace OWML.ModLoader
             missingSettings.ForEach(setting => Config.Settings.Add(setting.Key, setting.Value));
         }
 
-        private bool TryUpdate(string key, object userSetting, object modderSetting)
+        private bool TryUpdate(string key, object userSetting, object modSetting)
         {
             var userValue = Config.GetSettingsValue<object>(key);
             if (userValue is JValue userJValue)
             {
                 userValue = userJValue.Value;
             }
-            Config.Settings[key] = modderSetting;
+            Config.Settings[key] = modSetting;
 
-            if (IsNumber(userSetting) && IsNumber(modderSetting))
+            if (IsNumber(userSetting) && IsNumber(modSetting))
             {
                 Config.SetSettingsValue(key, Convert.ToDouble(userValue));
                 return true;
             }
 
-            if (IsBoolean(userSetting) && IsBoolean(modderSetting))
+            if (IsBoolean(userSetting) && IsBoolean(modSetting))
             {
                 Config.SetSettingsValue(key, Convert.ToBoolean(userValue));
                 return true;
@@ -121,16 +126,16 @@ namespace OWML.ModLoader
 
         private bool IsNumber(object setting)
         {
-            if (setting is JObject settingObject)
-            {
-                return settingObject["type"].ToString() == "slider";
-            }
-            return new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
+            return setting is JObject settingObject
+                ? settingObject["type"].ToString() == "slider"
+                : new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
         }
 
         private bool IsBoolean(object setting)
         {
-            return setting is JObject settingObject ? settingObject["type"].ToString() == "toggle" : setting is bool;
+            return setting is JObject settingObject
+                ? settingObject["type"].ToString() == "toggle"
+                : setting is bool;
         }
 
         private bool IsSettingSameType(object settingValue1, object settingValue2)
