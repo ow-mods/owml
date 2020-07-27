@@ -34,30 +34,12 @@ namespace OWML.ModLoader
 
         public void UpdateSnapshot()
         {
-            if (Config != null)
-            {
-                _configSnapshot = Config.Copy();
-            }
-            else
-            {
-                _configSnapshot = DefaultConfig?.Copy();
-            }
+            _configSnapshot = Config != null ? Config.Copy() : DefaultConfig?.Copy();
         }
 
         public void ResetConfigToDefaults()
         {
-            if (DefaultConfig != null)
-            {
-                Config = DefaultConfig.Copy();
-            }
-            else if (Config != null)
-            {
-                Config.Enabled = true; //to preserve other settings
-            }
-            else
-            {
-                Config = new ModConfig();
-            }
+            Config = DefaultConfig != null ? DefaultConfig.Copy() : new ModConfig();
         }
 
         public bool FixConfigs()
