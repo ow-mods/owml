@@ -134,12 +134,10 @@ namespace OWML.ModHelper.Menus
 
         private void OnDeactivateOptions(IModTabbedMenu options)
         {
-            if (!options.Menu.IsMenuEnabled())
+            if (!options.Menu.IsMenuEnabled() &&
+                _modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
             {
-                if (_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
-                {
-                    _events.Unity.FireOnNextUpdate(ShowReloadWarning);
-                }
+                _events.Unity.FireOnNextUpdate(ShowReloadWarning);
             }
         }
 
