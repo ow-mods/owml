@@ -12,11 +12,11 @@ namespace OWML.ModHelper.Menus
         private readonly ModMessagePopup _messagePopup;
         private readonly ModInputCombinationElementMenu _combinationPopup;
         private readonly List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
-        private readonly IModUnityEvents _events;
+        private readonly IModEvents _events;
 
         public ModPopupManager(IModConsole console, IModInputHandler inputHandler, IModEvents events)
         {
-            _events = events.Unity;
+            _events = events;
             _inputPopup = new ModInputMenu(console);
             _messagePopup = new ModMessagePopup(console);
             _combinationPopup = new ModInputCombinationElementMenu(console, inputHandler, this);
@@ -69,7 +69,7 @@ namespace OWML.ModHelper.Menus
         private void OnPopupClose(ModTemporaryPopup closedPopup)
         {
             _toDestroy.Add(closedPopup);
-            _events.FireOnNextUpdate(CleanUp);
+            _events.Unity.FireOnNextUpdate(CleanUp);
         }
 
         private void CleanUp()
