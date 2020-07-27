@@ -92,5 +92,15 @@ namespace OWML.ModHelper
         {
             return GetSettingsValue<T>(key);
         }
+
+        public IModConfig Copy()
+        {
+            return new ModConfig
+            {
+                Enabled = Enabled,
+                Settings = new Dictionary<string, object>(Settings)
+            };
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
@@ -12,6 +12,7 @@ namespace OWML.ModLoader
         public IModManifest Manifest { get; }
         public IModConfig Config { get; private set; }
         public IModConfig DefaultConfig { get; private set; }
+        public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
 
         public bool Enabled => Config != null && Config.Enabled ||
                                Config == null && DefaultConfig != null && DefaultConfig.Enabled ||
@@ -21,17 +22,24 @@ namespace OWML.ModLoader
                                  Config != null && Config.RequireVR ||
                                  Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
 
+        private IModConfig _configSnapshot;
+
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
             Manifest = manifest;
             Config = config;
             DefaultConfig = defaultConfig;
+            UpdateSnapshot();
+        }
+
+        public void UpdateSnapshot()
+        {
+            _configSnapshot = Config != null ? Config.Copy() : DefaultConfig?.Copy();
         }
 
         public void ResetConfigToDefaults()
         {
-            Config.Enabled = DefaultConfig.Enabled;
-            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
+            Config = DefaultConfig != null ? DefaultConfig.Copy() : new ModConfig();
         }
 
         public bool FixConfigs()
@@ -52,6 +60,7 @@ namespace OWML.ModLoader
                 settingsChanged = !MakeConfigConsistentWithDefault();
             }
             storage.Save(Config, Constants.ModConfigFileName);
+            UpdateSnapshot();
             return settingsChanged;
         }
 

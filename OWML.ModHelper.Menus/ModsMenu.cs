@@ -16,12 +16,14 @@ namespace OWML.ModHelper.Menus
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
         private readonly IModInputHandler _inputHandler;
+        private readonly IModEvents _events;
 
-        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
+        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler, IModEvents events) : base(console)
         {
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
             _inputHandler = inputHandler;
+            _events = events;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
@@ -59,6 +61,7 @@ namespace OWML.ModHelper.Menus
 
         private void InitCombinationMenu(IModTabbedMenu options)
         {
+            options.OnClose += () => OnDeactivateOptions(options);
             if (_menus.InputCombinationMenu.Menu != null)
             {
                 return;
@@ -129,5 +132,38 @@ namespace OWML.ModHelper.Menus
                 numberInputTemplate, comboInputTemplate, selectorTemplate);
         }
 
+        private void OnDeactivateOptions(IModTabbedMenu options)
+        {
+            if (!options.Menu.IsMenuEnabled() &&
+                _modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
+            {
+                _events.Unity.FireOnNextUpdate(ShowReloadWarning);
+            }
+        }
+
+        private void ShowReloadWarning()
+        {
+            _menus.MessagePopup.ShowMessage("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
+            _menus.MessagePopup.OnConfirm += OnPopupConfirm;
+            _menus.MessagePopup.OnCancel += OnPopupCancel;
+        }
+
+        private void OnPopupCancel()
+        {
+            UnsubscribeFromPopup();
+            _modConfigMenus.ForEach(modMenu => modMenu.ModData.UpdateSnapshot());
+        }
+
+        private void OnPopupConfirm()
+        {
+            UnsubscribeFromPopup();
+            Application.Quit();
+        }
+
+        private void UnsubscribeFromPopup()
+        {
+            _menus.MessagePopup.OnConfirm -= OnPopupConfirm;
+            _menus.MessagePopup.OnCancel -= OnPopupCancel;
+        }
     }
 }
