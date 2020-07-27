@@ -14,10 +14,11 @@ namespace OWML.ModHelper.Menus
         private ModMessagePopup _messagePopup;
         private ModInputCombinationElementMenu _combinationPopup;
         private List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
-        private ModTaskDelayer _delayer;
+        private IModUnityEvents _delayer;
 
-        public ModPopupManager(IModConsole console, IModInputHandler inputHandler)
+        public ModPopupManager(IModConsole console, IModInputHandler inputHandler, ModEvents events)
         {
+            _delayer = events.Unity;
             _console = console;
             _inputPopup = new ModInputMenu(console);
             _messagePopup = new ModMessagePopup(console);
@@ -32,8 +33,6 @@ namespace OWML.ModHelper.Menus
             }
             var newCanvas = Object.Instantiate(popupCanvas);
             newCanvas.AddComponent<DontDestroyOnLoad>();
-            _delayer = newCanvas.AddComponent<ModTaskDelayer>();
-            _delayer.OnNextUpdate += CleanUp;
             var inputMenu = newCanvas.GetComponentInChildren<PopupInputMenu>(true);
             var combinationMenuObject = Object.Instantiate(inputMenu.gameObject);
             combinationMenuObject.transform.SetParent(newCanvas.transform);
@@ -77,7 +76,7 @@ namespace OWML.ModHelper.Menus
         private void OnPopupClose(ModTemporaryPopup closedPopup)
         {
             _toDestroy.Add(closedPopup);
-            _delayer.FireEventOnNextUpdate = true;
+            _delayer.FireOnNextUpdate(CleanUp);
         }
 
         private void CleanUp()
