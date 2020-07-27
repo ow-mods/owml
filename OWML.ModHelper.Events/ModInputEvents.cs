@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OWML.Common;
 using UnityEngine;
-using OWML.ModHelper.Events;
 
-namespace OWML.ModHelper.Input
+namespace OWML.ModHelper.Events
 {
-    public class ModCommandListener : MonoBehaviour
+    public class ModInputEvents : MonoBehaviour, IModInputEvents
     {
+        private const float MinimalPressDuration = 0.1f;
+        private const float MaximalTapDuration = 0.1f;
+
         public event Action<SingleAxisCommand> OnNewlyPressed;
         public event Action<SingleAxisCommand> OnNewlyReleased;
         public event Action<SingleAxisCommand> OnNewlyHeld;
         public event Action<SingleAxisCommand> OnPressed;
         public event Action<SingleAxisCommand> OnTapped;
         public event Action<SingleAxisCommand> OnHeld;
-
-        public float MinimalPressDuration { get; set; } = 0.1f;
-        public float MaximalTapDuration { get; set; } = 0.1f;
 
         private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
         private readonly HashSet<SingleAxisCommand> _toRemove = new HashSet<SingleAxisCommand>();

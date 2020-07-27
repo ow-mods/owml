@@ -4,7 +4,6 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,21 +14,23 @@ namespace OWML.ModHelper.Menus
         public event Action OnCancel;
 
         protected List<Selectable> Selectables;
-        protected ModCommandListener CommandListener;
 
-        protected ModMenuWithSelectables(IModConsole console) : base(console) { }
+        private readonly IModEvents _events;
+
+        protected ModMenuWithSelectables(IModConsole console, IModEvents events) : base(console)
+        {
+            _events = events;
+        }
 
         private void SetupCommands()
         {
-            var listenerObject = new GameObject("ConfigurationMenu_Listener");
-            CommandListener = listenerObject.AddComponent<ModCommandListener>();
-            CommandListener.AddToListener(InputLibrary.confirm);
-            CommandListener.AddToListener(InputLibrary.enter2);//keypad's Enter
-            CommandListener.AddToListener(InputLibrary.cancel);
-            CommandListener.AddToListener(InputLibrary.escape);
-            CommandListener.AddToListener(InputLibrary.setDefaults);
-            CommandListener.OnNewlyReleased += OnButton;
-            listenerObject.SetActive(false);
+            _events.Input.AddToListener(InputLibrary.confirm);
+            _events.Input.AddToListener(InputLibrary.enter2);//keypad's Enter
+            _events.Input.AddToListener(InputLibrary.cancel);
+            _events.Input.AddToListener(InputLibrary.escape);
+            _events.Input.AddToListener(InputLibrary.setDefaults);
+            _events.Input.OnNewlyReleased += OnButton;
+            //listenerObject.SetActive(false); todo hmmm? :)
         }
 
         protected virtual void SetupButtons()
@@ -67,10 +68,7 @@ namespace OWML.ModHelper.Menus
                 .Single(x => x.name == "Content");
             Initialize(menu, layoutGroup);
 
-            if (CommandListener == null)
-            {
-                SetupCommands();
-            }
+            SetupCommands();
             SetupButtons();
 
             GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
@@ -151,13 +149,13 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnActivateMenu()
         {
-            CommandListener.gameObject.SetActive(true);
-            CommandListener.BlockNextRelease();
+            //CommandListener.gameObject.SetActive(true); // todo hmmmm
+            _events.Input.BlockNextRelease();
         }
 
         protected virtual void OnDeactivateMenu()
         {
-            CommandListener.gameObject.SetActive(false);
+            //CommandListener.gameObject.SetActive(false); // todo hmmmm
         }
 
         protected virtual void OnButton(SingleAxisCommand command)

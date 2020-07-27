@@ -10,6 +10,7 @@ namespace OWML.ModHelper.Events
     {
         public IModPlayerEvents Player { get; }
         public IModSceneEvents Scenes { get; }
+        public IModInputEvents Input { get; }
         public IModUnityEvents Unity { get; }
 
         public event Action<MonoBehaviour, Common.Events> Event;
@@ -33,6 +34,7 @@ namespace OWML.ModHelper.Events
 
             Player = new ModPlayerEvents(this);
             Scenes = new ModSceneEvents();
+            Input = new GameObject().AddComponent<ModInputEvents>();
             Unity = new GameObject().AddComponent<ModUnityEvents>();
         }
 

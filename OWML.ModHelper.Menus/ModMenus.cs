@@ -22,11 +22,11 @@ namespace OWML.ModHelper.Menus
             MainMenu = new ModMainMenu(console);
             PauseMenu = new ModPauseMenu(console);
             ModsMenu = new ModsMenu(console, this, inputHandler, events);
-            OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
+            OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig, events);
             InputMenu = new ModInputMenu(console);
             InputCombinationElementMenu = new ModInputCombinationElementMenu(console, inputHandler);
             MessagePopup = InputCombinationElementMenu.MessagePopup;
-            InputCombinationMenu = new ModInputCombinationMenu(console);
+            InputCombinationMenu = new ModInputCombinationMenu(console, events);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);

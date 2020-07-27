@@ -28,7 +28,7 @@ namespace OWML.ModHelper.Menus
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod, _events));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
@@ -61,14 +61,14 @@ namespace OWML.ModHelper.Menus
 
         private void InitCombinationMenu(IModTabbedMenu options)
         {
-            options.OnClose += () => OnDeactivateOptions(options);
+            options.OnClosed += () => OnDeactivateOptions(options);
             if (_menus.InputCombinationMenu.Menu != null)
             {
                 return;
             }
             var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
             var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
-                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
+                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler, _events);
             comboElementTemplate.Hide();
             var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
             _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
@@ -121,11 +121,11 @@ namespace OWML.ModHelper.Menus
             var toggleTemplate = options.InputTab.ToggleInputs[0];
             var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
             var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
-            var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+            var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu, _events);
             textInputTemplate.Hide();
-            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler);
+            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler, _events);
             comboInputTemplate.Hide();
-            var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
+            var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu, _events);
             numberInputTemplate.Hide();
             var rebindMenuCopy = options.RebindingMenu.Copy().Menu;
             modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate,

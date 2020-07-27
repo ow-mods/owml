@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using OWML.Common;
+using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
 
@@ -10,7 +11,8 @@ namespace OWML.ModHelper.Menus
 
         protected readonly IModInputMenu InputMenu;
 
-        protected ModFieldInput(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu) : base(toggle, menu)
+        protected ModFieldInput(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu, IModEvents events) 
+            : base(toggle, menu, events)
         {
             Button = new ModTitleButton(toggle.GetValue<Button>("_buttonTrue"), menu);
             Subscribe(Button);

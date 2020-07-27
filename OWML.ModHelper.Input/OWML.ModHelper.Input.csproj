@@ -74,7 +74,6 @@
   <ItemGroup>
     <Compile Include="InputInterceptor.cs" />
     <Compile Include="BindingChangeListener.cs" />
-    <Compile Include="ModCommandListener.cs" />
     <Compile Include="ModCommandUpdater.cs" />
     <Compile Include="ModInputCombination.cs" />
     <Compile Include="ModInputHandler.cs" />

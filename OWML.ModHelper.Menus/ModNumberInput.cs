@@ -1,5 +1,6 @@
 ﻿using OWML.Common.Menus;
 using System;
+using OWML.Common;
 using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
@@ -8,9 +9,8 @@ namespace OWML.ModHelper.Menus
     {
         private float _value;
 
-        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu, inputMenu)
-        {
-        }
+        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu, IModEvents events)
+            : base(element, menu, inputMenu, events) { }
 
         protected override void Open()
         {
@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(ToggleElement);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModNumberInput(copy, Menu, InputMenu);
+            return new ModNumberInput(copy, Menu, InputMenu, Events);
         }
 
         public IModNumberInput Copy(string title)

@@ -24,6 +24,7 @@ namespace OWML.ModHelper.Menus
 
         private string _combination;
         private readonly IModInputHandler _inputHandler;
+        private readonly IModEvents _events;
         private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
         {
             InputLibrary.menuConfirm
@@ -31,11 +32,12 @@ namespace OWML.ModHelper.Menus
 
         private static IModInputCombinationElementMenu _popupMenu;
 
-        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu,
-            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") :
+        public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, 
+            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, IModEvents events, string combination = "") :
             base(toggle, menu)
         {
             _inputHandler = inputHandler;
+            _events = events;
             _combination = combination;
             Initialize(menu);
             SetupButtons();
@@ -66,11 +68,9 @@ namespace OWML.ModHelper.Menus
 
         private void SetupButtons()
         {
-            var commandObject = new GameObject();
-            var commandComponent = commandObject.AddComponent<ModCommandListener>();
-            _openCommands.ForEach(commandComponent.AddToListener);
-            commandComponent.OnNewlyReleased += OnEditButton;
-            commandComponent.BlockNextRelease();
+            _openCommands.ForEach(_events.Input.AddToListener);
+            _events.Input.OnNewlyReleased += OnEditButton;
+            _events.Input.BlockNextRelease();
             YesButton.Title = "Edit";
             YesButton.OnClick += OnEditClick;
 
@@ -78,13 +78,12 @@ namespace OWML.ModHelper.Menus
             var deleteBindingGamepad = new InputBinding(JoystickButton.FaceLeft);
             var deleteBindingKeyboard = new InputBinding(KeyCode.Delete);
             deleteCommand.SetInputs(deleteBindingGamepad, deleteBindingKeyboard);
-            commandObject = new GameObject();
+            var commandObject = new GameObject();
             var updater = commandObject.AddComponent<ModCommandUpdater>();
             updater.Initialize(deleteCommand);
-            commandComponent = commandObject.AddComponent<ModCommandListener>();
-            commandComponent.AddToListener(deleteCommand);
-            commandComponent.OnNewlyReleased += OnDeleteButton;
-            commandComponent.BlockNextRelease();
+            _events.Input.AddToListener(deleteCommand);
+            _events.Input.OnNewlyReleased += OnDeleteButton;
+            _events.Input.BlockNextRelease();
             NoButton.Title = "Delete";
             NoButton.OnClick += OnDeleteClick;
         }
@@ -186,7 +185,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(Toggle);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, combination);
+            return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, _events, combination);
         }
     }
 }

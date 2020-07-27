@@ -25,8 +25,8 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu, IModInputHandler inputHandler)
-            : base(element, menu)
+        public ModComboInput(TwoButtonToggleElement element, IModMenu menu, IModInputCombinationMenu inputMenu, IModInputHandler inputHandler, IModEvents events)
+            : base(element, menu, events)
         {
             _inputHandler = inputHandler;
             InputMenu = inputMenu;
@@ -88,7 +88,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(ToggleElement);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModComboInput(copy, Menu, InputMenu, _inputHandler);
+            return new ModComboInput(copy, Menu, InputMenu, _inputHandler, Events);
         }
 
         public IModComboInput Copy(string title)

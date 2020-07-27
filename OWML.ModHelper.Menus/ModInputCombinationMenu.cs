@@ -17,7 +17,7 @@ namespace OWML.ModHelper.Menus
 
         private IModInputCombinationElement _combinationElementTemplate;
 
-        public ModInputCombinationMenu(IModConsole console) : base(console)
+        public ModInputCombinationMenu(IModConsole console, IModEvents events) : base(console, events)
         {
             CombinationElements = new List<IModInputCombinationElement>();
         }

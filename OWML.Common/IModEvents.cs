@@ -7,6 +7,7 @@ namespace OWML.Common
     {
         IModPlayerEvents Player { get; }
         IModSceneEvents Scenes { get; }
+        IModInputEvents Input { get; }
         IModUnityEvents Unity { get; }
 
         event Action<MonoBehaviour, Events> Event;

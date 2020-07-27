@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
-using OWML.ModHelper.Input;
-using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -11,7 +10,6 @@ namespace OWML.ModHelper.Menus
     public abstract class ModPopupInput<T> : ModInput<T>
     {
         protected readonly TwoButtonToggleElement ToggleElement;
-        protected ModCommandListener CommandListener;
 
         public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
 
@@ -22,9 +20,12 @@ namespace OWML.ModHelper.Menus
             InputLibrary.enter2
         };
 
-        protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
+        protected readonly IModEvents Events;
+
+        protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu, IModEvents events) : base(toggle, menu)
         {
             ToggleElement = toggle;
+            Events = events;
 
             var noButton = ToggleElement.GetValue<Button>("_buttonFalse");
             noButton.transform.parent.gameObject.SetActive(false);
@@ -41,10 +42,8 @@ namespace OWML.ModHelper.Menus
 
         private void SetupCommands()
         {
-            var listenerObject = new GameObject();
-            CommandListener = listenerObject.AddComponent<ModCommandListener>();
-            _openCommands.ForEach(CommandListener.AddToListener);
-            CommandListener.OnNewlyPressed += OnOpenCommand;
+            _openCommands.ForEach(Events.Input.AddToListener);
+            Events.Input.OnNewlyPressed += OnOpenCommand;
         }
 
         protected void Subscribe(IModButtonBase button)

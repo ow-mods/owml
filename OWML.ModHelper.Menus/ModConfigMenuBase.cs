@@ -21,7 +21,8 @@ namespace OWML.ModHelper.Menus
         protected abstract void AddInputs();
         protected abstract void UpdateUIValues();
 
-        protected ModConfigMenuBase(IModConsole console, IModManifest manifest) : base(console)
+        protected ModConfigMenuBase(IModConsole console, IModManifest manifest, IModEvents events)
+            : base(console, events)
         {
             Manifest = manifest;
             Storage = new ModStorage(manifest);
@@ -50,7 +51,7 @@ namespace OWML.ModHelper.Menus
             base.Open();
             UpdateUIValues();
         }
-        
+
         protected void AddConfigInput(string key, object value, int index)
         {
             if (value is bool)
