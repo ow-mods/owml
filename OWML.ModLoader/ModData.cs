@@ -17,9 +17,7 @@ namespace OWML.ModLoader
         public bool Enabled => Config != null && Config.Enabled ||
                                Config == null && DefaultConfig.Enabled;
 
-        public bool RequireVR => Manifest.RequireVR ||
-                                 Config != null && Config.RequireVR ||
-                                 Config == null && DefaultConfig.RequireVR;
+        public bool RequireVR => Manifest.RequireVR;
 
         private IModConfig _configSnapshot;
 
