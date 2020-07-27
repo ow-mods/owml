@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Menus
         {
             if (scaleReference == null)
             {
-                OwmlConsole.WriteLine("Error - scale reference is null",MessageType.Error);
+                OwmlConsole.WriteLine("Error - scale reference is null", MessageType.Error);
             }
             var layoutGroupNew = layoutObject.GetAddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childForceExpandWidth = false;
