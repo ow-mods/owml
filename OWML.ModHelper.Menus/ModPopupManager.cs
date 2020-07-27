@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.ModHelper.Events;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,17 +8,15 @@ namespace OWML.ModHelper.Menus
 {
     public class ModPopupManager : IModPopupManager
     {
-        private IModConsole _console;
-        private ModInputMenu _inputPopup;
-        private ModMessagePopup _messagePopup;
-        private ModInputCombinationElementMenu _combinationPopup;
-        private List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
-        private IModUnityEvents _delayer;
+        private readonly ModInputMenu _inputPopup;
+        private readonly ModMessagePopup _messagePopup;
+        private readonly ModInputCombinationElementMenu _combinationPopup;
+        private readonly List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
+        private readonly IModUnityEvents _events;
 
         public ModPopupManager(IModConsole console, IModInputHandler inputHandler, IModEvents events)
         {
-            _delayer = events.Unity;
-            _console = console;
+            _events = events.Unity;
             _inputPopup = new ModInputMenu(console);
             _messagePopup = new ModMessagePopup(console);
             _combinationPopup = new ModInputCombinationElementMenu(console, inputHandler, this);
@@ -72,7 +69,7 @@ namespace OWML.ModHelper.Menus
         private void OnPopupClose(ModTemporaryPopup closedPopup)
         {
             _toDestroy.Add(closedPopup);
-            _delayer.FireOnNextUpdate(CleanUp);
+            _events.FireOnNextUpdate(CleanUp);
         }
 
         private void CleanUp()

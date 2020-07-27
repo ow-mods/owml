@@ -7,14 +7,13 @@ namespace OWML.ModHelper.Menus
     {
         private string _value;
 
-        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager) : base(element, menu, popupManager)
-        {
-        }
+        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager)
+            : base(element, menu, popupManager) { }
 
         protected override void Open()
         {
             base.Open();
-            var popup = PopupManager.CreateInputPopup(InputType.Text, Value.ToString());
+            var popup = PopupManager.CreateInputPopup(InputType.Text, Value);
             popup.OnConfirm += OnConfirm;
         }
 

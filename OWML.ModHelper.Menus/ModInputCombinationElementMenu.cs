@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Menus
         public IModMessagePopup MessagePopup { get; }
 
         private readonly IModInputHandler _inputHandler;
-        private IModPopupManager _popupManager;
+        private readonly IModPopupManager _popupManager;
 
         private ModInputCombinationPopup _inputMenu;
         private SingleAxisCommand _cancelCommand;
@@ -63,7 +63,7 @@ namespace OWML.ModHelper.Menus
             var menuTransform = menu.GetComponentInChildren<VerticalLayoutGroup>(true).transform; // InputFieldElements
             var fieldTransform = menuTransform.Find("InputField");
             var borderTransform = fieldTransform.Find("BorderImage");
-            ModLayoutManager layoutManager = CreateLayoutManager(borderTransform.gameObject,
+            var layoutManager = CreateLayoutManager(borderTransform.gameObject,
                 menuTransform.GetComponentInChildren<ButtonWithHotkeyImageElement>().transform);
             _inputMenu = menu;
             _inputMenu.Initialize(_inputHandler, layoutManager);
@@ -112,7 +112,7 @@ namespace OWML.ModHelper.Menus
             Popup = _inputMenu;
             var submitAction = resetButtonObject.GetComponent<SubmitAction>();
             var imageElement = resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>();
-            _inputMenu.Initialize((PopupMenu)menu, (Selectable)inputSelectable, submitAction, imageElement, layout, _inputHandler);
+            _inputMenu.Initialize(menu, inputSelectable, submitAction, imageElement, layout, _inputHandler);
             Object.Destroy(menu);
             Object.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             base.Initialize(_inputMenu);
@@ -169,7 +169,8 @@ namespace OWML.ModHelper.Menus
             collisions.Remove($"Collides with {_comboName}");
             if (collisions.Count > 0)
             {
-                var popup = _popupManager.CreateMessagePopup($"This combination has following problems:\n{string.Join("\n", collisions.ToArray())}",
+                var problems = string.Join("\n", collisions.ToArray());
+                var popup = _popupManager.CreateMessagePopup($"This combination has following problems:\n{problems}",
                     true, "Save anyway");
                 popup.OnConfirm += OnForceConfirm;
                 return false;

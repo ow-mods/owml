@@ -84,7 +84,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void RegisterEvents()
         {
-            _inputMenu.OnPopupCancel += OnPopupCancel;//subsribing to PopupMenu doesn't work *shrug*
+            _inputMenu.OnPopupCancel += OnPopupCancel; // subscribing to PopupMenu doesn't work *shrug*
             _inputMenu.OnPopupConfirm += OnPopupConfirm;
         }
 
