@@ -14,7 +14,7 @@ namespace OWML.ModHelper.Menus
         protected override void Open()
         {
             base.Open();
-            var popup = PopupManager.CreateInput(InputType.Text, Value.ToString());
+            var popup = PopupManager.CreateInputPopup(InputType.Text, Value.ToString());
             popup.OnConfirm += OnConfirm;
         }
 

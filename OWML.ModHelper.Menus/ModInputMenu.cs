@@ -10,7 +10,6 @@ namespace OWML.ModHelper.Menus
     public class ModInputMenu : ModTemporaryPopup, IModInputMenu
     {
         public event Action<string> OnConfirm;
-        public event Action OnCancel;
 
         private PopupInputMenu _inputMenu;
 
@@ -22,6 +21,7 @@ namespace OWML.ModHelper.Menus
             {
                 return;
             }
+            Popup = menu;
             var parent = menu.transform.parent.gameObject;
             var parentCopy = Object.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
@@ -32,9 +32,7 @@ namespace OWML.ModHelper.Menus
 
         internal void Open(InputType inputType, string value)
         {
-            _inputMenu.OnPopupConfirm += OnPopupConfirm;
-            _inputMenu.OnPopupCancel += OnPopupCancel;
-
+            RegisterEvents();
             if (inputType == InputType.Number)
             {
                 _inputMenu.OnInputPopupValidateChar += OnValidateCharNumber;
@@ -55,10 +53,7 @@ namespace OWML.ModHelper.Menus
 
         internal ModInputMenu Copy()
         {
-            var newPopupObject = Object.Instantiate(_inputMenu.gameObject);
-            newPopupObject.transform.SetParent(_inputMenu.transform.parent);
-            newPopupObject.transform.localScale = _inputMenu.transform.localScale;
-            newPopupObject.transform.localPosition = _inputMenu.transform.localPosition;
+            var newPopupObject = CopyMenu();
             var newPopup = new ModInputMenu(OwmlConsole);
             newPopup.Initialize(newPopupObject.GetComponent<PopupInputMenu>());
             return newPopup;
@@ -66,9 +61,8 @@ namespace OWML.ModHelper.Menus
 
         internal override void DestroySelf()
         {
-            Object.Destroy(_inputMenu);
+            DestroySelf(_inputMenu.gameObject);
             OnConfirm = null;
-            OnCancel = null;
             _inputMenu = null;
         }
 
@@ -82,24 +76,24 @@ namespace OWML.ModHelper.Menus
             return "0123456789.".Contains("" + c);
         }
 
-        private void OnPopupConfirm()
+        protected override void OnPopupConfirm()
         {
-            UnregisterEvents();
+            base.OnPopupConfirm();
             OnConfirm?.Invoke(_inputMenu.GetInputText());
         }
 
-        private void OnPopupCancel()
+        protected override void RegisterEvents()
         {
-            UnregisterEvents();
-            OnCancel?.Invoke();
+            _inputMenu.OnPopupCancel += OnPopupCancel;//subsribing to PopupMenu doesn't work *shrug*
+            _inputMenu.OnPopupConfirm += OnPopupConfirm;
         }
 
-        private void UnregisterEvents()
+        protected override void UnregisterEvents()
         {
+            _inputMenu.OnPopupCancel -= OnPopupCancel;
+            _inputMenu.OnPopupConfirm -= OnPopupConfirm;
             _inputMenu.OnPopupValidate -= OnValidateNumber;
             _inputMenu.OnInputPopupValidateChar -= OnValidateCharNumber;
-            _inputMenu.OnPopupConfirm -= OnPopupConfirm;
-            _inputMenu.OnPopupCancel -= OnPopupCancel;
         }
     }
 }

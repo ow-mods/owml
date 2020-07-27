@@ -143,7 +143,7 @@ namespace OWML.ModHelper.Menus
 
         private void ShowReloadWarning()
         {
-            var popup = _menus.PopupManager.CreateMessage("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
+            var popup = _menus.PopupManager.CreateMessagePopup("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
             popup.OnConfirm += OnPopupConfirm;
             popup.OnCancel += OnPopupCancel;
         }

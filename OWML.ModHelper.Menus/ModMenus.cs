@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Menus
             PauseMenu = new ModPauseMenu(console);
             ModsMenu = new ModsMenu(console, this, inputHandler, events);
             OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
-            PopupManager = new ModPopupManager(console, inputHandler);
+            PopupManager = new ModPopupManager(console, inputHandler, events);
             InputCombinationMenu = new ModInputCombinationMenu(console);
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);

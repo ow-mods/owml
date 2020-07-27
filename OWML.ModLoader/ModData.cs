@@ -13,7 +13,7 @@ namespace OWML.ModLoader
         public IModConfig Config { get; private set; }
         public IModConfig DefaultConfig { get; private set; }
         public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
-        
+
         public bool Enabled => Config != null && Config.Enabled ||
                                Config == null && DefaultConfig != null && DefaultConfig.Enabled ||
                                Config == null && DefaultConfig == null;

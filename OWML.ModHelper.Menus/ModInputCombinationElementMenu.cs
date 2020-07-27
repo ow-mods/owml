@@ -13,7 +13,6 @@ namespace OWML.ModHelper.Menus
     public class ModInputCombinationElementMenu : ModTemporaryPopup, IModInputCombinationElementMenu
     {
         public event Action<string> OnConfirm;
-        public event Action OnCancel;
         public IModMessagePopup MessagePopup { get; }
 
         private readonly IModInputHandler _inputHandler;
@@ -60,6 +59,7 @@ namespace OWML.ModHelper.Menus
 
         private void Initialize(ModInputCombinationPopup menu)
         {
+            Popup = menu;
             var menuTransform = menu.GetComponentInChildren<VerticalLayoutGroup>(true).transform; // InputFieldElements
             var fieldTransform = menuTransform.Find("InputField");
             var borderTransform = fieldTransform.Find("BorderImage");
@@ -109,6 +109,7 @@ namespace OWML.ModHelper.Menus
 
             var inputSelectable = inputObject.AddComponent<Selectable>();
             _inputMenu = menu.gameObject.AddComponent<ModInputCombinationPopup>();
+            Popup = _inputMenu;
             var submitAction = resetButtonObject.GetComponent<SubmitAction>();
             var imageElement = resetButtonObject.GetComponent<ButtonWithHotkeyImageElement>();
             _inputMenu.Initialize((PopupMenu)menu, (Selectable)inputSelectable, submitAction, imageElement, layout, _inputHandler);
@@ -122,9 +123,7 @@ namespace OWML.ModHelper.Menus
             _combinationMenu = combinationMenu;
             _element = element;
             _comboName = comboName;
-            _inputMenu.OnPopupConfirm += OnPopupConfirm;
-            _inputMenu.OnPopupCancel += OnPopupCancel;
-            _inputMenu.OnPopupValidate += OnPopupValidate;
+            RegisterEvents();
 
             const string message = "Press your combination";
 
@@ -150,18 +149,14 @@ namespace OWML.ModHelper.Menus
 
         internal override void DestroySelf()
         {
-            Object.Destroy(_inputMenu);
+            DestroySelf(_inputMenu.gameObject);
             OnConfirm = null;
-            OnCancel = null;
             _inputMenu = null;
         }
 
         internal ModInputCombinationElementMenu Copy()
         {
-            var newPopupObject = Object.Instantiate(_inputMenu.gameObject);
-            newPopupObject.transform.SetParent(_inputMenu.transform.parent);
-            newPopupObject.transform.localScale = _inputMenu.transform.localScale;
-            newPopupObject.transform.localPosition = _inputMenu.transform.localPosition;
+            var newPopupObject = CopyMenu();
             var newPopup = new ModInputCombinationElementMenu(OwmlConsole, _inputHandler, _popupManager);
             newPopup.Initialize(newPopupObject.GetComponent<ModInputCombinationPopup>());
             return newPopup;
@@ -174,7 +169,7 @@ namespace OWML.ModHelper.Menus
             collisions.Remove($"Collides with {_comboName}");
             if (collisions.Count > 0)
             {
-                var popup = _popupManager.CreateMessage($"This combination has following problems:\n{string.Join("\n", collisions.ToArray())}",
+                var popup = _popupManager.CreateMessagePopup($"This combination has following problems:\n{string.Join("\n", collisions.ToArray())}",
                     true, "Save anyway");
                 popup.OnConfirm += OnForceConfirm;
                 return false;
@@ -189,7 +184,7 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            _popupManager.CreateMessage("This combination already exist in this group");
+            _popupManager.CreateMessagePopup("This combination already exist in this group");
             return false;
         }
 
@@ -199,22 +194,22 @@ namespace OWML.ModHelper.Menus
             OnPopupConfirm();
         }
 
-        private void OnPopupConfirm()
+        protected override void OnPopupConfirm()
         {
-            UnregisterEvents();
+            base.OnPopupConfirm();
             OnConfirm?.Invoke(_inputMenu.Combination);
         }
 
-        private void OnPopupCancel()
+        protected override void RegisterEvents()
         {
-            UnregisterEvents();
-            OnCancel?.Invoke();
+            base.RegisterEvents();
+            _inputMenu.OnPopupValidate += OnPopupValidate;
         }
 
-        private void UnregisterEvents()
+        protected override void UnregisterEvents()
         {
-            _inputMenu.OnPopupConfirm -= OnPopupConfirm;
-            _inputMenu.OnPopupCancel -= OnPopupCancel;
+            base.UnregisterEvents();
+            _inputMenu.OnPopupValidate -= OnPopupValidate;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace OWML.ModHelper.Menus
     public class ModMessagePopup : ModTemporaryPopup, IModMessagePopup
     {
         public event Action OnConfirm;
-        public event Action OnCancel;
 
         private PopupMenu _twoButtonPopup;
 
@@ -28,22 +27,19 @@ namespace OWML.ModHelper.Menus
                 Console.WriteLine("Error: Failed to setup popup");
             }
             Menu = _twoButtonPopup;
+            Popup = _twoButtonPopup;
         }
 
         internal override void DestroySelf()
         {
-            Object.Destroy(_twoButtonPopup);
+            DestroySelf(_twoButtonPopup.gameObject);
             OnConfirm = null;
-            OnCancel = null;
             _twoButtonPopup = null;
         }
 
         internal ModMessagePopup Copy()
         {
-            var newPopupObject = Object.Instantiate(_twoButtonPopup.gameObject);
-            newPopupObject.transform.SetParent(_twoButtonPopup.transform.parent);
-            newPopupObject.transform.localScale = _twoButtonPopup.transform.localScale;
-            newPopupObject.transform.localPosition = _twoButtonPopup.transform.localPosition;
+            var newPopupObject = CopyMenu();
             var newPopup = new ModMessagePopup(OwmlConsole);
             newPopup.Initialize(newPopupObject.GetComponent<PopupMenu>());
             return newPopup;
@@ -56,8 +52,7 @@ namespace OWML.ModHelper.Menus
                 OwmlConsole.WriteLine("Failed to create popup for a following message:", MessageType.Warning);
                 OwmlConsole.WriteLine(message, MessageType.Info);
             }
-            _twoButtonPopup.OnPopupConfirm += OnPopupConfirm;
-            _twoButtonPopup.OnPopupCancel += OnPopupCancel;
+            RegisterEvents();
             _twoButtonPopup.EnableMenu(true);
             var okPrompt = new ScreenPrompt(InputLibrary.confirm, okMessage);
             var cancelPrompt = new ScreenPrompt(InputLibrary.cancel, cancelMessage);
@@ -66,22 +61,10 @@ namespace OWML.ModHelper.Menus
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
-        private void OnPopupConfirm()
+        protected override void OnPopupConfirm()
         {
-            UnregisterEvents();
+            base.OnPopupConfirm();
             OnConfirm?.Invoke();
-        }
-
-        private void OnPopupCancel()
-        {
-            UnregisterEvents();
-            OnCancel?.Invoke();
-        }
-
-        private void UnregisterEvents()
-        {
-            _twoButtonPopup.OnPopupConfirm -= OnPopupConfirm;
-            _twoButtonPopup.OnPopupCancel -= OnPopupCancel;
         }
     }
 }

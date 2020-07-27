@@ -16,7 +16,7 @@ namespace OWML.ModHelper.Menus
         private List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
         private IModUnityEvents _delayer;
 
-        public ModPopupManager(IModConsole console, IModInputHandler inputHandler, ModEvents events)
+        public ModPopupManager(IModConsole console, IModInputHandler inputHandler, IModEvents events)
         {
             _delayer = events.Unity;
             _console = console;
@@ -27,10 +27,6 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(GameObject popupCanvas)
         {
-            if (_delayer != null)
-            {
-                return;
-            }
             var newCanvas = Object.Instantiate(popupCanvas);
             newCanvas.AddComponent<DontDestroyOnLoad>();
             var inputMenu = newCanvas.GetComponentInChildren<PopupInputMenu>(true);
@@ -45,7 +41,7 @@ namespace OWML.ModHelper.Menus
             _combinationPopup.Initialize(combinationMenu);
         }
 
-        public IModMessagePopup CreateMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
+        public IModMessagePopup CreateMessagePopup(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
         {
             var newPopup = _messagePopup.Copy();
             newPopup.ShowMessage(message, addCancel, okMessage, cancelMessage);
@@ -54,7 +50,7 @@ namespace OWML.ModHelper.Menus
             return newPopup;
         }
 
-        public IModInputMenu CreateInput(InputType inputType, string value)
+        public IModInputMenu CreateInputPopup(InputType inputType, string value)
         {
             var newPopup = _inputPopup.Copy();
             newPopup.Open(inputType, value);
