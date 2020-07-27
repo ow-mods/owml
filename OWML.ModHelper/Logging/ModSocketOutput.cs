@@ -90,7 +90,14 @@ namespace OWML.ModHelper
         private void WriteToSocket(string message)
         {
             var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
-            _socket?.Send(bytes);
+            try
+            {
+                _socket?.Send(bytes);
+            }
+            catch
+            {
+
+            }
         }
     }
 }
