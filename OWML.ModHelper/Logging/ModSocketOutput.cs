@@ -94,10 +94,7 @@ namespace OWML.ModHelper
             {
                 _socket?.Send(bytes);
             }
-            catch
-            {
-
-            }
+            catch (SocketException) { }
         }
     }
 }
