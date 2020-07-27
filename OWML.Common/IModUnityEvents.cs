@@ -8,6 +8,6 @@ namespace OWML.Common
         event Action OnFixedUpdate;
         event Action OnLateUpdate;
 
-        void FireOnNextUpdate(Action action);
+        void FireOnNextUpdate(Action action, int frames = 1);
     }
 }

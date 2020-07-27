@@ -10,33 +10,38 @@ namespace OWML.ModHelper.Events
     {
         private bool _isStarted;
         private readonly List<Action> _earlyActions = new List<Action>();
+        private int _frames;
 
         public event Action OnUpdate;
         public event Action OnFixedUpdate;
         public event Action OnLateUpdate;
 
-        public void FireOnNextUpdate(Action action)
+        public void FireOnNextUpdate(Action action, int frames = 1)
         {
             if (_isStarted)
             {
-                StartCoroutine(WaitOneFrame(action));
+                StartCoroutine(WaitForFrames(action, frames));
             }
             else
             {
+                _frames = frames;
                 _earlyActions.Add(action);
             }
         }
 
-        private IEnumerator WaitOneFrame(Action action)
+        private IEnumerator WaitForFrames(Action action, int frames)
         {
-            yield return new WaitForEndOfFrame();
+            for (var i = 0; i < frames; i++)
+            {
+                yield return new WaitForEndOfFrame();
+            }
             action();
         }
 
         private void Start()
         {
             _isStarted = true;
-            _earlyActions.ForEach(action => StartCoroutine(WaitOneFrame(action)));
+            _earlyActions.ForEach(action => StartCoroutine(WaitForFrames(action, _frames)));
             DontDestroyOnLoad(gameObject);
         }
 
