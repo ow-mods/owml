@@ -135,7 +135,7 @@ namespace OWML.ModHelper.Menus
         {
             if (!options.Menu.IsMenuEnabled())
             {
-                if (_modConfigMenus.Any(ModMenu => ModMenu.ModData.RequireReload))
+                if (_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
                 {
                     if (_taskDelayer == null)
                     {

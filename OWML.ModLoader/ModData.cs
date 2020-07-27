@@ -29,18 +29,35 @@ namespace OWML.ModLoader
             Manifest = manifest;
             Config = config;
             DefaultConfig = defaultConfig;
-            _configSnapshot = new ModConfig() { Enabled = Enabled };
+            UpdateSnapshot();
         }
 
         public void UpdateSnapshot()
         {
-            _configSnapshot.Enabled = Enabled;
+            if (Config != null)
+            {
+                _configSnapshot = Config.Copy();
+            }
+            else
+            {
+                _configSnapshot = DefaultConfig?.Copy();
+            }
         }
 
         public void ResetConfigToDefaults()
         {
-            Config.Enabled = DefaultConfig.Enabled;
-            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
+            if (DefaultConfig != null)
+            {
+                Config = DefaultConfig.Copy();
+            }
+            else if (Config != null)
+            {
+                Config.Enabled = true; //to preserve other settings
+            }
+            else
+            {
+                Config = new ModConfig();
+            }
         }
 
         public bool FixConfigs()
