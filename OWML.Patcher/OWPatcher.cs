@@ -47,9 +47,22 @@ namespace OWML.Patcher
                 Constants.OwmlConfigFileName,
                 Constants.OwmlDefaultConfigFileName
             };
+            var uncopiedFiles = new List<string>();
             foreach (var filename in filesToCopy)
             {
-                File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
+                try
+                {
+                    File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
+                }
+                catch
+                {
+                    uncopiedFiles.Add(filename);
+                }
+            }
+            if (uncopiedFiles.Any())
+            {
+                _writer.WriteLine("Warning - Failed to copy the following files:", MessageType.Warning);
+                uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
             }
         }
 
@@ -105,7 +118,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while patching: " + ex);
+                _writer.WriteLine($"Error while patching: {ex}", MessageType.Error);
                 throw;
             }
         }
@@ -118,7 +131,7 @@ namespace OWML.Patcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine("Error while saving patched game assembly: " + ex);
+                _writer.WriteLine($"Error while saving patched game assembly: {ex}", MessageType.Error);
                 throw;
             }
         }

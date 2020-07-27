@@ -11,6 +11,6 @@
 
         void UpdateSnapshot();
         void ResetConfigToDefaults();
-        void FixConfigs();
+        bool FixConfigs();
     }
 }

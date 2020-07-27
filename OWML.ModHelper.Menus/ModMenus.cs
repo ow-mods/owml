@@ -19,7 +19,7 @@ namespace OWML.ModHelper.Menus
         {
             MainMenu = new ModMainMenu(console);
             PauseMenu = new ModPauseMenu(console);
-            ModsMenu = new ModsMenu(console, this, inputHandler);
+            ModsMenu = new ModsMenu(console, this, inputHandler, events);
             OwmlMenu = new OwmlConfigMenu(console, owmlManifest, owmlConfig, owmlDefaultConfig);
             PopupManager = new ModPopupManager(console, inputHandler);
             InputCombinationMenu = new ModInputCombinationMenu(console);

@@ -11,7 +11,6 @@ namespace OWML.ModHelper.Menus
     {
         public event Action OnConfirm;
         public event Action OnCancel;
-        public bool IsOpen { get; private set; }
 
         private PopupMenu _twoButtonPopup;
 
@@ -54,15 +53,16 @@ namespace OWML.ModHelper.Menus
         {
             if (_twoButtonPopup == null || IsOpen)
             {
-                Console.WriteLine("Failed to create popup for a following message:");
-                Console.WriteLine(message);
+                OwmlConsole.WriteLine("Failed to create popup for a following message:", MessageType.Warning);
+                OwmlConsole.WriteLine(message, MessageType.Info);
             }
-            IsOpen = true;
             _twoButtonPopup.OnPopupConfirm += OnPopupConfirm;
             _twoButtonPopup.OnPopupCancel += OnPopupCancel;
             _twoButtonPopup.EnableMenu(true);
+            var okPrompt = new ScreenPrompt(InputLibrary.confirm, okMessage);
+            var cancelPrompt = new ScreenPrompt(InputLibrary.cancel, cancelMessage);
             _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, addCancel ? InputLibrary.cancel : null,
-                new ScreenPrompt(InputLibrary.confirm, okMessage), new ScreenPrompt(InputLibrary.cancel, cancelMessage), true, addCancel);
+               okPrompt, cancelPrompt, true, addCancel);
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
@@ -82,7 +82,6 @@ namespace OWML.ModHelper.Menus
         {
             _twoButtonPopup.OnPopupConfirm -= OnPopupConfirm;
             _twoButtonPopup.OnPopupCancel -= OnPopupCancel;
-            IsOpen = false;
         }
     }
 }

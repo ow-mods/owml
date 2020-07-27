@@ -91,7 +91,7 @@ namespace OWML.ModHelper.Menus
                 return;
             }
             if (currentlyPressedKeys.Count < 8 && (currentlyPressedKeys.Count > _combination.Count
-                || (currentlyPressedKeys.Count > 1 && _wasReleased)))
+                || currentlyPressedKeys.Count > 1 && _wasReleased))
             {
                 _wasReleased = false;
                 _combination = currentlyPressedKeys;

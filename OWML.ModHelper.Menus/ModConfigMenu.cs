@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using OWML.Common;
+﻿using OWML.Common;
 using System.Linq;
 using OWML.Common.Menus;
 

@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus
     {
         public event Action<string> OnConfirm;
         public event Action OnCancel;
+        public IModMessagePopup MessagePopup { get; }
 
         private readonly IModInputHandler _inputHandler;
         private IModPopupManager _popupManager;
@@ -26,6 +27,7 @@ namespace OWML.ModHelper.Menus
 
         public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler, IModPopupManager popupManager) : base(console)
         {
+            MessagePopup = new ModMessagePopup(console);
             _inputHandler = inputHandler;
             _popupManager = popupManager;
         }
@@ -103,7 +105,7 @@ namespace OWML.ModHelper.Menus
 
             if (layout == null)
             {
-                OwmlConsole.WriteLine("Error: failed to create combination visualizer in combination editor");
+                OwmlConsole.WriteLine("Error - Failed to create combination visualizer in combination editor.", MessageType.Error);
                 return;
             }
 

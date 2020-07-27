@@ -6,6 +6,5 @@ namespace OWML.Common.Menus
     {
         event Action OnConfirm;
         event Action OnCancel;
-        bool IsOpen { get; }
     }
 }

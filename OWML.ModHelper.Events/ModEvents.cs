@@ -10,6 +10,7 @@ namespace OWML.ModHelper.Events
     {
         public IModPlayerEvents Player { get; }
         public IModSceneEvents Scenes { get; }
+        public IModUnityEvents Unity { get; }
 
         public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
@@ -29,6 +30,7 @@ namespace OWML.ModHelper.Events
 
             Player = new ModPlayerEvents(this);
             Scenes = new ModSceneEvents();
+            Unity = new GameObject().AddComponent<ModUnityEvents>();
         }
 
         private void OnPatchEvent(MonoBehaviour behaviour, Common.Events ev)
@@ -109,7 +111,7 @@ namespace OWML.ModHelper.Events
                     break;
 
                 default:
-                    _console.WriteLine("Error: unrecognized event: " + ev);
+                    _console.WriteLine($"Error - Unrecognized event: {ev}", MessageType.Error);
                     throw new ArgumentOutOfRangeException(nameof(ev), ev, null);
             }
         }

@@ -43,6 +43,7 @@
     <Compile Include="IModInteraction.cs" />
     <Compile Include="IModPlayerEvents.cs" />
     <Compile Include="IModSceneEvents.cs" />
+    <Compile Include="IModUnityEvents.cs" />
     <Compile Include="Menus\IModPopupManager.cs" />
     <Compile Include="Menus\IModSeparator.cs" />
     <Compile Include="Menus\IModInputBase.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Menus\IModNumberInput.cs" />
     <Compile Include="Menus\IModTextInput.cs" />
     <Compile Include="Menus\IModToggleInput.cs" />
+    <Compile Include="MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
