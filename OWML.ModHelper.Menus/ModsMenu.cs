@@ -16,13 +16,14 @@ namespace OWML.ModHelper.Menus
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
         private readonly IModInputHandler _inputHandler;
-        private ModTaskDelayer _taskDelayer;
+        private readonly IModEvents _events;
 
-        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
+        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler, IModEvents events) : base(console)
         {
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
             _inputHandler = inputHandler;
+            _events = events;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
@@ -137,14 +138,7 @@ namespace OWML.ModHelper.Menus
             {
                 if (_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
                 {
-                    if (_taskDelayer == null)
-                    {
-                        var delayerObject = new GameObject();
-                        _taskDelayer = delayerObject.AddComponent<ModTaskDelayer>();
-                        _taskDelayer.OnNextUpdate += ShowReloadWarning;
-                        delayerObject.AddComponent<DontDestroyOnLoad>();
-                    }
-                    _taskDelayer.FireEventOnNextUpdate = true;
+                    _events.Unity.FireOnNextUpdate(ShowReloadWarning);
                 }
             }
         }
