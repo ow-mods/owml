@@ -51,7 +51,7 @@ namespace OWML.ModHelper.Menus
 
         internal void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
         {
-            if (_twoButtonPopup == null || IsOpen)
+            if (_twoButtonPopup == null)
             {
                 OwmlConsole.WriteLine("Failed to create popup for a following message:", MessageType.Warning);
                 OwmlConsole.WriteLine(message, MessageType.Info);

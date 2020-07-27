@@ -48,13 +48,11 @@ namespace OWML.ModHelper.Menus
         {
             if (scaleReference == null)
             {
-                OwmlConsole.WriteLine("error: scale reference is null");
+                OwmlConsole.WriteLine("Error - scale reference is null",MessageType.Error);
             }
             var layoutGroupNew = layoutObject.GetAddComponent<HorizontalLayoutGroup>();
-            OwmlConsole.WriteLine("Successfully created layoutGrop");
             layoutGroupNew.childForceExpandWidth = false;
             layoutGroupNew.childControlWidth = false;
-            OwmlConsole.WriteLine("Successfully setup layoutGrop");
             var styleManager = Object.FindObjectOfType<UIStyleManager>();
             var styleApplier = layoutObject.AddComponent<ModUIStyleApplier>();
             return new ModLayoutManager(layoutGroupNew, styleManager, styleApplier, scaleReference.localScale);
