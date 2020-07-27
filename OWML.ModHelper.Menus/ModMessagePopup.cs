@@ -3,7 +3,6 @@ using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {

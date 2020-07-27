@@ -8,9 +8,8 @@ namespace OWML.ModHelper.Menus
     {
         private float _value;
 
-        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager) : base(element, menu, popupManager)
-        {
-        }
+        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager) 
+            : base(element, menu, popupManager) { }
 
         protected override void Open()
         {
