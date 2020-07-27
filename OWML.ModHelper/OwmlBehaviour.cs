@@ -8,7 +8,6 @@ namespace OWML.ModHelper
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-            gameObject.AddComponent<ModTaskDelayer>();
         }
 
         private void OnApplicationQuit()
