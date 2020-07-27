@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,6 @@ namespace OWML.ModHelper.Menus
 
         private string _combination;
         private readonly IModInputHandler _inputHandler;
-        private readonly IModEvents _events;
         private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
         {
             InputLibrary.menuConfirm
@@ -33,11 +33,10 @@ namespace OWML.ModHelper.Menus
         private static IModInputCombinationElementMenu _popupMenu;
 
         public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu, 
-            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, IModEvents events, string combination = "") :
+            IModInputCombinationElementMenu popupMenu, IModInputHandler inputHandler, string combination = "") :
             base(toggle, menu)
         {
             _inputHandler = inputHandler;
-            _events = events;
             _combination = combination;
             Initialize(menu);
             SetupButtons();
@@ -68,9 +67,10 @@ namespace OWML.ModHelper.Menus
 
         private void SetupButtons()
         {
-            _openCommands.ForEach(_events.Input.AddToListener);
-            _events.Input.OnNewlyReleased += OnEditButton;
-            _events.Input.BlockNextRelease();
+            var inputEvents = ModEvents.Instance.Input;
+            _openCommands.ForEach(inputEvents.AddToListener);
+            inputEvents.OnNewlyReleased += OnEditButton;
+            inputEvents.BlockNextRelease();
             YesButton.Title = "Edit";
             YesButton.OnClick += OnEditClick;
 
@@ -81,9 +81,9 @@ namespace OWML.ModHelper.Menus
             var commandObject = new GameObject();
             var updater = commandObject.AddComponent<ModCommandUpdater>();
             updater.Initialize(deleteCommand);
-            _events.Input.AddToListener(deleteCommand);
-            _events.Input.OnNewlyReleased += OnDeleteButton;
-            _events.Input.BlockNextRelease();
+            inputEvents.AddToListener(deleteCommand);
+            inputEvents.OnNewlyReleased += OnDeleteButton;
+            inputEvents.BlockNextRelease();
             NoButton.Title = "Delete";
             NoButton.OnClick += OnDeleteClick;
         }
@@ -185,7 +185,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(Toggle);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, _events, combination);
+            return new ModInputCombinationElement(copy, Menu, _popupMenu, _inputHandler, combination);
         }
     }
 }

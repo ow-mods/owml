@@ -21,8 +21,7 @@ namespace OWML.ModHelper.Menus
         protected abstract void AddInputs();
         protected abstract void UpdateUIValues();
 
-        protected ModConfigMenuBase(IModConsole console, IModManifest manifest, IModEvents events)
-            : base(console, events)
+        protected ModConfigMenuBase(IModConsole console, IModManifest manifest) : base(console)
         {
             Manifest = manifest;
             Storage = new ModStorage(manifest);

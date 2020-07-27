@@ -1,4 +1,4 @@
-﻿using OWML.Common;
+﻿using OWML.ModHelper.Events;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -8,9 +8,10 @@ namespace OWML.ModHelper.Input
         private ModInputHandler _inputHandler;
         private bool _updateInputsNext, _updateInputs;
 
-        internal void Initialize(ModInputHandler inputHandler, IModEvents events)
+        internal void Initialize(ModInputHandler inputHandler)
         {
             _inputHandler = inputHandler;
+            var events = ModEvents.Instance;
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
             events.Event += OnEvent;
         }

@@ -15,21 +15,19 @@ namespace OWML.ModHelper.Menus
 
         protected List<Selectable> Selectables;
 
-        private readonly IModEvents _events;
-
-        protected ModMenuWithSelectables(IModConsole console, IModEvents events) : base(console)
+        protected ModMenuWithSelectables(IModConsole console) : base(console)
         {
-            _events = events;
         }
 
         private void SetupCommands()
         {
-            _events.Input.AddToListener(InputLibrary.confirm);
-            _events.Input.AddToListener(InputLibrary.enter2);//keypad's Enter
-            _events.Input.AddToListener(InputLibrary.cancel);
-            _events.Input.AddToListener(InputLibrary.escape);
-            _events.Input.AddToListener(InputLibrary.setDefaults);
-            _events.Input.OnNewlyReleased += OnButton;
+            var inputEvents = ModEvents.Instance.Input;
+            inputEvents.AddToListener(InputLibrary.confirm);
+            inputEvents.AddToListener(InputLibrary.enter2);//keypad's Enter
+            inputEvents.AddToListener(InputLibrary.cancel);
+            inputEvents.AddToListener(InputLibrary.escape);
+            inputEvents.AddToListener(InputLibrary.setDefaults);
+            inputEvents.OnNewlyReleased += OnButton;
             //listenerObject.SetActive(false); todo hmmm? :)
         }
 
@@ -150,7 +148,7 @@ namespace OWML.ModHelper.Menus
         protected virtual void OnActivateMenu()
         {
             //CommandListener.gameObject.SetActive(true); // todo hmmmm
-            _events.Input.BlockNextRelease();
+            ModEvents.Instance.Input.BlockNextRelease();
         }
 
         protected virtual void OnDeactivateMenu()

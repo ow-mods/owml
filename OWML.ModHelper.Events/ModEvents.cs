@@ -8,6 +8,8 @@ namespace OWML.ModHelper.Events
 {
     public class ModEvents : IModEvents
     {
+        public static IModEvents Instance { get; private set; }
+
         public IModPlayerEvents Player { get; }
         public IModSceneEvents Scenes { get; }
         public IModInputEvents Input { get; }
@@ -27,6 +29,8 @@ namespace OWML.ModHelper.Events
 
         public ModEvents(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper)
         {
+            Instance = this;
+
             _logger = logger;
             _console = console;
             _harmonyHelper = harmonyHelper;

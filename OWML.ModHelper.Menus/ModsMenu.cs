@@ -16,19 +16,17 @@ namespace OWML.ModHelper.Menus
         private readonly IModMenus _menus;
         private readonly List<IModConfigMenu> _modConfigMenus;
         private readonly IModInputHandler _inputHandler;
-        private readonly IModEvents _events;
 
-        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler, IModEvents events) : base(console)
+        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler) : base(console)
         {
             _menus = menus;
             _modConfigMenus = new List<IModConfigMenu>();
             _inputHandler = inputHandler;
-            _events = events;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod, _events));
+            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
@@ -68,7 +66,7 @@ namespace OWML.ModHelper.Menus
             }
             var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
             var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
-                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler, _events);
+                _menus.InputCombinationMenu, _menus.InputCombinationElementMenu, _inputHandler);
             comboElementTemplate.Hide();
             var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
             _menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
@@ -121,11 +119,11 @@ namespace OWML.ModHelper.Menus
             var toggleTemplate = options.InputTab.ToggleInputs[0];
             var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
             var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
-            var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu, _events);
+            var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             textInputTemplate.Hide();
-            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler, _events);
+            var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler);
             comboInputTemplate.Hide();
-            var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu, _events);
+            var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputMenu);
             numberInputTemplate.Hide();
             var rebindMenuCopy = options.RebindingMenu.Copy().Menu;
             modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate,
@@ -137,7 +135,7 @@ namespace OWML.ModHelper.Menus
             if (!options.Menu.IsMenuEnabled() &&
                 _modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
             {
-                _events.Unity.FireOnNextUpdate(ShowReloadWarning);
+                ModEvents.Instance.Unity.FireOnNextUpdate(ShowReloadWarning);
             }
         }
 

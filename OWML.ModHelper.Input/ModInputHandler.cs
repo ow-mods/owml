@@ -29,7 +29,7 @@ namespace OWML.ModHelper.Input
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events)
+        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig)
         {
             var textures = new ModInputTextures();
             textures.FillTextureLibrary();
@@ -40,7 +40,7 @@ namespace OWML.ModHelper.Input
 
             var listenerObject = new GameObject("GameBindingsChangeListener");
             var listener = listenerObject.AddComponent<BindingChangeListener>();
-            listener.Initialize(this, events);
+            listener.Initialize(this);
 
             if (owmlConfig.BlockInput)
             {

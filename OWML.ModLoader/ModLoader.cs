@@ -38,8 +38,8 @@ namespace OWML.ModLoader
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
             var events = new ModEvents(logger, console, harmonyHelper);
-            var inputHandler = new ModInputHandler(logger, console, harmonyHelper, owmlConfig, events);
-            var menus = new ModMenus(console, events, inputHandler, owmlManifest, owmlConfig, owmlDefaultConfig);
+            var inputHandler = new ModInputHandler(logger, console, harmonyHelper, owmlConfig);
+            var menus = new ModMenus(console, inputHandler, owmlManifest, owmlConfig, owmlDefaultConfig);
             var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper, inputHandler, modSorter, logFileName);
             owo.LoadMods();
         }
