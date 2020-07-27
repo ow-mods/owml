@@ -6,6 +6,7 @@ namespace OWML.Common.Menus
     {
         event Action<string> OnConfirm;
         event Action OnCancel;
+        IModMessagePopup MessagePopup { get; }
 
         void Initialize(PopupInputMenu menu);
         void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null,

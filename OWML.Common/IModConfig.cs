@@ -15,5 +15,7 @@ namespace OWML.Common
 
         [Obsolete("Use GetSettingsValue instead")]
         T GetSetting<T>(string key);
+
+        IModConfig Copy();
     }
 }

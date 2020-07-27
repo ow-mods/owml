@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
@@ -12,55 +12,54 @@ namespace OWML.ModLoader
         public IModManifest Manifest { get; }
         public IModConfig Config { get; private set; }
         public IModConfig DefaultConfig { get; private set; }
+        public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
 
         public bool Enabled => Config != null && Config.Enabled ||
-                               Config == null && DefaultConfig != null && DefaultConfig.Enabled ||
-                               Config == null && DefaultConfig == null;
+                               Config == null && DefaultConfig.Enabled;
 
         public bool RequireVR => Manifest.RequireVR ||
                                  Config != null && Config.RequireVR ||
-                                 Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
+                                 Config == null && DefaultConfig.RequireVR;
+
+        private IModConfig _configSnapshot;
 
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
         {
             Manifest = manifest;
             Config = config;
-            DefaultConfig = defaultConfig;
+            DefaultConfig = defaultConfig ?? new ModConfig();
+            UpdateSnapshot();
+        }
+
+        public void UpdateSnapshot()
+        {
+            _configSnapshot = Config != null ? Config.Copy() : DefaultConfig.Copy();
         }
 
         public void ResetConfigToDefaults()
         {
-            Config.Enabled = DefaultConfig.Enabled;
-            Config.Settings = new Dictionary<string, object>(DefaultConfig.Settings);
+            Config = DefaultConfig.Copy();
         }
 
         public bool FixConfigs()
         {
             var settingsChanged = false;
             var storage = new ModStorage(Manifest);
-            if (Config == null && DefaultConfig == null)
+            if (Config == null)
             {
-                Config = new ModConfig();
-                DefaultConfig = new ModConfig();
-            }
-            else if (DefaultConfig != null && Config == null)
-            {
-                Config = DefaultConfig;
+                Config = DefaultConfig.Copy();
             }
             else if (DefaultConfig != null)
             {
                 settingsChanged = !MakeConfigConsistentWithDefault();
             }
             storage.Save(Config, Constants.ModConfigFileName);
+            UpdateSnapshot();
             return settingsChanged;
         }
 
         private bool MakeConfigConsistentWithDefault()
         {
-            if (DefaultConfig == null)
-            {
-                return true;
-            }
             var wasCompatible = true;
             var toRemove = Config.Settings.Keys.Except(DefaultConfig.Settings.Keys).ToList();
             toRemove.ForEach(key => Config.Settings.Remove(key));

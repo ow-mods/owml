@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Menus
 
         private readonly OptionsSelectorElement _element;
         private int _count;
-        private List<string> _options;
+        private List<string> _options = new List<string>();
 
         public override string Value
         {
@@ -31,7 +31,15 @@ namespace OWML.ModHelper.Menus
         {
             _element = element;
             _count = element.GetValue<string[]>("_optionsList").Length;
-            element.OnValueChanged += value => InvokeOnChange(_options[value]);
+            element.OnValueChanged += OnValueChanged;
+        }
+
+        private void OnValueChanged(int value)
+        {
+            if (_options.Count > value)
+            {
+                InvokeOnChange(_options[value]);
+            }
         }
 
         public void Initialize(string option, string[] options)
