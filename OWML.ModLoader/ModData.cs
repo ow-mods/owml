@@ -15,12 +15,11 @@ namespace OWML.ModLoader
         public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
 
         public bool Enabled => Config != null && Config.Enabled ||
-                               Config == null && DefaultConfig != null && DefaultConfig.Enabled ||
-                               Config == null && DefaultConfig == null;
+                               Config == null && DefaultConfig.Enabled;
 
         public bool RequireVR => Manifest.RequireVR ||
                                  Config != null && Config.RequireVR ||
-                                 Config == null && DefaultConfig != null && DefaultConfig.RequireVR;
+                                 Config == null && DefaultConfig.RequireVR;
 
         private IModConfig _configSnapshot;
 
@@ -28,32 +27,27 @@ namespace OWML.ModLoader
         {
             Manifest = manifest;
             Config = config;
-            DefaultConfig = defaultConfig;
+            DefaultConfig = defaultConfig ?? new ModConfig();
             UpdateSnapshot();
         }
 
         public void UpdateSnapshot()
         {
-            _configSnapshot = Config != null ? Config.Copy() : DefaultConfig?.Copy();
+            _configSnapshot = Config != null ? Config.Copy() : DefaultConfig.Copy();
         }
 
         public void ResetConfigToDefaults()
         {
-            Config = DefaultConfig != null ? DefaultConfig.Copy() : new ModConfig();
+            Config = DefaultConfig.Copy();
         }
 
         public bool FixConfigs()
         {
             var settingsChanged = false;
             var storage = new ModStorage(Manifest);
-            if (Config == null && DefaultConfig == null)
+            if (Config == null)
             {
-                Config = new ModConfig();
-                DefaultConfig = new ModConfig();
-            }
-            else if (DefaultConfig != null && Config == null)
-            {
-                Config = DefaultConfig;
+                Config = DefaultConfig.Copy();
             }
             else if (DefaultConfig != null)
             {
@@ -66,10 +60,6 @@ namespace OWML.ModLoader
 
         private bool MakeConfigConsistentWithDefault()
         {
-            if (DefaultConfig == null)
-            {
-                return true;
-            }
             var wasCompatible = true;
             var toRemove = Config.Settings.Keys.Except(DefaultConfig.Settings.Keys).ToList();
             toRemove.ForEach(key => Config.Settings.Remove(key));
