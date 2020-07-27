@@ -50,6 +50,14 @@ namespace OWML.ModLoader
             {
                 Config = DefaultConfig.Copy();
             }
+            else if (Config != null)
+            {
+                Config.Enabled = true; //to preserve other settings
+            }
+            else
+            {
+                Config = new ModConfig();
+            }
         }
 
         public bool FixConfigs()
