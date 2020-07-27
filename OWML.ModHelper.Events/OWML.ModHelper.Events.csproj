@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="HarmonyHelper.cs" />
     <Compile Include="ModEvents.cs" />
+    <Compile Include="ModUnityEvents.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModPlayerEvents.cs" />

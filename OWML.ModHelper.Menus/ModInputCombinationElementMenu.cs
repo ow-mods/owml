@@ -15,11 +15,11 @@ namespace OWML.ModHelper.Menus
     {
         public event Action<string> OnConfirm;
         public event Action OnCancel;
+        public IModMessagePopup MessagePopup { get; }
 
         private readonly IModInputHandler _inputHandler;
 
         private ModInputCombinationPopup _inputMenu;
-        private PopupMenu _twoButtonPopup;
         private SingleAxisCommand _cancelCommand;
         private string _comboName;
         private IModInputCombinationMenu _combinationMenu;
@@ -27,6 +27,7 @@ namespace OWML.ModHelper.Menus
 
         public ModInputCombinationElementMenu(IModInputHandler inputHandler)
         {
+            MessagePopup = new ModMessagePopup();
             _inputHandler = inputHandler;
         }
 
@@ -59,11 +60,7 @@ namespace OWML.ModHelper.Menus
             }
             var parentCopy = Object.Instantiate(menu.transform.parent.gameObject);
             parentCopy.AddComponent<DontDestroyOnLoad>();
-            _twoButtonPopup = parentCopy.transform.Find("TwoButton-Popup")?.GetComponent<PopupMenu>();
-            if (_twoButtonPopup == null)
-            {
-                Console.WriteLine("Error - Failed to setup warning popup.");
-            }
+            MessagePopup.Initialize(parentCopy.transform.Find("TwoButton-Popup")?.GetComponent<PopupMenu>());
 
             var originalMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true); // InputField-Popup
             var menuTransform = originalMenu.GetComponentInChildren<VerticalLayoutGroup>(true).transform; // InputFieldElements
@@ -138,19 +135,6 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
-        private void ShowWarningPopup(string message, bool addCancel = false, string okMessage = "OK")
-        {
-            if (_twoButtonPopup == null)
-            {
-                Console.WriteLine("Failed to create popup for a following message:");
-                Console.WriteLine(message);
-            }
-            _twoButtonPopup.EnableMenu(true);
-            _twoButtonPopup.SetUpPopup(message, InputLibrary.confirm, addCancel ? InputLibrary.cancel : null,
-                new ScreenPrompt(InputLibrary.confirm, okMessage), new ScreenPrompt("Cancel"), true, addCancel);
-            _twoButtonPopup.GetValue<Text>("_labelText").text = message;
-        }
-
         private bool OnPopupValidate()
         {
             var currentCombination = _inputMenu.Combination;
@@ -158,10 +142,10 @@ namespace OWML.ModHelper.Menus
             collisions.Remove($"Collides with {_comboName}");
             if (collisions.Count > 0)
             {
-                ShowWarningPopup($"This combination has following problems:\n{string.Join("\n", collisions.ToArray())}",
+                MessagePopup.ShowMessage($"This combination has following problems:\n{string.Join("\n", collisions.ToArray())}",
                     true, "Save anyway");
-                _twoButtonPopup.OnPopupConfirm += OnForceConfirm;
-                _twoButtonPopup.OnPopupCancel += DisableWarningSubscription;
+                MessagePopup.OnConfirm += OnForceConfirm;
+                MessagePopup.OnCancel += DisableWarningSubscription;
                 return false;
             }
             if (_combinationMenu == null)
@@ -174,14 +158,14 @@ namespace OWML.ModHelper.Menus
             {
                 return true;
             }
-            ShowWarningPopup("This combination already exist in this group");
+            MessagePopup.ShowMessage("This combination already exist in this group");
             return false;
         }
 
         private void DisableWarningSubscription()
         {
-            _twoButtonPopup.OnPopupConfirm -= OnForceConfirm;
-            _twoButtonPopup.OnPopupCancel -= DisableWarningSubscription;
+            MessagePopup.OnConfirm -= OnForceConfirm;
+            MessagePopup.OnCancel -= DisableWarningSubscription;
         }
 
         private void OnForceConfirm()

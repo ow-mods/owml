@@ -9,5 +9,6 @@
         IModInputMenu InputMenu { get; }
         IModInputCombinationElementMenu InputCombinationElementMenu { get; }
         IModInputCombinationMenu InputCombinationMenu { get; }
+        IModMessagePopup MessagePopup { get; }
     }
 }

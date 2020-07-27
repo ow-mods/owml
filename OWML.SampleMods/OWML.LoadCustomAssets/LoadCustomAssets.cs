@@ -37,11 +37,11 @@ namespace OWML.LoadCustomAssets
             _cube = assetBundle.LoadAsset<GameObject>("Cube");
 
             var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
-            gunSoundAsset.OnLoaded += OnGunSoundLoaded;
+            gunSoundAsset.Loaded += OnGunSoundLoaded;
             var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
-            duckAsset.OnLoaded += OnDuckLoaded;
+            duckAsset.Loaded += OnDuckLoaded;
             var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
-            musicAsset.OnLoaded += OnMusicLoaded;
+            musicAsset.Loaded += OnMusicLoaded;
 
             ModHelper.Events.Player.OnPlayerAwake += OnPlayerAwake;
             ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;

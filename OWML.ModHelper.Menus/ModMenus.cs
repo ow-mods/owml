@@ -14,13 +14,14 @@ namespace OWML.ModHelper.Menus
         public IModInputMenu InputMenu { get; }
         public IModInputCombinationElementMenu InputCombinationElementMenu { get; }
         public IModInputCombinationMenu InputCombinationMenu { get; }
+        public IModMessagePopup MessagePopup { get; }
 
         public ModMenus(IModEvents events, IModInputHandler inputHandler,
             IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
         {
             MainMenu = new ModMainMenu();
             PauseMenu = new ModPauseMenu();
-            ModsMenu = new ModsMenu(this, inputHandler);
+            ModsMenu = new ModsMenu(this, inputHandler, events);
             OwmlMenu = new OwmlConfigMenu(owmlManifest, owmlConfig, owmlDefaultConfig);
             InputMenu = new ModInputMenu();
             InputCombinationElementMenu = new ModInputCombinationElementMenu(inputHandler);
@@ -28,7 +29,7 @@ namespace OWML.ModHelper.Menus
 
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
-            events.OnEvent += OnEvent;
+            events.Event += OnEvent;
         }
 
         private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
