@@ -9,7 +9,12 @@ namespace OWML.ModHelper.Menus
 {
     public class ModPopupMenu : ModMenu, IModPopupMenu
     {
+        public event Action OnOpened;
+        public event Action OnClosed;
+
+        [Obsolete("Use OnOpened instead.")]
         public Action OnOpen { get; set; }
+        [Obsolete("Use OnClosed instead.")]
         public Action OnClose { get; set; }
 
         public bool IsOpen { get; private set; }
@@ -41,12 +46,14 @@ namespace OWML.ModHelper.Menus
         {
             IsOpen = false;
             OnClose?.Invoke();
+            OnClosed?.Invoke();
         }
 
         private void OnActivateMenu()
         {
             IsOpen = true;
             OnOpen?.Invoke();
+            OnOpened?.Invoke();
         }
 
         public virtual void Open()
