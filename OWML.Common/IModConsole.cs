@@ -4,7 +4,7 @@ namespace OWML.Common
 {
     public interface IModConsole
     {
-        [Obsolete("Use WriteLine(string line) or WriteLine(string line, MessageType) instead.")]
+        [Obsolete("Use WriteLine(string line) or WriteLine(string line, MessageType type) instead.")]
         void WriteLine(params object[] objects);
 
         void WriteLine(string line);
