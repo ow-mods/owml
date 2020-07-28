@@ -6,20 +6,20 @@ namespace OWML.ModHelper.Menus
 {
     public class ModTitleButton : ModButtonBase, IModButton
     {
-        private readonly Text _text;
+        internal Text Text { get; }
         public virtual string Title
         {
-            get => _text != null ? _text.text : "";
+            get => Text != null ? Text.text : "";
             set
             {
                 Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
-                _text.text = value;
+                Text.text = value;
             }
         }
 
         public ModTitleButton(Button button, IModMenu menu) : base(button, menu)
         {
-            _text = Button.GetComponentInChildren<Text>();
+            Text = Button.GetComponentInChildren<Text>();
         }
 
         public new IModButton Copy()
