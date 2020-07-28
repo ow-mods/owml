@@ -109,18 +109,5 @@ namespace OWML.ModHelper.Menus
             return copy;
         }
 
-        [Obsolete("Use Copy instead")]
-        public IModPopupMenu CreateCopy(string title)
-        {
-            if (Menu == null)
-            {
-                OwmlConsole.WriteLine("Warning: can't copy menu, it doesn't exist.");
-                return null;
-            }
-            var menu = Copy();
-            menu.Title = title;
-            return menu;
-        }
-
     }
 }

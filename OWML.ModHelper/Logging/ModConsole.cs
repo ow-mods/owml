@@ -14,7 +14,7 @@ namespace OWML.ModHelper
         protected readonly IModManifest Manifest;
         protected readonly IOwmlConfig OwmlConfig;
 
-        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
+        [Obsolete("Use WriteLine(string line) or WriteLine(string line, MessageType) instead.")]
         public abstract void WriteLine(params object[] objects);
 
         public abstract void WriteLine(string line);
