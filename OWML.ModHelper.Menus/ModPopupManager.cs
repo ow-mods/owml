@@ -14,12 +14,12 @@ namespace OWML.ModHelper.Menus
         private readonly List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
         private readonly IModEvents _events;
 
-        public ModPopupManager(IModConsole console, IModInputHandler inputHandler, IModEvents events)
+        public ModPopupManager(IModInputHandler inputHandler, IModEvents events)
         {
             _events = events;
-            _inputPopup = new ModInputMenu(console);
-            _messagePopup = new ModMessagePopup(console);
-            _combinationPopup = new ModInputCombinationElementMenu(console, inputHandler, this);
+            _inputPopup = new ModInputMenu();
+            _messagePopup = new ModMessagePopup();
+            _combinationPopup = new ModInputCombinationElementMenu(inputHandler, this);
         }
 
         public void Initialize(GameObject popupCanvas)

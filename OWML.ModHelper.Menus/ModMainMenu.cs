@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMainMenu : ModMenu, IModMainMenu
     {
-        public IModTabbedMenu OptionsMenu { get; }
+        public IModTabbedMenu OptionsMenu { get; } = new ModOptionsMenu();
 
         public IModButton ResumeExpeditionButton { get; private set; }
         public IModButton NewExpeditionButton { get; private set; }
@@ -18,11 +18,6 @@ namespace OWML.ModHelper.Menus
         public IModButton QuitButton { get; private set; }
 
         private TitleAnimationController _anim;
-
-        public ModMainMenu(IModConsole console) : base(console)
-        {
-            OptionsMenu = new ModOptionsMenu(console);
-        }
 
         public void Initialize(TitleScreenManager titleScreenManager)
         {
