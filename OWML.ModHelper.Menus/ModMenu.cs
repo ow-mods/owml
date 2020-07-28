@@ -84,37 +84,13 @@ namespace OWML.ModHelper.Menus
             return button;
         }
 
-        [Obsolete("Use Buttons instead")]
-        public List<Button> GetButtons()
-        {
-            return Menu.GetComponentsInChildren<Button>(true).ToList();
-        }
-
-        [Obsolete("Use button.Duplicate instead")]
-        public Button AddButton(string title, int index)
-        {
-            var original = Buttons?.FirstOrDefault();
-            if (original == null)
-            {
-                ModConsole.OwmlConsole.WriteLine("Warning: no buttons to copy");
-                return null;
-            }
-
-            var copy = original.Copy();
-            copy.Title = title;
-
-            AddButton(copy, index);
-
-            return copy.Button;
-        }
-
-        [Obsolete("use IModButtonBase")]
+        [Obsolete("Use AddButton(IModButtonBase) instead.")]
         public IModButton AddButton(IModButton button)
         {
             return AddButton(button, button.Index);
         }
 
-        [Obsolete("use IModButtonBase")]
+        [Obsolete("Use AddButton(IModButtonBase, int) instead.")]
         public virtual IModButton AddButton(IModButton button, int index)
         {
             return (IModButton)AddButton((IModButtonBase)button, index);

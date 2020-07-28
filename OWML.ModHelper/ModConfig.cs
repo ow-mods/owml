@@ -88,12 +88,6 @@ namespace OWML.ModHelper
             }
         }
 
-        [Obsolete("Use GetSettingsValue instead")]
-        public T GetSetting<T>(string key)
-        {
-            return GetSettingsValue<T>(key);
-        }
-
         public IModConfig Copy()
         {
             return new ModConfig
