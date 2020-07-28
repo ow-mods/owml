@@ -27,13 +27,6 @@ namespace OWML.Launcher
             app.Run(args);
         }
 
-        private static IModConsole CreateWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
-        {
-            return hasConsolePort
-                ? new ModSocketOutput(owmlConfig, null, owmlManifest)
-                : (IModConsole)new OutputWriter();
-        }
-
         private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort)
         {
             if (hasConsolePort)
@@ -74,6 +67,13 @@ namespace OWML.Launcher
         private static IModManifest GetOwmlManifest()
         {
             return JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
+        }
+
+        private static IModConsole CreateWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
+        {
+            return hasConsolePort
+                ? new ModSocketOutput(owmlConfig, null, owmlManifest)
+                : (IModConsole)new OutputWriter();
         }
 
     }
