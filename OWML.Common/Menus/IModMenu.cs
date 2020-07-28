@@ -21,7 +21,7 @@ namespace OWML.Common.Menus
 
         [Obsolete("Use AddButton(IModButtonBase) instead.")]
         IModButton AddButton(IModButton button);
-        [Obsolete("Use AddButton(IModButtonBase) instead.")]
+        [Obsolete("Use AddButton(IModButtonBase, int) instead.")]
         IModButton AddButton(IModButton button, int index);
         IModButtonBase AddButton(IModButtonBase button);
         IModButtonBase AddButton(IModButtonBase button, int index);
