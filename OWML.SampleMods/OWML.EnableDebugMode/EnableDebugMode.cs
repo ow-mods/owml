@@ -11,18 +11,14 @@ namespace OWML.EnableDebugMode
         private int _renderValue;
         private bool _isStarted;
         private PlayerSpawner _playerSpawner;
-        private Dictionary<string, IModInputCombination> _inputs;
+        private readonly Dictionary<string, IModInputCombination> _inputs = new Dictionary<string, IModInputCombination>();
 
         public override void Configure(IModConfig config)
         {
-            if (_inputs != null)
+            foreach (var key in _inputs.Keys)
             {
-                foreach (var key in _inputs.Keys)
-                {
-                    ModHelper.Input.UnregisterCombination(_inputs[key]);
-                }
+                ModHelper.Input.UnregisterCombination(_inputs[key]);
             }
-            _inputs = new Dictionary<string, IModInputCombination>();
             foreach (var key in config.Settings.Keys)
             {
                 var value = config.GetSettingsValue<string>(key);

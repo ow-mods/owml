@@ -137,7 +137,7 @@ namespace OWML.ModHelper.Menus
             if (!options.Menu.IsMenuEnabled() &&
                 _modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
             {
-                _events.Unity.FireOnNextUpdate(ShowReloadWarning);
+                _events.Unity.FireInNUpdates(ShowReloadWarning, 2);
             }
         }
 
