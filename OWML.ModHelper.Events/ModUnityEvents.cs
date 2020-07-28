@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OWML.Common;
 using UnityEngine;
 
@@ -12,10 +13,26 @@ namespace OWML.ModHelper.Events
         public event Action OnLateUpdate;
 
         private List<Action> _actions = new List<Action>();
+        private Dictionary<int, List<Action>> _delayedActions;
+
+        public void FireAfterNFrames(int count, Action action)
+        {
+            var frame = Time.frameCount + count;
+            if (!_delayedActions.ContainsKey(frame))
+            {
+                _delayedActions.Add(frame, new List<Action>());
+            }
+            _delayedActions[frame].Add(action);
+        }
 
         public void FireOnNextUpdate(Action action)
         {
-            _actions.Add(action);
+            var frame = Time.frameCount;
+            if (!_delayedActions.ContainsKey(frame))
+            {
+                _delayedActions.Add(frame, new List<Action>());
+            }
+            _delayedActions[frame].Add(action);
         }
 
         private void Start()
@@ -26,7 +43,10 @@ namespace OWML.ModHelper.Events
         private void Update()
         {
             _actions.ForEach(action => action.Invoke());
-            _actions = new List<Action>();
+            _actions.Clear();
+            var keysToActivate = _delayedActions.Keys.Where(key => key <= Time.frameCount).ToList();
+            keysToActivate.ForEach(key => _delayedActions[key].ForEach(action => action.Invoke()));
+            keysToActivate.ForEach(key => _delayedActions.Remove(key));
             OnUpdate?.Invoke();
         }
 
