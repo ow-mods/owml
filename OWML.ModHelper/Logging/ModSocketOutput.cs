@@ -23,7 +23,7 @@ namespace OWML.ModHelper
             }
         }
 
-        [Obsolete("Use WriteLine(string line) or WriteLine(string line, MessageType type) instead.")]
+        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
         public override void WriteLine(params object[] objects)
         {
             var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());

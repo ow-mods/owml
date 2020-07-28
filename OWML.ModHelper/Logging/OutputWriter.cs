@@ -6,7 +6,7 @@ namespace OWML.ModHelper
 {
     public class OutputWriter : IModConsole
     {
-        [Obsolete("Use WriteLine(string line) or WriteLine(string line, MessageType type) instead.")]
+        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
         public void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
