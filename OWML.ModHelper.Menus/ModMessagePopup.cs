@@ -3,21 +3,18 @@ using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModMessagePopup : ModMenu, IModMessagePopup
+    public class ModMessagePopup : ModTemporaryPopup, IModMessagePopup
     {
         public event Action OnConfirm;
-        public event Action OnCancel;
-        public bool IsOpen { get; private set; }
 
         private PopupMenu _twoButtonPopup;
 
         public ModMessagePopup(IModConsole console) : base(console) { }
 
-        public void Initialize(PopupMenu popup)
+        internal void Initialize(PopupMenu popup)
         {
             if (Menu != null)
             {
@@ -29,28 +26,32 @@ namespace OWML.ModHelper.Menus
                 Console.WriteLine("Error: Failed to setup popup");
             }
             Menu = _twoButtonPopup;
+            Popup = _twoButtonPopup;
         }
 
-        public IModMessagePopup Copy()
+        internal override void DestroySelf()
         {
-            var newPopupObject = Object.Instantiate(_twoButtonPopup.gameObject);
-            newPopupObject.transform.SetParent(_twoButtonPopup.transform.parent);
-            newPopupObject.transform.localScale = _twoButtonPopup.transform.localScale;
+            DestroySelf(_twoButtonPopup.gameObject);
+            OnConfirm = null;
+            _twoButtonPopup = null;
+        }
+
+        internal ModMessagePopup Copy()
+        {
+            var newPopupObject = CopyMenu();
             var newPopup = new ModMessagePopup(OwmlConsole);
             newPopup.Initialize(newPopupObject.GetComponent<PopupMenu>());
             return newPopup;
         }
 
-        public void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
+        internal void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
         {
-            if (_twoButtonPopup == null || IsOpen)
+            if (_twoButtonPopup == null)
             {
                 OwmlConsole.WriteLine("Failed to create popup for a following message:", MessageType.Warning);
                 OwmlConsole.WriteLine(message, MessageType.Info);
             }
-            IsOpen = true;
-            _twoButtonPopup.OnPopupConfirm += OnPopupConfirm;
-            _twoButtonPopup.OnPopupCancel += OnPopupCancel;
+            RegisterEvents();
             _twoButtonPopup.EnableMenu(true);
             var okPrompt = new ScreenPrompt(InputLibrary.confirm, okMessage);
             var cancelPrompt = new ScreenPrompt(InputLibrary.cancel, cancelMessage);
@@ -59,23 +60,10 @@ namespace OWML.ModHelper.Menus
             _twoButtonPopup.GetValue<Text>("_labelText").text = message;
         }
 
-        private void OnPopupConfirm()
+        protected override void OnPopupConfirm()
         {
-            UnregisterEvents();
+            base.OnPopupConfirm();
             OnConfirm?.Invoke();
-        }
-
-        private void OnPopupCancel()
-        {
-            UnregisterEvents();
-            OnCancel?.Invoke();
-        }
-
-        private void UnregisterEvents()
-        {
-            _twoButtonPopup.OnPopupConfirm -= OnPopupConfirm;
-            _twoButtonPopup.OnPopupCancel -= OnPopupCancel;
-            IsOpen = false;
         }
     }
 }
