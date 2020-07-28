@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
@@ -56,10 +55,9 @@ namespace OWML.ModHelper.Menus
             _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
             if (button is ModTitleButton titleButton)
             {
-                var texts = _titleManager.GetValue<Text[]>("_mainMenuTextFields");
-                Array.Resize(ref texts, texts.Length + 1);
-                texts[texts.Length - 1] = titleButton.Text;
-                _titleManager.SetValue("_mainMenuTextFields", texts);
+                var texts = _titleManager.GetValue<Text[]>("_mainMenuTextFields").ToList();
+                texts.Add(titleButton.Text);
+                _titleManager.SetValue("_mainMenuTextFields", texts.ToArray());
             }
             return modButton;
         }
