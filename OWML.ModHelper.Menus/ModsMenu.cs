@@ -151,7 +151,10 @@ namespace OWML.ModHelper.Menus
         private void OnPopupCancel()
         {
             _modConfigMenus.ForEach(modMenu => modMenu.ModData.UpdateSnapshot());
-            _menus.MainMenu.SelectFirst();
+            if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
+            {
+                _menus.MainMenu.SelectFirst();
+            }
         }
 
         private void OnPopupConfirm()
