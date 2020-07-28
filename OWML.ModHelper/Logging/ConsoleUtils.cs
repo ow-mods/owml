@@ -1,5 +1,6 @@
 ﻿using OWML.Common;
 using System;
+using System.Collections.Generic;
 
 namespace OWML.ModHelper
 {
@@ -7,24 +8,14 @@ namespace OWML.ModHelper
     {
         public static void WriteByType(MessageType type, string line)
         {
-            switch (type)
+            Console.ForegroundColor = new Dictionary<MessageType, ConsoleColor>
             {
-                case MessageType.Error:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case MessageType.Warning:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case MessageType.Success:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case MessageType.Message:
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    break;
-                case MessageType.Info:
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    break;
-            }
+                { MessageType.Error, ConsoleColor.Red },
+                { MessageType.Warning, ConsoleColor.Yellow },
+                { MessageType.Success, ConsoleColor.Green },
+                { MessageType.Message, ConsoleColor.Gray },
+                { MessageType.Info, ConsoleColor.Cyan }
+            }[type];
             Console.WriteLine(line);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
