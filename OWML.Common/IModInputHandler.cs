@@ -7,8 +7,6 @@ namespace OWML.Common
         IModInputTextures Textures { get; }
 
         IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination);
-        IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination, bool ignoreTaken);
-
         void UnregisterCombination(IModInputCombination combo);
         bool IsPressedExact(IModInputCombination combo);
         bool IsNewlyPressedExact(IModInputCombination combo);

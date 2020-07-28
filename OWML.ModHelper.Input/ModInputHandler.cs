@@ -245,7 +245,7 @@ namespace OWML.ModHelper.Input
                    combination.IsFirst;
         }
 
-        private RegistrationCode SwapCombination(IModInputCombination combination, bool toUnregister, bool ignoreTaken)
+        private RegistrationCode SwapCombination(IModInputCombination combination, bool toUnregister)
         {
             var isTaken = false;
             if (combination.Hashes.Count == 0)
@@ -275,12 +275,9 @@ namespace OWML.ModHelper.Input
                 {
                     _comboRegistry.Add(hash, new HashSet<IModInputCombination>());
                 }
-                if (!isTaken || ignoreTaken)
-                {
-                    _comboRegistry[hash].Add(combination);
-                }
+                _comboRegistry[hash].Add(combination);
             }
-            return isTaken && !ignoreTaken ? RegistrationCode.CombinationTaken : RegistrationCode.AllNormal;
+            return isTaken ? RegistrationCode.CombinationTaken : RegistrationCode.AllNormal;
         }
 
         private List<string> GetCollisions(ReadOnlyCollection<long> hashes)
@@ -323,13 +320,8 @@ namespace OWML.ModHelper.Input
 
         public IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination)
         {
-            return RegisterCombination(mod, name, combination, false);
-        }
-
-        public IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination, bool ignoreTaken)
-        {
             var combo = new ModInputCombination(mod.ModHelper.Manifest, _console, name, combination);
-            switch (SwapCombination(combo, false, ignoreTaken))
+            switch (SwapCombination(combo, false))
             {
                 case RegistrationCode.InvalidCombination:
                     _console.WriteLine($"Failed to register \"{combo.FullName}\": Invalid combination!", MessageType.Error);
@@ -338,13 +330,13 @@ namespace OWML.ModHelper.Input
                     _console.WriteLine($"Failed to register \"{combo.FullName}\": Too long!", MessageType.Error);
                     return null;
                 case RegistrationCode.CombinationTaken:
-                    _console.WriteLine($"Failed to register \"{combo.FullName}\": Already in use by following mods:", MessageType.Error);
+                    _console.WriteLine($"Warning - \"{combo.FullName}\" is already in use by the following mods:", MessageType.Warning);
                     var collisions = GetCollisions(combo.Hashes);
                     foreach (var collision in collisions)
                     {
-                        _console.WriteLine($"\"{collision}\"", MessageType.Error);
+                        _console.WriteLine($" * \"{collision}\"", MessageType.Warning);
                     }
-                    return null;
+                    return combo;
                 case RegistrationCode.AllNormal:
                     return combo;
                 default:
@@ -359,7 +351,7 @@ namespace OWML.ModHelper.Input
                 _console.WriteLine("Failed to unregister: Null combination!", MessageType.Error);
                 return;
             }
-            switch (SwapCombination(combination, true, false))
+            switch (SwapCombination(combination, true))
             {
                 case RegistrationCode.InvalidCombination:
                     _console.WriteLine($"Failed to unregister \"{combination.FullName}\": Invalid combination!", MessageType.Error);
