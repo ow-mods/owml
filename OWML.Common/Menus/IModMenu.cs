@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
@@ -60,10 +59,5 @@ namespace OWML.Common.Menus
 
         void SelectFirst();
         void UpdateNavigation();
-
-        [Obsolete("Use Buttons instead")]
-        List<Button> GetButtons();
-        [Obsolete("Use button.Duplicate instead")]
-        Button AddButton(string title, int index);
     }
 }
