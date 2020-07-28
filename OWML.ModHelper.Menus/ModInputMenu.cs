@@ -6,19 +6,19 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModInputMenu : ModMenu, IModInputMenu
+    public class ModInputMenu : ModTemporaryPopup, IModInputMenu
     {
         public event Action<string> OnConfirm;
-        public event Action OnCancel;
 
         private PopupInputMenu _inputMenu;
 
-        public void Initialize(PopupInputMenu menu)
+        internal void Initialize(PopupInputMenu menu)
         {
             if (Menu != null)
             {
                 return;
             }
+            Popup = menu;
             var parent = menu.transform.parent.gameObject;
             var parentCopy = Object.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
@@ -27,11 +27,9 @@ namespace OWML.ModHelper.Menus
             Initialize((Menu)_inputMenu);
         }
 
-        public void Open(InputType inputType, string value)
+        internal void Open(InputType inputType, string value)
         {
-            _inputMenu.OnPopupConfirm += OnPopupConfirm;
-            _inputMenu.OnPopupCancel += OnPopupCancel;
-
+            RegisterEvents();
             if (inputType == InputType.Number)
             {
                 _inputMenu.OnInputPopupValidateChar += OnValidateCharNumber;
@@ -50,6 +48,21 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
+        internal ModInputMenu Copy()
+        {
+            var newPopupObject = CopyMenu();
+            var newPopup = new ModInputMenu();
+            newPopup.Initialize(newPopupObject.GetComponent<PopupInputMenu>());
+            return newPopup;
+        }
+
+        internal override void DestroySelf()
+        {
+            DestroySelf(_inputMenu.gameObject);
+            OnConfirm = null;
+            _inputMenu = null;
+        }
+
         private bool OnValidateNumber()
         {
             return float.TryParse(_inputMenu.GetInputText(), out _);
@@ -60,24 +73,24 @@ namespace OWML.ModHelper.Menus
             return "0123456789.".Contains("" + c);
         }
 
-        private void OnPopupConfirm()
+        protected override void OnPopupConfirm()
         {
-            UnregisterEvents();
+            base.OnPopupConfirm();
             OnConfirm?.Invoke(_inputMenu.GetInputText());
         }
 
-        private void OnPopupCancel()
+        protected override void RegisterEvents()
         {
-            UnregisterEvents();
-            OnCancel?.Invoke();
+            _inputMenu.OnPopupCancel += OnPopupCancel; // subscribing to PopupMenu doesn't work *shrug*
+            _inputMenu.OnPopupConfirm += OnPopupConfirm;
         }
 
-        private void UnregisterEvents()
+        protected override void UnregisterEvents()
         {
+            _inputMenu.OnPopupCancel -= OnPopupCancel;
+            _inputMenu.OnPopupConfirm -= OnPopupConfirm;
             _inputMenu.OnPopupValidate -= OnValidateNumber;
             _inputMenu.OnInputPopupValidateChar -= OnValidateCharNumber;
-            _inputMenu.OnPopupConfirm -= OnPopupConfirm;
-            _inputMenu.OnPopupCancel -= OnPopupCancel;
         }
     }
 }

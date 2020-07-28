@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using OWML.Common;
 using UnityEngine;
 
@@ -11,11 +11,23 @@ namespace OWML.ModHelper.Events
         public event Action OnFixedUpdate;
         public event Action OnLateUpdate;
 
-        private List<Action> _actions = new List<Action>();
-
         public void FireOnNextUpdate(Action action)
         {
-            _actions.Add(action);
+            FireInNUpdates(action, 1);
+        }
+
+        public void FireInNUpdates(Action action, int n)
+        {
+            StartCoroutine(WaitForFrames(action, n));
+        }
+
+        private IEnumerator WaitForFrames(Action action, int n)
+        {
+            for (var i = 0; i < n; i++)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            action.Invoke();
         }
 
         private void Start()
@@ -25,8 +37,6 @@ namespace OWML.ModHelper.Events
 
         private void Update()
         {
-            _actions.ForEach(action => action.Invoke());
-            _actions = new List<Action>();
             OnUpdate?.Invoke();
         }
 

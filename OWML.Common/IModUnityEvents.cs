@@ -9,5 +9,6 @@ namespace OWML.Common
         event Action OnLateUpdate;
 
         void FireOnNextUpdate(Action action);
+        void FireInNUpdates(Action action, int n);
     }
 }
