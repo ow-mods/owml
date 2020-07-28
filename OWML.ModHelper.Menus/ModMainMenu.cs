@@ -3,6 +3,7 @@ using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -18,6 +19,7 @@ namespace OWML.ModHelper.Menus
         public IModButton QuitButton { get; private set; }
 
         private TitleAnimationController _anim;
+        private TitleScreenManager _titleManager;
 
         public ModMainMenu(IModConsole console) : base(console)
         {
@@ -26,6 +28,7 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(TitleScreenManager titleScreenManager)
         {
+            _titleManager = titleScreenManager;
             _anim = titleScreenManager.GetComponent<TitleAnimationController>();
             var menu = titleScreenManager.GetValue<Menu>("_mainMenu");
             Initialize(menu);
@@ -50,6 +53,12 @@ namespace OWML.ModHelper.Menus
                 group = x.Button.GetComponent<CanvasGroup>()
             });
             _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
+            if (button is ModTitleButton titleButton)
+            {
+                var texts = _titleManager.GetValue<Text[]>("_mainMenuTextFields").ToList();
+                texts.Add(titleButton.Text);
+                _titleManager.SetValue("_mainMenuTextFields", texts.ToArray());
+            }
             return modButton;
         }
 
