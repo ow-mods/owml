@@ -12,7 +12,6 @@ namespace OWML.ModHelper.Events
         public event Action OnFixedUpdate;
         public event Action OnLateUpdate;
 
-        private List<Action> _actions = new List<Action>();
         private Dictionary<int, List<Action>> _delayedActions;
 
         public void FireAfterNFrames(int count, Action action)
@@ -42,8 +41,6 @@ namespace OWML.ModHelper.Events
 
         private void Update()
         {
-            _actions.ForEach(action => action.Invoke());
-            _actions.Clear();
             var keysToActivate = _delayedActions.Keys.Where(key => key <= Time.frameCount).ToList();
             keysToActivate.ForEach(key => _delayedActions[key].ForEach(action => action.Invoke()));
             keysToActivate.ForEach(key => _delayedActions.Remove(key));
