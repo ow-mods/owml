@@ -137,7 +137,7 @@ namespace OWML.ModHelper.Menus
             if (!options.Menu.IsMenuEnabled() &&
                 _modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
             {
-                _events.Unity.FireOnNextUpdate(ShowReloadWarning);
+                _events.Unity.FireInNUpdates(ShowReloadWarning, 2);
             }
         }
 
@@ -151,10 +151,6 @@ namespace OWML.ModHelper.Menus
         private void OnPopupCancel()
         {
             _modConfigMenus.ForEach(modMenu => modMenu.ModData.UpdateSnapshot());
-            if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
-            {
-                _menus.MainMenu.SelectFirst();
-            }
         }
 
         private void OnPopupConfirm()
