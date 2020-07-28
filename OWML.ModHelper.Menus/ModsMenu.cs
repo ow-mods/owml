@@ -111,7 +111,7 @@ namespace OWML.ModHelper.Menus
                 modButton.Button.enabled = true;
                 InitConfigMenu(modConfigMenu, options);
                 modButton.OnClick += modConfigMenu.Open;
-                menu.AddButton(modButton, index++);
+                menu.AddButton((IModButtonBase)modButton, index++);
             }
             return index;
         }
