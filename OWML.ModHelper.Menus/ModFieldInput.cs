@@ -8,13 +8,13 @@ namespace OWML.ModHelper.Menus
     {
         public IModButton Button { get; }
 
-        protected readonly IModInputMenu InputMenu;
+        protected readonly IModPopupManager PopupManager;
 
-        protected ModFieldInput(TwoButtonToggleElement toggle, IModMenu menu, IModInputMenu inputMenu) : base(toggle, menu)
+        protected ModFieldInput(TwoButtonToggleElement toggle, IModMenu menu, IModPopupManager popupManager) : base(toggle, menu)
         {
             Button = new ModTitleButton(toggle.GetValue<Button>("_buttonTrue"), menu);
             Subscribe(Button);
-            InputMenu = inputMenu;
+            PopupManager = popupManager;
         }
     }
 }

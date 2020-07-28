@@ -330,13 +330,13 @@ namespace OWML.ModHelper.Input
                     _console.WriteLine($"Failed to register \"{combo.FullName}\": Too long!", MessageType.Error);
                     return null;
                 case RegistrationCode.CombinationTaken:
-                    _console.WriteLine($"Failed to register \"{combo.FullName}\": Already in use by following mods:", MessageType.Error);
+                    _console.WriteLine($"Warning - \"{combo.FullName}\" is already in use by the following mods:", MessageType.Warning);
                     var collisions = GetCollisions(combo.Hashes);
                     foreach (var collision in collisions)
                     {
-                        _console.WriteLine($"\"{collision}\"", MessageType.Error);
+                        _console.WriteLine($" * \"{collision}\"", MessageType.Warning);
                     }
-                    return null;
+                    return combo;
                 case RegistrationCode.AllNormal:
                     return combo;
                 default:

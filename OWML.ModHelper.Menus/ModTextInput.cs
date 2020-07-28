@@ -7,28 +7,19 @@ namespace OWML.ModHelper.Menus
     {
         private string _value;
 
-        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModInputMenu inputMenu) : base(element, menu, inputMenu)
-        {
-        }
+        public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager)
+            : base(element, menu, popupManager) { }
 
         protected override void Open()
         {
             base.Open();
-            InputMenu.OnConfirm += OnConfirm;
-            InputMenu.OnCancel += OnCancel;
-            InputMenu.Open(InputType.Text, Value);
+            var popup = PopupManager.CreateInputPopup(InputType.Text, Value);
+            popup.OnConfirm += OnConfirm;
         }
 
         private void OnConfirm(string text)
         {
-            OnCancel();
             Value = text;
-        }
-
-        private void OnCancel()
-        {
-            InputMenu.OnConfirm -= OnConfirm;
-            InputMenu.OnCancel -= OnCancel;
         }
 
         public override string Value
@@ -46,7 +37,7 @@ namespace OWML.ModHelper.Menus
         {
             var copy = Object.Instantiate(ToggleElement);
             Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-            return new ModTextInput(copy, Menu, InputMenu);
+            return new ModTextInput(copy, Menu, PopupManager);
         }
 
         public IModTextInput Copy(string title)
