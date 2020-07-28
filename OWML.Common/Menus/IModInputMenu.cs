@@ -6,7 +6,5 @@ namespace OWML.Common.Menus
     {
         event Action<string> OnConfirm;
         event Action OnCancel;
-        void Initialize(PopupInputMenu inputMenu);
-        void Open(InputType inputType, string value);
     }
 }

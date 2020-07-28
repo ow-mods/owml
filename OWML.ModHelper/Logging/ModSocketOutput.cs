@@ -27,8 +27,7 @@ namespace OWML.ModHelper
         public override void WriteLine(params object[] objects)
         {
             var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
-            var type = MessageType.Message;
-            WriteLine(type, line, GetCallingType(new StackTrace()));
+            WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
         }
 
         public override void WriteLine(string line)
