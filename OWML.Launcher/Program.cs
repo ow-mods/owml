@@ -37,6 +37,7 @@ namespace OWML.Launcher
                     return;
                 }
                 owmlConfig.SocketPort = port;
+                JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
             }
             else
             {
