@@ -24,8 +24,7 @@ namespace OWML.EnableDebugMode
                 var value = config.GetSettingsValue<string>(key);
                 if (!string.IsNullOrEmpty(value))
                 {
-                    var combination = ModHelper.Input.RegisterCombination(this, key, value);
-                    _inputs[key] = combination;
+                    _inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
                 }
             }
         }
