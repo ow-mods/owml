@@ -1,6 +1,6 @@
 ﻿namespace OWML.Common
 {
-    public interface ISocketMessage
+    public interface IModSocketMessage
     {
         string SenderName { get; }
         string SenderType { get; }

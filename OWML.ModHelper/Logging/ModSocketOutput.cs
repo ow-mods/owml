@@ -37,7 +37,7 @@ namespace OWML.ModHelper
             Logger?.Log(line);
             CallWriteCallback(Manifest, line);
 
-            var message = new SocketMessage
+            var message = new ModSocketMessage
             {
                 SenderName = Manifest.Name,
                 SenderType = senderType,
@@ -55,7 +55,7 @@ namespace OWML.ModHelper
             }
             catch (Exception ex)
             {
-                var message = new SocketMessage
+                var message = new ModSocketMessage
                 {
                     SenderName = "OWML",
                     SenderType = "ModSocketOutput",

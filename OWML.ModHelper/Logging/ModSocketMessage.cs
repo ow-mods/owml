@@ -3,7 +3,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper
 {
-    public class SocketMessage : ISocketMessage
+    public class ModSocketMessage : IModSocketMessage
     {
         [JsonProperty("senderName")]
         public string SenderName { get; set; }

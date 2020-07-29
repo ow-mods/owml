@@ -25,7 +25,7 @@ namespace OWML.ModHelper
             _socket.Connect(endPoint);
         }
 
-        public void WriteToSocket(ISocketMessage message)
+        public void WriteToSocket(IModSocketMessage message)
         {
             var json = JsonConvert.SerializeObject(message);
             var bytes = Encoding.UTF8.GetBytes(json + Environment.NewLine);
