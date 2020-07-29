@@ -2,7 +2,6 @@
 {
     public interface IModSocket
     {
-        void Connect();
-        void WriteToSocket(ISocketMessage message);
+        void WriteToSocket(IModSocketMessage message);
     }
 }

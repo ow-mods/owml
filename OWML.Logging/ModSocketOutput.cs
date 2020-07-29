@@ -36,7 +36,7 @@ namespace OWML.Logging
         {
             Logger?.Log(line);
 
-            var message = new SocketMessage
+            var message = new ModSocketMessage
             {
                 SenderName = Manifest.Name,
                 SenderType = senderType,
@@ -54,7 +54,7 @@ namespace OWML.Logging
             }
             catch (Exception ex)
             {
-                var message = new SocketMessage
+                var message = new ModSocketMessage
                 {
                     SenderName = Constants.OwmlTitle,
                     SenderType = nameof(ModSocketOutput),

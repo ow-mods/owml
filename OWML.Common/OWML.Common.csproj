@@ -45,7 +45,7 @@
     <Compile Include="IModSceneEvents.cs" />
     <Compile Include="IModSocket.cs" />
     <Compile Include="IModUnityEvents.cs" />
-    <Compile Include="ISocketMessage.cs" />
+    <Compile Include="IModSocketMessage.cs" />
     <Compile Include="Menus\IModPopupManager.cs" />
     <Compile Include="Menus\IModSeparator.cs" />
     <Compile Include="Menus\IModInputBase.cs" />

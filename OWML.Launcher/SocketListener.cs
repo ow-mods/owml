@@ -94,10 +94,10 @@ namespace OWML.Launcher
                 {
                     continue;
                 }
-                SocketMessage data;
+                ModSocketMessage data;
                 try
                 {
-                    data = JsonConvert.DeserializeObject<SocketMessage>(json);
+                    data = JsonConvert.DeserializeObject<ModSocketMessage>(json);
                 }
                 catch (Exception ex)
                 {

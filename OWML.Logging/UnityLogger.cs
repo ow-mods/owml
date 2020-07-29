@@ -30,7 +30,7 @@ namespace OWML.Logging
                 return;
             }
             var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
-            _socket.WriteToSocket(new SocketMessage
+            _socket.WriteToSocket(new ModSocketMessage
             {
                 Type = MessageType.Error,
                 Message = line,
