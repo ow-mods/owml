@@ -3,18 +3,18 @@ using OWML.Common;
 
 namespace OWML.Logging
 {
-    public class SocketMessage
+    public class SocketMessage : ISocketMessage
     {
         [JsonProperty("senderName")]
-        public string SenderName;
+        public string SenderName { get; set; }
 
         [JsonProperty("senderType")]
-        public string SenderType;
+        public string SenderType { get; set; }
 
         [JsonProperty("type")]
-        public MessageType Type;
+        public MessageType Type { get; set; }
 
         [JsonProperty("message")]
-        public string Message;
+        public string Message { get; set; }
     }
 }

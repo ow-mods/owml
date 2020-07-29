@@ -78,6 +78,7 @@
     <Compile Include="ConsoleUtils.cs" />
     <Compile Include="ModConsole.cs" />
     <Compile Include="ModLogger.cs" />
+    <Compile Include="ModSocket.cs" />
     <Compile Include="ModSocketOutput.cs" />
     <Compile Include="OutputWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
