@@ -19,9 +19,10 @@ namespace OWML.Launcher
         private readonly PathFinder _pathFinder;
         private readonly OWPatcher _owPatcher;
         private readonly VRPatcher _vrPatcher;
+        private readonly GameVersion _gameVersion;
 
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
+            PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher, GameVersion gameVersion)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
@@ -30,11 +31,14 @@ namespace OWML.Launcher
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
+            _gameVersion = gameVersion;
         }
 
         public void Run(string[] args)
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}", MessageType.Info);
+
+            CheckVersion();
 
             LocateGamePath();
 
@@ -57,6 +61,22 @@ namespace OWML.Launcher
             }
 
             Console.ReadLine();
+        }
+
+        private void CheckVersion()
+        {
+            var owVersion = _gameVersion.GetVersion();
+            var supportedOwVersion = _owmlManifest.OWVersion;
+            if (owVersion.StartsWith(supportedOwVersion))
+            {
+                _writer.WriteLine("Game version: " + owVersion, MessageType.Info);
+            }
+            else
+            {
+                _writer.WriteLine("Error - This version of Outer Wilds is not supported: " + owVersion, MessageType.Error);
+                Console.ReadLine();
+                ExitConsole();
+            }
         }
 
         private void LocateGamePath()

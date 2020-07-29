@@ -9,6 +9,7 @@ namespace OWML.Common
         string Name { get; }
         string Version { get; }
         string OWMLVersion { get; }
+        string OWVersion { get; }
         string AssemblyPath { get; }
         string UniqueName { get; }
         string ModFolderPath { get; set; }

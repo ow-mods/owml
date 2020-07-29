@@ -21,8 +21,9 @@ namespace OWML.Launcher
             var pathFinder = new PathFinder(owmlConfig, writer);
             var owPatcher = new OWPatcher(owmlConfig, writer);
             var vrPatcher = new VRPatcher(owmlConfig, writer);
+            var gameVersion = new GameVersion(owmlConfig);
             var app = new App(owmlConfig, owmlManifest, writer, modFinder,
-                pathFinder, owPatcher, vrPatcher);
+                pathFinder, owPatcher, vrPatcher, gameVersion);
             app.Run(args);
         }
 

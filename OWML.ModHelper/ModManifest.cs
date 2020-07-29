@@ -24,6 +24,9 @@ namespace OWML.ModHelper
         [JsonProperty("owmlVersion")]
         public string OWMLVersion { get; private set; }
 
+        [JsonProperty("owVersion")]
+        public string OWVersion { get; private set; }
+
         [JsonProperty("dependencies")]
         public string[] Dependencies { get; private set; } = { };
 

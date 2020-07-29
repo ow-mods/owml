@@ -3,5 +3,6 @@
   "name": "OWML",
   "uniqueName": "Alek.OWML",
   "version": "0.6.1",
+  "owVersion": "1.0.7",
   "description": "The mod loader and mod framework for Outer Wilds"
 }
