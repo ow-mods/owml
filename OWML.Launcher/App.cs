@@ -70,13 +70,11 @@ namespace OWML.Launcher
             if (owVersion.StartsWith(supportedOwVersion))
             {
                 _writer.WriteLine("Game version: " + owVersion, MessageType.Info);
+                return;
             }
-            else
-            {
-                _writer.WriteLine("Error - This version of Outer Wilds is not supported: " + owVersion, MessageType.Error);
-                Console.ReadLine();
-                ExitConsole();
-            }
+            _writer.WriteLine("Error - This version of Outer Wilds is not supported: " + owVersion, MessageType.Error);
+            Console.ReadLine();
+            ExitConsole();
         }
 
         private void LocateGamePath()
