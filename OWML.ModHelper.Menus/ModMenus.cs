@@ -24,6 +24,13 @@ namespace OWML.ModHelper.Menus
             PopupManager = new ModPopupManager(console, inputHandler, events);
             InputCombinationMenu = new ModInputCombinationMenu(console);
 
+            const string supportedVersion = "1.0.7";
+            if (!Application.version.StartsWith(supportedVersion))
+            {
+                console.WriteLine($"Warning - Only version {supportedVersion} is supported for modded menus.\n" +
+                                  "Please update the game.", MessageType.Warning);
+                return;
+            }
             events.Subscribe<SettingsManager>(Common.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
             events.Event += OnEvent;
