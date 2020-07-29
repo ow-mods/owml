@@ -9,19 +9,13 @@ namespace OWML.ModHelper
 {
     public class ModSocket : IModSocket
     {
-        private readonly int _port;
-        private Socket _socket;
+        private readonly Socket _socket;
 
         public ModSocket(int port)
         {
-            _port = port;
-        }
-
-        public void Connect()
-        {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var ipAddress = IPAddress.Parse(Constants.LocalAddress);
-            var endPoint = new IPEndPoint(ipAddress, _port);
+            var endPoint = new IPEndPoint(ipAddress, port);
             _socket.Connect(endPoint);
         }
 

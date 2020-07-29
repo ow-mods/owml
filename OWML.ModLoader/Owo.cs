@@ -48,7 +48,6 @@ namespace OWML.ModLoader
 
         public void LoadMods()
         {
-            _socket.Connect();
             _unityLogger.Start();
 
             var mods = _modFinder.GetMods();
