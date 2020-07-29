@@ -11,6 +11,13 @@ namespace OWML.ModHelper
             LogType.Exception
         };
 
+        private readonly IModSocket _socket;
+
+        public UnityLogger(IModSocket socket)
+        {
+            _socket = socket;
+        }
+
         public void Start()
         {
             Application.logMessageReceived += OnLogMessageReceived;
@@ -18,11 +25,18 @@ namespace OWML.ModHelper
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)
         {
-            if (_relevantTypes.Contains(type))
+            if (!_relevantTypes.Contains(type))
             {
-                var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
-                ModConsole.Instance.WriteLine(line, MessageType.Error);
+                return;
             }
+            var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
+            _socket.WriteToSocket(new ModSocketMessage
+            {
+                Type = MessageType.Error,
+                Message = line,
+                SenderName = "Unity",
+                SenderType = type.ToString()
+            });
         }
 
     }

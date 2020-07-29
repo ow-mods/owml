@@ -23,12 +23,15 @@ namespace OWML.ModLoader
         private readonly IModInputHandler _inputHandler;
         private readonly ModSorter _sorter;
         private readonly string _logFileName;
+        private readonly UnityLogger _unityLogger;
+        private readonly IModSocket _socket;
 
         private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
-            IModInputHandler inputHandler, ModSorter sorter, string logFileName)
+            IModInputHandler inputHandler, ModSorter sorter, string logFileName,
+            UnityLogger unityLogger, IModSocket socket)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -39,11 +42,13 @@ namespace OWML.ModLoader
             _inputHandler = inputHandler;
             _sorter = sorter;
             _logFileName = logFileName;
+            _unityLogger = unityLogger;
+            _socket = socket;
         }
 
         public void LoadMods()
         {
-            new UnityLogger().Start();
+            _unityLogger.Start();
 
             var mods = _modFinder.GetMods();
             var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
@@ -108,7 +113,7 @@ namespace OWML.ModLoader
         private IModHelper CreateModHelper(IModData modData)
         {
             var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
-            var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest);
+            var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest, _socket);
             var assets = new ModAssets(console, modData.Manifest);
             var storage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);

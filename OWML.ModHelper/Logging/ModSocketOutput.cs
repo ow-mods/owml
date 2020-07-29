@@ -1,26 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using Newtonsoft.Json;
 using OWML.Common;
 
 namespace OWML.ModHelper
 {
     public class ModSocketOutput : ModConsole
     {
-        private readonly int _port;
-        private static Socket _socket;
+        private readonly IModSocket _socket;
 
-        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest) : base(config, logger, manifest)
+        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest, IModSocket socket)
+            : base(config, logger, manifest)
         {
-            if (_socket == null)
-            {
-                _port = config.SocketPort;
-                ConnectToSocket();
-            }
+            _socket = socket;
         }
 
         [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
@@ -45,16 +37,14 @@ namespace OWML.ModHelper
             Logger?.Log(line);
             CallWriteCallback(Manifest, line);
 
-            var message = new SocketMessage
+            var message = new ModSocketMessage
             {
                 SenderName = Manifest.Name,
                 SenderType = senderType,
                 Type = type,
                 Message = line
             };
-            var json = JsonConvert.SerializeObject(message);
-
-            WriteToSocket(json);
+            _socket.WriteToSocket(message);
         }
 
         private string GetCallingType(StackTrace frame)
@@ -65,35 +55,17 @@ namespace OWML.ModHelper
             }
             catch (Exception ex)
             {
-                var message = new SocketMessage
+                var message = new ModSocketMessage
                 {
                     SenderName = "OWML",
                     SenderType = "ModSocketOutput",
                     Type = MessageType.Error,
                     Message = $"Error while getting calling type : {ex.Message}"
                 };
-                WriteToSocket(JsonConvert.SerializeObject(message));
-
+                _socket.WriteToSocket(message);
                 return "";
             }
         }
 
-        private void ConnectToSocket()
-        {
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            var ipAddress = IPAddress.Parse(Constants.LocalAddress);
-            var endPoint = new IPEndPoint(ipAddress, _port);
-            _socket.Connect(endPoint);
-        }
-
-        private void WriteToSocket(string message)
-        {
-            var bytes = Encoding.UTF8.GetBytes(message + Environment.NewLine);
-            try
-            {
-                _socket?.Send(bytes);
-            }
-            catch (SocketException) { }
-        }
     }
 }
