@@ -91,33 +91,43 @@ namespace OWML.Launcher
                 var maxNumber = Convert.ToInt32(splitMinVersion[i]);
                 if (gameNumber < minNumber)
                 {
-                    _writer.WriteLine("Unsupported game version found", MessageType.Error);
-                    _writer.WriteLine("Press any key to exit...", MessageType.Info);
-                    Console.ReadKey();
-                    ExitConsole();
+                    ThrowBelowError();
                 }
                 if (gameNumber > maxNumber)
                 {
-                    _writer.WriteLine("Potentially unsupported game version found", MessageType.Warning);
-                    ConsoleKey response;
-                    do
-                    {
-                        _writer.WriteLine("Continue loading? [y/n]", MessageType.Info);
-                        response = Console.ReadKey(false).Key;
-                        if (response != ConsoleKey.Enter)
-                        {
-                            Console.WriteLine();
-                        }
-                    } while (response != ConsoleKey.Y && response != ConsoleKey.N);
-                    if (response == ConsoleKey.N)
-                    {
-                        ExitConsole();
-                    }
-                    _owmlManifest.MaximalGameVersion = gameVersion;
-                    JsonHelper.SaveJsonObject(Constants.OwmlManifestFileName, _owmlManifest);
+                    ThrowAboveWarning(gameVersion);
                     return;
                 }
             }
+        }
+
+        private void ThrowBelowError()
+        {
+            _writer.WriteLine("Unsupported game version found", MessageType.Error);
+            _writer.WriteLine("Press any key to exit...", MessageType.Info);
+            Console.ReadKey();
+            ExitConsole();
+        }
+
+        private void ThrowAboveWarning(string currentVersion)
+        {
+            _writer.WriteLine("Potentially unsupported game version found", MessageType.Warning);
+            ConsoleKey response;
+            do
+            {
+                _writer.WriteLine("Continue loading? [y/n]", MessageType.Info);
+                response = Console.ReadKey(false).Key;
+                if (response != ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                }
+            } while (response != ConsoleKey.Y && response != ConsoleKey.N);
+            if (response == ConsoleKey.N)
+            {
+                ExitConsole();
+            }
+            _owmlManifest.MaximalGameVersion = currentVersion;
+            JsonHelper.SaveJsonObject(Constants.OwmlManifestFileName, _owmlManifest);
         }
 
         private void CopyGameFiles()
