@@ -11,13 +11,6 @@ namespace OWML.Patcher
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
 
-        private const string EnabledVRDevice = "OpenVR";
-        private const int VRRemovedBytes = 2;
-        // String that comes right before the bytes we want to patch.
-        private const string VRPatchZoneText = "Assets/Scenes/PostCreditScene.unity";
-        private const int VRPatchStartZoneOffset = 6;
-        private const int BuildSettingsSector = 10;//count from zero
-
         private const int FileSizeStartIndex = 4;
         private const string FileName = "globalgamemanagers";
         private const string BackupSuffix = ".bak";
@@ -33,6 +26,41 @@ namespace OWML.Patcher
             _writer = writer;
         }
 
+        public (int sectorStart, int sectorSize) GetSectorInfo(byte[] fileBytes, int sector)
+        {
+            if (sector < 0 || sector >= SectorCount)
+            {
+                return (-1, -1);
+            }
+            var sectorIndex = FirstAddressIndex + sector * AddressStructureSize;
+            var sectorStart = BitConverter.ToInt32(fileBytes, sectorIndex) + BlockAddressOffset;
+            var sectorSize = BitConverter.ToInt32(fileBytes, sectorIndex + SizeOffset);
+            return (sectorStart, sectorSize);
+        }
+
+        public byte[] ReadFileBytes()
+        {
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException(filePath);
+            }
+
+            return File.ReadAllBytes(filePath);
+        }
+
+        public void WriteFileBytes(byte[] fileBytes)
+        {
+            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException(filePath);
+            }
+
+            BackupFile(filePath);
+            File.WriteAllBytes(filePath, fileBytes);
+        }
+
         public byte[] GetSectorBytes(byte[] fileBytes, int sector)
         {
             if (sector<0 || sector>=SectorCount)
@@ -40,10 +68,8 @@ namespace OWML.Patcher
                 return new byte[0];
             }
 
-            var sectorIndex = FirstAddressIndex + sector * AddressStructureSize;
-            var sectorStart = BitConverter.ToInt32(fileBytes, sectorIndex) + BlockAddressOffset;
-            var sectorEnd = sectorStart + BitConverter.ToInt32(fileBytes, sectorIndex + SizeOffset);
-
+            ( var sectorStart, var sectorSize ) = GetSectorInfo(fileBytes, sector);
+            var sectorEnd = sectorStart + sectorSize;
             return fileBytes.Take(sectorEnd).Skip(sectorStart).ToArray();
         }
 
@@ -80,39 +106,8 @@ namespace OWML.Patcher
                 return fileBytes;
             }
 
-            var sectorIndex = FirstAddressIndex + sector * AddressStructureSize;
-            var sectorStart = BitConverter.ToInt32(fileBytes, sectorIndex) + BlockAddressOffset;
-            var sectorSize = BitConverter.ToInt32(fileBytes, sectorIndex + SizeOffset);
+            (var sectorStart, var sectorSize) = GetSectorInfo(fileBytes, sector);
             return PatchSectionBytes(fileBytes, newBytes, sectorStart, sectorSize, sector);
-        }
-
-        public void PatchVR()
-        {
-            var filePath = $"{_owmlConfig.DataPath}/{FileName}";
-            if (!File.Exists(filePath))
-            {
-                throw new FileNotFoundException(filePath);
-            }
-
-            var fileBytes = File.ReadAllBytes(filePath);
-
-            var buildSettingsSectorIndex = FirstAddressIndex + AddressStructureSize * BuildSettingsSector;
-            var buildSettingsStartIndex = BitConverter.ToInt32(fileBytes, buildSettingsSectorIndex) + BlockAddressOffset;
-
-            var buildSettingsBytes = GetSectorBytes(fileBytes, BuildSettingsSector);
-            var patchStartOffset = FindVRPatchStartOffset(buildSettingsBytes);
-            var isAlreadyPatched = FindExistingVRPatch(buildSettingsBytes, patchStartOffset);
-
-            if (isAlreadyPatched)
-            {
-                _writer.WriteLine("globalgamemanagers already patched.");
-                return;
-            }
-
-            BackupFile(filePath);
-            var patchedBytes = CreateVRPatchFileBytes(fileBytes, buildSettingsStartIndex + patchStartOffset);
-            File.WriteAllBytes(filePath, patchedBytes);
-            _writer.WriteLine("Successfully patched globalgamemanagers.", MessageType.Success);
         }
 
         private int GetSectorIndex(byte[] fileBytes, int address)
@@ -120,7 +115,7 @@ namespace OWML.Patcher
             int sector = -1;
             for (int sectorIndex = 0; sectorIndex < SectorCount; sectorIndex++)
             {
-                var sectorStart = BitConverter.ToInt32(fileBytes, FirstAddressIndex + sectorIndex * AddressStructureSize) + BlockAddressOffset;
+                var sectorStart = GetSectorInfo(fileBytes, sectorIndex).sectorStart;
                 if (sectorStart > address)
                 {
                     return sector;
@@ -128,66 +123,6 @@ namespace OWML.Patcher
                 sector = sectorIndex;
             }
             return sector;
-        }
-
-        private int FindVRPatchStartOffset(byte[] sectorBytes)
-        {
-            var patchZoneBytes = Encoding.ASCII.GetBytes(VRPatchZoneText);
-            var patchZoneMatch = 0;
-            for (var i = 0; i < sectorBytes.Length; i++)
-            {
-                var fileByte = sectorBytes[i];
-                var patchZoneByte = patchZoneBytes[patchZoneMatch];
-                if (fileByte == patchZoneByte)
-                {
-                    patchZoneMatch++;
-                }
-                else
-                {
-                    patchZoneMatch = 0;
-                }
-                if (patchZoneMatch == patchZoneBytes.Length)
-                {
-                    return i + VRPatchStartZoneOffset;
-                }
-            }
-            throw new Exception("Could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
-        }
-
-        private bool FindExistingVRPatch(byte[] sectorBytes, int startIndex)
-        {
-            var existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
-            var existingPatchMatch = 0;
-
-            for (var i = startIndex; i < sectorBytes.Length; i++)
-            {
-                var fileByte = sectorBytes[i];
-                var existingPatchByte = existingPatchBytes[existingPatchMatch];
-                if (fileByte == existingPatchByte)
-                {
-                    existingPatchMatch++;
-                }
-                else
-                {
-                    existingPatchMatch = 0;
-                }
-                if (existingPatchMatch == existingPatchBytes.Length)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private byte[] CreateVRPatchFileBytes(byte[] fileBytes, int patchStartIndex)
-        {
-            // First byte is the number of elements in the array.
-            var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
-
-            // Bytes that need to be inserted into the file.
-            var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice)).ToArray();
-
-            return PatchSectionBytes(fileBytes, patchBytes, patchStartIndex, VRRemovedBytes, BuildSettingsSector);
         }
 
         private void ShiftInt(byte[] fileBytes, int location, int difference, bool isBigEndian = false)
