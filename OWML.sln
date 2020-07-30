@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Interaction"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder", "OWML.GameFinder\OWML.GameFinder.csproj", "{A3D507F5-22A2-4A18-B529-868FE8D59CF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Logging", "OWML.Logging\OWML.Logging.csproj", "{6F14D39C-5747-4149-BE4D-365B43918A0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{A3D507F5-22A2-4A18-B529-868FE8D59CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3D507F5-22A2-4A18-B529-868FE8D59CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3D507F5-22A2-4A18-B529-868FE8D59CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

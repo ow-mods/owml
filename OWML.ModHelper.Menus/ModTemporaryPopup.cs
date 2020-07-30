@@ -1,5 +1,4 @@
 ﻿using System;
-using OWML.Common;
 using Object = UnityEngine.Object;
 using UnityEngine;
 
@@ -10,7 +9,6 @@ namespace OWML.ModHelper.Menus
         protected PopupMenu Popup;
 
         public event Action OnCancel;
-        public ModTemporaryPopup(IModConsole console) : base(console) { }
 
         protected void DestroySelf(GameObject menuObject)
         {

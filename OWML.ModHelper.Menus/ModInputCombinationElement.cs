@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +46,7 @@ namespace OWML.ModHelper.Menus
                                      .GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
             if (layoutObject == null)
             {
-                ModConsole.Instance.WriteLine("Error - Failed to setup an element for combination editor.", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine("Error - Failed to setup an element for combination editor.", MessageType.Error);
                 return;
             }
             var layoutGroup = layoutObject.GetComponent<HorizontalLayoutGroup>();

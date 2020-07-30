@@ -50,6 +50,10 @@
       <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
+      <Project>{6f14d39c-5747-4149-be4d-365b43918a0a}</Project>
+      <Name>OWML.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj">
       <Project>{a62856bd-d06c-4f2c-86e8-91c6fdf8f8d5}</Project>
       <Name>OWML.ModHelper.Assets</Name>

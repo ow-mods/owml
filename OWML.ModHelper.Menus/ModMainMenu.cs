@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMainMenu : ModMenu, IModMainMenu
     {
-        public IModTabbedMenu OptionsMenu { get; }
+        public IModTabbedMenu OptionsMenu { get; } = new ModOptionsMenu();
 
         public IModButton ResumeExpeditionButton { get; private set; }
         public IModButton NewExpeditionButton { get; private set; }
@@ -20,11 +19,6 @@ namespace OWML.ModHelper.Menus
 
         private TitleAnimationController _anim;
         private TitleScreenManager _titleManager;
-
-        public ModMainMenu(IModConsole console) : base(console)
-        {
-            OptionsMenu = new ModOptionsMenu(console);
-        }
 
         public void Initialize(TitleScreenManager titleScreenManager)
         {

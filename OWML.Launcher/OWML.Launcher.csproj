@@ -74,6 +74,10 @@
       <Project>{a3d507f5-22a2-4a18-b529-868fe8d59cf3}</Project>
       <Name>OWML.GameFinder</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
+      <Project>{6F14D39C-5747-4149-BE4D-365B43918A0A}</Project>
+      <Name>OWML.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
       <Name>OWML.ModHelper</Name>

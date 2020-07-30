@@ -28,6 +28,7 @@
     <file src="bin\Debug\OWML.ModHelper.Input.dll" target="lib\net35" />
     <file src="bin\Debug\OWML.ModHelper.Interaction.dll" target="lib\net35" />
     <file src="bin\Debug\OWML.Common.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.Logging.dll" target="lib\net35" />
     <file src="bin\Debug\NAudio-Unity.dll" target="lib\net35" />
   </files>
 </package>

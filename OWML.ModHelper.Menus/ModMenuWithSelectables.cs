@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
@@ -17,14 +16,12 @@ namespace OWML.ModHelper.Menus
         protected List<Selectable> Selectables;
         protected ModCommandListener CommandListener;
 
-        protected ModMenuWithSelectables(IModConsole console) : base(console) { }
-
         private void SetupCommands()
         {
             var listenerObject = new GameObject("ConfigurationMenu_Listener");
             CommandListener = listenerObject.AddComponent<ModCommandListener>();
             CommandListener.AddToListener(InputLibrary.confirm);
-            CommandListener.AddToListener(InputLibrary.enter2);//keypad's Enter
+            CommandListener.AddToListener(InputLibrary.enter2); // keypad's Enter
             CommandListener.AddToListener(InputLibrary.cancel);
             CommandListener.AddToListener(InputLibrary.escape);
             CommandListener.AddToListener(InputLibrary.setDefaults);

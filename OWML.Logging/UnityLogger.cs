@@ -2,7 +2,7 @@
 using OWML.Common;
 using UnityEngine;
 
-namespace OWML.ModHelper
+namespace OWML.Logging
 {
     public class UnityLogger
     {

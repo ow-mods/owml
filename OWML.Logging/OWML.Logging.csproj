@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</ProjectGuid>
+    <ProjectGuid>{6F14D39C-5747-4149-BE4D-365B43918A0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.ModHelper</RootNamespace>
-    <AssemblyName>OWML.ModHelper</AssemblyName>
+    <RootNamespace>OWML.Logging</RootNamespace>
+    <AssemblyName>OWML.Logging</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +42,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.7\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
@@ -73,34 +75,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineArguments.cs" />
-    <Compile Include="DontDestroyOnLoad.cs" />
-    <Compile Include="JsonHelper.cs" />
-    <Compile Include="ModBehaviour.cs" />
-    <Compile Include="ModConfig.cs" />
-    <Compile Include="OwmlBehaviour.cs" />
-    <Compile Include="OwmlConfig.cs" />
-    <Compile Include="ModHelper.cs" />
-    <Compile Include="ModManifest.cs" />
-    <Compile Include="ModStorage.cs" />
+    <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="ModConsole.cs" />
+    <Compile Include="ModLogger.cs" />
+    <Compile Include="ModSocket.cs" />
+    <Compile Include="ModSocketMessage.cs" />
+    <Compile Include="ModSocketOutput.cs" />
+    <Compile Include="OutputWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="UnityLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
-      <Project>{6F14D39C-5747-4149-BE4D-365B43918A0A}</Project>
-      <Name>OWML.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
-      <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
-      <Name>OWML.ModHelper.Events</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

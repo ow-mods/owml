@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.Logging
 {
     public class ModSocketMessage : IModSocketMessage
     {
