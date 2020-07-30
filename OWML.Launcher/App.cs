@@ -84,15 +84,6 @@ namespace OWML.Launcher
             splitGameVersion[count-1] = string.Join("", splitGameVersion.Skip(count - 1));
             splitMinVersion[count-1] = string.Join("", splitMinVersion.Skip(count - 1));
             splitMaxVersion[count-1] = string.Join("", splitMaxVersion.Skip(count - 1));
-            _writer.WriteLine(gameVersion);
-            _writer.WriteLine(" ");
-            _writer.WriteLine(_owmlManifest.MinimalGameVersion);
-            _writer.WriteLine(" ");
-            _writer.WriteLine(_owmlManifest.MaximalGameVersion);
-            _writer.WriteLine(" ");
-            _writer.WriteLine($"{string.Join("; ",splitGameVersion)}");
-            _writer.WriteLine($"{string.Join("; ", splitMinVersion)}");
-            _writer.WriteLine($"{string.Join("; ", splitMaxVersion)}");
             for (var i = 0; i < count; i++)
             {
                 var gameNumber = Convert.ToInt32(splitGameVersion[i]);
@@ -111,7 +102,7 @@ namespace OWML.Launcher
                     ConsoleKey response;
                     do
                     {
-                        _writer.WriteLine("Continue loading? [y/n]");
+                        _writer.WriteLine("Continue loading? [y/n]", MessageType.Info);
                         response = Console.ReadKey(false).Key;
                         if (response != ConsoleKey.Enter)
                         {
