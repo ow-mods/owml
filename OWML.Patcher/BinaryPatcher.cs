@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace OWML.Patcher
 {
@@ -77,7 +76,7 @@ namespace OWML.Patcher
         {
             if (sector == -1)
             {
-                GetSectorIndex(fileBytes, sectionStart);
+                sector = GetSectorIndex(fileBytes, sectionStart);
             }
             if (sector < 0 || sector >= SectorCount)
             {
