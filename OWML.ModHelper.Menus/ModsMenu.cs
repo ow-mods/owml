@@ -90,7 +90,7 @@ namespace OWML.ModHelper.Menus
             var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
             var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
             CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
-            
+
             modsTab.UpdateNavigation();
             modsTab.SelectFirst();
             return modsTab;
