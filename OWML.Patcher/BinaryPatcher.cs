@@ -86,7 +86,7 @@ namespace OWML.Patcher
             return PatchSectionBytes(fileBytes, newBytes, sectorStart, sectorSize, sector);
         }
 
-        public void Patch()
+        public void PatchVR()
         {
             var filePath = $"{_owmlConfig.DataPath}/{FileName}";
             if (!File.Exists(filePath))

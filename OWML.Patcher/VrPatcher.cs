@@ -22,7 +22,7 @@ namespace OWML.Patcher
         {
             if (enableVR)
             {
-                _binaryPatcher.Patch();
+                _binaryPatcher.PatchVR();
                 AddPluginFiles();
             }
             else
