@@ -63,12 +63,12 @@ namespace OWML.Patcher
 
         public byte[] GetSectorBytes(byte[] fileBytes, int sector)
         {
-            if (sector<0 || sector>=SectorCount)
+            if (sector < 0 || sector >= SectorCount)
             {
                 return new byte[0];
             }
 
-            ( var sectorStart, var sectorSize ) = GetSectorInfo(fileBytes, sector);
+            (var sectorStart, var sectorSize) = GetSectorInfo(fileBytes, sector);
             var sectorEnd = sectorStart + sectorSize;
             return fileBytes.Take(sectorEnd).Skip(sectorStart).ToArray();
         }
