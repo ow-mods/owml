@@ -105,7 +105,7 @@ namespace OWML.Patcher
                 return fileBytes;
             }
 
-            (var sectorStart, var sectorSize) = GetSectorInfo(fileBytes, sector);
+            var (sectorStart, sectorSize) = GetSectorInfo(fileBytes, sector);
             return PatchSectionBytes(fileBytes, newBytes, sectorStart, sectorSize, sector);
         }
 
