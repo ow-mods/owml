@@ -81,14 +81,14 @@ namespace OWML.Launcher
             var splitMinVersion = _owmlManifest.MinimalGameVersion.Split('.');
             var splitMaxVersion = _owmlManifest.MaximalGameVersion.Split('.');
             var count = Math.Min(splitGameVersion.Length, Math.Min(splitMaxVersion.Length, splitMinVersion.Length));
-            splitGameVersion[count-1] = string.Join("", splitGameVersion.Skip(count - 1));
-            splitMinVersion[count-1] = string.Join("", splitMinVersion.Skip(count - 1));
-            splitMaxVersion[count-1] = string.Join("", splitMaxVersion.Skip(count - 1));
+            splitGameVersion[count - 1] = string.Join("", splitGameVersion.Skip(count - 1));
+            splitMinVersion[count - 1] = string.Join("", splitMinVersion.Skip(count - 1));
+            splitMaxVersion[count - 1] = string.Join("", splitMaxVersion.Skip(count - 1));
             for (var i = 0; i < count; i++)
             {
                 var gameNumber = Convert.ToInt32(splitGameVersion[i]);
                 var minNumber = Convert.ToInt32(splitMinVersion[i]);
-                var maxNumber = Convert.ToInt32(splitMinVersion[i]);
+                var maxNumber = Convert.ToInt32(splitMaxVersion[i]);
                 if (gameNumber < minNumber)
                 {
                     ThrowBelowError();
