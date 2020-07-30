@@ -83,6 +83,10 @@
       <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
+      <Project>{6F14D39C-5747-4149-BE4D-365B43918A0A}</Project>
+      <Name>OWML.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj">
       <Project>{A62856BD-D06C-4F2C-86E8-91C6FDF8F8D5}</Project>
       <Name>OWML.ModHelper.Assets</Name>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
@@ -16,7 +17,6 @@ namespace OWML.ModLoader
     {
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
-        private readonly IModConsole _console;
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
@@ -28,14 +28,13 @@ namespace OWML.ModLoader
 
         private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
 
-        public Owo(IModFinder modFinder, IModLogger logger, IModConsole console,
+        public Owo(IModFinder modFinder, IModLogger logger,
             IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
             IModInputHandler inputHandler, ModSorter sorter, string logFileName,
             UnityLogger unityLogger, IModSocket socket)
         {
             _modFinder = modFinder;
             _logger = logger;
-            _console = console;
             _owmlConfig = owmlConfig;
             _menus = menus;
             _harmonyHelper = harmonyHelper;
@@ -54,7 +53,7 @@ namespace OWML.ModLoader
             var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
             if (changedSettings.Any())
             {
-                _console.WriteLine("Warning - Settings of following mods changed:\n\t" + string.Join("\n\t", changedSettings),
+                ModConsole.OwmlConsole.WriteLine("Warning - Settings of following mods changed:\n\t" + string.Join("\n\t", changedSettings),
                     MessageType.Warning);
             }
 
@@ -73,7 +72,7 @@ namespace OWML.ModLoader
                 var missingDependencies = modData.Config.Enabled ?
                     modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
                     new List<string>();
-                missingDependencies.ForEach(dependency => _console.WriteLine(
+                missingDependencies.ForEach(dependency => ModConsole.OwmlConsole.WriteLine(
                     $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!",
                     MessageType.Error));
                 var modType = LoadMod(modData);
@@ -105,7 +104,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}", MessageType.Error);
                 return null;
             }
         }
@@ -137,7 +136,7 @@ namespace OWML.ModLoader
             }
             catch (Exception ex)
             {
-                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}", MessageType.Error);
                 return null;
             }
         }

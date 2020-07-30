@@ -2,6 +2,7 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,33 +12,34 @@ namespace OWML.ModHelper.Menus
     public class ModsMenu : ModPopupMenu, IModsMenu
     {
         private const string ModsTitle = "MODS";
-        private const string OwmlTitle = "OWML";
+
+        public IModConfigMenuBase OwmlMenu { get; }
 
         private readonly IModMenus _menus;
-        private readonly List<IModConfigMenu> _modConfigMenus;
         private readonly IModInputHandler _inputHandler;
+        private readonly List<IModConfigMenu> _modConfigMenus = new List<IModConfigMenu>();
         private readonly IModEvents _events;
 
-        public ModsMenu(IModConsole console, IModMenus menus, IModInputHandler inputHandler, IModEvents events) : base(console)
+        public ModsMenu(IModMenus menus, IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events)
         {
+            OwmlMenu = owmlMenu;
             _menus = menus;
-            _modConfigMenus = new List<IModConfigMenu>();
             _inputHandler = inputHandler;
             _events = events;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(OwmlConsole, modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(modData, mod));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
         {
-            OwmlConsole.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
+            ModConsole.OwmlConsole.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
             var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
             if (modConfigMenu == null)
             {
-                OwmlConsole.WriteLine($"Error - {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine($"Error - {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.", MessageType.Error);
                 return null;
             }
             return modConfigMenu;
@@ -53,15 +55,11 @@ namespace OWML.ModHelper.Menus
             var modsMenu = CreateModsMenu(options);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = owMenu.Menu;
-
-            InitConfigMenu(_menus.OwmlMenu, options);
-            var owmlButton = modsButton.Duplicate(OwmlTitle);
-            owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
         private void InitCombinationMenu(IModTabbedMenu options)
         {
-            options.OnClose += () => OnDeactivateOptions(options);
+            options.OnClosed += () => OnDeactivateOptions(options);
             if (_menus.InputCombinationMenu.Menu != null)
             {
                 return;
@@ -82,8 +80,13 @@ namespace OWML.ModHelper.Menus
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
 
+            var owmlButton = options.RebindingButton.Copy(Constants.OwmlTitle);
+            modsTab.AddButton((IModButtonBase)owmlButton, 0);
+            InitConfigMenu(OwmlMenu, options);
+            owmlButton.OnClick += () => OwmlMenu.Open();
+
             var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
-            var index = CreateBlockOfButtons(options, modsTab, enabledMods, 0, "ENABLED MODS");
+            var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
             var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
             CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
 

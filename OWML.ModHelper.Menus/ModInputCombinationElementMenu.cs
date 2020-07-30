@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
 using System.Linq;
+using OWML.Logging;
 using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
@@ -24,9 +25,9 @@ namespace OWML.ModHelper.Menus
         private IModInputCombinationMenu _combinationMenu;
         private IModInputCombinationElement _element;
 
-        public ModInputCombinationElementMenu(IModConsole console, IModInputHandler inputHandler, IModPopupManager popupManager) : base(console)
+        public ModInputCombinationElementMenu(IModInputHandler inputHandler, IModPopupManager popupManager)
         {
-            MessagePopup = new ModMessagePopup(console);
+            MessagePopup = new ModMessagePopup();
             _inputHandler = inputHandler;
             _popupManager = popupManager;
         }
@@ -47,7 +48,7 @@ namespace OWML.ModHelper.Menus
         {
             if (scaleReference == null)
             {
-                OwmlConsole.WriteLine("Error - scale reference is null", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine("Error - scale reference is null", MessageType.Error);
             }
             var layoutGroupNew = layoutObject.GetAddComponent<HorizontalLayoutGroup>();
             layoutGroupNew.childForceExpandWidth = false;
@@ -103,7 +104,7 @@ namespace OWML.ModHelper.Menus
 
             if (layout == null)
             {
-                OwmlConsole.WriteLine("Error - Failed to create combination visualizer in combination editor.", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine("Error - Failed to create combination visualizer in combination editor.", MessageType.Error);
                 return;
             }
 
@@ -157,7 +158,7 @@ namespace OWML.ModHelper.Menus
         internal ModInputCombinationElementMenu Copy()
         {
             var newPopupObject = CopyMenu();
-            var newPopup = new ModInputCombinationElementMenu(OwmlConsole, _inputHandler, _popupManager);
+            var newPopup = new ModInputCombinationElementMenu(_inputHandler, _popupManager);
             newPopup.Initialize(newPopupObject.GetComponent<ModInputCombinationPopup>());
             return newPopup;
         }

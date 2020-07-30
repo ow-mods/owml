@@ -1,5 +1,4 @@
 ﻿using System;
-using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using Object = UnityEngine.Object;
@@ -12,8 +11,6 @@ namespace OWML.ModHelper.Menus
         public event Action<string> OnConfirm;
 
         private PopupInputMenu _inputMenu;
-
-        public ModInputMenu(IModConsole console) : base(console) { }
 
         internal void Initialize(PopupInputMenu menu)
         {
@@ -54,7 +51,7 @@ namespace OWML.ModHelper.Menus
         internal ModInputMenu Copy()
         {
             var newPopupObject = CopyMenu();
-            var newPopup = new ModInputMenu(OwmlConsole);
+            var newPopup = new ModInputMenu();
             newPopup.Initialize(newPopupObject.GetComponent<PopupInputMenu>());
             return newPopup;
         }

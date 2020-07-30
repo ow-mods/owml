@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.Logging
 {
     public class ModSocketOutput : ModConsole
     {
@@ -35,7 +35,6 @@ namespace OWML.ModHelper
         private void WriteLine(MessageType type, string line, string senderType)
         {
             Logger?.Log(line);
-            CallWriteCallback(Manifest, line);
 
             var message = new ModSocketMessage
             {
@@ -57,8 +56,8 @@ namespace OWML.ModHelper
             {
                 var message = new ModSocketMessage
                 {
-                    SenderName = "OWML",
-                    SenderType = "ModSocketOutput",
+                    SenderName = Constants.OwmlTitle,
+                    SenderType = nameof(ModSocketOutput),
                     Type = MessageType.Error,
                     Message = $"Error while getting calling type : {ex.Message}"
                 };

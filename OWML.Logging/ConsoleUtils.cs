@@ -1,8 +1,8 @@
-﻿using OWML.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.Logging
 {
     public static class ConsoleUtils
     {
