@@ -16,5 +16,7 @@ namespace OWML.Common
         string[] Dependencies { get; }
         bool PriorityLoad { get; }
         bool RequireVR { get; }
+        string MinimalGameVersion { get; }
+        string MaximalGameVersion { get; set; }
     }
 }

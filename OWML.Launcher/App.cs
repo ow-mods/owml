@@ -75,7 +75,58 @@ namespace OWML.Launcher
         private void CheckGameVersion()
         {
             var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
-            _writer.WriteLine($"Game version: {versionReader.GetGameVersion()}", MessageType.Info);
+            var gameVersion = versionReader.GetGameVersion();
+            _writer.WriteLine($"Game version: {gameVersion}", MessageType.Info);
+            var splitGameVersion = gameVersion.Split('.');
+            var splitMinVersion = _owmlManifest.MinimalGameVersion.Split('.');
+            var splitMaxVersion = _owmlManifest.MaximalGameVersion.Split('.');
+            var count = Math.Min(splitGameVersion.Length, Math.Min(splitMaxVersion.Length, splitMinVersion.Length));
+            splitGameVersion[count-1] = string.Join("", splitGameVersion.Skip(count - 1));
+            splitMinVersion[count-1] = string.Join("", splitMinVersion.Skip(count - 1));
+            splitMaxVersion[count-1] = string.Join("", splitMaxVersion.Skip(count - 1));
+            _writer.WriteLine(gameVersion);
+            _writer.WriteLine(" ");
+            _writer.WriteLine(_owmlManifest.MinimalGameVersion);
+            _writer.WriteLine(" ");
+            _writer.WriteLine(_owmlManifest.MaximalGameVersion);
+            _writer.WriteLine(" ");
+            _writer.WriteLine($"{string.Join("; ",splitGameVersion)}");
+            _writer.WriteLine($"{string.Join("; ", splitMinVersion)}");
+            _writer.WriteLine($"{string.Join("; ", splitMaxVersion)}");
+            for (var i = 0; i < count; i++)
+            {
+                var gameNumber = Convert.ToInt32(splitGameVersion[i]);
+                var minNumber = Convert.ToInt32(splitMinVersion[i]);
+                var maxNumber = Convert.ToInt32(splitMinVersion[i]);
+                if (gameNumber < minNumber)
+                {
+                    _writer.WriteLine("Unsupported game version found", MessageType.Error);
+                    _writer.WriteLine("Press any key to exit...", MessageType.Info);
+                    Console.ReadKey();
+                    ExitConsole();
+                }
+                if (gameNumber > maxNumber)
+                {
+                    _writer.WriteLine("Potentially unsupported game version found", MessageType.Warning);
+                    ConsoleKey response;
+                    do
+                    {
+                        _writer.WriteLine("Continue loading? [y/n]");
+                        response = Console.ReadKey(false).Key;
+                        if (response != ConsoleKey.Enter)
+                        {
+                            Console.WriteLine();
+                        }
+                    } while (response != ConsoleKey.Y && response != ConsoleKey.N);
+                    if (response == ConsoleKey.N)
+                    {
+                        ExitConsole();
+                    }
+                    _owmlManifest.MaximalGameVersion = gameVersion;
+                    JsonHelper.SaveJsonObject(Constants.OwmlManifestFileName, _owmlManifest);
+                    return;
+                }
+            }
         }
 
         private void CopyGameFiles()

@@ -41,5 +41,9 @@ namespace OWML.ModHelper
 
         [JsonIgnore]
         public string AssemblyPath => ModFolderPath + Filename;
+        [JsonProperty("minimalGameVersion")]
+        public string MinimalGameVersion { get; } = "";
+        [JsonProperty("maximalGameVersion")]
+        public string MaximalGameVersion { get; set; } = "";
     }
 }
