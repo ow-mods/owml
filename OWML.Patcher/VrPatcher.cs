@@ -6,7 +6,6 @@ namespace OWML.Patcher
     public class VRPatcher
     {
         private readonly IOwmlConfig _owmlConfig;
-        private readonly IModConsole _writer;
         private readonly BinaryPatcher _binaryPatcher;
         private readonly VRFilePatcher _vrPatcher;
 
@@ -15,9 +14,8 @@ namespace OWML.Patcher
         public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
         {
             _owmlConfig = owmlConfig;
-            _writer = writer;
-            _binaryPatcher = new BinaryPatcher(_owmlConfig, _writer);
-            _vrPatcher = new VRFilePatcher(_writer, _binaryPatcher);
+            _binaryPatcher = new BinaryPatcher(_owmlConfig, writer);
+            _vrPatcher = new VRFilePatcher(writer, _binaryPatcher);
         }
 
         public void PatchVR(bool enableVR)

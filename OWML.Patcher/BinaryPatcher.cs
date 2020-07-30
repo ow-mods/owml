@@ -67,7 +67,7 @@ namespace OWML.Patcher
                 return new byte[0];
             }
 
-            (var sectorStart, var sectorSize) = GetSectorInfo(fileBytes, sector);
+            var (sectorStart, sectorSize) = GetSectorInfo(fileBytes, sector);
             var sectorEnd = sectorStart + sectorSize;
             return fileBytes.Take(sectorEnd).Skip(sectorStart).ToArray();
         }
@@ -111,8 +111,8 @@ namespace OWML.Patcher
 
         private int GetSectorIndex(byte[] fileBytes, int address)
         {
-            int sector = -1;
-            for (int sectorIndex = 0; sectorIndex < SectorCount; sectorIndex++)
+            var sector = -1;
+            for (var sectorIndex = 0; sectorIndex < SectorCount; sectorIndex++)
             {
                 var sectorStart = GetSectorInfo(fileBytes, sectorIndex).sectorStart;
                 if (sectorStart > address)
@@ -126,7 +126,7 @@ namespace OWML.Patcher
 
         private void ShiftInt(byte[] fileBytes, int location, int difference, bool isBigEndian = false)
         {
-            int value = isBigEndian ?
+            var value = isBigEndian ?
                 BitConverter.ToInt32(fileBytes.Take(location + 4).Reverse().ToArray(), 0) :
                 BitConverter.ToInt32(fileBytes, location);
 
