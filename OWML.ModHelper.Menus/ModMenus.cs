@@ -10,17 +10,14 @@ namespace OWML.ModHelper.Menus
         public IModMainMenu MainMenu { get; }
         public IModPauseMenu PauseMenu { get; }
         public IModsMenu ModsMenu { get; }
-        public IModConfigMenuBase OwmlMenu { get; }
         public IModInputCombinationMenu InputCombinationMenu { get; }
         public IModPopupManager PopupManager { get; }
 
-        public ModMenus(IModEvents events, IModInputHandler inputHandler,
-            IModManifest owmlManifest, IOwmlConfig owmlConfig, IOwmlConfig owmlDefaultConfig)
+        public ModMenus(IModEvents events, IModInputHandler inputHandler, IModConfigMenuBase owmlMenu)
         {
             MainMenu = new ModMainMenu();
             PauseMenu = new ModPauseMenu();
-            ModsMenu = new ModsMenu(this, inputHandler, events);
-            OwmlMenu = new OwmlConfigMenu(owmlManifest, owmlConfig, owmlDefaultConfig);
+            ModsMenu = new ModsMenu(this, owmlMenu, inputHandler, events);
             PopupManager = new ModPopupManager(inputHandler, events);
             InputCombinationMenu = new ModInputCombinationMenu();
 

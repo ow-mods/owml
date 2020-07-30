@@ -13,13 +13,16 @@ namespace OWML.ModHelper.Menus
     {
         private const string ModsTitle = "MODS";
 
+        public IModConfigMenuBase OwmlMenu { get; }
+
         private readonly IModMenus _menus;
         private readonly IModInputHandler _inputHandler;
         private readonly List<IModConfigMenu> _modConfigMenus = new List<IModConfigMenu>();
         private readonly IModEvents _events;
 
-        public ModsMenu(IModMenus menus, IModInputHandler inputHandler, IModEvents events)
+        public ModsMenu(IModMenus menus, IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events)
         {
+            OwmlMenu = owmlMenu;
             _menus = menus;
             _inputHandler = inputHandler;
             _events = events;
@@ -52,15 +55,11 @@ namespace OWML.ModHelper.Menus
             var modsMenu = CreateModsMenu(options);
             modsButton.OnClick += () => modsMenu.Open();
             Menu = owMenu.Menu;
-
-            InitConfigMenu(_menus.OwmlMenu, options);
-            var owmlButton = modsButton.Duplicate(Constants.OwmlTitle);
-            owmlButton.OnClick += () => _menus.OwmlMenu.Open();
         }
 
         private void InitCombinationMenu(IModTabbedMenu options)
         {
-            options.OnClose += () => OnDeactivateOptions(options);
+            options.OnClosed += () => OnDeactivateOptions(options);
             if (_menus.InputCombinationMenu.Menu != null)
             {
                 return;
@@ -81,8 +80,13 @@ namespace OWML.ModHelper.Menus
             modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
             options.AddTab(modsTab);
 
+            var owmlButton = options.RebindingButton.Copy(Constants.OwmlTitle);
+            modsTab.AddButton((IModButtonBase)owmlButton, 0);
+            InitConfigMenu(OwmlMenu, options);
+            owmlButton.OnClick += () => OwmlMenu.Open();
+
             var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
-            var index = CreateBlockOfButtons(options, modsTab, enabledMods, 0, "ENABLED MODS");
+            var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
             var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
             CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
 
