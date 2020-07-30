@@ -38,6 +38,8 @@ namespace OWML.Launcher
 
             LocateGamePath();
 
+            CheckGameVersion();
+
             CopyGameFiles();
 
             CreateLogsDirectory();
@@ -68,6 +70,12 @@ namespace OWML.Launcher
                 _owmlConfig.GamePath = gamePath;
                 JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, _owmlConfig);
             }
+        }
+
+        private void CheckGameVersion()
+        {
+            var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
+            _writer.WriteLine($"Game version: {versionReader.GetGameVersion()}", MessageType.Info);
         }
 
         private void CopyGameFiles()
