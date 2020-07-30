@@ -12,10 +12,10 @@ namespace OWML.Patcher
         private readonly BinaryPatcher _binaryPatcher;
 
         private const string EnabledVRDevice = "OpenVR";
-        private const int VRRemovedBytes = 2;
+        private const int RemovedBytes = 2;
         // String that comes right before the bytes we want to patch.
-        private const string VRPatchZoneText = "Assets/Scenes/PostCreditScene.unity";
-        private const int VRPatchStartZoneOffset = 6;
+        private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity";
+        private const int PatchStartZoneOffset = 6;
         private const int BuildSettingsSector = 10;//count from zero
 
         public VRFilePatcher(IModConsole writer, BinaryPatcher binaryPatcher)
@@ -30,8 +30,8 @@ namespace OWML.Patcher
             var buildSettingsStartIndex = _binaryPatcher.GetSectorInfo(fileBytes, BuildSettingsSector).sectorStart;
 
             var buildSettingsBytes = _binaryPatcher.GetSectorBytes(fileBytes, BuildSettingsSector);
-            var patchStartOffset = FindVRPatchStartOffset(buildSettingsBytes);
-            var isAlreadyPatched = FindExistingVRPatch(buildSettingsBytes, patchStartOffset);
+            var patchStartOffset = FindPatchStartOffset(buildSettingsBytes);
+            var isAlreadyPatched = FindExistingPatch(buildSettingsBytes, patchStartOffset);
 
             if (isAlreadyPatched)
             {
@@ -39,14 +39,14 @@ namespace OWML.Patcher
                 return;
             }
 
-            var patchedBytes = CreateVRPatchFileBytes(fileBytes, buildSettingsStartIndex + patchStartOffset);
+            var patchedBytes = CreatePatchFileBytes(fileBytes, buildSettingsStartIndex + patchStartOffset);
             _binaryPatcher.WriteFileBytes(patchedBytes);
             _writer.WriteLine("Successfully patched globalgamemanagers.", MessageType.Success);
         }
 
-        private int FindVRPatchStartOffset(byte[] sectorBytes)
+        private int FindPatchStartOffset(byte[] sectorBytes)
         {
-            var patchZoneBytes = Encoding.ASCII.GetBytes(VRPatchZoneText);
+            var patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
             var patchZoneMatch = 0;
             for (var i = 0; i < sectorBytes.Length; i++)
             {
@@ -62,13 +62,13 @@ namespace OWML.Patcher
                 }
                 if (patchZoneMatch == patchZoneBytes.Length)
                 {
-                    return i + VRPatchStartZoneOffset;
+                    return i + PatchStartZoneOffset;
                 }
             }
             throw new Exception("Could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
         }
 
-        private bool FindExistingVRPatch(byte[] sectorBytes, int startIndex)
+        private bool FindExistingPatch(byte[] sectorBytes, int startIndex)
         {
             var existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
             var existingPatchMatch = 0;
@@ -93,7 +93,7 @@ namespace OWML.Patcher
             return false;
         }
 
-        private byte[] CreateVRPatchFileBytes(byte[] fileBytes, int patchStartIndex)
+        private byte[] CreatePatchFileBytes(byte[] fileBytes, int patchStartIndex)
         {
             // First byte is the number of elements in the array.
             var vrDevicesDeclarationBytes = new byte[] { 1, 0, 0, 0, (byte)EnabledVRDevice.Length, 0, 0, 0 };
@@ -101,7 +101,7 @@ namespace OWML.Patcher
             // Bytes that need to be inserted into the file.
             var patchBytes = vrDevicesDeclarationBytes.Concat(Encoding.ASCII.GetBytes(EnabledVRDevice)).ToArray();
 
-            return _binaryPatcher.PatchSectionBytes(fileBytes, patchBytes, patchStartIndex, VRRemovedBytes, BuildSettingsSector);
+            return _binaryPatcher.PatchSectionBytes(fileBytes, patchBytes, patchStartIndex, RemovedBytes, BuildSettingsSector);
         }
     }
 }
