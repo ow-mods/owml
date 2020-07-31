@@ -75,35 +75,50 @@ namespace OWML.Launcher
         private void CheckGameVersion()
         {
             var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
-            var gameVersion = versionReader.GetGameVersion();
-            _writer.WriteLine($"Game version: {gameVersion}", MessageType.Info);
-            var splitGameVersion = gameVersion.Split('.');
-            var splitMinVersion = _owmlManifest.MinimalGameVersion.Split('.');
-            var splitMaxVersion = _owmlManifest.MaximalGameVersion.Split('.');
-            var count = Math.Min(splitGameVersion.Length, Math.Min(splitMaxVersion.Length, splitMinVersion.Length));
-            splitGameVersion[count - 1] = string.Join("", splitGameVersion.Skip(count - 1));
-            splitMinVersion[count - 1] = string.Join("", splitMinVersion.Skip(count - 1));
-            splitMaxVersion[count - 1] = string.Join("", splitMaxVersion.Skip(count - 1));
-            for (var i = 0; i < count; i++)
+            var gameVersionString = versionReader.GetGameVersion();
+            _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
+            try
             {
-                var gameNumber = Convert.ToInt32(splitGameVersion[i]);
-                var minNumber = Convert.ToInt32(splitMinVersion[i]);
-                var maxNumber = Convert.ToInt32(splitMaxVersion[i]);
-                if (gameNumber < minNumber)
+                var gameVersion = new Version(NormalizeVersionString(gameVersionString));
+                var minVersion = new Version(_owmlManifest.MinimalGameVersion);
+                var maxVersion = new Version(_owmlManifest.MaximalGameVersion);
+                if (gameVersion < minVersion)
                 {
                     ThrowBelowError();
                 }
-                if (gameNumber > maxNumber)
+                if (gameVersion > maxVersion)
                 {
-                    ThrowAboveWarning(gameVersion);
+                    ThrowAboveWarning(gameVersion.ToString());
                     return;
                 }
             }
+            catch (Exception ex)
+            {
+                _writer.WriteLine($"Error while trying to perfrom version chec:\n{ex}", MessageType.Error);
+                AnyKey();
+            }
+        }
+
+        private string NormalizeVersionString(string version)
+        {
+            var dotCount = version.Count(ch => ch == '.');
+            while (dotCount > 3)
+            {
+                var lastDot = version.LastIndexOf('.');
+                version = version.Substring(0, lastDot) + version.Substring(lastDot + 1);
+                dotCount--;
+            }
+            return version;
         }
 
         private void ThrowBelowError()
         {
             _writer.WriteLine("Unsupported game version found", MessageType.Error);
+            AnyKey();
+        }
+
+        private void AnyKey()
+        {
             _writer.WriteLine("Press any key to exit...", MessageType.Info);
             Console.ReadKey();
             ExitConsole();
