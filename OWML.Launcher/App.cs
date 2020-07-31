@@ -77,8 +77,7 @@ namespace OWML.Launcher
             var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
             var gameVersionString = versionReader.GetGameVersion();
             _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
-            var dotCount = gameVersionString.Count(ch => ch == '.');
-            if (dotCount > 3)
+            if (!Version.TryParse(gameVersionString, out Version gameVersion))
             {
                 _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
                 _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
@@ -86,7 +85,6 @@ namespace OWML.Launcher
             }
             try
             {
-                var gameVersion = new Version(gameVersionString);
                 var minVersion = new Version(_owmlManifest.MinGameVersion);
                 var maxVersion = new Version(_owmlManifest.MaxGameVersion);
                 if (gameVersion < minVersion)
