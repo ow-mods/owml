@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace OWML.Patcher
 {
@@ -8,6 +9,7 @@ namespace OWML.Patcher
         private readonly BinaryPatcher _binaryPatcher;
 
         private const int PlayerSettingsSector = 0;
+        private const string VersionPattern = "[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,4}[.]{0,1}[0-9]{0,4}";
 
         public GameVersionReader(BinaryPatcher binaryPatcher)
         {
@@ -17,15 +19,9 @@ namespace OWML.Patcher
         public string GetGameVersion()
         {
             var sectorBytes = _binaryPatcher.GetSectorBytes(_binaryPatcher.ReadFileBytes(), PlayerSettingsSector);
-            for (int i = 4; i < sectorBytes.Length - 2; i++)
-            {
-                if (sectorBytes[i - 1] == 0 && sectorBytes[i + 1] == '.' && sectorBytes[i + 3] == '.')
-                {
-                    int length = BitConverter.ToInt32(sectorBytes, i - 4);
-                    return Encoding.ASCII.GetString(sectorBytes, i, length);
-                }
-            }
-            return "not found";
+            var sectorString = Encoding.ASCII.GetString(sectorBytes);
+            var match = Regex.Match(sectorString, VersionPattern);
+            return match.Success? match.Value: "not found";
         }
     }
 }
