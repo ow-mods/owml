@@ -77,7 +77,7 @@ namespace OWML.Launcher
             var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
             var gameVersionString = versionReader.GetGameVersion();
             _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
-            if (!Version.TryParse(gameVersionString, out Version gameVersion))
+            if (!Version.TryParse(gameVersionString, out var gameVersion))
             {
                 _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
                 PotentiallyUnsupported();
