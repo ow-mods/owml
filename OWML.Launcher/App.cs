@@ -74,29 +74,29 @@ namespace OWML.Launcher
 
         private void CheckGameVersion()
         {
-            var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
+            var versionReader = new GameVersionReader(new BinaryPatcher(_owmlConfig, _writer));
             var gameVersionString = versionReader.GetGameVersion();
             _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
-            if (!Version.TryParse(gameVersionString, out var gameVersion))
+            var isValidFormat = Version.TryParse(gameVersionString, out var gameVersion);
+            var minVersion = new Version(_owmlManifest.MinGameVersion);
+            var maxVersion = new Version(_owmlManifest.MaxGameVersion);
+            if (!isValidFormat)
             {
                 _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
+            }
+            if (!isValidFormat || gameVersion > maxVersion)
+            {
                 PotentiallyUnsupported();
                 return;
             }
-            var minVersion = new Version(_owmlManifest.MinGameVersion);
-            var maxVersion = new Version(_owmlManifest.MaxGameVersion);
             if (gameVersion < minVersion)
             {
                 _writer.WriteLine("Unsupported game version found", MessageType.Error);
-                AnyKey();
-            }
-            if (gameVersion > maxVersion)
-            {
-                PotentiallyUnsupported();
+                AnyKeyExitConsole();
             }
         }
 
-        private void AnyKey()
+        private void AnyKeyExitConsole()
         {
             _writer.WriteLine("Press any key to exit...", MessageType.Info);
             Console.ReadKey();
