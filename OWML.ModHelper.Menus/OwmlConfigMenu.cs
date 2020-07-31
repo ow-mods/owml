@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.ModHelper.Input;
 
 namespace OWML.ModHelper.Menus
 {
@@ -9,11 +10,13 @@ namespace OWML.ModHelper.Menus
 
         private readonly IOwmlConfig _config;
         private readonly IOwmlConfig _defaultConfig;
+        private readonly ModInputHandler _inputHandler;
 
-        public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IOwmlConfig defaultConfig) : base(manifest)
+        public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IOwmlConfig defaultConfig, ModInputHandler inputHandler) : base(manifest)
         {
             _config = config;
             _defaultConfig = defaultConfig;
+            _inputHandler = inputHandler;
         }
 
         protected override void AddInputs()
@@ -35,6 +38,7 @@ namespace OWML.ModHelper.Menus
         {
             _config.GamePath = (string)GetInputValue(GamePathTitle);
             _config.BlockInput = (bool)GetInputValue(BlockInputTitle);
+            _inputHandler.BlockInput(_config.BlockInput);
             Storage.Save(_config, Constants.OwmlConfigFileName);
             Close();
         }

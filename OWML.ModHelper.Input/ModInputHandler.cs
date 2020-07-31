@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using UnityEngine;
+using Harmony;
 
 namespace OWML.ModHelper.Input
 {
@@ -13,6 +14,7 @@ namespace OWML.ModHelper.Input
         private const float Cooldown = 0.05f;
         private const float TapDuration = 0.1f;
         private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
+        private const string HarmonyName = "com.tai.inputhandler";
 
         internal static ModInputHandler Instance { get; private set; }
 
@@ -26,6 +28,14 @@ namespace OWML.ModHelper.Input
         private HashSet<IModInputCombination> _currentCombinations = new HashSet<IModInputCombination>();
         private int _lastSingleUpdate;
         private int _lastCombinationUpdate;
+
+        private readonly MethodInfo _singleAxisMethod;
+        private readonly MethodInfo _doubleAxisMethod;
+        private readonly HarmonyMethod _singleAxisPatch;
+        private readonly HarmonyMethod _doubleAxisPatch;
+        private readonly HarmonyInstance _harmony;
+        private bool _patched;
+
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
@@ -42,12 +52,33 @@ namespace OWML.ModHelper.Input
             var listener = listenerObject.AddComponent<BindingChangeListener>();
             listener.Initialize(this, events);
 
-            if (owmlConfig.BlockInput)
-            {
-                patcher.AddPostfix<SingleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
-                patcher.AddPostfix<DoubleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
-            }
+            _singleAxisMethod = typeof(SingleAxisCommand).GetMethod("UpdateInputCommand");
+            _doubleAxisMethod = typeof(DoubleAxisCommand).GetMethod("UpdateInputCommand");
+            var singleAxisPatchMehod = typeof(InputInterceptor).GetMethod(nameof(InputInterceptor.SingleAxisUpdatePost));
+            _singleAxisPatch = new HarmonyMethod(singleAxisPatchMehod) { prioritiy = Priority.Last };
+            var doubleAxisPatchMehod = typeof(InputInterceptor).GetMethod(nameof(InputInterceptor.DoubleAxisUpdatePost));
+            _doubleAxisPatch = new HarmonyMethod(doubleAxisPatchMehod) { prioritiy = Priority.Last };
+            _harmony = HarmonyInstance.Create(HarmonyName);
+            BlockInput(owmlConfig.BlockInput);
             Instance = this;
+        }
+
+        public void BlockInput(bool block)
+        {
+            if (_patched == block)
+            {
+                return;
+            }
+            if (block)
+            {
+                _harmony.Patch(_singleAxisMethod, null, _singleAxisPatch);
+                _harmony.Patch(_doubleAxisMethod, null, _doubleAxisPatch);
+            }
+            else
+            {
+                _harmony.UnpatchAll(HarmonyName);
+            }
+            _patched = block;
         }
 
         internal bool IsPressedAndIgnored(KeyCode key)
