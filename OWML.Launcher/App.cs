@@ -101,7 +101,7 @@ namespace OWML.Launcher
             }
             catch (Exception ex)
             {
-                _writer.WriteLine($"Error while trying to perfrom version chec:\n{ex}", MessageType.Error);
+                _writer.WriteLine($"Error while trying to perfrom version check:\n{ex}", MessageType.Error);
                 AnyKey();
             }
         }
