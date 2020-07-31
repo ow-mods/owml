@@ -80,7 +80,7 @@ namespace OWML.Launcher
             if (!Version.TryParse(gameVersionString, out Version gameVersion))
             {
                 _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
-                _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
+                PotentiallyUnsupported();
                 return;
             }
             try
@@ -94,7 +94,7 @@ namespace OWML.Launcher
                 }
                 if (gameVersion > maxVersion)
                 {
-                    _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
+                    PotentiallyUnsupported();
                 }
             }
             catch (Exception ex)
@@ -109,6 +109,11 @@ namespace OWML.Launcher
             _writer.WriteLine("Press any key to exit...", MessageType.Info);
             Console.ReadKey();
             ExitConsole();
+        }
+
+        private void PotentiallyUnsupported()
+        {
+            _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
         }
 
         private void CopyGameFiles()
