@@ -83,24 +83,16 @@ namespace OWML.Launcher
                 PotentiallyUnsupported();
                 return;
             }
-            try
+            var minVersion = new Version(_owmlManifest.MinGameVersion);
+            var maxVersion = new Version(_owmlManifest.MaxGameVersion);
+            if (gameVersion < minVersion)
             {
-                var minVersion = new Version(_owmlManifest.MinGameVersion);
-                var maxVersion = new Version(_owmlManifest.MaxGameVersion);
-                if (gameVersion < minVersion)
-                {
-                    _writer.WriteLine("Unsupported game version found", MessageType.Error);
-                    AnyKey();
-                }
-                if (gameVersion > maxVersion)
-                {
-                    PotentiallyUnsupported();
-                }
-            }
-            catch (Exception ex)
-            {
-                _writer.WriteLine($"Error while trying to perfrom version check:\n{ex}", MessageType.Error);
+                _writer.WriteLine("Unsupported game version found", MessageType.Error);
                 AnyKey();
+            }
+            if (gameVersion > maxVersion)
+            {
+                PotentiallyUnsupported();
             }
         }
 
