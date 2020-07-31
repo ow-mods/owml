@@ -45,51 +45,19 @@ namespace OWML.Patcher
 
         private int FindPatchStartOffset(byte[] sectorBytes)
         {
-            var patchZoneBytes = Encoding.ASCII.GetBytes(PatchZoneText);
-            var patchZoneMatch = 0;
-            for (var i = 0; i < sectorBytes.Length; i++)
+            var sectorString = Encoding.ASCII.GetString(sectorBytes);
+            var position = sectorString.IndexOf(PatchZoneText);
+            if (position < 0)
             {
-                var fileByte = sectorBytes[i];
-                var patchZoneByte = patchZoneBytes[patchZoneMatch];
-                if (fileByte == patchZoneByte)
-                {
-                    patchZoneMatch++;
-                }
-                else
-                {
-                    patchZoneMatch = 0;
-                }
-                if (patchZoneMatch == patchZoneBytes.Length)
-                {
-                    return i + PatchStartZoneOffset;
-                }
+                throw new Exception("Could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
             }
-            throw new Exception("Could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
+            return position + PatchZoneText.Length + PatchStartZoneOffset - 1;
         }
 
         private bool FindExistingPatch(byte[] sectorBytes, int startIndex)
         {
-            var existingPatchBytes = Encoding.ASCII.GetBytes(EnabledVRDevice);
-            var existingPatchMatch = 0;
-
-            for (var i = startIndex; i < sectorBytes.Length; i++)
-            {
-                var fileByte = sectorBytes[i];
-                var existingPatchByte = existingPatchBytes[existingPatchMatch];
-                if (fileByte == existingPatchByte)
-                {
-                    existingPatchMatch++;
-                }
-                else
-                {
-                    existingPatchMatch = 0;
-                }
-                if (existingPatchMatch == existingPatchBytes.Length)
-                {
-                    return true;
-                }
-            }
-            return false;
+            var zoneString = Encoding.ASCII.GetString(sectorBytes.Skip(startIndex).ToArray());
+            return zoneString.IndexOf(EnabledVRDevice) >= 0;
         }
 
         private byte[] CreatePatchFileBytes(byte[] fileBytes, int patchStartIndex)
