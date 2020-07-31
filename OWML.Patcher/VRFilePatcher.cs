@@ -62,7 +62,6 @@ namespace OWML.Patcher
 
         private byte[] CreatePatchFileBytes(byte[] fileBytes, int patchStartIndex)
         {
-            // First byte is the number of elements in the array.
             var stringsCountBytes = BitConverter.GetBytes(1);
             var stringLengthBytes = BitConverter.GetBytes(EnabledVRDevice.Length);
             var vrDevicesSizeBytes = stringsCountBytes.Concat(stringLengthBytes).ToArray();
