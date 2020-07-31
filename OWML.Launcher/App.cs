@@ -77,19 +77,26 @@ namespace OWML.Launcher
             var versionReader = new GameVersionReader(_writer, new BinaryPatcher(_owmlConfig, _writer));
             var gameVersionString = versionReader.GetGameVersion();
             _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
+            var dotCount = gameVersionString.Count(ch => ch == '.');
+            if (dotCount > 3)
+            {
+                _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
+                _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
+                return;
+            }
             try
             {
-                var gameVersion = new Version(NormalizeVersionString(gameVersionString));
-                var minVersion = new Version(_owmlManifest.MinimalGameVersion);
-                var maxVersion = new Version(_owmlManifest.MaximalGameVersion);
+                var gameVersion = new Version(gameVersionString);
+                var minVersion = new Version(_owmlManifest.MinGameVersion);
+                var maxVersion = new Version(_owmlManifest.MaxGameVersion);
                 if (gameVersion < minVersion)
                 {
-                    ThrowBelowError();
+                    _writer.WriteLine("Unsupported game version found", MessageType.Error);
+                    AnyKey();
                 }
                 if (gameVersion > maxVersion)
                 {
-                    ThrowAboveWarning(gameVersion.ToString());
-                    return;
+                    _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
                 }
             }
             catch (Exception ex)
@@ -99,50 +106,11 @@ namespace OWML.Launcher
             }
         }
 
-        private string NormalizeVersionString(string version)
-        {
-            var dotCount = version.Count(ch => ch == '.');
-            while (dotCount > 3)
-            {
-                var lastDot = version.LastIndexOf('.');
-                version = version.Substring(0, lastDot) + version.Substring(lastDot + 1);
-                dotCount--;
-            }
-            return version;
-        }
-
-        private void ThrowBelowError()
-        {
-            _writer.WriteLine("Unsupported game version found", MessageType.Error);
-            AnyKey();
-        }
-
         private void AnyKey()
         {
             _writer.WriteLine("Press any key to exit...", MessageType.Info);
             Console.ReadKey();
             ExitConsole();
-        }
-
-        private void ThrowAboveWarning(string currentVersion)
-        {
-            _writer.WriteLine("Potentially unsupported game version found", MessageType.Warning);
-            ConsoleKey response;
-            do
-            {
-                _writer.WriteLine("Continue loading? [y/n]", MessageType.Info);
-                response = Console.ReadKey(false).Key;
-                if (response != ConsoleKey.Enter)
-                {
-                    Console.WriteLine();
-                }
-            } while (response != ConsoleKey.Y && response != ConsoleKey.N);
-            if (response == ConsoleKey.N)
-            {
-                ExitConsole();
-            }
-            _owmlManifest.MaximalGameVersion = currentVersion;
-            JsonHelper.SaveJsonObject(Constants.OwmlManifestFileName, _owmlManifest);
         }
 
         private void CopyGameFiles()
