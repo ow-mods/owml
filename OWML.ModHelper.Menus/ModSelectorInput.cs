@@ -14,11 +14,17 @@ namespace OWML.ModHelper.Menus
         private readonly OptionsSelectorElement _element;
         private int _count;
         private List<string> _options = new List<string>();
+        private Dictionary<string, string> _converter;
+        private Dictionary<string, string> _inverseConverter;
 
         public override string Value
         {
-            get => _options[_element.GetCurrentIndex()];
-            set => _element.Initialize(_options.IndexOf(value));
+            get
+            {
+                var option = _options[_element.GetCurrentIndex()];
+                return _inverseConverter == null ? option : _inverseConverter[option];
+            }
+            set => _element.Initialize(_options.IndexOf(_converter == null ? value : _converter[value]));
         }
 
         public int SelectedIndex
@@ -40,6 +46,17 @@ namespace OWML.ModHelper.Menus
             {
                 InvokeOnChange(_options[value]);
             }
+        }
+
+        public void Initialize(string option, Dictionary<string, string> options)
+        {
+            _count = options.Count;
+            _options = options.Values.ToList();
+            _converter = options;
+            _inverseConverter = options.ToDictionary(pair => pair.Value, pair => pair.Key);
+            var index = _options.IndexOf(options[option]);
+            index = Math.Max(index, 0);
+            _element.Initialize(index, _options.ToArray());
         }
 
         public void Initialize(string option, string[] options)

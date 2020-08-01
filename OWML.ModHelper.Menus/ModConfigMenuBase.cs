@@ -2,7 +2,9 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using System.Linq;
+using System.Collections.Generic;
 using OWML.Logging;
+using System.Xml.Schema;
 
 namespace OWML.ModHelper.Menus
 {
@@ -51,7 +53,7 @@ namespace OWML.ModHelper.Menus
             base.Open();
             UpdateUIValues();
         }
-        
+
         protected void AddConfigInput(string key, object value, int index)
         {
             if (value is bool)
@@ -82,6 +84,7 @@ namespace OWML.ModHelper.Menus
                     case "toggle":
                         AddToggleInput(key, obj, index);
                         return;
+                    case "dictionary selector":
                     case "selector":
                         AddSelectorInput(key, obj, index);
                         return;
@@ -129,11 +132,21 @@ namespace OWML.ModHelper.Menus
 
         private void AddSelectorInput(string key, JObject obj, int index)
         {
-            var options = obj["options"].ToObject<string[]>();
+            var value = (string)obj["value"];
             var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
             selector.Element.name = key;
             selector.Title = (string)obj["title"] ?? key;
-            selector.Initialize((string)obj["value"], options);
+            if (obj["type"].ToString().Contains("dictionary"))
+            {
+                var jTokenDictionary = obj["options"].ToObject<Dictionary<string, JToken>>();
+                var stringDictionary = jTokenDictionary.ToDictionary(pair => pair.Key, pair => pair.Value.Value<string>());
+                selector.Initialize(value, stringDictionary);
+            }
+            else
+            {
+                var options = obj["options"].ToObject<string[]>();
+                selector.Initialize(value, options);
+            }
             selector.Show();
         }
 

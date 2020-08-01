@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.ModHelper;
+using OWML.Logging;
 
 namespace OWML.ModLoader
 {
@@ -71,7 +72,7 @@ namespace OWML.ModLoader
                 {
                     wasCompatible = TryUpdate(key, Config.Settings[key], DefaultConfig.Settings[key]) && wasCompatible;
                 }
-                else if (DefaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
+                else if (DefaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString().Contains("selector"))
                 {
                     wasCompatible = UpdateSelector(key, Config.Settings[key], objectValue) && wasCompatible;
                 }
@@ -83,7 +84,9 @@ namespace OWML.ModLoader
 
         private bool UpdateSelector(string key, object userSetting, JObject modSetting)
         {
-            var options = modSetting["options"].ToObject<List<string>>();
+            var options = modSetting["type"].ToString().Contains("dictionary")?
+                    modSetting["options"].ToObject<Dictionary<string,JToken>>().Keys.ToList():
+                    modSetting["options"].ToObject<List<string>>();
             var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
             Config.Settings[key] = modSetting;
             var isInOptions = options.Contains(userString);

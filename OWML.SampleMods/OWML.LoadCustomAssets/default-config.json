@@ -29,6 +29,15 @@
       "options": [ "A", "B", "C" ],
       "value": "A"
     },
+    "super thing": {
+      "type": "dictionary selector",
+      "options": {
+        "1": "A",
+        "2": "B",
+        "3": "C"
+      },
+      "value": "1"
+    },
     "integer thing": {
       "type": "selector",
       "options": [ 5, 10, 15 ],
