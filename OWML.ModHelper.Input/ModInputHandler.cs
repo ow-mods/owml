@@ -55,9 +55,9 @@ namespace OWML.ModHelper.Input
             _singleAxisMethod = typeof(SingleAxisCommand).GetMethod("UpdateInputCommand");
             _doubleAxisMethod = typeof(DoubleAxisCommand).GetMethod("UpdateInputCommand");
             var singleAxisPatchMehod = typeof(InputInterceptor).GetMethod(nameof(InputInterceptor.SingleAxisUpdatePost));
-            _singleAxisPatch = new HarmonyMethod(singleAxisPatchMehod) { prioritiy = Priority.Last };
+            _singleAxisPatch = new HarmonyMethod(singleAxisPatchMehod) { prioritiy = Priority.First };
             var doubleAxisPatchMehod = typeof(InputInterceptor).GetMethod(nameof(InputInterceptor.DoubleAxisUpdatePost));
-            _doubleAxisPatch = new HarmonyMethod(doubleAxisPatchMehod) { prioritiy = Priority.Last };
+            _doubleAxisPatch = new HarmonyMethod(doubleAxisPatchMehod) { prioritiy = Priority.First };
             _harmony = HarmonyInstance.Create(HarmonyName);
             BlockInput(owmlConfig.BlockInput);
             Instance = this;
