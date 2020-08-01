@@ -8,7 +8,7 @@ namespace OWML.Patcher
         private readonly BinaryPatcher _binaryPatcher;
 
         private const int PlayerSettingsSector = 0;
-        private const string VersionPattern = @"\d+(\.\d+){3,}";//can handle 1-infinite dots
+        private const string VersionPattern = @"\d+(\.\d+){3,}";//can handle 3-infinite dots
 
         public GameVersionReader(BinaryPatcher binaryPatcher)
         {
