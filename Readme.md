@@ -17,7 +17,7 @@ With Outer Wilds Mod Manager (recommended):
 
 Manual install:
 1. Download OWML and extract the zip file anywhere you want.
-2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
+2. [Download Outer Wilds mods](https://outerwildsmods.com/mods) and put them in the Mods folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
 
 ## Sample mod
