@@ -38,6 +38,8 @@ namespace OWML.Launcher
 
             LocateGamePath();
 
+            CheckGameVersion();
+
             CopyGameFiles();
 
             CreateLogsDirectory();
@@ -68,6 +70,42 @@ namespace OWML.Launcher
                 _owmlConfig.GamePath = gamePath;
                 JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, _owmlConfig);
             }
+        }
+
+        private void CheckGameVersion()
+        {
+            var versionReader = new GameVersionReader(new BinaryPatcher(_owmlConfig, _writer));
+            var gameVersionString = versionReader.GetGameVersion();
+            _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
+            var isValidFormat = Version.TryParse(gameVersionString, out var gameVersion);
+            var minVersion = new Version(_owmlManifest.MinGameVersion);
+            var maxVersion = new Version(_owmlManifest.MaxGameVersion);
+            if (!isValidFormat)
+            {
+                _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
+            }
+            if (!isValidFormat || gameVersion > maxVersion)
+            {
+                PotentiallyUnsupported();
+                return;
+            }
+            if (gameVersion < minVersion)
+            {
+                _writer.WriteLine("Unsupported game version found", MessageType.Error);
+                AnyKeyExitConsole();
+            }
+        }
+
+        private void AnyKeyExitConsole()
+        {
+            _writer.WriteLine("Press any key to exit...", MessageType.Info);
+            Console.ReadKey();
+            ExitConsole();
+        }
+
+        private void PotentiallyUnsupported()
+        {
+            _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
         }
 
         private void CopyGameFiles()
