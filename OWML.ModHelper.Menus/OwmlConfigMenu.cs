@@ -4,7 +4,6 @@ namespace OWML.ModHelper.Menus
 {
     public class OwmlConfigMenu : ModConfigMenuBase
     {
-        private const string GamePathTitle = "Game path";
         private const string BlockInputTitle = "Mod inputs can block game actions";
 
         private readonly IOwmlConfig _config;
@@ -19,7 +18,6 @@ namespace OWML.ModHelper.Menus
         protected override void AddInputs()
         {
             var index = 2;
-            AddConfigInput(GamePathTitle, _config.GamePath, index++);
             AddConfigInput(BlockInputTitle, _config.BlockInput, index++);
             UpdateNavigation();
             SelectFirst();
@@ -27,13 +25,11 @@ namespace OWML.ModHelper.Menus
 
         protected override void UpdateUIValues()
         {
-            GetTextInput(GamePathTitle).Value = _config.GamePath;
             GetToggleInput(BlockInputTitle).Value = _config.BlockInput;
         }
 
         protected override void OnSave()
         {
-            _config.GamePath = (string)GetInputValue(GamePathTitle);
             _config.BlockInput = (bool)GetInputValue(BlockInputTitle);
             Storage.Save(_config, Constants.OwmlConfigFileName);
             Close();
