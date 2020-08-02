@@ -147,6 +147,7 @@ namespace OWML.ModHelper.Menus
         protected virtual void OnActivateMenu()
         {
             CommandListener.OnNewlyReleased += OnButton;
+            CommandListener.BlockNextRelease();
         }
 
         protected virtual void OnDeactivateMenu()
