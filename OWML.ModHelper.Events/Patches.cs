@@ -21,6 +21,9 @@ namespace OWML.ModHelper.Events
         public static void BeforeDisable(MonoBehaviour __instance) => OnEvent?.Invoke(__instance, Common.Events.BeforeDisable);
         public static void AfterDisable(MonoBehaviour __instance) => OnEvent?.Invoke(__instance, Common.Events.AfterDisable);
 
+        public static void BeforeDestroy(MonoBehaviour __instance) => OnEvent?.Invoke(__instance, Common.Events.BeforeDestroy);
+        public static void AfterDestroy(MonoBehaviour __instance) => OnEvent?.Invoke(__instance, Common.Events.AfterDestroy);
+
         public static IEnumerable<CodeInstruction> EmptyMethod(IEnumerable<CodeInstruction> instructions)
         {
             return new List<CodeInstruction>();
