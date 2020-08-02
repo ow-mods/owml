@@ -25,7 +25,6 @@ namespace OWML.ModHelper.Menus
             CommandListener.AddToListener(InputLibrary.cancel);
             CommandListener.AddToListener(InputLibrary.escape);
             CommandListener.AddToListener(InputLibrary.setDefaults);
-            CommandListener.OnNewlyReleased += OnButton;
         }
 
         protected virtual void SetupButtons()
@@ -147,13 +146,13 @@ namespace OWML.ModHelper.Menus
 
         protected virtual void OnActivateMenu()
         {
-            CommandListener.gameObject.SetActive(true);
+            CommandListener.OnNewlyReleased += OnButton;
             CommandListener.BlockNextRelease();
         }
 
         protected virtual void OnDeactivateMenu()
         {
-            CommandListener.gameObject.SetActive(false);
+            CommandListener.OnNewlyReleased -= OnButton;
         }
 
         protected virtual void OnButton(SingleAxisCommand command)
