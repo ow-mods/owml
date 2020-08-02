@@ -50,7 +50,6 @@ namespace OWML.ModHelper.Input
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-            gameObject.SetActive(false);
         }
 
         private void Update()
