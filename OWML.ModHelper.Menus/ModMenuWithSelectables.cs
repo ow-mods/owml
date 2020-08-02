@@ -26,7 +26,6 @@ namespace OWML.ModHelper.Menus
             CommandListener.AddToListener(InputLibrary.escape);
             CommandListener.AddToListener(InputLibrary.setDefaults);
             CommandListener.OnNewlyReleased += OnButton;
-            listenerObject.SetActive(false);
         }
 
         protected virtual void SetupButtons()
