@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Input
         private readonly HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
         private readonly Dictionary<long, HashSet<IModInputCombination>> _comboRegistry = new Dictionary<long, HashSet<IModInputCombination>>();
         private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
-        private readonly float[] _timeout = new float[ModInputLibrary.MaxUsefulKey];
+        private readonly int[] _blockedFrame = new int[ModInputLibrary.MaxUsefulKey];
         private readonly int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
         private HashSet<IModInputCombination> _currentCombinations = new HashSet<IModInputCombination>();
         private int _lastSingleUpdate;
@@ -56,7 +56,7 @@ namespace OWML.ModHelper.Input
             var cleanKey = ModInputLibrary.NormalizeKeyCode(key);
             return UnityEngine.Input.GetKey(cleanKey) &&
                 _currentCombinations.Count > 0 &&
-                Time.realtimeSinceStartup - _timeout[(int)cleanKey] < Cooldown;
+                (Time.frameCount - _blockedFrame[(int)cleanKey]) * Time.deltaTime < Cooldown;
         }
 
         private long? GetHashFromKeyboard()
@@ -76,7 +76,7 @@ namespace OWML.ModHelper.Input
                     return null;
                 }
                 hash = hash * ModInputLibrary.MaxUsefulKey + code;
-                if (Time.realtimeSinceStartup - _timeout[code] > Cooldown)
+                if ((Time.frameCount - _blockedFrame[code]) * Time.deltaTime > Cooldown)
                 {
                     countdownTrigger = false;
                 }
@@ -115,7 +115,7 @@ namespace OWML.ModHelper.Input
 
             while (hash > 0)
             {
-                _timeout[hash % ModInputLibrary.MaxUsefulKey] = Time.realtimeSinceStartup;
+                _blockedFrame[hash % ModInputLibrary.MaxUsefulKey] = Time.frameCount;
                 hash /= ModInputLibrary.MaxUsefulKey;
             }
             return combinations;
