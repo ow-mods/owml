@@ -90,7 +90,7 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Tested with all versions of Outer Wilds up to and including v1.0.7.
+* Compatible with the latest version of Outer Wilds - 1.0.7.
 * Currently Windows only.
 
 ## Feedback
