@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
@@ -21,8 +20,6 @@ namespace OWML.ModHelper.Menus
 
         private List<IModTabMenu> _tabMenus;
 
-        public ModOptionsMenu(IModConsole console) : base(console) { }
-
         public void Initialize(TabbedMenu menu)
         {
             base.Initialize(menu);
@@ -32,7 +29,7 @@ namespace OWML.ModHelper.Menus
             _tabMenus = new List<IModTabMenu>();
             foreach (var tabButton in tabButtons)
             {
-                var tabMenu = new ModTabMenu(OwmlConsole, this);
+                var tabMenu = new ModTabMenu(this);
                 tabMenu.Initialize(tabButton);
                 _tabMenus.Add(tabMenu);
             }
@@ -88,7 +85,7 @@ namespace OWML.ModHelper.Menus
             var menu = RebindingButton.Button
                 .GetComponent<SubmitActionMenu>()
                 .GetValue<Menu>("_menuToOpen");
-            var rebindingMenu = new ModPopupMenu(OwmlConsole);
+            var rebindingMenu = new ModPopupMenu();
             rebindingMenu.Initialize(menu);
             return rebindingMenu;
         }

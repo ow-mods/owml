@@ -49,6 +49,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameVersionReader.cs" />
+    <Compile Include="VRFilePatcher.cs" />
     <Compile Include="BinaryPatcher.cs" />
     <Compile Include="OWPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

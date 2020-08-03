@@ -7,7 +7,7 @@ namespace OWML.ModHelper.Events
 {
     internal static class Patches
     {
-        public static Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
+        public static event Action<MonoBehaviour, Common.Events> OnEvent;
 
         public static void BeforeAwake(MonoBehaviour __instance) => OnEvent?.Invoke(__instance, Common.Events.BeforeAwake);
         public static void AfterAwake(MonoBehaviour __instance) => OnEvent?.Invoke(__instance, Common.Events.AfterAwake);

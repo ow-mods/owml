@@ -10,7 +10,11 @@ namespace OWML.ModHelper.Events
     {
         public IModPlayerEvents Player { get; }
         public IModSceneEvents Scenes { get; }
+        public IModUnityEvents Unity { get; }
 
+        public event Action<MonoBehaviour, Common.Events> Event;
+
+        [Obsolete("Use Event instead.")]
         public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
         private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
@@ -29,6 +33,7 @@ namespace OWML.ModHelper.Events
 
             Player = new ModPlayerEvents(this);
             Scenes = new ModSceneEvents();
+            Unity = new GameObject().AddComponent<ModUnityEvents>();
         }
 
         private void OnPatchEvent(MonoBehaviour behaviour, Common.Events ev)
@@ -38,6 +43,7 @@ namespace OWML.ModHelper.Events
             {
                 _logger.Log($"Got subscribed event: {ev} of {type.Name}");
                 OnEvent?.Invoke(behaviour, ev);
+                Event?.Invoke(behaviour, ev);
             }
             else
             {
@@ -49,12 +55,6 @@ namespace OWML.ModHelper.Events
         {
             SubscribeToEvent<T>(ev);
             PatchEvent<T>(ev);
-        }
-
-        [Obsolete("Use Subscribe instead")]
-        public void AddEvent<T>(Common.Events ev) where T : MonoBehaviour
-        {
-            Subscribe<T>(ev);
         }
 
         private void SubscribeToEvent<T>(Common.Events ev)

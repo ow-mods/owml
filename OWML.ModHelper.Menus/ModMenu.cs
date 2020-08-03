@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Logging;
 using OWML.ModHelper.Events;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,12 +29,6 @@ namespace OWML.ModHelper.Menus
         public List<IModSeparator> Separators { get; private set; }
 
         protected LayoutGroup Layout;
-        protected readonly IModConsole OwmlConsole;
-
-        public ModMenu(IModConsole console)
-        {
-            OwmlConsole = console;
-        }
 
         public virtual void Initialize(Menu menu)
         {
@@ -84,42 +79,18 @@ namespace OWML.ModHelper.Menus
             var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
             if (button == null)
             {
-                OwmlConsole.WriteLine("Warning - No button found with title or name: " + title, MessageType.Warning);
+                ModConsole.OwmlConsole.WriteLine("Warning - No button found with title or name: " + title, MessageType.Warning);
             }
             return button;
         }
 
-        [Obsolete("Use Buttons instead")]
-        public List<Button> GetButtons()
-        {
-            return Menu.GetComponentsInChildren<Button>(true).ToList();
-        }
-
-        [Obsolete("Use button.Duplicate instead")]
-        public Button AddButton(string title, int index)
-        {
-            var original = Buttons?.FirstOrDefault();
-            if (original == null)
-            {
-                OwmlConsole.WriteLine("Warning: no buttons to copy");
-                return null;
-            }
-
-            var copy = original.Copy();
-            copy.Title = title;
-
-            AddButton(copy, index);
-
-            return copy.Button;
-        }
-
-        [Obsolete("use IModButtonBase")]
+        [Obsolete("Use AddButton(IModButtonBase) instead.")]
         public IModButton AddButton(IModButton button)
         {
             return AddButton(button, button.Index);
         }
 
-        [Obsolete("use IModButtonBase")]
+        [Obsolete("Use AddButton(IModButtonBase, int) instead.")]
         public virtual IModButton AddButton(IModButton button, int index)
         {
             return (IModButton)AddButton((IModButtonBase)button, index);
@@ -308,7 +279,7 @@ namespace OWML.ModHelper.Menus
             {
                 return numberInput.Value;
             }
-            OwmlConsole.WriteLine($"Error - No input found with name {key}", MessageType.Error);
+            ModConsole.OwmlConsole.WriteLine($"Error - No input found with name {key}", MessageType.Error);
             return null;
         }
 
@@ -356,7 +327,7 @@ namespace OWML.ModHelper.Menus
                 numberInput.Value = Convert.ToSingle(val);
                 return;
             }
-            OwmlConsole.WriteLine("Error - No input found with name " + key, MessageType.Error);
+            ModConsole.OwmlConsole.WriteLine("Error - No input found with name " + key, MessageType.Error);
         }
 
         protected void InvokeOnInit()

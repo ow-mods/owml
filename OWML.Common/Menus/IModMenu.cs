@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
@@ -20,7 +19,9 @@ namespace OWML.Common.Menus
         IModButton GetTitleButton(string title);
         IModPromptButton GetPromptButton(string title);
 
+        [Obsolete("Use AddButton(IModButtonBase) instead.")]
         IModButton AddButton(IModButton button);
+        [Obsolete("Use AddButton(IModButtonBase, int) instead.")]
         IModButton AddButton(IModButton button, int index);
         IModButtonBase AddButton(IModButtonBase button);
         IModButtonBase AddButton(IModButtonBase button, int index);
@@ -60,10 +61,5 @@ namespace OWML.Common.Menus
 
         void SelectFirst();
         void UpdateNavigation();
-
-        [Obsolete("Use Buttons instead")]
-        List<Button> GetButtons();
-        [Obsolete("Use button.Duplicate instead")]
-        Button AddButton(string title, int index);
     }
 }

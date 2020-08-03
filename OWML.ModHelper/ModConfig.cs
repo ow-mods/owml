@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using OWML.Logging;
 
 namespace OWML.ModHelper
 {
@@ -11,9 +12,6 @@ namespace OWML.ModHelper
         [JsonProperty("enabled")]
         public bool Enabled { get; set; } = true;
 
-        [JsonProperty("requireVR"), Obsolete("Use ModManifest.RequireVR instead")]
-        public bool RequireVR { get; set; }
-
         [JsonProperty("settings")]
         public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
 
@@ -21,7 +19,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                ModConsole.Instance.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
                 return default;
             }
 
@@ -39,7 +37,7 @@ namespace OWML.ModHelper
             }
             catch (InvalidCastException)
             {
-                ModConsole.Instance.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}", MessageType.Error);
                 return default;
             }
         }
@@ -64,7 +62,7 @@ namespace OWML.ModHelper
             }
             catch (ArgumentException ex)
             {
-                ModConsole.Instance.WriteLine($"Error - Can't convert {valueString} to enum {typeof(T)}: {ex.Message}", MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine($"Error - Can't convert {valueString} to enum {typeof(T)}: {ex.Message}", MessageType.Error);
                 return default;
             }
         }
@@ -73,7 +71,7 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                ModConsole.Instance.WriteLine("Error - Setting not found: " + key, MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine("Error - Setting not found: " + key, MessageType.Error);
                 return;
             }
 
@@ -87,10 +85,14 @@ namespace OWML.ModHelper
             }
         }
 
-        [Obsolete("Use GetSettingsValue instead")]
-        public T GetSetting<T>(string key)
+        public IModConfig Copy()
         {
-            return GetSettingsValue<T>(key);
+            return new ModConfig
+            {
+                Enabled = Enabled,
+                Settings = new Dictionary<string, object>(Settings)
+            };
         }
+
     }
 }

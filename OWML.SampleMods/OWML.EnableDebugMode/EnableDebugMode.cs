@@ -11,25 +11,20 @@ namespace OWML.EnableDebugMode
         private int _renderValue;
         private bool _isStarted;
         private PlayerSpawner _playerSpawner;
-        private Dictionary<string, IModInputCombination> _inputs;
+        private readonly Dictionary<string, IModInputCombination> _inputs = new Dictionary<string, IModInputCombination>();
 
         public override void Configure(IModConfig config)
         {
-            if (_inputs != null)
+            foreach (var input in _inputs)
             {
-                foreach (var key in _inputs.Keys)
-                {
-                    ModHelper.Input.UnregisterCombination(_inputs[key]);
-                }
+                ModHelper.Input.UnregisterCombination(input.Value);
             }
-            _inputs = new Dictionary<string, IModInputCombination>();
             foreach (var key in config.Settings.Keys)
             {
                 var value = config.GetSettingsValue<string>(key);
                 if (!string.IsNullOrEmpty(value))
                 {
-                    var combination = ModHelper.Input.RegisterCombination(this, key, value);
-                    _inputs.Add(key, combination);
+                    _inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
                 }
             }
         }
@@ -39,7 +34,7 @@ namespace OWML.EnableDebugMode
             ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
             ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
             ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
-            ModHelper.Events.OnEvent += OnEvent;
+            ModHelper.Events.Event += OnEvent;
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)

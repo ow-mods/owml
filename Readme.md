@@ -11,19 +11,13 @@ OWML does the following:
 
 ## Installation
 
-With [Outer Wilds Mod Manager](https://github.com/Raicuparta/ow-mod-manager) (recommended):
-1. Download the [latest release of the Mod Manager](https://github.com/Raicuparta/ow-mod-manager/releases).
+With Outer Wilds Mod Manager (recommended):
+1. Download the Mod Manager from the [Outer Wilds Mods](https://outerwildsmods.com/) website.
 2. Use the Mod Manager to install OWML and mods, and start the game.
-
-With Vortex:
-1. Download OWML and extract the zip file.
-2. Put the OWML folder in ﻿the game's root folder, usually C:\Program Files\Epic Games\OuterWilds.
-3. Install [the Vortex extension](https://www.nexusmods.com/site/mods/73/).
-4. Use [Vortex](https://www.nexusmods.com/site/mods/1/) to install mods and start the game.
 
 Manual install:
 1. Download OWML and extract the zip file anywhere you want.
-2. [Download mods](https://www.nexusmods.com/outerwilds) and put them in the Mods folder, each mod in a separate folder.
+2. [Download Outer Wilds mods](https://outerwildsmods.com/mods) and put them in the Mods folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
 
 ## Sample mod
@@ -96,7 +90,7 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Tested with all versions of Outer Wilds up to and including v1.0.7.
+* Compatible with the latest version of Outer Wilds - 1.0.7.
 * Currently Windows only.
 
 ## Feedback
@@ -105,8 +99,6 @@ I'm working tightly with the mod community to improve OWML and aid in mod develo
 I'm Alek on the [Outer Wilds Discord](https://discord.gg/csKYR3w).
 
 Feature requests, bug reports and PRs are welcome on GitHub.
-
-[Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
 
 ## Credits
 
@@ -121,7 +113,7 @@ Special thanks to:
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * Inspired by (and some code from) [SMAPI](https://smapi.io)
-* Texture_Turtle for graphics on [Nexus page](https://www.nexusmods.com/outerwilds/mods/1)
+* Texture_Turtle for graphics on Nexus page
 
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)

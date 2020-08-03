@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using OWML.Logging;
 
 namespace OWML.Launcher
 {
@@ -93,10 +94,10 @@ namespace OWML.Launcher
                 {
                     continue;
                 }
-                SocketMessage data;
+                ModSocketMessage data;
                 try
                 {
-                    data = JsonConvert.DeserializeObject<SocketMessage>(json);
+                    data = JsonConvert.DeserializeObject<ModSocketMessage>(json);
                 }
                 catch (Exception ex)
                 {

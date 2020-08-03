@@ -2,11 +2,11 @@
 using System.Linq;
 using OWML.Common;
 
-namespace OWML.ModHelper
+namespace OWML.Logging
 {
     public class OutputWriter : IModConsole
     {
-        [Obsolete]
+        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
         public void WriteLine(params object[] objects)
         {
             WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));

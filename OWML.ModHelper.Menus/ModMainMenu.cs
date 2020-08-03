@@ -1,14 +1,14 @@
 ﻿using System.Linq;
-using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
     public class ModMainMenu : ModMenu, IModMainMenu
     {
-        public IModTabbedMenu OptionsMenu { get; }
+        public IModTabbedMenu OptionsMenu { get; } = new ModOptionsMenu();
 
         public IModButton ResumeExpeditionButton { get; private set; }
         public IModButton NewExpeditionButton { get; private set; }
@@ -18,14 +18,11 @@ namespace OWML.ModHelper.Menus
         public IModButton QuitButton { get; private set; }
 
         private TitleAnimationController _anim;
-
-        public ModMainMenu(IModConsole console) : base(console)
-        {
-            OptionsMenu = new ModOptionsMenu(console);
-        }
+        private TitleScreenManager _titleManager;
 
         public void Initialize(TitleScreenManager titleScreenManager)
         {
+            _titleManager = titleScreenManager;
             _anim = titleScreenManager.GetComponent<TitleAnimationController>();
             var menu = titleScreenManager.GetValue<Menu>("_mainMenu");
             Initialize(menu);
@@ -50,6 +47,12 @@ namespace OWML.ModHelper.Menus
                 group = x.Button.GetComponent<CanvasGroup>()
             });
             _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
+            if (button is ModTitleButton titleButton)
+            {
+                var texts = _titleManager.GetValue<Text[]>("_mainMenuTextFields").ToList();
+                texts.Add(titleButton.Text);
+                _titleManager.SetValue("_mainMenuTextFields", texts.ToArray());
+            }
             return modButton;
         }
 
