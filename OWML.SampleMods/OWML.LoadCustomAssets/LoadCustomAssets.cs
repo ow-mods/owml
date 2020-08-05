@@ -130,6 +130,15 @@ namespace OWML.LoadCustomAssets
             {
                 CreateCube();
             }
+            else if (Input.GetKeyDown(KeyCode.F9))
+            {
+                SendFatalMessage();
+            }
+        }
+
+        private void SendFatalMessage()
+        {
+            ModHelper.Console.WriteLine("I have chosen to crash the game", MessageType.Fatal);
         }
 
         private void ShootDuck()

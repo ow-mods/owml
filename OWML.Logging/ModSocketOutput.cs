@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using OWML.Common;
+using UnityEngine;
 
 namespace OWML.Logging
 {
@@ -44,6 +45,11 @@ namespace OWML.Logging
                 Message = line
             };
             _socket.WriteToSocket(message);
+
+            if (message.Type == MessageType.Fatal)
+            {
+                Application.Quit();
+            }
         }
 
         private string GetCallingType(StackTrace frame)
