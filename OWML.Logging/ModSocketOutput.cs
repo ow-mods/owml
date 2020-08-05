@@ -47,9 +47,14 @@ namespace OWML.Logging
 
             if (message.Type == MessageType.Fatal)
             {
-                _socket.Close();
-                Process.GetCurrentProcess().Kill();
+                KillProcess();
             }
+        }
+
+        private void KillProcess()
+        {
+            _socket.Close();
+            Process.GetCurrentProcess().Kill();
         }
 
         private string GetCallingType(StackTrace frame)
