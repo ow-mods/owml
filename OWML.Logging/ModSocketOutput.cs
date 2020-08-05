@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using OWML.Common;
-using UnityEngine;
 
 namespace OWML.Logging
 {
@@ -48,7 +47,8 @@ namespace OWML.Logging
 
             if (message.Type == MessageType.Fatal)
             {
-                Application.Quit();
+                _socket.Close();
+                Process.GetCurrentProcess().Kill();
             }
         }
 
