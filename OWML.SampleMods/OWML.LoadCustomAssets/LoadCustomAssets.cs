@@ -118,6 +118,10 @@ namespace OWML.LoadCustomAssets
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                SendFatalMessage();
+            }
             if (!_isInSolarSystem || OWTime.IsPaused())
             {
                 return;
@@ -129,10 +133,6 @@ namespace OWML.LoadCustomAssets
             else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
             {
                 CreateCube();
-            }
-            else if (Input.GetKeyDown(KeyCode.F9))
-            {
-                SendFatalMessage();
             }
         }
 
