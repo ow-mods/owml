@@ -71,12 +71,12 @@ namespace OWML.ModHelper.Menus
 
         private float ToRealNumber(float fakeNumber)
         {
-            return fakeNumber * (Max - Min) / 10;
+            return 0.1f * (fakeNumber * (Max - Min)) + Min;
         }
 
         private float ToFakeNumber(float realNumber)
         {
-            return realNumber * 10 / (Max - Min);
+            return 10 * (realNumber - Min) / (Max - Min);
         }
     }
 }

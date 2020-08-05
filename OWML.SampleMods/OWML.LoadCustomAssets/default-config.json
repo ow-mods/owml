@@ -18,6 +18,18 @@
       "min": 0,
       "max": 20
     },
+    "negativeMin": {
+      "type": "slider",
+      "value": -2,
+      "min": -10,
+      "max": 20
+    },
+    "negativeMax": {
+      "type": "slider",
+      "value": -2,
+      "min": -50,
+      "max": -20
+    },
     "decimals": {
       "type": "slider",
       "value": 10.54545,
