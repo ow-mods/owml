@@ -29,5 +29,10 @@ namespace OWML.Logging
             }
             catch (SocketException) { }
         }
+
+        public void Close()
+        {
+            _socket.Close();
+        }
     }
 }

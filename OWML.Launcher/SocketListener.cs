@@ -17,6 +17,7 @@ namespace OWML.Launcher
         private static int _port;
         private static TcpListener _server;
         private static IOwmlConfig _config;
+        private bool _hasReceivedFatalMessage;
 
         public SocketListener(IOwmlConfig config)
         {
@@ -76,7 +77,7 @@ namespace OWML.Launcher
 
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    ProcessMessage(bytes, i);   
+                    ProcessMessage(bytes, i);
                 }
 
                 ConsoleUtils.WriteByType(MessageType.Success, "Closing client!");
@@ -106,9 +107,13 @@ namespace OWML.Launcher
                     continue;
                 }
 
-                if (data.Type == MessageType.Quit)
+                if (data.Type == MessageType.Quit && !_hasReceivedFatalMessage)
                 {
                     Environment.Exit(0);
+                }
+                if (data.Type == MessageType.Fatal)
+                {
+                    _hasReceivedFatalMessage = true;
                 }
                 ConsoleUtils.WriteByType(data.Type,
                     $"[{data.SenderName}.{data.SenderType}] : {data.Message}");

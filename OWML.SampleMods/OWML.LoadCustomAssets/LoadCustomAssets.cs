@@ -118,6 +118,10 @@ namespace OWML.LoadCustomAssets
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                SendFatalMessage();
+            }
             if (!_isInSolarSystem || OWTime.IsPaused())
             {
                 return;
@@ -130,6 +134,11 @@ namespace OWML.LoadCustomAssets
             {
                 CreateCube();
             }
+        }
+
+        private void SendFatalMessage()
+        {
+            ModHelper.Console.WriteLine("I have chosen to crash the game", MessageType.Fatal);
         }
 
         private void ShootDuck()
