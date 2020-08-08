@@ -7,6 +7,7 @@
         Warning = 2,
         Info = 3,
         Success = 4,
-        Quit = 5
+        Quit = 5,
+        Fatal = 6
     }
 }

@@ -44,6 +44,17 @@ namespace OWML.Logging
                 Message = line
             };
             _socket.WriteToSocket(message);
+
+            if (message.Type == MessageType.Fatal)
+            {
+                KillProcess();
+            }
+        }
+
+        private void KillProcess()
+        {
+            _socket.Close();
+            Process.GetCurrentProcess().Kill();
         }
 
         private string GetCallingType(StackTrace frame)

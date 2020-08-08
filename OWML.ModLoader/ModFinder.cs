@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 
@@ -28,8 +27,7 @@ namespace OWML.ModLoader
             var mods = new List<IModData>();
             foreach (var manifestFilename in manifestFilenames)
             {
-                var json = File.ReadAllText(manifestFilename);
-                var manifest = JsonConvert.DeserializeObject<ModManifest>(json);
+                var manifest = JsonHelper.LoadJsonObject<ModManifest>(manifestFilename);
                 manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName));
                 var modData = GetModData(manifest);
                 mods.Add(modData);
