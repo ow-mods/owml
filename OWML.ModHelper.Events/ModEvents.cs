@@ -108,6 +108,13 @@ namespace OWML.ModHelper.Events
                     _harmonyHelper.AddPostfix<T>("OnDisable", typeof(Patches), nameof(Patches.AfterDisable));
                     break;
 
+                case Common.Events.BeforeDestroy:
+                    _harmonyHelper.AddPrefix<T>("OnDestroy", typeof(Patches), nameof(Patches.BeforeDestroy));
+                    break;
+                case Common.Events.AfterDestroy:
+                    _harmonyHelper.AddPostfix<T>("OnDestroy", typeof(Patches), nameof(Patches.AfterDestroy));
+                    break;
+
                 default:
                     _console.WriteLine($"Error - Unrecognized event: {ev}", MessageType.Error);
                     throw new ArgumentOutOfRangeException(nameof(ev), ev, null);
