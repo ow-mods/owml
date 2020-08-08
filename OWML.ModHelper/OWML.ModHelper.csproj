@@ -43,7 +43,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OW.Unity.Dlls.1.0.7\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
@@ -96,10 +95,6 @@
     <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
       <Project>{6F14D39C-5747-4149-BE4D-365B43918A0A}</Project>
       <Name>OWML.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
-      <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
-      <Name>OWML.ModHelper.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
