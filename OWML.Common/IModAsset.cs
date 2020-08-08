@@ -8,5 +8,7 @@ namespace OWML.Common
 
         [Obsolete("Use Loaded instead.")]
         Action<T> OnLoaded { get; set; }
+
+        T Asset { get; }
     }
 }

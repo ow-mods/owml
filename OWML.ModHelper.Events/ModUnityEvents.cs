@@ -21,6 +21,11 @@ namespace OWML.ModHelper.Events
             StartCoroutine(WaitForFrames(action, n));
         }
 
+        public void RunWhen(Func<bool> when, Action what)
+        {
+            StartCoroutine(WaitUntil(when, what));
+        }
+
         private IEnumerator WaitForFrames(Action action, int n)
         {
             for (var i = 0; i < n; i++)
@@ -28,6 +33,12 @@ namespace OWML.ModHelper.Events
                 yield return new WaitForEndOfFrame();
             }
             action.Invoke();
+        }
+
+        private IEnumerator WaitUntil(Func<bool> when, Action what)
+        {
+            yield return new WaitUntil(when);
+            what();
         }
 
         private void Start()
