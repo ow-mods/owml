@@ -10,6 +10,6 @@ namespace OWML.Common
 
         void FireOnNextUpdate(Action action);
         void FireInNUpdates(Action action, int n);
-        void RunWhen(Func<bool> when, Action what);
+        void RunWhen(Func<bool> predicate, Action action);
     }
 }

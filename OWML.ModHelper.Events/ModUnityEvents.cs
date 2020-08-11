@@ -21,9 +21,9 @@ namespace OWML.ModHelper.Events
             StartCoroutine(WaitForFrames(action, n));
         }
 
-        public void RunWhen(Func<bool> when, Action what)
+        public void RunWhen(Func<bool> predicate, Action action)
         {
-            StartCoroutine(WaitUntil(when, what));
+            StartCoroutine(WaitUntil(predicate, action));
         }
 
         private IEnumerator WaitForFrames(Action action, int n)
@@ -35,10 +35,10 @@ namespace OWML.ModHelper.Events
             action.Invoke();
         }
 
-        private IEnumerator WaitUntil(Func<bool> when, Action what)
+        private IEnumerator WaitUntil(Func<bool> predicate, Action action)
         {
-            yield return new WaitUntil(when);
-            what();
+            yield return new WaitUntil(predicate);
+            action();
         }
 
         private void Start()
