@@ -41,7 +41,7 @@ namespace OWML.LoadCustomAssets
             var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
             duckAsset.Loaded += OnDuckLoaded;
             var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
-            musicAsset.Loaded += OnMusicLoaded;
+            ModHelper.Events.Unity.RunWhen(() => musicAsset.Asset != null, () => OnMusicLoaded(musicAsset.Asset));
 
             ModHelper.Events.Player.OnPlayerAwake += OnPlayerAwake;
             ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
