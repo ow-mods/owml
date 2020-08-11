@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using Newtonsoft.Json;
 using OWML.Common;
 
@@ -10,6 +11,7 @@ namespace OWML.Logging
     public class ModSocket : IModSocket
     {
         private readonly Socket _socket;
+        private const int _closeWaitSeconds = 1;
 
         public ModSocket(int port)
         {
@@ -32,6 +34,7 @@ namespace OWML.Logging
 
         public void Close()
         {
+            Thread.Sleep(TimeSpan.FromSeconds(_closeWaitSeconds));
             _socket.Close();
         }
     }
