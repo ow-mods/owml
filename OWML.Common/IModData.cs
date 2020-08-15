@@ -8,9 +8,9 @@
         bool Enabled { get; }
         bool RequireVR { get; }
         bool RequireReload { get; }
+        IModConfig UserConfig { get; }
 
         void UpdateSnapshot();
         void ResetConfigToDefaults();
-        bool FixConfigs();
     }
 }
