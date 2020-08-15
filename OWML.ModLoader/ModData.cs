@@ -11,8 +11,6 @@ namespace OWML.ModLoader
     {
         public IModManifest Manifest { get; }
         public IModConfig Config { get; private set; }
-        [Obsolete("Maybe this should be obsolete?")]
-        public IModConfig DefaultConfig { get; private set; }
         public IModConfig UserConfig { get; private set; }
         public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
         public bool RequireVR => Manifest.RequireVR;
@@ -27,7 +25,6 @@ namespace OWML.ModLoader
             Manifest = manifest;
             Config = new ModMergedConfig(config, defaultConfig, manifest);
             UserConfig = config;
-            DefaultConfig = defaultConfig;
             UpdateSnapshot();
         }
 
