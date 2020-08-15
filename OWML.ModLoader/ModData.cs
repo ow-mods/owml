@@ -13,9 +13,9 @@ namespace OWML.ModLoader
         public IModConfig Config { get; private set; }
         [Obsolete("Maybe this should be obsolete?")]
         public IModConfig DefaultConfig { get; private set; }
+        public IModConfig UserConfig { get; private set; }
         public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
         public bool RequireVR => Manifest.RequireVR;
-        public IModConfig UserConfig { get; private set; }
 
         public bool Enabled => Config.Enabled;
 
