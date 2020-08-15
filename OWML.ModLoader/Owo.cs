@@ -50,13 +50,6 @@ namespace OWML.ModLoader
             _unityLogger.Start();
 
             var mods = _modFinder.GetMods();
-            // TODO move warning to ModMergedConfig
-            //var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
-            //if (changedSettings.Any())
-            //{
-            //    ModConsole.OwmlConsole.WriteLine("Warning - Settings of following mods changed:\n\t" + string.Join("\n\t", changedSettings),
-            //        MessageType.Warning);
-            //}
 
             var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
             var sortedNormal = _sorter.SortMods(normalMods);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using OWML.Logging;
 
 namespace OWML.ModHelper
 {
@@ -20,8 +21,8 @@ namespace OWML.ModHelper
         }
 
         private IModConfig _userConfig;
-        private IModConfig _defaultConfig;
-        private IModManifest _manifest;
+        private readonly IModConfig _defaultConfig;
+        private readonly IModManifest _manifest;
 
         public ModMergedConfig(IModConfig userConfig, IModConfig defaultConfig, IModManifest manifest)
         {
@@ -54,9 +55,8 @@ namespace OWML.ModHelper
             };
         }
 
-        private bool FixConfigs()
+        private void FixConfigs()
         {
-            var settingsChanged = false;
             var storage = new ModStorage(_manifest);
             if (_userConfig == null)
             {
@@ -64,10 +64,13 @@ namespace OWML.ModHelper
             }
             else if (_defaultConfig != null)
             {
-                settingsChanged = !MakeConfigConsistentWithDefault();
+                var settingsChanged = !MakeConfigConsistentWithDefault();
+                if (settingsChanged)
+                {
+                    ModConsole.OwmlConsole.WriteLine($"Warning - Settings mod {_manifest.UniqueName} changed", MessageType.Warning);
+                }
             }
             storage.Save(_userConfig, Constants.ModConfigFileName);
-            return settingsChanged;
         }
 
         private bool MakeConfigConsistentWithDefault()
