@@ -4,7 +4,7 @@ using OWML.Common;
 
 namespace OWML.ModHelper
 {
-    class ModMainConfig : IModConfig
+    class ModMergedConfig : IModConfig
     {
         public bool Enabled { get => _userConfig.Enabled; set => _userConfig.Enabled = value; }
         public Dictionary<string, object> Settings
@@ -20,7 +20,7 @@ namespace OWML.ModHelper
         private readonly IModConfig _userConfig;
         private readonly IModConfig _defaultConfig;
 
-        public ModMainConfig(IModConfig userConfig, IModConfig defaultConfig)
+        public ModMergedConfig(IModConfig userConfig, IModConfig defaultConfig)
         {
             _userConfig = userConfig;
             _defaultConfig = defaultConfig;
