@@ -77,7 +77,7 @@
     <Compile Include="JsonHelper.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="ModMainConfig.cs" />
+    <Compile Include="ModMergedConfig.cs" />
     <Compile Include="OwmlBehaviour.cs" />
     <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModHelper.cs" />
