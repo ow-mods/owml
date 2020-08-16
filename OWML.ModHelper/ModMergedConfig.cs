@@ -7,7 +7,7 @@ using OWML.Logging;
 
 namespace OWML.ModHelper
 {
-    public class ModMergedConfig : IModConfig
+    public class ModMergedConfig : IModMergedConfig
     {
         public bool Enabled { get => _userConfig.Enabled; set => _userConfig.Enabled = value; }
         public Dictionary<string, object> Settings
@@ -23,12 +23,14 @@ namespace OWML.ModHelper
         private IModConfig _userConfig;
         private readonly IModConfig _defaultConfig;
         private readonly IModManifest _manifest;
+        private readonly IModStorage _storage;
 
         public ModMergedConfig(IModConfig userConfig, IModConfig defaultConfig, IModManifest manifest)
         {
             _userConfig = userConfig;
             _defaultConfig = defaultConfig;
             _manifest = manifest;
+            _storage = new ModStorage(manifest);
             FixConfigs();
         }
 
@@ -55,9 +57,13 @@ namespace OWML.ModHelper
             };
         }
 
+        public void SaveToStorage()
+        {
+            _storage.Save(_userConfig, Constants.ModConfigFileName);
+        }
+
         private void FixConfigs()
         {
-            var storage = new ModStorage(_manifest);
             if (_userConfig == null)
             {
                 _userConfig = _defaultConfig.Copy();
@@ -70,7 +76,7 @@ namespace OWML.ModHelper
                     ModConsole.OwmlConsole.WriteLine($"Warning - Settings mod {_manifest.UniqueName} changed", MessageType.Warning);
                 }
             }
-            storage.Save(_userConfig, Constants.ModConfigFileName);
+            SaveToStorage();
         }
 
         private bool MakeConfigConsistentWithDefault()

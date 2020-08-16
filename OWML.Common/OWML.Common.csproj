@@ -41,6 +41,7 @@
     <Compile Include="IModInputTextures.cs" />
     <Compile Include="IModInputHandler.cs" />
     <Compile Include="IModInteraction.cs" />
+    <Compile Include="IModMergedConfig.cs" />
     <Compile Include="IModPlayerEvents.cs" />
     <Compile Include="IModSceneEvents.cs" />
     <Compile Include="IModSocket.cs" />
