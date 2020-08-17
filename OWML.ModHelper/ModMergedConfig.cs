@@ -86,7 +86,9 @@ namespace OWML.ModHelper
             return value is int
                 || value is long
                 || value is float
-                || value is double;
+                || value is double
+                || value is decimal
+                || value is ulong;
         }
 
         private bool IsSettingConsistentWithDefault(string key)
