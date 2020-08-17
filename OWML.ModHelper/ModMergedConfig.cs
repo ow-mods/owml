@@ -81,11 +81,12 @@ namespace OWML.ModHelper
             settings[key] = value;
         }
 
-        private bool IsNumeric(object value)
+        private bool IsNumber(object value)
         {
-            var type = value.GetType();
-            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
-            return underlyingType.IsPrimitive || underlyingType == typeof(decimal);
+            return value is int
+                || value is long
+                || value is float
+                || value is double;
         }
 
         private bool IsSettingConsistentWithDefault(string key)
@@ -97,11 +98,8 @@ namespace OWML.ModHelper
             var userValue = _userConfig.Settings[key];
             var defaultValue = _defaultConfig.Settings[key];
             var defaultInnerValue = GetInnerValue(defaultValue);
-            if (IsNumeric(userValue) && IsNumeric(defaultInnerValue))
-            {
-                return true;
-            }
-            return userValue.GetType() == defaultInnerValue.GetType();
+            return (userValue.GetType() == defaultInnerValue.GetType())
+                || (IsNumber(userValue) && IsNumber(defaultInnerValue));
         }
 
         private void MakeConfigConsistentWithDefault()
