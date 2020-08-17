@@ -10,7 +10,5 @@ namespace OWML.Common
 
         T GetSettingsValue<T>(string key);
         void SetSettingsValue(string key, object value);
-
-        IModConfig Copy();
     }
 }

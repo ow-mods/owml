@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OWML.Common
+﻿namespace OWML.Common
 {
     public interface IModMergedConfig : IModConfig
     {
         void SaveToStorage();
+        IModConfig Copy();
     }
 }
