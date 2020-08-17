@@ -23,8 +23,8 @@ namespace OWML.ModHelper
 
         public ModMergedConfig(IModConfig userConfig, IModConfig defaultConfig, IModManifest manifest)
         {
-            _userConfig = userConfig;
-            _defaultConfig = defaultConfig;
+            _userConfig = userConfig ?? new ModConfig();
+            _defaultConfig = defaultConfig ?? new ModConfig();
             _manifest = manifest;
             _storage = new ModStorage(manifest);
             FixConfigs();
@@ -60,11 +60,12 @@ namespace OWML.ModHelper
 
         private Dictionary<string, object> GetMergedSettings()
         {
-            if (_userConfig?.Settings == null)
+            if (_userConfig.Settings == null)
             {
                 return _defaultConfig.Settings;
             }
-            if (_defaultConfig?.Settings == null)
+            // TODO hm, maybe not?
+            if (_defaultConfig.Settings == null)
             {
                 return new Dictionary<string, object>();
             }
@@ -75,105 +76,43 @@ namespace OWML.ModHelper
 
         private void FixConfigs()
         {
-            if (_userConfig == null)
-            {
-                _userConfig = _defaultConfig.Copy();
-            }
-            else if (_defaultConfig != null)
-            {
-                var settingsChanged = !MakeConfigConsistentWithDefault();
-                if (settingsChanged)
-                {
-                    ModConsole.OwmlConsole.WriteLine($"Warning - Settings mod {_manifest.UniqueName} changed", MessageType.Warning);
-                }
-            }
+            MakeConfigConsistentWithDefault();
             SaveToStorage();
         }
 
-        private bool MakeConfigConsistentWithDefault()
+        private void RemoveRedundantUserConfigEntries()
         {
-            var wasCompatible = true;
             var toRemove = _userConfig.Settings.Keys.Except(_defaultConfig.Settings.Keys).ToList();
             toRemove.ForEach(key => _userConfig.Settings.Remove(key));
+        }
 
+        private void MakeConfigConsistentWithDefault()
+        {
+            RemoveRedundantUserConfigEntries();
             var keysCopy = _userConfig.Settings.Keys.ToList();
             foreach (var key in keysCopy)
             {
-                if (!IsSettingSameType(_userConfig.Settings[key], _defaultConfig.Settings[key]))
+                var userValue = _userConfig.Settings[key];
+                var defaultValue = _defaultConfig.Settings[key];
+                if (!IsSettingConsistentWithDefault(userValue, defaultValue))
                 {
-                    wasCompatible = TryUpdate(key, _userConfig.Settings[key], _defaultConfig.Settings[key]) && wasCompatible;
-                }
-                else if (_defaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
-                {
-                    wasCompatible = UpdateSelector(key, _userConfig.Settings[key], objectValue) && wasCompatible;
+                    _userConfig.Settings.Remove(key);
                 }
             }
-
-            AddMissingDefaults(_defaultConfig);
-            return wasCompatible;
         }
 
-        private bool UpdateSelector(string key, object userSetting, JObject modSetting)
+        private Type GetDefaultSettingType(object defaultValue)
         {
-            var options = modSetting["options"].ToObject<List<string>>();
-            var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
-            _userConfig.Settings[key] = modSetting;
-            var isInOptions = options.Contains(userString);
-            if (isInOptions)
+            if (defaultValue is JObject defaultJObject)
             {
-                _userConfig.SetSettingsValue(key, userString);
+                return defaultJObject["value"].ToObject(typeof(object)).GetType();
             }
-            return isInOptions;
+            return defaultValue.GetType();
         }
 
-        private void AddMissingDefaults(IModConfig defaultConfig)
+        private bool IsSettingConsistentWithDefault(object userValue, object defaultValue)
         {
-            var missingSettings = defaultConfig.Settings.Where(s => !_userConfig.Settings.ContainsKey(s.Key)).ToList();
-            missingSettings.ForEach(setting => _userConfig.Settings.Add(setting.Key, setting.Value));
-        }
-
-        private bool TryUpdate(string key, object userSetting, object modSetting)
-        {
-            var userValue = _userConfig.GetSettingsValue<object>(key);
-            if (userValue is JValue userJValue)
-            {
-                userValue = userJValue.Value;
-            }
-            _userConfig.Settings[key] = modSetting;
-
-            if (IsNumber(userSetting) && IsNumber(modSetting))
-            {
-                _userConfig.SetSettingsValue(key, Convert.ToDouble(userValue));
-                return true;
-            }
-
-            if (IsBoolean(userSetting) && IsBoolean(modSetting))
-            {
-                _userConfig.SetSettingsValue(key, Convert.ToBoolean(userValue));
-                return true;
-            }
-            return false;
-        }
-
-        private bool IsNumber(object setting)
-        {
-            return setting is JObject settingObject
-                ? settingObject["type"].ToString() == "slider"
-                : new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
-        }
-
-        private bool IsBoolean(object setting)
-        {
-            return setting is JObject settingObject
-                ? settingObject["type"].ToString() == "toggle"
-                : setting is bool;
-        }
-
-        private bool IsSettingSameType(object settingValue1, object settingValue2)
-        {
-            return settingValue1.GetType() == settingValue2.GetType() &&
-                   (!(settingValue1 is JObject obj1) || !(settingValue2 is JObject obj2) ||
-                    (string)obj1["type"] == (string)obj2["type"]);
+            return userValue.GetType() == GetDefaultSettingType(defaultValue);
         }
     }
 }
