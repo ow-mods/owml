@@ -95,9 +95,11 @@ namespace OWML.ModHelper
             {
                 return false;
             }
+
             var userValue = _userConfig.Settings[key];
             var defaultValue = _defaultConfig.Settings[key];
             var defaultInnerValue = GetInnerValue(defaultValue);
+
             return (userValue.GetType() == defaultInnerValue.GetType())
                 || (IsNumber(userValue) && IsNumber(defaultInnerValue));
         }
