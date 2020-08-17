@@ -17,14 +17,12 @@ namespace OWML.ModHelper
 
         private IModConfig _userConfig;
         private readonly IModConfig _defaultConfig;
-        private readonly IModManifest _manifest;
         private readonly IModStorage _storage;
 
         public ModMergedConfig(IModConfig userConfig, IModConfig defaultConfig, IModManifest manifest)
         {
             _userConfig = userConfig ?? new ModConfig();
             _defaultConfig = defaultConfig ?? new ModConfig();
-            _manifest = manifest;
             _storage = new ModStorage(manifest);
             FixConfigs();
         }
