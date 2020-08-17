@@ -89,18 +89,30 @@ namespace OWML.ModHelper
             }
         }
 
-        private Type GetDefaultSettingType(object defaultValue)
+        private object GetInnerValue(object outerValue)
         {
-            if (defaultValue is JObject defaultJObject)
+            if (outerValue is JObject jObject)
             {
-                return defaultJObject["value"].ToObject(typeof(object)).GetType();
+                return jObject["value"].ToObject(typeof(object));
             }
-            return defaultValue.GetType();
+            return outerValue;
+        }
+
+        private bool IsNumeric(object value)
+        {
+            var type = value.GetType();
+            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+            return underlyingType.IsPrimitive || underlyingType == typeof(decimal);
         }
 
         private bool IsSettingConsistentWithDefault(object userValue, object defaultValue)
         {
-            return userValue.GetType() == GetDefaultSettingType(defaultValue);
+            var defaultInnerValue = GetInnerValue(defaultValue);
+            if (IsNumeric(userValue) && IsNumeric(defaultInnerValue))
+            {
+                return true;
+            }
+            return userValue.GetType() == defaultInnerValue.GetType();
         }
     }
 }
