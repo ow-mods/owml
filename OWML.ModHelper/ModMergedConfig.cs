@@ -58,15 +58,7 @@ namespace OWML.ModHelper
         private Dictionary<string, object> GetMergedSettings()
         {
             var settings = new Dictionary<string, object>(_defaultConfig.Settings);
-            _userConfig.Settings.ToList().ForEach(x =>
-            {
-                if (settings[x.Key] is JObject jObject)
-                {
-                    jObject["value"] = JToken.FromObject(x.Value);
-                    return;
-                }
-                settings[x.Key] = x.Value;
-            });
+            _userConfig.Settings.ToList().ForEach(x => SetInnerValue(settings, x.Key, x.Value));
             return settings;
         }
 
@@ -104,6 +96,16 @@ namespace OWML.ModHelper
                 return jObject["value"].ToObject(typeof(object));
             }
             return outerValue;
+        }
+
+        private void SetInnerValue(Dictionary<string, object> settings, string key, object value)
+        {
+            if (settings[key] is JObject jObject)
+            {
+                jObject["value"] = JToken.FromObject(value);
+                return;
+            }
+            settings[key] = value;
         }
 
         private bool IsNumeric(object value)
