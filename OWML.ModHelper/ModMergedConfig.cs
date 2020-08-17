@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.Logging;
 
 namespace OWML.ModHelper
 {
@@ -60,15 +59,6 @@ namespace OWML.ModHelper
 
         private Dictionary<string, object> GetMergedSettings()
         {
-            if (_userConfig.Settings == null)
-            {
-                return _defaultConfig.Settings;
-            }
-            // TODO hm, maybe not?
-            if (_defaultConfig.Settings == null)
-            {
-                return new Dictionary<string, object>();
-            }
             var settings = new Dictionary<string, object>(_defaultConfig.Settings);
             _userConfig.Settings.ToList().ForEach(x => settings[x.Key] = x.Value);
             return settings;
