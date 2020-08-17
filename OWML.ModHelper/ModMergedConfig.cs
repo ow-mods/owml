@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.Logging;
 
 namespace OWML.ModHelper
 {
@@ -16,16 +15,14 @@ namespace OWML.ModHelper
             set => _userConfig.Settings = value;
         }
 
-        private IModConfig _userConfig;
+        private readonly IModConfig _userConfig;
         private readonly IModConfig _defaultConfig;
-        private readonly IModManifest _manifest;
         private readonly IModStorage _storage;
 
         public ModMergedConfig(IModConfig userConfig, IModConfig defaultConfig, IModManifest manifest)
         {
-            _userConfig = userConfig;
-            _defaultConfig = defaultConfig;
-            _manifest = manifest;
+            _userConfig = userConfig ?? new ModConfig();
+            _defaultConfig = defaultConfig ?? new ModConfig();
             _storage = new ModStorage(manifest);
             FixConfigs();
         }
@@ -41,7 +38,7 @@ namespace OWML.ModHelper
 
         public void SetSettingsValue(string key, object value)
         {
-            _userConfig.SetSettingsValue(key, value);
+            _userConfig.SetSettingsValue(key, GetConvertedSelectorValue(key, value) ?? value);
         }
 
         public IModConfig Copy()
@@ -60,120 +57,85 @@ namespace OWML.ModHelper
 
         private Dictionary<string, object> GetMergedSettings()
         {
-            if (_userConfig?.Settings == null)
-            {
-                return _defaultConfig.Settings;
-            }
-            if (_defaultConfig?.Settings == null)
-            {
-                return new Dictionary<string, object>();
-            }
             var settings = new Dictionary<string, object>(_defaultConfig.Settings);
-            _userConfig.Settings.ToList().ForEach(x => settings[x.Key] = x.Value);
+            _userConfig.Settings.ToList().ForEach(x => SetInnerValue(settings, x.Key, x.Value));
             return settings;
+        }
+
+        private object GetInnerValue(object outerValue)
+        {
+            if (outerValue is JObject jObject)
+            {
+                return jObject["value"].ToObject(typeof(object));
+            }
+            return outerValue;
+        }
+
+        private void SetInnerValue(Dictionary<string, object> settings, string key, object value)
+        {
+            if (settings[key] is JObject jObject)
+            {
+                jObject["value"] = JToken.FromObject(value);
+                return;
+            }
+            settings[key] = value;
+        }
+
+        private bool IsNumber(object value)
+        {
+            return value is int
+                || value is long
+                || value is float
+                || value is double
+                || value is decimal
+                || value is ulong;
+        }
+
+        private bool IsSettingConsistentWithDefault(string key)
+        {
+            if (!_defaultConfig.Settings.ContainsKey(key))
+            {
+                return false;
+            }
+
+            var userValue = _userConfig.Settings[key];
+            var defaultValue = _defaultConfig.Settings[key];
+            var defaultInnerValue = GetInnerValue(defaultValue);
+
+            return (userValue.GetType() == defaultInnerValue.GetType())
+                || (IsNumber(userValue) && IsNumber(defaultInnerValue));
+        }
+
+        private void MakeConfigConsistentWithDefault()
+        {
+            _userConfig.Settings.Keys.ToList().ForEach(key =>
+            {
+                if (!IsSettingConsistentWithDefault(key))
+                {
+                    _userConfig.Settings.Remove(key);
+                }
+            });
         }
 
         private void FixConfigs()
         {
-            if (_userConfig == null)
-            {
-                _userConfig = _defaultConfig.Copy();
-            }
-            else if (_defaultConfig != null)
-            {
-                var settingsChanged = !MakeConfigConsistentWithDefault();
-                if (settingsChanged)
-                {
-                    ModConsole.OwmlConsole.WriteLine($"Warning - Settings mod {_manifest.UniqueName} changed", MessageType.Warning);
-                }
-            }
+            MakeConfigConsistentWithDefault();
             SaveToStorage();
         }
 
-        private bool MakeConfigConsistentWithDefault()
+        private object GetConvertedSelectorValue(string key, object value)
         {
-            var wasCompatible = true;
-            var toRemove = _userConfig.Settings.Keys.Except(_defaultConfig.Settings.Keys).ToList();
-            toRemove.ForEach(key => _userConfig.Settings.Remove(key));
-
-            var keysCopy = _userConfig.Settings.Keys.ToList();
-            foreach (var key in keysCopy)
+            if (!_defaultConfig.Settings.ContainsKey(key))
             {
-                if (!IsSettingSameType(_userConfig.Settings[key], _defaultConfig.Settings[key]))
-                {
-                    wasCompatible = TryUpdate(key, _userConfig.Settings[key], _defaultConfig.Settings[key]) && wasCompatible;
-                }
-                else if (_defaultConfig.Settings[key] is JObject objectValue && objectValue["type"].ToString() == "selector")
-                {
-                    wasCompatible = UpdateSelector(key, _userConfig.Settings[key], objectValue) && wasCompatible;
-                }
+                return null;
             }
-
-            AddMissingDefaults(_defaultConfig);
-            return wasCompatible;
-        }
-
-        private bool UpdateSelector(string key, object userSetting, JObject modSetting)
-        {
-            var options = modSetting["options"].ToObject<List<string>>();
-            var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
-            _userConfig.Settings[key] = modSetting;
-            var isInOptions = options.Contains(userString);
-            if (isInOptions)
+            var defaultValue = _defaultConfig.Settings[key];
+            if (defaultValue is JObject defaultObjectValue && defaultObjectValue["type"].ToString() == "selector")
             {
-                _userConfig.SetSettingsValue(key, userString);
+                var innerValue = defaultObjectValue["value"];
+                return innerValue.Type == JTokenType.Integer ? int.Parse(value.ToString()) : value;
             }
-            return isInOptions;
-        }
-
-        private void AddMissingDefaults(IModConfig defaultConfig)
-        {
-            var missingSettings = defaultConfig.Settings.Where(s => !_userConfig.Settings.ContainsKey(s.Key)).ToList();
-            missingSettings.ForEach(setting => _userConfig.Settings.Add(setting.Key, setting.Value));
-        }
-
-        private bool TryUpdate(string key, object userSetting, object modSetting)
-        {
-            var userValue = _userConfig.GetSettingsValue<object>(key);
-            if (userValue is JValue userJValue)
-            {
-                userValue = userJValue.Value;
-            }
-            _userConfig.Settings[key] = modSetting;
-
-            if (IsNumber(userSetting) && IsNumber(modSetting))
-            {
-                _userConfig.SetSettingsValue(key, Convert.ToDouble(userValue));
-                return true;
-            }
-
-            if (IsBoolean(userSetting) && IsBoolean(modSetting))
-            {
-                _userConfig.SetSettingsValue(key, Convert.ToBoolean(userValue));
-                return true;
-            }
-            return false;
-        }
-
-        private bool IsNumber(object setting)
-        {
-            return setting is JObject settingObject
-                ? settingObject["type"].ToString() == "slider"
-                : new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
-        }
-
-        private bool IsBoolean(object setting)
-        {
-            return setting is JObject settingObject
-                ? settingObject["type"].ToString() == "toggle"
-                : setting is bool;
-        }
-
-        private bool IsSettingSameType(object settingValue1, object settingValue2)
-        {
-            return settingValue1.GetType() == settingValue2.GetType() &&
-                   (!(settingValue1 is JObject obj1) || !(settingValue2 is JObject obj2) ||
-                    (string)obj1["type"] == (string)obj2["type"]);
+            return null;
         }
     }
 }

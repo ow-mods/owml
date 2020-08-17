@@ -29,7 +29,7 @@ namespace OWML.ModHelper
         private T GetSettingsValue<T>(string key, object setting)
         {
             var type = typeof(T);
-            
+
             try
             {
                 var value = setting is JObject objectValue ? objectValue["value"] : setting;
@@ -69,30 +69,7 @@ namespace OWML.ModHelper
 
         public void SetSettingsValue(string key, object value)
         {
-            if (!Settings.ContainsKey(key))
-            {
-                ModConsole.OwmlConsole.WriteLine("Error - Setting not found: " + key, MessageType.Error);
-                return;
-            }
-
-            if (Settings[key] is JObject setting)
-            {
-                setting["value"] = JToken.FromObject(value);
-            }
-            else
-            {
-                Settings[key] = value;
-            }
+            Settings[key] = value;
         }
-
-        public IModConfig Copy()
-        {
-            return new ModConfig
-            {
-                Enabled = Enabled,
-                Settings = new Dictionary<string, object>(Settings)
-            };
-        }
-
     }
 }
