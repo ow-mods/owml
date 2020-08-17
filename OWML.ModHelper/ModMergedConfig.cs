@@ -11,7 +11,7 @@ namespace OWML.ModHelper
         public bool Enabled { get => _userConfig.Enabled; set => _userConfig.Enabled = value; }
         public Dictionary<string, object> Settings
         {
-            get => GetMergedSettings();
+            get => _defaultConfig.Settings;
             set => _userConfig.Settings = value;
         }
 
@@ -53,13 +53,6 @@ namespace OWML.ModHelper
         public void SaveToStorage()
         {
             _storage.Save(_userConfig, Constants.ModConfigFileName);
-        }
-
-        private Dictionary<string, object> GetMergedSettings()
-        {
-            var settings = new Dictionary<string, object>(_defaultConfig.Settings);
-            _userConfig.Settings.ToList().ForEach(x => settings[x.Key] = x.Value);
-            return settings;
         }
 
         private void FixConfigs()
