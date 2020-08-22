@@ -38,11 +38,14 @@ namespace OWML.ModHelper
 
         public void SetSettingsValue(string key, object value)
         {
-            if (Equals(_defaultConfig.GetSettingsValue<object>(key), value))
+            if (!_defaultConfig.Settings.ContainsKey(key) || Equals(GetInnerValue(_defaultConfig.Settings[key]), value))
             {
-                return;
+                _userConfig.Settings.Remove(key);
             }
-            _userConfig.SetSettingsValue(key, GetConvertedSelectorValue(key, value) ?? value);
+            else
+            {
+                _userConfig.SetSettingsValue(key, GetConvertedSelectorValue(key, value) ?? value);
+            }
             SaveToStorage();
         }
 
