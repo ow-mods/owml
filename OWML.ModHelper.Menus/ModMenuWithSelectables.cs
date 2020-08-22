@@ -32,6 +32,7 @@ namespace OWML.ModHelper.Menus
             var saveButton = GetPromptButton("UIElement-SaveAndExit");
             var resetButton = GetPromptButton("UIElement-ResetToDefaultsButton");
             var cancelButton = GetPromptButton("UIElement-DiscardChangesButton");
+            cancelButton.Hide();
 
             if (saveButton == null || resetButton == null || cancelButton == null)
             {
