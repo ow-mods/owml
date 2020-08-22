@@ -78,9 +78,26 @@ namespace OWML.ModHelper
 
         private Dictionary<string, object> GetMergedSettings()
         {
-            var settings = new Dictionary<string, object>(_defaultConfig.Settings);
-            _userConfig.Settings.ToList().ForEach(x => SetInnerValue(settings, x.Key, x.Value));
-            return settings;
+            var mergedSettings = new Dictionary<string, object>();
+            foreach (var defaultSetting in _defaultConfig.Settings)
+            {
+                var key = defaultSetting.Key;
+                mergedSettings[key] = GetSettingValueClone(defaultSetting.Value);
+                if (_userConfig.Settings.ContainsKey(key))
+                {
+                    SetInnerValue(mergedSettings, key, _userConfig.Settings[key]);
+                }
+            }
+            return mergedSettings;
+        }
+
+        private object GetSettingValueClone(object value)
+        {
+            if (value is JObject jObject)
+            {
+                return jObject.DeepClone().ToObject<object>();
+            }
+            return value;
         }
 
         private void SetInnerValue(Dictionary<string, object> settings, string key, object value)
