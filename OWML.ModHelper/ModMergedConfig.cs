@@ -38,7 +38,7 @@ namespace OWML.ModHelper
 
         public void SetSettingsValue(string key, object value)
         {
-            if (!_defaultConfig.Settings.ContainsKey(key) || Equals(GetInnerValue(_defaultConfig.Settings[key]), value))
+            if (IsSettingValueEqual(key, value))
             {
                 _userConfig.Settings.Remove(key);
             }
@@ -91,6 +91,22 @@ namespace OWML.ModHelper
                 return;
             }
             settings[key] = value;
+        }
+
+        private bool IsSettingValueEqual(string key, object value)
+        {
+            if (!_defaultConfig.Settings.ContainsKey(key))
+            {
+                return true;
+            }
+
+            var defaultValue = GetInnerValue(_defaultConfig.Settings[key]);
+
+            if (IsNumber(value) && IsNumber(defaultValue))
+            {
+                return Convert.ToDouble(value) == Convert.ToDouble(defaultValue);
+            }
+            return Equals(GetInnerValue(_defaultConfig.Settings[key]), value);
         }
 
         private bool IsNumber(object value)
