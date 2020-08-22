@@ -19,11 +19,15 @@ namespace OWML.ModHelper
         {
             if (!Settings.ContainsKey(key))
             {
-                ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
                 return default;
             }
 
             return GetSettingsValue<T>(key, Settings[key]);
+        }
+
+        public object GetSettingsValue(string key)
+        {
+            return GetSettingsValue<object>(key);
         }
 
         private T GetSettingsValue<T>(string key, object setting)

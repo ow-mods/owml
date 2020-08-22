@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using OWML.Logging;
 
 namespace OWML.ModHelper
 {
@@ -33,7 +34,16 @@ namespace OWML.ModHelper
             {
                 return _userConfig.GetSettingsValue<T>(key);
             }
+            if (!_defaultConfig.Settings.ContainsKey(key))
+            {
+                ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
+            }
             return _defaultConfig.GetSettingsValue<T>(key);
+        }
+
+        public object GetSettingsValue(string key)
+        {
+            return GetSettingsValue<object>(key);
         }
 
         public void SetSettingsValue(string key, object value)
@@ -70,15 +80,6 @@ namespace OWML.ModHelper
             return settings;
         }
 
-        private object GetInnerValue(object outerValue)
-        {
-            if (outerValue is JObject jObject)
-            {
-                return jObject["value"].ToObject(typeof(object));
-            }
-            return outerValue;
-        }
-
         private void SetInnerValue(Dictionary<string, object> settings, string key, object value)
         {
             if (!settings.ContainsKey(key))
@@ -95,18 +96,13 @@ namespace OWML.ModHelper
 
         private bool IsSettingValueEqual(string key, object value)
         {
-            if (!_defaultConfig.Settings.ContainsKey(key))
-            {
-                return true;
-            }
-
-            var defaultValue = GetInnerValue(_defaultConfig.Settings[key]);
+            var defaultValue = _defaultConfig.GetSettingsValue(key);
 
             if (IsNumber(value) && IsNumber(defaultValue))
             {
                 return Convert.ToDouble(value) == Convert.ToDouble(defaultValue);
             }
-            return Equals(GetInnerValue(_defaultConfig.Settings[key]), value);
+            return Equals(defaultValue, value);
         }
 
         private bool IsNumber(object value)
@@ -121,17 +117,16 @@ namespace OWML.ModHelper
 
         private bool IsSettingConsistentWithDefault(string key)
         {
-            if (!_defaultConfig.Settings.ContainsKey(key))
+            var userValue = _userConfig.Settings[key];
+            var defaultValue = _defaultConfig.GetSettingsValue(key);
+
+            if (userValue == null || defaultValue == null)
             {
                 return false;
             }
 
-            var userValue = _userConfig.Settings[key];
-            var defaultValue = _defaultConfig.Settings[key];
-            var defaultInnerValue = GetInnerValue(defaultValue);
-
-            return (userValue.GetType() == defaultInnerValue.GetType())
-                || (IsNumber(userValue) && IsNumber(defaultInnerValue));
+            return (userValue.GetType() == defaultValue.GetType())
+                || (IsNumber(userValue) && IsNumber(defaultValue));
         }
 
         private void MakeConfigConsistentWithDefault()
