@@ -70,6 +70,12 @@ namespace OWML.ModHelper
             _storage.Save(_userConfig, Constants.ModConfigFileName);
         }
 
+        public void Reset()
+        {
+            _userConfig.Settings.Clear();
+            SaveToStorage();
+        }
+
         private Dictionary<string, object> GetMergedSettings()
         {
             var settings = new Dictionary<string, object>(_defaultConfig.Settings);
@@ -91,9 +97,14 @@ namespace OWML.ModHelper
             settings[key] = value;
         }
 
+        private object GetDefaultValue(string key)
+        {
+            return _defaultConfig.GetSettingsValue(key);
+        }
+
         private bool IsSettingValueEqual(string key, object value)
         {
-            var defaultValue = _defaultConfig.GetSettingsValue(key);
+            var defaultValue = GetDefaultValue(key);
 
             if (IsNumber(value) && IsNumber(defaultValue))
             {
@@ -115,7 +126,7 @@ namespace OWML.ModHelper
         private bool IsSettingConsistentWithDefault(string key)
         {
             var userValue = _userConfig.Settings[key];
-            var defaultValue = _defaultConfig.GetSettingsValue(key);
+            var defaultValue = GetDefaultValue(key);
 
             if (userValue == null || defaultValue == null)
             {

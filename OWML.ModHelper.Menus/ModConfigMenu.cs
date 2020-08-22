@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
 
         protected override void OnReset()
         {
-            ModData.ResetConfigToDefaults();
+            ModData.Config.Reset();
             UpdateUIValues();
         }
 

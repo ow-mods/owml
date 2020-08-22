@@ -9,6 +9,5 @@
         bool RequireReload { get; }
 
         void UpdateSnapshot();
-        void ResetConfigToDefaults();
     }
 }
