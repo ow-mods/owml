@@ -51,12 +51,9 @@ namespace OWML.ModHelper
             if (IsSettingValueEqual(key, value))
             {
                 _userConfig.Settings.Remove(key);
+                return;
             }
-            else
-            {
-                _userConfig.SetSettingsValue(key, value);
-            }
-            SaveToStorage();
+            _userConfig.SetSettingsValue(key, value);
         }
 
         public IModConfig Copy()

@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Menus
         protected override void AddInputs()
         {
             var index = 2;
-            AddConfigInput(EnabledTitle, ModData.Config.Enabled, index++, OnSettingChange(EnabledTitle));
+            AddConfigInput(EnabledTitle, ModData.Config.Enabled, index++, OnEnabledChange);
             foreach (var setting in ModData.Config.Settings)
             {
                 AddConfigInput(setting.Key, setting.Value, index++, OnSettingChange(setting.Key));
@@ -39,20 +39,6 @@ namespace OWML.ModHelper.Menus
             }
         }
 
-        protected override void OnSave()
-        {
-            ModData.Config.Enabled = (bool)GetInputValue(EnabledTitle);
-            var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
-            foreach (var key in keys)
-            {
-                var value = GetInputValue(key);
-                ModData.Config.SetSettingsValue(key, value);
-            }
-            ModData.Config.SaveToStorage();
-            Mod?.Configure(ModData.Config);
-            Close();
-        }
-
         protected override void OnReset()
         {
             ModData.ResetConfigToDefaults();
@@ -64,7 +50,14 @@ namespace OWML.ModHelper.Menus
             return (object value) =>
             {
                 ModData.Config.SetSettingsValue(key, value);
+                ModData.Config.SaveToStorage();
             };
+        }
+
+        private void OnEnabledChange(object value)
+        {
+            ModData.Config.Enabled = (bool)value;
+            ModData.Config.SaveToStorage();
         }
     }
 }
