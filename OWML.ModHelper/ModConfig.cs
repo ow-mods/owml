@@ -32,8 +32,7 @@ namespace OWML.ModHelper
 
             try
             {
-                var value = setting is JObject objectValue ? objectValue["value"] : setting;
-                return type.IsEnum ? ConvertToEnum<T>(value) : (T)Convert.ChangeType(value, type);
+                return GetInnerValue<T>(setting);
             }
             catch (InvalidCastException)
             {
@@ -42,29 +41,13 @@ namespace OWML.ModHelper
             }
         }
 
-        private T ConvertToEnum<T>(object value)
+        private T GetInnerValue<T>(object outerValue)
         {
-            if (value is float || value is double)
+            if (outerValue is JObject jObject)
             {
-                var floatValue = Convert.ToDouble(value);
-                return (T)(object)(long)Math.Round(floatValue);
+                return jObject["value"].ToObject<T>();
             }
-            if (value is int || value is long)
-            {
-                return (T)value;
-            }
-
-            var valueString = Convert.ToString(value);
-
-            try
-            {
-                return (T)Enum.Parse(typeof(T), valueString, true);
-            }
-            catch (ArgumentException ex)
-            {
-                ModConsole.OwmlConsole.WriteLine($"Error - Can't convert {valueString} to enum {typeof(T)}: {ex.Message}", MessageType.Error);
-                return default;
-            }
+            return (T)Convert.ChangeType(outerValue, typeof(T));
         }
 
         public void SetSettingsValue(string key, object value)
