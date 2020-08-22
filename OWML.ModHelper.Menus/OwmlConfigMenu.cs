@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using System;
 
 namespace OWML.ModHelper.Menus
 {
@@ -18,7 +19,8 @@ namespace OWML.ModHelper.Menus
         protected override void AddInputs()
         {
             var index = 2;
-            AddConfigInput(BlockInputTitle, _config.BlockInput, index++);
+            // TODO take care of useless callback.
+            AddConfigInput(BlockInputTitle, _config.BlockInput, index++, (object _) => { });
             UpdateNavigation();
             SelectFirst();
         }

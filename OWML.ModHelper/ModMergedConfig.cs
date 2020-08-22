@@ -38,7 +38,12 @@ namespace OWML.ModHelper
 
         public void SetSettingsValue(string key, object value)
         {
+            if (Equals(_defaultConfig.GetSettingsValue<object>(key), value))
+            {
+                return;
+            }
             _userConfig.SetSettingsValue(key, GetConvertedSelectorValue(key, value) ?? value);
+            SaveToStorage();
         }
 
         public IModConfig Copy()
@@ -73,6 +78,10 @@ namespace OWML.ModHelper
 
         private void SetInnerValue(Dictionary<string, object> settings, string key, object value)
         {
+            if (!settings.ContainsKey(key))
+            {
+                return;
+            }
             if (settings[key] is JObject jObject)
             {
                 jObject["value"] = JToken.FromObject(value);
