@@ -44,7 +44,7 @@ namespace OWML.ModHelper
             }
             else
             {
-                _userConfig.SetSettingsValue(key, GetConvertedSelectorValue(key, value) ?? value);
+                _userConfig.SetSettingsValue(key, value);
             }
             SaveToStorage();
         }
@@ -149,21 +149,6 @@ namespace OWML.ModHelper
         {
             MakeConfigConsistentWithDefault();
             SaveToStorage();
-        }
-
-        private object GetConvertedSelectorValue(string key, object value)
-        {
-            if (!_defaultConfig.Settings.ContainsKey(key))
-            {
-                return null;
-            }
-            var defaultValue = _defaultConfig.Settings[key];
-            if (defaultValue is JObject defaultObjectValue && defaultObjectValue["type"].ToString() == "selector")
-            {
-                var innerValue = defaultObjectValue["value"];
-                return innerValue.Type == JTokenType.Integer ? int.Parse(value.ToString()) : value;
-            }
-            return null;
         }
     }
 }
