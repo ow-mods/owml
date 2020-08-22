@@ -153,6 +153,7 @@ namespace OWML.ModHelper.Menus
         private void AddComboInput(string key, int index, Action<object> onChange)
         {
             var comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
+            comboInput.OnChange += value => onChange(value);
             comboInput.Element.name = key;
             comboInput.Show();
         }

@@ -22,6 +22,7 @@ namespace OWML.ModHelper.Menus
             {
                 _combination = value;
                 UpdateLayout(value);
+                InvokeOnChange(value);
             }
         }
 
