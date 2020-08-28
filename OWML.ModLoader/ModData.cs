@@ -26,10 +26,5 @@ namespace OWML.ModLoader
         {
             _configSnapshot = Config.Copy();
         }
-
-        public void ResetConfigToDefaults()
-        {
-            Config.Settings.Clear();
-        }
     }
 }

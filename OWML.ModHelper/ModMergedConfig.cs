@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using OWML.Logging;
 
 namespace OWML.ModHelper
 {
@@ -33,12 +34,26 @@ namespace OWML.ModHelper
             {
                 return _userConfig.GetSettingsValue<T>(key);
             }
+            if (!_defaultConfig.Settings.ContainsKey(key))
+            {
+                ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
+            }
             return _defaultConfig.GetSettingsValue<T>(key);
+        }
+
+        public object GetSettingsValue(string key)
+        {
+            return GetSettingsValue<object>(key);
         }
 
         public void SetSettingsValue(string key, object value)
         {
-            _userConfig.SetSettingsValue(key, GetConvertedSelectorValue(key, value) ?? value);
+            if (IsSettingValueEqual(key, value))
+            {
+                _userConfig.Settings.Remove(key);
+                return;
+            }
+            _userConfig.SetSettingsValue(key, value);
         }
 
         public IModConfig Copy()
@@ -55,30 +70,64 @@ namespace OWML.ModHelper
             _storage.Save(_userConfig, Constants.ModConfigFileName);
         }
 
-        private Dictionary<string, object> GetMergedSettings()
+        public void Reset()
         {
-            var settings = new Dictionary<string, object>(_defaultConfig.Settings);
-            _userConfig.Settings.ToList().ForEach(x => SetInnerValue(settings, x.Key, x.Value));
-            return settings;
+            _userConfig.Settings.Clear();
+            SaveToStorage();
         }
 
-        private object GetInnerValue(object outerValue)
+        private Dictionary<string, object> GetMergedSettings()
         {
-            if (outerValue is JObject jObject)
+            var mergedSettings = new Dictionary<string, object>();
+            foreach (var defaultSetting in _defaultConfig.Settings)
             {
-                return jObject["value"].ToObject(typeof(object));
+                var key = defaultSetting.Key;
+                mergedSettings[key] = GetSettingValueClone(defaultSetting.Value);
+                if (_userConfig.Settings.ContainsKey(key))
+                {
+                    SetInnerValue(mergedSettings, key, _userConfig.Settings[key]);
+                }
             }
-            return outerValue;
+            return mergedSettings;
+        }
+
+        private object GetSettingValueClone(object value)
+        {
+            if (value is JObject jObject)
+            {
+                return jObject.DeepClone().ToObject<object>();
+            }
+            return value;
         }
 
         private void SetInnerValue(Dictionary<string, object> settings, string key, object value)
         {
+            if (!settings.ContainsKey(key))
+            {
+                return;
+            }
             if (settings[key] is JObject jObject)
             {
                 jObject["value"] = JToken.FromObject(value);
                 return;
             }
             settings[key] = value;
+        }
+
+        private object GetDefaultValue(string key)
+        {
+            return _defaultConfig.GetSettingsValue(key);
+        }
+
+        private bool IsSettingValueEqual(string key, object value)
+        {
+            var defaultValue = GetDefaultValue(key);
+
+            if (IsNumber(value) && IsNumber(defaultValue))
+            {
+                return Convert.ToDouble(value) == Convert.ToDouble(defaultValue);
+            }
+            return Equals(defaultValue, value);
         }
 
         private bool IsNumber(object value)
@@ -93,17 +142,16 @@ namespace OWML.ModHelper
 
         private bool IsSettingConsistentWithDefault(string key)
         {
-            if (!_defaultConfig.Settings.ContainsKey(key))
+            var userValue = _userConfig.Settings[key];
+            var defaultValue = GetDefaultValue(key);
+
+            if (userValue == null || defaultValue == null)
             {
                 return false;
             }
 
-            var userValue = _userConfig.Settings[key];
-            var defaultValue = _defaultConfig.Settings[key];
-            var defaultInnerValue = GetInnerValue(defaultValue);
-
-            return (userValue.GetType() == defaultInnerValue.GetType())
-                || (IsNumber(userValue) && IsNumber(defaultInnerValue));
+            return (userValue.GetType() == defaultValue.GetType())
+                || (IsNumber(userValue) && IsNumber(defaultValue));
         }
 
         private void MakeConfigConsistentWithDefault()
@@ -121,21 +169,6 @@ namespace OWML.ModHelper
         {
             MakeConfigConsistentWithDefault();
             SaveToStorage();
-        }
-
-        private object GetConvertedSelectorValue(string key, object value)
-        {
-            if (!_defaultConfig.Settings.ContainsKey(key))
-            {
-                return null;
-            }
-            var defaultValue = _defaultConfig.Settings[key];
-            if (defaultValue is JObject defaultObjectValue && defaultObjectValue["type"].ToString() == "selector")
-            {
-                var innerValue = defaultObjectValue["value"];
-                return innerValue.Type == JTokenType.Integer ? int.Parse(value.ToString()) : value;
-            }
-            return null;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace OWML.Common
         Dictionary<string, object> Settings { get; set; }
 
         T GetSettingsValue<T>(string key);
+        object GetSettingsValue(string key);
         void SetSettingsValue(string key, object value);
     }
 }

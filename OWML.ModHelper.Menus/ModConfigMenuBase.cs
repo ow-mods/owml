@@ -3,6 +3,7 @@ using OWML.Common;
 using OWML.Common.Menus;
 using System.Linq;
 using OWML.Logging;
+using System;
 
 namespace OWML.ModHelper.Menus
 {
@@ -51,24 +52,24 @@ namespace OWML.ModHelper.Menus
             base.Open();
             UpdateUIValues();
         }
-        
-        protected void AddConfigInput(string key, object value, int index)
+
+        protected void AddConfigInput(string key, object value, int index, Action<object> onChange)
         {
             if (value is bool)
             {
-                AddToggleInput(key, index);
+                AddToggleInput(key, index, onChange);
                 return;
             }
 
             if (value is string)
             {
-                AddTextInput(key, index);
+                AddTextInput(key, index, onChange);
                 return;
             }
 
             if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(value.GetType()))
             {
-                AddNumberInput(key, index);
+                AddNumberInput(key, index, onChange);
                 return;
             }
 
@@ -77,16 +78,16 @@ namespace OWML.ModHelper.Menus
                 switch ((string)obj["type"])
                 {
                     case "slider":
-                        AddSliderInput(key, obj, index);
+                        AddSliderInput(key, obj, index, onChange);
                         return;
                     case "toggle":
-                        AddToggleInput(key, obj, index);
+                        AddToggleInput(key, obj, index, onChange);
                         return;
                     case "selector":
-                        AddSelectorInput(key, obj, index);
+                        AddSelectorInput(key, obj, index, onChange);
                         return;
                     case "input":
-                        AddComboInput(key, index);
+                        AddComboInput(key, index, onChange);
                         return;
                     default:
                         ModConsole.OwmlConsole.WriteLine("Error - Unrecognized complex setting: " + value, MessageType.Error);
@@ -97,9 +98,10 @@ namespace OWML.ModHelper.Menus
             ModConsole.OwmlConsole.WriteLine("Error - Unrecognized setting type: " + value.GetType(), MessageType.Error);
         }
 
-        private void AddToggleInput(string key, int index)
+        private void AddToggleInput(string key, int index, Action<object> onChange)
         {
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
+            toggle.OnChange += value => onChange(value);
             toggle.YesButton.Title = "Yes";
             toggle.NoButton.Title = "No";
             toggle.Element.name = key;
@@ -107,9 +109,10 @@ namespace OWML.ModHelper.Menus
             toggle.Show();
         }
 
-        private void AddToggleInput(string key, JObject obj, int index)
+        private void AddToggleInput(string key, JObject obj, int index, Action<object> onChange)
         {
             var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
+            toggle.OnChange += value => onChange(value);
             toggle.YesButton.Title = (string)obj["yes"];
             toggle.NoButton.Title = (string)obj["no"];
             toggle.Element.name = key;
@@ -117,9 +120,10 @@ namespace OWML.ModHelper.Menus
             toggle.Show();
         }
 
-        private void AddSliderInput(string key, JObject obj, int index)
+        private void AddSliderInput(string key, JObject obj, int index, Action<object> onChange)
         {
             var slider = AddSliderInput(_sliderTemplate.Copy(key), index);
+            slider.OnChange += value => onChange(value);
             slider.Min = (float)obj["min"];
             slider.Max = (float)obj["max"];
             slider.Element.name = key;
@@ -127,33 +131,37 @@ namespace OWML.ModHelper.Menus
             slider.Show();
         }
 
-        private void AddSelectorInput(string key, JObject obj, int index)
+        private void AddSelectorInput(string key, JObject obj, int index, Action<object> onChange)
         {
             var options = obj["options"].ToObject<string[]>();
             var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
+            selector.OnChange += value => onChange(value);
             selector.Element.name = key;
             selector.Title = (string)obj["title"] ?? key;
             selector.Initialize((string)obj["value"], options);
             selector.Show();
         }
 
-        private void AddTextInput(string key, int index)
+        private void AddTextInput(string key, int index, Action<object> onChange)
         {
             var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
+            textInput.OnChange += value => onChange(value);
             textInput.Element.name = key;
             textInput.Show();
         }
 
-        private void AddComboInput(string key, int index)
+        private void AddComboInput(string key, int index, Action<object> onChange)
         {
             var comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
+            comboInput.OnChange += value => onChange(value);
             comboInput.Element.name = key;
             comboInput.Show();
         }
 
-        private void AddNumberInput(string key, int index)
+        private void AddNumberInput(string key, int index, Action<object> onChange)
         {
             var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
+            numberInput.OnChange += value => onChange(value);
             numberInput.Element.name = key;
             numberInput.Show();
         }
