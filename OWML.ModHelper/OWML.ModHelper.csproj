@@ -78,9 +78,7 @@
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="OwmlBehaviour.cs" />
-    <Compile Include="OwmlConfig.cs" />
     <Compile Include="ModHelper.cs" />
-    <Compile Include="ModManifest.cs" />
     <Compile Include="ModStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

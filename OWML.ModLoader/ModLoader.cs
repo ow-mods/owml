@@ -6,6 +6,7 @@ using OWML.ModHelper.Input;
 using UnityEngine;
 using System;
 using OWML.Common.Enums;
+using OWML.Common.Models;
 using OWML.Logging;
 
 namespace OWML.ModLoader
