@@ -1,0 +1,14 @@
+﻿using System;
+using OWML.Common.Enums;
+
+namespace OWML.Common.Interfaces
+{
+    public interface IModConsole
+    {
+        [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
+        void WriteLine(params object[] objects);
+
+        void WriteLine(string line);
+        void WriteLine(string line, MessageType type);
+    }
+}

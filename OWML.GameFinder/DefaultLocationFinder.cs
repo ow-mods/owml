@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using OWML.Common;
+using OWML.Common.Interfaces;
 
 namespace OWML.GameFinder
 {

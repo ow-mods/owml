@@ -1,4 +1,4 @@
-﻿using OWML.Common;
+﻿using OWML.Common.Interfaces;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input
@@ -11,13 +11,13 @@ namespace OWML.ModHelper.Input
         internal void Initialize(ModInputHandler inputHandler, IModEvents events)
         {
             _inputHandler = inputHandler;
-            events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
+            events.Subscribe<TitleScreenManager>(Common.Enums.Events.AfterStart);
             events.Event += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Common.Enums.Events ev)
         {
-            if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Events.AfterStart)
+            if (behaviour.GetType() == typeof(TitleScreenManager) && ev == Common.Enums.Events.AfterStart)
             {
                 _updateInputsNext = true;
             }

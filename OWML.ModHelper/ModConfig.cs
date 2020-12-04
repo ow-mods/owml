@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using OWML.Logging;
 
 namespace OWML.ModHelper

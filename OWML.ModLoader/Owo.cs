@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using OWML.Common;
-using OWML.Common.Menus;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
+using OWML.Common.Interfaces.Menus;
 using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;

@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using OWML.Common.Enums;
+using OWML.Common.Interfaces.Menus;
 using OWML.Logging;
 using OWML.ModHelper.Events;
 using UnityEngine.UI;
@@ -49,7 +50,7 @@ namespace OWML.ModHelper.Menus
             _hotkeyButton = Button.GetComponent<ButtonWithHotkeyImageElement>();
             if (_hotkeyButton == null)
             {
-                ModConsole.OwmlConsole.WriteLine("Error - Can't setup ModPromptButton for this button.", Common.MessageType.Error);
+                ModConsole.OwmlConsole.WriteLine("Error - Can't setup ModPromptButton for this button.", MessageType.Error);
                 return;
             }
             _prompt = _hotkeyButton.GetValue<ScreenPrompt>("_screenPrompt");

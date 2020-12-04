@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using NAudio.Wave;
-using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using UnityEngine;
 
 namespace OWML.ModHelper.Assets

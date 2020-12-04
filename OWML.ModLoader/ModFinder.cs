@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using OWML.ModHelper;
 
 namespace OWML.ModLoader

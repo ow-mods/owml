@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using OWML.Common;
+using OWML.Common.Interfaces;
 
 namespace OWML.ModHelper.Input
 {

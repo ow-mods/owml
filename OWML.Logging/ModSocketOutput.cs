@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 
 namespace OWML.Logging
 {

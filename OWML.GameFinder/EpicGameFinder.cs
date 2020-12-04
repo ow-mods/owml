@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using OWML.Common;
+using OWML.Common.Interfaces;
 
 namespace OWML.GameFinder
 {

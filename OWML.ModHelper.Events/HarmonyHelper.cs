@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Harmony;
-using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 
 namespace OWML.ModHelper.Events
 {

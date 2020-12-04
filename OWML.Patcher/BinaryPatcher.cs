@@ -1,7 +1,8 @@
-﻿using OWML.Common;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {

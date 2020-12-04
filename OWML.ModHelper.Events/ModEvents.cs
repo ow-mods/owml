@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using UnityEngine;
 
 namespace OWML.ModHelper.Events
@@ -12,13 +13,13 @@ namespace OWML.ModHelper.Events
         public IModSceneEvents Scenes { get; }
         public IModUnityEvents Unity { get; }
 
-        public event Action<MonoBehaviour, Common.Events> Event;
+        public event Action<MonoBehaviour, Common.Enums.Events> Event;
 
         [Obsolete("Use Event instead.")]
-        public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
+        public Action<MonoBehaviour, Common.Enums.Events> OnEvent { get; set; }
 
-        private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
-        private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Events>>();
+        private static readonly List<KeyValuePair<Type, Common.Enums.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Enums.Events>>();
+        private readonly List<KeyValuePair<Type, Common.Enums.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Enums.Events>>();
 
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly IModConsole _console;
@@ -36,7 +37,7 @@ namespace OWML.ModHelper.Events
             Unity = new GameObject().AddComponent<ModUnityEvents>();
         }
 
-        private void OnPatchEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnPatchEvent(MonoBehaviour behaviour, Common.Enums.Events ev)
         {
             var type = behaviour.GetType();
             if (IsSubscribedTo(type, ev))
@@ -51,13 +52,13 @@ namespace OWML.ModHelper.Events
             }
         }
 
-        public void Subscribe<T>(Common.Events ev) where T : MonoBehaviour
+        public void Subscribe<T>(Common.Enums.Events ev) where T : MonoBehaviour
         {
             SubscribeToEvent<T>(ev);
             PatchEvent<T>(ev);
         }
 
-        private void SubscribeToEvent<T>(Common.Events ev)
+        private void SubscribeToEvent<T>(Common.Enums.Events ev)
         {
             var type = typeof(T);
             if (IsSubscribedTo(type, ev))
@@ -68,7 +69,7 @@ namespace OWML.ModHelper.Events
             AddToEventList(_subscribedEvents, type, ev);
         }
 
-        private void PatchEvent<T>(Common.Events ev)
+        private void PatchEvent<T>(Common.Enums.Events ev)
         {
             var type = typeof(T);
             if (InEventList(PatchedEvents, type, ev))
@@ -80,38 +81,38 @@ namespace OWML.ModHelper.Events
 
             switch (ev)
             {
-                case Common.Events.BeforeAwake:
+                case Common.Enums.Events.BeforeAwake:
                     _harmonyHelper.AddPrefix<T>("Awake", typeof(Patches), nameof(Patches.BeforeAwake));
                     break;
-                case Common.Events.AfterAwake:
+                case Common.Enums.Events.AfterAwake:
                     _harmonyHelper.AddPostfix<T>("Awake", typeof(Patches), nameof(Patches.AfterAwake));
                     break;
 
-                case Common.Events.BeforeStart:
+                case Common.Enums.Events.BeforeStart:
                     _harmonyHelper.AddPrefix<T>("Start", typeof(Patches), nameof(Patches.BeforeStart));
                     break;
-                case Common.Events.AfterStart:
+                case Common.Enums.Events.AfterStart:
                     _harmonyHelper.AddPostfix<T>("Start", typeof(Patches), nameof(Patches.AfterStart));
                     break;
 
-                case Common.Events.BeforeEnable:
+                case Common.Enums.Events.BeforeEnable:
                     _harmonyHelper.AddPrefix<T>("OnEnable", typeof(Patches), nameof(Patches.BeforeEnable));
                     break;
-                case Common.Events.AfterEnable:
+                case Common.Enums.Events.AfterEnable:
                     _harmonyHelper.AddPostfix<T>("OnEnable", typeof(Patches), nameof(Patches.AfterEnable));
                     break;
 
-                case Common.Events.BeforeDisable:
+                case Common.Enums.Events.BeforeDisable:
                     _harmonyHelper.AddPrefix<T>("OnDisable", typeof(Patches), nameof(Patches.BeforeDisable));
                     break;
-                case Common.Events.AfterDisable:
+                case Common.Enums.Events.AfterDisable:
                     _harmonyHelper.AddPostfix<T>("OnDisable", typeof(Patches), nameof(Patches.AfterDisable));
                     break;
 
-                case Common.Events.BeforeDestroy:
+                case Common.Enums.Events.BeforeDestroy:
                     _harmonyHelper.AddPrefix<T>("OnDestroy", typeof(Patches), nameof(Patches.BeforeDestroy));
                     break;
-                case Common.Events.AfterDestroy:
+                case Common.Enums.Events.AfterDestroy:
                     _harmonyHelper.AddPostfix<T>("OnDestroy", typeof(Patches), nameof(Patches.AfterDestroy));
                     break;
 
@@ -121,19 +122,19 @@ namespace OWML.ModHelper.Events
             }
         }
 
-        private bool IsSubscribedTo(Type type, Common.Events ev)
+        private bool IsSubscribedTo(Type type, Common.Enums.Events ev)
         {
             return _subscribedEvents.Any(pair => (type == pair.Key || type.IsSubclassOf(pair.Key)) && pair.Value == ev);
         }
 
-        private bool InEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
+        private bool InEventList(List<KeyValuePair<Type, Common.Enums.Events>> events, Type type, Common.Enums.Events ev)
         {
             return events.Any(pair => type == pair.Key && pair.Value == ev);
         }
 
-        private void AddToEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
+        private void AddToEventList(List<KeyValuePair<Type, Common.Enums.Events>> events, Type type, Common.Enums.Events ev)
         {
-            events.Add(new KeyValuePair<Type, Common.Events>(type, ev));
+            events.Add(new KeyValuePair<Type, Common.Enums.Events>(type, ev));
         }
 
     }

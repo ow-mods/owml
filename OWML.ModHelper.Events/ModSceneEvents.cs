@@ -1,5 +1,5 @@
 ﻿using System;
-using OWML.Common;
+using OWML.Common.Interfaces;
 
 namespace OWML.ModHelper.Events
 {

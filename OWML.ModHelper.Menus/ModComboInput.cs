@@ -1,9 +1,9 @@
-﻿using OWML.Common.Menus;
-using OWML.ModHelper.Events;
+﻿using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
-using OWML.Common;
+using OWML.Common.Interfaces;
+using OWML.Common.Interfaces.Menus;
 
 namespace OWML.ModHelper.Menus
 {

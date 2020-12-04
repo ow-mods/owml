@@ -3,7 +3,8 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
-using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using UnityEngine;
 
 namespace OWML.ModHelper.Input

@@ -1,5 +1,5 @@
-﻿using OWML.Common;
-using System.IO;
+﻿using System.IO;
+using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {

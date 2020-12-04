@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Gameloop.Vdf;
 using Microsoft.Win32;
-using OWML.Common;
+using OWML.Common.Interfaces;
 
 namespace OWML.GameFinder
 {

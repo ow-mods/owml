@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using OWML.Common;
+using OWML.Common.Interfaces;
 using UnityEngine;
 
 namespace OWML.ModHelper.Events

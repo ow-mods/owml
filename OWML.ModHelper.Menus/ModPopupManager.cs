@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using OWML.Common;
-using OWML.Common.Menus;
+using OWML.Common.Interfaces;
+using OWML.Common.Interfaces.Menus;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

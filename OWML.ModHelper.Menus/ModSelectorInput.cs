@@ -1,8 +1,8 @@
-﻿using OWML.Common.Menus;
-using OWML.ModHelper.Events;
+﻿using OWML.ModHelper.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OWML.Common.Interfaces.Menus;
 using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus

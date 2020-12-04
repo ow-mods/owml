@@ -1,8 +1,9 @@
-﻿using OWML.Common;
-using OWML.ModHelper;
+﻿using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using UnityEngine;
 using System.Collections.Generic;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 
 namespace OWML.EnableDebugMode
 {

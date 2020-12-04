@@ -1,5 +1,5 @@
-﻿using OWML.Common;
-using OWML.Common.Menus;
+﻿using OWML.Common.Interfaces;
+using OWML.Common.Interfaces.Menus;
 using OWML.ModHelper.Events;
 using UnityEngine;
 
@@ -21,22 +21,22 @@ namespace OWML.ModHelper.Menus
             PopupManager = new ModPopupManager(inputHandler, events);
             InputCombinationMenu = new ModInputCombinationMenu();
 
-            events.Subscribe<SettingsManager>(Common.Events.AfterStart);
-            events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
+            events.Subscribe<SettingsManager>(Common.Enums.Events.AfterStart);
+            events.Subscribe<TitleScreenManager>(Common.Enums.Events.AfterStart);
             events.Event += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Common.Enums.Events ev)
         {
             if (behaviour is SettingsManager settingsManager &&
-                ev == Common.Events.AfterStart &&
+                ev == Common.Enums.Events.AfterStart &&
                 settingsManager.name == "PauseMenuManagers")
             {
                 PauseMenu.Initialize(settingsManager);
                 ModsMenu.Initialize(PauseMenu);
             }
             else if (behaviour is TitleScreenManager titleScreenManager &&
-                     ev == Common.Events.AfterStart)
+                     ev == Common.Enums.Events.AfterStart)
             {
                 MainMenu.Initialize(titleScreenManager);
                 var inputMenu = titleScreenManager

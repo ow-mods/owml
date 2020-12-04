@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using OWML.GameFinder;
 using OWML.ModHelper;
 using OWML.Patcher;
