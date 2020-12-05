@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus
         private readonly ButtonWithHotkeyImageElement _hotkeyButton;
 
         public string DefaultTitle => UITextLibrary.GetString(_textId);
+
         public ScreenPrompt Prompt
         {
             get => _prompt;
@@ -23,7 +24,7 @@ namespace OWML.ModHelper.Menus
                 _hotkeyButton.SetPrompt(value);
                 if (_prompt.GetText() != DefaultTitle)
                 {
-                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
@@ -40,12 +41,13 @@ namespace OWML.ModHelper.Menus
                 _prompt.SetText(value);
                 if (value != DefaultTitle)
                 {
-                    Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                    GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 }
             }
         }
 
-        public ModPromptButton(Button button, IModMenu menu) : base(button, menu)
+        public ModPromptButton(Button button, IModMenu menu) 
+            : base(button, menu)
         {
             _hotkeyButton = Button.GetComponent<ButtonWithHotkeyImageElement>();
             if (_hotkeyButton == null)

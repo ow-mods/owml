@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common.Interfaces.Menus;
-using Object = UnityEngine.Object;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,10 +51,10 @@ namespace OWML.ModHelper.Menus
                 return;
             }
             _combinationElementTemplate = combinationElementTemplate;
-            var canvasTransform = Object.Instantiate(menu.transform.parent.gameObject).transform;
+            var canvasTransform = GameObject.Instantiate(menu.transform.parent.gameObject).transform;
             foreach (Transform child in canvasTransform)
             {
-                Object.Destroy(child.gameObject);
+                GameObject.Destroy(child.gameObject);
             }
             menu.transform.SetParent(canvasTransform);
             var toggleTransform = _combinationElementTemplate.Toggle.transform;

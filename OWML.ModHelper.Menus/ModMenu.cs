@@ -43,8 +43,10 @@ namespace OWML.ModHelper.Menus
 
         public virtual void Initialize(Menu menu)
         {
-            var root = menu.GetValue<GameObject>("_selectableItemsRoot") ?? menu.GetValue<GameObject>("_menuActivationRoot");
-            var layoutGroup = root.GetComponent<LayoutGroup>() ?? root.GetComponentInChildren<LayoutGroup>(true);
+            var root = menu.GetValue<GameObject>("_selectableItemsRoot") ??
+                       menu.GetValue<GameObject>("_menuActivationRoot");
+            var layoutGroup = root.GetComponent<LayoutGroup>() ??
+                              root.GetComponentInChildren<LayoutGroup>(true);
             Initialize(menu, layoutGroup);
         }
 
@@ -60,9 +62,13 @@ namespace OWML.ModHelper.Menus
             var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
             BaseButtons.AddRange(ordinaryButtons.Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>().ToList());
 
-            ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
-            SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
-            SelectorInputs = Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModSelectorInput>().ToList();
+            ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true)
+                .Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
+            SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true)
+                .Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
+            SelectorInputs = Menu.GetComponentsInChildren<OptionsSelectorElement>(true)
+                .Select(x => new ModSelectorInput(x, this)).Cast<IModSelectorInput>().ToList();
+
             TextInputs = new List<IModTextInput>();
             NumberInputs = new List<IModNumberInput>();
             ComboInputs = new List<IModComboInput>();

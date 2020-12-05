@@ -1,6 +1,5 @@
 ﻿using System;
 using OWML.Common.Interfaces.Menus;
-using Object = UnityEngine.Object;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
@@ -13,7 +12,7 @@ namespace OWML.ModHelper.Menus
 
         protected void DestroySelf(GameObject menuObject)
         {
-            Object.Destroy(menuObject);
+            GameObject.Destroy(menuObject);
             OnCancel = null;
         }
 
@@ -44,7 +43,7 @@ namespace OWML.ModHelper.Menus
 
         protected GameObject CopyMenu()
         {
-            var newMenuObject = Object.Instantiate(Popup.gameObject, Popup.transform.parent);
+            var newMenuObject = GameObject.Instantiate(Popup.gameObject, Popup.transform.parent);
             newMenuObject.transform.localScale = Popup.transform.localScale;
             newMenuObject.transform.localPosition = Popup.transform.localPosition;
             return newMenuObject;

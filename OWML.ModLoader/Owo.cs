@@ -106,9 +106,11 @@ namespace OWML.ModLoader
                 _logger.Log($"{modData.Manifest.UniqueName} is disabled");
                 return null;
             }
+
             _logger.Log("Loading assembly: " + modData.Manifest.AssemblyPath);
             var assembly = Assembly.LoadFile(modData.Manifest.AssemblyPath);
             _logger.Log($"Loaded {assembly.FullName}");
+
             try
             {
                 return assembly.GetTypes().FirstOrDefault(x => x.IsSubclassOf(typeof(ModBehaviour)));

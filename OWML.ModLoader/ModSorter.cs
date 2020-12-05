@@ -94,6 +94,7 @@ namespace OWML.ModLoader
     internal class Edge
     {
         public string First { get; }
+
         public string Second { get; }
 
         internal Edge(string first, string second)

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Interfaces;
-using OWML.ModHelper;
 
 namespace OWML.ModLoader
 {
@@ -26,13 +25,12 @@ namespace OWML.ModLoader
         private IModConfig _configSnapshot;
 
         private readonly IModStorage _storage;
-
-
+        
         public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModStorage storage)
         {
             Manifest = manifest;
             Config = config;
-            DefaultConfig = defaultConfig ?? new ModConfig();
+            DefaultConfig = defaultConfig;
             _storage = storage;
             UpdateSnapshot();
         }

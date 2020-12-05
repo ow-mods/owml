@@ -13,8 +13,7 @@ namespace OWML.Patcher
 
         private const string EnabledVRDevice = "OpenVR";
         private const int RemovedBytes = 2;
-        // String that comes right before the bytes we want to patch.
-        private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity";
+        private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity"; // String that comes right before the bytes we want to patch.
         private const int PatchStartZoneOffset = 5;
         private const int BuildSettingsSector = 10; // count from zero
 
@@ -47,7 +46,7 @@ namespace OWML.Patcher
         private int FindPatchStartOffset(byte[] sectorBytes)
         {
             var sectorString = Encoding.ASCII.GetString(sectorBytes);
-            var position = sectorString.IndexOf(PatchZoneText);
+            var position = sectorString.IndexOf(PatchZoneText, StringComparison.InvariantCulture);
             if (position < 0)
             {
                 throw new Exception("Could not find patch zone in globalgamemanagers. This probably means the VR patch needs to be updated.");
@@ -58,7 +57,7 @@ namespace OWML.Patcher
         private bool FindExistingPatch(byte[] sectorBytes, int startIndex)
         {
             var zoneString = Encoding.ASCII.GetString(sectorBytes.Skip(startIndex).ToArray());
-            return zoneString.IndexOf(EnabledVRDevice) >= 0;
+            return zoneString.IndexOf(EnabledVRDevice, StringComparison.InvariantCulture) >= 0;
         }
 
         private byte[] CreatePatchFileBytes(byte[] fileBytes, int patchStartIndex)

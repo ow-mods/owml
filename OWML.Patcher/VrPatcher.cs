@@ -9,7 +9,11 @@ namespace OWML.Patcher
         private readonly IBinaryPatcher _binaryPatcher;
         private readonly IVRFilePatcher _vrFilePatcher;
 
-        private static readonly string[] PluginFilenames = { "openvr_api.dll", "OVRPlugin.dll" };
+        private static readonly string[] PluginFilenames =
+        {
+            "openvr_api.dll",
+            "OVRPlugin.dll"
+        };
 
         public VRPatcher(IOwmlConfig owmlConfig, IBinaryPatcher binaryPatcher, IVRFilePatcher vrFilePatcher)
         {

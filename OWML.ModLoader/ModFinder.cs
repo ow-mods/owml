@@ -11,7 +11,6 @@ namespace OWML.ModLoader
     public class ModFinder : IModFinder
     {
         private readonly IOwmlConfig _config;
-
         private readonly IModConsole _console;
 
         public ModFinder(IOwmlConfig config, IModConsole console)
@@ -27,8 +26,10 @@ namespace OWML.ModLoader
                 _console.WriteLine("Warning - Mods folder not found!", MessageType.Warning);
                 return new List<IModData>();
             }
+
             var manifestFilenames = Directory.GetFiles(_config.ModsPath, Constants.ModManifestFileName, SearchOption.AllDirectories);
             var mods = new List<IModData>();
+
             foreach (var manifestFilename in manifestFilenames)
             {
                 var manifest = JsonHelper.LoadJsonObject<ModManifest>(manifestFilename);
@@ -36,14 +37,15 @@ namespace OWML.ModLoader
                 var modData = InitModData(manifest);
                 mods.Add(modData);
             }
+
             return mods;
         }
 
-        private IModData InitModData(IModManifest manifest)
+        private IModData InitModData(IModManifest manifest) // todo DI
         {
             var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
-            var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName);
+            var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName) ?? new ModConfig();
             return new ModData(manifest, config, defaultConfig, storage);
         }
     }

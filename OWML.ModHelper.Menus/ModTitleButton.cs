@@ -7,17 +7,19 @@ namespace OWML.ModHelper.Menus
     public class ModTitleButton : ModButtonBase, IModButton
     {
         internal Text Text { get; }
+
         public virtual string Title
         {
             get => Text != null ? Text.text : "";
             set
             {
-                Object.Destroy(Button.GetComponentInChildren<LocalizedText>());
+                GameObject.Destroy(Button.GetComponentInChildren<LocalizedText>());
                 Text.text = value;
             }
         }
 
-        public ModTitleButton(Button button, IModMenu menu) : base(button, menu)
+        public ModTitleButton(Button button, IModMenu menu)
+            : base(button, menu)
         {
             Text = Button.GetComponentInChildren<Text>();
         }

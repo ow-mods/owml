@@ -1,7 +1,7 @@
 ﻿using System;
 using OWML.Common.Interfaces.Menus;
 using OWML.ModHelper.Events;
-using Object = UnityEngine.Object;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -20,10 +20,10 @@ namespace OWML.ModHelper.Menus
             }
             Popup = menu;
             var parent = menu.transform.parent.gameObject;
-            var parentCopy = Object.Instantiate(parent);
+            var parentCopy = GameObject.Instantiate(parent);
             parentCopy.AddComponent<DontDestroyOnLoad>();
             _inputMenu = parentCopy.transform.GetComponentInChildren<PopupInputMenu>(true);
-            Object.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
+            GameObject.Destroy(_inputMenu.GetValue<Text>("_labelText").GetComponent<LocalizedText>());
             Initialize((Menu)_inputMenu);
         }
 

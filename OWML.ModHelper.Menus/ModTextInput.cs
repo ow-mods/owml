@@ -8,7 +8,9 @@ namespace OWML.ModHelper.Menus
         private string _value;
 
         public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager)
-            : base(element, menu, popupManager) { }
+            : base(element, menu, popupManager)
+        {
+        }
 
         protected override void Open()
         {
@@ -35,8 +37,8 @@ namespace OWML.ModHelper.Menus
 
         public IModTextInput Copy()
         {
-            var copy = Object.Instantiate(ToggleElement);
-            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
+            var copy = GameObject.Instantiate(ToggleElement);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModTextInput(copy, Menu, PopupManager);
         }
 

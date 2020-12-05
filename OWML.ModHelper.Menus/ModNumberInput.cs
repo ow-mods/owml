@@ -1,6 +1,6 @@
 ﻿using System;
 using OWML.Common.Interfaces.Menus;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -8,8 +8,10 @@ namespace OWML.ModHelper.Menus
     {
         private float _value;
 
-        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager) 
-            : base(element, menu, popupManager) { }
+        public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager)
+            : base(element, menu, popupManager)
+        {
+        }
 
         protected override void Open()
         {
@@ -36,8 +38,8 @@ namespace OWML.ModHelper.Menus
 
         public IModNumberInput Copy()
         {
-            var copy = Object.Instantiate(ToggleElement);
-            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
+            var copy = GameObject.Instantiate(ToggleElement);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModNumberInput(copy, Menu, PopupManager);
         }
 

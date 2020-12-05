@@ -10,10 +10,10 @@ namespace OWML.ModHelper.Menus
 {
     public abstract class ModPopupInput<T> : ModInput<T>
     {
+        public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
+
         protected readonly TwoButtonToggleElement ToggleElement;
         protected ModCommandListener CommandListener;
-
-        public override bool IsSelected => ToggleElement.GetValue<bool>("_amISelected");
 
         private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
         {
@@ -22,7 +22,8 @@ namespace OWML.ModHelper.Menus
             InputLibrary.enter2
         };
 
-        protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu) : base(toggle, menu)
+        protected ModPopupInput(TwoButtonToggleElement toggle, IModMenu menu)
+            : base(toggle, menu)
         {
             ToggleElement = toggle;
 

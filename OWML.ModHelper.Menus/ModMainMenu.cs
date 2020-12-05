@@ -52,12 +52,14 @@ namespace OWML.ModHelper.Menus
                 group = x.Button.GetComponent<CanvasGroup>()
             });
             _anim.SetValue("_buttonFadeControllers", fadeControllers.ToArray());
+
             if (button is ModTitleButton titleButton)
             {
                 var texts = _titleManager.GetValue<Text[]>("_mainMenuTextFields").ToList();
                 texts.Add(titleButton.Text);
                 _titleManager.SetValue("_mainMenuTextFields", texts.ToArray());
             }
+
             return modButton;
         }
 

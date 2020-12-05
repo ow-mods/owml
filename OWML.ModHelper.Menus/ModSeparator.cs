@@ -10,6 +10,7 @@ namespace OWML.ModHelper.Menus
         private const float MinimalHeight = 70f;
 
         public MonoBehaviour Element { get; }
+
         public LayoutElement LayoutElement { get; }
 
         private int _index;
@@ -47,7 +48,7 @@ namespace OWML.ModHelper.Menus
             var separatorObject = new GameObject("Separator");
             LayoutElement = separatorObject.AddComponent<LayoutElement>();
             Element = LayoutElement;
-            var styleManager = Object.FindObjectOfType<UIStyleManager>();
+            var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
             _text = separatorObject.AddComponent<Text>();
             _text.font = styleManager.GetMenuFont();
             _text.color = styleManager.GetForegroundMenuColor(UIElementState.NORMAL);
@@ -73,7 +74,7 @@ namespace OWML.ModHelper.Menus
 
         public IModSeparator Copy()
         {
-            var copy = Object.Instantiate(LayoutElement);
+            var copy = GameObject.Instantiate(LayoutElement);
             return new ModSeparator(copy, Menu);
         }
 

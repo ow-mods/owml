@@ -87,8 +87,8 @@ namespace OWML.ModHelper.Menus
 
         public IModComboInput Copy()
         {
-            var copy = Object.Instantiate(ToggleElement);
-            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
+            var copy = GameObject.Instantiate(ToggleElement);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModComboInput(copy, Menu, InputMenu, _inputHandler);
         }
 

@@ -2,7 +2,6 @@
 using OWML.Common.Interfaces;
 using OWML.Common.Interfaces.Menus;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace OWML.ModHelper.Menus
 {
@@ -30,11 +29,11 @@ namespace OWML.ModHelper.Menus
 
         public void Initialize(GameObject popupCanvas)
         {
-            var newCanvas = Object.Instantiate(popupCanvas);
+            var newCanvas = GameObject.Instantiate(popupCanvas);
             newCanvas.AddComponent<DontDestroyOnLoad>();
 
             var inputMenu = newCanvas.GetComponentInChildren<PopupInputMenu>(true);
-            var combinationMenuObject = Object.Instantiate(inputMenu.gameObject);
+            var combinationMenuObject = GameObject.Instantiate(inputMenu.gameObject);
 
             combinationMenuObject.transform.SetParent(newCanvas.transform);
             combinationMenuObject.transform.localScale = inputMenu.transform.localScale;

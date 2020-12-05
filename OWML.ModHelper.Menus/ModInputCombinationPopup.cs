@@ -13,13 +13,17 @@ namespace OWML.ModHelper.Menus
     public class ModInputCombinationPopup : PopupMenu
     {
         public IModLayoutManager Layout { get; private set; }
+
         public event Action OnPopupReset;
+
         public string Combination => string.Join("+", _combination.Select(ModInputLibrary.KeyCodeToString).ToArray());
 
         [SerializeField]
         private SubmitAction _resetAction;
+
         [SerializeField]
         private ButtonWithHotkeyImageElement _resetButton;
+
         private List<KeyCode> _combination = new List<KeyCode>();
         private IModInputHandler _inputHandler;
         private bool _wasReleased = true;
@@ -184,7 +188,7 @@ namespace OWML.ModHelper.Menus
             InitializeMenu();
         }
 
-        internal void Initialize(IModInputHandler inputHandler, IModLayoutManager layout)
+        public void Initialize(IModInputHandler inputHandler, IModLayoutManager layout)
         {
             _inputHandler = inputHandler;
             _initialized = false;

@@ -40,12 +40,12 @@ namespace OWML.ModHelper.Events
             _logger = logger;
             _console = console;
             _harmonyHelper = harmonyHelper;
-            Patches.OnEvent += OnPatchEvent;
-
             Player = playerEvents;
-            Player.Init(this);
             Scenes = sceneEvents;
-            Unity = new GameObject().AddComponent<ModUnityEvents>();
+            Unity = new GameObject().AddComponent<ModUnityEvents>(); // todo hmm
+
+            Player.Init(this);
+            Patches.OnEvent += OnPatchEvent;
         }
 
         private void OnPatchEvent(MonoBehaviour behaviour, Common.Enums.Events ev)

@@ -12,30 +12,30 @@ namespace OWML.ModHelper.Menus
         private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
 
         public LayoutGroup LayoutGroup { get; }
+
         public int ChildCount => LayoutGroup.transform.childCount;
 
         private readonly UIStyleManager _styleManager;
         private readonly ModUIStyleApplier _styleApplier;
         private readonly Vector3 _scale;
         private readonly HashSet<Graphic> _constantGraphics = new HashSet<Graphic>();
-        private readonly HashSet<Graphic> _backingGraphics = new HashSet<Graphic>();
 
-        public ModLayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
-            Vector3 scale, Graphic[] constantGraphics, Graphic[] backGraphics)
-            : this(layout, styleManager, styleApplier, scale, constantGraphics)
-        {
-            backGraphics.ToList().ForEach(element => _backingGraphics.Add(element));
-            styleApplier.SetBackground(backGraphics);
-        }
-
-        public ModLayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier,
-            Vector3 scale, Graphic[] constantGraphics)
+        public ModLayoutManager(
+            LayoutGroup layout, 
+            UIStyleManager styleManager,
+            ModUIStyleApplier styleApplier,
+            Vector3 scale, 
+            Graphic[] constantGraphics) 
             : this(layout, styleManager, styleApplier, scale)
         {
             constantGraphics.ToList().ForEach(element => _constantGraphics.Add(element));
         }
 
-        public ModLayoutManager(LayoutGroup layout, UIStyleManager styleManager, ModUIStyleApplier styleApplier, Vector3 scale)
+        public ModLayoutManager(
+            LayoutGroup layout, 
+            UIStyleManager styleManager,
+            ModUIStyleApplier styleApplier,
+            Vector3 scale)
         {
             _scale = scale;
             _styleManager = styleManager;
@@ -69,13 +69,12 @@ namespace OWML.ModHelper.Menus
             }
             foreach (Transform child in LayoutGroup.transform)
             {
-                if (_constantGraphics.Contains(child.gameObject.GetComponent<Graphic>())
-                    || _backingGraphics.Contains(child.gameObject.GetComponent<Graphic>()))
+                if (_constantGraphics.Contains(child.gameObject.GetComponent<Graphic>()))
                 {
                     continue;
                 }
                 child.gameObject.SetActive(false);
-                Object.Destroy(child.gameObject);
+                GameObject.Destroy(child.gameObject);
             }
         }
 

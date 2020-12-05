@@ -1,7 +1,7 @@
 ﻿using System;
 using OWML.Common.Interfaces.Menus;
 using OWML.ModHelper.Events;
-using Object = UnityEngine.Object;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -37,8 +37,8 @@ namespace OWML.ModHelper.Menus
 
         public IModButtonBase Copy()
         {
-            var button = Object.Instantiate(Button);
-            Object.Destroy(button.GetComponent<SubmitAction>());
+            var button = GameObject.Instantiate(Button);
+            GameObject.Destroy(button.GetComponent<SubmitAction>());
             var modButton = (IModButtonBase)Activator.CreateInstance(GetType(), button, Menu);
             modButton.Index = Index + 1;
             return modButton;

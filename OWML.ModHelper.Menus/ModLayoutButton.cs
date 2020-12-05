@@ -8,10 +8,11 @@ namespace OWML.ModHelper.Menus
     {
         public IModLayoutManager Layout { get; }
 
-        public ModLayoutButton(Button button, IModMenu menu) : base(button, menu)
+        public ModLayoutButton(Button button, IModMenu menu) 
+            : base(button, menu)
         {
             var scale = button.transform.localScale;
-            Object.Destroy(Button.GetComponentInChildren<Text>(true).gameObject);
+            GameObject.Destroy(Button.GetComponentInChildren<Text>(true).gameObject);
             var layoutObject = new GameObject("LayoutGroup", typeof(RectTransform));
             layoutObject.transform.SetParent(button.transform);
             var target = layoutObject.AddComponent<Image>();
@@ -24,7 +25,7 @@ namespace OWML.ModHelper.Menus
             layoutGroup.childControlHeight = false;
             layoutGroup.childForceExpandHeight = false;
             layoutGroup.childForceExpandWidth = false;
-            var styleManager = Object.FindObjectOfType<UIStyleManager>();
+            var styleManager = GameObject.FindObjectOfType<UIStyleManager>();
             var styleApplier = ModUIStyleApplier.ReplaceStyleApplier(Button.gameObject);
             Layout = new ModLayoutManager(layoutGroup, styleManager, styleApplier, scale);
         }

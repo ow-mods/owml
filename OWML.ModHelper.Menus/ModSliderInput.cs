@@ -8,13 +8,15 @@ namespace OWML.ModHelper.Menus
     public class ModSliderInput : ModInput<float>, IModSliderInput
     {
         public float Min { get; set; }
+
         public float Max { get; set; }
+
         public bool HasValueText => _valueText != null;
+
         public override bool IsSelected => _uIStyleApplier?.GetValue<bool>("_selected") ?? false;
 
         private readonly SliderElement _element;
         private readonly Text _valueText;
-
         private readonly UIStyleApplier _uIStyleApplier;
 
         public ModSliderInput(SliderElement element, IModMenu menu) : base(element, menu)
@@ -37,8 +39,8 @@ namespace OWML.ModHelper.Menus
 
         public IModSliderInput Copy()
         {
-            var copy = Object.Instantiate(_element);
-            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
+            var copy = GameObject.Instantiate(_element);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModSliderInput(copy, Menu);
         }
 

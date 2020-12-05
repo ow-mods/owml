@@ -7,13 +7,9 @@ namespace OWML.ModHelper.Menus
 {
     public class ModUIStyleApplier : UIStyleApplier
     {
-        public ModUIStyleApplier()
-        {
-            ClearAllArrays();
-        }
-
         public void Initialize(UIStyleApplier oldStyleApplier)
         {
+            ClearAllArrays();
             var fields = typeof(UIStyleApplier).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
             fields.ForEach(field => field.SetValue(this, field.GetValue(oldStyleApplier)));
         }

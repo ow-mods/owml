@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common.Interfaces.Menus;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -53,8 +53,8 @@ namespace OWML.ModHelper.Menus
 
         public IModSelectorInput Copy()
         {
-            var copy = Object.Instantiate(_element);
-            Object.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
+            var copy = GameObject.Instantiate(_element);
+            GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
             return new ModSelectorInput(copy, Menu);
         }
 
