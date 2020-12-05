@@ -15,11 +15,11 @@ namespace OWML.Logging
 
         private readonly Socket _socket;
 
-        public ModSocket(int port)
+        public ModSocket(IOwmlConfig config)
         {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var ipAddress = IPAddress.Parse(Constants.LocalAddress);
-            var endPoint = new IPEndPoint(ipAddress, port);
+            var endPoint = new IPEndPoint(ipAddress, config.SocketPort);
             _socket.Connect(endPoint);
         }
 

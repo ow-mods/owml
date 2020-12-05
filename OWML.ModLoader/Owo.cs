@@ -25,7 +25,8 @@ namespace OWML.ModLoader
         private readonly IModSorter _sorter;
         private readonly IUnityLogger _unityLogger;
         private readonly IModSocket _socket;
-
+        private readonly IObjImporter _objImporter;
+        
         private readonly string _logFileName;
         private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
@@ -39,6 +40,7 @@ namespace OWML.ModLoader
             IModSorter sorter,
             IUnityLogger unityLogger, 
             IModSocket socket,
+            IObjImporter objImporter,
             string logFileName)
         {
             _modFinder = modFinder;
@@ -50,6 +52,7 @@ namespace OWML.ModLoader
             _sorter = sorter;
             _unityLogger = unityLogger;
             _socket = socket;
+            _objImporter = objImporter;
             _logFileName = logFileName;
         }
 
@@ -117,11 +120,11 @@ namespace OWML.ModLoader
             }
         }
 
-        private IModHelper CreateModHelper(IModData modData)
+        private IModHelper CreateModHelper(IModData modData) // todo DI
         {
             var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
             var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest, _socket);
-            var assets = new ModAssets(console, modData.Manifest);
+            var assets = new ModAssets(console, modData.Manifest, _objImporter);
             var modStorage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
             var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);

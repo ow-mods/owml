@@ -10,13 +10,13 @@ namespace OWML.ModHelper.Assets
     {
         private readonly IModConsole _console;
         private readonly IModManifest _manifest;
-        private readonly ObjImporter _objImporter;
+        private readonly IObjImporter _objImporter;
 
-        public ModAssets(IModConsole console, IModManifest manifest)
+        public ModAssets(IModConsole console, IModManifest manifest, IObjImporter objImporter)
         {
             _console = console;
             _manifest = manifest;
-            _objImporter = new ObjImporter();
+            _objImporter = objImporter;
         }
 
         public AssetBundle LoadBundle(string filename)

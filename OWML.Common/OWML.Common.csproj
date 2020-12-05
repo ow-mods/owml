@@ -50,6 +50,7 @@
     <Compile Include="Interfaces\IModSorter.cs" />
     <Compile Include="Interfaces\IModUnityEvents.cs" />
     <Compile Include="Interfaces\IModSocketMessage.cs" />
+    <Compile Include="Interfaces\IObjImporter.cs" />
     <Compile Include="Interfaces\IOWPatcher.cs" />
     <Compile Include="Interfaces\IPathFinder.cs" />
     <Compile Include="Interfaces\ISectorInfo.cs" />

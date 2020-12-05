@@ -13,7 +13,7 @@ namespace OWML.Launcher
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args) // todo DI
         {
             var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
             var hasConsolePort = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
@@ -31,6 +31,7 @@ namespace OWML.Launcher
             var versionHandler = new GameVersionHandler(versionReader, consoleWriter, owmlManifest);
             var app = new App(owmlConfig, owmlManifest, consoleWriter, modFinder,
                 pathFinder, owPatcher, vrPatcher, versionHandler);
+
             app.Run(args);
         }
 
@@ -79,7 +80,7 @@ namespace OWML.Launcher
         private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
         {
             return hasConsolePort
-                ? new ModSocketOutput(owmlConfig, null, owmlManifest, new ModSocket(owmlConfig.SocketPort))
+                ? new ModSocketOutput(owmlConfig, null, owmlManifest, new ModSocket(owmlConfig))
                 : (IModConsole)new OutputWriter();
         }
 

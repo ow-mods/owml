@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using OWML.Common.Interfaces;
 using UnityEngine;
 
 namespace OWML.ModHelper.Assets
@@ -11,7 +12,7 @@ namespace OWML.ModHelper.Assets
      * or any other fancy things). 
      */
 
-    public class ObjImporter
+    public class ObjImporter : IObjImporter
     {
         public Mesh ImportFile(string filePath)
         {

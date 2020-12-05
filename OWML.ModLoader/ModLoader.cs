@@ -8,6 +8,7 @@ using System;
 using OWML.Common.Enums;
 using OWML.Common.Models;
 using OWML.Logging;
+using OWML.ModHelper.Assets;
 
 namespace OWML.ModLoader
 {
@@ -19,7 +20,7 @@ namespace OWML.ModLoader
 
         private static readonly string ManifestPath = $"{Application.dataPath}/Managed/{Constants.OwmlManifestFileName}";
 
-        public static void LoadMods()
+        public static void LoadMods() // todo DI
         {
             var owmlGo = new GameObject();
             owmlGo.AddComponent<OwmlBehaviour>();
@@ -38,7 +39,7 @@ namespace OWML.ModLoader
             var logger = new ModLogger(owmlConfig, owmlManifest, logFileName);
             logger.Log("Got config!");
 
-            var socket = new ModSocket(owmlConfig.SocketPort);
+            var socket = new ModSocket(owmlConfig);
             var unityLogger = new UnityLogger(socket);
             var console = new ModSocketOutput(owmlConfig, logger, owmlManifest, socket);
             console.WriteLine("Mod loader has been initialized.");
@@ -53,8 +54,9 @@ namespace OWML.ModLoader
             var owmlStorage = new ModStorage(owmlManifest);
             var owmlMenu = new OwmlConfigMenu(owmlManifest, owmlConfig, owmlDefaultConfig, owmlStorage);
             var menus = new ModMenus(events, inputHandler, owmlMenu, owmlStorage);
+            var objImporter = new ObjImporter();
             var owo = new Owo(modFinder, logger, owmlConfig, menus, harmonyHelper,
-                inputHandler, modSorter, unityLogger, socket, logFileName);
+                inputHandler, modSorter, unityLogger, socket, objImporter, logFileName); // todo remove logFileName
 
             owo.LoadMods();
         }
