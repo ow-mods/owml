@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Menus
 
         private PopupMenu _twoButtonPopup;
 
-        internal void Initialize(PopupMenu popup)
+        public void Initialize(PopupMenu popup)
         {
             if (Menu != null)
             {
@@ -28,14 +28,14 @@ namespace OWML.ModHelper.Menus
             Popup = _twoButtonPopup;
         }
 
-        internal override void DestroySelf()
+        public override void DestroySelf()
         {
             DestroySelf(_twoButtonPopup.gameObject);
             OnConfirm = null;
             _twoButtonPopup = null;
         }
 
-        internal ModMessagePopup Copy()
+        public IModMessagePopup Copy()
         {
             var newPopupObject = CopyMenu();
             var newPopup = new ModMessagePopup();
@@ -43,7 +43,7 @@ namespace OWML.ModHelper.Menus
             return newPopup;
         }
 
-        internal void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
+        public void ShowMessage(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
         {
             if (_twoButtonPopup == null)
             {

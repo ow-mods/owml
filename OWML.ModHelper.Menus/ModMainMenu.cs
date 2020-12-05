@@ -8,13 +8,18 @@ namespace OWML.ModHelper.Menus
 {
     public class ModMainMenu : ModMenu, IModMainMenu
     {
-        public IModTabbedMenu OptionsMenu { get; } = new ModOptionsMenu();
+        public IModTabbedMenu OptionsMenu { get; } = new ModOptionsMenu(); // todo DI?
 
         public IModButton ResumeExpeditionButton { get; private set; }
+
         public IModButton NewExpeditionButton { get; private set; }
+
         public IModButton OptionsButton { get; private set; }
+
         public IModButton ViewCreditsButton { get; private set; }
+
         public IModButton SwitchProfileButton { get; private set; }
+
         public IModButton QuitButton { get; private set; }
 
         private TitleAnimationController _anim;

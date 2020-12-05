@@ -8,18 +8,28 @@ namespace OWML.ModHelper.Menus
     public class ModMenus : IModMenus
     {
         public IModMainMenu MainMenu { get; }
+
         public IModPauseMenu PauseMenu { get; }
+
         public IModsMenu ModsMenu { get; }
+
         public IModInputCombinationMenu InputCombinationMenu { get; }
+
         public IModPopupManager PopupManager { get; }
 
-        public ModMenus(IModEvents events, IModInputHandler inputHandler, IModConfigMenuBase owmlMenu, IModStorage storage)
+        public ModMenus(
+            IModEvents events, 
+            IModMainMenu mainMenu, 
+            IModPauseMenu pauseMenu,
+            IModsMenu modsMenu,
+            IModPopupManager popupManager,
+            IModInputCombinationMenu inputComboMenu)
         {
-            MainMenu = new ModMainMenu();
-            PauseMenu = new ModPauseMenu();
-            ModsMenu = new ModsMenu(this, owmlMenu, inputHandler, events, storage);
-            PopupManager = new ModPopupManager(inputHandler, events);
-            InputCombinationMenu = new ModInputCombinationMenu();
+            MainMenu = mainMenu;
+            PauseMenu = pauseMenu;
+            ModsMenu = modsMenu;
+            PopupManager = popupManager;
+            InputCombinationMenu = inputComboMenu;
 
             events.Subscribe<SettingsManager>(Common.Enums.Events.AfterStart);
             events.Subscribe<TitleScreenManager>(Common.Enums.Events.AfterStart);
@@ -33,7 +43,7 @@ namespace OWML.ModHelper.Menus
                 settingsManager.name == "PauseMenuManagers")
             {
                 PauseMenu.Initialize(settingsManager);
-                ModsMenu.Initialize(PauseMenu);
+                ModsMenu.Initialize(this, PauseMenu);
             }
             else if (behaviour is TitleScreenManager titleScreenManager &&
                      ev == Common.Enums.Events.AfterStart)
@@ -43,7 +53,7 @@ namespace OWML.ModHelper.Menus
                     .GetComponent<ProfileMenuManager>()
                     .GetValue<PopupInputMenu>("_createProfileConfirmPopup");
                 PopupManager.Initialize(inputMenu.transform.parent.gameObject);
-                ModsMenu.Initialize(MainMenu);
+                ModsMenu.Initialize(this, MainMenu);
             }
         }
 

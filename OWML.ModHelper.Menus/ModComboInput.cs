@@ -10,6 +10,7 @@ namespace OWML.ModHelper.Menus
     public class ModComboInput : ModPopupInput<string>, IModComboInput
     {
         public IModLayoutButton Button { get; }
+
         protected readonly IModInputCombinationMenu InputMenu;
 
         private string _combination;

@@ -55,7 +55,12 @@ namespace OWML.ModLoader
             var inputHandler = new ModInputHandler(logger, console, harmonyHelper, owmlConfig, events);
             var owmlStorage = new ModStorage(owmlManifest);
             var owmlMenu = new OwmlConfigMenu(owmlManifest, owmlConfig, owmlDefaultConfig, owmlStorage);
-            var menus = new ModMenus(events, inputHandler, owmlMenu, owmlStorage);
+            var mainMenu = new ModMainMenu();
+            var pauseMenu = new ModPauseMenu();
+            var modsMenu = new ModsMenu(owmlMenu, inputHandler, events, owmlStorage);
+            var popupManager = new ModPopupManager(inputHandler, events);
+            var inputComboMenu = new ModInputCombinationMenu();
+            var menus = new ModMenus(events, mainMenu, pauseMenu, modsMenu, popupManager, inputComboMenu);
             var objImporter = new ObjImporter();
             var owo = new Owo(modFinder, logger, owmlConfig, menus, harmonyHelper,
                 inputHandler, modSorter, unityLogger, socket, objImporter, logFileName); // todo remove logFileName

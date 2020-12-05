@@ -9,11 +9,15 @@ namespace OWML.ModHelper.Menus
     public class ModOptionsMenu : ModPopupMenu, IModTabbedMenu
     {
         public IModTabMenu GameplayTab { get; private set; }
+
         public IModTabMenu AudioTab { get; private set; }
+
         public IModTabMenu InputTab { get; private set; }
+
         public IModTabMenu GraphicsTab { get; private set; }
 
         public IModButton RebindingButton { get; private set; }
+
         public IModPopupMenu RebindingMenu { get; private set; }
 
         public new TabbedMenu Menu { get; private set; }

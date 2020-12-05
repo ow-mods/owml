@@ -17,19 +17,23 @@ namespace OWML.ModHelper.Menus
 
         public IModConfigMenuBase OwmlMenu { get; }
 
-        private readonly IModMenus _menus;
         private readonly IModInputHandler _inputHandler;
-        private readonly List<IModConfigMenu> _modConfigMenus = new List<IModConfigMenu>();
         private readonly IModEvents _events;
         private readonly IModStorage _storage;
+        private readonly List<IModConfigMenu> _modConfigMenus = new List<IModConfigMenu>();
+        private IModMenus _menus;
 
-        public ModsMenu(IModMenus menus, IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events, IModStorage storage)
+        public ModsMenu(IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events, IModStorage storage)
         {
             OwmlMenu = owmlMenu;
-            _menus = menus;
             _inputHandler = inputHandler;
             _events = events;
             _storage = storage;
+        }
+
+        public void Init(IModMenus menus)
+        {
+            _menus = menus;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
@@ -49,8 +53,9 @@ namespace OWML.ModHelper.Menus
             return modConfigMenu;
         }
 
-        public void Initialize(IModOWMenu owMenu)
+        public void Initialize(IModMenus menus, IModOWMenu owMenu)
         {
+            _menus = menus;
             var modsButton = owMenu.OptionsButton.Duplicate(ModsTitle);
             var options = owMenu.OptionsMenu;
 

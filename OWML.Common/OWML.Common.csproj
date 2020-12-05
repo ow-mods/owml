@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\Menus\IModOWMenu.cs" />
     <Compile Include="Interfaces\Menus\IModPromptButton.cs" />
     <Compile Include="Interfaces\Menus\IModSelectorInput.cs" />
+    <Compile Include="Interfaces\Menus\IModTemporaryPopup.cs" />
     <Compile Include="Interfaces\Menus\InputType.cs" />
     <Compile Include="Interfaces\Menus\IModButton.cs" />
     <Compile Include="Interfaces\IModConfig.cs" />

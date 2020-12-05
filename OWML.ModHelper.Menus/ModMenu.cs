@@ -16,16 +16,27 @@ namespace OWML.ModHelper.Menus
         public event Action OnInit;
 
         public Menu Menu { get; protected set; }
+
         public List<IModButtonBase> BaseButtons { get; private set; }
+
         public List<IModToggleInput> ToggleInputs { get; private set; }
+
         public List<IModSliderInput> SliderInputs { get; private set; }
+
         public List<IModSelectorInput> SelectorInputs { get; private set; }
+
         public List<IModTextInput> TextInputs { get; private set; }
+
         public List<IModComboInput> ComboInputs { get; private set; }
+
         public List<IModNumberInput> NumberInputs { get; private set; }
+
         public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
+
         public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
+
         public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
+
         public List<IModSeparator> Separators { get; private set; }
 
         protected LayoutGroup Layout;

@@ -12,7 +12,7 @@ namespace OWML.ModHelper.Menus
 
         private PopupInputMenu _inputMenu;
 
-        internal void Initialize(PopupInputMenu menu)
+        public void Initialize(PopupInputMenu menu)
         {
             if (Menu != null)
             {
@@ -27,7 +27,7 @@ namespace OWML.ModHelper.Menus
             Initialize((Menu)_inputMenu);
         }
 
-        internal void Open(InputType inputType, string value)
+        public void Open(InputType inputType, string value)
         {
             RegisterEvents();
             if (inputType == InputType.Number)
@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
-        internal ModInputMenu Copy()
+        public IModInputMenu Copy()
         {
             var newPopupObject = CopyMenu();
             var newPopup = new ModInputMenu();
@@ -56,7 +56,7 @@ namespace OWML.ModHelper.Menus
             return newPopup;
         }
 
-        internal override void DestroySelf()
+        public override void DestroySelf()
         {
             DestroySelf(_inputMenu.gameObject);
             OnConfirm = null;

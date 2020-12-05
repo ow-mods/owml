@@ -1,10 +1,11 @@
 ﻿using System;
+using OWML.Common.Interfaces.Menus;
 using Object = UnityEngine.Object;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModTemporaryPopup : ModMenu
+    public class ModTemporaryPopup : ModMenu, IModTemporaryPopup
     {
         protected PopupMenu Popup;
 
@@ -39,7 +40,7 @@ namespace OWML.ModHelper.Menus
             UnregisterEvents();
         }
 
-        internal virtual void DestroySelf() { }
+        public virtual void DestroySelf() { }
 
         protected GameObject CopyMenu()
         {

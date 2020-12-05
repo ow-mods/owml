@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
             base.Initialize(_inputMenu);
         }
 
-        internal void Initialize(PopupInputMenu menu)
+        public void Initialize(PopupInputMenu menu)
         {
             if (Menu != null)
             {
@@ -120,7 +120,7 @@ namespace OWML.ModHelper.Menus
             base.Initialize(_inputMenu);
         }
 
-        internal void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
+        public void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
         {
             _combinationMenu = combinationMenu;
             _element = element;
@@ -149,14 +149,14 @@ namespace OWML.ModHelper.Menus
             _inputMenu.GetValue<Text>("_labelText").text = message;
         }
 
-        internal override void DestroySelf()
+        public override void DestroySelf()
         {
             DestroySelf(_inputMenu.gameObject);
             OnConfirm = null;
             _inputMenu = null;
         }
 
-        internal ModInputCombinationElementMenu Copy()
+        public IModInputCombinationElementMenu Copy()
         {
             var newPopupObject = CopyMenu();
             var newPopup = new ModInputCombinationElementMenu(_inputHandler, _popupManager);

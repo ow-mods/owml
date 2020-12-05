@@ -8,10 +8,10 @@ namespace OWML.ModHelper.Menus
 {
     public class ModPopupManager : IModPopupManager
     {
-        private readonly ModInputMenu _inputPopup;
-        private readonly ModMessagePopup _messagePopup;
-        private readonly ModInputCombinationElementMenu _combinationPopup;
-        private readonly List<ModTemporaryPopup> _toDestroy = new List<ModTemporaryPopup>();
+        private readonly IModInputMenu _inputPopup;
+        private readonly IModMessagePopup _messagePopup;
+        private readonly IModInputCombinationElementMenu _combinationPopup;
+        private readonly List<IModTemporaryPopup> _toDestroy = new List<IModTemporaryPopup>();
         private readonly IModEvents _events;
 
         public ModPopupManager(IModInputHandler inputHandler, IModEvents events)
@@ -26,13 +26,17 @@ namespace OWML.ModHelper.Menus
         {
             var newCanvas = Object.Instantiate(popupCanvas);
             newCanvas.AddComponent<DontDestroyOnLoad>();
+
             var inputMenu = newCanvas.GetComponentInChildren<PopupInputMenu>(true);
             var combinationMenuObject = Object.Instantiate(inputMenu.gameObject);
+
             combinationMenuObject.transform.SetParent(newCanvas.transform);
             combinationMenuObject.transform.localScale = inputMenu.transform.localScale;
             combinationMenuObject.transform.localPosition = inputMenu.transform.localPosition;
+
             var combinationMenu = combinationMenuObject.GetComponent<PopupInputMenu>();
             var messageMenu = newCanvas.transform.Find("TwoButton-Popup").GetComponent<PopupMenu>();
+
             _inputPopup.Initialize(inputMenu);
             _messagePopup.Initialize(messageMenu);
             _combinationPopup.Initialize(combinationMenu);
@@ -66,7 +70,7 @@ namespace OWML.ModHelper.Menus
             return newPopup;
         }
 
-        private void OnPopupClose(ModTemporaryPopup closedPopup)
+        private void OnPopupClose(IModTemporaryPopup closedPopup)
         {
             _toDestroy.Add(closedPopup);
             _events.Unity.FireOnNextUpdate(CleanUp);
