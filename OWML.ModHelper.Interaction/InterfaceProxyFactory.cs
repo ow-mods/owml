@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using OWML.Common.Interfaces;
 
 // Adapted from SMAPI code : https://github.com/Pathoschild/SMAPI/tree/c4a82418ac8b09a6965052f5c9173928457fba52/src/SMAPI/Framework/Reflection
 
 namespace OWML.ModHelper.Interaction
 {
-    public class InterfaceProxyFactory
+    public class InterfaceProxyFactory : IInterfaceProxyFactory
     {
         private readonly ModuleBuilder _moduleBuilder;
         private readonly IDictionary<string, InterfaceProxyBuilder> _builders = new Dictionary<string, InterfaceProxyBuilder>();

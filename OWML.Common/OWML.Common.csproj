@@ -38,6 +38,7 @@
     <Compile Include="Interfaces\IGameVersionHandler.cs" />
     <Compile Include="Interfaces\IGameVersionReader.cs" />
     <Compile Include="Interfaces\IHarmonyHelper.cs" />
+    <Compile Include="Interfaces\IInterfaceProxyFactory.cs" />
     <Compile Include="Interfaces\IModAssets.cs" />
     <Compile Include="Interfaces\IModAsset.cs" />
     <Compile Include="Interfaces\IModInputCombination.cs" />

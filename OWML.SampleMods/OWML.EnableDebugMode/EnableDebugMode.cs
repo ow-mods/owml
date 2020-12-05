@@ -3,7 +3,7 @@ using OWML.ModHelper.Events;
 using UnityEngine;
 using System.Collections.Generic;
 using OWML.Common.Enums;
-using OWML.Common.Interfaces;
+using OWML.Common.Interfaces; // todo this is a breaking change
 
 namespace OWML.EnableDebugMode
 {

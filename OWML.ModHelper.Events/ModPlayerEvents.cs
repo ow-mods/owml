@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Events
     {
         public event Action<PlayerBody> OnPlayerAwake;
 
-        public ModPlayerEvents(IModEvents events)
+        public void Init(IModEvents events)
         {
             events.Subscribe<PlayerBody>(Common.Enums.Events.AfterAwake);
             events.Event += OnEvent;

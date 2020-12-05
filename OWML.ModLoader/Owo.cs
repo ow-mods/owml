@@ -126,8 +126,12 @@ namespace OWML.ModLoader
             var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest, _socket);
             var assets = new ModAssets(console, modData.Manifest, _objImporter);
             var modStorage = new ModStorage(modData.Manifest);
-            var events = new ModEvents(logger, console, _harmonyHelper);
-            var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);
+            var playerEvents = new ModPlayerEvents();
+            var sceneEvents = new ModSceneEvents();
+            var events = new ModEvents(logger, console, _harmonyHelper, playerEvents, sceneEvents);
+            var proxyFactory = new InterfaceProxyFactory();
+            var interaction = new ModInteraction(_modList, proxyFactory, modData.Manifest);
+
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
                 events, assets, modStorage, _menus, modData.Manifest, modData.Config,
                 _owmlConfig, _inputHandler, interaction);
