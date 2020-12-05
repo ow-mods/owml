@@ -11,14 +11,15 @@ namespace OWML.Logging
         private readonly IModManifest _manifest;
         private static string _logFileName;
 
-        public ModLogger(IOwmlConfig config, IModManifest manifest, string logFileName)
+        public ModLogger(IOwmlConfig config, IModManifest manifest)
         {
             if (_config == null)
             {
                 _config = config;
             }
             _manifest = manifest;
-            _logFileName = logFileName;
+            var startTime = DateTime.Now.ToString("dd-MM-yyyy-HH.mm.ss");
+            _logFileName = $"{config.OWMLPath}Logs/OWML.Log.{startTime}.txt";
         }
 
         public void Log(string s)

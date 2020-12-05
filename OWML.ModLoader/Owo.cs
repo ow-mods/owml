@@ -18,6 +18,7 @@ namespace OWML.ModLoader
     {
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
+        private readonly IModConsole _console;
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
@@ -26,25 +27,25 @@ namespace OWML.ModLoader
         private readonly IUnityLogger _unityLogger;
         private readonly IModSocket _socket;
         private readonly IObjImporter _objImporter;
-        
-        private readonly string _logFileName;
+
         private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(
-            IModFinder modFinder, 
+            IModFinder modFinder,
             IModLogger logger,
-            IOwmlConfig owmlConfig, 
-            IModMenus menus, 
+            IModConsole console,
+            IOwmlConfig owmlConfig,
+            IModMenus menus,
             IHarmonyHelper harmonyHelper,
             IModInputHandler inputHandler,
             IModSorter sorter,
-            IUnityLogger unityLogger, 
+            IUnityLogger unityLogger,
             IModSocket socket,
-            IObjImporter objImporter,
-            string logFileName)
+            IObjImporter objImporter)
         {
             _modFinder = modFinder;
             _logger = logger;
+            _console = console;
             _owmlConfig = owmlConfig;
             _menus = menus;
             _harmonyHelper = harmonyHelper;
@@ -53,19 +54,20 @@ namespace OWML.ModLoader
             _unityLogger = unityLogger;
             _socket = socket;
             _objImporter = objImporter;
-            _logFileName = logFileName;
         }
 
         public void LoadMods()
         {
-            _unityLogger.Start();
+            _console.WriteLine("Mod loader has been initialized.");
+            _console.WriteLine($"Game version: {Application.version}", MessageType.Info);
 
+            _unityLogger.Start();
             var mods = _modFinder.GetMods();
+
             var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
             if (changedSettings.Any())
             {
-                ModConsole.OwmlConsole.WriteLine("Warning - Settings of following mods changed:\n\t" + string.Join("\n\t", changedSettings),
-                    MessageType.Warning);
+                _console.WriteLine($"Warning - Settings of following mods changed:\n\t{string.Join("\n\t", changedSettings)}", MessageType.Warning);
             }
 
             var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
@@ -80,12 +82,10 @@ namespace OWML.ModLoader
 
             foreach (var modData in sortedMods)
             {
-                var missingDependencies = modData.Config.Enabled ?
-                    modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList() :
-                    new List<string>();
-                missingDependencies.ForEach(dependency => ModConsole.OwmlConsole.WriteLine(
-                    $"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!",
-                    MessageType.Error));
+                var missingDependencies = modData.Config.Enabled
+                    ? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
+                    : new List<string>();
+                missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
                 var modType = LoadMod(modData);
                 if (modType == null || missingDependencies.Any())
                 {
@@ -107,7 +107,7 @@ namespace OWML.ModLoader
                 return null;
             }
 
-            _logger.Log("Loading assembly: " + modData.Manifest.AssemblyPath);
+            _logger.Log($"Loading assembly: {modData.Manifest.AssemblyPath}");
             var assembly = Assembly.LoadFile(modData.Manifest.AssemblyPath);
             _logger.Log($"Loaded {assembly.FullName}");
 
@@ -124,7 +124,7 @@ namespace OWML.ModLoader
 
         private IModHelper CreateModHelper(IModData modData) // todo DI
         {
-            var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
+            var logger = new ModLogger(_owmlConfig, modData.Manifest);
             var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest, _socket);
             var assets = new ModAssets(console, modData.Manifest, _objImporter);
             var modStorage = new ModStorage(modData.Manifest);

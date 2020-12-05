@@ -4,8 +4,6 @@ using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
 using OWML.ModHelper.Input;
 using UnityEngine;
-using System;
-using OWML.Common.Enums;
 using OWML.Common.Models;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
@@ -34,18 +32,10 @@ namespace OWML.ModLoader
                 return;
             }
 
-            var startTime = DateTime.Now.ToString("dd-MM-yyyy-HH.mm.ss");
-            var logFileName = $"{owmlConfig.OWMLPath}Logs/OWML.Log.{startTime}.txt";
-            var logger = new ModLogger(owmlConfig, owmlManifest, logFileName);
-            logger.Log("Got config!");
-
+            var logger = new ModLogger(owmlConfig, owmlManifest);
             var socket = new ModSocket(owmlConfig);
             var unityLogger = new UnityLogger(socket);
             var console = new ModSocketOutput(owmlConfig, logger, owmlManifest, socket);
-            console.WriteLine("Mod loader has been initialized.");
-            console.WriteLine($"For detailed log, see Logs/OWML.Log.{startTime}.txt");
-            console.WriteLine($"Game version: {Application.version}", MessageType.Info);
-
             var modSorter = new ModSorter(console);
             var modFinder = new ModFinder(owmlConfig, console);
             var harmonyHelper = new HarmonyHelper(logger, console);
@@ -65,8 +55,8 @@ namespace OWML.ModLoader
             var inputComboMenu = new ModInputCombinationMenu();
             var menus = new ModMenus(events, mainMenu, pauseMenu, modsMenu, popupManager, inputComboMenu);
             var objImporter = new ObjImporter();
-            var owo = new Owo(modFinder, logger, owmlConfig, menus, harmonyHelper,
-                inputHandler, modSorter, unityLogger, socket, objImporter, logFileName); // todo remove logFileName
+            var owo = new Owo(modFinder, logger, console, owmlConfig, menus, harmonyHelper,
+                inputHandler, modSorter, unityLogger, socket, objImporter);
 
             owo.LoadMods();
         }
