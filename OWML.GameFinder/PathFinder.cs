@@ -3,7 +3,7 @@ using OWML.Common.Interfaces;
 
 namespace OWML.GameFinder
 {
-    public class PathFinder
+    public class PathFinder : IPathFinder
     {
         private readonly IOwmlConfig _config;
         private readonly IModConsole _writer;

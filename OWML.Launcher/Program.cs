@@ -20,13 +20,17 @@ namespace OWML.Launcher
             SaveConsolePort(owmlConfig, hasConsolePort);
             SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
-            var writer = CreateWriter(owmlConfig, owmlManifest, hasConsolePort);
-            var modFinder = new ModFinder(owmlConfig, writer);
-            var pathFinder = new PathFinder(owmlConfig, writer);
-            var owPatcher = new OWPatcher(owmlConfig, writer);
-            var vrPatcher = new VRPatcher(owmlConfig, writer);
-            var app = new App(owmlConfig, owmlManifest, writer, modFinder,
-                pathFinder, owPatcher, vrPatcher);
+            var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
+            var modFinder = new ModFinder(owmlConfig, consoleWriter);
+            var pathFinder = new PathFinder(owmlConfig, consoleWriter);
+            var owPatcher = new OWPatcher(owmlConfig, consoleWriter);
+            var binaryPatcher = new BinaryPatcher(owmlConfig, consoleWriter);
+            var vrFilePatcher = new VRFilePatcher(consoleWriter, binaryPatcher);
+            var vrPatcher = new VRPatcher(owmlConfig, binaryPatcher, vrFilePatcher);
+            var versionReader = new GameVersionReader(new BinaryPatcher(owmlConfig, consoleWriter));
+            var versionHandler = new GameVersionHandler(versionReader, consoleWriter, owmlManifest);
+            var app = new App(owmlConfig, owmlManifest, consoleWriter, modFinder,
+                pathFinder, owPatcher, vrPatcher, versionHandler);
             app.Run(args);
         }
 
@@ -72,7 +76,7 @@ namespace OWML.Launcher
             return JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
         }
 
-        private static IModConsole CreateWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
+        private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
         {
             return hasConsolePort
                 ? new ModSocketOutput(owmlConfig, null, owmlManifest, new ModSocket(owmlConfig.SocketPort))

@@ -34,6 +34,9 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Enums\Events.cs" />
+    <Compile Include="Interfaces\IBinaryPatcher.cs" />
+    <Compile Include="Interfaces\IGameVersionHandler.cs" />
+    <Compile Include="Interfaces\IGameVersionReader.cs" />
     <Compile Include="Interfaces\IHarmonyHelper.cs" />
     <Compile Include="Interfaces\IModAssets.cs" />
     <Compile Include="Interfaces\IModAsset.cs" />
@@ -46,6 +49,11 @@
     <Compile Include="Interfaces\IModSocket.cs" />
     <Compile Include="Interfaces\IModUnityEvents.cs" />
     <Compile Include="Interfaces\IModSocketMessage.cs" />
+    <Compile Include="Interfaces\IOWPatcher.cs" />
+    <Compile Include="Interfaces\IPathFinder.cs" />
+    <Compile Include="Interfaces\ISectorInfo.cs" />
+    <Compile Include="Interfaces\IVRFilePatcher.cs" />
+    <Compile Include="Interfaces\IVRPatcher.cs" />
     <Compile Include="Interfaces\Menus\IModPopupManager.cs" />
     <Compile Include="Interfaces\Menus\IModSeparator.cs" />
     <Compile Include="Interfaces\Menus\IModInputBase.cs" />

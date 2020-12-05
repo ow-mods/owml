@@ -6,7 +6,7 @@ using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {
-    public class BinaryPatcher
+    public class BinaryPatcher : IBinaryPatcher
     {
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
@@ -26,16 +26,16 @@ namespace OWML.Patcher
             _writer = writer;
         }
 
-        public (int sectorStart, int sectorSize) GetSectorInfo(byte[] fileBytes, int sector)
+        public ISectorInfo GetSectorInfo(byte[] fileBytes, int sector)
         {
             if (sector < 0 || sector >= SectorCount)
             {
-                return (-1, -1);
+                return new SectorInfo(-1, -1);
             }
             var sectorIndex = FirstAddressIndex + sector * AddressStructureSize;
             var sectorStart = BitConverter.ToInt32(fileBytes, sectorIndex) + BlockAddressOffset;
             var sectorSize = BitConverter.ToInt32(fileBytes, sectorIndex + SizeOffset);
-            return (sectorStart, sectorSize);
+            return new SectorInfo(sectorStart, sectorSize);
         }
 
         public byte[] ReadFileBytes()
@@ -68,9 +68,8 @@ namespace OWML.Patcher
                 return new byte[0];
             }
 
-            var (sectorStart, sectorSize) = GetSectorInfo(fileBytes, sector);
-            var sectorEnd = sectorStart + sectorSize;
-            return fileBytes.Take(sectorEnd).Skip(sectorStart).ToArray();
+            var sectorInfo = GetSectorInfo(fileBytes, sector);
+            return fileBytes.Take(sectorInfo.SectorEnd).Skip(sectorInfo.SectorStart).ToArray();
         }
 
         public byte[] PatchSectionBytes(byte[] fileBytes, byte[] newBytes, int sectionStart, int sectionOriginalSize, int sector = -1)
@@ -99,23 +98,12 @@ namespace OWML.Patcher
             return newFileBytes;
         }
 
-        public byte[] PatchSectorBytes(byte[] fileBytes, byte[] newBytes, int sector)
-        {
-            if (sector < 0 || sector >= SectorCount)
-            {
-                return fileBytes;
-            }
-
-            var (sectorStart, sectorSize) = GetSectorInfo(fileBytes, sector);
-            return PatchSectionBytes(fileBytes, newBytes, sectorStart, sectorSize, sector);
-        }
-
         private int GetSectorIndex(byte[] fileBytes, int address)
         {
             var sector = -1;
             for (var sectorIndex = 0; sectorIndex < SectorCount; sectorIndex++)
             {
-                var sectorStart = GetSectorInfo(fileBytes, sectorIndex).sectorStart;
+                var sectorStart = GetSectorInfo(fileBytes, sectorIndex).SectorStart;
                 if (sectorStart > address)
                 {
                     return sector;
@@ -149,7 +137,7 @@ namespace OWML.Patcher
             var sizeIndex = FirstAddressIndex + patchedSector * AddressStructureSize + SizeOffset;
             ShiftInt(fileBytes, sizeIndex, patchSize);
 
-            // Shift conscutive sector addresses.
+            // Shift consecutive sector addresses.
             for (var sector = patchedSector + 1; sector < SectorCount; sector++)
             {
                 var startIndex = FirstAddressIndex + sector * AddressStructureSize;

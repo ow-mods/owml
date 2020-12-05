@@ -3,26 +3,26 @@ using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {
-    public class VRPatcher
+    public class VRPatcher : IVRPatcher
     {
         private readonly IOwmlConfig _owmlConfig;
-        private readonly BinaryPatcher _binaryPatcher;
-        private readonly VRFilePatcher _vrPatcher;
+        private readonly IBinaryPatcher _binaryPatcher;
+        private readonly IVRFilePatcher _vrFilePatcher;
 
         private static readonly string[] PluginFilenames = { "openvr_api.dll", "OVRPlugin.dll" };
 
-        public VRPatcher(IOwmlConfig owmlConfig, IModConsole writer)
+        public VRPatcher(IOwmlConfig owmlConfig, IBinaryPatcher binaryPatcher, IVRFilePatcher vrFilePatcher)
         {
             _owmlConfig = owmlConfig;
-            _binaryPatcher = new BinaryPatcher(_owmlConfig, writer);
-            _vrPatcher = new VRFilePatcher(writer, _binaryPatcher);
+            _binaryPatcher = binaryPatcher;
+            _vrFilePatcher = vrFilePatcher;
         }
 
         public void PatchVR(bool enableVR)
         {
             if (enableVR)
             {
-                _vrPatcher.Patch();
+                _vrFilePatcher.Patch();
                 AddPluginFiles();
             }
             else

@@ -6,9 +6,7 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
-using OWML.GameFinder;
 using OWML.ModHelper;
-using OWML.Patcher;
 
 namespace OWML.Launcher
 {
@@ -18,12 +16,13 @@ namespace OWML.Launcher
         private readonly IModManifest _owmlManifest;
         private readonly IModConsole _writer;
         private readonly IModFinder _modFinder;
-        private readonly PathFinder _pathFinder;
-        private readonly OWPatcher _owPatcher;
-        private readonly VRPatcher _vrPatcher;
+        private readonly IPathFinder _pathFinder;
+        private readonly IOWPatcher _owPatcher;
+        private readonly IVRPatcher _vrPatcher;
+        private readonly IGameVersionHandler _versionHandler;
 
         public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            PathFinder pathFinder, OWPatcher owPatcher, VRPatcher vrPatcher)
+            IPathFinder pathFinder, IOWPatcher owPatcher, IVRPatcher vrPatcher, IGameVersionHandler versionHandler)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
@@ -32,6 +31,7 @@ namespace OWML.Launcher
             _pathFinder = pathFinder;
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
+            _versionHandler = versionHandler;
         }
 
         public void Run(string[] args)
@@ -76,38 +76,7 @@ namespace OWML.Launcher
 
         private void CheckGameVersion()
         {
-            var versionReader = new GameVersionReader(new BinaryPatcher(_owmlConfig, _writer));
-            var gameVersionString = versionReader.GetGameVersion();
-            _writer.WriteLine($"Game version: {gameVersionString}", MessageType.Info);
-            var isValidFormat = Version.TryParse(gameVersionString, out var gameVersion);
-            var minVersion = new Version(_owmlManifest.MinGameVersion);
-            var maxVersion = new Version(_owmlManifest.MaxGameVersion);
-            if (!isValidFormat)
-            {
-                _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
-            }
-            if (!isValidFormat || gameVersion > maxVersion)
-            {
-                PotentiallyUnsupported();
-                return;
-            }
-            if (gameVersion < minVersion)
-            {
-                _writer.WriteLine("Unsupported game version found", MessageType.Error);
-                AnyKeyExitConsole();
-            }
-        }
-
-        private void AnyKeyExitConsole()
-        {
-            _writer.WriteLine("Press any key to exit...", MessageType.Info);
-            Console.ReadKey();
-            ExitConsole();
-        }
-
-        private void PotentiallyUnsupported()
-        {
-            _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
+            _versionHandler.CompareVersions();
         }
 
         private void CopyGameFiles()
@@ -133,21 +102,7 @@ namespace OWML.Launcher
                 var stateText = modData.Enabled ? "" : "(disabled)";
                 var type = modData.Enabled ? MessageType.Message : MessageType.Warning;
                 _writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}", type);
-
-                if (!string.IsNullOrEmpty(modData.Manifest.OWMLVersion) && !IsMadeForSameOwmlMajorVersion(modData.Manifest))
-                {
-                    _writer.WriteLine($"  Warning - Made for old version of OWML: v{modData.Manifest.OWMLVersion}", MessageType.Warning);
-                }
             }
-        }
-
-        private bool IsMadeForSameOwmlMajorVersion(IModManifest manifest)
-        {
-            var owmlVersionSplit = _owmlManifest.Version.Split('.');
-            var modVersionSplit = manifest.OWMLVersion.Split('.');
-            return owmlVersionSplit.Length == modVersionSplit.Length &&
-                   owmlVersionSplit[0] == modVersionSplit[0] &&
-                   owmlVersionSplit[1] == modVersionSplit[1];
         }
 
         private bool HasVrMod(List<IModData> mods)

@@ -6,19 +6,19 @@ using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {
-    public class VRFilePatcher
+    public class VRFilePatcher : IVRFilePatcher
     {
         private readonly IModConsole _writer;
-        private readonly BinaryPatcher _binaryPatcher;
+        private readonly IBinaryPatcher _binaryPatcher;
 
         private const string EnabledVRDevice = "OpenVR";
         private const int RemovedBytes = 2;
         // String that comes right before the bytes we want to patch.
         private const string PatchZoneText = "Assets/Scenes/PostCreditScene.unity";
         private const int PatchStartZoneOffset = 5;
-        private const int BuildSettingsSector = 10;//count from zero
+        private const int BuildSettingsSector = 10; // count from zero
 
-        public VRFilePatcher(IModConsole writer, BinaryPatcher binaryPatcher)
+        public VRFilePatcher(IModConsole writer, IBinaryPatcher binaryPatcher)
         {
             _writer = writer;
             _binaryPatcher = binaryPatcher;
@@ -27,7 +27,7 @@ namespace OWML.Patcher
         public void Patch()
         {
             var fileBytes = _binaryPatcher.ReadFileBytes();
-            var buildSettingsStartIndex = _binaryPatcher.GetSectorInfo(fileBytes, BuildSettingsSector).sectorStart;
+            var buildSettingsStartIndex = _binaryPatcher.GetSectorInfo(fileBytes, BuildSettingsSector).SectorStart;
 
             var buildSettingsBytes = _binaryPatcher.GetSectorBytes(fileBytes, BuildSettingsSector);
             var patchStartOffset = FindPatchStartOffset(buildSettingsBytes);

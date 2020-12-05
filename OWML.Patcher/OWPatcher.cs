@@ -10,7 +10,7 @@ using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {
-    public class OWPatcher
+    public class OWPatcher : IOWPatcher
     {
         private readonly IOwmlConfig _owmlConfig;
         private readonly IModConsole _writer;
