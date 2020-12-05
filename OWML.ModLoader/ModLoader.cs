@@ -31,7 +31,7 @@ namespace OWML.ModLoader
                 return;
             }
 
-            var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder(); // todo move?
 
             builder.RegisterInstance(owmlConfig).As<IOwmlConfig>();
             builder.RegisterInstance(owmlManifest).As<IModManifest>();

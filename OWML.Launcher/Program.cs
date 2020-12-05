@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
@@ -13,7 +14,7 @@ namespace OWML.Launcher
 {
     public class Program
     {
-        public static void Main(string[] args) // todo DI
+        public static void Main(string[] args)
         {
             var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
             var hasConsolePort = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
@@ -21,17 +22,27 @@ namespace OWML.Launcher
             SaveOwmlPath(owmlConfig);
             var owmlManifest = GetOwmlManifest();
             var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
-            var modFinder = new ModFinder(owmlConfig, consoleWriter);
-            var pathFinder = new PathFinder(owmlConfig, consoleWriter);
-            var owPatcher = new OWPatcher(owmlConfig, consoleWriter);
-            var binaryPatcher = new BinaryPatcher(owmlConfig, consoleWriter);
-            var vrFilePatcher = new VRFilePatcher(consoleWriter, binaryPatcher);
-            var vrPatcher = new VRPatcher(owmlConfig, binaryPatcher, vrFilePatcher);
-            var versionReader = new GameVersionReader(new BinaryPatcher(owmlConfig, consoleWriter));
-            var versionHandler = new GameVersionHandler(versionReader, consoleWriter, owmlManifest);
-            var app = new App(owmlConfig, owmlManifest, consoleWriter, modFinder,
-                pathFinder, owPatcher, vrPatcher, versionHandler);
 
+            var builder = new ContainerBuilder(); // todo move?
+
+            builder.RegisterInstance(owmlConfig).As<IOwmlConfig>();
+            builder.RegisterInstance(owmlManifest).As<IModManifest>();
+            builder.RegisterInstance(consoleWriter).As<IModConsole>();
+
+            builder.RegisterType<ModFinder>().As<IModFinder>();
+            builder.RegisterType<PathFinder>().As<IPathFinder>();
+            builder.RegisterType<OWPatcher>().As<IOWPatcher>();
+            builder.RegisterType<BinaryPatcher>().As<IBinaryPatcher>();
+            builder.RegisterType<VRFilePatcher>().As<IVRFilePatcher>();
+            builder.RegisterType<VRPatcher>().As<IVRPatcher>();
+            builder.RegisterType<GameVersionReader>().As<IGameVersionReader>();
+            builder.RegisterType<GameVersionHandler>().As<IGameVersionHandler>();
+
+            builder.RegisterType<App>();
+
+            var container = builder.Build();
+
+            var app = container.Resolve<App>();
             app.Run(args);
         }
 
