@@ -12,11 +12,11 @@ namespace OWML.ModHelper.Interaction
         private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
         private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
 
-        public ModInteraction(IList<IModBehaviour> list, IInterfaceProxyFactory proxyFactory, IModManifest manifest)
+        public ModInteraction(IList<IModBehaviour> modList, IInterfaceProxyFactory proxyFactory, IModManifest manifest)
         {
-            _modList = list;
             _manifest = manifest;
             _proxyFactory = proxyFactory;
+            _modList = modList;
             RegenerateDictionaries();
         }
 

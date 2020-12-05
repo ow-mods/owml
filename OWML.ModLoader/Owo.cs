@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Autofac;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
 using OWML.Common.Interfaces.Menus;
@@ -27,7 +28,6 @@ namespace OWML.ModLoader
         private readonly IUnityLogger _unityLogger;
         private readonly IModSocket _socket;
         private readonly IObjImporter _objImporter;
-
         private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(
@@ -122,21 +122,33 @@ namespace OWML.ModLoader
             }
         }
 
-        private IModHelper CreateModHelper(IModData modData) // todo DI
+        private IModHelper CreateModHelper(IModData modData)
         {
-            var logger = new ModLogger(_owmlConfig, modData.Manifest);
-            var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest, _socket);
-            var assets = new ModAssets(console, modData.Manifest, _objImporter);
-            var modStorage = new ModStorage(modData.Manifest);
-            var playerEvents = new ModPlayerEvents();
-            var sceneEvents = new ModSceneEvents();
-            var events = new ModEvents(logger, console, _harmonyHelper, playerEvents, sceneEvents);
-            var proxyFactory = new InterfaceProxyFactory();
-            var interaction = new ModInteraction(_modList, proxyFactory, modData.Manifest);
+            var builder = new ContainerBuilder(); // todo move?
 
-            return new ModHelper.ModHelper(logger, console, _harmonyHelper,
-                events, assets, modStorage, _menus, modData.Manifest, modData.Config,
-                _owmlConfig, _inputHandler, interaction);
+            builder.RegisterInstance(_owmlConfig).As<IOwmlConfig>();
+            builder.RegisterInstance(modData.Manifest).As<IModManifest>();
+            builder.RegisterInstance(modData.Config).As<IModConfig>();
+            builder.RegisterInstance(_socket).As<IModSocket>();
+            builder.RegisterInstance(_objImporter).As<IObjImporter>();
+            builder.RegisterInstance(_harmonyHelper).As<IHarmonyHelper>();
+            builder.RegisterInstance(_modList).As<IList<IModBehaviour>>();
+            builder.RegisterInstance(_menus).As<IModMenus>();
+            builder.RegisterInstance(_inputHandler).As<IModInputHandler>();
+
+            builder.RegisterType<ModLogger>().As<IModLogger>();
+            builder.RegisterType<ModSocketOutput>().As<IModConsole>();
+            builder.RegisterType<ModAssets>().As<IModAssets>();
+            builder.RegisterType<ModStorage>().As<IModStorage>();
+            builder.RegisterType<ModPlayerEvents>().As<IModPlayerEvents>();
+            builder.RegisterType<ModSceneEvents>().As<IModSceneEvents>();
+            builder.RegisterType<ModEvents>().As<IModEvents>();
+            builder.RegisterType<InterfaceProxyFactory>().As<IInterfaceProxyFactory>();
+            builder.RegisterType<ModInteraction>().As<IModInteraction>();
+            builder.RegisterType<ModHelper.ModHelper>().As<IModHelper>();
+            
+            var container = builder.Build();
+            return container.Resolve<IModHelper>();
         }
 
         private IModBehaviour InitializeMod(Type modType, IModHelper helper)
