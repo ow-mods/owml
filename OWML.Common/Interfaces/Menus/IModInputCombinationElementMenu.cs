@@ -10,6 +10,8 @@ namespace OWML.Common.Interfaces.Menus
 
         void Initialize(PopupInputMenu combinationMenu);
 
+        void Init(IModPopupManager popupManager);
+
         void Open(string value, string comboName, IModInputCombinationMenu combinationMenu, IModInputCombinationElement element);
 
         IModInputCombinationElementMenu Copy();

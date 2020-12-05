@@ -58,7 +58,10 @@ namespace OWML.ModLoader
             var mainMenu = new ModMainMenu();
             var pauseMenu = new ModPauseMenu();
             var modsMenu = new ModsMenu(owmlMenu, inputHandler, events, owmlStorage);
-            var popupManager = new ModPopupManager(inputHandler, events);
+            var inputMenu = new ModInputMenu();
+            var messagePopup = new ModMessagePopup();
+            var inputComboElementMenu = new ModInputCombinationElementMenu(inputHandler);
+            var popupManager = new ModPopupManager(events, inputMenu, messagePopup, inputComboElementMenu);
             var inputComboMenu = new ModInputCombinationMenu();
             var menus = new ModMenus(events, mainMenu, pauseMenu, modsMenu, popupManager, inputComboMenu);
             var objImporter = new ObjImporter();

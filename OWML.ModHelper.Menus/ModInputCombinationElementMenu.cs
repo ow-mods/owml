@@ -15,22 +15,22 @@ namespace OWML.ModHelper.Menus
     public class ModInputCombinationElementMenu : ModTemporaryPopup, IModInputCombinationElementMenu
     {
         public event Action<string> OnConfirm;
-        public IModMessagePopup MessagePopup { get; }
+
+        public IModMessagePopup MessagePopup { get; } = new ModMessagePopup(); // todo remove?
 
         private readonly IModInputHandler _inputHandler;
-        private readonly IModPopupManager _popupManager;
+
+        private IModPopupManager _popupManager;
+        private IModInputCombinationMenu _combinationMenu;
+        private IModInputCombinationElement _element;
 
         private ModInputCombinationPopup _inputMenu;
         private SingleAxisCommand _cancelCommand;
         private string _comboName;
-        private IModInputCombinationMenu _combinationMenu;
-        private IModInputCombinationElement _element;
 
-        public ModInputCombinationElementMenu(IModInputHandler inputHandler, IModPopupManager popupManager)
+        public ModInputCombinationElementMenu(IModInputHandler inputHandler)
         {
-            MessagePopup = new ModMessagePopup();
             _inputHandler = inputHandler;
-            _popupManager = popupManager;
         }
 
         private GameObject CreateResetButton(Transform buttonsTransform)
@@ -78,6 +78,7 @@ namespace OWML.ModHelper.Menus
             {
                 return;
             }
+
             var menuTransform = menu.GetComponentInChildren<VerticalLayoutGroup>(true).transform; // InputFieldElements
             var buttonsTransform = menuTransform.GetComponentInChildren<HorizontalLayoutGroup>(true).transform;
 
@@ -120,6 +121,11 @@ namespace OWML.ModHelper.Menus
             base.Initialize(_inputMenu);
         }
 
+        public void Init(IModPopupManager popupManager)
+        {
+            _popupManager = popupManager;
+        }
+
         public void Open(string value, string comboName, IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
         {
             _combinationMenu = combinationMenu;
@@ -159,8 +165,9 @@ namespace OWML.ModHelper.Menus
         public IModInputCombinationElementMenu Copy()
         {
             var newPopupObject = CopyMenu();
-            var newPopup = new ModInputCombinationElementMenu(_inputHandler, _popupManager);
+            var newPopup = new ModInputCombinationElementMenu(_inputHandler);
             newPopup.Initialize(newPopupObject.GetComponent<ModInputCombinationPopup>());
+            newPopup.Init(_popupManager);
             return newPopup;
         }
 
