@@ -11,6 +11,7 @@ namespace OWML.ModLoader
     public class ModFinder : IModFinder
     {
         private readonly IOwmlConfig _config;
+
         private readonly IModConsole _console;
 
         public ModFinder(IOwmlConfig config, IModConsole console)
@@ -32,18 +33,18 @@ namespace OWML.ModLoader
             {
                 var manifest = JsonHelper.LoadJsonObject<ModManifest>(manifestFilename);
                 manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName));
-                var modData = GetModData(manifest);
+                var modData = InitModData(manifest);
                 mods.Add(modData);
             }
             return mods;
         }
 
-        private IModData GetModData(IModManifest manifest)
+        private IModData InitModData(IModManifest manifest)
         {
             var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
             var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName);
-            return new ModData(manifest, config, defaultConfig);
+            return new ModData(manifest, config, defaultConfig, storage);
         }
     }
 }

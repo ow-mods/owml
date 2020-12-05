@@ -5,7 +5,7 @@ using OWML.Common.Interfaces;
 
 namespace OWML.ModLoader
 {
-    public class ModSorter
+    public class ModSorter : IModSorter
     {
         private readonly IModConsole _console;
 

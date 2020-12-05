@@ -47,11 +47,13 @@
     <Compile Include="Interfaces\IModPlayerEvents.cs" />
     <Compile Include="Interfaces\IModSceneEvents.cs" />
     <Compile Include="Interfaces\IModSocket.cs" />
+    <Compile Include="Interfaces\IModSorter.cs" />
     <Compile Include="Interfaces\IModUnityEvents.cs" />
     <Compile Include="Interfaces\IModSocketMessage.cs" />
     <Compile Include="Interfaces\IOWPatcher.cs" />
     <Compile Include="Interfaces\IPathFinder.cs" />
     <Compile Include="Interfaces\ISectorInfo.cs" />
+    <Compile Include="Interfaces\IUnityLogger.cs" />
     <Compile Include="Interfaces\IVRFilePatcher.cs" />
     <Compile Include="Interfaces\IVRPatcher.cs" />
     <Compile Include="Interfaces\Menus\IModPopupManager.cs" />

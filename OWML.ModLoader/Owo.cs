@@ -22,17 +22,24 @@ namespace OWML.ModLoader
         private readonly IModMenus _menus;
         private readonly IHarmonyHelper _harmonyHelper;
         private readonly IModInputHandler _inputHandler;
-        private readonly ModSorter _sorter;
-        private readonly string _logFileName;
-        private readonly UnityLogger _unityLogger;
+        private readonly IModSorter _sorter;
+        private readonly IUnityLogger _unityLogger;
         private readonly IModSocket _socket;
 
-        private readonly List<IModBehaviour> _modList = new List<IModBehaviour>();
+        private readonly string _logFileName;
+        private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
-        public Owo(IModFinder modFinder, IModLogger logger,
-            IOwmlConfig owmlConfig, IModMenus menus, IHarmonyHelper harmonyHelper,
-            IModInputHandler inputHandler, ModSorter sorter, string logFileName,
-            UnityLogger unityLogger, IModSocket socket)
+        public Owo(
+            IModFinder modFinder, 
+            IModLogger logger,
+            IOwmlConfig owmlConfig, 
+            IModMenus menus, 
+            IHarmonyHelper harmonyHelper,
+            IModInputHandler inputHandler,
+            IModSorter sorter,
+            IUnityLogger unityLogger, 
+            IModSocket socket,
+            string logFileName)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -41,9 +48,9 @@ namespace OWML.ModLoader
             _harmonyHelper = harmonyHelper;
             _inputHandler = inputHandler;
             _sorter = sorter;
-            _logFileName = logFileName;
             _unityLogger = unityLogger;
             _socket = socket;
+            _logFileName = logFileName;
         }
 
         public void LoadMods()
@@ -115,11 +122,11 @@ namespace OWML.ModLoader
             var logger = new ModLogger(_owmlConfig, modData.Manifest, _logFileName);
             var console = new ModSocketOutput(_owmlConfig, logger, modData.Manifest, _socket);
             var assets = new ModAssets(console, modData.Manifest);
-            var storage = new ModStorage(modData.Manifest);
+            var modStorage = new ModStorage(modData.Manifest);
             var events = new ModEvents(logger, console, _harmonyHelper);
             var interaction = new ModInteraction(_modList, new InterfaceProxyFactory(), modData.Manifest);
             return new ModHelper.ModHelper(logger, console, _harmonyHelper,
-                events, assets, storage, _menus, modData.Manifest, modData.Config,
+                events, assets, modStorage, _menus, modData.Manifest, modData.Config,
                 _owmlConfig, _inputHandler, interaction);
         }
 

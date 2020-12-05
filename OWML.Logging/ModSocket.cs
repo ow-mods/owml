@@ -11,8 +11,9 @@ namespace OWML.Logging
 {
     public class ModSocket : IModSocket
     {
+        private const int CloseWaitSeconds = 1;
+
         private readonly Socket _socket;
-        private const int _closeWaitSeconds = 1;
 
         public ModSocket(int port)
         {
@@ -35,7 +36,7 @@ namespace OWML.Logging
 
         public void Close()
         {
-            Thread.Sleep(TimeSpan.FromSeconds(_closeWaitSeconds));
+            Thread.Sleep(TimeSpan.FromSeconds(CloseWaitSeconds));
             _socket.Close();
         }
     }

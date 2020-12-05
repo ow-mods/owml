@@ -21,18 +21,20 @@ namespace OWML.ModHelper.Menus
         private readonly IModInputHandler _inputHandler;
         private readonly List<IModConfigMenu> _modConfigMenus = new List<IModConfigMenu>();
         private readonly IModEvents _events;
+        private readonly IModStorage _storage;
 
-        public ModsMenu(IModMenus menus, IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events)
+        public ModsMenu(IModMenus menus, IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events, IModStorage storage)
         {
             OwmlMenu = owmlMenu;
             _menus = menus;
             _inputHandler = inputHandler;
             _events = events;
+            _storage = storage;
         }
 
         public void AddMod(IModData modData, IModBehaviour mod)
         {
-            _modConfigMenus.Add(new ModConfigMenu(modData, mod));
+            _modConfigMenus.Add(new ModConfigMenu(modData, mod, _storage));
         }
 
         public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)

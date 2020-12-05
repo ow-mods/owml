@@ -22,6 +22,5 @@ namespace OWML.ModHelper
             var path = _manifest.ModFolderPath + filename;
             JsonHelper.SaveJsonObject(path, obj);
         }
-
     }
 }

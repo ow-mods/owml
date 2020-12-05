@@ -11,9 +11,13 @@ namespace OWML.ModLoader
     public class ModData : IModData
     {
         public IModManifest Manifest { get; }
+
         public IModConfig Config { get; private set; }
-        public IModConfig DefaultConfig { get; private set; }
+
+        public IModConfig DefaultConfig { get; }
+
         public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
+
         public bool RequireVR => Manifest.RequireVR;
 
         public bool Enabled => Config != null && Config.Enabled ||
@@ -21,11 +25,15 @@ namespace OWML.ModLoader
 
         private IModConfig _configSnapshot;
 
-        public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig)
+        private readonly IModStorage _storage;
+
+
+        public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModStorage storage)
         {
             Manifest = manifest;
             Config = config;
             DefaultConfig = defaultConfig ?? new ModConfig();
+            _storage = storage;
             UpdateSnapshot();
         }
 
@@ -42,7 +50,6 @@ namespace OWML.ModLoader
         public bool FixConfigs()
         {
             var settingsChanged = false;
-            var storage = new ModStorage(Manifest);
             if (Config == null)
             {
                 Config = DefaultConfig.Copy();
@@ -51,7 +58,7 @@ namespace OWML.ModLoader
             {
                 settingsChanged = !MakeConfigConsistentWithDefault();
             }
-            storage.Save(Config, Constants.ModConfigFileName);
+            _storage.Save(Config, Constants.ModConfigFileName);
             UpdateSnapshot();
             return settingsChanged;
         }

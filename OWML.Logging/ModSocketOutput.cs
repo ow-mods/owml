@@ -75,7 +75,7 @@ namespace OWML.Logging
                     Message = $"Error while getting calling type : {ex.Message}"
                 };
                 _socket.WriteToSocket(message);
-                return "";
+                return string.Empty;
             }
         }
 

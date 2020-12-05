@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OWML.Logging
 {
-    public class UnityLogger
+    public class UnityLogger : IUnityLogger
     {
         private readonly LogType[] _relevantTypes = {
             LogType.Error,

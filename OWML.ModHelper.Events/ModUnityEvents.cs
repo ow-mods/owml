@@ -8,7 +8,9 @@ namespace OWML.ModHelper.Events
     public class ModUnityEvents : MonoBehaviour, IModUnityEvents
     {
         public event Action OnUpdate;
+
         public event Action OnFixedUpdate;
+
         public event Action OnLateUpdate;
 
         public void FireOnNextUpdate(Action action)

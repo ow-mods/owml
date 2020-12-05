@@ -16,6 +16,7 @@ namespace OWML.ModHelper.Input
         public event Action<SingleAxisCommand> OnHeld;
 
         public float MinimalPressDuration { get; set; } = 0.1f;
+
         public float MaximalTapDuration { get; set; } = 0.1f;
 
         private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();

@@ -21,12 +21,13 @@ namespace OWML.ModHelper.Menus
         private IModNumberInput _numberInputTemplate;
 
         protected abstract void AddInputs();
+
         protected abstract void UpdateUIValues();
 
-        protected ModConfigMenuBase(IModManifest manifest)
+        protected ModConfigMenuBase(IModManifest manifest, IModStorage storage)
         {
             Manifest = manifest;
-            Storage = new ModStorage(manifest);
+            Storage = storage;
         }
 
         public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,

@@ -10,7 +10,9 @@ namespace OWML.ModHelper.Events
     public class ModEvents : IModEvents
     {
         public IModPlayerEvents Player { get; }
+
         public IModSceneEvents Scenes { get; }
+
         public IModUnityEvents Unity { get; }
 
         public event Action<MonoBehaviour, Common.Enums.Events> Event;
@@ -19,10 +21,13 @@ namespace OWML.ModHelper.Events
         public Action<MonoBehaviour, Common.Enums.Events> OnEvent { get; set; }
 
         private static readonly List<KeyValuePair<Type, Common.Enums.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Enums.Events>>();
+
         private readonly List<KeyValuePair<Type, Common.Enums.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Enums.Events>>();
 
         private readonly IHarmonyHelper _harmonyHelper;
+
         private readonly IModConsole _console;
+
         private readonly IModLogger _logger;
 
         public ModEvents(IModLogger logger, IModConsole console, IHarmonyHelper harmonyHelper)

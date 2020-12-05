@@ -10,7 +10,8 @@ namespace OWML.ModHelper.Menus
         private readonly IOwmlConfig _config;
         private readonly IOwmlConfig _defaultConfig;
 
-        public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IOwmlConfig defaultConfig) : base(manifest)
+        public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IOwmlConfig defaultConfig, IModStorage storage) 
+            : base(manifest, storage)
         {
             _config = config;
             _defaultConfig = defaultConfig;

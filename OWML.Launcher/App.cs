@@ -21,8 +21,15 @@ namespace OWML.Launcher
         private readonly IVRPatcher _vrPatcher;
         private readonly IGameVersionHandler _versionHandler;
 
-        public App(IOwmlConfig owmlConfig, IModManifest owmlManifest, IModConsole writer, IModFinder modFinder,
-            IPathFinder pathFinder, IOWPatcher owPatcher, IVRPatcher vrPatcher, IGameVersionHandler versionHandler)
+        public App(
+            IOwmlConfig owmlConfig,
+            IModManifest owmlManifest,
+            IModConsole writer,
+            IModFinder modFinder,
+            IPathFinder pathFinder,
+            IOWPatcher owPatcher,
+            IVRPatcher vrPatcher,
+            IGameVersionHandler versionHandler)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
