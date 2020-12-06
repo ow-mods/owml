@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
@@ -19,7 +20,7 @@ namespace OWML.ModLoader
             _console = console;
         }
 
-        public List<IModData> GetMods()
+        public IList<IModData> GetMods()
         {
             if (!Directory.Exists(_config.ModsPath))
             {
@@ -28,17 +29,15 @@ namespace OWML.ModLoader
             }
 
             var manifestFilenames = Directory.GetFiles(_config.ModsPath, Constants.ModManifestFileName, SearchOption.AllDirectories);
-            var mods = new List<IModData>();
 
-            foreach (var manifestFilename in manifestFilenames)
-            {
-                var manifest = JsonHelper.LoadJsonObject<ModManifest>(manifestFilename);
-                manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName));
-                var modData = InitModData(manifest);
-                mods.Add(modData);
-            }
+            return manifestFilenames.Select(GetMod).ToList();
+        }
 
-            return mods;
+        private IModData GetMod(string manifestFilename)
+        {
+            var manifest = JsonHelper.LoadJsonObject<ModManifest>(manifestFilename);
+            manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName));
+            return InitModData(manifest);
         }
 
         private IModData InitModData(IModManifest manifest) // todo DI?

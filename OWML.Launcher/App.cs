@@ -103,13 +103,14 @@ namespace OWML.Launcher
             _writer.WriteLine("Game files copied.");
         }
 
-        private void ShowModList(List<IModData> mods)
+        private void ShowModList(IList<IModData> mods)
         {
             if (!mods.Any())
             {
                 _writer.WriteLine("Warning - No mods found.", MessageType.Warning);
                 return;
             }
+
             _writer.WriteLine("Found mods:");
             foreach (var modData in mods)
             {
@@ -119,7 +120,7 @@ namespace OWML.Launcher
             }
         }
 
-        private bool HasVrMod(List<IModData> mods)
+        private bool HasVrMod(IList<IModData> mods)
         {
             var vrMod = mods.FirstOrDefault(x => x.RequireVR && x.Enabled);
             var hasVrMod = vrMod != null;
@@ -127,7 +128,7 @@ namespace OWML.Launcher
             return hasVrMod;
         }
 
-        private void PatchGame(List<IModData> mods)
+        private void PatchGame(IList<IModData> mods)
         {
             _owPatcher.PatchGame();
 
