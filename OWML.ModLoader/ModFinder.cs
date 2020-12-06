@@ -41,7 +41,7 @@ namespace OWML.ModLoader
             return mods;
         }
 
-        private IModData InitModData(IModManifest manifest) // todo DI
+        private IModData InitModData(IModManifest manifest) // todo DI?
         {
             var storage = new ModStorage(manifest);
             var config = storage.Load<ModConfig>(Constants.ModConfigFileName);

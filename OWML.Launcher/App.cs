@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using OWML.Common;
@@ -20,6 +19,8 @@ namespace OWML.Launcher
         private readonly IOWPatcher _owPatcher;
         private readonly IVRPatcher _vrPatcher;
         private readonly IGameVersionHandler _versionHandler;
+        private readonly IProcessHelper _processHelper;
+        private readonly IArgumentHelper _argumentHelper;
 
         public App(
             IOwmlConfig owmlConfig,
@@ -29,7 +30,9 @@ namespace OWML.Launcher
             IPathFinder pathFinder,
             IOWPatcher owPatcher,
             IVRPatcher vrPatcher,
-            IGameVersionHandler versionHandler)
+            IGameVersionHandler versionHandler,
+            IProcessHelper processHelper,
+            IArgumentHelper argumentHelper)
         {
             _owmlConfig = owmlConfig;
             _owmlManifest = owmlManifest;
@@ -39,6 +42,8 @@ namespace OWML.Launcher
             _owPatcher = owPatcher;
             _vrPatcher = vrPatcher;
             _versionHandler = versionHandler;
+            _processHelper = processHelper;
+            _argumentHelper = argumentHelper;
         }
 
         public void Run(string[] args)
@@ -61,10 +66,11 @@ namespace OWML.Launcher
 
             StartGame(args);
 
-            var hasPortArgument = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
+            var hasPortArgument = _argumentHelper.HasArgument(Constants.ConsolePortArgument);
             if (hasPortArgument)
             {
                 ExitConsole();
+                return;
             }
 
             Console.ReadLine();
@@ -141,7 +147,7 @@ namespace OWML.Launcher
 
             if (args.Contains("-consolePort"))
             {
-                var index = Array.IndexOf(args, "-consolePort");
+                var index = Array.IndexOf(args, "-consolePort"); // todo move into ArgumentHelper (Remove...)
                 var list = new List<string>(args);
                 list.RemoveRange(index, 2);
                 args = list.ToArray();
@@ -149,7 +155,7 @@ namespace OWML.Launcher
 
             try
             {
-                Process.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", string.Join(" ", args));
+                _processHelper.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", args);
             }
             catch (Exception ex)
             {
@@ -159,7 +165,8 @@ namespace OWML.Launcher
 
         private void ExitConsole()
         {
-            Environment.Exit(0);
+            _processHelper.KillCurrentProcess();
+            //Environment.Exit(0); todo
         }
 
         private void CreateLogsDirectory()

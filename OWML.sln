@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder", "OWML.Gam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Logging", "OWML.Logging\OWML.Logging.csproj", "{6F14D39C-5747-4149-BE4D-365B43918A0A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5F23B5A9-FEFC-4016-9A00-5DDE76798B85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Launcher.Tests", "test\OWML.Launcher.Tests\OWML.Launcher.Tests.csproj", "{04A652D4-416F-4538-9795-8AD10C09A940}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +105,10 @@ Global
 		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F14D39C-5747-4149-BE4D-365B43918A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A652D4-416F-4538-9795-8AD10C09A940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A652D4-416F-4538-9795-8AD10C09A940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A652D4-416F-4538-9795-8AD10C09A940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A652D4-416F-4538-9795-8AD10C09A940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +116,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6155732E-89B0-4D1E-A76B-229C056AE1E9} = {D5C426B0-14D9-48F7-90AA-257E2A074B97}
 		{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6} = {D5C426B0-14D9-48F7-90AA-257E2A074B97}
+		{04A652D4-416F-4538-9795-8AD10C09A940} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}

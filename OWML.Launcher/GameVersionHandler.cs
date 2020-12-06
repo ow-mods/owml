@@ -1,17 +1,16 @@
 ﻿using System;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
-using OWML.Patcher;
 
 namespace OWML.Launcher
 {
     public class GameVersionHandler : IGameVersionHandler
     {
-        private readonly GameVersionReader _versionReader;
+        private readonly IGameVersionReader _versionReader;
         private readonly IModConsole _writer;
         private readonly IModManifest _owmlManifest;
 
-        public GameVersionHandler(GameVersionReader versionReader, IModConsole writer, IModManifest owmlManifest)
+        public GameVersionHandler(IGameVersionReader versionReader, IModConsole writer, IModManifest owmlManifest)
         {
             _versionReader = versionReader;
             _writer = writer;

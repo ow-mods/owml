@@ -14,17 +14,21 @@ namespace OWML.Logging
         private const int CloseWaitSeconds = 1;
 
         private readonly Socket _socket;
+        private readonly IOwmlConfig _config;
 
         public ModSocket(IOwmlConfig config)
         {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            var ipAddress = IPAddress.Parse(Constants.LocalAddress);
-            var endPoint = new IPEndPoint(ipAddress, config.SocketPort);
-            _socket.Connect(endPoint);
+            _config = config;
         }
 
         public void WriteToSocket(IModSocketMessage message)
         {
+            if (!_socket.Connected)
+            {
+                Connect();
+            }
+
             var json = JsonConvert.SerializeObject(message);
             var bytes = Encoding.UTF8.GetBytes(json + Environment.NewLine);
             try
@@ -38,6 +42,13 @@ namespace OWML.Logging
         {
             Thread.Sleep(TimeSpan.FromSeconds(CloseWaitSeconds));
             _socket.Close();
+        }
+
+        private void Connect()
+        {
+            var ipAddress = IPAddress.Parse(Constants.LocalAddress);
+            var endPoint = new IPEndPoint(ipAddress, _config.SocketPort);
+            _socket.Connect(endPoint);
         }
     }
 }

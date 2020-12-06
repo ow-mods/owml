@@ -48,12 +48,12 @@ namespace OWML.ModHelper.Input
             _commands.Where(x => x.IsPressed()).ToList().ForEach(x => x.BlockNextRelease());
         }
 
-        private void Start()
+        public void Start()
         {
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Update()
+        public void Update()
         {
             foreach (var command in _toRemove)
             {

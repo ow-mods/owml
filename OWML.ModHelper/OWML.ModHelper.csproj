@@ -72,7 +72,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineArguments.cs" />
     <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="ModBehaviour.cs" />

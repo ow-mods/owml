@@ -4,7 +4,7 @@ namespace OWML.ModHelper
 {
     public class DontDestroyOnLoad : MonoBehaviour
     {
-        private void Start()
+        public void Start()
         {
             DontDestroyOnLoad(gameObject);
         }

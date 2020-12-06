@@ -3,6 +3,7 @@
     public interface IModSocket
     {
         void WriteToSocket(IModSocketMessage message);
+
         void Close();
     }
 }

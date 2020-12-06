@@ -43,25 +43,24 @@ namespace OWML.ModHelper.Events
             action();
         }
 
-        private void Start()
+        public void Start()
         {
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Update()
+        public void Update()
         {
             OnUpdate?.Invoke();
         }
 
-        private void FixedUpdate()
+        public void FixedUpdate()
         {
             OnFixedUpdate?.Invoke();
         }
 
-        private void LateUpdate()
+        public void LateUpdate()
         {
             OnLateUpdate?.Invoke();
         }
-
     }
 }

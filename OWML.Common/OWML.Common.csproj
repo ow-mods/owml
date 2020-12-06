@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Enums\Events.cs" />
+    <Compile Include="Interfaces\IArgumentHelper.cs" />
     <Compile Include="Interfaces\IBinaryPatcher.cs" />
     <Compile Include="Interfaces\IGameVersionHandler.cs" />
     <Compile Include="Interfaces\IGameVersionReader.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Interfaces\IObjImporter.cs" />
     <Compile Include="Interfaces\IOWPatcher.cs" />
     <Compile Include="Interfaces\IPathFinder.cs" />
+    <Compile Include="Interfaces\IProcessHelper.cs" />
     <Compile Include="Interfaces\ISectorInfo.cs" />
     <Compile Include="Interfaces\IUnityLogger.cs" />
     <Compile Include="Interfaces\IVRFilePatcher.cs" />

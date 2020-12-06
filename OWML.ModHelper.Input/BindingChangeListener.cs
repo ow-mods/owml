@@ -23,7 +23,7 @@ namespace OWML.ModHelper.Input
             }
         }
 
-        private void Start()
+        public void Start()
         {
             DontDestroyOnLoad(gameObject);
             GlobalMessenger.AddListener("KeyBindingsChanged", PrepareForUpdate);
@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Input
             _updateInputsNext = true;
         }
 
-        private void Update()
+        public void Update()
         {
             if (_updateInputs)
             {

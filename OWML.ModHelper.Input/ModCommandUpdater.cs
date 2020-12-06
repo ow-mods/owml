@@ -11,12 +11,12 @@ namespace OWML.ModHelper.Input
             _command = command;
         }
 
-        private void Start()
+        public void Start()
         {
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Update()
+        public void Update()
         {
             _command?.UpdateInputCommand();
         }

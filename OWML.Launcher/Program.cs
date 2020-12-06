@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
@@ -16,41 +15,43 @@ namespace OWML.Launcher
     {
         public static void Main(string[] args)
         {
-            var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
-            var hasConsolePort = CommandLineArguments.HasArgument(Constants.ConsolePortArgument);
-            SaveConsolePort(owmlConfig, hasConsolePort);
-            SaveOwmlPath(owmlConfig);
-            var owmlManifest = GetOwmlManifest();
-            var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
-
-            var builder = new ContainerBuilder(); // todo move?
-
-            builder.RegisterInstance(owmlConfig).As<IOwmlConfig>();
-            builder.RegisterInstance(owmlManifest).As<IModManifest>();
-            builder.RegisterInstance(consoleWriter).As<IModConsole>();
-
-            builder.RegisterType<ModFinder>().As<IModFinder>();
-            builder.RegisterType<PathFinder>().As<IPathFinder>();
-            builder.RegisterType<OWPatcher>().As<IOWPatcher>();
-            builder.RegisterType<BinaryPatcher>().As<IBinaryPatcher>();
-            builder.RegisterType<VRFilePatcher>().As<IVRFilePatcher>();
-            builder.RegisterType<VRPatcher>().As<IVRPatcher>();
-            builder.RegisterType<GameVersionReader>().As<IGameVersionReader>();
-            builder.RegisterType<GameVersionHandler>().As<IGameVersionHandler>();
-
-            builder.RegisterType<App>();
-
-            var container = builder.Build();
-
+            var container = CreateContainer(args);
             var app = container.Resolve<App>();
             app.Run(args);
         }
 
-        private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort)
+        public static Container CreateContainer(string[] args)
+        {
+            var owmlConfig = GetOwmlConfig() ?? CreateOwmlConfig();
+            var argumentHelper = new ArgumentHelper(args);
+            var hasConsolePort = argumentHelper.HasArgument(Constants.ConsolePortArgument);
+            SaveConsolePort(owmlConfig, hasConsolePort, argumentHelper);
+            SaveOwmlPath(owmlConfig);
+            var owmlManifest = GetOwmlManifest();
+            var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
+
+            return new Container() // todo consolidate version?
+                .Register(owmlConfig)
+                .Register(owmlManifest)
+                .Register(consoleWriter)
+                .Register<IArgumentHelper>(argumentHelper)
+                .Register<IModFinder, ModFinder>()
+                .Register<IPathFinder, PathFinder>()
+                .Register<IOWPatcher, OWPatcher>()
+                .Register<IBinaryPatcher, BinaryPatcher>()
+                .Register<IVRFilePatcher, VRFilePatcher>()
+                .Register<IVRPatcher, VRPatcher>()
+                .Register<IGameVersionReader, GameVersionReader>()
+                .Register<IGameVersionHandler, GameVersionHandler>()
+                .Register<IProcessHelper, ProcessHelper>()
+                .Register<App>(); // todo need interface?
+        }
+
+        private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort, ArgumentHelper argumentHelper)
         {
             if (hasConsolePort)
             {
-                var argument = CommandLineArguments.GetArgument(Constants.ConsolePortArgument);
+                var argument = argumentHelper.GetArgument(Constants.ConsolePortArgument);
                 if (!int.TryParse(argument, out var port))
                 {
                     ConsoleUtils.WriteByType(MessageType.Error, "Error - Bad port.");
@@ -91,9 +92,8 @@ namespace OWML.Launcher
         private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
         {
             return hasConsolePort
-                ? new ModSocketOutput(owmlConfig, null, owmlManifest, new ModSocket(owmlConfig))
+                ? new ModSocketOutput(owmlConfig, null, owmlManifest, new ModSocket(owmlConfig), new ProcessHelper()) // todo container?
                 : (IModConsole)new OutputWriter();
         }
-
     }
 }

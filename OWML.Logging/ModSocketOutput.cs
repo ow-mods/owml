@@ -10,11 +10,13 @@ namespace OWML.Logging
     public class ModSocketOutput : ModConsole
     {
         private readonly IModSocket _socket;
+        private readonly IProcessHelper _processHelper;
 
-        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest, IModSocket socket)
+        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest, IModSocket socket, IProcessHelper processHelper)
             : base(config, logger, manifest)
         {
             _socket = socket;
+            _processHelper = processHelper;
         }
 
         [Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
@@ -47,7 +49,7 @@ namespace OWML.Logging
             };
             _socket.WriteToSocket(message);
 
-            if (message.Type == MessageType.Fatal)
+            if (type == MessageType.Fatal)
             {
                 KillProcess();
             }
@@ -56,7 +58,7 @@ namespace OWML.Logging
         private void KillProcess()
         {
             _socket.Close();
-            Process.GetCurrentProcess().Kill();
+            _processHelper.KillCurrentProcess();
         }
 
         private string GetCallingType(StackTrace frame)

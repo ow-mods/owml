@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Assets
             Loaded?.Invoke(asset);
         }
 
-        private void Start()
+        public void Start()
         {
             DontDestroyOnLoad(gameObject);
         }
@@ -29,6 +29,5 @@ namespace OWML.ModHelper.Assets
         {
             return gameObject.AddComponent<T1>();
         }
-
     }
 }
