@@ -90,6 +90,10 @@
       <Project>{9c09f86b-0c03-4630-8424-b939d3c632d0}</Project>
       <Name>OWML.Launcher</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OWML.Utils\OWML.Utils.csproj">
+      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
+      <Name>OWML.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

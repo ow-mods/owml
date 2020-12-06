@@ -1,5 +1,4 @@
-﻿using Autofac;
-using OWML.Common;
+﻿using OWML.Common;
 using OWML.Common.Interfaces;
 using OWML.Common.Interfaces.Menus;
 using OWML.ModHelper;
@@ -10,6 +9,7 @@ using UnityEngine;
 using OWML.Common.Models;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
+using OWML.Utils;
 
 namespace OWML.ModLoader
 {
@@ -31,40 +31,37 @@ namespace OWML.ModLoader
                 return;
             }
 
-            var builder = new ContainerBuilder(); // todo move?
+            var owo = new Container()
+                .Register<IOwmlConfig>(owmlConfig)
+                .Register<IModManifest>(owmlManifest)
+                .Register<IModLogger, ModLogger>()
+                .Register<IModSocket, ModSocket>()
+                .Register<IUnityLogger, UnityLogger>()
+                .Register<IModConsole, ModSocketOutput>()
+                .Register<IModSorter, ModSorter>()
+                .Register<IModFinder, ModFinder>()
+                .Register<IHarmonyHelper, HarmonyHelper>()
+                .Register<IModPlayerEvents, ModPlayerEvents>()
+                .Register<IHarmonyHelper, HarmonyHelper>()
+                .Register<IModSceneEvents, ModSceneEvents>()
+                .Register<IModEvents, ModEvents>()
+                .Register<IModInputHandler, ModInputHandler>()
+                .Register<IHarmonyHelper, HarmonyHelper>()
+                .Register<IModStorage, ModStorage>()
+                .Register<IModConfigMenuBase, OwmlConfigMenu>()
+                .Register<IModMainMenu, ModMainMenu>()
+                .Register<IModPauseMenu, ModPauseMenu>()
+                .Register<IModsMenu, ModsMenu>()
+                .Register<IModInputMenu, ModInputMenu>()
+                .Register<IModMessagePopup, ModMessagePopup>()
+                .Register<IModInputCombinationElementMenu, ModInputCombinationElementMenu>()
+                .Register<IModPopupManager, ModPopupManager>()
+                .Register<IModInputCombinationMenu, ModInputCombinationMenu>()
+                .Register<IModMenus, ModMenus>()
+                .Register<IObjImporter, ObjImporter>()
+                .Register<Owo>()
+                .Resolve<Owo>();
 
-            builder.RegisterInstance(owmlConfig).As<IOwmlConfig>();
-            builder.RegisterInstance(owmlManifest).As<IModManifest>();
-
-            builder.RegisterType<ModLogger>().As<IModLogger>();
-            builder.RegisterType<ModSocket>().As<IModSocket>();
-            builder.RegisterType<UnityLogger>().As<IUnityLogger>();
-            builder.RegisterType<ModSocketOutput>().As<IModConsole>();
-            builder.RegisterType<ModSorter>().As<IModSorter>();
-            builder.RegisterType<ModFinder>().As<IModFinder>();
-            builder.RegisterType<HarmonyHelper>().As<IHarmonyHelper>();
-            builder.RegisterType<ModPlayerEvents>().As<IModPlayerEvents>();
-            builder.RegisterType<ModSceneEvents>().As<IModSceneEvents>();
-            builder.RegisterType<ModEvents>().As<IModEvents>();
-            builder.RegisterType<ModInputHandler>().As<IModInputHandler>();
-            builder.RegisterType<ModStorage>().As<IModStorage>();
-            builder.RegisterType<OwmlConfigMenu>().As<IModConfigMenuBase>();
-            builder.RegisterType<ModMainMenu>().As<IModMainMenu>();
-            builder.RegisterType<ModPauseMenu>().As<IModPauseMenu>();
-            builder.RegisterType<ModsMenu>().As<IModsMenu>();
-            builder.RegisterType<ModInputMenu>().As<IModInputMenu>();
-            builder.RegisterType<ModMessagePopup>().As<IModMessagePopup>();
-            builder.RegisterType<ModInputCombinationElementMenu>().As<IModInputCombinationElementMenu>();
-            builder.RegisterType<ModPopupManager>().As<IModPopupManager>();
-            builder.RegisterType<ModInputCombinationMenu>().As<IModInputCombinationMenu>();
-            builder.RegisterType<ModMenus>().As<IModMenus>();
-            builder.RegisterType<ObjImporter>().As<IObjImporter>();
-
-            builder.RegisterType<Owo>(); // todo need interface?
-
-            var container = builder.Build();
-
-            var owo = container.Resolve<Owo>();
             owo.LoadMods();
         }
     }

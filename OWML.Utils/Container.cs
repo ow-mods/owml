@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace OWML.Launcher
+namespace OWML.Utils
 {
     public class Container
     {

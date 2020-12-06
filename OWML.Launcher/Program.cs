@@ -8,6 +8,7 @@ using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
+using OWML.Utils;
 
 namespace OWML.Launcher
 {
@@ -30,7 +31,7 @@ namespace OWML.Launcher
             var owmlManifest = GetOwmlManifest();
             var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
 
-            return new Container() // todo consolidate version?
+            return new Container()
                 .Register(owmlConfig)
                 .Register(owmlManifest)
                 .Register(consoleWriter)
@@ -44,7 +45,7 @@ namespace OWML.Launcher
                 .Register<IGameVersionReader, GameVersionReader>()
                 .Register<IGameVersionHandler, GameVersionHandler>()
                 .Register<IProcessHelper, ProcessHelper>()
-                .Register<App>(); // todo need interface?
+                .Register<App>();
         }
 
         private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort, IArgumentHelper argumentHelper)
@@ -92,7 +93,7 @@ namespace OWML.Launcher
         private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
         {
             return hasConsolePort
-                ? new ModSocketOutput(owmlConfig, null, owmlManifest, new ModSocket(owmlConfig), new ProcessHelper()) // todo container?
+                ? new ModSocketOutput(owmlConfig, owmlManifest, new ModSocket(owmlConfig), new ProcessHelper()) // todo container?
                 : (IModConsole)new OutputWriter();
         }
     }

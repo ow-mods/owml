@@ -12,8 +12,8 @@ namespace OWML.Logging
         private readonly IModSocket _socket;
         private readonly IProcessHelper _processHelper;
 
-        public ModSocketOutput(IOwmlConfig config, IModLogger logger, IModManifest manifest, IModSocket socket, IProcessHelper processHelper)
-            : base(config, logger, manifest)
+        public ModSocketOutput(IOwmlConfig config, IModManifest manifest, IModSocket socket, IProcessHelper processHelper)
+            : base(config, null, manifest)
         {
             _socket = socket;
             _processHelper = processHelper;
@@ -38,8 +38,6 @@ namespace OWML.Logging
 
         private void WriteLine(MessageType type, string line, string senderType)
         {
-            Logger?.Log(line);
-
             var message = new ModSocketMessage
             {
                 SenderName = Manifest.Name,

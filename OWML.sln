@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5F23B5A9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Launcher.Tests", "test\OWML.Launcher.Tests\OWML.Launcher.Tests.csproj", "{04A652D4-416F-4538-9795-8AD10C09A940}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils", "OWML.Utils\OWML.Utils.csproj", "{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{04A652D4-416F-4538-9795-8AD10C09A940}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04A652D4-416F-4538-9795-8AD10C09A940}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04A652D4-416F-4538-9795-8AD10C09A940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
