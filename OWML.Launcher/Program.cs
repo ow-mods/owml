@@ -32,20 +32,20 @@ namespace OWML.Launcher
             var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
 
             return new Container()
-                .Register(owmlConfig)
-                .Register(owmlManifest)
-                .Register(consoleWriter)
-                .Register<IArgumentHelper>(argumentHelper)
-                .Register<IModFinder, ModFinder>()
-                .Register<IPathFinder, PathFinder>()
-                .Register<IOWPatcher, OWPatcher>()
-                .Register<IBinaryPatcher, BinaryPatcher>()
-                .Register<IVRFilePatcher, VRFilePatcher>()
-                .Register<IVRPatcher, VRPatcher>()
-                .Register<IGameVersionReader, GameVersionReader>()
-                .Register<IGameVersionHandler, GameVersionHandler>()
-                .Register<IProcessHelper, ProcessHelper>()
-                .Register<App>();
+                .Add(owmlConfig)
+                .Add(owmlManifest)
+                .Add(consoleWriter)
+                .Add<IArgumentHelper>(argumentHelper)
+                .Add<IModFinder, ModFinder>()
+                .Add<IPathFinder, PathFinder>()
+                .Add<IOWPatcher, OWPatcher>()
+                .Add<IBinaryPatcher, BinaryPatcher>()
+                .Add<IVRFilePatcher, VRFilePatcher>()
+                .Add<IVRPatcher, VRPatcher>()
+                .Add<IGameVersionReader, GameVersionReader>()
+                .Add<IGameVersionHandler, GameVersionHandler>()
+                .Add<IProcessHelper, ProcessHelper>()
+                .Add<App>();
         }
 
         private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort, IArgumentHelper argumentHelper)

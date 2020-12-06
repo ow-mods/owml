@@ -27,8 +27,8 @@ namespace OWML.Launcher.Tests
             var args = new[] { "-consolePort", "1337" };
 
             var container = Program.CreateContainer(args);
-            container.Register(processHelper.Object);
-            container.Register(console.Object);
+            container.Add(processHelper.Object);
+            container.Add(console.Object);
 
             console.Setup(s => s.WriteLine(It.IsAny<string>()))
                 .Callback((string s) => _outputHelper.WriteLine(s));
