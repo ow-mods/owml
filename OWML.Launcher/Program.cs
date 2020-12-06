@@ -17,7 +17,7 @@ namespace OWML.Launcher
         {
             var container = CreateContainer(args);
             var app = container.Resolve<App>();
-            app.Run(args);
+            app.Run();
         }
 
         public static Container CreateContainer(string[] args)
@@ -47,7 +47,7 @@ namespace OWML.Launcher
                 .Register<App>(); // todo need interface?
         }
 
-        private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort, ArgumentHelper argumentHelper)
+        private static void SaveConsolePort(IOwmlConfig owmlConfig, bool hasConsolePort, IArgumentHelper argumentHelper)
         {
             if (hasConsolePort)
             {

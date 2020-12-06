@@ -34,7 +34,7 @@ namespace OWML.Launcher.Tests
                 .Callback((string s, MessageType type) => _outputHelper.WriteLine($"{type}: {s}"));
 
             var app = container.Resolve<App>();
-            app.Run(args);
+            app.Run();
 
             var config = container.Resolve<IOwmlConfig>();
 

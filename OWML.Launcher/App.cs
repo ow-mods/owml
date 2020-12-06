@@ -46,7 +46,7 @@ namespace OWML.Launcher
             _argumentHelper = argumentHelper;
         }
 
-        public void Run(string[] args)
+        public void Run()
         {
             _writer.WriteLine($"Started OWML v{_owmlManifest.Version}", MessageType.Info);
 
@@ -64,9 +64,10 @@ namespace OWML.Launcher
 
             PatchGame(mods);
 
-            StartGame(args);
-
             var hasPortArgument = _argumentHelper.HasArgument(Constants.ConsolePortArgument);
+
+            StartGame();
+
             if (hasPortArgument)
             {
                 ExitConsole();
@@ -141,21 +142,15 @@ namespace OWML.Launcher
             }
         }
 
-        private void StartGame(string[] args)
+        private void StartGame()
         {
             _writer.WriteLine("Starting game...");
 
-            if (args.Contains("-consolePort"))
-            {
-                var index = Array.IndexOf(args, "-consolePort"); // todo move into ArgumentHelper (Remove...)
-                var list = new List<string>(args);
-                list.RemoveRange(index, 2);
-                args = list.ToArray();
-            }
+            _argumentHelper.RemoveArgument("consolePort");
 
             try
             {
-                _processHelper.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", args);
+                _processHelper.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", _argumentHelper.Arguments);
             }
             catch (Exception ex)
             {
@@ -166,7 +161,7 @@ namespace OWML.Launcher
         private void ExitConsole()
         {
             _processHelper.KillCurrentProcess();
-            //Environment.Exit(0); todo
+            //Environment.Exit(0); todo change back?
         }
 
         private void CreateLogsDirectory()
