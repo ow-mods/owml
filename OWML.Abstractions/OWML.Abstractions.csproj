@@ -7,8 +7,8 @@
     <ProjectGuid>{F30E9352-0578-4775-A006-2501FCB35462}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.UnityAbstractions</RootNamespace>
-    <AssemblyName>OWML.UnityAbstractions</AssemblyName>
+    <RootNamespace>OWML.Abstractions</RootNamespace>
+    <AssemblyName>OWML.Abstractions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="ApplicationHelper.cs" />
     <Compile Include="GameObjectHelper.cs" />
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

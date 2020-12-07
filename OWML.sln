@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils", "OWML.Utils\OW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModLoader.Tests", "test\OWML.ModLoader.Tests\OWML.ModLoader.Tests.csproj", "{C9520FE4-2E02-4671-A832-0A0AA3833636}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.UnityAbstractions", "OWML.UnityAbstractions\OWML.UnityAbstractions.csproj", "{F30E9352-0578-4775-A006-2501FCB35462}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Abstractions", "OWML.Abstractions\OWML.Abstractions.csproj", "{F30E9352-0578-4775-A006-2501FCB35462}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 using OWML.Common.Interfaces;
 using UnityEngine;
 
-namespace OWML.UnityAbstractions
+namespace OWML.Abstractions
 {
     public class ApplicationHelper : IApplicationHelper
     {

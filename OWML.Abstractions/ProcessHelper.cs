@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using OWML.Common.Interfaces;
 
-namespace OWML.Utils
+namespace OWML.Abstractions
 {
     public class ProcessHelper : IProcessHelper
     {

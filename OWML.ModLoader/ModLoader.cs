@@ -8,7 +8,7 @@ using OWML.ModHelper.Input;
 using OWML.Common.Models;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
-using OWML.UnityAbstractions;
+using OWML.Abstractions;
 using OWML.Utils;
 using UnityEngine;
 

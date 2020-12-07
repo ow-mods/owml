@@ -79,6 +79,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OWML.Abstractions\OWML.Abstractions.csproj">
+      <Project>{F30E9352-0578-4775-A006-2501FCB35462}</Project>
+      <Name>OWML.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3c00626f-b688-4f32-b493-5b7ec1c879a0}</Project>
       <Name>OWML.Common</Name>
@@ -110,10 +114,6 @@
     <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
       <Name>OWML.ModHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.UnityAbstractions\OWML.UnityAbstractions.csproj">
-      <Project>{F30E9352-0578-4775-A006-2501FCB35462}</Project>
-      <Name>OWML.UnityAbstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj">
       <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
