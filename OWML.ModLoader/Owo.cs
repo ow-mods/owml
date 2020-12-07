@@ -11,11 +11,10 @@ using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Interaction;
 using OWML.Utils;
-using UnityEngine;
 
 namespace OWML.ModLoader
 {
-    internal class Owo
+    public class Owo
     {
         private readonly IModFinder _modFinder;
         private readonly IModLogger _logger;
@@ -28,6 +27,10 @@ namespace OWML.ModLoader
         private readonly IUnityLogger _unityLogger;
         private readonly IModSocket _socket;
         private readonly IObjImporter _objImporter;
+        private readonly IGameObjectHelper _goHelper;
+        private readonly IApplicationHelper _appHelper;
+        private readonly IProcessHelper _processHelper;
+        private readonly IModUnityEvents _unityEvents;
         private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
         public Owo(
@@ -41,7 +44,11 @@ namespace OWML.ModLoader
             IModSorter sorter,
             IUnityLogger unityLogger,
             IModSocket socket,
-            IObjImporter objImporter)
+            IObjImporter objImporter,
+            IGameObjectHelper goHelper,
+            IApplicationHelper appHelper,
+            IProcessHelper processHelper,
+            IModUnityEvents unityEvents)
         {
             _modFinder = modFinder;
             _logger = logger;
@@ -54,12 +61,18 @@ namespace OWML.ModLoader
             _unityLogger = unityLogger;
             _socket = socket;
             _objImporter = objImporter;
+            _goHelper = goHelper;
+            _appHelper = appHelper;
+            _processHelper = processHelper;
+            _unityEvents = unityEvents;
         }
 
         public void LoadMods()
         {
             _console.WriteLine("Mod loader has been initialized.");
-            _console.WriteLine($"Game version: {Application.version}", MessageType.Info);
+            _console.WriteLine($"Game version: {_appHelper.Version}", MessageType.Info);
+
+            _goHelper.CreateAndAdd<OwmlBehaviour>();
 
             _unityLogger.Start();
             var mods = _modFinder.GetMods();
@@ -89,12 +102,12 @@ namespace OWML.ModLoader
                 var modType = LoadMod(modData);
                 if (modType == null || missingDependencies.Any())
                 {
-                    _menus.ModsMenu.AddMod(modData, null);
+                    _menus.ModsMenu?.AddMod(modData, null);
                     continue;
                 }
                 var helper = CreateModHelper(modData);
                 var initMod = InitializeMod(modType, helper);
-                _menus.ModsMenu.AddMod(modData, initMod);
+                _menus.ModsMenu?.AddMod(modData, initMod);
                 _modList.Add(initMod);
             }
         }
@@ -134,6 +147,8 @@ namespace OWML.ModLoader
                 .Add(_modList)
                 .Add(_menus)
                 .Add(_inputHandler)
+                .Add(_processHelper)
+                .Add(_unityEvents)
                 .Add<IModLogger, ModLogger>()
                 .Add<IModConsole, ModSocketOutput>()
                 .Add<IModAssets, ModAssets>()
@@ -151,17 +166,16 @@ namespace OWML.ModLoader
         {
             _logger.Log($"Initializing {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
             _logger.Log("Adding mod behaviour...");
-            var go = new GameObject(helper.Manifest.UniqueName);
             try
             {
-                var mod = (ModBehaviour)go.AddComponent(modType);
+                var mod = (IModBehaviour)_goHelper.CreateAndAdd(modType, helper.Manifest.UniqueName);
                 _logger.Log("Added! Initializing...");
                 mod.Init(helper);
                 return mod;
             }
             catch (Exception ex)
             {
-                ModConsole.OwmlConsole.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}", MessageType.Error);
+                _console.WriteLine($"Error while adding/initializing {helper.Manifest.UniqueName}: {ex}", MessageType.Error);
                 return null;
             }
         }

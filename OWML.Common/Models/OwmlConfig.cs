@@ -26,6 +26,9 @@ namespace OWML.Common.Models
         [JsonIgnore]
         public string ModsPath => $"{OWMLPath}Mods";
 
+        [JsonIgnore]
+        public string LogsPath => $"{OWMLPath}Logs";
+
         [JsonProperty("socketPort")]
         public int SocketPort { get; set; }
     }

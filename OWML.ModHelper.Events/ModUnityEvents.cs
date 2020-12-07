@@ -7,6 +7,11 @@ namespace OWML.ModHelper.Events
 {
     public class ModUnityEvents : MonoBehaviour, IModUnityEvents
     {
+        public ModUnityEvents(IGameObjectHelper goHelper)
+        {
+            goHelper.CreateAndAdd<ModUnityEvents>();
+        }
+
         public event Action OnUpdate;
 
         public event Action OnFixedUpdate;

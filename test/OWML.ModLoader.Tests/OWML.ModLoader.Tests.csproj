@@ -4,14 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</ProjectGuid>
+    <ProjectGuid>{C9520FE4-2E02-4671-A832-0A0AA3833636}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.Utils</RootNamespace>
-    <AssemblyName>OWML.Utils</AssemblyName>
+    <RootNamespace>OWML.ModLoader.Tests</RootNamespace>
+    <AssemblyName>OWML.ModLoader.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,14 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.3.1.416.3\lib\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,19 +42,38 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Container.cs" />
-    <Compile Include="ProcessHelper.cs" />
+    <Compile Include="ModLoaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
+    <ProjectReference Include="..\..\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj">
+      <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
+      <Name>OWML.ModHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OWML.ModLoader\OWML.ModLoader.csproj">
+      <Project>{d075d13c-990a-46a2-b596-4600a3411bd5}</Project>
+      <Name>OWML.ModLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OWML.UnityAbstractions\OWML.UnityAbstractions.csproj">
+      <Project>{F30E9352-0578-4775-A006-2501FCB35462}</Project>
+      <Name>OWML.UnityAbstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OWML.Utils\OWML.Utils.csproj">
+      <Project>{cc1a74b8-7068-4cd9-8aa4-c5270aaea030}</Project>
+      <Name>OWML.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

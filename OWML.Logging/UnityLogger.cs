@@ -13,15 +13,17 @@ namespace OWML.Logging
         };
 
         private readonly IModSocket _socket;
+        private readonly IApplicationHelper _appHelper;
 
-        public UnityLogger(IModSocket socket)
+        public UnityLogger(IModSocket socket, IApplicationHelper appHelper)
         {
             _socket = socket;
+            _appHelper = appHelper;
         }
 
         public void Start()
         {
-            Application.logMessageReceived += OnLogMessageReceived;
+            _appHelper.AddLogCallback(OnLogMessageReceived);
         }
 
         private void OnLogMessageReceived(string message, string stackTrace, LogType type)

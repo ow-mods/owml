@@ -35,14 +35,15 @@ namespace OWML.ModHelper.Events
             IModConsole console,
             IHarmonyHelper harmonyHelper,
             IModPlayerEvents playerEvents,
-            IModSceneEvents sceneEvents)
+            IModSceneEvents sceneEvents,
+            IModUnityEvents unityEvents)
         {
             _logger = logger;
             _console = console;
             _harmonyHelper = harmonyHelper;
             Player = playerEvents;
             Scenes = sceneEvents;
-            Unity = new GameObject().AddComponent<ModUnityEvents>(); // todo hmm
+            Unity = unityEvents;
 
             Player.Init(this);
             Patches.OnEvent += OnPatchEvent;

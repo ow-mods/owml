@@ -5,33 +5,38 @@ using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
 using OWML.ModHelper.Input;
-using UnityEngine;
 using OWML.Common.Models;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
+using OWML.UnityAbstractions;
 using OWML.Utils;
+using UnityEngine;
 
 namespace OWML.ModLoader
 {
     public class ModLoader
     {
-        private static readonly string ConfigPath = $"{Application.dataPath}/Managed/{Constants.OwmlConfigFileName}";
-        private static readonly string ManifestPath = $"{Application.dataPath}/Managed/{Constants.OwmlManifestFileName}";
-
         public static void LoadMods()
         {
-            var owmlGo = new GameObject();
-            owmlGo.AddComponent<OwmlBehaviour>();
+            var appHelper = new ApplicationHelper();
+            var container = CreateContainer(appHelper);
 
-            var owmlConfig = JsonHelper.LoadJsonObject<OwmlConfig>(ConfigPath);
-            var owmlManifest = JsonHelper.LoadJsonObject<ModManifest>(ManifestPath);
+            var owo = container.Resolve<Owo>();
+            owo.LoadMods();
+        }
+
+        public static Container CreateContainer(IApplicationHelper appHelper)
+        {
+            var owmlConfig = JsonHelper.LoadJsonObject<OwmlConfig>($"{appHelper.DataPath}/Managed/{Constants.OwmlConfigFileName}");
+            var owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{appHelper.DataPath}/Managed/{Constants.OwmlManifestFileName}");
+
             if (owmlConfig == null || owmlManifest == null)
             {
-                // Everything is wrong and can't write to console...
-                return;
+                throw new UnityException("Can't load OWML config or manifest.");
             }
 
-            var owo = new Container()
+            return new Container()
+                .Add(appHelper)
                 .Add<IOwmlConfig>(owmlConfig)
                 .Add<IModManifest>(owmlManifest)
                 .Add<IModLogger, ModLogger>()
@@ -42,7 +47,7 @@ namespace OWML.ModLoader
                 .Add<IModFinder, ModFinder>()
                 .Add<IHarmonyHelper, HarmonyHelper>()
                 .Add<IModPlayerEvents, ModPlayerEvents>()
-                .Add<IHarmonyHelper, HarmonyHelper>()
+                .Add<IModUnityEvents, ModUnityEvents>()
                 .Add<IModSceneEvents, ModSceneEvents>()
                 .Add<IModEvents, ModEvents>()
                 .Add<IModInputHandler, ModInputHandler>()
@@ -59,10 +64,9 @@ namespace OWML.ModLoader
                 .Add<IModInputCombinationMenu, ModInputCombinationMenu>()
                 .Add<IModMenus, ModMenus>()
                 .Add<IObjImporter, ObjImporter>()
-                .Add<Owo>()
-                .Resolve<Owo>();
-
-            owo.LoadMods();
+                .Add<IGameObjectHelper, GameObjectHelper>()
+                .Add<IProcessHelper, ProcessHelper>()
+                .Add<Owo>();
         }
     }
 }

@@ -18,8 +18,14 @@ namespace OWML.Logging
                 _config = config;
             }
             _manifest = manifest;
+
             var startTime = DateTime.Now.ToString("dd-MM-yyyy-HH.mm.ss");
-            _logFileName = $"{config.OWMLPath}Logs/OWML.Log.{startTime}.txt";
+            _logFileName = $"{config.LogsPath}/OWML.Log.{startTime}.txt";
+
+            if (!Directory.Exists(config.LogsPath))
+            {
+                Directory.CreateDirectory(config.LogsPath);
+            }
         }
 
         public void Log(string s)

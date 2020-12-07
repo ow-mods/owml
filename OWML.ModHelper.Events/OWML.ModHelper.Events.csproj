@@ -88,6 +88,10 @@
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.UnityAbstractions\OWML.UnityAbstractions.csproj">
+      <Project>{F30E9352-0578-4775-A006-2501FCB35462}</Project>
+      <Name>OWML.UnityAbstractions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
