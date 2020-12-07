@@ -1,7 +1,6 @@
 ﻿using OWML.Common;
 using OWML.Common.Interfaces;
 using OWML.Common.Models;
-using UnityEngine;
 
 namespace OWML.ModHelper.Menus
 {
@@ -9,16 +8,14 @@ namespace OWML.ModHelper.Menus
     {
         private const string BlockInputTitle = "Mod inputs can block game actions";
 
-        private readonly string _defaultConfigPath = $"{Application.dataPath}/Managed/{Constants.OwmlDefaultConfigFileName}";
-
         private readonly IOwmlConfig _config;
         private readonly IOwmlConfig _defaultConfig;
 
-        public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IModStorage storage) 
+        public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IModStorage storage, IApplicationHelper appHelper) 
             : base(manifest, storage)
         {
             _config = config;
-            _defaultConfig = JsonHelper.LoadJsonObject<OwmlConfig>(_defaultConfigPath);
+            _defaultConfig = JsonHelper.LoadJsonObject<OwmlConfig>($"{appHelper.DataPath}/Managed/{Constants.OwmlDefaultConfigFileName}");
         }
 
         protected override void AddInputs()

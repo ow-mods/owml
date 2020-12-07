@@ -40,7 +40,6 @@ namespace OWML.ModLoader.Tests
             container.Add(logger.Object);
             container.Add(goHelper.Object);
             container.Add(new Mock<IModUnityEvents>().Object);
-            container.Add(new Mock<IModMenus>().Object);
             container.Add(new Mock<IModInputHandler>().Object);
 
             var config = container.Resolve<IOwmlConfig>();
