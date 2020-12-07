@@ -21,13 +21,13 @@ namespace OWML.ModLoader.Tests
 
             var console = new Mock<IModConsole>();
             console.Setup(s => s.WriteLine(It.IsAny<string>()))
-                .Callback((string s) => Console.WriteLine(s));
+                .Callback((string s) => WriteLine(s));
             console.Setup(s => s.WriteLine(It.IsAny<string>(), It.IsAny<MessageType>()))
-                .Callback((string s, MessageType type) => Console.WriteLine($"{type}: {s}"));
+                .Callback((string s, MessageType type) => WriteLine($"{type}: {s}"));
 
             var logger = new Mock<IModLogger>();
             logger.Setup(s => s.Log(It.IsAny<string>()))
-                .Callback((string s) => Console.WriteLine(s));
+                .Callback((string s) => WriteLine(s));
 
             var modBehaviour = new Mock<IModBehaviour>();
 
@@ -57,6 +57,13 @@ namespace OWML.ModLoader.Tests
             var currentFolder = Directory.GetCurrentDirectory();
             var owmlSolutionFolder = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
             return $"{owmlSolutionFolder}/Release/";
+        }
+
+        private void WriteLine(string s)
+        {
+            Console.WriteLine(s);
+            Assert.DoesNotContain("Error", s, StringComparison.InvariantCultureIgnoreCase);
+            Assert.DoesNotContain("Exception", s, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
