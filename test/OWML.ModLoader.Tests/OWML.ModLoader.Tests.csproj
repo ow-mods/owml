@@ -59,6 +59,10 @@
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj">
+      <Project>{BE89BAC0-91FF-4558-B093-79328D18AB30}</Project>
+      <Name>OWML.ModHelper.Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
       <Name>OWML.ModHelper</Name>

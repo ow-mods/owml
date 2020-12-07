@@ -9,7 +9,7 @@ namespace OWML.ModHelper.Input
     {
         private Dictionary<string, Texture2D> _loadedTextures;
 
-        internal void FillTextureLibrary()
+        public void FillTextureLibrary()
         {
             _loadedTextures = new Dictionary<string, Texture2D>();
             var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;

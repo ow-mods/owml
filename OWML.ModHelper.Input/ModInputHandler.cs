@@ -30,25 +30,21 @@ namespace OWML.ModHelper.Input
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events)
+        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events, IGameObjectHelper goHelper, IModInputTextures inputTextures)
         {
-            var textures = new ModInputTextures();
-            textures.FillTextureLibrary();
-            Textures = textures;
-
+            Instance = this;
             _console = console;
             _logger = logger;
+            Textures = inputTextures;
 
-            var listenerObject = new GameObject("GameBindingsChangeListener");
-            var listener = listenerObject.AddComponent<BindingChangeListener>();
-            listener.Initialize(this, events);
+            var listener = (IBindingChangeListener)goHelper.CreateAndAdd<BindingChangeListener>("GameBindingsChangeListener");
+            listener?.Initialize(this, events);
 
             if (owmlConfig.BlockInput)
             {
                 patcher.AddPostfix<SingleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.SingleAxisUpdatePost));
                 patcher.AddPostfix<DoubleAxisCommand>("UpdateInputCommand", typeof(InputInterceptor), nameof(InputInterceptor.DoubleAxisUpdatePost));
             }
-            Instance = this;
         }
 
         internal bool IsPressedAndIgnored(KeyCode key)
@@ -388,7 +384,7 @@ namespace OWML.ModHelper.Input
             }
         }
 
-        internal void UpdateGamesBindings()
+        public void UpdateGamesBindings()
         {
             for (var i = ModInputLibrary.MinUsefulKey; i < ModInputLibrary.MaxUsefulKey; i++)
             {

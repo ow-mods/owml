@@ -37,6 +37,7 @@
     <Compile Include="Interfaces\IApplicationHelper.cs" />
     <Compile Include="Interfaces\IArgumentHelper.cs" />
     <Compile Include="Interfaces\IBinaryPatcher.cs" />
+    <Compile Include="Interfaces\IBindingChangeListener.cs" />
     <Compile Include="Interfaces\IGameObjectHelper.cs" />
     <Compile Include="Interfaces\IGameVersionHandler.cs" />
     <Compile Include="Interfaces\IGameVersionReader.cs" />

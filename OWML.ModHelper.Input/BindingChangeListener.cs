@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Input
 {
-    public class BindingChangeListener : MonoBehaviour
+    public class BindingChangeListener : MonoBehaviour, IBindingChangeListener
     {
-        private ModInputHandler _inputHandler;
+        private IModInputHandler _inputHandler;
         private bool _updateInputsNext, _updateInputs;
 
-        internal void Initialize(ModInputHandler inputHandler, IModEvents events)
+        public void Initialize(IModInputHandler inputHandler, IModEvents events)
         {
             _inputHandler = inputHandler;
             events.Subscribe<TitleScreenManager>(Common.Enums.Events.AfterStart);

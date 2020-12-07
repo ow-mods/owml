@@ -3,7 +3,6 @@ using System.IO;
 using Moq;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
 using Xunit;
 
 namespace OWML.ModLoader.Tests
@@ -40,7 +39,6 @@ namespace OWML.ModLoader.Tests
             container.Add(logger.Object);
             container.Add(goHelper.Object);
             container.Add(new Mock<IModUnityEvents>().Object);
-            container.Add(new Mock<IModInputHandler>().Object);
 
             var config = container.Resolve<IOwmlConfig>();
             config.OWMLPath = GetOwmlPath();
