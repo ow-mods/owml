@@ -21,20 +21,22 @@ namespace OWML.Launcher.Tests
         [Fact]
         public async Task Run_StartsGame()
         {
-            var processHelper = new Mock<IProcessHelper>();
             var console = new Mock<IModConsole>();
-
-            var args = new[] { "-consolePort", "1337" };
-
-            var container = Program.CreateContainer(args);
-            container.Add(processHelper.Object);
-            container.Add(console.Object);
-
             console.Setup(s => s.WriteLine(It.IsAny<string>()))
                 .Callback((string s) => _outputHelper.WriteLine(s));
-
             console.Setup(s => s.WriteLine(It.IsAny<string>(), It.IsAny<MessageType>()))
                 .Callback((string s, MessageType type) => _outputHelper.WriteLine($"{type}: {s}"));
+
+            var logger = new Mock<IModLogger>();
+            logger.Setup(s => s.Log(It.IsAny<string>()))
+                .Callback((string s) => _outputHelper.WriteLine(s));
+
+            var processHelper = new Mock<IProcessHelper>();
+
+            var container = Program.CreateContainer(new[] { "-consolePort", "1337" });
+            container.Add(processHelper.Object);
+            container.Add(console.Object);
+            container.Add(logger.Object);
 
             var config = container.Resolve<IOwmlConfig>();
             config.OWMLPath = await Task.Run(SetupOWML);
