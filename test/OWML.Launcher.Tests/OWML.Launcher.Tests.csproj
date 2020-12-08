@@ -82,15 +82,15 @@
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OWML.Common\OWML.Common.csproj">
+    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.Launcher\OWML.Launcher.csproj">
-      <Project>{9c09f86b-0c03-4630-8424-b939d3c632d0}</Project>
+    <ProjectReference Include="..\..\src\OWML.Launcher\OWML.Launcher.csproj">
+      <Project>{9C09F86B-0C03-4630-8424-B939D3C632D0}</Project>
       <Name>OWML.Launcher</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.Utils\OWML.Utils.csproj">
+    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
       <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
       <Name>OWML.Utils</Name>
     </ProjectReference>

@@ -55,24 +55,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OWML.Common\OWML.Common.csproj">
+    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj">
+    <ProjectReference Include="..\..\src\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj">
       <Project>{BE89BAC0-91FF-4558-B093-79328D18AB30}</Project>
       <Name>OWML.ModHelper.Input</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj">
-      <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
-      <Name>OWML.ModHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\OWML.ModLoader\OWML.ModLoader.csproj">
+    <ProjectReference Include="..\..\src\OWML.ModLoader\OWML.ModLoader.csproj">
       <Project>{d075d13c-990a-46a2-b596-4600a3411bd5}</Project>
       <Name>OWML.ModLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.Utils\OWML.Utils.csproj">
-      <Project>{cc1a74b8-7068-4cd9-8aa4-c5270aaea030}</Project>
+    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
+      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
       <Name>OWML.Utils</Name>
     </ProjectReference>
   </ItemGroup>

@@ -43,7 +43,7 @@ namespace OWML.Patcher
                 "OWML.ModHelper.Interaction.dll",
                 "OWML.Logging.dll",
                 "OWML.Utils.dll",
-                "OWML.UnityAbstractions.dll",
+                "OWML.Abstractions.dll",
                 "Newtonsoft.Json.dll",
                 "System.Runtime.Serialization.dll",
                 "0Harmony.dll",
