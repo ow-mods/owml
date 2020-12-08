@@ -17,7 +17,29 @@ namespace OWML.Launcher.Tests
         }
 
         [Fact]
-        public async Task Run_StartsGame()
+        public async Task CreateRelease()
+        {
+            var currentFolder = Directory.GetCurrentDirectory();
+            var owmlSolutionFolder = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
+
+            Directory.Delete($"{owmlSolutionFolder}/Release", true);
+
+            await Task.Run(() =>
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = $"{owmlSolutionFolder}/createrelease.bat",
+                    WorkingDirectory = owmlSolutionFolder,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }).WaitForExit();
+            });
+
+            Assert.True(File.Exists($"{owmlSolutionFolder}/Release/Mods/OWML.LoadCustomAssets/OWML.LoadCustomAssets.dll"));
+            Assert.True(File.Exists($"{owmlSolutionFolder}/Release/OWML.Launcher.exe"));
+        }
+
+        [Fact]
+        public void Run_StartsGame()
         {
             var processHelper = new Mock<IProcessHelper>();
 
@@ -26,28 +48,10 @@ namespace OWML.Launcher.Tests
             container.Add(Console.Object);
             container.Add(Logger.Object);
 
-            var config = container.Resolve<IOwmlConfig>();
-            config.OWMLPath = await Task.Run(SetupOWML);
-
             var app = container.Resolve<App>();
             app.Run();
 
-            processHelper.Verify(s => s.Start($"{config.GamePath}/OuterWilds.exe", new string[] { }), Times.Once);
-        }
-
-        private string SetupOWML() // todo separate test
-        {
-            var currentFolder = Directory.GetCurrentDirectory();
-            var owmlSolutionFolder = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = $"{owmlSolutionFolder}/createrelease.bat",
-                WorkingDirectory = owmlSolutionFolder,
-                WindowStyle = ProcessWindowStyle.Hidden
-            }).WaitForExit();
-
-            return $"{owmlSolutionFolder}/Release/";
+            processHelper.Verify(s => s.Start(Config.ExePath, new string[] { }), Times.Once);
         }
     }
 }

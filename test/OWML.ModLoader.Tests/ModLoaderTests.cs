@@ -19,7 +19,7 @@ namespace OWML.ModLoader.Tests
             var container = ModLoader.CreateContainer(AppHelper.Object, GOHelper.Object);
             container.Add(Console.Object);
             container.Add(Logger.Object);
-            container.Add(Config.Object);
+            container.Add(Config);
 
             var owo = container.Resolve<Owo>();
             owo.LoadMods();

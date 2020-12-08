@@ -14,7 +14,7 @@ namespace OWML.ModFinder.Tests
         [Fact]
         public void ModFinder_GetMods()
         {
-            var modFinder = new ModLoader.ModFinder(Config.Object, Console.Object);
+            var modFinder = new ModLoader.ModFinder(Config, Console.Object);
 
             var mods = modFinder.GetMods();
 

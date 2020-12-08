@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace OWML.GameFinder.Tests
 {
-    public class GameFinderTests : OWMLTests
+    public class GameFinderTests : OWMLTests // todo test steam finder, epic finder etc
     {
         public GameFinderTests(ITestOutputHelper outputHelper)
             : base(outputHelper)

@@ -15,6 +15,9 @@ namespace OWML.Common.Models
         public string DataPath => $"{GamePath}/OuterWilds_Data";
 
         [JsonIgnore]
+        public string ExePath => $"{GamePath}/OuterWilds.exe";
+
+        [JsonIgnore]
         public string ManagedPath => $"{DataPath}/Managed";
 
         [JsonIgnore]

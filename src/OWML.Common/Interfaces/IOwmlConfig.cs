@@ -10,6 +10,8 @@
 
         string DataPath { get; }
 
+        string ExePath { get; }
+
         string OWMLPath { get; set; }
 
         string ModsPath { get; }

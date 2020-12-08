@@ -151,7 +151,7 @@ namespace OWML.Launcher
 
             try
             {
-                _processHelper.Start($"{_owmlConfig.GamePath}/OuterWilds.exe", _argumentHelper.Arguments);
+                _processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
             }
             catch (Exception ex)
             {
