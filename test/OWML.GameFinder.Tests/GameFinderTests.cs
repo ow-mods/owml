@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace OWML.GameFinder.Tests
 {
-    public class GameFinderTestses : OWMLTests
+    public class GameFinderTests : OWMLTests
     {
-        public GameFinderTestses(ITestOutputHelper outputHelper)
+        public GameFinderTests(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
         }

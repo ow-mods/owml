@@ -9,9 +9,9 @@ using Xunit.Abstractions;
 
 namespace OWML.Launcher.Tests
 {
-    public class LauncherTestses : OWMLTests
+    public class LauncherTests : OWMLTests
     {
-        public LauncherTestses(ITestOutputHelper outputHelper)
+        public LauncherTests(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
         }

@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace OWML.ModLoader.Tests
 {
-    public class ModLoaderTestses : OWMLTests
+    public class ModLoaderTests : OWMLTests
     {
-        public ModLoaderTestses(ITestOutputHelper outputHelper)
+        public ModLoaderTests(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
         }

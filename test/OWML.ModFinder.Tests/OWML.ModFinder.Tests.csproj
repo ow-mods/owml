@@ -6,17 +6,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9520FE4-2E02-4671-A832-0A0AA3833636}</ProjectGuid>
+    <ProjectGuid>{30C84B7F-ED70-413F-8224-2BCF433213A5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.ModLoader.Tests</RootNamespace>
-    <AssemblyName>OWML.ModLoader.Tests</AssemblyName>
+    <RootNamespace>OWML.ModFinder.Tests</RootNamespace>
+    <AssemblyName>OWML.ModFinder.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +33,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -55,7 +52,9 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
@@ -71,11 +70,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModLoaderTests.cs" />
+    <Compile Include="ModFinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
@@ -83,17 +79,16 @@
       <Name>OWML.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OWML.ModLoader\OWML.ModLoader.csproj">
-      <Project>{d075d13c-990a-46a2-b596-4600a3411bd5}</Project>
+      <Project>{D075D13C-990A-46A2-B596-4600A3411BD5}</Project>
       <Name>OWML.ModLoader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
-      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
-      <Name>OWML.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
       <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>
       <Name>OWML.Tests.Setup</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
