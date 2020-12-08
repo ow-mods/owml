@@ -6,15 +6,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04A652D4-416F-4538-9795-8AD10C09A940}</ProjectGuid>
+    <ProjectGuid>{13F31207-D421-4B53-A8A2-8D690019AE2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OWML.Launcher.Tests</RootNamespace>
-    <AssemblyName>OWML.Launcher.Tests</AssemblyName>
+    <RootNamespace>OWML.Tests.Setup</RootNamespace>
+    <AssemblyName>OWML.Tests.Setup</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -26,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +33,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -55,7 +52,9 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
@@ -71,11 +70,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LauncherTestses.cs" />
+    <Compile Include="OWMLTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -85,18 +83,6 @@
     <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Launcher\OWML.Launcher.csproj">
-      <Project>{9C09F86B-0C03-4630-8424-B939D3C632D0}</Project>
-      <Name>OWML.Launcher</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
-      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
-      <Name>OWML.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
-      <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>
-      <Name>OWML.Tests.Setup</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

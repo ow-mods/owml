@@ -47,6 +47,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.EnableDebugMode", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.LoadCustomAssets", "src\OWML.SampleMods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.csproj", "{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder.Tests", "test\OWML.GameFinder.Tests\OWML.GameFinder.Tests.csproj", "{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Tests.Setup", "test\OWML.Tests.Setup\OWML.Tests.Setup.csproj", "{13F31207-D421-4B53-A8A2-8D690019AE2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +133,14 @@ Global
 		{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13F31207-D421-4B53-A8A2-8D690019AE2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F31207-D421-4B53-A8A2-8D690019AE2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F31207-D421-4B53-A8A2-8D690019AE2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F31207-D421-4B53-A8A2-8D690019AE2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,9 +166,11 @@ Global
 		{C447A599-2700-44E1-BBFA-52880B7BFFBA} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 		{6155732E-89B0-4D1E-A76B-229C056AE1E9} = {C447A599-2700-44E1-BBFA-52880B7BFFBA}
 		{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6} = {C447A599-2700-44E1-BBFA-52880B7BFFBA}
+		{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
+		{13F31207-D421-4B53-A8A2-8D690019AE2E} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal

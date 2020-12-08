@@ -71,7 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModLoaderTests.cs" />
+    <Compile Include="ModLoaderTestses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +89,10 @@
     <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
       <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
       <Name>OWML.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
+      <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>
+      <Name>OWML.Tests.Setup</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
