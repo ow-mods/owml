@@ -19,23 +19,20 @@ namespace OWML.Launcher.Tests
         [Fact]
         public async Task CreateRelease()
         {
-            var currentFolder = Directory.GetCurrentDirectory();
-            var owmlSolutionFolder = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
-
-            Directory.Delete($"{owmlSolutionFolder}/Release", true);
+            Directory.Delete(OwmlReleasePath, true);
 
             await Task.Run(() =>
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = $"{owmlSolutionFolder}/createrelease.bat",
-                    WorkingDirectory = owmlSolutionFolder,
+                    FileName = $"{OwmlSolutionPath}/createrelease.bat",
+                    WorkingDirectory = OwmlSolutionPath,
                     WindowStyle = ProcessWindowStyle.Hidden
                 }).WaitForExit();
             });
 
-            Assert.True(File.Exists($"{owmlSolutionFolder}/Release/Mods/OWML.LoadCustomAssets/OWML.LoadCustomAssets.dll"));
-            Assert.True(File.Exists($"{owmlSolutionFolder}/Release/OWML.Launcher.exe"));
+            Assert.True(File.Exists($"{OwmlReleasePath}/Mods/OWML.LoadCustomAssets/OWML.LoadCustomAssets.dll"));
+            Assert.True(File.Exists($"{OwmlReleasePath}/OWML.Launcher.exe"));
         }
 
         [Fact]

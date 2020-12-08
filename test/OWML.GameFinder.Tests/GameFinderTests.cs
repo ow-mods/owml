@@ -1,5 +1,5 @@
-﻿using Moq;
-using OWML.Common.Interfaces;
+﻿using System.IO;
+using OWML.Common.Models;
 using OWML.Tests.Setup;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,14 +16,11 @@ namespace OWML.GameFinder.Tests
         [Fact]
         public void PathFinder_FindGamePath()
         {
-            var config = new Mock<IOwmlConfig>();
+            var pathFinder = new PathFinder(new OwmlConfig(), Console.Object);
 
-            var gameFinder = new PathFinder(config.Object, Console.Object);
-            var gamePath = gameFinder.FindGamePath();
+            var gamePath = pathFinder.FindGamePath();
 
-            const string expectedPath = "C:\\Program Files\\Epic Games\\OuterWilds";
-
-            Assert.Equal(expectedPath, gamePath);
+            Assert.Equal(new DirectoryInfo(Config.GamePath).FullName, new DirectoryInfo(gamePath).FullName);
         }
     }
 }

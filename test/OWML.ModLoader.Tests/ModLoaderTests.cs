@@ -14,7 +14,7 @@ namespace OWML.ModLoader.Tests
         }
 
         [Fact]
-        public void LoadMods_LoadsMods()
+        public void ModLoader_LoadMods()
         {
             var container = ModLoader.CreateContainer(AppHelper.Object, GOHelper.Object);
             container.Add(Console.Object);

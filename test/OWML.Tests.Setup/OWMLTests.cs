@@ -11,6 +11,10 @@ namespace OWML.Tests.Setup
 {
     public class OWMLTests
     {
+        protected string OwmlSolutionPath => GetSolutionPath();
+
+        protected string OwmlReleasePath => $"{OwmlSolutionPath}/Release/";
+
         protected readonly Mock<IModConsole> Console = new Mock<IModConsole>();
         protected readonly Mock<IModLogger> Logger = new Mock<IModLogger>();
         protected readonly Mock<IApplicationHelper> AppHelper = new Mock<IApplicationHelper>();
@@ -18,7 +22,7 @@ namespace OWML.Tests.Setup
         protected readonly Mock<IModBehaviour> Mod = new Mock<IModBehaviour>();
 
         protected readonly IOwmlConfig Config = new OwmlConfig();
-
+        
         private readonly ITestOutputHelper _outputHelper;
 
         public OWMLTests(ITestOutputHelper outputHelper)
@@ -46,15 +50,14 @@ namespace OWML.Tests.Setup
             GOHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, It.IsAnyType>(It.IsAny<string>()))
                 .Returns(() => new Mock<IBindingChangeListener>().Object);
 
-            Config.OWMLPath = GetOwmlPath();
+            Config.OWMLPath = OwmlReleasePath;
             Config.GamePath = "C:/Program Files/Epic Games/OuterWilds";
         }
 
-        private string GetOwmlPath()
+        private string GetSolutionPath()
         {
             var currentFolder = Directory.GetCurrentDirectory();
-            var owmlSolutionFolder = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
-            return $"{owmlSolutionFolder}/Release/";
+            return Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
         }
 
         private void WriteLine(string s)
