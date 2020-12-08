@@ -3,13 +3,20 @@ using System.IO;
 using Moq;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
-using OWML.ModHelper.Input;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace OWML.ModLoader.Tests
 {
     public class ModLoaderTests
     {
+        private readonly ITestOutputHelper _outputHelper;
+
+        public ModLoaderTests(ITestOutputHelper outputHelper)
+        {
+            _outputHelper = outputHelper;
+        }
+
         [Fact]
         public void LoadMods_LoadsMods()
         {
@@ -34,14 +41,14 @@ namespace OWML.ModLoader.Tests
             var goHelper = new Mock<IGameObjectHelper>();
             goHelper.Setup(s => s.CreateAndAdd<IModBehaviour>(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns(() => modBehaviour.Object);
-            goHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, BindingChangeListener>("GameBindingsChangeListener"))
+            goHelper.Setup(s => s.CreateAndAdd<IModUnityEvents, It.IsAnyType>(It.IsAny<string>()))
+                .Returns(() => new Mock<IModUnityEvents>().Object);
+            goHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, It.IsAnyType>(It.IsAny<string>()))
                 .Returns(() => new Mock<IBindingChangeListener>().Object);
 
-            var container = ModLoader.CreateContainer(appHelper.Object);
+            var container = ModLoader.CreateContainer(appHelper.Object, goHelper.Object);
             container.Add(console.Object);
             container.Add(logger.Object);
-            container.Add(goHelper.Object);
-            container.Add(new Mock<IModUnityEvents>().Object);
 
             var config = container.Resolve<IOwmlConfig>();
             config.OWMLPath = GetOwmlPath();
@@ -61,7 +68,7 @@ namespace OWML.ModLoader.Tests
 
         private void WriteLine(string s)
         {
-            Console.WriteLine(s);
+            _outputHelper.WriteLine(s);
             Assert.DoesNotContain("Error", s, StringComparison.InvariantCultureIgnoreCase);
             Assert.DoesNotContain("Exception", s, StringComparison.InvariantCultureIgnoreCase);
         }

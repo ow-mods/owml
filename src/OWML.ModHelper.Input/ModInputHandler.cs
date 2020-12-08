@@ -30,14 +30,13 @@ namespace OWML.ModHelper.Input
         private readonly IModLogger _logger;
         private readonly IModConsole _console;
 
-        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events, IGameObjectHelper goHelper, IModInputTextures inputTextures)
+        public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events, IModInputTextures inputTextures, IBindingChangeListener listener)
         {
             Instance = this;
             _console = console;
             _logger = logger;
             Textures = inputTextures;
 
-            var listener = goHelper.CreateAndAdd<IBindingChangeListener, BindingChangeListener>("GameBindingsChangeListener");
             listener.Initialize(this, events);
 
             if (owmlConfig.BlockInput)
