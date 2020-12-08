@@ -168,7 +168,7 @@ namespace OWML.ModLoader
             _logger.Log("Adding mod behaviour...");
             try
             {
-                var mod = (IModBehaviour)_goHelper.CreateAndAdd(modType, helper.Manifest.UniqueName);
+                var mod = _goHelper.CreateAndAdd<IModBehaviour>(modType, helper.Manifest.UniqueName);
                 _logger.Log("Added! Initializing...");
                 mod.Init(helper);
                 return mod;

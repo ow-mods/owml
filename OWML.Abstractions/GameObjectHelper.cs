@@ -6,16 +6,13 @@ namespace OWML.Abstractions
 {
     public class GameObjectHelper : IGameObjectHelper
     {
-        public T CreateAndAdd<T>(string name = null) where T : MonoBehaviour
-        {
-            var go = new GameObject(name);
-            return go.AddComponent<T>();
-        }
+        public TInterface CreateAndAdd<TInterface, TBehaviour>(string name = null) where TBehaviour : MonoBehaviour => 
+            (TInterface)(object)CreateAndAdd<TBehaviour>(name);
 
-        public object CreateAndAdd(Type type, string name = null)
-        {
-            var go = new GameObject(name);
-            return go.AddComponent(type);
-        }
+        public TBehaviour CreateAndAdd<TBehaviour>(string name = null) where TBehaviour : MonoBehaviour => 
+            new GameObject(name).AddComponent<TBehaviour>();
+
+        public TBehaviour CreateAndAdd<TBehaviour>(Type type, string name = null) => 
+            (TBehaviour)(object)new GameObject(name).AddComponent(type);
     }
 }

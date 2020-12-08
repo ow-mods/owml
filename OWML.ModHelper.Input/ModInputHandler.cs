@@ -37,8 +37,8 @@ namespace OWML.ModHelper.Input
             _logger = logger;
             Textures = inputTextures;
 
-            var listener = (IBindingChangeListener)goHelper.CreateAndAdd<BindingChangeListener>("GameBindingsChangeListener");
-            listener?.Initialize(this, events);
+            var listener = goHelper.CreateAndAdd<IBindingChangeListener, BindingChangeListener>("GameBindingsChangeListener");
+            listener.Initialize(this, events);
 
             if (owmlConfig.BlockInput)
             {

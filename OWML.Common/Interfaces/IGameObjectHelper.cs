@@ -5,8 +5,10 @@ namespace OWML.Common.Interfaces
 {
     public interface IGameObjectHelper
     {
-        T CreateAndAdd<T>(string name = null) where T : MonoBehaviour;
+        TInterface CreateAndAdd<TInterface, TBehaviour>(string name = null) where TBehaviour : MonoBehaviour;
 
-        object CreateAndAdd(Type type, string name = null);
+        TBehaviour CreateAndAdd<TBehaviour>(string name = null) where TBehaviour : MonoBehaviour;
+
+        TBehaviour CreateAndAdd<TBehaviour>(Type type, string name = null);
     }
 }

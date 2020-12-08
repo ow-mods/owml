@@ -3,6 +3,7 @@ using System.IO;
 using Moq;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
+using OWML.ModHelper.Input;
 using Xunit;
 
 namespace OWML.ModLoader.Tests
@@ -31,8 +32,10 @@ namespace OWML.ModLoader.Tests
             var modBehaviour = new Mock<IModBehaviour>();
 
             var goHelper = new Mock<IGameObjectHelper>();
-            goHelper.Setup(s => s.CreateAndAdd(It.IsAny<Type>(), It.IsAny<string>()))
+            goHelper.Setup(s => s.CreateAndAdd<IModBehaviour>(It.IsAny<Type>(), It.IsAny<string>()))
                 .Returns(() => modBehaviour.Object);
+            goHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, BindingChangeListener>("GameBindingsChangeListener"))
+                .Returns(() => new Mock<IBindingChangeListener>().Object);
 
             var container = ModLoader.CreateContainer(appHelper.Object);
             container.Add(console.Object);
