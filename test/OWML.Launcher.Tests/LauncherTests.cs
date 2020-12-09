@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using OWML.Common.Interfaces;
 using OWML.Tests.Setup;
 using Xunit;
@@ -14,25 +11,6 @@ namespace OWML.Launcher.Tests
         public LauncherTests(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-        }
-
-        [Fact]
-        public async Task CreateRelease()
-        {
-            Directory.Delete(OwmlReleasePath, true);
-
-            await Task.Run(() =>
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = $"{OwmlSolutionPath}/createrelease.bat",
-                    WorkingDirectory = OwmlSolutionPath,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                }).WaitForExit();
-            });
-
-            Assert.True(File.Exists($"{OwmlReleasePath}/Mods/OWML.LoadCustomAssets/OWML.LoadCustomAssets.dll"));
-            Assert.True(File.Exists($"{OwmlReleasePath}/OWML.Launcher.exe"));
         }
 
         [Fact]
