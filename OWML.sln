@@ -177,7 +177,7 @@ Global
 		{30C84B7F-ED70-413F-8224-2BCF433213A5} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal
