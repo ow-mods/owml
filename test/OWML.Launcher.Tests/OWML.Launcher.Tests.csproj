@@ -71,7 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateReleaseTests.cs" />
+    <Compile Include="ReleaseTests.cs" />
     <Compile Include="LauncherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

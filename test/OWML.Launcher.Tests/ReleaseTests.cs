@@ -1,35 +1,21 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using OWML.Tests.Setup;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace OWML.Launcher.Tests
 {
-    public class CreateReleaseTests : OWMLTests
+    public class ReleaseTests : OWMLTests
     {
-        public CreateReleaseTests(ITestOutputHelper outputHelper)
+        public ReleaseTests(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
         }
 
         [Fact]
-        public async Task CreateRelease()
+        public void CreateRelease()
         {
-            Directory.Delete(OwmlReleasePath, true);
-
-            await Task.Run(() =>
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = $"{OwmlSolutionPath}/createrelease.bat",
-                    WorkingDirectory = OwmlSolutionPath,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                }).WaitForExit();
-            });
-
             AssertFolderContainsFiles(OwmlReleasePath, new[]
             {
                 "OWML.Launcher.exe",
@@ -80,15 +66,10 @@ namespace OWML.Launcher.Tests
                 "savefile.json",
                 "spiral-mountain.mp3"
             });
-
-            // todo log folder?
         }
 
-        private void AssertFolderContainsFiles(string folder, string[] files)
-        {
+        private void AssertFolderContainsFiles(string folder, string[] files) => 
             files.ToList().ForEach(file => AssertFileExists(folder, file));
-            Assert.Equal(Directory.GetFiles(folder).Length, files.Length);
-        }
 
         private void AssertFileExists(string folder, string file) => 
             Assert.True(File.Exists($"{folder}/{file}"), $"File doesn't exist: {folder}/{file}");

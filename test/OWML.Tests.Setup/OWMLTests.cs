@@ -11,9 +11,7 @@ namespace OWML.Tests.Setup
 {
     public class OWMLTests
     {
-        protected string OwmlSolutionPath => GetSolutionPath();
-
-        protected string OwmlReleasePath => $"{OwmlSolutionPath}/Release/";
+        protected string OwmlReleasePath => GetReleasePath();
 
         protected readonly Mock<IModConsole> Console = new Mock<IModConsole>();
         protected readonly Mock<IModLogger> Logger = new Mock<IModLogger>();
@@ -54,10 +52,11 @@ namespace OWML.Tests.Setup
             Config.GamePath = "C:/Program Files/Epic Games/OuterWilds";
         }
 
-        private string GetSolutionPath()
+        private string GetReleasePath()
         {
             var currentFolder = Directory.GetCurrentDirectory();
-            return Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
+            var solutionPath = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
+            return solutionPath + "/src/OWML.Launcher/bin/Debug/";
         }
 
         private void WriteLine(string s)
