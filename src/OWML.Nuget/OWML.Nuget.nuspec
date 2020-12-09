@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/amazingalek/owml</projectUrl>
     <description>$description$</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2019</copyright>
+    <copyright>Copyright 2019-2021</copyright>
     <tags>Outer Wilds</tags>
     <dependencies>
       <group targetFramework=".NETFramework3.5">
