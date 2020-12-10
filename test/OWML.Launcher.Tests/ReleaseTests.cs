@@ -14,7 +14,7 @@ namespace OWML.Launcher.Tests
         }
 
         [Fact]
-        public void CreateRelease()
+        public void ReleaseContainsAllFiles()
         {
             AssertFolderContainsFiles(OwmlReleasePath, new[]
             {
@@ -66,6 +66,14 @@ namespace OWML.Launcher.Tests
                 "savefile.json",
                 "spiral-mountain.mp3"
             });
+        }
+
+        [Fact]
+        public void ReleaseDoesNotContainGameFiles()
+        {
+            Assert.NotEmpty(Directory.GetFiles(OwmlReleasePath, "OWML*.dll", SearchOption.AllDirectories));
+            Assert.Empty(Directory.GetFiles(OwmlReleasePath, "UnityEngine*.dll", SearchOption.AllDirectories));
+            Assert.Empty(Directory.GetFiles(OwmlReleasePath, "Assembly-CSharp.dll", SearchOption.AllDirectories));
         }
 
         private void AssertFolderContainsFiles(string folder, string[] files) => 
