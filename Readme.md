@@ -90,8 +90,8 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Compatible with the latest version of Outer Wilds - 1.0.7.
-* Currently Windows only.
+* Compatible with all versions of Outer Wilds.
+* Custom menus only work with the latest version of Outer Wilds - 1.0.7.
 
 ## Feedback
 
@@ -113,7 +113,6 @@ Special thanks to:
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * Inspired by (and some code from) [SMAPI](https://smapi.io)
-* Texture_Turtle for graphics on Nexus page
 
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)
