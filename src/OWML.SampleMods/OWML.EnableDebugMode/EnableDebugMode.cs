@@ -105,7 +105,7 @@ namespace OWML.EnableDebugMode
                 _renderValue = 0;
             }
             ModHelper.Console.WriteLine("Render value: " + _renderValue);
-            typeof(GUIMode).GetAnyField("_renderMode").SetValue(null, _renderValue);
+            typeof(GUIMode).GetAnyMember("_renderMode").SetValue(null, _renderValue);
         }
 
         private void WarpTo(SpawnLocation location)

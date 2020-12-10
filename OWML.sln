@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Tests.Setup", "test\OW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModFinder.Tests", "test\OWML.ModFinder.Tests\OWML.ModFinder.Tests.csproj", "{30C84B7F-ED70-413F-8224-2BCF433213A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Events.Tests", "test\OWML.ModHelper.Events.Tests\OWML.ModHelper.Events.Tests.csproj", "{A80BBC66-185F-4915-B80B-3860D6C62FA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{30C84B7F-ED70-413F-8224-2BCF433213A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30C84B7F-ED70-413F-8224-2BCF433213A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30C84B7F-ED70-413F-8224-2BCF433213A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80BBC66-185F-4915-B80B-3860D6C62FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80BBC66-185F-4915-B80B-3860D6C62FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80BBC66-185F-4915-B80B-3860D6C62FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80BBC66-185F-4915-B80B-3860D6C62FA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,9 +181,10 @@ Global
 		{2C1AB98A-B0EB-4E06-B006-6D3855DDB6E1} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 		{13F31207-D421-4B53-A8A2-8D690019AE2E} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 		{30C84B7F-ED70-413F-8224-2BCF433213A5} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
+		{A80BBC66-185F-4915-B80B-3860D6C62FA6} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

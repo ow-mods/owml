@@ -97,7 +97,7 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
-      <Project>{B771615E-6B51-44F8-B862-D7543C12C0FF}</Project>
+      <Project>{b771615e-6b51-44f8-b862-d7543c12c0ff}</Project>
       <Name>OWML.ModHelper.Events</Name>
       <Private>False</Private>
     </ProjectReference>

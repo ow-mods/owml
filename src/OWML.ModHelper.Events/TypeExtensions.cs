@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace OWML.ModHelper.Events
@@ -14,57 +15,44 @@ namespace OWML.ModHelper.Events
                    type.BaseType?.BaseType?.GetMethod(name, Flags);
         }
 
-        public static PropertyInfo GetAnyProperty(this Type type, string name)
+        public static MemberInfo GetAnyMember(this Type type, string name)
         {
-            return type.GetProperty(name, Flags) ??
-                   type.BaseType?.GetProperty(name, Flags) ??
-                   type.BaseType?.BaseType?.GetProperty(name, Flags);
-        }
-
-        public static FieldInfo GetAnyField(this Type type, string name)
-        {
-            return type.GetField(name, Flags) ??
-                   type.BaseType?.GetField(name, Flags) ??
-                   type.BaseType?.BaseType?.GetField(name, Flags);
+            return type.GetMember(name, Flags).FirstOrDefault() ??
+                   type.BaseType?.GetMember(name, Flags).FirstOrDefault() ??
+                   type.BaseType?.BaseType?.GetMember(name, Flags).FirstOrDefault();
         }
 
         public static T GetValue<T>(this object obj, string name)
         {
-            var type = obj.GetType();
-            var field = type.GetAnyField(name);
-            if (field != null)
+            var member = obj.GetType().GetAnyMember(name);
+            switch (member)
             {
-                return (T)field.GetValue(obj);
+                case FieldInfo field:
+                    return (T)field.GetValue(obj);
+                case PropertyInfo property:
+                    return (T)property.GetValue(obj, null);
+                default:
+                    return default;
             }
-            var property = type.GetAnyProperty(name);
-            if (property != null)
-            {
-                return (T)property.GetValue(obj, null);
-            }
-            return default;
         }
 
         public static void SetValue(this object obj, string name, object value)
         {
-            var type = obj.GetType();
-            var field = type.GetAnyField(name);
-            if (field != null)
+            var member = obj.GetType().GetAnyMember(name);
+            switch (member)
             {
-                field.SetValue(obj, value);
-                return;
-            }
-            var property = type.GetAnyProperty(name);
-            if (property != null)
-            {
-                property.SetValue(obj, value, null);
+                case FieldInfo field:
+                    field.SetValue(obj, value);
+                    break;
+                case PropertyInfo property:
+                    property.SetValue(obj, value, null);
+                    break;
             }
         }
 
         public static void Invoke(this object obj, string name, params object[] parameters)
         {
-            var type = obj.GetType();
-            var method = type.GetAnyMethod(name);
-            method?.Invoke(obj, parameters);
+            Invoke<object>(obj, name, parameters);
         }
 
         public static T Invoke<T>(this object obj, string name, params object[] parameters)
