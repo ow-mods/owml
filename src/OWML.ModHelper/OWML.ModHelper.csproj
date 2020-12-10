@@ -118,10 +118,17 @@
       <Project>{3212c570-d4c3-4083-a3db-616f80ba5dab}</Project>
       <Name>OWML.ModHelper.Interaction</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj">
+      <Project>{b874cc24-8340-4238-ac9d-1bfb41186bb5}</Project>
+      <Name>OWML.ModHelper.Menus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj">
       <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
       <Name>OWML.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>nuget pack $(ProjectPath)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
