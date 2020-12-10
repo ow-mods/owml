@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OWML.Common.Interfaces
+namespace OWML.Common
 {
     public interface IModSceneEvents
     {

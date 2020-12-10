@@ -5,8 +5,6 @@ using System.Linq;
 using dnlib.DotNet.Emit;
 using dnpatch;
 using OWML.Common;
-using OWML.Common.Enums;
-using OWML.Common.Interfaces;
 
 namespace OWML.Patcher
 {

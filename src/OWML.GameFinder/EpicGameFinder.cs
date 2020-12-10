@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.GameFinder
 {
@@ -13,7 +13,8 @@ namespace OWML.GameFinder
         private const string ManifestPattern = "*.item";
         private const string ManifestGameName = "OuterWilds";
 
-        public EpicGameFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
+        public EpicGameFinder(IOwmlConfig config, IModConsole writer)
+            : base(config, writer)
         {
         }
 

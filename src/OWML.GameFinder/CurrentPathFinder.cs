@@ -1,11 +1,11 @@
-﻿using OWML.Common.Enums;
-using OWML.Common.Interfaces;
+﻿using OWML.Common;
 
 namespace OWML.GameFinder
 {
     public class CurrentPathFinder : BaseFinder
     {
-        public CurrentPathFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
+        public CurrentPathFinder(IOwmlConfig config, IModConsole writer)
+            : base(config, writer)
         {
         }
 

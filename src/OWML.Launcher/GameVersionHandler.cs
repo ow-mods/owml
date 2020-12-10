@@ -1,6 +1,5 @@
 ﻿using System;
-using OWML.Common.Enums;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.Launcher
 {

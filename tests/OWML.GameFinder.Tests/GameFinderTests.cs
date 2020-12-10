@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using OWML.Common.Models;
+using OWML.Common;
 using OWML.Tests.Setup;
 using Xunit;
 using Xunit.Abstractions;

@@ -1,4 +1,4 @@
-﻿namespace OWML.Common.Enums
+﻿namespace OWML.Common
 {
     public enum MessageType
     {

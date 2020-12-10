@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.GameFinder
 {
@@ -19,7 +19,8 @@ namespace OWML.GameFinder
             "F:/Games/Outer Wilds"
         };
 
-        public DefaultLocationFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
+        public DefaultLocationFinder(IOwmlConfig config, IModConsole writer)
+            : base(config, writer)
         {
         }
 

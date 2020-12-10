@@ -1,4 +1,4 @@
-﻿using OWML.Common.Enums;
+﻿using OWML.Common;
 using OWML.Logging;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace OWML.Common.Interfaces
+namespace OWML.Common
 {
     public interface IModInputCombination
     {

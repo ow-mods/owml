@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using OWML.Common.Interfaces;
+using OWML.Common;
 using UnityEngine;
 
 namespace OWML.ModHelper

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.Abstractions
 {

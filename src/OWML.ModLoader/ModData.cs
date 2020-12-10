@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.Common.Interfaces;
 
 namespace OWML.ModLoader
 {

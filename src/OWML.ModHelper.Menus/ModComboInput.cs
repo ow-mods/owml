@@ -1,8 +1,8 @@
-﻿using OWML.ModHelper.Input;
+﻿using OWML.Common;
+using OWML.Common.Menus;
+using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
-using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
 using OWML.Utils;
 
 namespace OWML.ModHelper.Menus

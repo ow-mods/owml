@@ -1,11 +1,12 @@
 ﻿using System;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.GameFinder
 {
     public class PromptGameFinder : BaseFinder
     {
-        public PromptGameFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
+        public PromptGameFinder(IOwmlConfig config, IModConsole writer)
+            : base(config, writer)
         {
         }
 

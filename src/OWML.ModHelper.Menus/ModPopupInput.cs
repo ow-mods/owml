@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using OWML.Common.Interfaces.Menus;
+using OWML.Common.Menus;
 using OWML.ModHelper.Input;
 using OWML.Utils;
 using UnityEngine;

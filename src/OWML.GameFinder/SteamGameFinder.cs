@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Gameloop.Vdf;
 using Microsoft.Win32;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.GameFinder
 {
@@ -13,7 +13,8 @@ namespace OWML.GameFinder
         private const string LibraryFoldersPath = "steamapps/libraryfolders.vdf";
         private const int MaxLibraryCount = 10;
         
-        public SteamGameFinder(IOwmlConfig config, IModConsole writer) : base(config, writer)
+        public SteamGameFinder(IOwmlConfig config, IModConsole writer)
+            : base(config, writer)
         {
         }
 

@@ -1,8 +1,7 @@
 ﻿using System;
-using OWML.Common.Enums;
 using UnityEngine;
 
-namespace OWML.Common.Interfaces
+namespace OWML.Common
 {
     public interface IModEvents
     {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using OWML.Common.Enums;
-using OWML.Common.Interfaces;
+using OWML.Common;
 using OWML.ModHelper;
 using UnityEngine;
 
@@ -8,12 +7,13 @@ namespace OWML.LoadCustomAssets
 {
     public class LoadCustomAssets : ModBehaviour
     {
-        enum ABC
+        private enum ABC
         {
             A,
             B,
             C
         }
+
         private OWRigidbody _duckBody;
         private Transform _playerTransform;
         private OWRigidbody _playerBody;

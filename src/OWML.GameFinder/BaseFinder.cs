@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.GameFinder
 {

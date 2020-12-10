@@ -1,4 +1,4 @@
-﻿namespace OWML.Common.Interfaces
+﻿namespace OWML.Common
 {
     public interface IOwmlConfig
     {

@@ -34,7 +34,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="DontDestroyOnLoad.cs" />
-    <Compile Include="Enums\Events.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="Interfaces\IApplicationHelper.cs" />
     <Compile Include="Interfaces\IArgumentHelper.cs" />
     <Compile Include="Interfaces\IBinaryPatcher.cs" />
@@ -110,9 +110,9 @@
     <Compile Include="Interfaces\Menus\IModNumberInput.cs" />
     <Compile Include="Interfaces\Menus\IModTextInput.cs" />
     <Compile Include="Interfaces\Menus\IModToggleInput.cs" />
-    <Compile Include="Enums\MessageType.cs" />
-    <Compile Include="Models\ModManifest.cs" />
-    <Compile Include="Models\OwmlConfig.cs" />
+    <Compile Include="MessageType.cs" />
+    <Compile Include="ModManifest.cs" />
+    <Compile Include="OwmlConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -168,5 +168,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

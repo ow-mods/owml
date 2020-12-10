@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.Logging
 {

@@ -1,14 +1,12 @@
 ﻿using OWML.Common;
-using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
 using OWML.ModHelper.Input;
-using OWML.Common.Models;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
 using OWML.Abstractions;
+using OWML.Common.Menus;
 using OWML.Utils;
 using UnityEngine;
 

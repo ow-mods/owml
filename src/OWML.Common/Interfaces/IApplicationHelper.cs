@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace OWML.Common.Interfaces
+namespace OWML.Common
 {
     public interface IApplicationHelper
     {

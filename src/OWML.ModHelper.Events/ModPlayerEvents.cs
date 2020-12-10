@@ -1,5 +1,5 @@
 ﻿using System;
-using OWML.Common.Interfaces;
+using OWML.Common;
 using UnityEngine;
 
 namespace OWML.ModHelper.Events
@@ -10,13 +10,13 @@ namespace OWML.ModHelper.Events
 
         public void Init(IModEvents events)
         {
-            events.Subscribe<PlayerBody>(Common.Enums.Events.AfterAwake);
+            events.Subscribe<PlayerBody>(Common.Events.AfterAwake);
             events.Event += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Enums.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
         {
-            if (behaviour is PlayerBody playerBody && ev == Common.Enums.Events.AfterAwake)
+            if (behaviour is PlayerBody playerBody && ev == Common.Events.AfterAwake)
             {
                 OnPlayerAwake?.Invoke(playerBody);
             }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OWML.Common.Interfaces
+namespace OWML.Common
 {
     public interface IModInputTextures
     {

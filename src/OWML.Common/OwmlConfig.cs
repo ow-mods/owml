@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using OWML.Common.Interfaces;
 
-namespace OWML.Common.Models
+namespace OWML.Common
 {
     public class OwmlConfig : IOwmlConfig
     {

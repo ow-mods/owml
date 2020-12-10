@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Linq;
-using OWML.Common.Enums;
-using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
+using OWML.Common;
+using OWML.Common.Menus;
 using OWML.Logging;
 
 namespace OWML.ModHelper.Menus

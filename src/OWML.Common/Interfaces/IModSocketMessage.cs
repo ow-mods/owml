@@ -1,6 +1,4 @@
-﻿using OWML.Common.Enums;
-
-namespace OWML.Common.Interfaces
+﻿namespace OWML.Common
 {
     public interface IModSocketMessage
     {

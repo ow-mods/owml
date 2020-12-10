@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace OWML.Common.Interfaces
+namespace OWML.Common
 {
     public interface IHarmonyHelper
     {

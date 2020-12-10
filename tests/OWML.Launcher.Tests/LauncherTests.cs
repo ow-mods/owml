@@ -1,5 +1,5 @@
 ﻿using Moq;
-using OWML.Common.Interfaces;
+using OWML.Common;
 using OWML.Tests.Setup;
 using Xunit;
 using Xunit.Abstractions;

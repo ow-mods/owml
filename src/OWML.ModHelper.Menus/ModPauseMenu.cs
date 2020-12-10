@@ -1,4 +1,4 @@
-﻿using OWML.Common.Interfaces.Menus;
+﻿using OWML.Common.Menus;
 using OWML.Utils;
 
 namespace OWML.ModHelper.Menus

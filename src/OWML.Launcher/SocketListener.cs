@@ -5,8 +5,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using OWML.Common.Enums;
-using OWML.Common.Interfaces;
 using OWML.Logging;
 using OWML.Utils;
 

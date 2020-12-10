@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OWML.Common.Interfaces.Menus
+namespace OWML.Common.Menus
 {
     public interface IModMenu
     {

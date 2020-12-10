@@ -1,7 +1,6 @@
 ﻿using OWML.Common;
 using System.Linq;
-using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
+using OWML.Common.Menus;
 
 namespace OWML.ModHelper.Menus
 {

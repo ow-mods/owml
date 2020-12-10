@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using Moq;
-using OWML.Common.Enums;
-using OWML.Common.Interfaces;
-using OWML.Common.Models;
+using OWML.Common;
 using Xunit;
 using Xunit.Abstractions;
 

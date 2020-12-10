@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
-using OWML.Common.Interfaces;
+using OWML.Common;
 
 namespace OWML.Patcher
 {

@@ -1,4 +1,4 @@
-﻿using OWML.Common.Interfaces;
+﻿using OWML.Common;
 using OWML.Utils;
 
 namespace OWML.ModHelper

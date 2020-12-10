@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
-using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
+using OWML.Common.Menus;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus

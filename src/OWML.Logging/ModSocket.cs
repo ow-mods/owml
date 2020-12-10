@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 using OWML.Common;
-using OWML.Common.Interfaces;
 
 namespace OWML.Logging
 {

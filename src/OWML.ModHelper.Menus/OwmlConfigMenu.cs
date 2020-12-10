@@ -1,6 +1,4 @@
 ﻿using OWML.Common;
-using OWML.Common.Interfaces;
-using OWML.Common.Models;
 using OWML.Utils;
 
 namespace OWML.ModHelper.Menus

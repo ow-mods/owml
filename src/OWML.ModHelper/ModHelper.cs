@@ -1,5 +1,5 @@
-﻿using OWML.Common.Interfaces;
-using OWML.Common.Interfaces.Menus;
+﻿using OWML.Common;
+using OWML.Common.Menus;
 
 namespace OWML.ModHelper
 {

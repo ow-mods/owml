@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using OWML.Common.Enums;
+using OWML.Common;
 
 namespace OWML.Logging
 {
