@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/amazingalek/owml</projectUrl>
-    <description>$description$</description>
+    <description>Mod loader and mod framework for Outer Wilds</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2021</copyright>
     <tags>Outer Wilds</tags>
@@ -29,6 +29,7 @@
     <file src="bin\Debug\OWML.ModHelper.Interaction.dll" target="lib\net35" />
     <file src="bin\Debug\OWML.Common.dll" target="lib\net35" />
     <file src="bin\Debug\OWML.Logging.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.Utils.dll" target="lib\net35" />
     <file src="bin\Debug\NAudio-Unity.dll" target="lib\net35" />
   </files>
 </package>
