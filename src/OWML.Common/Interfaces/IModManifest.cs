@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OWML.Common.Interfaces
+﻿namespace OWML.Common.Interfaces
 {
     public interface IModManifest
     {
@@ -12,7 +10,6 @@ namespace OWML.Common.Interfaces
         string AssemblyPath { get; }
         string UniqueName { get; }
         string ModFolderPath { get; set; }
-        Dictionary<string, string> AppIds { get; }
         string[] Dependencies { get; }
         bool PriorityLoad { get; }
         bool RequireVR { get; }

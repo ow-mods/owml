@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OWML.Common.Interfaces;
 
 namespace OWML.Common.Models
@@ -32,9 +31,6 @@ namespace OWML.Common.Models
 
         [JsonIgnore]
         public string ModFolderPath { get; set; }
-
-        [JsonProperty("appIds")]
-        public Dictionary<string, string> AppIds { get; private set; }
 
         [JsonProperty("requireVR")]
         public bool RequireVR { get; private set; }

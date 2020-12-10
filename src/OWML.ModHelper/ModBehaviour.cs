@@ -24,14 +24,10 @@ namespace OWML.ModHelper
 
         public virtual object GetApi() => null;
 
-        public IList<IModBehaviour> GetDependants()
-        {
-            return ModHelper.Interaction.GetDependants(ModHelper.Manifest.UniqueName);
-        }
+        public IList<IModBehaviour> GetDependants() => 
+            ModHelper.Interaction.GetDependants(ModHelper.Manifest.UniqueName);
 
-        public IList<IModBehaviour> GetDependencies()
-        {
-            return ModHelper.Interaction.GetDependencies(ModHelper.Manifest.UniqueName);
-        }
+        public IList<IModBehaviour> GetDependencies() => 
+            ModHelper.Interaction.GetDependencies(ModHelper.Manifest.UniqueName);
     }
 }
