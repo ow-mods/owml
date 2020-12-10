@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using System;
+using OWML.Common;
 using OWML.Common.Menus;
 using OWML.Utils;
 using UnityEngine;
@@ -17,45 +18,70 @@ namespace OWML.ModHelper.Menus
 
         public IModPopupManager PopupManager { get; }
 
+        private readonly IModConsole _console;
+
         public ModMenus(
-            IModEvents events, 
-            IModMainMenu mainMenu, 
+            IModEvents events,
+            IModMainMenu mainMenu,
             IModPauseMenu pauseMenu,
             IModsMenu modsMenu,
             IModPopupManager popupManager,
-            IModInputCombinationMenu inputComboMenu)
+            IModInputCombinationMenu inputComboMenu,
+            IModConsole console)
         {
+            _console = console;
             MainMenu = mainMenu;
             PauseMenu = pauseMenu;
             ModsMenu = modsMenu;
             PopupManager = popupManager;
             InputCombinationMenu = inputComboMenu;
 
-            events.Subscribe<SettingsManager>(Common.Events.AfterStart);
-            events.Subscribe<TitleScreenManager>(Common.Events.AfterStart);
+            events.Subscribe<SettingsManager>(Events.AfterStart);
+            events.Subscribe<TitleScreenManager>(Events.AfterStart);
             events.Event += OnEvent;
         }
 
-        private void OnEvent(MonoBehaviour behaviour, Common.Events ev)
+        private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
             if (behaviour is SettingsManager settingsManager &&
-                ev == Common.Events.AfterStart &&
+                ev == Events.AfterStart &&
                 settingsManager.name == "PauseMenuManagers")
+            {
+                InitPauseMenu(settingsManager);
+            }
+            else if (behaviour is TitleScreenManager titleScreenManager &&
+                     ev == Events.AfterStart)
+            {
+                InitMainMenu(titleScreenManager);
+            }
+        }
+
+        private void InitMainMenu(TitleScreenManager titleScreenManager)
+        {
+            try
+            {
+                MainMenu.Initialize(titleScreenManager);
+                var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
+                PopupManager.Initialize(inputMenu);
+                ModsMenu.Initialize(this, MainMenu);
+            }
+            catch (Exception)
+            {
+                _console.WriteLine("Menu system crashed.", MessageType.Warning);
+            }
+        }
+
+        private void InitPauseMenu(SettingsManager settingsManager)
+        {
+            try
             {
                 PauseMenu.Initialize(settingsManager);
                 ModsMenu.Initialize(this, PauseMenu);
             }
-            else if (behaviour is TitleScreenManager titleScreenManager &&
-                     ev == Common.Events.AfterStart)
+            catch (Exception)
             {
-                MainMenu.Initialize(titleScreenManager);
-                var inputMenu = titleScreenManager
-                    .GetComponent<ProfileMenuManager>()
-                    .GetValue<PopupInputMenu>("_createProfileConfirmPopup");
-                PopupManager.Initialize(inputMenu.transform.parent.gameObject);
-                ModsMenu.Initialize(this, MainMenu);
+                _console.WriteLine("Menu system crashed.", MessageType.Warning);
             }
         }
-
     }
 }

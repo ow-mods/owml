@@ -27,8 +27,9 @@ namespace OWML.ModHelper.Menus
             _combinationPopup.Init(this);
         }
 
-        public void Initialize(GameObject popupCanvas)
+        public void Initialize(PopupInputMenu popupInputMenu)
         {
+            var popupCanvas = popupInputMenu.transform.parent.gameObject;
             var newCanvas = GameObject.Instantiate(popupCanvas);
             newCanvas.AddComponent<DontDestroyOnLoad>();
 

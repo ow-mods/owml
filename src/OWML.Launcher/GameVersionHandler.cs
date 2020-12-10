@@ -27,31 +27,20 @@ namespace OWML.Launcher
 
             if (!isValidFormat)
             {
-                _writer.WriteLine("Warning - non-standard game version formatting found", MessageType.Warning);
-                return;
+                _writer.WriteLine("Warning - invalid game version format", MessageType.Warning);
             }
-
-            if (gameVersion > maxVersion)
+            else if (gameVersion > maxVersion)
             {
                 _writer.WriteLine("Potentially unsupported game version found, continue at your own risk", MessageType.Warning);
-                return;
             }
-
-            if (gameVersion < minVersion)
+            else if (gameVersion < minVersion)
             {
-                AnyKeyExitConsole();
-                return;
+                _writer.WriteLine("Unsupported game version found, custom menus won't work.", MessageType.Warning);
             }
-
-            _writer.WriteLine("Version is supported", MessageType.Success);
-        }
-
-        private void AnyKeyExitConsole()
-        {
-            _writer.WriteLine("Unsupported game version found", MessageType.Error);
-            _writer.WriteLine("Press any key to exit...", MessageType.Info);
-            Console.ReadKey();
-            Environment.Exit(0);
+            else
+            {
+                _writer.WriteLine("Game version is supported", MessageType.Success);
+            }
         }
     }
 }

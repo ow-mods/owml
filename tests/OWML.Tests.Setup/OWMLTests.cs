@@ -54,7 +54,7 @@ namespace OWML.Tests.Setup
         {
             var currentFolder = Directory.GetCurrentDirectory();
             var solutionPath = Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
-            return solutionPath + "/src/OWML.Launcher/bin/Debug/";
+            return $"{solutionPath}/src/OWML.Launcher/bin/Debug/";
         }
 
         private void WriteLine(string s)

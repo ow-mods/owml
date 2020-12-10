@@ -26,5 +26,21 @@ namespace OWML.ModLoader.Tests
 
             Mod.Verify(s => s.Init(It.IsAny<IModHelper>()), Times.Once());
         }
+
+        [Fact]
+        public void ModLoader_OldVersion_LoadMods()
+        {
+            Config.GamePath = "C:/Program Files (x86)/Outer Wilds";
+
+            var container = ModLoader.CreateContainer(AppHelper.Object, GOHelper.Object);
+            container.Add(Console.Object);
+            container.Add(Logger.Object);
+            container.Add(Config);
+
+            var owo = container.Resolve<Owo>();
+            owo.LoadMods();
+
+            Mod.Verify(s => s.Init(It.IsAny<IModHelper>()), Times.Once());
+        }
     }
 }
