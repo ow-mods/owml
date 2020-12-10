@@ -4,9 +4,7 @@ namespace OWML.Common
 {
     public class DontDestroyOnLoad : MonoBehaviour
     {
-        public void Start()
-        {
+        public void Start() => 
             DontDestroyOnLoad(gameObject);
-        }
     }
 }
