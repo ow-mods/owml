@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OWML.Common.Interfaces.Menus;
-using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
+using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

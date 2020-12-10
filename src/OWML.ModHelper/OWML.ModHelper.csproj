@@ -83,8 +83,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DontDestroyOnLoad.cs" />
-    <Compile Include="JsonHelper.cs" />
     <Compile Include="ModBehaviour.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="OwmlBehaviour.cs" />
@@ -103,6 +101,26 @@
     <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj">
       <Project>{6F14D39C-5747-4149-BE4D-365B43918A0A}</Project>
       <Name>OWML.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj">
+      <Project>{a62856bd-d06c-4f2c-86e8-91c6fdf8f8d5}</Project>
+      <Name>OWML.ModHelper.Assets</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj">
+      <Project>{b771615e-6b51-44f8-b862-d7543c12c0ff}</Project>
+      <Name>OWML.ModHelper.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj">
+      <Project>{be89bac0-91ff-4558-b093-79328d18ab30}</Project>
+      <Name>OWML.ModHelper.Input</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.ModHelper.Interaction\OWML.ModHelper.Interaction.csproj">
+      <Project>{3212c570-d4c3-4083-a3db-616f80ba5dab}</Project>
+      <Name>OWML.ModHelper.Interaction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj">
+      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
+      <Name>OWML.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

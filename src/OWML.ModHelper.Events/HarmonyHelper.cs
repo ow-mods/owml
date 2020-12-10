@@ -3,6 +3,7 @@ using System.Reflection;
 using Harmony;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Events
 {
@@ -26,7 +27,7 @@ namespace OWML.ModHelper.Events
             HarmonyInstance harmony;
             try
             {
-                _logger.Log($"Creating harmony instance: {_manifest.UniqueName}"); // todo this is only/always Alek.OWML...
+                _logger.Log($"Creating harmony instance: {_manifest.UniqueName}");
                 harmony = HarmonyInstance.Create(_manifest.UniqueName);
             }
             catch (Exception ex)

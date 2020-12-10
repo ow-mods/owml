@@ -1,7 +1,7 @@
 ﻿using OWML.Common.Enums;
 using OWML.Common.Interfaces.Menus;
 using OWML.Logging;
-using OWML.ModHelper.Events;
+using OWML.Utils;
 using UnityEngine.UI;
 using UnityEngine;
 

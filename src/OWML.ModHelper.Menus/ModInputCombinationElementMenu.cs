@@ -1,5 +1,4 @@
 ﻿using System;
-using OWML.ModHelper.Events;
 using UnityEngine.UI;
 using UnityEngine;
 using OWML.ModHelper.Input;
@@ -8,6 +7,7 @@ using OWML.Common.Enums;
 using OWML.Common.Interfaces;
 using OWML.Common.Interfaces.Menus;
 using OWML.Logging;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
 {

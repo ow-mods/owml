@@ -1,8 +1,8 @@
 ﻿using OWML.ModHelper;
-using OWML.ModHelper.Events;
+using OWML.Utils; // todo this is a breaking change
 using UnityEngine;
 using System.Collections.Generic;
-using OWML.Common.Enums;
+using OWML.Common.Enums; // todo this is a breaking change
 using OWML.Common.Interfaces; // todo this is a breaking change
 
 namespace OWML.EnableDebugMode

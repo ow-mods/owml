@@ -6,6 +6,7 @@ using OWML.Common.Enums;
 using OWML.Common.Interfaces;
 using OWML.Common.Models;
 using OWML.ModHelper;
+using OWML.Utils;
 
 namespace OWML.ModLoader
 {

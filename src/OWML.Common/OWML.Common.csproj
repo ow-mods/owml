@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DontDestroyOnLoad.cs" />
     <Compile Include="Enums\Events.cs" />
     <Compile Include="Interfaces\IApplicationHelper.cs" />
     <Compile Include="Interfaces\IArgumentHelper.cs" />

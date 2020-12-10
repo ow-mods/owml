@@ -137,9 +137,9 @@
       <Project>{be89bac0-91ff-4558-b093-79328d18ab30}</Project>
       <Name>OWML.ModHelper.Input</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OWML.ModHelper\OWML.ModHelper.csproj">
-      <Project>{cb57bab8-d70e-4fce-9bf1-328a924173a7}</Project>
-      <Name>OWML.ModHelper</Name>
+    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj">
+      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
+      <Name>OWML.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

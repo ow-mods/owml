@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using OWML.ModHelper.Events;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Input
 {

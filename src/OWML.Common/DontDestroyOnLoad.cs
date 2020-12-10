@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OWML.ModHelper
+namespace OWML.Common
 {
     public class DontDestroyOnLoad : MonoBehaviour
     {

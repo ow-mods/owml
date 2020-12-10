@@ -6,7 +6,6 @@ using OWML.Common.Interfaces;
 using OWML.Common.Models;
 using OWML.GameFinder;
 using OWML.Logging;
-using OWML.ModHelper;
 using OWML.ModLoader;
 using OWML.Patcher;
 using OWML.Utils;

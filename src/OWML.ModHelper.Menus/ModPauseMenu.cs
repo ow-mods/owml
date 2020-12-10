@@ -1,5 +1,5 @@
 ﻿using OWML.Common.Interfaces.Menus;
-using OWML.ModHelper.Events;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
 {

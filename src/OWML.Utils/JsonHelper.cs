@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 
-namespace OWML.ModHelper
+namespace OWML.Utils
 {
     public static class JsonHelper
     {

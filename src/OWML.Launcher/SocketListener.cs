@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using OWML.Common;
-using OWML.ModHelper;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
 using OWML.Logging;
+using OWML.Utils;
 
 namespace OWML.Launcher
 {

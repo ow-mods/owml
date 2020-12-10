@@ -89,7 +89,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModPlayerEvents.cs" />
     <Compile Include="ModSceneEvents.cs" />
-    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -98,6 +97,10 @@
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj">
       <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
       <Name>OWML.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj">
+      <Project>{cc1a74b8-7068-4cd9-8aa4-c5270aaea030}</Project>
+      <Name>OWML.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

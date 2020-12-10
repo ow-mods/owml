@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Tests.Setup", "test\OW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModFinder.Tests", "test\OWML.ModFinder.Tests\OWML.ModFinder.Tests.csproj", "{30C84B7F-ED70-413F-8224-2BCF433213A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Events.Tests", "test\OWML.ModHelper.Events.Tests\OWML.ModHelper.Events.Tests.csproj", "{A80BBC66-185F-4915-B80B-3860D6C62FA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils.Tests", "test\OWML.Utils.Tests\OWML.Utils.Tests.csproj", "{A80BBC66-185F-4915-B80B-3860D6C62FA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

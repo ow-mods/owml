@@ -1,6 +1,6 @@
 ﻿using OWML.Common.Interfaces;
 using OWML.Common.Interfaces.Menus;
-using OWML.ModHelper.Events;
+using OWML.Utils;
 using UnityEngine;
 
 namespace OWML.ModHelper.Menus

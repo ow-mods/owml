@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace OWML.ModHelper.Events
+namespace OWML.Utils
 {
     public static class TypeExtensions
     {
