@@ -67,7 +67,7 @@ namespace OWML.ModHelper.Menus
             }
             catch (Exception)
             {
-                _console.WriteLine("Menu system crashed.", MessageType.Warning);
+                _console.WriteLine("Menu system crashed.", MessageType.Error);
             }
         }
 
@@ -80,7 +80,7 @@ namespace OWML.ModHelper.Menus
             }
             catch (Exception)
             {
-                _console.WriteLine("Menu system crashed.", MessageType.Warning);
+                _console.WriteLine("Menu system crashed.", MessageType.Error);
             }
         }
     }
