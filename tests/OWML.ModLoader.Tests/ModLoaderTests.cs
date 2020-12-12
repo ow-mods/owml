@@ -14,7 +14,7 @@ namespace OWML.ModLoader.Tests
         }
 
         [Fact]
-        public void ModLoader_LoadMods()
+        public void ModLoader_LoadMods() // fails because i removed copying mod to release folder
         {
             var container = ModLoader.CreateContainer(AppHelper.Object, GOHelper.Object);
             container.Add(Console.Object);
@@ -28,7 +28,7 @@ namespace OWML.ModLoader.Tests
         }
 
         [Fact]
-        public void ModLoader_OldVersion_LoadMods()
+        public void ModLoader_OldVersion_LoadMods() // fails because i removed copying mod to release folder
         {
             Config.GamePath = "C:/Program Files (x86)/Outer Wilds";
 

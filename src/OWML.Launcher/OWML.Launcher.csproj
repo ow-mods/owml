@@ -103,10 +103,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /e /i /y $(SolutionDir)\src\SampleMods\OWML.EnableDebugMode\bin\Debug\* $(TargetDir)\Mods\OWML.EnableDebugMode
-xcopy /e /i /y $(SolutionDir)\src\SampleMods\OWML.LoadCustomAssets\bin\Debug\* $(TargetDir)\Mods\OWML.LoadCustomAssets
-mkdir Logs
-7z a OWML.zip *</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>rmdir /q /s $(TargetDir)</PreBuildEvent>
