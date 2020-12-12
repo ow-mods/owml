@@ -10,8 +10,8 @@ jobs:
 
   build:
     runs-on: windows-latest
-    env:
-      INTERNAL_PKG_KEY: ${{ secrets.INTERNAL_PKG_KEY }}
+    #env:
+    #  INTERNAL_PKG_KEY: ${{ secrets.INTERNAL_PKG_KEY }}
     steps:
       - uses: actions/checkout@v2
       
@@ -34,6 +34,8 @@ jobs:
           field: version
           value: ${{ steps.version.outputs.prop }}
       
+      - name: env
+        run: echo "INTERNAL_PKG_KEY=${{ secrets.INTERNAL_PKG_KEY }}" >> $GITHUB_ENV
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v1
       - name: Setup NuGet
