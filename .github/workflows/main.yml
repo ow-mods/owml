@@ -10,8 +10,6 @@ jobs:
 
   build:
     runs-on: windows-latest
-    #env:
-    #  INTERNAL_PKG_KEY: ${{ secrets.INTERNAL_PKG_KEY }}
     steps:
       - uses: actions/checkout@v2
       
@@ -54,8 +52,8 @@ jobs:
       
       - name: copy mods
         run: |
-          xcopy /e /i /y src\SampleMods\OWML.EnableDebugMode\bin\Debug\* src\OWML.Launcher\bin\Debug\Mods\OWML.EnableDebugMode \
-          xcopy /e /i /y src\SampleMods\OWML.LoadCustomAssets\bin\Debug\* src\OWML.Launcher\bin\Debug\Mods\OWML.LoadCustomAssets \
+          xcopy /e /i /y src\SampleMods\OWML.EnableDebugMode\bin\Debug\* src\OWML.Launcher\bin\Debug\Mods\OWML.EnableDebugMode
+          xcopy /e /i /y src\SampleMods\OWML.LoadCustomAssets\bin\Debug\* src\OWML.Launcher\bin\Debug\Mods\OWML.LoadCustomAssets
           mkdir Logs
       - name: zip
         run: 7z a OWML.zip src\OWML.Launcher\bin\Debug\*
