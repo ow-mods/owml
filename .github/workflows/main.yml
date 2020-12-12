@@ -49,7 +49,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: owml-nuget
-          path: src\OWML.ModHelper\OWML.*.nupkg
+          path: OWML.*.nupkg
       
       - name: copy mods
         run: |
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: owml-zip
-          path: src\OWML.Launcher\bin\Debug\OWML.zip
+          path: OWML.zip
 
   nuget:
     runs-on: ubuntu-latest
