@@ -32,12 +32,15 @@ jobs:
           field: version
           value: ${{ steps.version.outputs.prop }}
       
-      - name: env
-        run: echo "INTERNAL_PKG_KEY=${{ secrets.INTERNAL_PKG_KEY }}" >> $GITHUB_ENV
+      #- name: env
+      #  run: echo "INTERNAL_PKG_KEY=${{ secrets.INTERNAL_PKG_KEY }}" >> $GITHUB_ENV
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v1
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.2
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+          INTERNAL_PKG_KEY: ${{ secrets.INTERNAL_PKG_KEY }}
       - name: restore packages
         run: nuget restore OWML.sln
       - name: build
