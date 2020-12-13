@@ -56,6 +56,8 @@ jobs:
       - name: zip
         run: |
           cd src\OWML.Launcher\bin\Debug
+          mkdir Logs
+          mkdir Mods
           7z a OWML.zip *
       - uses: actions/upload-artifact@v2
         with:
