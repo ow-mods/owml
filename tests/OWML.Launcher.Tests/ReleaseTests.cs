@@ -16,8 +16,6 @@ namespace OWML.Launcher.Tests
         [Fact]
         public void ReleaseContainsAllFiles()
         {
-            CopyMods();
-
             AssertFolderContainsFiles(OwmlReleasePath, new[]
             {
                 "OWML.Launcher.exe",
@@ -81,27 +79,6 @@ namespace OWML.Launcher.Tests
             Assert.NotEmpty(Directory.GetFiles(OwmlReleasePath, "OWML*.dll", SearchOption.AllDirectories));
             Assert.Empty(Directory.GetFiles(OwmlReleasePath, "UnityEngine*.dll", SearchOption.AllDirectories));
             Assert.Empty(Directory.GetFiles(OwmlReleasePath, "Assembly-CSharp.dll", SearchOption.AllDirectories));
-        }
-
-        private void CopyMods()
-        {
-            Directory.CreateDirectory($"{OwmlReleasePath}/Logs");
-            Directory.CreateDirectory($"{OwmlReleasePath}/Mods");
-            CopyMod("OWML.EnableDebugMode");
-            CopyMod("OWML.LoadCustomAssets");
-        }
-
-        private void CopyMod(string modName)
-        {
-            var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug";
-            var toModPath = $"{OwmlReleasePath}/Mods/{modName}";
-            Directory.CreateDirectory(toModPath);
-            var modFiles = Directory.GetFiles(fromModPath);
-            foreach (var filePath in modFiles)
-            {
-                var to = $"{toModPath}/{Path.GetFileName(filePath)}";
-                File.Copy(filePath, to);
-            }
         }
 
         private void AssertFolderContainsFiles(string folder, string[] files) => 
