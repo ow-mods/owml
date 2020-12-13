@@ -34,6 +34,12 @@ jobs:
           file: src\SampleMods\OWML.LoadCustomAssets\manifest.json
           field: version
           value: ${{ steps.version.outputs.prop }}
+      - name: set csproj version #untested
+        uses: rshillington/file-content-replacer@master
+        with:
+          files: "**/*.csproj"
+          from: '\[assembly: AssemblyVersion\(".*"\)\]'
+          to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
       
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v1
@@ -65,21 +71,24 @@ jobs:
   nuget:
     runs-on: ubuntu-latest
     needs: build
-    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/download-artifact@v2
         name: download artifact
         with:
           name: owml-nuget
-      # todo publish to nuget.org
+      - uses: myci-actions/publish-nuget@2 # todo untested
+        with:
+          filename: OWML.*.nupkg
+          api-key: ${{ secrets.NUGET_KEY }}
           
   release:
     runs-on: ubuntu-latest
     needs: nuget
-    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/download-artifact@v2
         name: download artifact
         with:
           name: owml-zip
-      # todo publish github release
+      #todo create github release
