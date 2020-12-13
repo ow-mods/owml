@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Events
             try
             {
                 _logger.Log($"Getting method {methodName} of {targetType.Name}");
-                result = targetType.GetAnyMethod(methodName); // todo
+                result = Utils.TypeExtensions.GetAnyMethod(targetType, methodName);
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace OWML.ModHelper.Events
 
         public void AddPrefix(MethodBase original, Type patchType, string patchMethodName)
         {
-            var prefix = patchType.GetAnyMethod(patchMethodName);
+            var prefix = Utils.TypeExtensions.GetAnyMethod(patchType, patchMethodName);
             if (prefix == null)
             {
                 _console.WriteLine($"Error in {nameof(AddPrefix)}: {patchType.Name}.{patchMethodName} is null.", MessageType.Error);
@@ -83,7 +83,7 @@ namespace OWML.ModHelper.Events
 
         public void AddPostfix(MethodBase original, Type patchType, string patchMethodName)
         {
-            var postfix = patchType.GetAnyMethod(patchMethodName);
+            var postfix = Utils.TypeExtensions.GetAnyMethod(patchType, patchMethodName);
             if (postfix == null)
             {
                 _console.WriteLine($"Error in {nameof(AddPostfix)}: {patchType.Name}.{patchMethodName} is null.", MessageType.Error);
@@ -109,7 +109,7 @@ namespace OWML.ModHelper.Events
 
         public void Transpile(MethodBase original, Type patchType, string patchMethodName)
         {
-            var patchMethod = patchType.GetAnyMethod(patchMethodName);
+            var patchMethod = Utils.TypeExtensions.GetAnyMethod(patchType, patchMethodName);
             if (patchMethod == null)
             {
                 _console.WriteLine($"Error in {nameof(Transpile)}: {patchType.Name}.{patchMethodName} is null.", MessageType.Error);

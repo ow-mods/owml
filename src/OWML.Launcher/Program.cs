@@ -33,6 +33,7 @@ namespace OWML.Launcher
                 .Add(owmlManifest)
                 .Add(consoleWriter)
                 .Add<IArgumentHelper>(argumentHelper)
+                .Add<IModLogger, ModLogger>()
                 .Add<IModFinder, ModFinder>()
                 .Add<IPathFinder, PathFinder>()
                 .Add<IOWPatcher, OWPatcher>()
