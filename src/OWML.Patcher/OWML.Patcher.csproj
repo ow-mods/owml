@@ -64,5 +64,15 @@
       <Name>OWML.ModLoader</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\dnlib.dll" />
+    <None Include="lib\dnpatch.dll" />
+    <None Include="lib\openvr_api.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="lib\OVRPlugin.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

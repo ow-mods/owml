@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Events
             try
             {
                 _logger.Log($"Getting method {methodName} of {targetType.Name}");
-                result = targetType.GetAnyMethod(methodName);
+                result = targetType.GetAnyMethod(methodName); // todo
             }
             catch (Exception ex)
             {
