@@ -37,7 +37,7 @@ jobs:
       - name: set csproj version #untested
         uses: rshillington/file-content-replacer@master
         with:
-          files: "**/*.csproj"
+          files: "**/AssemblyInfo.cs"
           from: '\[assembly: AssemblyVersion\(".*"\)\]'
           to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
       
