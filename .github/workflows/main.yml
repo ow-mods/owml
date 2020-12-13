@@ -51,14 +51,9 @@ jobs:
           name: owml-nuget
           path: OWML.*.nupkg
       
-      - name: copy mods
-        run: |
-          xcopy /e /i /y src\SampleMods\OWML.EnableDebugMode\bin\Debug\* src\OWML.Launcher\bin\Debug\Mods\OWML.EnableDebugMode
-          xcopy /e /i /y src\SampleMods\OWML.LoadCustomAssets\bin\Debug\* src\OWML.Launcher\bin\Debug\Mods\OWML.LoadCustomAssets
       - name: zip
         run: |
           cd src\OWML.Launcher\bin\Debug
-          mkdir Logs
           7z a OWML.zip *
       - uses: actions/upload-artifact@v2
         with:
@@ -74,6 +69,7 @@ jobs:
         name: download artifact
         with:
           name: owml-nuget
+      # todo publish to nuget.org
           
   release:
     runs-on: ubuntu-latest
@@ -84,3 +80,4 @@ jobs:
         name: download artifact
         with:
           name: owml-zip
+      # todo publish github release
