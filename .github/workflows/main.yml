@@ -34,12 +34,17 @@ jobs:
           file: src\SampleMods\OWML.LoadCustomAssets\manifest.json
           field: version
           value: ${{ steps.version.outputs.prop }}
-      - name: set csproj version #untested
+          
+      - run: type src\OWML.ModHelper\Properties\AssemblyInfo.cs # todo
+        
+      - name: set csproj version
         uses: rshillington/file-content-replacer@master
         with:
           files: "**/AssemblyInfo.cs"
           from: '\[assembly: AssemblyVersion\(".*"\)\]'
           to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
+      
+      - run: type src\OWML.ModHelper\Properties\AssemblyInfo.cs # todo
       
       - name: setup-msbuild
         uses: microsoft/setup-msbuild@v1
