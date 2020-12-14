@@ -3,6 +3,7 @@
     public interface IModConfigMenu : IModConfigMenuBase
     {
         IModData ModData { get; }
+
         IModBehaviour Mod { get; }
     }
 }

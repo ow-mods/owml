@@ -8,6 +8,7 @@ namespace OWML.Common
         void WriteLine(params object[] objects);
 
         void WriteLine(string line);
+
         void WriteLine(string line, MessageType type);
     }
 }

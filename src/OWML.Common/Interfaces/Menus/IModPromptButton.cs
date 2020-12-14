@@ -3,6 +3,7 @@
     public interface IModPromptButton : IModButton
     {
         string DefaultTitle { get; }
+
         ScreenPrompt Prompt { get; set; }
     }
 }

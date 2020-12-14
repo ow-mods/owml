@@ -7,6 +7,7 @@ namespace OWML.Common.Menus
         LayoutElement LayoutElement { get; }
 
         IModSeparator Copy();
+
         IModSeparator Copy(string title);
     }
 }
