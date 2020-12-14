@@ -1,10 +1,10 @@
 {
-  "filename": "OWML.EnableDebugMode.dll",
-  "author": "Alek",
-  "name": "EnableDebugMode",
-  "uniqueName": "Alek.EnableDebugMode",
-  "version": "0.3",
-  "owmlVersion": "1.0.0",
-  "description": "Enables the debug mode in Outer Wilds",
-  "requireVR": false
+	"filename": "OWML.EnableDebugMode.dll",
+	"author": "Alek",
+	"name": "EnableDebugMode",
+	"uniqueName": "Alek.EnableDebugMode",
+	"version": "0.3",
+	"owmlVersion": "1.0.0",
+	"description": "Enables the debug mode in Outer Wilds",
+	"requireVR": false
 }

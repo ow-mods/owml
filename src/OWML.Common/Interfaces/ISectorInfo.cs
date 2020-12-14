@@ -1,11 +1,11 @@
 ﻿namespace OWML.Common
 {
-    public interface ISectorInfo
-    {
-        int SectorStart { get; }
+	public interface ISectorInfo
+	{
+		int SectorStart { get; }
 
-        int SectorSize { get; }
+		int SectorSize { get; }
 
-        int SectorEnd { get; }
-    }
+		int SectorEnd { get; }
+	}
 }

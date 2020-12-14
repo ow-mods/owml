@@ -1,9 +1,9 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModConfigMenu : IModConfigMenuBase
-    {
-        IModData ModData { get; }
+	public interface IModConfigMenu : IModConfigMenuBase
+	{
+		IModData ModData { get; }
 
-        IModBehaviour Mod { get; }
-    }
+		IModBehaviour Mod { get; }
+	}
 }

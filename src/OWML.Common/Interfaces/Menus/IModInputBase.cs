@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace OWML.Common.Menus
 {
-    public interface IModInputBase
-    {
-        MonoBehaviour Element { get; }
+	public interface IModInputBase
+	{
+		MonoBehaviour Element { get; }
 
-        string Title { get; set; }
+		string Title { get; set; }
 
-        int Index { get; set; }
+		int Index { get; set; }
 
-        bool IsSelected { get; }
+		bool IsSelected { get; }
 
-        void Show();
+		void Show();
 
-        void Hide();
+		void Hide();
 
-        void Initialize(IModMenu menu);
-    }
+		void Initialize(IModMenu menu);
+	}
 }

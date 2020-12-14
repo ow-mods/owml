@@ -1,15 +1,15 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModPauseMenu : IModPopupMenu, IModOWMenu
-    {
-        new IModTabbedMenu OptionsMenu { get; }
+	public interface IModPauseMenu : IModPopupMenu, IModOWMenu
+	{
+		new IModTabbedMenu OptionsMenu { get; }
 
-        new IModButton OptionsButton { get; }
+		new IModButton OptionsButton { get; }
 
-        new IModButton QuitButton { get; }
+		new IModButton QuitButton { get; }
 
-        IModButton ResumeButton { get; }
+		IModButton ResumeButton { get; }
 
-        void Initialize(SettingsManager settingsManager);
-    }
+		void Initialize(SettingsManager settingsManager);
+	}
 }

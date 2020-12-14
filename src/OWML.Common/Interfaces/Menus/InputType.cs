@@ -1,10 +1,10 @@
 ﻿namespace OWML.Common.Menus
 {
-    public enum InputType
-    {
-        Text = 0,
+	public enum InputType
+	{
+		Text = 0,
 
-        Number = 1
-    }
+		Number = 1
+	}
 
 }

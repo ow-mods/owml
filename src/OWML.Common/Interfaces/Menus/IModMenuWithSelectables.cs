@@ -2,8 +2,8 @@
 
 namespace OWML.Common.Menus
 {
-    public interface IModMenuWithSelectables : IModPopupMenu
-    {
-        event Action OnCancel;
-    }
+	public interface IModMenuWithSelectables : IModPopupMenu
+	{
+		event Action OnCancel;
+	}
 }

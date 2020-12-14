@@ -3,24 +3,24 @@ using UnityEngine;
 
 namespace OWML.Common
 {
-    public interface IModInputCombination
-    {
-        float LastPressedMoment { get; }
+	public interface IModInputCombination
+	{
+		float LastPressedMoment { get; }
 
-        float PressDuration { get; }
+		float PressDuration { get; }
 
-        string ModName { get; }
+		string ModName { get; }
 
-        string Name { get; }
+		string Name { get; }
 
-        string FullName { get; }
+		string FullName { get; }
 
-        ReadOnlyCollection<KeyCode> Singles { get; }
+		ReadOnlyCollection<KeyCode> Singles { get; }
 
-        ReadOnlyCollection<long> Hashes { get; }
+		ReadOnlyCollection<long> Hashes { get; }
 
-        bool IsFirst { get; }
+		bool IsFirst { get; }
 
-        void InternalSetPressed(bool isPressed = true);
-    }
+		void InternalSetPressed(bool isPressed = true);
+	}
 }

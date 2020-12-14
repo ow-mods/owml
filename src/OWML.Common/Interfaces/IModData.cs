@@ -1,23 +1,23 @@
 ﻿namespace OWML.Common
 {
-    public interface IModData
-    {
-        IModManifest Manifest { get; }
+	public interface IModData
+	{
+		IModManifest Manifest { get; }
 
-        IModConfig Config { get; }
+		IModConfig Config { get; }
 
-        IModConfig DefaultConfig { get; }
+		IModConfig DefaultConfig { get; }
 
-        bool Enabled { get; }
+		bool Enabled { get; }
 
-        bool RequireVR { get; }
+		bool RequireVR { get; }
 
-        bool RequireReload { get; }
+		bool RequireReload { get; }
 
-        void UpdateSnapshot();
+		void UpdateSnapshot();
 
-        void ResetConfigToDefaults();
+		void ResetConfigToDefaults();
 
-        bool FixConfigs();
-    }
+		bool FixConfigs();
+	}
 }

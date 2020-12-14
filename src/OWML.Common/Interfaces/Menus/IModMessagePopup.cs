@@ -2,16 +2,16 @@
 
 namespace OWML.Common.Menus
 {
-    public interface IModMessagePopup : IModTemporaryPopup
-    {
-        event Action OnConfirm;
+	public interface IModMessagePopup : IModTemporaryPopup
+	{
+		event Action OnConfirm;
 
-        event Action OnCancel;
+		event Action OnCancel;
 
-        void Initialize(PopupMenu messageMenu);
+		void Initialize(PopupMenu messageMenu);
 
-        void ShowMessage(string message, bool addCancel, string okMessage, string cancelMessage);
+		void ShowMessage(string message, bool addCancel, string okMessage, string cancelMessage);
 
-        IModMessagePopup Copy();
-    }
+		IModMessagePopup Copy();
+	}
 }

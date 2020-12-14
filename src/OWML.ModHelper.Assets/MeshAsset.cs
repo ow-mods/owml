@@ -2,7 +2,7 @@
 
 namespace OWML.ModHelper.Assets
 {
-    public class MeshAsset : ModAsset<MeshFilter>
-    {
-    }
+	public class MeshAsset : ModAsset<MeshFilter>
+	{
+	}
 }

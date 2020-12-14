@@ -2,7 +2,7 @@
 
 namespace OWML.ModHelper.Assets
 {
-    public class AudioAsset : ModAsset<AudioSource>
-    {
-    }
+	public class AudioAsset : ModAsset<AudioSource>
+	{
+	}
 }

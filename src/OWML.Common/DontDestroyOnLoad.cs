@@ -2,9 +2,9 @@
 
 namespace OWML.Common
 {
-    public class DontDestroyOnLoad : MonoBehaviour
-    {
-        public void Start() => 
-            DontDestroyOnLoad(gameObject);
-    }
+	public class DontDestroyOnLoad : MonoBehaviour
+	{
+		public void Start() =>
+			DontDestroyOnLoad(gameObject);
+	}
 }

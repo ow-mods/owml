@@ -7,92 +7,92 @@ using OWML.Logging;
 
 namespace OWML.ModHelper
 {
-    public class ModConfig : IModConfig
-    {
-        [JsonProperty("enabled")]
-        public bool Enabled { get; set; } = true;
+	public class ModConfig : IModConfig
+	{
+		[JsonProperty("enabled")]
+		public bool Enabled { get; set; } = true;
 
-        [JsonProperty("settings")]
-        public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
+		[JsonProperty("settings")]
+		public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
 
-        public T GetSettingsValue<T>(string key)
-        {
-            if (!Settings.ContainsKey(key))
-            {
-                ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
-                return default;
-            }
+		public T GetSettingsValue<T>(string key)
+		{
+			if (!Settings.ContainsKey(key))
+			{
+				ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
+				return default;
+			}
 
-            return GetSettingsValue<T>(key, Settings[key]);
-        }
+			return GetSettingsValue<T>(key, Settings[key]);
+		}
 
-        private T GetSettingsValue<T>(string key, object setting)
-        {
-            var type = typeof(T);
-            
-            try
-            {
-                var value = setting is JObject objectValue ? objectValue["value"] : setting;
-                return type.IsEnum ? ConvertToEnum<T>(value) : (T)Convert.ChangeType(value, type);
-            }
-            catch (InvalidCastException)
-            {
-                ModConsole.OwmlConsole.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}", MessageType.Error);
-                return default;
-            }
-        }
+		private T GetSettingsValue<T>(string key, object setting)
+		{
+			var type = typeof(T);
 
-        private T ConvertToEnum<T>(object value)
-        {
-            if (value is float || value is double)
-            {
-                var floatValue = Convert.ToDouble(value);
-                return (T)(object)(long)Math.Round(floatValue);
-            }
-            if (value is int || value is long)
-            {
-                return (T)value;
-            }
+			try
+			{
+				var value = setting is JObject objectValue ? objectValue["value"] : setting;
+				return type.IsEnum ? ConvertToEnum<T>(value) : (T)Convert.ChangeType(value, type);
+			}
+			catch (InvalidCastException)
+			{
+				ModConsole.OwmlConsole.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}", MessageType.Error);
+				return default;
+			}
+		}
 
-            var valueString = Convert.ToString(value);
+		private T ConvertToEnum<T>(object value)
+		{
+			if (value is float || value is double)
+			{
+				var floatValue = Convert.ToDouble(value);
+				return (T)(object)(long)Math.Round(floatValue);
+			}
+			if (value is int || value is long)
+			{
+				return (T)value;
+			}
 
-            try
-            {
-                return (T)Enum.Parse(typeof(T), valueString, true);
-            }
-            catch (ArgumentException ex)
-            {
-                ModConsole.OwmlConsole.WriteLine($"Error - Can't convert {valueString} to enum {typeof(T)}: {ex.Message}", MessageType.Error);
-                return default;
-            }
-        }
+			var valueString = Convert.ToString(value);
 
-        public void SetSettingsValue(string key, object value)
-        {
-            if (!Settings.ContainsKey(key))
-            {
-                ModConsole.OwmlConsole.WriteLine("Error - Setting not found: " + key, MessageType.Error);
-                return;
-            }
+			try
+			{
+				return (T)Enum.Parse(typeof(T), valueString, true);
+			}
+			catch (ArgumentException ex)
+			{
+				ModConsole.OwmlConsole.WriteLine($"Error - Can't convert {valueString} to enum {typeof(T)}: {ex.Message}", MessageType.Error);
+				return default;
+			}
+		}
 
-            if (Settings[key] is JObject setting)
-            {
-                setting["value"] = JToken.FromObject(value);
-            }
-            else
-            {
-                Settings[key] = value;
-            }
-        }
+		public void SetSettingsValue(string key, object value)
+		{
+			if (!Settings.ContainsKey(key))
+			{
+				ModConsole.OwmlConsole.WriteLine("Error - Setting not found: " + key, MessageType.Error);
+				return;
+			}
 
-        public IModConfig Copy()
-        {
-            return new ModConfig
-            {
-                Enabled = Enabled,
-                Settings = new Dictionary<string, object>(Settings)
-            };
-        }
+			if (Settings[key] is JObject setting)
+			{
+				setting["value"] = JToken.FromObject(value);
+			}
+			else
+			{
+				Settings[key] = value;
+			}
+		}
 
-    }
+		public IModConfig Copy()
+		{
+			return new ModConfig
+			{
+				Enabled = Enabled,
+				Settings = new Dictionary<string, object>(Settings)
+			};
+		}
+
+	}
 }

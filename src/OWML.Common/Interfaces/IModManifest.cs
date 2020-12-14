@@ -1,31 +1,31 @@
 ﻿namespace OWML.Common
 {
-    public interface IModManifest
-    {
-        string Filename { get; }
+	public interface IModManifest
+	{
+		string Filename { get; }
 
-        string Author { get; }
+		string Author { get; }
 
-        string Name { get; }
+		string Name { get; }
 
-        string Version { get; }
+		string Version { get; }
 
-        string OWMLVersion { get; }
+		string OWMLVersion { get; }
 
-        string AssemblyPath { get; }
+		string AssemblyPath { get; }
 
-        string UniqueName { get; }
+		string UniqueName { get; }
 
-        string ModFolderPath { get; set; }
+		string ModFolderPath { get; set; }
 
-        string[] Dependencies { get; }
+		string[] Dependencies { get; }
 
-        bool PriorityLoad { get; }
+		bool PriorityLoad { get; }
 
-        bool RequireVR { get; }
+		bool RequireVR { get; }
 
-        string MinGameVersion { get; }
+		string MinGameVersion { get; }
 
-        string MaxGameVersion { get; }
-    }
+		string MaxGameVersion { get; }
+	}
 }

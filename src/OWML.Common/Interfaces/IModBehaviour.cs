@@ -2,20 +2,20 @@
 
 namespace OWML.Common
 {
-    public interface IModBehaviour
-    {
-        IModHelper ModHelper { get; }
+	public interface IModBehaviour
+	{
+		IModHelper ModHelper { get; }
 
-        object Api { get; }
+		object Api { get; }
 
-        void Configure(IModConfig config);
+		void Configure(IModConfig config);
 
-        IList<IModBehaviour> GetDependants();
+		IList<IModBehaviour> GetDependants();
 
-        IList<IModBehaviour> GetDependencies();
+		IList<IModBehaviour> GetDependencies();
 
-        object GetApi();
+		object GetApi();
 
-        void Init(IModHelper helper);
-    }
+		void Init(IModHelper helper);
+	}
 }

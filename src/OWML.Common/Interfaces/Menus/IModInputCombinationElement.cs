@@ -1,13 +1,13 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModInputCombinationElement : IModToggleInput
-    {
-        IModLayoutManager Layout { get; }
+	public interface IModInputCombinationElement : IModToggleInput
+	{
+		IModLayoutManager Layout { get; }
 
-        void Destroy();
+		void Destroy();
 
-        void DestroySelf();
+		void DestroySelf();
 
-        new IModInputCombinationElement Copy(string combination);
-    }
+		new IModInputCombinationElement Copy(string combination);
+	}
 }

@@ -4,30 +4,30 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Assets
 {
-    public class ModAsset<T> : MonoBehaviour, IModAsset<T>
-    {
-        public event Action<T> Loaded;
+	public class ModAsset<T> : MonoBehaviour, IModAsset<T>
+	{
+		public event Action<T> Loaded;
 
-        [Obsolete("Use Loaded instead.")]
-        public Action<T> OnLoaded { get; set; }
+		[Obsolete("Use Loaded instead.")]
+		public Action<T> OnLoaded { get; set; }
 
-        public T Asset { get; private set; }
+		public T Asset { get; private set; }
 
-        public void SetAsset(T asset)
-        {
-            Asset = asset;
-            OnLoaded?.Invoke(asset);
-            Loaded?.Invoke(asset);
-        }
+		public void SetAsset(T asset)
+		{
+			Asset = asset;
+			OnLoaded?.Invoke(asset);
+			Loaded?.Invoke(asset);
+		}
 
-        public void Start()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+		public void Start()
+		{
+			DontDestroyOnLoad(gameObject);
+		}
 
-        public T1 AddComponent<T1>() where T1 : Component
-        {
-            return gameObject.AddComponent<T1>();
-        }
-    }
+		public T1 AddComponent<T1>() where T1 : Component
+		{
+			return gameObject.AddComponent<T1>();
+		}
+	}
 }

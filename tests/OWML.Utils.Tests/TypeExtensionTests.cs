@@ -5,37 +5,37 @@ using Xunit.Abstractions;
 
 namespace OWML.ModHelper.Events.Tests
 {
-    public class TypeExtensionTests : OWMLTests
-    {
-        public TypeExtensionTests(ITestOutputHelper outputHelper)
-            : base(outputHelper)
-        {
-        }
+	public class TypeExtensionTests : OWMLTests
+	{
+		public TypeExtensionTests(ITestOutputHelper outputHelper)
+			: base(outputHelper)
+		{
+		}
 
-        [Fact]
-        public void GetValue()
-        {
-            var config = new ModConfig
-            {
-                Enabled = true
-            };
+		[Fact]
+		public void GetValue()
+		{
+			var config = new ModConfig
+			{
+				Enabled = true
+			};
 
-            var value = config.GetValue<bool>("Enabled");
+			var value = config.GetValue<bool>("Enabled");
 
-            Assert.True(value);
-        }
+			Assert.True(value);
+		}
 
-        [Fact]
-        public void SetValue()
-        {
-            var config = new ModConfig
-            {
-                Enabled = false
-            };
+		[Fact]
+		public void SetValue()
+		{
+			var config = new ModConfig
+			{
+				Enabled = false
+			};
 
-            config.SetValue("Enabled", true);
+			config.SetValue("Enabled", true);
 
-            Assert.True(config.Enabled);
-        }
-    }
+			Assert.True(config.Enabled);
+		}
+	}
 }

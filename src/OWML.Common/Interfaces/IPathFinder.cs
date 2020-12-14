@@ -1,7 +1,7 @@
 ﻿namespace OWML.Common
 {
-    public interface IPathFinder
-    {
-        string FindGamePath();
-    }
+	public interface IPathFinder
+	{
+		string FindGamePath();
+	}
 }

@@ -3,19 +3,19 @@ using UnityEngine;
 
 namespace OWML.Common
 {
-    public interface IModEvents
-    {
-        IModPlayerEvents Player { get; }
+	public interface IModEvents
+	{
+		IModPlayerEvents Player { get; }
 
-        IModSceneEvents Scenes { get; }
+		IModSceneEvents Scenes { get; }
 
-        IModUnityEvents Unity { get; }
+		IModUnityEvents Unity { get; }
 
-        event Action<MonoBehaviour, Events> Event;
+		event Action<MonoBehaviour, Events> Event;
 
-        [Obsolete("Use Event instead.")]
-        Action<MonoBehaviour, Events> OnEvent { get; set; }
+		[Obsolete("Use Event instead.")]
+		Action<MonoBehaviour, Events> OnEvent { get; set; }
 
-        void Subscribe<T>(Events ev) where T : MonoBehaviour;
-    }
+		void Subscribe<T>(Events ev) where T : MonoBehaviour;
+	}
 }

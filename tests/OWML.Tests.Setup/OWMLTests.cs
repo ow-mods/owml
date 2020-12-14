@@ -2,67 +2,76 @@
 using System.IO;
 using Moq;
 using OWML.Common;
+using OWML.Utils;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace OWML.Tests.Setup
 {
-    public class OWMLTests
-    {
-        protected string OwmlSolutionPath => GetSolutionPath();
+	public class OWMLTests
+	{
+		protected string OwmlSolutionPath => GetSolutionPath();
 
-        protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/";
+		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/";
 
-        protected readonly Mock<IModConsole> Console = new Mock<IModConsole>();
-        protected readonly Mock<IModLogger> Logger = new Mock<IModLogger>();
-        protected readonly Mock<IApplicationHelper> AppHelper = new Mock<IApplicationHelper>();
-        protected readonly Mock<IGameObjectHelper> GOHelper;
-        protected readonly Mock<IModBehaviour> Mod = new Mock<IModBehaviour>();
+		protected Mock<IModConsole> Console { get; } = new Mock<IModConsole>();
 
-        protected readonly IOwmlConfig Config = new OwmlConfig();
-        
-        private readonly ITestOutputHelper _outputHelper;
+		protected Mock<IModLogger> Logger { get; } = new Mock<IModLogger>();
 
-        public OWMLTests(ITestOutputHelper outputHelper)
-        {
-            _outputHelper = outputHelper;
+		protected Mock<IApplicationHelper> AppHelper { get; } = new Mock<IApplicationHelper>();
 
-            AppHelper.Setup(s => s.DataPath)
-                .Returns(() => "C:/Program Files/Epic Games/OuterWilds/OuterWilds_Data");
-            AppHelper.Setup(s => s.Version)
-                .Returns(() => "1.3.3.7");
+		protected Mock<IGameObjectHelper> GOHelper { get; } = new Mock<IGameObjectHelper>();
 
-            Console.Setup(s => s.WriteLine(It.IsAny<string>()))
-                .Callback((string s) => WriteLine(s));
-            Console.Setup(s => s.WriteLine(It.IsAny<string>(), It.IsAny<MessageType>()))
-                .Callback((string s, MessageType type) => WriteLine($"{type}: {s}"));
+		protected IOwmlConfig Config { get; } = new OwmlConfig();
 
-            Logger.Setup(s => s.Log(It.IsAny<string>()))
-                .Callback((string s) => WriteLine(s));
+		private readonly ITestOutputHelper _outputHelper;
 
-            GOHelper = new Mock<IGameObjectHelper>();
-            GOHelper.Setup(s => s.CreateAndAdd<IModBehaviour>(It.IsAny<Type>(), It.IsAny<string>()))
-                .Returns(() => Mod.Object);
-            GOHelper.Setup(s => s.CreateAndAdd<IModUnityEvents, It.IsAnyType>(It.IsAny<string>()))
-                .Returns(() => new Mock<IModUnityEvents>().Object);
-            GOHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, It.IsAnyType>(It.IsAny<string>()))
-                .Returns(() => new Mock<IBindingChangeListener>().Object);
+		public OWMLTests(ITestOutputHelper outputHelper)
+		{
+			_outputHelper = outputHelper;
 
-            Config.OWMLPath = OwmlReleasePath;
-            Config.GamePath = "C:/Program Files/Epic Games/OuterWilds";
-        }
+			AppHelper.Setup(s => s.DataPath)
+				.Returns(() => "C:/Program Files/Epic Games/OuterWilds/OuterWilds_Data");
+			AppHelper.Setup(s => s.Version)
+				.Returns(() => "1.3.3.7");
 
-        private string GetSolutionPath()
-        {
-            var currentFolder = Directory.GetCurrentDirectory();
-            return Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
-        }
+			Console.Setup(s => s.WriteLine(It.IsAny<string>()))
+				.Callback((string s) => WriteLine(s));
+			Console.Setup(s => s.WriteLine(It.IsAny<string>(), It.IsAny<MessageType>()))
+				.Callback((string s, MessageType type) => WriteLine($"{type}: {s}"));
 
-        private void WriteLine(string s)
-        {
-            _outputHelper.WriteLine(s);
-            Assert.DoesNotContain("Error", s, StringComparison.InvariantCultureIgnoreCase);
-            Assert.DoesNotContain("Exception", s, StringComparison.InvariantCultureIgnoreCase);
-        }
-    }
+			Logger.Setup(s => s.Log(It.IsAny<string>()))
+				.Callback((string s) => WriteLine(s));
+
+			GOHelper.Setup(s => s.CreateAndAdd<IModBehaviour>(It.IsAny<Type>(), It.IsAny<string>()))
+				.Returns(() =>
+				{
+					var mod = new Mock<IModBehaviour>();
+					mod.Setup(s => s.Init(It.IsAny<IModHelper>()))
+						.Callback((IModHelper modHelper) => mod.SetupGet(m => m.ModHelper)
+							.Returns(modHelper));
+					return mod.Object;
+				});
+			GOHelper.Setup(s => s.CreateAndAdd<IModUnityEvents, It.IsAnyType>(It.IsAny<string>()))
+				.Returns(() => new Mock<IModUnityEvents>().Object);
+			GOHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, It.IsAnyType>(It.IsAny<string>()))
+				.Returns(() => new Mock<IBindingChangeListener>().Object);
+
+			Config.OWMLPath = OwmlReleasePath;
+			Config.GamePath = "C:/Program Files/Epic Games/OuterWilds";
+		}
+
+		private string GetSolutionPath()
+		{
+			var currentFolder = Directory.GetCurrentDirectory();
+			return Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
+		}
+
+		private void WriteLine(string s)
+		{
+			_outputHelper.WriteLine(s);
+			Assert.DoesNotContain("Error", s, StringComparison.InvariantCultureIgnoreCase);
+			Assert.DoesNotContain("Exception", s, StringComparison.InvariantCultureIgnoreCase);
+		}
+	}
 }

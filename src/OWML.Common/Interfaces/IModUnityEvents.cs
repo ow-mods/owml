@@ -2,18 +2,18 @@
 
 namespace OWML.Common
 {
-    public interface IModUnityEvents
-    {
-        event Action OnUpdate;
+	public interface IModUnityEvents
+	{
+		event Action OnUpdate;
 
-        event Action OnFixedUpdate;
+		event Action OnFixedUpdate;
 
-        event Action OnLateUpdate;
+		event Action OnLateUpdate;
 
-        void FireOnNextUpdate(Action action);
+		void FireOnNextUpdate(Action action);
 
-        void FireInNUpdates(Action action, int n);
+		void FireInNUpdates(Action action, int n);
 
-        void RunWhen(Func<bool> predicate, Action action);
-    }
+		void RunWhen(Func<bool> predicate, Action action);
+	}
 }

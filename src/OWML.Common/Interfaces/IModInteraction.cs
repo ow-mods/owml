@@ -2,18 +2,18 @@
 
 namespace OWML.Common
 {
-    public interface IModInteraction
-    {
-        IList<IModBehaviour> GetMods();
+	public interface IModInteraction
+	{
+		IList<IModBehaviour> GetMods();
 
-        IList<IModBehaviour> GetDependants(string dependencyUniqueName);
+		IList<IModBehaviour> GetDependants(string dependencyUniqueName);
 
-        IList<IModBehaviour> GetDependencies(string uniqueName);
+		IList<IModBehaviour> GetDependencies(string uniqueName);
 
-        IModBehaviour GetMod(string uniqueName);
+		IModBehaviour GetMod(string uniqueName);
 
-        TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class;
+		TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class;
 
-        bool ModExists(string uniqueName);
-    }
+		bool ModExists(string uniqueName);
+	}
 }

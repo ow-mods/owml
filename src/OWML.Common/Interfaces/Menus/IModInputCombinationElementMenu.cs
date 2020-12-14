@@ -2,18 +2,18 @@
 
 namespace OWML.Common.Menus
 {
-    public interface IModInputCombinationElementMenu : IModTemporaryPopup
-    {
-        event Action<string> OnConfirm;
-        
-        event Action OnCancel;
+	public interface IModInputCombinationElementMenu : IModTemporaryPopup
+	{
+		event Action<string> OnConfirm;
 
-        void Initialize(PopupInputMenu combinationMenu);
+		event Action OnCancel;
 
-        void Init(IModPopupManager popupManager);
+		void Initialize(PopupInputMenu combinationMenu);
 
-        void Open(string value, string comboName, IModInputCombinationMenu combinationMenu, IModInputCombinationElement element);
+		void Init(IModPopupManager popupManager);
 
-        IModInputCombinationElementMenu Copy();
-    }
+		void Open(string value, string comboName, IModInputCombinationMenu combinationMenu, IModInputCombinationElement element);
+
+		IModInputCombinationElementMenu Copy();
+	}
 }

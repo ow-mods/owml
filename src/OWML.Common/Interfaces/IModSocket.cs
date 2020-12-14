@@ -1,9 +1,9 @@
 ﻿namespace OWML.Common
 {
-    public interface IModSocket
-    {
-        void WriteToSocket(IModSocketMessage message);
+	public interface IModSocket
+	{
+		void WriteToSocket(IModSocketMessage message);
 
-        void Close();
-    }
+		void Close();
+	}
 }

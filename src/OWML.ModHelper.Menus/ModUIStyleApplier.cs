@@ -5,77 +5,77 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModUIStyleApplier : UIStyleApplier
-    {
-        public void Initialize(UIStyleApplier oldStyleApplier)
-        {
-            ClearAllArrays();
-            var fields = typeof(UIStyleApplier).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-            fields.ForEach(field => field.SetValue(this, field.GetValue(oldStyleApplier)));
-        }
+	public class ModUIStyleApplier : UIStyleApplier
+	{
+		public void Initialize(UIStyleApplier oldStyleApplier)
+		{
+			ClearAllArrays();
+			var fields = typeof(UIStyleApplier).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
+			fields.ForEach(field => field.SetValue(this, field.GetValue(oldStyleApplier)));
+		}
 
-        public void ClearAllArrays()
-        {
-            _textItems = new Text[0];
-            _foregroundGraphics = new Graphic[0];
-            _backgroundGraphics = new Graphic[0];
-            _onOffGraphics = new Graphic[0];
-            _onOffGraphicList = new OnOffGraphic[0];
-        }
+		public void ClearAllArrays()
+		{
+			_textItems = new Text[0];
+			_foregroundGraphics = new Graphic[0];
+			_backgroundGraphics = new Graphic[0];
+			_onOffGraphics = new Graphic[0];
+			_onOffGraphicList = new OnOffGraphic[0];
+		}
 
-        public void SetTexts(Text[] texts)
-        {
-            _textItems = texts;
-        }
+		public void SetTexts(Text[] texts)
+		{
+			_textItems = texts;
+		}
 
-        public void SetForeground(Graphic[] foreground)
-        {
-            _foregroundGraphics = foreground;
-        }
+		public void SetForeground(Graphic[] foreground)
+		{
+			_foregroundGraphics = foreground;
+		}
 
-        public void SetBackground(Graphic[] background)
-        {
-            _backgroundGraphics = background;
-        }
+		public void SetBackground(Graphic[] background)
+		{
+			_backgroundGraphics = background;
+		}
 
-        public void SetOnOffGraphics(Graphic[] onOffs)
-        {
-            _onOffGraphics = onOffs;
-        }
+		public void SetOnOffGraphics(Graphic[] onOffs)
+		{
+			_onOffGraphics = onOffs;
+		}
 
-        public void SetOnOffExtended(OnOffGraphic[] onOffs)
-        {
-            _onOffGraphicList = onOffs;
-        }
+		public void SetOnOffExtended(OnOffGraphic[] onOffs)
+		{
+			_onOffGraphicList = onOffs;
+		}
 
-        public void SetAsButton()
-        {
-            _buttonItem = true;
-            _secondaryMenuItem = false;
-        }
+		public void SetAsButton()
+		{
+			_buttonItem = true;
+			_secondaryMenuItem = false;
+		}
 
-        public void SetAsSecondary()
-        {
-            _buttonItem = false;
-            _secondaryMenuItem = true;
-        }
+		public void SetAsSecondary()
+		{
+			_buttonItem = false;
+			_secondaryMenuItem = true;
+		}
 
-        public void SetAsDefault()
-        {
-            _buttonItem = false;
-            _secondaryMenuItem = false;
-        }
+		public void SetAsDefault()
+		{
+			_buttonItem = false;
+			_secondaryMenuItem = false;
+		}
 
-        public static ModUIStyleApplier ReplaceStyleApplier(GameObject obj)
-        {
-            var oldUIStyleApplier = obj.GetComponent<UIStyleApplier>();
-            var newUIStyleApplier = obj.AddComponent<ModUIStyleApplier>();
-            if (oldUIStyleApplier != null)
-            {
-                newUIStyleApplier.Initialize(oldUIStyleApplier);
-                Destroy(oldUIStyleApplier);
-            }
-            return newUIStyleApplier;
-        }
-    }
+		public static ModUIStyleApplier ReplaceStyleApplier(GameObject obj)
+		{
+			var oldUIStyleApplier = obj.GetComponent<UIStyleApplier>();
+			var newUIStyleApplier = obj.AddComponent<ModUIStyleApplier>();
+			if (oldUIStyleApplier != null)
+			{
+				newUIStyleApplier.Initialize(oldUIStyleApplier);
+				Destroy(oldUIStyleApplier);
+			}
+			return newUIStyleApplier;
+		}
+	}
 }

@@ -1,11 +1,11 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModsMenu : IModPopupMenu
-    {
-        void AddMod(IModData modData, IModBehaviour mod);
+	public interface IModsMenu : IModPopupMenu
+	{
+		void AddMod(IModData modData, IModBehaviour mod);
 
-        IModConfigMenu GetModMenu(IModBehaviour modBehaviour);
+		IModConfigMenu GetModMenu(IModBehaviour modBehaviour);
 
-        void Initialize(IModMenus menus, IModOWMenu mainMenu);
-    }
+		void Initialize(IModMenus menus, IModOWMenu mainMenu);
+	}
 }

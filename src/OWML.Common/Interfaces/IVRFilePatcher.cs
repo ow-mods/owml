@@ -1,7 +1,7 @@
 ﻿namespace OWML.Common
 {
-    public interface IVRFilePatcher
-    {
-        void Patch();
-    }
+	public interface IVRFilePatcher
+	{
+		void Patch();
+	}
 }

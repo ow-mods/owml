@@ -2,32 +2,32 @@ using System.Collections.Generic;
 
 namespace OWML.Common
 {
-    public interface IModInputHandler
-    {
-        IModInputTextures Textures { get; }
+	public interface IModInputHandler
+	{
+		IModInputTextures Textures { get; }
 
-        IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination);
+		IModInputCombination RegisterCombination(IModBehaviour mod, string name, string combination);
 
-        void UnregisterCombination(IModInputCombination combo);
+		void UnregisterCombination(IModInputCombination combo);
 
-        bool IsPressedExact(IModInputCombination combo);
+		bool IsPressedExact(IModInputCombination combo);
 
-        bool IsNewlyPressedExact(IModInputCombination combo);
+		bool IsNewlyPressedExact(IModInputCombination combo);
 
-        bool WasTappedExact(IModInputCombination combo);
+		bool WasTappedExact(IModInputCombination combo);
 
-        bool WasNewlyReleasedExact(IModInputCombination combo);
+		bool WasNewlyReleasedExact(IModInputCombination combo);
 
-        bool IsPressed(IModInputCombination combo);
+		bool IsPressed(IModInputCombination combo);
 
-        bool IsNewlyPressed(IModInputCombination combo);
+		bool IsNewlyPressed(IModInputCombination combo);
 
-        bool WasTapped(IModInputCombination combo);
+		bool WasTapped(IModInputCombination combo);
 
-        bool WasNewlyReleased(IModInputCombination combo);
+		bool WasNewlyReleased(IModInputCombination combo);
 
-        List<string> GetWarningMessages(string combinations);
+		List<string> GetWarningMessages(string combinations);
 
-        void UpdateGamesBindings();
-    }
+		void UpdateGamesBindings();
+	}
 }

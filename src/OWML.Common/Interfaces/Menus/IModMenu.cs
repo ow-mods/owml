@@ -3,90 +3,90 @@ using System.Collections.Generic;
 
 namespace OWML.Common.Menus
 {
-    public interface IModMenu
-    {
-        event Action OnInit;
+	public interface IModMenu
+	{
+		event Action OnInit;
 
-        Menu Menu { get; }
+		Menu Menu { get; }
 
-        List<IModButtonBase> BaseButtons { get; }
+		List<IModButtonBase> BaseButtons { get; }
 
-        List<IModButton> Buttons { get; }
+		List<IModButton> Buttons { get; }
 
-        List<IModLayoutButton> LayoutButtons { get; }
+		List<IModLayoutButton> LayoutButtons { get; }
 
-        List<IModPromptButton> PromptButtons { get; }
-        
-        [Obsolete("Use GetTitleButton instead")]
-        IModButton GetButton(string title);
+		List<IModPromptButton> PromptButtons { get; }
 
-        IModButton GetTitleButton(string title);
+		[Obsolete("Use GetTitleButton instead")]
+		IModButton GetButton(string title);
 
-        IModPromptButton GetPromptButton(string title);
+		IModButton GetTitleButton(string title);
 
-        [Obsolete("Use AddButton(IModButtonBase) instead.")]
-        IModButton AddButton(IModButton button);
+		IModPromptButton GetPromptButton(string title);
 
-        [Obsolete("Use AddButton(IModButtonBase, int) instead.")]
-        IModButton AddButton(IModButton button, int index);
+		[Obsolete("Use AddButton(IModButtonBase) instead.")]
+		IModButton AddButton(IModButton button);
 
-        IModButtonBase AddButton(IModButtonBase button);
+		[Obsolete("Use AddButton(IModButtonBase, int) instead.")]
+		IModButton AddButton(IModButton button, int index);
 
-        IModButtonBase AddButton(IModButtonBase button, int index);
+		IModButtonBase AddButton(IModButtonBase button);
 
-        List<IModToggleInput> ToggleInputs { get; }
+		IModButtonBase AddButton(IModButtonBase button, int index);
 
-        IModToggleInput GetToggleInput(string title);
+		List<IModToggleInput> ToggleInputs { get; }
 
-        IModToggleInput AddToggleInput(IModToggleInput input);
+		IModToggleInput GetToggleInput(string title);
 
-        IModToggleInput AddToggleInput(IModToggleInput input, int index);
+		IModToggleInput AddToggleInput(IModToggleInput input);
 
-        List<IModSliderInput> SliderInputs { get; }
+		IModToggleInput AddToggleInput(IModToggleInput input, int index);
 
-        IModSliderInput GetSliderInput(string title);
+		List<IModSliderInput> SliderInputs { get; }
 
-        IModSliderInput AddSliderInput(IModSliderInput input);
+		IModSliderInput GetSliderInput(string title);
 
-        IModSliderInput AddSliderInput(IModSliderInput input, int index);
+		IModSliderInput AddSliderInput(IModSliderInput input);
 
-        List<IModSelectorInput> SelectorInputs { get; }
+		IModSliderInput AddSliderInput(IModSliderInput input, int index);
 
-        IModSelectorInput GetSelectorInput(string title);
+		List<IModSelectorInput> SelectorInputs { get; }
 
-        IModSelectorInput AddSelectorInput(IModSelectorInput input);
+		IModSelectorInput GetSelectorInput(string title);
 
-        IModSelectorInput AddSelectorInput(IModSelectorInput input, int index);
+		IModSelectorInput AddSelectorInput(IModSelectorInput input);
 
-        List<IModTextInput> TextInputs { get; }
+		IModSelectorInput AddSelectorInput(IModSelectorInput input, int index);
 
-        IModTextInput GetTextInput(string title);
+		List<IModTextInput> TextInputs { get; }
 
-        IModTextInput AddTextInput(IModTextInput input);
+		IModTextInput GetTextInput(string title);
 
-        IModTextInput AddTextInput(IModTextInput input, int index);
+		IModTextInput AddTextInput(IModTextInput input);
 
-        List<IModNumberInput> NumberInputs { get; }
+		IModTextInput AddTextInput(IModTextInput input, int index);
 
-        IModNumberInput GetNumberInput(string title);
+		List<IModNumberInput> NumberInputs { get; }
 
-        IModNumberInput AddNumberInput(IModNumberInput input);
+		IModNumberInput GetNumberInput(string title);
 
-        IModNumberInput AddNumberInput(IModNumberInput input, int index);
+		IModNumberInput AddNumberInput(IModNumberInput input);
 
-        List<IModSeparator> Separators { get; }
+		IModNumberInput AddNumberInput(IModNumberInput input, int index);
 
-        IModSeparator AddSeparator(IModSeparator separator);
+		List<IModSeparator> Separators { get; }
 
-        IModSeparator AddSeparator(IModSeparator separator, int index);
-        IModSeparator GetSeparator(string title);
+		IModSeparator AddSeparator(IModSeparator separator);
 
-        object GetInputValue(string key);
+		IModSeparator AddSeparator(IModSeparator separator, int index);
+		IModSeparator GetSeparator(string title);
 
-        void SetInputValue(string key, object value);
+		object GetInputValue(string key);
 
-        void SelectFirst();
+		void SetInputValue(string key, object value);
 
-        void UpdateNavigation();
-    }
+		void SelectFirst();
+
+		void UpdateNavigation();
+	}
 }

@@ -2,30 +2,30 @@
 
 namespace OWML.Common
 {
-    public interface IModHelper
-    {
-        IModLogger Logger { get; }
+	public interface IModHelper
+	{
+		IModLogger Logger { get; }
 
-        IModConsole Console { get; }
+		IModConsole Console { get; }
 
-        IModEvents Events { get; }
+		IModEvents Events { get; }
 
-        IHarmonyHelper HarmonyHelper { get; }
+		IHarmonyHelper HarmonyHelper { get; }
 
-        IModAssets Assets { get; }
+		IModAssets Assets { get; }
 
-        IModStorage Storage { get; }
+		IModStorage Storage { get; }
 
-        IModMenus Menus { get; }
+		IModMenus Menus { get; }
 
-        IModManifest Manifest { get; }
+		IModManifest Manifest { get; }
 
-        IModConfig Config { get; }
+		IModConfig Config { get; }
 
-        IOwmlConfig OwmlConfig { get; }
+		IOwmlConfig OwmlConfig { get; }
 
-        IModInputHandler Input { get; }
+		IModInputHandler Input { get; }
 
-        IModInteraction Interaction { get; }
-    }
+		IModInteraction Interaction { get; }
+	}
 }

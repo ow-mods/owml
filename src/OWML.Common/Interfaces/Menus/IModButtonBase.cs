@@ -3,31 +3,31 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModButtonBase
-    {
-        event Action OnClick;
+	public interface IModButtonBase
+	{
+		event Action OnClick;
 
-        int Index { get; set; }
+		int Index { get; set; }
 
-        Button Button { get; }
+		Button Button { get; }
 
-        bool IsSelected { get; }
+		bool IsSelected { get; }
 
-        void Initialize(IModMenu menu);
+		void Initialize(IModMenu menu);
 
-        IModButtonBase Copy();
+		IModButtonBase Copy();
 
-        IModButtonBase Copy(int index);
+		IModButtonBase Copy(int index);
 
-        IModButtonBase Duplicate();
+		IModButtonBase Duplicate();
 
-        IModButtonBase Duplicate(int index);
+		IModButtonBase Duplicate(int index);
 
-        IModButtonBase Replace();
+		IModButtonBase Replace();
 
-        IModButtonBase Replace(int index);
+		IModButtonBase Replace(int index);
 
-        void Show();
-        void Hide();
-    }
+		void Show();
+		void Hide();
+	}
 }

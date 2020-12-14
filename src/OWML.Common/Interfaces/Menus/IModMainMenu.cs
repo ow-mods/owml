@@ -1,21 +1,21 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModMainMenu : IModOWMenu
-    {
-        new IModTabbedMenu OptionsMenu { get; }
+	public interface IModMainMenu : IModOWMenu
+	{
+		new IModTabbedMenu OptionsMenu { get; }
 
-        new IModButton OptionsButton { get; }
+		new IModButton OptionsButton { get; }
 
-        new IModButton QuitButton { get; }
+		new IModButton QuitButton { get; }
 
-        IModButton ResumeExpeditionButton { get; }
+		IModButton ResumeExpeditionButton { get; }
 
-        IModButton NewExpeditionButton { get; }
+		IModButton NewExpeditionButton { get; }
 
-        IModButton ViewCreditsButton { get; }
+		IModButton ViewCreditsButton { get; }
 
-        IModButton SwitchProfileButton { get; }
+		IModButton SwitchProfileButton { get; }
 
-        void Initialize(TitleScreenManager titleScreenManager);
-    }
+		void Initialize(TitleScreenManager titleScreenManager);
+	}
 }

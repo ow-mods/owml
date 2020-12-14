@@ -2,12 +2,12 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModSeparator : IModInputBase
-    {
-        LayoutElement LayoutElement { get; }
+	public interface IModSeparator : IModInputBase
+	{
+		LayoutElement LayoutElement { get; }
 
-        IModSeparator Copy();
+		IModSeparator Copy();
 
-        IModSeparator Copy(string title);
-    }
+		IModSeparator Copy(string title);
+	}
 }

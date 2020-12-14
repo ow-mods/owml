@@ -3,34 +3,34 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModButton : IModButtonBase
-    {
-        event Action OnClick;
+	public interface IModButton : IModButtonBase
+	{
+		event Action OnClick;
 
-        int Index { get; set; }
+		int Index { get; set; }
 
-        Button Button { get; }
+		Button Button { get; }
 
-        void Initialize(IModMenu menu);
+		void Initialize(IModMenu menu);
 
-        string Title { get; set; }
+		string Title { get; set; }
 
-        new IModButton Copy();
+		new IModButton Copy();
 
-        IModButton Copy(string title);
+		IModButton Copy(string title);
 
-        IModButton Copy(string title, int index);
+		IModButton Copy(string title, int index);
 
-        IModButton Duplicate(string title);
+		IModButton Duplicate(string title);
 
-        IModButton Duplicate(string title, int index);
+		IModButton Duplicate(string title, int index);
 
-        IModButton Replace(string title);
+		IModButton Replace(string title);
 
-        IModButton Replace(string title, int index);
+		IModButton Replace(string title, int index);
 
-        void Show();
+		void Show();
 
-        void Hide();
-    }
+		void Hide();
+	}
 }

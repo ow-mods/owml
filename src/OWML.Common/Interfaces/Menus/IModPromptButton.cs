@@ -1,9 +1,9 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModPromptButton : IModButton
-    {
-        string DefaultTitle { get; }
+	public interface IModPromptButton : IModButton
+	{
+		string DefaultTitle { get; }
 
-        ScreenPrompt Prompt { get; set; }
-    }
+		ScreenPrompt Prompt { get; set; }
+	}
 }

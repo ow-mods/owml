@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace OWML.Common.Menus
 {
-    public interface IModInputCombinationMenu : IModPopupMenu
-    {
-        event Action<string> OnConfirm;
+	public interface IModInputCombinationMenu : IModPopupMenu
+	{
+		event Action<string> OnConfirm;
 
-        event Action OnCancel;
+		event Action OnCancel;
 
-        List<IModInputCombinationElement> CombinationElements { get; }
+		List<IModInputCombinationElement> CombinationElements { get; }
 
-        string GenerateCombination();
+		string GenerateCombination();
 
-        void FillMenu(string combination);
+		void FillMenu(string combination);
 
-        void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate);
+		void Initialize(Menu menu, IModInputCombinationElement combinationElementTemplate);
 
-        void RemoveCombinationElement(IModInputCombinationElement element);
-    }
+		void RemoveCombinationElement(IModInputCombinationElement element);
+	}
 }

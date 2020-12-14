@@ -3,22 +3,22 @@ using UnityEngine.UI;
 
 namespace OWML.Common.Menus
 {
-    public interface IModLayoutManager
-    {
-        LayoutGroup LayoutGroup { get; }
+	public interface IModLayoutManager
+	{
+		LayoutGroup LayoutGroup { get; }
 
-        int ChildCount { get; }
+		int ChildCount { get; }
 
-        void UpdateState();
+		void UpdateState();
 
-        void Clear();
+		void Clear();
 
-        void AddText(string text);
+		void AddText(string text);
 
-        void AddTextAt(string text, int index);
+		void AddTextAt(string text, int index);
 
-        void AddPicture(Texture2D texture, float scale = 1.0f);
+		void AddPicture(Texture2D texture, float scale = 1.0f);
 
-        void AddPictureAt(Texture2D texture, int index, float scale = 1.0f);
-    }
+		void AddPictureAt(Texture2D texture, int index, float scale = 1.0f);
+	}
 }

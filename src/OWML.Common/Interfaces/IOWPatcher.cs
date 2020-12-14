@@ -1,7 +1,7 @@
 ﻿namespace OWML.Common
 {
-    public interface IOWPatcher
-    {
-        void PatchGame();
-    }
+	public interface IOWPatcher
+	{
+		void PatchGame();
+	}
 }

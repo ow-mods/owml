@@ -2,8 +2,8 @@
 
 namespace OWML.Common
 {
-    public interface IModSorter
-    {
-        IList<IModData> SortMods(IList<IModData> mods);
-    }
+	public interface IModSorter
+	{
+		IList<IModData> SortMods(IList<IModData> mods);
+	}
 }

@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace OWML.Common
 {
-    public interface IApplicationHelper
-    {
-        string DataPath { get; }
+	public interface IApplicationHelper
+	{
+		string DataPath { get; }
 
-        string Version { get; }
+		string Version { get; }
 
-        void AddLogCallback(Action<string, string, LogType> onLogMessageReceived);
-    }
+		void AddLogCallback(Action<string, string, LogType> onLogMessageReceived);
+	}
 }

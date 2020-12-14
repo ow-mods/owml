@@ -2,36 +2,36 @@
 
 namespace OWML.Common
 {
-    public class OwmlConfig : IOwmlConfig
-    {
-        [JsonProperty("gamePath")]
-        public string GamePath { get; set; }
+	public class OwmlConfig : IOwmlConfig
+	{
+		[JsonProperty("gamePath")]
+		public string GamePath { get; set; }
 
-        [JsonProperty("combinationsBlockInput")]
-        public bool BlockInput { get; set; }
+		[JsonProperty("combinationsBlockInput")]
+		public bool BlockInput { get; set; }
 
-        [JsonIgnore]
-        public string DataPath => $"{GamePath}/OuterWilds_Data";
+		[JsonIgnore]
+		public string DataPath => $"{GamePath}/OuterWilds_Data";
 
-        [JsonIgnore]
-        public string ExePath => $"{GamePath}/OuterWilds.exe";
+		[JsonIgnore]
+		public string ExePath => $"{GamePath}/OuterWilds.exe";
 
-        [JsonIgnore]
-        public string ManagedPath => $"{DataPath}/Managed";
+		[JsonIgnore]
+		public string ManagedPath => $"{DataPath}/Managed";
 
-        [JsonIgnore]
-        public string PluginsPath => $"{DataPath}/Plugins";
+		[JsonIgnore]
+		public string PluginsPath => $"{DataPath}/Plugins";
 
-        [JsonProperty("owmlPath")]
-        public string OWMLPath { get; set; }
+		[JsonProperty("owmlPath")]
+		public string OWMLPath { get; set; }
 
-        [JsonIgnore]
-        public string ModsPath => $"{OWMLPath}Mods";
+		[JsonIgnore]
+		public string ModsPath => $"{OWMLPath}Mods";
 
-        [JsonIgnore]
-        public string LogsPath => $"{OWMLPath}Logs";
+		[JsonIgnore]
+		public string LogsPath => $"{OWMLPath}Logs";
 
-        [JsonProperty("socketPort")]
-        public int SocketPort { get; set; }
-    }
+		[JsonProperty("socketPort")]
+		public int SocketPort { get; set; }
+	}
 }

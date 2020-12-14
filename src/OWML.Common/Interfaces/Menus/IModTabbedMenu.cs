@@ -1,25 +1,25 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModTabbedMenu : IModPopupMenu
-    {
-        IModTabMenu GameplayTab { get; }
+	public interface IModTabbedMenu : IModPopupMenu
+	{
+		IModTabMenu GameplayTab { get; }
 
-        IModTabMenu AudioTab { get; }
+		IModTabMenu AudioTab { get; }
 
-        IModTabMenu InputTab { get; }
+		IModTabMenu InputTab { get; }
 
-        IModTabMenu GraphicsTab { get; }
+		IModTabMenu GraphicsTab { get; }
 
-        IModButton RebindingButton { get; }
+		IModButton RebindingButton { get; }
 
-        IModPopupMenu RebindingMenu { get; }
+		IModPopupMenu RebindingMenu { get; }
 
-        new IModTabbedMenu Copy();
+		new IModTabbedMenu Copy();
 
-        void Initialize(TabbedMenu menu);
+		void Initialize(TabbedMenu menu);
 
-        new TabbedMenu Menu { get; }
+		new TabbedMenu Menu { get; }
 
-        void AddTab(IModTabMenu tab);
-    }
+		void AddTab(IModTabMenu tab);
+	}
 }

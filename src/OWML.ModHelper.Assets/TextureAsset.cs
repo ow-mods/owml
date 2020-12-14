@@ -2,7 +2,7 @@
 
 namespace OWML.ModHelper.Assets
 {
-    public class TextureAsset : ModAsset<MeshRenderer>
-    {
-    }
+	public class TextureAsset : ModAsset<MeshRenderer>
+	{
+	}
 }

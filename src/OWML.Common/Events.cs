@@ -1,25 +1,25 @@
 ﻿namespace OWML.Common
 {
-    public enum Events
-    {
-        BeforeAwake = 0,
+	public enum Events
+	{
+		BeforeAwake = 0,
 
-        AfterAwake = 1,
+		AfterAwake = 1,
 
-        BeforeStart = 2,
+		BeforeStart = 2,
 
-        AfterStart = 3,
+		AfterStart = 3,
 
-        BeforeEnable = 4,
+		BeforeEnable = 4,
 
-        AfterEnable = 5,
+		AfterEnable = 5,
 
-        BeforeDisable = 6,
+		BeforeDisable = 6,
 
-        AfterDisable = 7,
+		AfterDisable = 7,
 
-        BeforeDestroy = 8,
+		BeforeDestroy = 8,
 
-        AfterDestroy = 9
-    }
+		AfterDestroy = 9
+	}
 }

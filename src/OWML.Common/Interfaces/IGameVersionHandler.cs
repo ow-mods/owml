@@ -1,7 +1,7 @@
 ﻿namespace OWML.Common
 {
-    public interface IGameVersionHandler
-    {
-        void CompareVersions();
-    }
+	public interface IGameVersionHandler
+	{
+		void CompareVersions();
+	}
 }

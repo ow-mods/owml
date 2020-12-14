@@ -1,7 +1,7 @@
 ﻿namespace OWML.Common.Menus
 {
-    public interface IModTemporaryPopup : IModMenu
-    {
-        void DestroySelf();
-    }
+	public interface IModTemporaryPopup : IModMenu
+	{
+		void DestroySelf();
+	}
 }
