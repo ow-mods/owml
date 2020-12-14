@@ -41,7 +41,7 @@ jobs:
         uses: rshillington/file-content-replacer@master
         with:
           files: "**/AssemblyInfo.cs"
-          from: '\[assembly: AssemblyVersion\(".*"\)\]'
+          from: '^\[assembly: AssemblyVersion\(".*"\)\]'
           to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
       
       - run: type src\OWML.ModHelper\Properties\AssemblyInfo.cs # todo
