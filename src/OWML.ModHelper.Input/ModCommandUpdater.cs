@@ -6,19 +6,13 @@ namespace OWML.ModHelper.Input
 	{
 		private InputCommand _command;
 
-		public void Initialize(InputCommand command)
-		{
+		public void Initialize(InputCommand command) =>
 			_command = command;
-		}
 
-		public void Start()
-		{
+		public void Start() =>
 			DontDestroyOnLoad(gameObject);
-		}
 
-		public void Update()
-		{
+		public void Update() =>
 			_command?.UpdateInputCommand();
-		}
 	}
 }

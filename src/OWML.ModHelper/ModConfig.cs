@@ -17,13 +17,13 @@ namespace OWML.ModHelper
 
 		public T GetSettingsValue<T>(string key)
 		{
-			if (!Settings.ContainsKey(key))
+			if (Settings.ContainsKey(key))
 			{
-				ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
-				return default;
+				return GetSettingsValue<T>(key, Settings[key]);
 			}
 
-			return GetSettingsValue<T>(key, Settings[key]);
+			ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
+			return default;
 		}
 
 		private T GetSettingsValue<T>(string key, object setting)
@@ -49,6 +49,7 @@ namespace OWML.ModHelper
 				var floatValue = Convert.ToDouble(value);
 				return (T)(object)(long)Math.Round(floatValue);
 			}
+
 			if (value is int || value is long)
 			{
 				return (T)value;
@@ -85,14 +86,11 @@ namespace OWML.ModHelper
 			}
 		}
 
-		public IModConfig Copy()
-		{
-			return new ModConfig
+		public IModConfig Copy() =>
+			new ModConfig
 			{
 				Enabled = Enabled,
 				Settings = new Dictionary<string, object>(Settings)
 			};
-		}
-
 	}
 }

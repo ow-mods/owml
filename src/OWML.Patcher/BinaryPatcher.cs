@@ -87,9 +87,7 @@ namespace OWML.Patcher
 			}
 
 			var sectionEnd = sectionStart + sectionOriginalSize;
-
 			var sizeDifference = newBytes.Length - sectionOriginalSize;
-
 			var newFileBytes = fileBytes.Take(sectionStart).Concat(newBytes).Concat(fileBytes.Skip(sectionEnd)).ToArray();
 
 			PatchFileSize(newFileBytes, sizeDifference, sector);
@@ -144,10 +142,8 @@ namespace OWML.Patcher
 			}
 		}
 
-		private void BackupFile(string path)
-		{
+		private void BackupFile(string path) => 
 			File.Copy(path, path + BackupSuffix, true);
-		}
 
 		public void RestoreFromBackup()
 		{

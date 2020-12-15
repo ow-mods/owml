@@ -67,6 +67,5 @@ namespace OWML.Patcher
 				}
 			}
 		}
-
 	}
 }

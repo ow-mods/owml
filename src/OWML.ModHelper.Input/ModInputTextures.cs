@@ -20,11 +20,13 @@ namespace OWML.ModHelper.Input
 				{
 					continue;
 				}
+
 				var keyName = ModInputLibrary.KeyCodeToString(key);
 				if (_loadedTextures.ContainsKey(keyName))
 				{
 					continue;
 				}
+
 				var button = InputTranslator.ConvertKeyCodeToButton(key, config);
 				var toStore = (int)key >= ModInputLibrary.MinGamepadKey ?
 					ButtonPromptLibrary.SharedInstance.GetButtonTexture(button) :
@@ -33,10 +35,8 @@ namespace OWML.ModHelper.Input
 			}
 		}
 
-		public Texture2D KeyTexture(string key)
-		{
-			return KeyTexture(ModInputLibrary.StringToKeyCode(key));
-		}
+		public Texture2D KeyTexture(string key) => 
+			KeyTexture(ModInputLibrary.StringToKeyCode(key));
 
 		public Texture2D KeyTexture(KeyCode key)
 		{
@@ -44,11 +44,13 @@ namespace OWML.ModHelper.Input
 			{
 				FillTextureLibrary();
 			}
+
 			var keyName = ModInputLibrary.KeyCodeToString(key);
 			if (_loadedTextures.ContainsKey(keyName))
 			{
 				return _loadedTextures[keyName];
 			}
+
 			var config = OWInput.GetActivePadConfig() ?? InputUtil.GamePadConfig_Xbox;
 			var toStore = (int)key >= ModInputLibrary.MinGamepadKey ?
 				ButtonPromptLibrary.SharedInstance.GetButtonTexture(InputTranslator.ConvertKeyCodeToButton(key, config)) :

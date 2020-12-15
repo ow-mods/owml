@@ -14,19 +14,14 @@ namespace OWML.GameFinder
 			_writer = writer;
 		}
 
-		public string FindGamePath()
-		{
-			return FindPathWith<CurrentPathFinder>() ??
-				   FindPathWith<SteamGameFinder>() ??
-				   FindPathWith<EpicGameFinder>() ??
-				   FindPathWith<DefaultLocationFinder>() ??
-				   FindPathWith<PromptGameFinder>();
-		}
+		public string FindGamePath() =>
+			FindPathWith<CurrentPathFinder>() ??
+			FindPathWith<SteamGameFinder>() ??
+			FindPathWith<EpicGameFinder>() ??
+			FindPathWith<DefaultLocationFinder>() ??
+			FindPathWith<PromptGameFinder>();
 
-		private string FindPathWith<T>() where T : BaseFinder
-		{
-			var gameFinder = (T)Activator.CreateInstance(typeof(T), _config, _writer);
-			return gameFinder.FindGamePath();
-		}
+		private string FindPathWith<T>() where T : BaseFinder => 
+			((T)Activator.CreateInstance(typeof(T), _config, _writer)).FindGamePath();
 	}
 }

@@ -19,10 +19,8 @@ namespace OWML.Launcher
 		private static IOwmlConfig _config;
 		private bool _hasReceivedFatalMessage;
 
-		public SocketListener(IOwmlConfig config)
-		{
+		public SocketListener(IOwmlConfig config) =>
 			_config = config;
-		}
 
 		public void Init()
 		{
@@ -95,6 +93,7 @@ namespace OWML.Launcher
 				{
 					continue;
 				}
+
 				ModSocketMessage data;
 				try
 				{
@@ -111,12 +110,12 @@ namespace OWML.Launcher
 				{
 					Environment.Exit(0);
 				}
-				if (data.Type == MessageType.Fatal)
+				else if (data.Type == MessageType.Fatal)
 				{
 					_hasReceivedFatalMessage = true;
 				}
-				ConsoleUtils.WriteByType(data.Type,
-					$"[{data.SenderName}.{data.SenderType}] : {data.Message}");
+
+				ConsoleUtils.WriteByType(data.Type, $"[{data.SenderName}.{data.SenderType}] : {data.Message}");
 			}
 		}
 	}

@@ -34,14 +34,10 @@ namespace OWML.Logging
 			LogInternal(message);
 		}
 
-		public void Log(params object[] objects)
-		{
+		public void Log(params object[] objects) => 
 			Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
-		}
 
-		private static void LogInternal(string message)
-		{
+		private static void LogInternal(string message) => 
 			File.AppendAllText(_logFileName, $"{DateTime.Now}: {message}{Environment.NewLine}");
-		}
 	}
 }

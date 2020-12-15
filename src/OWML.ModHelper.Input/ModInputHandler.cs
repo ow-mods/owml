@@ -10,25 +10,26 @@ namespace OWML.ModHelper.Input
 {
 	public class ModInputHandler : IModInputHandler
 	{
-		private const float Cooldown = 0.05f;
-		private const float TapDuration = 0.1f;
-		private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
-
 		internal static ModInputHandler Instance { get; private set; }
 
 		public IModInputTextures Textures { get; }
 
+		private const float Cooldown = 0.05f;
+		private const float TapDuration = 0.1f;
+		private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
+		
 		private readonly HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
 		private readonly Dictionary<long, HashSet<IModInputCombination>> _comboRegistry = new Dictionary<long, HashSet<IModInputCombination>>();
 		private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
 		private readonly int[] _blockedFrame = new int[ModInputLibrary.MaxUsefulKey];
 		private readonly int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
-		private HashSet<IModInputCombination> _currentCombinations = new HashSet<IModInputCombination>();
-		private int _lastSingleUpdate;
-		private int _lastCombinationUpdate;
 		private readonly IModLogger _logger;
 		private readonly IModConsole _console;
 
+		private HashSet<IModInputCombination> _currentCombinations = new HashSet<IModInputCombination>();
+		private int _lastSingleUpdate;
+		private int _lastCombinationUpdate;
+		
 		public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events, IModInputTextures inputTextures, IBindingChangeListener listener)
 		{
 			Instance = this;
@@ -65,11 +66,13 @@ namespace OWML.ModHelper.Input
 				{
 					continue;
 				}
+
 				keysCount++;
 				if (keysCount > ModInputLibrary.MaxComboLength)
 				{
 					return null;
 				}
+
 				hash = hash * ModInputLibrary.MaxUsefulKey + code;
 				if ((Time.frameCount - _blockedFrame[code]) * Time.deltaTime > Cooldown)
 				{
@@ -87,12 +90,14 @@ namespace OWML.ModHelper.Input
 			{
 				return new HashSet<IModInputCombination>();
 			}
+
 			var hash = (long)nullableHash;
 			if (hash < 0)
 			{
 				countdownTrigger = true;
 				hash = -hash;
 			}
+
 			if (!_comboRegistry.ContainsKey(hash))
 			{
 				return new HashSet<IModInputCombination>();
@@ -103,6 +108,7 @@ namespace OWML.ModHelper.Input
 			{
 				combinations.IntersectWith(_currentCombinations);
 			}
+
 			if (combinations.Count == 0)
 			{
 				return combinations;
@@ -113,6 +119,7 @@ namespace OWML.ModHelper.Input
 				_blockedFrame[hash % ModInputLibrary.MaxUsefulKey] = Time.frameCount;
 				hash /= ModInputLibrary.MaxUsefulKey;
 			}
+
 			return combinations;
 		}
 
@@ -122,11 +129,13 @@ namespace OWML.ModHelper.Input
 			{
 				return;
 			}
+
 			_lastCombinationUpdate = Time.frameCount;
 			foreach (var combo in _toResetOnNextFrame)
 			{
 				combo.InternalSetPressed(false);
 			}
+
 			_toResetOnNextFrame.Clear();
 			var combinations = GetCombinationsFromKeyboard();
 			if (_currentCombinations.Count > 0 && !_currentCombinations.Equals(combinations))
@@ -136,6 +145,7 @@ namespace OWML.ModHelper.Input
 				toUnpress.ToList().ForEach(combination => combination.InternalSetPressed(false));
 				_toResetOnNextFrame.UnionWith(toUnpress);
 			}
+
 			_currentCombinations = combinations;
 			_currentCombinations.ToList().ForEach(combination => combination.InternalSetPressed());
 		}
@@ -146,31 +156,26 @@ namespace OWML.ModHelper.Input
 			{
 				return false;
 			}
+
 			UpdateCurrentCombinations();
 			return _currentCombinations.Contains(combination);
 		}
 
-		public bool IsNewlyPressedExact(IModInputCombination combination)
-		{
-			return combination != null &&
-				   IsPressedExact(combination) &&
-				   combination.IsFirst;
-		}
+		public bool IsNewlyPressedExact(IModInputCombination combination) =>
+			combination != null &&
+			IsPressedExact(combination) &&
+			combination.IsFirst;
 
-		public bool WasTappedExact(IModInputCombination combination)
-		{
-			return combination != null &&
-				   !IsPressedExact(combination) &&
-				   combination.PressDuration < TapDuration &&
-				   combination.IsFirst;
-		}
+		public bool WasTappedExact(IModInputCombination combination) =>
+			combination != null &&
+			!IsPressedExact(combination) &&
+			combination.PressDuration < TapDuration &&
+			combination.IsFirst;
 
-		public bool WasNewlyReleasedExact(IModInputCombination combination)
-		{
-			return combination != null &&
-				   !IsPressedExact(combination) &&
-				   combination.IsFirst;
-		}
+		public bool WasNewlyReleasedExact(IModInputCombination combination) =>
+			combination != null &&
+			!IsPressedExact(combination) &&
+			combination.IsFirst;
 
 		private void CleanupSinglesPressed()
 		{
@@ -178,6 +183,7 @@ namespace OWML.ModHelper.Input
 			{
 				return;
 			}
+
 			_lastSingleUpdate = Time.frameCount;
 			var toRemove = new List<IModInputCombination>();
 			foreach (var combo in _singlesPressed)
@@ -186,6 +192,7 @@ namespace OWML.ModHelper.Input
 				{
 					toRemove.Add(combo);
 				}
+
 				if (!IsPressed(combo))
 				{
 					combo.InternalSetPressed(false);
@@ -202,43 +209,37 @@ namespace OWML.ModHelper.Input
 			{
 				return true;
 			}
+
 			var single = combination.Singles.FirstOrDefault(key => UnityEngine.Input.GetKey(key) && !IsPressedAndIgnored(key));
 			if (single == 0)
 			{
 				return false;
 			}
+
 			_singlesPressed.Add(combination);
 			combination.InternalSetPressed();
 			return true;
 		}
 
-		public bool IsPressed(IModInputCombination combination)
-		{
-			return combination != null &&
-				   (IsPressedExact(combination) || IsPressedSingle(combination));
-		}
+		public bool IsPressed(IModInputCombination combination) =>
+			combination != null &&
+			(IsPressedExact(combination) || IsPressedSingle(combination));
 
-		public bool IsNewlyPressed(IModInputCombination combination)
-		{
-			return combination != null &&
-				   IsPressed(combination) &&
-				   combination.IsFirst;
-		}
+		public bool IsNewlyPressed(IModInputCombination combination) =>
+			combination != null &&
+			IsPressed(combination) &&
+			combination.IsFirst;
 
-		public bool WasTapped(IModInputCombination combination)
-		{
-			return combination != null &&
-				   !IsPressed(combination) &&
-				   combination.PressDuration < TapDuration &&
-				   combination.IsFirst;
-		}
+		public bool WasTapped(IModInputCombination combination) =>
+			combination != null &&
+			!IsPressed(combination) &&
+			combination.PressDuration < TapDuration &&
+			combination.IsFirst;
 
-		public bool WasNewlyReleased(IModInputCombination combination)
-		{
-			return combination != null &&
-				   !IsPressed(combination) &&
-				   combination.IsFirst;
-		}
+		public bool WasNewlyReleased(IModInputCombination combination) =>
+			combination != null &&
+			!IsPressed(combination) &&
+			combination.IsFirst;
 
 		private RegistrationCode SwapCombination(IModInputCombination combination, bool toUnregister)
 		{
@@ -247,6 +248,7 @@ namespace OWML.ModHelper.Input
 			{
 				return RegistrationCode.InvalidCombination;
 			}
+
 			foreach (var hash in combination.Hashes)
 			{
 				if (toUnregister)
@@ -255,6 +257,7 @@ namespace OWML.ModHelper.Input
 					{
 						continue;
 					}
+
 					_comboRegistry[hash].Remove(combination);
 					if (_comboRegistry[hash].Count == 0)
 					{
@@ -262,14 +265,17 @@ namespace OWML.ModHelper.Input
 					}
 					continue;
 				}
+
 				if (_comboRegistry.ContainsKey(hash) || hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0)
 				{
 					isTaken = true;
 				}
+
 				if (!_comboRegistry.ContainsKey(hash))
 				{
 					_comboRegistry.Add(hash, new HashSet<IModInputCombination>());
 				}
+
 				_comboRegistry[hash].Add(combination);
 			}
 			return isTaken ? RegistrationCode.CombinationTaken : RegistrationCode.AllNormal;
@@ -285,6 +291,7 @@ namespace OWML.ModHelper.Input
 					var toAdd = _comboRegistry[hash].Select(combination => combination.FullName).ToList();
 					toAdd.ForEach(combos.Add);
 				}
+
 				if (hash < ModInputLibrary.MaxUsefulKey && _gameBindingCounter[hash] > 0) // let's add both ¯\_(ツ)_/¯
 				{
 					combos.Add("Outer Wilds." + Enum.GetName(typeof(KeyCode), (KeyCode)hash));
@@ -307,6 +314,7 @@ namespace OWML.ModHelper.Input
 				}
 				hashes.Add(hash);
 			}
+
 			var warningMessages = GetCollisions(hashes.AsReadOnly())
 				.Select(combination => $"Collides with {combination}").ToList();
 			warningMessages.AddRange(errorMessages);
@@ -346,6 +354,7 @@ namespace OWML.ModHelper.Input
 				_console.WriteLine("Failed to unregister: Null combination!", MessageType.Error);
 				return;
 			}
+
 			switch (SwapCombination(combination, true))
 			{
 				case RegistrationCode.InvalidCombination:
@@ -368,6 +377,7 @@ namespace OWML.ModHelper.Input
 			{
 				return;
 			}
+
 			var fields = binding is SingleAxisCommand ?
 				typeof(SingleAxisCommand).GetFields(NonPublic) :
 				typeof(DoubleAxisCommand).GetFields(NonPublic);

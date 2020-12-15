@@ -24,9 +24,7 @@ namespace OWML.Utils
 			return this;
 		}
 
-		public T Resolve<T>()
-		{
-			return _container.Resolve<T>();
-		}
+		public T Resolve<T>() => 
+			_container.Resolve<T>();
 	}
 }

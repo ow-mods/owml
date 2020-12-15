@@ -76,10 +76,8 @@ namespace OWML.ModHelper.Events
 			Patch(original, prefix, null, null);
 		}
 
-		public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName)
-		{
+		public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName) => 
 			AddPostfix(GetMethod<T>(methodName), patchType, patchMethodName);
-		}
 
 		public void AddPostfix(MethodBase original, Type patchType, string patchMethodName)
 		{
@@ -92,20 +90,14 @@ namespace OWML.ModHelper.Events
 			Patch(original, null, postfix, null);
 		}
 
-		public void EmptyMethod<T>(string methodName)
-		{
+		public void EmptyMethod<T>(string methodName) => 
 			EmptyMethod(GetMethod<T>(methodName));
-		}
 
-		public void EmptyMethod(MethodBase methodInfo)
-		{
+		public void EmptyMethod(MethodBase methodInfo) => 
 			Transpile(methodInfo, typeof(Patches), nameof(Patches.EmptyMethod));
-		}
 
-		public void Transpile<T>(string methodName, Type patchType, string patchMethodName)
-		{
+		public void Transpile<T>(string methodName, Type patchType, string patchMethodName) => 
 			Transpile(GetMethod<T>(methodName), patchType, patchMethodName);
-		}
 
 		public void Transpile(MethodBase original, Type patchType, string patchMethodName)
 		{
@@ -139,6 +131,5 @@ namespace OWML.ModHelper.Events
 				_console.WriteLine($"Exception while patching {fullName}: {ex}", MessageType.Error);
 			}
 		}
-
 	}
 }

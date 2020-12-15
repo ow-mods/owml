@@ -27,17 +27,20 @@ namespace OWML.GameFinder
 				Writer.WriteLine("Steam not found in Registry.");
 				return null;
 			}
+
 			var defaultLocation = $"{steamPath}/{GameLocation}";
 			if (IsValidGamePath(defaultLocation))
 			{
 				return defaultLocation;
 			}
+
 			var libraryFoldersFile = $"{steamPath}/{LibraryFoldersPath}";
 			if (!File.Exists(libraryFoldersFile))
 			{
 				Writer.WriteLine($"Steam library folders file not found: {libraryFoldersFile}");
 				return null;
 			}
+
 			var libraryFoldersContent = File.ReadAllText(libraryFoldersFile);
 			var libraryFoldersVdf = VdfConvert.Deserialize(libraryFoldersContent);
 			for (var i = 1; i < MaxLibraryCount; i++)
@@ -49,12 +52,14 @@ namespace OWML.GameFinder
 					Writer.WriteLine("Game not found in custom Steam library.");
 					return null;
 				}
+
 				var gamePath = $"{libraryPath}/{GameLocation}";
 				if (IsValidGamePath(gamePath))
 				{
 					return gamePath;
 				}
 			}
+
 			Writer.WriteLine("Game not found in Steam.");
 			return null;
 		}

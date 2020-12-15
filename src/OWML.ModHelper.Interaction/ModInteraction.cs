@@ -9,6 +9,7 @@ namespace OWML.ModHelper.Interaction
 		private readonly IList<IModBehaviour> _modList;
 		private readonly IInterfaceProxyFactory _proxyFactory;
 		private readonly IModManifest _manifest;
+
 		private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
 		private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
 
@@ -17,6 +18,7 @@ namespace OWML.ModHelper.Interaction
 			_manifest = manifest;
 			_proxyFactory = proxyFactory;
 			_modList = modList;
+
 			RegenerateDictionaries();
 		}
 
@@ -63,16 +65,11 @@ namespace OWML.ModHelper.Interaction
 			return _dependencyDict[uniqueName];
 		}
 
-		public IModBehaviour GetMod(string uniqueName)
-		{
-			return _modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
-		}
+		public IModBehaviour GetMod(string uniqueName) => 
+			_modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
 
-		private object GetApi(string uniqueName)
-		{
-			var mod = GetMod(uniqueName);
-			return mod.Api;
-		}
+		private object GetApi(string uniqueName) => 
+			GetMod(uniqueName).Api;
 
 		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
 		{
@@ -88,14 +85,10 @@ namespace OWML.ModHelper.Interaction
 			}
 		}
 
-		public IList<IModBehaviour> GetMods()
-		{
-			return _modList;
-		}
+		public IList<IModBehaviour> GetMods() => 
+			_modList;
 
-		public bool ModExists(string uniqueName)
-		{
-			return _modList.Any(m => m.ModHelper.Manifest.UniqueName == uniqueName);
-		}
+		public bool ModExists(string uniqueName) => 
+			_modList.Any(m => m.ModHelper.Manifest.UniqueName == uniqueName);
 	}
 }

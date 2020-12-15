@@ -27,12 +27,14 @@ namespace OWML.GameFinder
 				Writer.WriteLine("EGS not found in Registry.");
 				return null;
 			}
+
 			var manifestsPath = $"{appDataPath}{ManifestsFolder}";
 			if (!Directory.Exists(manifestsPath))
 			{
 				Writer.WriteLine($"EGS manifests folder not found: {manifestsPath}");
 				return null;
 			}
+
 			var manifestPaths = Directory.GetFiles(manifestsPath, ManifestPattern, SearchOption.TopDirectoryOnly);
 			foreach (var manifestPath in manifestPaths)
 			{
@@ -43,14 +45,9 @@ namespace OWML.GameFinder
 					return epicManifest.InstallLocation;
 				}
 			}
+
 			Writer.WriteLine("Game not found in EGS.");
 			return null;
-		}
-
-		private class EpicManifest
-		{
-			[JsonProperty("InstallLocation")]
-			public string InstallLocation { get; set; }
 		}
 	}
 }

@@ -65,10 +65,8 @@ namespace OWML.Launcher
 			}
 		}
 
-		private static IOwmlConfig GetOwmlConfig()
-		{
-			return JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
-		}
+		private static IOwmlConfig GetOwmlConfig() => 
+			JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
 
 		private static IOwmlConfig CreateOwmlConfig()
 		{
@@ -83,16 +81,12 @@ namespace OWML.Launcher
 			JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
 		}
 
-		private static IModManifest GetOwmlManifest()
-		{
-			return JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
-		}
+		private static IModManifest GetOwmlManifest() => 
+			JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
 
-		private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort)
-		{
-			return hasConsolePort
-				? new ModSocketOutput(owmlConfig, owmlManifest, null, new ModSocket(owmlConfig), new ProcessHelper()) // todo container?
+		private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort) =>
+			hasConsolePort
+				? new ModSocketOutput(owmlConfig, owmlManifest, null, new ModSocket(owmlConfig), new ProcessHelper())
 				: (IModConsole)new OutputWriter();
-		}
 	}
 }

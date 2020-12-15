@@ -20,14 +20,10 @@ namespace OWML.ModHelper.Assets
 			Loaded?.Invoke(asset);
 		}
 
-		public void Start()
-		{
+		public void Start() =>
 			DontDestroyOnLoad(gameObject);
-		}
 
-		public T1 AddComponent<T1>() where T1 : Component
-		{
-			return gameObject.AddComponent<T1>();
-		}
+		public T1 AddComponent<T1>() where T1 : Component =>
+			gameObject.AddComponent<T1>();
 	}
 }

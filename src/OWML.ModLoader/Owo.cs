@@ -20,7 +20,6 @@ namespace OWML.ModLoader
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IModMenus _menus;
-		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IModInputHandler _inputHandler;
 		private readonly IModSorter _sorter;
 		private readonly IUnityLogger _unityLogger;
@@ -38,7 +37,6 @@ namespace OWML.ModLoader
 			IModConsole console,
 			IOwmlConfig owmlConfig,
 			IModMenus menus,
-			IHarmonyHelper harmonyHelper,
 			IModInputHandler inputHandler,
 			IModSorter sorter,
 			IUnityLogger unityLogger,
@@ -54,7 +52,6 @@ namespace OWML.ModLoader
 			_console = console;
 			_owmlConfig = owmlConfig;
 			_menus = menus;
-			_harmonyHelper = harmonyHelper;
 			_inputHandler = inputHandler;
 			_sorter = sorter;
 			_unityLogger = unityLogger;
@@ -72,7 +69,6 @@ namespace OWML.ModLoader
 			_console.WriteLine($"Game version: {_appHelper.Version}", MessageType.Info);
 
 			_goHelper.CreateAndAdd<OwmlBehaviour>();
-
 			_unityLogger.Start();
 			var mods = _modFinder.GetMods();
 
@@ -82,21 +78,17 @@ namespace OWML.ModLoader
 				_console.WriteLine($"Warning - Settings of following mods changed:\n\t{string.Join("\n\t", changedSettings)}", MessageType.Warning);
 			}
 
-			var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
-			var sortedNormal = _sorter.SortMods(normalMods);
-
-			var priorityMods = mods.Where(mod => mod.Manifest.PriorityLoad).ToList();
-			var sortedPriority = _sorter.SortMods(priorityMods);
+			var sortedMods = SortMods(mods);
 
 			var modNames = mods.Where(mod => mod.Config.Enabled)
 				.Select(mod => mod.Manifest.UniqueName).ToList();
-			var sortedMods = sortedPriority.Concat(sortedNormal);
-
+			
 			foreach (var modData in sortedMods)
 			{
 				var missingDependencies = modData.Config.Enabled
 					? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
 					: new List<string>();
+
 				missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
@@ -104,11 +96,24 @@ namespace OWML.ModLoader
 					_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
+
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
 				_menus.ModsMenu?.AddMod(modData, initMod);
 				_modList.Add(initMod);
 			}
+		}
+
+		private IEnumerable<IModData> SortMods(IList<IModData> mods)
+		{
+			var normalMods = mods.Where(mod => !mod.Manifest.PriorityLoad).ToList();
+			var sortedNormal = _sorter.SortMods(normalMods);
+
+			var priorityMods = mods.Where(mod => mod.Manifest.PriorityLoad).ToList();
+			var sortedPriority = _sorter.SortMods(priorityMods);
+
+			var sortedMods = sortedPriority.Concat(sortedNormal);
+			return sortedMods;
 		}
 
 		private Type LoadMod(IModData modData)
@@ -134,9 +139,8 @@ namespace OWML.ModLoader
 			}
 		}
 
-		private IModHelper CreateModHelper(IModData modData)
-		{
-			return new Container()
+		private IModHelper CreateModHelper(IModData modData) =>
+			new Container()
 				.Add(_owmlConfig)
 				.Add(modData.Manifest)
 				.Add(modData.Config)
@@ -159,7 +163,6 @@ namespace OWML.ModLoader
 				.Add<IModInteraction, ModInteraction>()
 				.Add<IModHelper, ModHelper.ModHelper>()
 				.Resolve<IModHelper>();
-		}
 
 		private IModBehaviour InitializeMod(Type modType, IModHelper helper)
 		{
@@ -178,6 +181,5 @@ namespace OWML.ModLoader
 				return null;
 			}
 		}
-
 	}
 }

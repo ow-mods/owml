@@ -19,12 +19,10 @@ namespace OWML.GameFinder
 
 		public abstract string FindGamePath();
 
-		protected bool IsValidGamePath(string gamePath)
-		{
-			return !string.IsNullOrEmpty(gamePath) &&
-				   Directory.Exists(gamePath) &&
-				   Directory.Exists($"{gamePath}/{ManagedPath}") &&
-				   File.Exists($"{gamePath}/{ExePath}");
-		}
+		protected bool IsValidGamePath(string gamePath) =>
+			!string.IsNullOrEmpty(gamePath) &&
+			Directory.Exists(gamePath) &&
+			Directory.Exists($"{gamePath}/{ManagedPath}") &&
+			File.Exists($"{gamePath}/{ExePath}");
 	}
 }

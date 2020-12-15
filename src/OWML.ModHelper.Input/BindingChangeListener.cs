@@ -29,10 +29,8 @@ namespace OWML.ModHelper.Input
 			GlobalMessenger.AddListener("KeyBindingsChanged", PrepareForUpdate);
 		}
 
-		private void PrepareForUpdate()
-		{
+		private void PrepareForUpdate() => 
 			_updateInputsNext = true;
-		}
 
 		public void Update()
 		{
@@ -48,9 +46,7 @@ namespace OWML.ModHelper.Input
 			}
 		}
 
-		public void UpdateInputs()
-		{
+		public void UpdateInputs() => 
 			_inputHandler.UpdateGamesBindings();
-		}
 	}
 }

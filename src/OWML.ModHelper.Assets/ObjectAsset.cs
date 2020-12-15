@@ -26,6 +26,5 @@ namespace OWML.ModHelper.Assets
 				SetAsset(gameObject);
 			}
 		}
-
 	}
 }

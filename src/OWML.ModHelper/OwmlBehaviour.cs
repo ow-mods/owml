@@ -6,14 +6,10 @@ namespace OWML.ModHelper
 {
 	public class OwmlBehaviour : MonoBehaviour
 	{
-		public void Start()
-		{
+		public void Start() =>
 			DontDestroyOnLoad(gameObject);
-		}
 
-		public void OnApplicationQuit()
-		{
+		public void OnApplicationQuit() =>
 			ModConsole.OwmlConsole.WriteLine("", MessageType.Quit);
-		}
 	}
 }

@@ -14,15 +14,10 @@ namespace OWML.ModHelper.Events
 			LoadManager.OnCompleteSceneLoad += OnCompleteSceneLoad;
 		}
 
-		private void OnStartSceneLoad(OWScene originalScene, OWScene newScene)
-		{
+		private void OnStartSceneLoad(OWScene originalScene, OWScene newScene) => 
 			OnStartSceneChange?.Invoke(originalScene, newScene);
-		}
 
-		private void OnCompleteSceneLoad(OWScene originalScene, OWScene newScene)
-		{
+		private void OnCompleteSceneLoad(OWScene originalScene, OWScene newScene) => 
 			OnCompleteSceneChange?.Invoke(originalScene, newScene);
-		}
-
 	}
 }

@@ -31,18 +31,15 @@ namespace OWML.ModLoader
 			Config = config;
 			DefaultConfig = defaultConfig;
 			_storage = storage;
+
 			UpdateSnapshot();
 		}
 
-		public void UpdateSnapshot()
-		{
+		public void UpdateSnapshot() => 
 			_configSnapshot = Config != null ? Config.Copy() : DefaultConfig.Copy();
-		}
 
-		public void ResetConfigToDefaults()
-		{
+		public void ResetConfigToDefaults() => 
 			Config = DefaultConfig.Copy();
-		}
 
 		public bool FixConfigs()
 		{
@@ -55,6 +52,7 @@ namespace OWML.ModLoader
 			{
 				settingsChanged = !MakeConfigConsistentWithDefault();
 			}
+
 			_storage.Save(Config, Constants.ModConfigFileName);
 			UpdateSnapshot();
 			return settingsChanged;
@@ -96,11 +94,9 @@ namespace OWML.ModLoader
 			return isInOptions;
 		}
 
-		private void AddMissingDefaults(IModConfig defaultConfig)
-		{
-			var missingSettings = defaultConfig.Settings.Where(s => !Config.Settings.ContainsKey(s.Key)).ToList();
-			missingSettings.ForEach(setting => Config.Settings.Add(setting.Key, setting.Value));
-		}
+		private void AddMissingDefaults(IModConfig defaultConfig) =>
+			defaultConfig.Settings.Where(s => !Config.Settings.ContainsKey(s.Key)).ToList()
+				.ForEach(setting => Config.Settings.Add(setting.Key, setting.Value));
 
 		private bool TryUpdate(string key, object userSetting, object modSetting)
 		{
@@ -125,25 +121,19 @@ namespace OWML.ModLoader
 			return false;
 		}
 
-		private bool IsNumber(object setting)
-		{
-			return setting is JObject settingObject
+		private bool IsNumber(object setting) =>
+			setting is JObject settingObject
 				? settingObject["type"].ToString() == "slider"
 				: new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(setting.GetType());
-		}
 
-		private bool IsBoolean(object setting)
-		{
-			return setting is JObject settingObject
+		private bool IsBoolean(object setting) =>
+			setting is JObject settingObject
 				? settingObject["type"].ToString() == "toggle"
 				: setting is bool;
-		}
 
-		private bool IsSettingSameType(object settingValue1, object settingValue2)
-		{
-			return settingValue1.GetType() == settingValue2.GetType() &&
-				   (!(settingValue1 is JObject obj1) || !(settingValue2 is JObject obj2) ||
-					(string)obj1["type"] == (string)obj2["type"]);
-		}
+		private bool IsSettingSameType(object settingValue1, object settingValue2) =>
+			settingValue1.GetType() == settingValue2.GetType() &&
+			(!(settingValue1 is JObject obj1) || !(settingValue2 is JObject obj2) ||
+			 (string)obj1["type"] == (string)obj2["type"]);
 	}
 }

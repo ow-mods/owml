@@ -6,15 +6,13 @@ namespace OWML.Patcher
 {
 	public class GameVersionReader : IGameVersionReader
 	{
-		private readonly IBinaryPatcher _binaryPatcher;
-
 		private const int PlayerSettingsSector = 0;
 		private const string VersionPattern = @"\d+(\.\d+){3,}"; // can handle 3-infinite dots
 
-		public GameVersionReader(IBinaryPatcher binaryPatcher)
-		{
+		private readonly IBinaryPatcher _binaryPatcher;
+		
+		public GameVersionReader(IBinaryPatcher binaryPatcher) => 
 			_binaryPatcher = binaryPatcher;
-		}
 
 		public string GetGameVersion()
 		{

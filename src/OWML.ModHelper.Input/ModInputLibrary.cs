@@ -128,6 +128,7 @@ namespace OWML.ModHelper.Input
 					keyCombination[0] = (int)RegistrationCode.InvalidCombination;
 					return keyCombination;
 				}
+
 				if (i >= MaxComboLength)
 				{
 					keyCombination[0] = (int)RegistrationCode.CombinationTooLong;
@@ -147,6 +148,7 @@ namespace OWML.ModHelper.Input
 			{
 				return keyCombination[0];
 			}
+
 			long hash = 0;
 			for (var i = 0; i < MaxComboLength; i++)
 			{

@@ -41,6 +41,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EpicManifest.cs" />
     <Compile Include="PathFinder.cs" />
     <Compile Include="BaseFinder.cs" />
     <Compile Include="PromptGameFinder.cs" />

@@ -20,10 +20,8 @@ namespace OWML.Logging
 			_appHelper = appHelper;
 		}
 
-		public void Start()
-		{
+		public void Start() => 
 			_appHelper.AddLogCallback(OnLogMessageReceived);
-		}
 
 		private void OnLogMessageReceived(string message, string stackTrace, LogType type)
 		{
@@ -31,6 +29,7 @@ namespace OWML.Logging
 			{
 				return;
 			}
+
 			var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
 			_socket.WriteToSocket(new ModSocketMessage
 			{
@@ -40,6 +39,5 @@ namespace OWML.Logging
 				SenderType = type.ToString()
 			});
 		}
-
 	}
 }

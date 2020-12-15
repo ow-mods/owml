@@ -20,13 +20,10 @@ namespace OWML.ModHelper.Events
 		public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
 		private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
-
 		private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Events>>();
 
 		private readonly IHarmonyHelper _harmonyHelper;
-
 		private readonly IModConsole _console;
-
 		private readonly IModLogger _logger;
 
 		public ModEvents(
@@ -133,20 +130,13 @@ namespace OWML.ModHelper.Events
 			}
 		}
 
-		private bool IsSubscribedTo(Type type, Common.Events ev)
-		{
-			return _subscribedEvents.Any(pair => (type == pair.Key || type.IsSubclassOf(pair.Key)) && pair.Value == ev);
-		}
+		private bool IsSubscribedTo(Type type, Common.Events ev) => 
+			_subscribedEvents.Any(pair => (type == pair.Key || type.IsSubclassOf(pair.Key)) && pair.Value == ev);
 
-		private bool InEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
-		{
-			return events.Any(pair => type == pair.Key && pair.Value == ev);
-		}
+		private bool InEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev) => 
+			events.Any(pair => type == pair.Key && pair.Value == ev);
 
-		private void AddToEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev)
-		{
+		private void AddToEventList(List<KeyValuePair<Type, Common.Events>> events, Type type, Common.Events ev) => 
 			events.Add(new KeyValuePair<Type, Common.Events>(type, ev));
-		}
-
 	}
 }

@@ -51,6 +51,7 @@ namespace OWML.Patcher
 				Constants.OwmlConfigFileName,
 				Constants.OwmlDefaultConfigFileName
 			};
+
 			var uncopiedFiles = new List<string>();
 			foreach (var filename in filesToCopy)
 			{
@@ -63,6 +64,7 @@ namespace OWML.Patcher
 					uncopiedFiles.Add(filename);
 				}
 			}
+
 			if (uncopiedFiles.Any())
 			{
 				_writer.WriteLine("Warning - Failed to copy the following files:", MessageType.Warning);
@@ -79,6 +81,7 @@ namespace OWML.Patcher
 				Class = PatchClass,
 				Method = PatchMethod
 			};
+
 			var instructions = patcher.GetInstructions(target).ToList();
 			var patchedInstructions = GetPatchedInstructions(instructions);
 
@@ -105,14 +108,11 @@ namespace OWML.Patcher
 			target.Instructions = instructions.ToArray();
 
 			Patch(patcher, target);
-
 			Save(patcher);
 		}
 
-		private List<Instruction> GetPatchedInstructions(List<Instruction> instructions)
-		{
-			return instructions.Where(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader))).ToList();
-		}
+		private List<Instruction> GetPatchedInstructions(List<Instruction> instructions) => 
+			instructions.Where(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader))).ToList();
 
 		private void Patch(dnpatch.Patcher patcher, Target target)
 		{
@@ -139,6 +139,5 @@ namespace OWML.Patcher
 				throw;
 			}
 		}
-
 	}
 }

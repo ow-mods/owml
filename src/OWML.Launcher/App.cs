@@ -54,8 +54,6 @@ namespace OWML.Launcher
 
 			CopyGameFiles();
 
-			CreateLogsDirectory();
-
 			var mods = _modFinder.GetMods();
 
 			ShowModList(mods);
@@ -157,18 +155,7 @@ namespace OWML.Launcher
 			}
 		}
 
-		private void ExitConsole()
-		{
+		private void ExitConsole() =>
 			_processHelper.KillCurrentProcess();
-			//Environment.Exit(0); todo change back?
-		}
-
-		private void CreateLogsDirectory()
-		{
-			if (!Directory.Exists("Logs"))
-			{
-				Directory.CreateDirectory("Logs");
-			}
-		}
 	}
 }

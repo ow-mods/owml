@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Assets
 		{
 			var objectPath = _manifest.ModFolderPath + objectFilename;
 			var imagePath = _manifest.ModFolderPath + imageFilename;
-			_console.WriteLine("Loading object from " + objectPath);
+			_console.WriteLine($"Loading object from {objectPath}");
 
 			var go = new GameObject();
 			var modAsset = go.AddComponent<ObjectAsset>();
@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Assets
 		public IModAsset<MeshFilter> LoadMesh(string objectFilename)
 		{
 			var objectPath = _manifest.ModFolderPath + objectFilename;
-			_console.WriteLine("Loading mesh from " + objectPath);
+			_console.WriteLine($"Loading mesh from {objectPath}");
 
 			var go = new GameObject();
 			var modAsset = go.AddComponent<MeshAsset>();
@@ -61,7 +61,7 @@ namespace OWML.ModHelper.Assets
 		public IModAsset<MeshRenderer> LoadTexture(string imageFilename)
 		{
 			var imagePath = _manifest.ModFolderPath + imageFilename;
-			_console.WriteLine("Loading texture from " + imagePath);
+			_console.WriteLine($"Loading texture from {imagePath}");
 
 			var go = new GameObject();
 			var modAsset = go.AddComponent<TextureAsset>();
@@ -74,7 +74,7 @@ namespace OWML.ModHelper.Assets
 		public IModAsset<AudioSource> LoadAudio(string audioFilename)
 		{
 			var audioPath = _manifest.ModFolderPath + audioFilename;
-			_console.WriteLine("Loading audio from " + audioPath);
+			_console.WriteLine($"Loading audio from {audioPath}");
 
 			var go = new GameObject();
 			var modAsset = go.AddComponent<AudioAsset>();
@@ -156,6 +156,7 @@ namespace OWML.ModHelper.Assets
 				clip = AudioClip.Create(audioPath, (int)reader.Length, reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
 				clip.SetData(outputBytes, 0);
 			}
+
 			var audioSource = modAsset.AddComponent<AudioSource>();
 			audioSource.clip = clip;
 			yield return new WaitForEndOfFrame();
@@ -175,11 +176,11 @@ namespace OWML.ModHelper.Assets
 			{
 				_console.WriteLine("Error - Audio is null.", MessageType.Error);
 			}
+
 			var audioSource = modAsset.AddComponent<AudioSource>();
 			audioSource.clip = clip;
 			yield return new WaitForEndOfFrame();
 			modAsset.SetAsset(audioSource);
 		}
-
 	}
 }

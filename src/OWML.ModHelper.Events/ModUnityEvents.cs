@@ -13,20 +13,14 @@ namespace OWML.ModHelper.Events
 
 		public event Action OnLateUpdate;
 
-		public void FireOnNextUpdate(Action action)
-		{
+		public void FireOnNextUpdate(Action action) => 
 			FireInNUpdates(action, 1);
-		}
 
-		public void FireInNUpdates(Action action, int n)
-		{
+		public void FireInNUpdates(Action action, int n) => 
 			StartCoroutine(WaitForFrames(action, n));
-		}
 
-		public void RunWhen(Func<bool> predicate, Action action)
-		{
+		public void RunWhen(Func<bool> predicate, Action action) => 
 			StartCoroutine(WaitUntil(predicate, action));
-		}
 
 		private IEnumerator WaitForFrames(Action action, int n)
 		{
@@ -43,24 +37,16 @@ namespace OWML.ModHelper.Events
 			action();
 		}
 
-		public void Start()
-		{
+		public void Start() => 
 			DontDestroyOnLoad(gameObject);
-		}
 
-		public void Update()
-		{
+		public void Update() => 
 			OnUpdate?.Invoke();
-		}
 
-		public void FixedUpdate()
-		{
+		public void FixedUpdate() => 
 			OnFixedUpdate?.Invoke();
-		}
 
-		public void LateUpdate()
-		{
+		public void LateUpdate() => 
 			OnLateUpdate?.Invoke();
-		}
 	}
 }
