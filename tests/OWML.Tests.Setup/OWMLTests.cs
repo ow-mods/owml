@@ -11,7 +11,7 @@ namespace OWML.Tests.Setup
 	{
 		protected string OwmlSolutionPath => GetSolutionPath();
 
-		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/net472";
+		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/net472/";
 
 		protected Mock<IModConsole> Console { get; } = new Mock<IModConsole>();
 
