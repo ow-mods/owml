@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+	  <LangVersion>8.0</LangVersion>
+	  <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Json.Net.Unity3D" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+    <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj" />
+    <ProjectReference Include="..\OWML.ModLoader\OWML.ModLoader.csproj" />
+    <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
+    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="OWML.DefaultConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="OWML.Manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
