@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
@@ -6,8 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
-    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj" />

@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj" />
     <ProjectReference Include="..\..\src\OWML.Launcher\OWML.Launcher.csproj" />
     <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj" />
   </ItemGroup>

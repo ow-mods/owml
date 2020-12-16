@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
     <ProjectReference Include="..\OWML.ModLoader\OWML.ModLoader.csproj" />
   </ItemGroup>
 

@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\OWML.Common\OWML.Common.csproj" />
     <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj" />
   </ItemGroup>
 
