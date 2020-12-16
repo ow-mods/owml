@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+	  <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OWML.Common2\OWML.Common2.csproj" />
+    <ProjectReference Include="..\OWML.ModLoader2\OWML.ModLoader2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="dnlib">
+      <HintPath>lib\dnlib.dll</HintPath>
+    </Reference>
+    <Reference Include="dnpatch">
+      <HintPath>lib\dnpatch.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="lib\openvr_api.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="lib\OVRPlugin.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
