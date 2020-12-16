@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Abstractions2", "src\O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Logging2", "src\OWML.Logging2\OWML.Logging2.csproj", "{438EDBCC-A16A-4326-A91A-BDCD34F73F89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Assets2", "src\OWML.ModHelper.Assets2\OWML.ModHelper.Assets2.csproj", "{BFDBBCA2-4DA3-4162-B85C-56121D715983}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +179,10 @@ Global
 		{438EDBCC-A16A-4326-A91A-BDCD34F73F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{438EDBCC-A16A-4326-A91A-BDCD34F73F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{438EDBCC-A16A-4326-A91A-BDCD34F73F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFDBBCA2-4DA3-4162-B85C-56121D715983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFDBBCA2-4DA3-4162-B85C-56121D715983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFDBBCA2-4DA3-4162-B85C-56121D715983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFDBBCA2-4DA3-4162-B85C-56121D715983}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -210,6 +216,7 @@ Global
 		{FE023885-8941-40D6-83A1-E5D30A6C8C8F} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 		{7F5AA67B-6B62-44A2-A974-65B5E6BC3EAF} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 		{438EDBCC-A16A-4326-A91A-BDCD34F73F89} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
+		{BFDBBCA2-4DA3-4162-B85C-56121D715983} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
