@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OWML.GameFinder\OWML.GameFinder.csproj" />
-    <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj" />
+    <ProjectReference Include="..\OWML.Tests.Setup2\OWML.Tests.Setup2.csproj" />
   </ItemGroup>
 
 </Project>
