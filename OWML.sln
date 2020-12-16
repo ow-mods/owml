@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Input2", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Interaction2", "src\OWML.ModHelper.Interaction2\OWML.ModHelper.Interaction2.csproj", "{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Menus2", "src\OWML.ModHelper.Menus2\OWML.ModHelper.Menus2.csproj", "{9D7DB512-E490-4D4B-814C-DD13F34C443C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,6 +203,10 @@ Global
 		{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D7DB512-E490-4D4B-814C-DD13F34C443C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D7DB512-E490-4D4B-814C-DD13F34C443C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D7DB512-E490-4D4B-814C-DD13F34C443C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D7DB512-E490-4D4B-814C-DD13F34C443C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -238,6 +244,7 @@ Global
 		{0ED63C08-B5AA-4D6D-BA7C-E679F7F1FF00} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 		{646B43A2-009C-430C-A78E-4E1AC75536B2} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 		{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
+		{9D7DB512-E490-4D4B-814C-DD13F34C443C} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
