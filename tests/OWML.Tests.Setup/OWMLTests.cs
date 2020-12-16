@@ -11,7 +11,7 @@ namespace OWML.Tests.Setup
 	{
 		protected string OwmlSolutionPath => GetSolutionPath();
 
-		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/";
+		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/net472";
 
 		protected Mock<IModConsole> Console { get; } = new Mock<IModConsole>();
 
@@ -63,7 +63,7 @@ namespace OWML.Tests.Setup
 		private string GetSolutionPath()
 		{
 			var currentFolder = Directory.GetCurrentDirectory();
-			return Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
+			return Directory.GetParent(currentFolder).Parent.Parent.Parent.Parent.FullName;
 		}
 
 		private void WriteLine(string s)
