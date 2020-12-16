@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.GameFinder\OWML.GameFinder.csproj" />
-    <ProjectReference Include="..\OWML.Tests.Setup2\OWML.Tests.Setup2.csproj" />
+    <ProjectReference Include="..\..\src\OWML.ModHelper\OWML.ModHelper.csproj" />
+    <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj" />
   </ItemGroup>
 
 </Project>

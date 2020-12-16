@@ -37,21 +37,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.Patcher", "src\OWML.Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.Utils", "src\OWML.Utils\OWML.Utils.csproj", "{AC134171-116C-42BB-95D6-BF97C2B29454}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.EnableDebugMode", "src\SampleMods\OWML.EnableDebugMode2\OWML.EnableDebugMode.csproj", "{34E8B1FF-1218-42CE-832F-1FB8B39C247F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.EnableDebugMode", "src\SampleMods\OWML.EnableDebugMode\OWML.EnableDebugMode.csproj", "{34E8B1FF-1218-42CE-832F-1FB8B39C247F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.LoadCustomAssets", "src\SampleMods\OWML.LoadCustomAssets2\OWML.LoadCustomAssets.csproj", "{FAD6D4A0-5B49-4ABC-B11A-FF6D509FB77D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.LoadCustomAssets", "src\SampleMods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.csproj", "{FAD6D4A0-5B49-4ABC-B11A-FF6D509FB77D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder.Tests2", "tests\OWML.GameFinder.Tests2\OWML.GameFinder.Tests2.csproj", "{B5F78317-9735-4B01-88EB-C288726CD69D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder.Tests", "tests\OWML.GameFinder.Tests\OWML.GameFinder.Tests.csproj", "{B5F78317-9735-4B01-88EB-C288726CD69D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Tests.Setup2", "tests\OWML.Tests.Setup2\OWML.Tests.Setup2.csproj", "{4CEDEC69-8F13-495B-8866-9B2F6ACBE8BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Tests.Setup", "tests\OWML.Tests.Setup\OWML.Tests.Setup.csproj", "{4CEDEC69-8F13-495B-8866-9B2F6ACBE8BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModLoader.Tests2", "tests\OWML.ModLoader.Tests2\OWML.ModLoader.Tests2.csproj", "{ACDD836F-1A85-496A-826A-EB1865D355ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModLoader.Tests", "tests\OWML.ModLoader.Tests\OWML.ModLoader.Tests.csproj", "{ACDD836F-1A85-496A-826A-EB1865D355ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Launcher.Tests2", "tests\OWML.Launcher.Tests2\OWML.Launcher.Tests2.csproj", "{39F80A26-8DBB-43CE-89E2-2D148489D73C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Launcher.Tests", "tests\OWML.Launcher.Tests\OWML.Launcher.Tests.csproj", "{39F80A26-8DBB-43CE-89E2-2D148489D73C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModFinder.Tests2", "tests\OWML.ModFinder.Tests2\OWML.ModFinder.Tests2.csproj", "{65AC15AE-920A-4C98-B730-7CD20EA76310}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModFinder.Tests", "tests\OWML.ModFinder.Tests\OWML.ModFinder.Tests.csproj", "{65AC15AE-920A-4C98-B730-7CD20EA76310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils.Tests2", "tests\OWML.Utils.Tests2\OWML.Utils.Tests2.csproj", "{DA74E671-FA8A-4834-90B7-368054990690}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils.Tests", "tests\OWML.Utils.Tests\OWML.Utils.Tests.csproj", "{DA74E671-FA8A-4834-90B7-368054990690}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
