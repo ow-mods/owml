@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OWML.Common2\OWML.Common2.csproj" />
-    <ProjectReference Include="..\OWML.ModLoader2\OWML.ModLoader2.csproj" />
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+    <ProjectReference Include="..\OWML.ModLoader\OWML.ModLoader.csproj" />
   </ItemGroup>
 
   <ItemGroup>

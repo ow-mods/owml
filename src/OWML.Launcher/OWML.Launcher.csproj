@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OWML.Common2\OWML.Common2.csproj" />
-    <ProjectReference Include="..\OWML.GameFinder2\OWML.GameFinder2.csproj" />
-    <ProjectReference Include="..\OWML.Patcher2\OWML.Patcher2.csproj" />
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+    <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
+    <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
   </ItemGroup>
 
   <ItemGroup>

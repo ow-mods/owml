@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+	  <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj" />
+    <ProjectReference Include="..\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj" />
+    <ProjectReference Include="..\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj" />
+    <ProjectReference Include="..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj" />
+    <ProjectReference Include="..\OWML.ModHelper.Interaction\OWML.ModHelper.Interaction.csproj" />
+    <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj" />
+  </ItemGroup>
+
+</Project>

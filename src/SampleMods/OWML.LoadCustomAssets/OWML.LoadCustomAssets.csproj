@@ -126,11 +126,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OWML.Common2\OWML.Common2.csproj">
+    <ProjectReference Include="..\..\OWML.Common\OWML.Common.csproj">
       <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
       <Name>OWML.Common2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OWML.ModHelper2\OWML.ModHelper2.csproj">
+    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj">
       <Project>{ECC2ABFF-C9D3-4D7A-AB50-F9708236D1B2}</Project>
       <Name>OWML.ModHelper2</Name>
     </ProjectReference>

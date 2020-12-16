@@ -67,11 +67,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.Common2\OWML.Common2.csproj">
+    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
       <Name>OWML.Common2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.GameFinder2\OWML.GameFinder2.csproj">
+    <ProjectReference Include="..\..\src\OWML.GameFinder\OWML.GameFinder.csproj">
       <Project>{79B243D0-E526-4E43-9755-D5474D258AA4}</Project>
       <Name>OWML.GameFinder2</Name>
     </ProjectReference>

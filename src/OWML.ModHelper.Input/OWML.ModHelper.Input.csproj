@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OWML.Common2\OWML.Common2.csproj" />
-    <ProjectReference Include="..\OWML.Utils2\OWML.Utils2.csproj" />
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
   </ItemGroup>
 
 </Project>

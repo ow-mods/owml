@@ -67,11 +67,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.Common2\OWML.Common2.csproj">
+    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
       <Name>OWML.Common2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.ModLoader2\OWML.ModLoader2.csproj">
+    <ProjectReference Include="..\..\src\OWML.ModLoader\OWML.ModLoader.csproj">
       <Project>{B0611F7A-3ED4-465E-A351-9EA90649DFB9}</Project>
       <Name>OWML.ModLoader2</Name>
     </ProjectReference>

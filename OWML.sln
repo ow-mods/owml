@@ -25,33 +25,33 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.EnableDebugMode", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.LoadCustomAssets", "src\SampleMods\OWML.LoadCustomAssets\OWML.LoadCustomAssets.csproj", "{EC1DFA4B-D824-40FB-BF99-2B722BC1FAF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Launcher2", "src\OWML.Launcher2\OWML.Launcher2.csproj", "{FEF4EC4E-3B1E-4501-9841-1902A98BD309}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Launcher", "src\OWML.Launcher\OWML.Launcher.csproj", "{FEF4EC4E-3B1E-4501-9841-1902A98BD309}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder2", "src\OWML.GameFinder2\OWML.GameFinder2.csproj", "{79B243D0-E526-4E43-9755-D5474D258AA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.GameFinder", "src\OWML.GameFinder\OWML.GameFinder.csproj", "{79B243D0-E526-4E43-9755-D5474D258AA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Common2", "src\OWML.Common2\OWML.Common2.csproj", "{FE023885-8941-40D6-83A1-E5D30A6C8C8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Common", "src\OWML.Common\OWML.Common.csproj", "{FE023885-8941-40D6-83A1-E5D30A6C8C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Abstractions2", "src\OWML.Abstractions2\OWML.Abstractions2.csproj", "{7F5AA67B-6B62-44A2-A974-65B5E6BC3EAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Abstractions", "src\OWML.Abstractions\OWML.Abstractions.csproj", "{7F5AA67B-6B62-44A2-A974-65B5E6BC3EAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Logging2", "src\OWML.Logging2\OWML.Logging2.csproj", "{438EDBCC-A16A-4326-A91A-BDCD34F73F89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Logging", "src\OWML.Logging\OWML.Logging.csproj", "{438EDBCC-A16A-4326-A91A-BDCD34F73F89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Assets2", "src\OWML.ModHelper.Assets2\OWML.ModHelper.Assets2.csproj", "{BFDBBCA2-4DA3-4162-B85C-56121D715983}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Assets", "src\OWML.ModHelper.Assets\OWML.ModHelper.Assets.csproj", "{BFDBBCA2-4DA3-4162-B85C-56121D715983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Events2", "src\OWML.ModHelper.Events2\OWML.ModHelper.Events2.csproj", "{0ED63C08-B5AA-4D6D-BA7C-E679F7F1FF00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Events", "src\OWML.ModHelper.Events\OWML.ModHelper.Events.csproj", "{0ED63C08-B5AA-4D6D-BA7C-E679F7F1FF00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Input2", "src\OWML.ModHelper.Input2\OWML.ModHelper.Input2.csproj", "{646B43A2-009C-430C-A78E-4E1AC75536B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Input", "src\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj", "{646B43A2-009C-430C-A78E-4E1AC75536B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Interaction2", "src\OWML.ModHelper.Interaction2\OWML.ModHelper.Interaction2.csproj", "{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Interaction", "src\OWML.ModHelper.Interaction\OWML.ModHelper.Interaction.csproj", "{40F30DE5-EF82-4DD1-9BE5-3B1F9B3E7544}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Menus2", "src\OWML.ModHelper.Menus2\OWML.ModHelper.Menus2.csproj", "{9D7DB512-E490-4D4B-814C-DD13F34C443C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper.Menus", "src\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj", "{9D7DB512-E490-4D4B-814C-DD13F34C443C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModLoader2", "src\OWML.ModLoader2\OWML.ModLoader2.csproj", "{B0611F7A-3ED4-465E-A351-9EA90649DFB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModLoader", "src\OWML.ModLoader\OWML.ModLoader.csproj", "{B0611F7A-3ED4-465E-A351-9EA90649DFB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper2", "src\OWML.ModHelper2\OWML.ModHelper2.csproj", "{ECC2ABFF-C9D3-4D7A-AB50-F9708236D1B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.ModHelper", "src\OWML.ModHelper\OWML.ModHelper.csproj", "{ECC2ABFF-C9D3-4D7A-AB50-F9708236D1B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Patcher2", "src\OWML.Patcher2\OWML.Patcher2.csproj", "{148D42B8-2C2D-40FD-83C7-CBE3E11F8987}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Patcher", "src\OWML.Patcher\OWML.Patcher.csproj", "{148D42B8-2C2D-40FD-83C7-CBE3E11F8987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils2", "src\OWML.Utils2\OWML.Utils2.csproj", "{AC134171-116C-42BB-95D6-BF97C2B29454}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWML.Utils", "src\OWML.Utils\OWML.Utils.csproj", "{AC134171-116C-42BB-95D6-BF97C2B29454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
