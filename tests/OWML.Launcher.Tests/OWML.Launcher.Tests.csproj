@@ -78,17 +78,17 @@
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
-      <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
-      <Name>OWML.Common</Name>
+    <ProjectReference Include="..\..\src\OWML.Common2\OWML.Common2.csproj">
+      <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
+      <Name>OWML.Common2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Launcher\OWML.Launcher.csproj">
-      <Project>{9C09F86B-0C03-4630-8424-B939D3C632D0}</Project>
-      <Name>OWML.Launcher</Name>
+    <ProjectReference Include="..\..\src\OWML.Launcher2\OWML.Launcher2.csproj">
+      <Project>{FEF4EC4E-3B1E-4501-9841-1902A98BD309}</Project>
+      <Name>OWML.Launcher2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
-      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
-      <Name>OWML.Utils</Name>
+    <ProjectReference Include="..\..\src\OWML.Utils2\OWML.Utils2.csproj">
+      <Project>{AC134171-116C-42BB-95D6-BF97C2B29454}</Project>
+      <Name>OWML.Utils2</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
       <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>

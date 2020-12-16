@@ -2,7 +2,6 @@
 using System.IO;
 using Moq;
 using OWML.Common;
-using OWML.Utils;
 using Xunit;
 using Xunit.Abstractions;
 

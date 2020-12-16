@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common2\OWML.Common2.csproj" />
-    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
+    <ProjectReference Include="..\OWML.Utils2\OWML.Utils2.csproj" />
   </ItemGroup>
 
 </Project>

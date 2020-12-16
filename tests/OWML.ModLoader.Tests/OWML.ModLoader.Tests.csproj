@@ -117,17 +117,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
-      <Project>{3C00626F-B688-4F32-B493-5B7EC1C879A0}</Project>
-      <Name>OWML.Common</Name>
+    <ProjectReference Include="..\..\src\OWML.Common2\OWML.Common2.csproj">
+      <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
+      <Name>OWML.Common2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.ModLoader\OWML.ModLoader.csproj">
-      <Project>{d075d13c-990a-46a2-b596-4600a3411bd5}</Project>
-      <Name>OWML.ModLoader</Name>
+    <ProjectReference Include="..\..\src\OWML.ModLoader2\OWML.ModLoader2.csproj">
+      <Project>{B0611F7A-3ED4-465E-A351-9EA90649DFB9}</Project>
+      <Name>OWML.ModLoader2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
-      <Project>{CC1A74B8-7068-4CD9-8AA4-C5270AAEA030}</Project>
-      <Name>OWML.Utils</Name>
+    <ProjectReference Include="..\..\src\OWML.Utils2\OWML.Utils2.csproj">
+      <Project>{AC134171-116C-42BB-95D6-BF97C2B29454}</Project>
+      <Name>OWML.Utils2</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
       <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>

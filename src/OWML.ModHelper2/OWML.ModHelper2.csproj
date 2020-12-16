@@ -13,7 +13,6 @@
     <ProjectReference Include="..\OWML.ModHelper.Input2\OWML.ModHelper.Input2.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Interaction2\OWML.ModHelper.Interaction2.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Menus2\OWML.ModHelper.Menus2.csproj" />
-    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
   </ItemGroup>
 
 </Project>

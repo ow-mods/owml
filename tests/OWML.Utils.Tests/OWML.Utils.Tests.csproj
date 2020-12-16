@@ -67,13 +67,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OWML.ModHelper\OWML.ModHelper.csproj">
-      <Project>{CB57BAB8-D70E-4FCE-9BF1-328A924173A7}</Project>
-      <Name>OWML.ModHelper</Name>
+    <ProjectReference Include="..\..\src\OWML.ModHelper2\OWML.ModHelper2.csproj">
+      <Project>{ECC2ABFF-C9D3-4D7A-AB50-F9708236D1B2}</Project>
+      <Name>OWML.ModHelper2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
-      <Project>{cc1a74b8-7068-4cd9-8aa4-c5270aaea030}</Project>
-      <Name>OWML.Utils</Name>
+    <ProjectReference Include="..\..\src\OWML.Utils2\OWML.Utils2.csproj">
+      <Project>{AC134171-116C-42BB-95D6-BF97C2B29454}</Project>
+      <Name>OWML.Utils2</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
       <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>
