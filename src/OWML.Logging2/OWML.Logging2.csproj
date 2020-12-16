@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+	  <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OWML.Common2\OWML.Common2.csproj" />
+  </ItemGroup>
+
+</Project>
