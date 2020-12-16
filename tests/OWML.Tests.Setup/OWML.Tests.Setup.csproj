@@ -75,7 +75,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
-      <Name>OWML.Common2</Name>
+      <Name>OWML.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

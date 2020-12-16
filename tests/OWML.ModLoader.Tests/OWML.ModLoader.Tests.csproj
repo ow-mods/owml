@@ -119,15 +119,15 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\OWML.Common\OWML.Common.csproj">
       <Project>{FE023885-8941-40D6-83A1-E5D30A6C8C8F}</Project>
-      <Name>OWML.Common2</Name>
+      <Name>OWML.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OWML.ModLoader\OWML.ModLoader.csproj">
       <Project>{B0611F7A-3ED4-465E-A351-9EA90649DFB9}</Project>
-      <Name>OWML.ModLoader2</Name>
+      <Name>OWML.ModLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\OWML.Utils\OWML.Utils.csproj">
       <Project>{AC134171-116C-42BB-95D6-BF97C2B29454}</Project>
-      <Name>OWML.Utils2</Name>
+      <Name>OWML.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\OWML.Tests.Setup\OWML.Tests.Setup.csproj">
       <Project>{13F31207-D421-4B53-A8A2-8D690019AE2E}</Project>
