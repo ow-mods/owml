@@ -13,11 +13,13 @@ namespace OWML.Logging
 
 		private readonly IModSocket _socket;
 		private readonly IApplicationHelper _appHelper;
+		private readonly IModLogger _logger;
 
-		public UnityLogger(IModSocket socket, IApplicationHelper appHelper)
+		public UnityLogger(IModSocket socket, IApplicationHelper appHelper, IModLogger logger)
 		{
 			_socket = socket;
 			_appHelper = appHelper;
+			_logger = logger;
 		}
 
 		public void Start() => 
@@ -31,6 +33,7 @@ namespace OWML.Logging
 			}
 
 			var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
+			_logger.Log(line);
 			_socket.WriteToSocket(new ModSocketMessage
 			{
 				Type = MessageType.Error,
