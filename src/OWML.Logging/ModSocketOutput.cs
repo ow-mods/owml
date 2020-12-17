@@ -24,15 +24,11 @@ namespace OWML.Logging
 			WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
 		}
 
-		public override void WriteLine(string line)
-		{
+		public override void WriteLine(string line) => 
 			WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
-		}
 
-		public override void WriteLine(string line, MessageType type)
-		{
+		public override void WriteLine(string line, MessageType type) => 
 			WriteLine(type, line, GetCallingType(new StackTrace()));
-		}
 
 		private void WriteLine(MessageType type, string line, string senderType)
 		{
@@ -78,6 +74,5 @@ namespace OWML.Logging
 				return string.Empty;
 			}
 		}
-
 	}
 }

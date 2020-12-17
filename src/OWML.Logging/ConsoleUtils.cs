@@ -17,6 +17,11 @@ namespace OWML.Logging
 
 		public static void WriteByType(MessageType type, string line)
 		{
+			if (string.IsNullOrEmpty(line))
+			{
+				return;
+			}
+
 			Console.ForegroundColor = MessageTypeColors.ContainsKey(type)
 				? MessageTypeColors[type]
 				: ConsoleColor.Gray;

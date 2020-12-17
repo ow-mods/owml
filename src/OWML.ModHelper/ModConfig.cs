@@ -13,7 +13,7 @@ namespace OWML.ModHelper
 		public bool Enabled { get; set; } = true;
 
 		[JsonProperty("settings")]
-		public Dictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
+		public Dictionary<string, object> Settings { get; set; } = new();
 
 		public T GetSettingsValue<T>(string key)
 		{
