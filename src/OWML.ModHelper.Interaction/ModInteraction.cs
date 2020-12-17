@@ -74,15 +74,12 @@ namespace OWML.ModHelper.Interaction
 		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
 		{
 			var api = GetApi(uniqueName);
-			switch (api)
+			return api switch
 			{
-				case null:
-					return null;
-				case TInterface inter:
-					return inter;
-				default:
-					return _proxyFactory.CreateProxy<TInterface>(api, _manifest.UniqueName, uniqueName);
-			}
+				null => null,
+				TInterface inter => inter,
+				_ => _proxyFactory.CreateProxy<TInterface>(api, _manifest.UniqueName, uniqueName)
+			};
 		}
 
 		public IList<IModBehaviour> GetMods() => 
