@@ -8,10 +8,8 @@ namespace OWML.ModLoader
 	{
 		private readonly IModConsole _console;
 
-		public ModSorter(IModConsole console)
-		{
+		public ModSorter(IModConsole console) => 
 			_console = console;
-		}
 
 		public IList<IModData> SortMods(IList<IModData> mods)
 		{
