@@ -26,7 +26,7 @@ namespace OWML.LoadCustomAssets
 		private bool _isDucksEnabled;
 		private bool _isCubesEnabled;
 
-		private readonly List<GameObject> _ducks = new List<GameObject>();
+		private readonly List<GameObject> _ducks = new();
 
 		private void Start()
 		{

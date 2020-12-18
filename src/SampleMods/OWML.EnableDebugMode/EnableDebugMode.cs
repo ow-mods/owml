@@ -11,7 +11,7 @@ namespace OWML.EnableDebugMode
 		private int _renderValue;
 		private bool _isStarted;
 		private PlayerSpawner _playerSpawner;
-		private readonly Dictionary<string, IModInputCombination> _inputs = new Dictionary<string, IModInputCombination>();
+		private readonly Dictionary<string, IModInputCombination> _inputs = new();
 
 		public override void Configure(IModConfig config)
 		{

@@ -6,7 +6,8 @@ namespace OWML.Logging
 {
 	public static class ConsoleUtils
 	{
-		private static readonly Dictionary<MessageType, ConsoleColor> MessageTypeColors = new Dictionary<MessageType, ConsoleColor> {
+		private static readonly Dictionary<MessageType, ConsoleColor> MessageTypeColors = new()
+		{
 			{ MessageType.Error, ConsoleColor.Red },
 			{ MessageType.Warning, ConsoleColor.Yellow },
 			{ MessageType.Success, ConsoleColor.Green },

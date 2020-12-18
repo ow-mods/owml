@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Menus
 		private readonly IModInputMenu _inputPopup;
 		private readonly IModMessagePopup _messagePopup;
 		private readonly IModInputCombinationElementMenu _combinationPopup;
-		private readonly List<IModTemporaryPopup> _toDestroy = new List<IModTemporaryPopup>();
+		private readonly List<IModTemporaryPopup> _toDestroy = new();
 		private readonly IModEvents _events;
 
 		public ModPopupManager(

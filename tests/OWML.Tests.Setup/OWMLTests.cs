@@ -13,13 +13,13 @@ namespace OWML.Tests.Setup
 
 		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/net48/";
 
-		protected Mock<IModConsole> Console { get; } = new Mock<IModConsole>();
+		protected Mock<IModConsole> Console { get; } = new();
 
-		protected Mock<IModLogger> Logger { get; } = new Mock<IModLogger>();
+		protected Mock<IModLogger> Logger { get; } = new();
 
-		protected Mock<IApplicationHelper> AppHelper { get; } = new Mock<IApplicationHelper>();
+		protected Mock<IApplicationHelper> AppHelper { get; } = new();
 
-		protected Mock<IGameObjectHelper> GOHelper { get; } = new Mock<IGameObjectHelper>();
+		protected Mock<IGameObjectHelper> GOHelper { get; } = new();
 
 		protected IOwmlConfig Config { get; } = new OwmlConfig();
 

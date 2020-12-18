@@ -10,8 +10,8 @@ namespace OWML.ModHelper.Interaction
 		private readonly IInterfaceProxyFactory _proxyFactory;
 		private readonly IModManifest _manifest;
 
-		private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
-		private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
+		private Dictionary<string, List<IModBehaviour>> _dependantDict = new();
+		private Dictionary<string, List<IModBehaviour>> _dependencyDict = new();
 
 		public ModInteraction(IList<IModBehaviour> modList, IInterfaceProxyFactory proxyFactory, IModManifest manifest)
 		{
