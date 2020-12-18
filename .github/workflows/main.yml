@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      INTERNAL_PKG_KEY: ${{ secrets.INTERNAL_PKG_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: get version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: src\OWML.Launcher\OWML.Manifest.json
+          prop_path: version
+      - name: set version - EnableDebugMode
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: src\SampleMods\OWML.EnableDebugMode\manifest.json
+          field: version
+          value: ${{ steps.version.outputs.prop }}
+      - name: set version - LoadCustomAssets
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: src\SampleMods\OWML.LoadCustomAssets\manifest.json
+          field: version
+          value: ${{ steps.version.outputs.prop }}       
+      - name: set assembly version
+        uses: rshillington/file-content-replacer@master
+        with:
+          files: "**/AssemblyInfo.cs"
+          from: '\[assembly: AssemblyVersion\("[0-9.]*"\)\]'
+          to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
+            
+      - name: setup msbuild
+        uses: microsoft/setup-msbuild@v1
+      - name: setup nuget
+        uses: NuGet/setup-nuget@v1.0.2
+      - name: restore
+        run: nuget restore OWML.sln
+      - name: build
+        run: msbuild OWML.sln
+        
+      - name: pack
+        run: nuget pack src\OWML.ModHelper\OWML.ModHelper.csproj
+      - name: upload nuget
+        uses: actions/upload-artifact@v2
+        with:
+          name: owml-nuget
+          path: OWML.*.nupkg
+      
+      - name: create zip
+        run: |
+          cd src\OWML.Launcher\bin\Debug
+          mkdir Logs
+          mkdir Mods
+          7z a OWML.zip *
+      - name: upload zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: owml-zip
+          path: src\OWML.Launcher\bin\Debug\OWML.zip
+
+  nuget:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: owml-nuget
+      - name: publish
+        uses: myci-actions/publish-nuget@2 # todo untested
+        with:
+          filename: OWML.*.nupkg
+          api-key: ${{ secrets.NUGET_KEY }}
+          
+  release:
+    runs-on: ubuntu-latest
+    needs: nuget
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: owml-zip
+      - name: create release # todo untested
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.prop }}
+          release_name: ${{ steps.version.outputs.prop }}
+          draft: true # todo
+          prerelease: true # todo
+      - name: upload zip to release # todo untested
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./OWML.zip
+          asset_name: OWML.zip
+          asset_content_type: application/zip

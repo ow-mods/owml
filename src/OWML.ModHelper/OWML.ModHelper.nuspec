@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>OWML</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/amazingalek/owml</projectUrl>
+    <description>Mod loader and mod framework for Outer Wilds</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2021</copyright>
+    <tags>Outer Wilds</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="Lib.Harmony" version="1.2.0.1" />
+        <dependency id="Json.Net.Unity3D" version="9.0.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Debug\OWML.ModHelper.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Assets.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Events.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Menus.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Input.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.ModHelper.Interaction.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.Common.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.Logging.dll" target="lib\net35" />
+    <file src="bin\Debug\OWML.Utils.dll" target="lib\net35" />
+    <file src="bin\Debug\NAudio-Unity.dll" target="lib\net35" />
+  </files>
+</package>
