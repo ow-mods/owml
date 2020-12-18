@@ -62,7 +62,7 @@ namespace OWML.ModHelper.Menus
 			var newPopup = _inputPopup.Copy();
 			newPopup.Open(inputType, value);
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
-			newPopup.OnConfirm += thing => OnPopupClose(newPopup);
+			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;
 		}
 
@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
 			var newPopup = _combinationPopup.Copy();
 			newPopup.Open(value, comboName, combinationMenu, element);
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
-			newPopup.OnConfirm += thing => OnPopupClose(newPopup);
+			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;
 		}
 
