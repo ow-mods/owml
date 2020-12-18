@@ -49,7 +49,11 @@ namespace OWML.Launcher.Tests
 				"openvr_api.dll",
 				"OVRPlugin.dll"
 			});
-
+		}
+		
+		[Fact]
+		public void ReleaseContainsAllModFiles()
+		{
 			Directory.CreateDirectory($"{OwmlReleasePath}/Logs");
 			Directory.CreateDirectory($"{OwmlReleasePath}/Mods");
 			CopyMod("OWML.EnableDebugMode");
