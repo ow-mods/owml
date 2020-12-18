@@ -1,0 +1,44 @@
+{
+	"enabled": true,
+	"settings": {
+		"enableMusic": {
+			"type": "toggle",
+			"value": "False",
+			"yes": "Yep",
+			"no": "Nah",
+			"title": "How"
+		},
+		"enableDucks": false,
+		"enableCubes": 7,
+		"speed": {
+			"type": "slider",
+			"value": "8.0",
+			"min": 0,
+			"max": 20
+		},
+		"power": 10,
+		"thing": {
+			"type": "selector",
+			"options": [ "A", "B", "C", "D" ],
+			"value": "D"
+		},
+		"integer thing": {
+			"type": "selector",
+			"options": [ 5, 10 ],
+			"value": 5
+		},
+		"enableSuperMode": {
+			"type": "slider",
+			"value": 11,
+			"min": 0,
+			"max": 20
+		},
+		"Why am I here": {
+			"type": "toggle",
+			"value": true,
+			"yes": "Absolutely",
+			"no": "Na-ah!",
+			"title": "Why am I here"
+		}
+	}
+}
