@@ -26,11 +26,12 @@ namespace OWML.ModHelper.Events
 			try
 			{
 				_logger.Log($"Creating harmony instance: {_manifest.UniqueName}");
+				HarmonyInstance.DEBUG = true;
 				harmony = HarmonyInstance.Create(_manifest.UniqueName);
 			}
-			catch (Exception ex)
+			catch (TypeLoadException ex)
 			{
-				_console.WriteLine($"Exception while creating harmony instance: {ex}", MessageType.Error);
+				_console.WriteLine($"TypeLoadException ({ex.TypeName}) while creating harmony instance: {ex}", MessageType.Error);
 				return null;
 			}
 			if (harmony == null)

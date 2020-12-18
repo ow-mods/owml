@@ -82,7 +82,7 @@ namespace OWML.ModLoader
 
 			var modNames = mods.Where(mod => mod.Config.Enabled)
 				.Select(mod => mod.Manifest.UniqueName).ToList();
-			
+
 			foreach (var modData in sortedMods)
 			{
 				var missingDependencies = modData.Config.Enabled

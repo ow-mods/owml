@@ -28,11 +28,8 @@ namespace OWML.Logging
 			}
 		}
 
-		public void Log(string s)
-		{
-			var message = $"[{_manifest.Name}]: {s}";
-			LogInternal(message);
-		}
+		public void Log(string s) => 
+			LogInternal($"[{_manifest.Name}]: {s}");
 
 		public void Log(params object[] objects) => 
 			Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));

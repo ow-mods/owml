@@ -10,10 +10,8 @@ namespace OWML.Launcher
 
 		private readonly List<string> _arguments;
 
-		public ArgumentHelper(string[] args)
-		{
+		public ArgumentHelper(string[] args) => 
 			_arguments = args.ToList();
-		}
 
 		public string GetArgument(string name)
 		{
@@ -25,10 +23,8 @@ namespace OWML.Launcher
 			return _arguments[index + 1];
 		}
 
-		public bool HasArgument(string name)
-		{
-			return GetArgument(name) != null;
-		}
+		public bool HasArgument(string name) => 
+			GetArgument(name) != null;
 
 		public void RemoveArgument(string argument)
 		{
