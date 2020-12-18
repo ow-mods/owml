@@ -366,8 +366,6 @@ namespace OWML.ModHelper.Input
 				case RegistrationCode.AllNormal:
 					_logger.Log($"Successfully unregistered \"{combination.FullName}\"", MessageType.Success);
 					return;
-				default:
-					return;
 			}
 		}
 

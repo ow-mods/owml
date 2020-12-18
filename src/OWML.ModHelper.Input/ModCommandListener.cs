@@ -95,7 +95,7 @@ namespace OWML.ModHelper.Input
 				{
 					OnTapped?.Invoke(command);
 				}
-				if (blockFlag)//damn you, Mobius Digital
+				if (blockFlag) //damn you, Mobius Digital
 				{
 					var toReblock = _wasPressed[command] || _isPressed[command];
 					command.SetValue("_blockNextRelease", toReblock);

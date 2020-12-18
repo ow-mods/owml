@@ -28,7 +28,7 @@ namespace OWML.LoadCustomAssets
 
 		private readonly List<GameObject> _ducks = new();
 
-		private void Start()
+		public void Start()
 		{
 			ModHelper.Console.WriteLine($"In {nameof(LoadCustomAssets)}!", MessageType.Info);
 			_saveFile = ModHelper.Storage.Load<SaveFile>("savefile.json");
@@ -117,7 +117,7 @@ namespace OWML.LoadCustomAssets
 			ToggleMusic(ModHelper.Config.GetSettingsValue<bool>("enableMusic"));
 		}
 
-		private void Update()
+		public void Update()
 		{
 			if (Input.GetKeyDown(KeyCode.F9))
 			{
@@ -180,6 +180,5 @@ namespace OWML.LoadCustomAssets
 				_music.Stop();
 			}
 		}
-
 	}
 }

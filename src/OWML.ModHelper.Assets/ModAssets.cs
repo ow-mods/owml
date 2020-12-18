@@ -105,10 +105,7 @@ namespace OWML.ModHelper.Assets
 				yield return www;
 				www.LoadImageIntoTexture(texture);
 			}
-			if (texture == null)
-			{
-				_console.WriteLine("Error - Texture is null.", MessageType.Error);
-			}
+			
 			var meshRenderer = modAsset.AddComponent<MeshRenderer>();
 			meshRenderer.material.mainTexture = texture;
 			modAsset.SetMeshRenderer(meshRenderer);
@@ -136,10 +133,7 @@ namespace OWML.ModHelper.Assets
 				yield return www;
 				www.LoadImageIntoTexture(texture);
 			}
-			if (texture == null)
-			{
-				_console.WriteLine("Error - Texture is null.", MessageType.Error);
-			}
+			
 			var meshRenderer = modAsset.AddComponent<MeshRenderer>();
 			meshRenderer.material.mainTexture = texture;
 			yield return new WaitForEndOfFrame();

@@ -67,47 +67,45 @@ namespace OWML.ModHelper.Assets
 			var entireText = stream.ReadToEnd();
 			stream.Close();
 
-			using (var reader = new StringReader(entireText))
-			{
-				var currentText = reader.ReadLine();
-				char[] splitIdentifier = { ' ' };
+			using var reader = new StringReader(entireText);
+			var currentText = reader.ReadLine();
+			char[] splitIdentifier = { ' ' };
 
-				while (currentText != null)
+			while (currentText != null)
+			{
+				if (!currentText.StartsWith("f ")
+				    && !currentText.StartsWith("v ")
+				    && !currentText.StartsWith("vt ")
+				    && !currentText.StartsWith("vn "))
 				{
-					if (!currentText.StartsWith("f ")
-						&& !currentText.StartsWith("v ")
-						&& !currentText.StartsWith("vt ")
-						&& !currentText.StartsWith("vn "))
+					currentText = reader.ReadLine();
+					currentText = currentText?.Replace("  ", " ");
+				}
+				else
+				{
+					currentText = currentText.Trim();
+					var brokenString = currentText.Split(splitIdentifier, 50);
+					switch (brokenString[0])
 					{
-						currentText = reader.ReadLine();
-						currentText = currentText?.Replace("  ", " ");
-					}
-					else
-					{
-						currentText = currentText.Trim();
-						var brokenString = currentText.Split(splitIdentifier, 50);
-						switch (brokenString[0])
-						{
-							case "v":
-								vertices++;
-								break;
-							case "vt":
-								vt++;
-								break;
-							case "vn":
-								vn++;
-								break;
-							case "f":
-								face = face + brokenString.Length - 1;
-								triangles += 3 * (brokenString.Length - 2);
-								/* brokenString.Length is 3 or greater since a face must have at least
+						case "v":
+							vertices++;
+							break;
+						case "vt":
+							vt++;
+							break;
+						case "vn":
+							vn++;
+							break;
+						case "f":
+							face = face + brokenString.Length - 1;
+							triangles += 3 * (brokenString.Length - 2);
+							/* brokenString.Length is 3 or greater since a face must have at least
                                  3 vertices.  For each additional vertex, there is an additional
                                  triangle in the mesh (hence this formula).*/
-								break;
-						}
-						currentText = reader.ReadLine();
-						currentText = currentText?.Replace("  ", " ");
+							break;
 					}
+					currentText = reader.ReadLine();
+					currentText = currentText?.Replace("  ", " ");
 				}
 			}
 
