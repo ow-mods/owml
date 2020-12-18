@@ -13,6 +13,8 @@ jobs:
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       INTERNAL_PKG_KEY: ${{ secrets.INTERNAL_PKG_KEY }}
+    outputs:
+      version: ${{ steps.version.outputs.prop }}
     steps:
       - uses: actions/checkout@v2
       
@@ -101,8 +103,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.prop }}
-          release_name: ${{ steps.version.outputs.prop }}
+          tag_name: ${{ needs.build.outputs.version }}
+          release_name: ${{ needs.build.outputs.version }}
           draft: true # todo
           prerelease: true # todo
       - name: upload zip to release # todo untested
