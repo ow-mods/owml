@@ -92,7 +92,7 @@ namespace OWML.Launcher.Tests
 
 		private void CopyMod(string modName)
 		{
-			var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug";
+			var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug/net35";
 			var toModPath = $"{OwmlReleasePath}/Mods/{modName}";
 			Directory.CreateDirectory(toModPath);
 			var modFiles = Directory.GetFiles(fromModPath);

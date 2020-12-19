@@ -12,4 +12,10 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="System.Runtime.Serialization">
+	    <Private>true</Private>
+	  </Reference>
+	</ItemGroup>
+
 </Project>
