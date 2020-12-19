@@ -36,12 +36,10 @@ jobs:
           file: src\SampleMods\OWML.LoadCustomAssets\manifest.json
           field: version
           value: ${{ steps.version.outputs.prop }}       
-      - name: set assembly version
-        uses: rshillington/file-content-replacer@master
+      - name: set project version
+        uses: roryprimrose/set-vs-sdk-project-version@v1
         with:
-          files: "**/AssemblyInfo.cs"
-          from: '\[assembly: AssemblyVersion\("[0-9.]*"\)\]'
-          to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
+          version: ${{ steps.version.outputs.prop }}
             
       - name: setup msbuild
         uses: microsoft/setup-msbuild@v1
