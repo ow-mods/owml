@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
+	  <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
