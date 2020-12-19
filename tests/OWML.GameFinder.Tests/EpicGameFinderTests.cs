@@ -17,7 +17,7 @@ namespace OWML.GameFinder.Tests
 		public void EpicGameFinder_FindGamePath()
 		{
 			var pathFinder = new EpicGameFinder(new OwmlConfig(), Console.Object);
-
+			
 			var gamePath = pathFinder.FindGamePath();
 
 			Assert.Equal(new DirectoryInfo(Config.GamePath).FullName, new DirectoryInfo(gamePath).FullName);

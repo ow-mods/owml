@@ -85,7 +85,6 @@ namespace OWML.Launcher.Tests
 		[Fact]
 		public void ReleaseDoesNotContainGameFiles()
 		{
-			Assert.NotEmpty(Directory.GetFiles(OwmlReleasePath, "OWML*.dll", SearchOption.AllDirectories));
 			Assert.Empty(Directory.GetFiles(OwmlReleasePath, "UnityEngine*.dll", SearchOption.AllDirectories));
 			Assert.Empty(Directory.GetFiles(OwmlReleasePath, "Assembly-CSharp.dll", SearchOption.AllDirectories));
 		}
