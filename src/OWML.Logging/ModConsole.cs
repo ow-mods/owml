@@ -4,7 +4,7 @@ using OWML.Common;
 namespace OWML.Logging
 {
 	public abstract class ModConsole : IModConsole
-	{
+	{ 
 		public static ModConsole OwmlConsole { get; private set; }
 
 		protected readonly IModLogger Logger;
