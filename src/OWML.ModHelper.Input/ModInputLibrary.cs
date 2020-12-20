@@ -13,22 +13,15 @@ namespace OWML.ModHelper.Input
 		public const int MaxComboLength = 7;
 		public const int GamePadKeyDiff = 20;
 
-		internal static string GetReadableMessage(RegistrationCode code)
-		{
-			switch (code)
+		internal static string GetReadableMessage(RegistrationCode code) =>
+			code switch
 			{
-				case RegistrationCode.InvalidCombination:
-					return "contains invalid keys";
-				case RegistrationCode.CombinationTooLong:
-					return "contains too many keys";
-				case RegistrationCode.CombinationTaken:
-					return "similar combination already registered";
-				case RegistrationCode.AllNormal:
-					return "correct combination";
-				default:
-					return "unknown";
-			}
-		}
+				RegistrationCode.InvalidCombination => "contains invalid keys",
+				RegistrationCode.CombinationTooLong => "contains too many keys",
+				RegistrationCode.CombinationTaken => "similar combination already registered",
+				RegistrationCode.AllNormal => "correct combination",
+				_ => "unknown"
+			};
 
 		public static KeyCode NormalizeKeyCode(KeyCode key)
 		{
@@ -39,55 +32,35 @@ namespace OWML.ModHelper.Input
 			return key;
 		}
 
-		public static JoystickButton XboxButtonToJoystickButton(string xboxKey)
-		{
-			switch (xboxKey[0])
+		public static JoystickButton XboxButtonToJoystickButton(string xboxKey) =>
+			xboxKey[0] switch
 			{
-				case 'a':
-					return JoystickButton.FaceDown;
-				case 'b':
-					return JoystickButton.FaceRight;
-				case 'x':
-					return JoystickButton.FaceLeft;
-				case 'y':
-					return JoystickButton.FaceUp;
-				default:
-					return KeyToKeycode(xboxKey, JoystickButton.None);
-			}
-		}
+				'a' => JoystickButton.FaceDown,
+				'b' => JoystickButton.FaceRight,
+				'x' => JoystickButton.FaceLeft,
+				'y' => JoystickButton.FaceUp,
+				_ => KeyToKeycode(xboxKey, JoystickButton.None)
+			};
 
-		public static string JoystickButtonToXboxButton(JoystickButton key)
-		{
-			switch (key)
+		public static string JoystickButtonToXboxButton(JoystickButton key) =>
+			key switch
 			{
-				case JoystickButton.FaceDown:
-					return "a";
-				case JoystickButton.FaceRight:
-					return "b";
-				case JoystickButton.FaceLeft:
-					return "x";
-				case JoystickButton.FaceUp:
-					return "y";
-				default:
-					return key.ToString();
-			}
-		}
+				JoystickButton.FaceDown => "a",
+				JoystickButton.FaceRight => "b",
+				JoystickButton.FaceLeft => "x",
+				JoystickButton.FaceUp => "y",
+				_ => key.ToString()
+			};
 
-		private static KeyCode StringToKeyCodeKeyboard(string keyboardKey)
-		{
-			switch (keyboardKey)
+		private static KeyCode StringToKeyCodeKeyboard(string keyboardKey) =>
+			keyboardKey switch
 			{
-				case "control":
-				case "ctrl":
-					return KeyCode.LeftControl;
-				case "shift":
-					return KeyCode.LeftShift;
-				case "alt":
-					return KeyCode.LeftAlt;
-				default:
-					return KeyToKeycode(keyboardKey, KeyCode.None);
-			}
-		}
+				"control" => KeyCode.LeftControl,
+				"ctrl" => KeyCode.LeftControl,
+				"shift" => KeyCode.LeftShift,
+				"alt" => KeyCode.LeftAlt,
+				_ => KeyToKeycode(keyboardKey, KeyCode.None)
+			};
 
 		private static T KeyToKeycode<T>(string keyboardKey, T defaultValue)
 		{

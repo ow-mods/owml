@@ -1,9 +1,9 @@
-﻿using OWML.Tests.Setup;
-using OWML.Utils;
+﻿using OWML.ModHelper;
+using OWML.Tests.Setup;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace OWML.ModHelper.Events.Tests
+namespace OWML.Utils.Tests
 {
 	public class TypeExtensionTests : OWMLTests
 	{

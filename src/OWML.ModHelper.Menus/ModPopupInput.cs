@@ -15,7 +15,7 @@ namespace OWML.ModHelper.Menus
 		protected readonly TwoButtonToggleElement ToggleElement;
 		protected ModCommandListener CommandListener;
 
-		private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
+		private readonly List<SingleAxisCommand> _openCommands = new()
 		{
 			InputLibrary.menuConfirm,
 			InputLibrary.enter,

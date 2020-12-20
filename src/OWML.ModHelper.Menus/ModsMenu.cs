@@ -18,7 +18,7 @@ namespace OWML.ModHelper.Menus
 		private readonly IModInputHandler _inputHandler;
 		private readonly IModEvents _events;
 		private readonly IModStorage _storage;
-		private readonly List<IModConfigMenu> _modConfigMenus = new List<IModConfigMenu>();
+		private readonly List<IModConfigMenu> _modConfigMenus = new();
 		private IModMenus _menus;
 
 		public ModsMenu(IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events, IModStorage storage)

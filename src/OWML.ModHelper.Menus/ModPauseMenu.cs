@@ -5,13 +5,16 @@ namespace OWML.ModHelper.Menus
 {
 	public class ModPauseMenu : ModPopupMenu, IModPauseMenu
 	{
-		public IModTabbedMenu OptionsMenu { get; } = new ModOptionsMenu(); // todo DI?
+		public IModTabbedMenu OptionsMenu { get; }
 
 		public IModButton ResumeButton { get; private set; }
 
 		public IModButton OptionsButton { get; private set; }
 
 		public IModButton QuitButton { get; private set; }
+
+		public ModPauseMenu(IModTabbedMenu optionsMenu) => 
+			OptionsMenu = optionsMenu;
 
 		public void Initialize(SettingsManager settingsManager)
 		{
@@ -28,6 +31,5 @@ namespace OWML.ModHelper.Menus
 
 			InvokeOnInit();
 		}
-
 	}
 }

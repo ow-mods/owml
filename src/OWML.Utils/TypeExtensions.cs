@@ -18,18 +18,13 @@ namespace OWML.Utils
 			type.BaseType?.GetMember(name, Flags).FirstOrDefault() ??
 			type.BaseType?.BaseType?.GetMember(name, Flags).FirstOrDefault();
 
-		public static T GetValue<T>(this object obj, string name)
-		{
-			switch (obj.GetType().GetAnyMember(name))
+		public static T GetValue<T>(this object obj, string name) =>
+			obj.GetType().GetAnyMember(name) switch
 			{
-				case FieldInfo field:
-					return (T)field.GetValue(obj);
-				case PropertyInfo property:
-					return (T)property.GetValue(obj, null);
-				default:
-					return default;
-			}
-		}
+				FieldInfo field => (T) field.GetValue(obj),
+				PropertyInfo property => (T) property.GetValue(obj, null),
+				_ => default
+			};
 
 		public static void SetValue(this object obj, string name, object value)
 		{

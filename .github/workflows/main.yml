@@ -36,12 +36,10 @@ jobs:
           file: src\SampleMods\OWML.LoadCustomAssets\manifest.json
           field: version
           value: ${{ steps.version.outputs.prop }}       
-      - name: set assembly version
-        uses: rshillington/file-content-replacer@master
+      - name: set project version
+        uses: roryprimrose/set-vs-sdk-project-version@v1
         with:
-          files: "**/AssemblyInfo.cs"
-          from: '\[assembly: AssemblyVersion\("[0-9.]*"\)\]'
-          to: '[assembly: AssemblyVersion("${{ steps.version.outputs.prop }}")]'
+          version: ${{ steps.version.outputs.prop }}
             
       - name: setup msbuild
         uses: microsoft/setup-msbuild@v1
@@ -62,7 +60,7 @@ jobs:
       
       - name: create zip
         run: |
-          cd src\OWML.Launcher\bin\Debug
+          cd src\OWML.Launcher\bin\Debug\net48
           mkdir Logs
           mkdir Mods
           7z a OWML.zip *
@@ -70,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: owml-zip
-          path: src\OWML.Launcher\bin\Debug\OWML.zip
+          path: src\OWML.Launcher\bin\Debug\net48\OWML.zip
 
   nuget:
     runs-on: windows-latest

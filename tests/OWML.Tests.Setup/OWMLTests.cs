@@ -2,7 +2,6 @@
 using System.IO;
 using Moq;
 using OWML.Common;
-using OWML.Utils;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -12,17 +11,19 @@ namespace OWML.Tests.Setup
 	{
 		protected string OwmlSolutionPath => GetSolutionPath();
 
-		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/";
+		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/net48/";
 
-		protected Mock<IModConsole> Console { get; } = new Mock<IModConsole>();
+		protected Mock<IModConsole> Console { get; } = new();
 
-		protected Mock<IModLogger> Logger { get; } = new Mock<IModLogger>();
+		protected Mock<IModLogger> Logger { get; } = new();
 
-		protected Mock<IApplicationHelper> AppHelper { get; } = new Mock<IApplicationHelper>();
+		protected Mock<IApplicationHelper> AppHelper { get; } = new();
 
-		protected Mock<IGameObjectHelper> GOHelper { get; } = new Mock<IGameObjectHelper>();
+		protected Mock<IGameObjectHelper> GOHelper { get; } = new();
 
 		protected IOwmlConfig Config { get; } = new OwmlConfig();
+
+		private const string GamePath = "C:/Program Files/Epic Games/OuterWilds";
 
 		private readonly ITestOutputHelper _outputHelper;
 
@@ -30,8 +31,11 @@ namespace OWML.Tests.Setup
 		{
 			_outputHelper = outputHelper;
 
+			Config.OWMLPath = OwmlReleasePath;
+			Config.GamePath = GamePath;
+
 			AppHelper.Setup(s => s.DataPath)
-				.Returns(() => "C:/Program Files/Epic Games/OuterWilds/OuterWilds_Data");
+				.Returns(() => $"{GamePath}/OuterWilds_Data");
 			AppHelper.Setup(s => s.Version)
 				.Returns(() => "1.3.3.7");
 
@@ -56,16 +60,10 @@ namespace OWML.Tests.Setup
 				.Returns(() => new Mock<IModUnityEvents>().Object);
 			GOHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, It.IsAnyType>(It.IsAny<string>()))
 				.Returns(() => new Mock<IBindingChangeListener>().Object);
-
-			Config.OWMLPath = OwmlReleasePath;
-			Config.GamePath = "C:/Program Files/Epic Games/OuterWilds";
 		}
 
-		private string GetSolutionPath()
-		{
-			var currentFolder = Directory.GetCurrentDirectory();
-			return Directory.GetParent(currentFolder).Parent.Parent.Parent.FullName;
-		}
+		private string GetSolutionPath() =>
+			Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
 
 		private void WriteLine(string s)
 		{

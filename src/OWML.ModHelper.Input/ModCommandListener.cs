@@ -19,10 +19,10 @@ namespace OWML.ModHelper.Input
 
 		public float MaximalTapDuration { get; set; } = 0.1f;
 
-		private readonly HashSet<SingleAxisCommand> _commands = new HashSet<SingleAxisCommand>();
-		private readonly HashSet<SingleAxisCommand> _toRemove = new HashSet<SingleAxisCommand>();
-		private readonly Dictionary<SingleAxisCommand, bool> _wasPressed = new Dictionary<SingleAxisCommand, bool>();
-		private readonly Dictionary<SingleAxisCommand, bool> _isPressed = new Dictionary<SingleAxisCommand, bool>();
+		private readonly HashSet<SingleAxisCommand> _commands = new();
+		private readonly HashSet<SingleAxisCommand> _toRemove = new();
+		private readonly Dictionary<SingleAxisCommand, bool> _wasPressed = new();
+		private readonly Dictionary<SingleAxisCommand, bool> _isPressed = new();
 
 		public void AddToListener(SingleAxisCommand command)
 		{
@@ -95,7 +95,7 @@ namespace OWML.ModHelper.Input
 				{
 					OnTapped?.Invoke(command);
 				}
-				if (blockFlag)//damn you, Mobius Digital
+				if (blockFlag) //damn you, Mobius Digital
 				{
 					var toReblock = _wasPressed[command] || _isPressed[command];
 					command.SetValue("_blockNextRelease", toReblock);

@@ -23,30 +23,20 @@ namespace OWML.ModHelper.Menus
 			_onOffGraphicList = new OnOffGraphic[0];
 		}
 
-		public void SetTexts(Text[] texts)
-		{
+		public void SetTexts(Text[] texts) => 
 			_textItems = texts;
-		}
 
-		public void SetForeground(Graphic[] foreground)
-		{
+		public void SetForeground(Graphic[] foreground) => 
 			_foregroundGraphics = foreground;
-		}
 
-		public void SetBackground(Graphic[] background)
-		{
+		public void SetBackground(Graphic[] background) => 
 			_backgroundGraphics = background;
-		}
 
-		public void SetOnOffGraphics(Graphic[] onOffs)
-		{
+		public void SetOnOffGraphics(Graphic[] onOffs) => 
 			_onOffGraphics = onOffs;
-		}
 
-		public void SetOnOffExtended(OnOffGraphic[] onOffs)
-		{
+		public void SetOnOffExtended(OnOffGraphic[] onOffs) => 
 			_onOffGraphicList = onOffs;
-		}
 
 		public void SetAsButton()
 		{
@@ -70,11 +60,13 @@ namespace OWML.ModHelper.Menus
 		{
 			var oldUIStyleApplier = obj.GetComponent<UIStyleApplier>();
 			var newUIStyleApplier = obj.AddComponent<ModUIStyleApplier>();
-			if (oldUIStyleApplier != null)
+			if (oldUIStyleApplier == null)
 			{
-				newUIStyleApplier.Initialize(oldUIStyleApplier);
-				Destroy(oldUIStyleApplier);
+				return newUIStyleApplier;
 			}
+			
+			newUIStyleApplier.Initialize(oldUIStyleApplier);
+			Destroy(oldUIStyleApplier);
 			return newUIStyleApplier;
 		}
 	}

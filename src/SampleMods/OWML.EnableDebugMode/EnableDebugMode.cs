@@ -11,7 +11,7 @@ namespace OWML.EnableDebugMode
 		private int _renderValue;
 		private bool _isStarted;
 		private PlayerSpawner _playerSpawner;
-		private readonly Dictionary<string, IModInputCombination> _inputs = new Dictionary<string, IModInputCombination>();
+		private readonly Dictionary<string, IModInputCombination> _inputs = new();
 
 		public override void Configure(IModConfig config)
 		{
@@ -29,7 +29,7 @@ namespace OWML.EnableDebugMode
 			}
 		}
 
-		private void Start()
+		public void Start()
 		{
 			ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
 			ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
@@ -46,7 +46,7 @@ namespace OWML.EnableDebugMode
 			}
 		}
 
-		private void Update()
+		public void Update()
 		{
 			if (!_isStarted)
 			{
@@ -112,6 +112,5 @@ namespace OWML.EnableDebugMode
 			ModHelper.Console.WriteLine($"Warping to {location}!");
 			_playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
 		}
-
 	}
 }

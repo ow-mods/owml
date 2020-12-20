@@ -63,6 +63,5 @@ namespace OWML.GameFinder
 			Writer.WriteLine("Game not found in Steam.");
 			return null;
 		}
-
 	}
 }

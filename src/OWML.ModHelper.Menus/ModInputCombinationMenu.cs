@@ -12,7 +12,7 @@ namespace OWML.ModHelper.Menus
 	{
 		public event Action<string> OnConfirm;
 
-		public List<IModInputCombinationElement> CombinationElements { get; } = new List<IModInputCombinationElement>();
+		public List<IModInputCombinationElement> CombinationElements { get; } = new();
 
 		private IModInputCombinationElement _combinationElementTemplate;
 

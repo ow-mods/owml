@@ -13,7 +13,7 @@ namespace OWML.ModHelper.Menus
 
 		private readonly OptionsSelectorElement _element;
 		private int _count;
-		private List<string> _options = new List<string>();
+		private List<string> _options = new();
 
 		public override string Value
 		{

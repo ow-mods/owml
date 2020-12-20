@@ -49,7 +49,11 @@ namespace OWML.Launcher.Tests
 				"openvr_api.dll",
 				"OVRPlugin.dll"
 			});
-
+		}
+		
+		[Fact]
+		public void ReleaseContainsAllModFiles()
+		{
 			Directory.CreateDirectory($"{OwmlReleasePath}/Logs");
 			Directory.CreateDirectory($"{OwmlReleasePath}/Mods");
 			CopyMod("OWML.EnableDebugMode");
@@ -81,14 +85,13 @@ namespace OWML.Launcher.Tests
 		[Fact]
 		public void ReleaseDoesNotContainGameFiles()
 		{
-			Assert.NotEmpty(Directory.GetFiles(OwmlReleasePath, "OWML*.dll", SearchOption.AllDirectories));
 			Assert.Empty(Directory.GetFiles(OwmlReleasePath, "UnityEngine*.dll", SearchOption.AllDirectories));
 			Assert.Empty(Directory.GetFiles(OwmlReleasePath, "Assembly-CSharp.dll", SearchOption.AllDirectories));
 		}
 
 		private void CopyMod(string modName)
 		{
-			var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug";
+			var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug/net35";
 			var toModPath = $"{OwmlReleasePath}/Mods/{modName}";
 			Directory.CreateDirectory(toModPath);
 			var modFiles = Directory.GetFiles(fromModPath);
