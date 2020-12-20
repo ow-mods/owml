@@ -16,6 +16,11 @@ namespace OWML.ModHelper.Menus
 
 		private IModInputCombinationElement _combinationElementTemplate;
 
+		public ModInputCombinationMenu(IModConsole console)
+			: base(console)
+		{
+		}
+
 		public string GenerateCombination()
 		{
 			var toDestroy = CombinationElements.Where(x => x.Title == "").ToList();

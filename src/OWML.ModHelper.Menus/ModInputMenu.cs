@@ -13,6 +13,11 @@ namespace OWML.ModHelper.Menus
 
 		private PopupInputMenu _inputMenu;
 
+		public ModInputMenu(IModConsole console) 
+			: base(console)
+		{
+		}
+		
 		public void Initialize(PopupInputMenu menu)
 		{
 			if (Menu != null)
@@ -52,7 +57,7 @@ namespace OWML.ModHelper.Menus
 		public IModInputMenu Copy()
 		{
 			var newPopupObject = CopyMenu();
-			var newPopup = new ModInputMenu();
+			var newPopup = new ModInputMenu(Console);
 			newPopup.Initialize(newPopupObject.GetComponent<PopupInputMenu>());
 			return newPopup;
 		}

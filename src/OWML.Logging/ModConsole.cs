@@ -18,6 +18,8 @@ namespace OWML.Logging
 
 		public abstract void WriteLine(string line, MessageType type);
 
+		public abstract void WriteLine(string line, MessageType type, string senderType);
+
 		protected ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
 		{
 			Logger = logger;

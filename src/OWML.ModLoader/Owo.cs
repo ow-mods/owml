@@ -134,7 +134,7 @@ namespace OWML.ModLoader
 			}
 			catch (Exception ex)
 			{
-				ModConsole.OwmlConsole.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}", MessageType.Error);
+				_console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}", MessageType.Error);
 				return null;
 			}
 		}

@@ -15,5 +15,8 @@ namespace OWML.Logging
 
 		public void WriteLine(string line, MessageType type) => 
 			ConsoleUtils.WriteByType(type, line);
+
+		public void WriteLine(string line, MessageType type, string senderType) => 
+			ConsoleUtils.WriteByType(type, $"{senderType}: {line}");
 	}
 }

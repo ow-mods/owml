@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using OWML.Common;
+using OWML.Common.Menus;
 using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,10 +19,9 @@ namespace OWML.ModHelper.Menus
 			set => _text.text = value;
 		}
 
-		public ModTabMenu(IModTabbedMenu optionsMenu)
-		{
+		public ModTabMenu(IModTabbedMenu optionsMenu, IModConsole console)
+			: base(console) =>
 			_optionsMenu = optionsMenu;
-		}
 
 		public void Initialize(TabButton tabButton)
 		{
@@ -48,7 +48,7 @@ namespace OWML.ModHelper.Menus
 			_text = tabButton.GetComponentInChildren<Text>(true);
 			var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
 			tabButton.SetValue("_tabbedMenu", menu);
-			var modMenu = new ModTabMenu(_optionsMenu);
+			var modMenu = new ModTabMenu(_optionsMenu, Console);
 			modMenu.Initialize(tabButton);
 			return modMenu;
 		}
@@ -59,6 +59,5 @@ namespace OWML.ModHelper.Menus
 			Title = title;
 			return copy;
 		}
-
 	}
 }

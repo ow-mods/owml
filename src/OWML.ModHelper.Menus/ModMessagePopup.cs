@@ -1,7 +1,6 @@
 ﻿using System;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 using OWML.Utils;
 using UnityEngine.UI;
 
@@ -12,6 +11,11 @@ namespace OWML.ModHelper.Menus
 		public event Action OnConfirm;
 
 		private PopupMenu _twoButtonPopup;
+
+		public ModMessagePopup(IModConsole console)
+			: base(console)
+		{
+		}
 
 		public void Initialize(PopupMenu popup)
 		{
@@ -38,7 +42,7 @@ namespace OWML.ModHelper.Menus
 		public IModMessagePopup Copy()
 		{
 			var newPopupObject = CopyMenu();
-			var newPopup = new ModMessagePopup();
+			var newPopup = new ModMessagePopup(Console);
 			newPopup.Initialize(newPopupObject.GetComponent<PopupMenu>());
 			return newPopup;
 		}
@@ -47,8 +51,8 @@ namespace OWML.ModHelper.Menus
 		{
 			if (_twoButtonPopup == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Failed to create popup for a following message:", MessageType.Warning);
-				ModConsole.OwmlConsole.WriteLine(message, MessageType.Info);
+				Console.WriteLine("Failed to create popup for a following message:", MessageType.Warning);
+				Console.WriteLine(message, MessageType.Info);
 			}
 			RegisterEvents();
 			_twoButtonPopup.EnableMenu(true);

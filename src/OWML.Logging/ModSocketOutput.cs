@@ -21,16 +21,16 @@ namespace OWML.Logging
 		public override void WriteLine(params object[] objects)
 		{
 			var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
-			WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
+			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
 		}
 
 		public override void WriteLine(string line) => 
-			WriteLine(MessageType.Message, line, GetCallingType(new StackTrace()));
+			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
 
 		public override void WriteLine(string line, MessageType type) => 
-			WriteLine(type, line, GetCallingType(new StackTrace()));
+			WriteLine(line, type, GetCallingType(new StackTrace()));
 
-		private void WriteLine(MessageType type, string line, string senderType)
+		public override void WriteLine(string line, MessageType type, string senderType)
 		{
 			Logger?.Log($"{type}: {line}");
 
@@ -48,7 +48,9 @@ namespace OWML.Logging
 				KillProcess();
 			}
 		}
-
+		private void WriteLine(MessageType type, string line, string senderType) =>
+			WriteLine(line, type, senderType);
+		
 		private void KillProcess()
 		{
 			_socket.Close();
