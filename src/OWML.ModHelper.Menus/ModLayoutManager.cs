@@ -9,7 +9,7 @@ namespace OWML.ModHelper.Menus
 	public class ModLayoutManager : IModLayoutManager
 	{
 		private const int FontSize = 36;
-		private static readonly Vector2 NormalPivot = new Vector2(0.5f, 0.5f);
+		private static readonly Vector2 NormalPivot = new(0.5f, 0.5f);
 
 		public LayoutGroup LayoutGroup { get; }
 
@@ -18,7 +18,7 @@ namespace OWML.ModHelper.Menus
 		private readonly UIStyleManager _styleManager;
 		private readonly ModUIStyleApplier _styleApplier;
 		private readonly Vector3 _scale;
-		private readonly HashSet<Graphic> _constantGraphics = new HashSet<Graphic>();
+		private readonly HashSet<Graphic> _constantGraphics = new();
 
 		public ModLayoutManager(
 			LayoutGroup layout,

@@ -18,15 +18,15 @@ namespace OWML.ModHelper.Input
 		private const float TapDuration = 0.1f;
 		private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
 		
-		private readonly HashSet<IModInputCombination> _singlesPressed = new HashSet<IModInputCombination>();
-		private readonly Dictionary<long, HashSet<IModInputCombination>> _comboRegistry = new Dictionary<long, HashSet<IModInputCombination>>();
-		private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new HashSet<IModInputCombination>();
+		private readonly HashSet<IModInputCombination> _singlesPressed = new();
+		private readonly Dictionary<long, HashSet<IModInputCombination>> _comboRegistry = new();
+		private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new();
 		private readonly int[] _blockedFrame = new int[ModInputLibrary.MaxUsefulKey];
 		private readonly int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
 		private readonly IModLogger _logger;
 		private readonly IModConsole _console;
 
-		private HashSet<IModInputCombination> _currentCombinations = new HashSet<IModInputCombination>();
+		private HashSet<IModInputCombination> _currentCombinations = new();
 		private int _lastSingleUpdate;
 		private int _lastCombinationUpdate;
 		
@@ -365,8 +365,6 @@ namespace OWML.ModHelper.Input
 					return;
 				case RegistrationCode.AllNormal:
 					_logger.Log($"Successfully unregistered \"{combination.FullName}\"", MessageType.Success);
-					return;
-				default:
 					return;
 			}
 		}

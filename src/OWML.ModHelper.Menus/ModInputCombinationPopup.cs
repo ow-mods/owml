@@ -24,7 +24,7 @@ namespace OWML.ModHelper.Menus
 		[SerializeField]
 		private ButtonWithHotkeyImageElement _resetButton;
 
-		private List<KeyCode> _combination = new List<KeyCode>();
+		private List<KeyCode> _combination = new();
 		private IModInputHandler _inputHandler;
 		private bool _wasReleased = true;
 		private SingleAxisCommand _resetCommand;

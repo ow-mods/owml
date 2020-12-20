@@ -35,10 +35,10 @@ namespace OWML.ModLoader
 			UpdateSnapshot();
 		}
 
-		public void UpdateSnapshot() => 
+		public void UpdateSnapshot() =>
 			_configSnapshot = Config != null ? Config.Copy() : DefaultConfig.Copy();
 
-		public void ResetConfigToDefaults() => 
+		public void ResetConfigToDefaults() =>
 			Config = DefaultConfig.Copy();
 
 		public bool FixConfigs()
@@ -133,7 +133,8 @@ namespace OWML.ModLoader
 
 		private bool IsSettingSameType(object settingValue1, object settingValue2) =>
 			settingValue1.GetType() == settingValue2.GetType() &&
-			(!(settingValue1 is JObject obj1) || !(settingValue2 is JObject obj2) ||
+			(settingValue1 is not JObject obj1 ||
+			 settingValue2 is not JObject obj2 ||
 			 (string)obj1["type"] == (string)obj2["type"]);
 	}
 }

@@ -21,13 +21,13 @@ namespace OWML.Logging
 			}
 		}
 
-		public void Log(string s) => 
+		public void Log(string s) =>
 			LogInternal($"[{_manifest.Name}]: {s}");
 
-		public void Log(params object[] objects) => 
+		public void Log(params object[] objects) =>
 			Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
 
-		private static void LogInternal(string message) => 
+		private static void LogInternal(string message) =>
 			File.AppendAllText(_logFileName, $"{DateTime.Now}: {message}{Environment.NewLine}");
 	}
 }

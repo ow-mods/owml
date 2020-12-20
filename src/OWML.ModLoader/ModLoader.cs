@@ -57,6 +57,7 @@ namespace OWML.ModLoader
 				.Add<IModInputHandler, ModInputHandler>()
 				.Add<IModStorage, ModStorage>()
 				.Add<IModConfigMenuBase, OwmlConfigMenu>()
+				.Add<IModTabbedMenu, ModOptionsMenu>()
 				.Add<IModMainMenu, ModMainMenu>()
 				.Add<IModPauseMenu, ModPauseMenu>()
 				.Add<IModsMenu, ModsMenu>()

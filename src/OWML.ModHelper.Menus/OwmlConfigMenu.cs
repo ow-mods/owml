@@ -19,8 +19,7 @@ namespace OWML.ModHelper.Menus
 
 		protected override void AddInputs()
 		{
-			var index = 2;
-			AddConfigInput(BlockInputTitle, _config.BlockInput, index++);
+			AddConfigInput(BlockInputTitle, _config.BlockInput, 2);
 			UpdateNavigation();
 			SelectFirst();
 		}
@@ -43,6 +42,5 @@ namespace OWML.ModHelper.Menus
 			_config.BlockInput = _defaultConfig.BlockInput;
 			UpdateUIValues();
 		}
-
 	}
 }

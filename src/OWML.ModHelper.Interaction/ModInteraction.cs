@@ -10,8 +10,8 @@ namespace OWML.ModHelper.Interaction
 		private readonly IInterfaceProxyFactory _proxyFactory;
 		private readonly IModManifest _manifest;
 
-		private Dictionary<string, List<IModBehaviour>> _dependantDict = new Dictionary<string, List<IModBehaviour>>();
-		private Dictionary<string, List<IModBehaviour>> _dependencyDict = new Dictionary<string, List<IModBehaviour>>();
+		private Dictionary<string, List<IModBehaviour>> _dependantDict = new();
+		private Dictionary<string, List<IModBehaviour>> _dependencyDict = new();
 
 		public ModInteraction(IList<IModBehaviour> modList, IInterfaceProxyFactory proxyFactory, IModManifest manifest)
 		{
@@ -74,15 +74,12 @@ namespace OWML.ModHelper.Interaction
 		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
 		{
 			var api = GetApi(uniqueName);
-			switch (api)
+			return api switch
 			{
-				case null:
-					return null;
-				case TInterface inter:
-					return inter;
-				default:
-					return _proxyFactory.CreateProxy<TInterface>(api, _manifest.UniqueName, uniqueName);
-			}
+				null => null,
+				TInterface inter => inter,
+				_ => _proxyFactory.CreateProxy<TInterface>(api, _manifest.UniqueName, uniqueName)
+			};
 		}
 
 		public IList<IModBehaviour> GetMods() => 

@@ -25,7 +25,7 @@ namespace OWML.ModHelper.Menus
 
 		private string _combination;
 		private readonly IModInputHandler _inputHandler;
-		private readonly List<SingleAxisCommand> _openCommands = new List<SingleAxisCommand>
+		private readonly List<SingleAxisCommand> _openCommands = new()
 		{
 			InputLibrary.menuConfirm
 		};

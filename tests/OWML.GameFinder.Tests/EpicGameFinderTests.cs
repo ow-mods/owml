@@ -6,18 +6,18 @@ using Xunit.Abstractions;
 
 namespace OWML.GameFinder.Tests
 {
-	public class GameFinderTests : OWMLTests
+	public class EpicGameFinderTests : OWMLTests
 	{
-		public GameFinderTests(ITestOutputHelper outputHelper)
+		public EpicGameFinderTests(ITestOutputHelper outputHelper)
 			: base(outputHelper)
 		{
 		}
 
 		[Fact]
-		public void PathFinder_FindGamePath()
+		public void EpicGameFinder_FindGamePath()
 		{
-			var pathFinder = new PathFinder(new OwmlConfig(), Console.Object);
-
+			var pathFinder = new EpicGameFinder(new OwmlConfig(), Console.Object);
+			
 			var gamePath = pathFinder.FindGamePath();
 
 			Assert.Equal(new DirectoryInfo(Config.GamePath).FullName, new DirectoryInfo(gamePath).FullName);

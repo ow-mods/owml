@@ -19,8 +19,8 @@ namespace OWML.ModHelper.Events
 		[Obsolete("Use Event instead.")]
 		public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
 
-		private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new List<KeyValuePair<Type, Common.Events>>();
-		private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new List<KeyValuePair<Type, Common.Events>>();
+		private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new();
+		private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new();
 
 		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IModConsole _console;

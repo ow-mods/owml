@@ -25,7 +25,7 @@ namespace OWML.ModHelper.Input
 
 		private bool _isPressed;
 		private float _firstPressedMoment;
-		private readonly List<KeyCode> _singles = new List<KeyCode>();
+		private readonly List<KeyCode> _singles = new();
 		private readonly List<long> _hashes;
 		private readonly IModManifest _manifest;
 		private readonly IModConsole _console;

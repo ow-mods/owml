@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Menus
 		private readonly IModInputMenu _inputPopup;
 		private readonly IModMessagePopup _messagePopup;
 		private readonly IModInputCombinationElementMenu _combinationPopup;
-		private readonly List<IModTemporaryPopup> _toDestroy = new List<IModTemporaryPopup>();
+		private readonly List<IModTemporaryPopup> _toDestroy = new();
 		private readonly IModEvents _events;
 
 		public ModPopupManager(
@@ -62,7 +62,7 @@ namespace OWML.ModHelper.Menus
 			var newPopup = _inputPopup.Copy();
 			newPopup.Open(inputType, value);
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
-			newPopup.OnConfirm += thing => OnPopupClose(newPopup);
+			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;
 		}
 
@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
 			var newPopup = _combinationPopup.Copy();
 			newPopup.Open(value, comboName, combinationMenu, element);
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
-			newPopup.OnConfirm += thing => OnPopupClose(newPopup);
+			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;
 		}
 
