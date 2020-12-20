@@ -2,7 +2,6 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 
 namespace OWML.ModHelper.Menus
 {
@@ -23,7 +22,8 @@ namespace OWML.ModHelper.Menus
 
 		protected abstract void UpdateUIValues();
 
-		protected ModConfigMenuBase(IModManifest manifest, IModStorage storage)
+		protected ModConfigMenuBase(IModManifest manifest, IModStorage storage, IModConsole console)
+			: base(console)
 		{
 			Manifest = manifest;
 			Storage = storage;
@@ -90,12 +90,12 @@ namespace OWML.ModHelper.Menus
 						AddComboInput(key, index);
 						return;
 					default:
-						ModConsole.OwmlConsole.WriteLine("Error - Unrecognized complex setting: " + value, MessageType.Error);
+						Console.WriteLine("Error - Unrecognized complex setting: " + value, MessageType.Error);
 						return;
 				}
 			}
 
-			ModConsole.OwmlConsole.WriteLine("Error - Unrecognized setting type: " + value.GetType(), MessageType.Error);
+			Console.WriteLine("Error - Unrecognized setting type: " + value.GetType(), MessageType.Error);
 		}
 
 		private void AddToggleInput(string key, int index)
@@ -158,6 +158,5 @@ namespace OWML.ModHelper.Menus
 			numberInput.Element.name = key;
 			numberInput.Show();
 		}
-
 	}
 }

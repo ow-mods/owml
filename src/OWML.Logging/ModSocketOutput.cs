@@ -48,7 +48,9 @@ namespace OWML.Logging
 				KillProcess();
 			}
 		}
-
+		private void WriteLine(MessageType type, string line, string senderType) =>
+			WriteLine(line, type, senderType);
+		
 		private void KillProcess()
 		{
 			_socket.Close();

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 using OWML.ModHelper.Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,18 +24,26 @@ namespace OWML.ModHelper.Menus
 
 		private string _combination;
 		private readonly IModInputHandler _inputHandler;
+		private readonly IModPopupManager _popupManager;
+		private readonly IModConsole _console;
+
 		private readonly List<SingleAxisCommand> _openCommands = new()
 		{
 			InputLibrary.menuConfirm
 		};
 
-		private static IModPopupManager _popupManager;
 
-		public ModInputCombinationElement(TwoButtonToggleElement toggle, IModMenu menu,
-			IModPopupManager popupManager, IModInputHandler inputHandler, string combination = "") :
-			base(toggle, menu)
+		public ModInputCombinationElement(
+			TwoButtonToggleElement toggle, 
+			IModMenu menu,
+			IModPopupManager popupManager,
+			IModInputHandler inputHandler,
+			IModConsole console,
+			string combination = "") 
+				: base(toggle, menu)
 		{
 			_inputHandler = inputHandler;
+			_console = console;
 			_combination = combination;
 			Initialize(menu);
 			SetupButtons();
@@ -46,7 +53,7 @@ namespace OWML.ModHelper.Menus
 									 .GetComponentInChildren<HorizontalLayoutGroup>(true).gameObject;
 			if (layoutObject == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Error - Failed to setup an element for combination editor.", MessageType.Error);
+				_console.WriteLine("Error - Failed to setup an element for combination editor.", MessageType.Error);
 				return;
 			}
 			var layoutGroup = layoutObject.GetComponent<HorizontalLayoutGroup>();
@@ -179,7 +186,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var copy = GameObject.Instantiate(Toggle);
 			GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
-			return new ModInputCombinationElement(copy, Menu, _popupManager, _inputHandler, combination);
+			return new ModInputCombinationElement(copy, Menu, _popupManager, _inputHandler, _console, combination);
 		}
 	}
 }

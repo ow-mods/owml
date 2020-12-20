@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using OWML.Common;
+using OWML.Common.Menus;
 using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
@@ -13,7 +14,8 @@ namespace OWML.ModHelper.Menus
 
 		public IModButton QuitButton { get; private set; }
 
-		public ModPauseMenu(IModTabbedMenu optionsMenu) => 
+		public ModPauseMenu(IModTabbedMenu optionsMenu, IModConsole console)
+			: base(console) =>
 			OptionsMenu = optionsMenu;
 
 		public void Initialize(SettingsManager settingsManager)

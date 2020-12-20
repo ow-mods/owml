@@ -4,7 +4,6 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +39,12 @@ namespace OWML.ModHelper.Menus
 		public List<IModSeparator> Separators { get; private set; }
 
 		protected LayoutGroup Layout;
+		protected IModConsole Console;
+
+		public ModMenu(IModConsole console)
+		{
+			Console = console;
+		}
 
 		public virtual void Initialize(Menu menu)
 		{
@@ -57,7 +62,7 @@ namespace OWML.ModHelper.Menus
 
 			var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
 				.Select(x => x.GetComponent<Button>()).ToList();
-			BaseButtons = promptButtons.Select(x => new ModPromptButton(x, this)).Cast<IModButtonBase>().ToList();
+			BaseButtons = promptButtons.Select(x => new ModPromptButton(x, this, Console)).Cast<IModButtonBase>().ToList();
 
 			var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
 			BaseButtons.AddRange(ordinaryButtons.Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>().ToList());
@@ -96,7 +101,7 @@ namespace OWML.ModHelper.Menus
 			var button = buttons.FirstOrDefault(x => x.Title == title || x.Button.name == title);
 			if (button == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Warning - No button found with title or name: " + title, MessageType.Warning);
+				Console.WriteLine("Warning - No button found with title or name: " + title, MessageType.Warning);
 			}
 			return button;
 		}
@@ -296,7 +301,7 @@ namespace OWML.ModHelper.Menus
 			{
 				return numberInput.Value;
 			}
-			ModConsole.OwmlConsole.WriteLine($"Error - No input found with name {key}", MessageType.Error);
+			Console.WriteLine($"Error - No input found with name {key}", MessageType.Error);
 			return null;
 		}
 
@@ -344,7 +349,7 @@ namespace OWML.ModHelper.Menus
 				numberInput.Value = Convert.ToSingle(val);
 				return;
 			}
-			ModConsole.OwmlConsole.WriteLine("Error - No input found with name " + key, MessageType.Error);
+			Console.WriteLine("Error - No input found with name " + key, MessageType.Error);
 		}
 
 		protected void InvokeOnInit()
