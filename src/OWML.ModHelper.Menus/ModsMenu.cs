@@ -2,7 +2,6 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +20,13 @@ namespace OWML.ModHelper.Menus
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
 		private IModMenus _menus;
 
-		public ModsMenu(IModConfigMenuBase owmlMenu, IModInputHandler inputHandler, IModEvents events, IModStorage storage)
+		public ModsMenu(
+			IModConfigMenuBase owmlMenu,
+			IModInputHandler inputHandler,
+			IModEvents events,
+			IModStorage storage,
+			IModConsole console)
+				: base(console)
 		{
 			OwmlMenu = owmlMenu;
 			_inputHandler = inputHandler;
@@ -36,16 +41,16 @@ namespace OWML.ModHelper.Menus
 
 		public void AddMod(IModData modData, IModBehaviour mod)
 		{
-			_modConfigMenus.Add(new ModConfigMenu(modData, mod, _storage));
+			_modConfigMenus.Add(new ModConfigMenu(modData, mod, _storage, Console));
 		}
 
 		public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
 		{
-			ModConsole.OwmlConsole.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
+			Console.WriteLine("Registering " + modBehaviour.ModHelper.Manifest.UniqueName);
 			var modConfigMenu = _modConfigMenus.FirstOrDefault(x => x.Mod == modBehaviour);
 			if (modConfigMenu == null)
 			{
-				ModConsole.OwmlConsole.WriteLine($"Error - {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.", MessageType.Error);
+				Console.WriteLine($"Error - {modBehaviour.ModHelper.Manifest.UniqueName} isn't added.", MessageType.Error);
 				return null;
 			}
 			return modConfigMenu;
@@ -71,9 +76,15 @@ namespace OWML.ModHelper.Menus
 			{
 				return;
 			}
+			
 			var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
-			var comboElementTemplate = new ModInputCombinationElement(toggleTemplate,
-				_menus.InputCombinationMenu, _menus.PopupManager, _inputHandler);
+			var comboElementTemplate = new ModInputCombinationElement(
+				toggleTemplate,
+				_menus.InputCombinationMenu,
+				_menus.PopupManager,
+				_inputHandler,
+				Console);
+			
 			comboElementTemplate.Hide();
 			var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
 			_menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
@@ -158,14 +169,10 @@ namespace OWML.ModHelper.Menus
 			popup.OnCancel += OnPopupCancel;
 		}
 
-		private void OnPopupCancel()
-		{
+		private void OnPopupCancel() => 
 			_modConfigMenus.ForEach(modMenu => modMenu.ModData.UpdateSnapshot());
-		}
 
-		private void OnPopupConfirm()
-		{
+		private void OnPopupConfirm() => 
 			Application.Quit();
-		}
 	}
 }

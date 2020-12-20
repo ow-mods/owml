@@ -48,6 +48,5 @@ namespace OWML.ModHelper.Menus
 			copy.Title = title;
 			return copy;
 		}
-
 	}
 }

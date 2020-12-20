@@ -11,8 +11,8 @@ namespace OWML.ModHelper.Menus
 		public IModData ModData { get; }
 		public IModBehaviour Mod { get; }
 
-		public ModConfigMenu(IModData modData, IModBehaviour mod, IModStorage storage)
-			: base(modData.Manifest, storage)
+		public ModConfigMenu(IModData modData, IModBehaviour mod, IModStorage storage, IModConsole console)
+			: base(modData.Manifest, storage, console)
 		{
 			ModData = modData;
 			Mod = mod;

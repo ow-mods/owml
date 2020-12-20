@@ -10,5 +10,7 @@ namespace OWML.Common
 		void WriteLine(string line);
 
 		void WriteLine(string line, MessageType type);
+
+		void WriteLine(string line, MessageType type, string senderType);
 	}
 }

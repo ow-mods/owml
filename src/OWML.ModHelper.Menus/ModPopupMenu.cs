@@ -1,7 +1,6 @@
 ﻿using System;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +26,11 @@ namespace OWML.ModHelper.Menus
 		{
 			get => _title.text;
 			set => _title.text = value;
+		}
+
+		public ModPopupMenu(IModConsole console)
+			: base(console)
+		{
 		}
 
 		public override void Initialize(Menu menu, LayoutGroup layoutGroup)
@@ -61,7 +65,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (Menu == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Warning - Can't open menu, it doesn't exist.", MessageType.Warning);
+				Console.WriteLine("Warning - Can't open menu, it doesn't exist.", MessageType.Warning);
 				return;
 			}
 			SelectFirst();
@@ -72,7 +76,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (Menu == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Warning - Can't close menu, it doesn't exist.", MessageType.Warning);
+				Console.WriteLine("Warning - Can't close menu, it doesn't exist.", MessageType.Warning);
 				return;
 			}
 			Menu.EnableMenu(false);
@@ -94,11 +98,11 @@ namespace OWML.ModHelper.Menus
 		{
 			if (Menu == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Warning - Can't copy menu, it doesn't exist.", MessageType.Warning);
+				Console.WriteLine("Warning - Can't copy menu, it doesn't exist.", MessageType.Warning);
 				return null;
 			}
 			var menu = GameObject.Instantiate(Menu, Menu.transform.parent);
-			var modMenu = new ModPopupMenu();
+			var modMenu = new ModPopupMenu(Console);
 			modMenu.Initialize(menu);
 			return modMenu;
 		}

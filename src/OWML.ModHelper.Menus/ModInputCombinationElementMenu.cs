@@ -5,7 +5,6 @@ using OWML.ModHelper.Input;
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
-using OWML.Logging;
 using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
@@ -23,10 +22,9 @@ namespace OWML.ModHelper.Menus
 		private SingleAxisCommand _cancelCommand;
 		private string _comboName;
 
-		public ModInputCombinationElementMenu(IModInputHandler inputHandler)
-		{
+		public ModInputCombinationElementMenu(IModInputHandler inputHandler, IModConsole console)
+			: base(console) =>
 			_inputHandler = inputHandler;
-		}
 
 		private GameObject CreateResetButton(Transform buttonsTransform)
 		{
@@ -45,7 +43,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (scaleReference == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Error - scale reference is null", MessageType.Error);
+				Console.WriteLine("Error - scale reference is null", MessageType.Error);
 			}
 			var layoutGroupNew = layoutObject.GetAddComponent<HorizontalLayoutGroup>();
 			layoutGroupNew.childForceExpandWidth = false;
@@ -102,7 +100,7 @@ namespace OWML.ModHelper.Menus
 
 			if (layout == null)
 			{
-				ModConsole.OwmlConsole.WriteLine("Error - Failed to create combination visualizer in combination editor.", MessageType.Error);
+				Console.WriteLine("Error - Failed to create combination visualizer in combination editor.", MessageType.Error);
 				return;
 			}
 
@@ -161,7 +159,7 @@ namespace OWML.ModHelper.Menus
 		public IModInputCombinationElementMenu Copy()
 		{
 			var newPopupObject = CopyMenu();
-			var newPopup = new ModInputCombinationElementMenu(_inputHandler);
+			var newPopup = new ModInputCombinationElementMenu(_inputHandler, Console);
 			newPopup.Initialize(newPopupObject.GetComponent<ModInputCombinationPopup>());
 			newPopup.Init(_popupManager);
 			return newPopup;

@@ -10,8 +10,13 @@ namespace OWML.ModHelper.Menus
 		private readonly IOwmlConfig _config;
 		private readonly IOwmlConfig _defaultConfig;
 
-		public OwmlConfigMenu(IModManifest manifest, IOwmlConfig config, IModStorage storage, IApplicationHelper appHelper)
-			: base(manifest, storage)
+		public OwmlConfigMenu(
+			IModManifest manifest,
+			IOwmlConfig config,
+			IModStorage storage,
+			IApplicationHelper appHelper,
+			IModConsole console)
+				: base(manifest, storage, console)
 		{
 			_config = config;
 			_defaultConfig = JsonHelper.LoadJsonObject<OwmlConfig>($"{appHelper.DataPath}/Managed/{Constants.OwmlDefaultConfigFileName}");

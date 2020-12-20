@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using OWML.Common;
 using OWML.Common.Menus;
 using OWML.Utils;
 using UnityEngine;
@@ -25,7 +26,8 @@ namespace OWML.ModHelper.Menus
 		private TitleAnimationController _anim;
 		private TitleScreenManager _titleManager;
 
-		public ModMainMenu(IModTabbedMenu optionsMenu) => 
+		public ModMainMenu(IModTabbedMenu optionsMenu, IModConsole console) 
+			: base(console) => 
 			OptionsMenu = optionsMenu;
 
 		public void Initialize(TitleScreenManager titleScreenManager)
