@@ -7,15 +7,13 @@ namespace OWML.ModHelper.Events
 {
 	public class HarmonyHelper : IHarmonyHelper
 	{
-		private readonly IModLogger _logger;
 		private readonly IModConsole _console;
 		private readonly IModManifest _manifest;
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly HarmonyInstance _harmony;
 
-		public HarmonyHelper(IModLogger logger, IModConsole console, IModManifest manifest, IOwmlConfig owmlConfig)
+		public HarmonyHelper(IModConsole console, IModManifest manifest, IOwmlConfig owmlConfig)
 		{
-			_logger = logger;
 			_console = console;
 			_manifest = manifest;
 			_owmlConfig = owmlConfig;
@@ -28,7 +26,7 @@ namespace OWML.ModHelper.Events
 			HarmonyInstance harmony;
 			try
 			{
-				_logger.Log($"Creating harmony instance: {_manifest.UniqueName}");
+				_console.WriteLine($"Creating harmony instance: {_manifest.UniqueName}", MessageType.Debug);
 				HarmonyInstance.DEBUG = true;
 				FileLog.logPath = $"{_owmlConfig.LogsPath}/harmony.log.txt";
 				harmony = HarmonyInstance.Create(_manifest.UniqueName);
@@ -51,7 +49,7 @@ namespace OWML.ModHelper.Events
 			MethodInfo result = null;
 			try
 			{
-				_logger.Log($"Getting method {methodName} of {targetType.Name}");
+				_console.WriteLine($"Getting method {methodName} of {targetType.Name}", MessageType.Debug);
 				result = Utils.TypeExtensions.GetAnyMethod(targetType, methodName);
 			}
 			catch (Exception ex)
@@ -129,7 +127,7 @@ namespace OWML.ModHelper.Events
 			try
 			{
 				_harmony.Patch(original, prefixMethod, postfixMethod, transpilerMethod);
-				_logger.Log($"Patched {fullName}!");
+				_console.WriteLine($"Patched {fullName}!", MessageType.Debug);
 			}
 			catch (Exception ex)
 			{

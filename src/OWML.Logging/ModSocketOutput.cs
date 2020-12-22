@@ -24,24 +24,26 @@ namespace OWML.Logging
 			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
 		}
 
-		public override void WriteLine(string line) => 
+		public override void WriteLine(string line) =>
 			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
 
-		public override void WriteLine(string line, MessageType type) => 
+		public override void WriteLine(string line, MessageType type) =>
 			WriteLine(line, type, GetCallingType(new StackTrace()));
 
 		public override void WriteLine(string line, MessageType type, string senderType)
 		{
 			Logger?.Log($"{type}: {line}");
 
-			var message = new ModSocketMessage
+			if (type != MessageType.Debug || OwmlConfig.DebugMode)
 			{
-				SenderName = Manifest.Name,
-				SenderType = senderType,
-				Type = type,
-				Message = line
-			};
-			_socket.WriteToSocket(message);
+				_socket.WriteToSocket(new ModSocketMessage
+				{
+					SenderName = Manifest.Name,
+					SenderType = senderType,
+					Type = type,
+					Message = line
+				});
+			}
 
 			if (type == MessageType.Fatal)
 			{
@@ -50,7 +52,7 @@ namespace OWML.Logging
 		}
 		private void WriteLine(MessageType type, string line, string senderType) =>
 			WriteLine(line, type, senderType);
-		
+
 		private void KillProcess()
 		{
 			_socket.Close();

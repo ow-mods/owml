@@ -17,24 +17,28 @@ namespace OWML.ModHelper.Input
 		private const float Cooldown = 0.05f;
 		private const float TapDuration = 0.1f;
 		private const BindingFlags NonPublic = BindingFlags.NonPublic | BindingFlags.Instance;
-		
+
 		private readonly HashSet<IModInputCombination> _singlesPressed = new();
 		private readonly Dictionary<long, HashSet<IModInputCombination>> _comboRegistry = new();
 		private readonly HashSet<IModInputCombination> _toResetOnNextFrame = new();
 		private readonly int[] _blockedFrame = new int[ModInputLibrary.MaxUsefulKey];
 		private readonly int[] _gameBindingCounter = new int[ModInputLibrary.MaxUsefulKey];
-		private readonly IModLogger _logger;
 		private readonly IModConsole _console;
 
 		private HashSet<IModInputCombination> _currentCombinations = new();
 		private int _lastSingleUpdate;
 		private int _lastCombinationUpdate;
-		
-		public ModInputHandler(IModLogger logger, IModConsole console, IHarmonyHelper patcher, IOwmlConfig owmlConfig, IModEvents events, IModInputTextures inputTextures, IBindingChangeListener listener)
+
+		public ModInputHandler(
+			IModConsole console,
+			IHarmonyHelper patcher,
+			IOwmlConfig owmlConfig,
+			IModEvents events,
+			IModInputTextures inputTextures,
+			IBindingChangeListener listener)
 		{
 			Instance = this;
 			_console = console;
-			_logger = logger;
 			Textures = inputTextures;
 
 			listener.Initialize(this, events);
@@ -364,7 +368,7 @@ namespace OWML.ModHelper.Input
 					_console.WriteLine($"Failed to unregister \"{combination.FullName}\": Too long!", MessageType.Error);
 					return;
 				case RegistrationCode.AllNormal:
-					_logger.Log($"Successfully unregistered \"{combination.FullName}\"", MessageType.Success);
+					_console.WriteLine($"Successfully unregistered \"{combination.FullName}\"", MessageType.Debug);
 					return;
 			}
 		}

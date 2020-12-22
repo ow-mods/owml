@@ -14,6 +14,8 @@
 
 		Quit = 5,
 
-		Fatal = 6
+		Fatal = 6,
+		
+		Debug = 7
 	}
 }
