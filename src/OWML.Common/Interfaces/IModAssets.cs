@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace OWML.Common
 {
@@ -6,12 +7,25 @@ namespace OWML.Common
 	{
 		AssetBundle LoadBundle(string filename);
 
+		GameObject Get3DObject(string objectFilename, string audioFilename);
+
+		Mesh GetMesh(string filename);
+
+		Texture2D GetTexture(string filename);
+
+
+		AudioClip GetAudio(string filename);
+		
+		[Obsolete("Use Get3DObject instead.")]
 		IModAsset<GameObject> Load3DObject(string objectFilename, string imageFilename);
+		
+		[Obsolete("Use GetMesh instead.")]
+		IModAsset<MeshFilter> LoadMesh(string filename);
 
-		IModAsset<MeshFilter> LoadMesh(string objectFilename);
+		[Obsolete("Use GetTexture instead.")]
+		IModAsset<MeshRenderer> LoadTexture(string filename);
 
-		IModAsset<MeshRenderer> LoadTexture(string imageFilename);
-
-		IModAsset<AudioSource> LoadAudio(string audioFilename);
+		[Obsolete("Use GetAudio instead.")]
+		IModAsset<AudioSource> LoadAudio(string filename);
 	}
 }
