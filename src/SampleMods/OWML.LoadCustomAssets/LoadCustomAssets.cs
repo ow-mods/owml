@@ -36,14 +36,7 @@ namespace OWML.LoadCustomAssets
 
 			var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
 			_cube = assetBundle.LoadAsset<GameObject>("Cube");
-
-			var gunSoundAsset = ModHelper.Assets.LoadAudio("blaster-firing.wav");
-			gunSoundAsset.Loaded += OnGunSoundLoaded;
-			var duckAsset = ModHelper.Assets.Load3DObject("duck.obj", "duck.png");
-			duckAsset.Loaded += OnDuckLoaded;
-			var musicAsset = ModHelper.Assets.LoadAudio("spiral-mountain.mp3");
-			ModHelper.Events.Unity.RunWhen(() => musicAsset.Asset != null, () => OnMusicLoaded(musicAsset.Asset));
-
+			
 			ModHelper.Events.Player.OnPlayerAwake += OnPlayerAwake;
 			ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
 			ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
@@ -77,21 +70,25 @@ namespace OWML.LoadCustomAssets
 			ModHelper.Console.WriteLine("Test Debug", MessageType.Debug);
 		}
 
-		private void OnMusicLoaded(AudioSource audio)
+		private void LoadMusic()
 		{
-			_music = audio;
+			_music = new GameObject().AddComponent<AudioSource>();
+			_music.clip = ModHelper.Assets.GetAudio("spiral-mountain.mp3");
 			ModHelper.Console.WriteLine("Music loaded!");
 		}
 
-		private void OnGunSoundLoaded(AudioSource audio)
+		private void LoadGunSound()
 		{
-			_shootSound = audio;
+			_shootSound = new GameObject().AddComponent<AudioSource>();
+			_shootSound.clip = ModHelper.Assets.GetAudio("blaster-firing.wav");
 			ModHelper.Console.WriteLine("Gun sound loaded!");
 		}
 
-		private void OnDuckLoaded(GameObject duck)
+		private void LoadDuck()
 		{
+			var duck = ModHelper.Assets.Get3DObject("duck.obj", "duck.png");
 			ModHelper.Console.WriteLine("Duck loaded!");
+			
 			duck.AddComponent<SphereCollider>();
 			duck.AddComponent<Rigidbody>();
 			_duckBody = duck.AddComponent<OWRigidbody>();
@@ -102,6 +99,10 @@ namespace OWML.LoadCustomAssets
 		{
 			_playerBody = playerBody;
 			_playerTransform = playerBody.transform;
+
+			LoadDuck();
+			LoadGunSound();
+			LoadMusic();
 		}
 
 		private void OnStartSceneChange(OWScene oldScene, OWScene newScene)
