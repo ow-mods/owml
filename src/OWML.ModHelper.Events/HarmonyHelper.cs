@@ -10,13 +10,16 @@ namespace OWML.ModHelper.Events
 		private readonly IModLogger _logger;
 		private readonly IModConsole _console;
 		private readonly IModManifest _manifest;
+		private readonly IOwmlConfig _owmlConfig;
 		private readonly HarmonyInstance _harmony;
 
-		public HarmonyHelper(IModLogger logger, IModConsole console, IModManifest manifest)
+		public HarmonyHelper(IModLogger logger, IModConsole console, IModManifest manifest, IOwmlConfig owmlConfig)
 		{
 			_logger = logger;
 			_console = console;
 			_manifest = manifest;
+			_owmlConfig = owmlConfig;
+			
 			_harmony = CreateInstance();
 		}
 
@@ -27,6 +30,7 @@ namespace OWML.ModHelper.Events
 			{
 				_logger.Log($"Creating harmony instance: {_manifest.UniqueName}");
 				HarmonyInstance.DEBUG = true;
+				FileLog.logPath = $"{_owmlConfig.LogsPath}/harmony.log.txt";
 				harmony = HarmonyInstance.Create(_manifest.UniqueName);
 			}
 			catch (TypeLoadException ex)
