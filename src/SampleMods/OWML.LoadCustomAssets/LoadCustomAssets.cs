@@ -74,6 +74,7 @@ namespace OWML.LoadCustomAssets
 			ModHelper.Console.WriteLine("Test Message", MessageType.Message);
 			ModHelper.Console.WriteLine("Test Success", MessageType.Success);
 			ModHelper.Console.WriteLine("Test Info", MessageType.Info);
+			ModHelper.Console.WriteLine("Test Debug", MessageType.Debug);
 		}
 
 		private void OnMusicLoaded(AudioSource audio)
