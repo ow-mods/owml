@@ -39,8 +39,8 @@ namespace OWML.ModHelper.Menus
 
 		protected override void OnSave()
 		{
-			_config.DebugMode = (bool)GetInputValue(DebugModeTitle); // todo generic
-			_config.BlockInput = (bool)GetInputValue(BlockInputTitle);
+			_config.DebugMode = GetInputValue<bool>(DebugModeTitle);
+			_config.BlockInput = GetInputValue<bool>(BlockInputTitle);
 			Storage.Save(_config, Constants.OwmlConfigFileName);
 			Close();
 		}
