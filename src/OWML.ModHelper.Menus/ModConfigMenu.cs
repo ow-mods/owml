@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
 
 		protected override void OnSave()
 		{
-			ModData.Config.Enabled = (bool)GetInputValue(EnabledTitle);
+			ModData.Config.Enabled = GetInputValue<bool>(EnabledTitle);
 			var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
 			foreach (var key in keys)
 			{

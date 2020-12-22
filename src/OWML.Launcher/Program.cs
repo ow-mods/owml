@@ -87,6 +87,6 @@ namespace OWML.Launcher
 		private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort) =>
 			hasConsolePort
 				? new ModSocketOutput(owmlConfig, owmlManifest, null, new ModSocket(owmlConfig), new ProcessHelper())
-				: (IModConsole)new OutputWriter();
+				: (IModConsole)new OutputWriter(owmlConfig);
 	}
 }

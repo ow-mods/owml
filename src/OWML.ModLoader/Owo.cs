@@ -16,7 +16,6 @@ namespace OWML.ModLoader
 	public class Owo
 	{
 		private readonly IModFinder _modFinder;
-		private readonly IModLogger _logger;
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IModMenus _menus;
@@ -33,7 +32,6 @@ namespace OWML.ModLoader
 
 		public Owo(
 			IModFinder modFinder,
-			IModLogger logger,
 			IModConsole console,
 			IOwmlConfig owmlConfig,
 			IModMenus menus,
@@ -48,7 +46,6 @@ namespace OWML.ModLoader
 			IModUnityEvents unityEvents)
 		{
 			_modFinder = modFinder;
-			_logger = logger;
 			_console = console;
 			_owmlConfig = owmlConfig;
 			_menus = menus;
@@ -120,13 +117,13 @@ namespace OWML.ModLoader
 		{
 			if (!modData.Config.Enabled)
 			{
-				_logger.Log($"{modData.Manifest.UniqueName} is disabled");
+				_console.WriteLine($"{modData.Manifest.UniqueName} is disabled", MessageType.Debug);
 				return null;
 			}
 
-			_logger.Log($"Loading assembly: {modData.Manifest.AssemblyPath}");
+			_console.WriteLine($"Loading assembly: {modData.Manifest.AssemblyPath}", MessageType.Debug);
 			var assembly = Assembly.LoadFile(modData.Manifest.AssemblyPath);
-			_logger.Log($"Loaded {assembly.FullName}");
+			_console.WriteLine($"Loaded {assembly.FullName}", MessageType.Debug);
 
 			try
 			{
@@ -166,12 +163,12 @@ namespace OWML.ModLoader
 
 		private IModBehaviour InitializeMod(Type modType, IModHelper helper)
 		{
-			_logger.Log($"Initializing {helper.Manifest.UniqueName} ({helper.Manifest.Version})...");
-			_logger.Log("Adding mod behaviour...");
+			_console.WriteLine($"Initializing {helper.Manifest.UniqueName} ({helper.Manifest.Version})...", MessageType.Debug);
+			_console.WriteLine("Adding mod behaviour...", MessageType.Debug);
 			try
 			{
 				var mod = _goHelper.CreateAndAdd<IModBehaviour>(modType, helper.Manifest.UniqueName);
-				_logger.Log("Added! Initializing...");
+				_console.WriteLine("Added! Initializing...", MessageType.Debug);
 				mod.Init(helper);
 				return mod;
 			}

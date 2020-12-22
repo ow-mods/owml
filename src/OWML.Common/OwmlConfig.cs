@@ -10,6 +10,9 @@ namespace OWML.Common
 		[JsonProperty("combinationsBlockInput")]
 		public bool BlockInput { get; set; }
 
+		[JsonProperty("debugMode")]
+		public bool DebugMode { get; set; }
+
 		[JsonIgnore]
 		public string DataPath => $"{GamePath}/OuterWilds_Data";
 

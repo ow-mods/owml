@@ -5,6 +5,7 @@ namespace OWML.ModHelper.Menus
 {
 	public class OwmlConfigMenu : ModConfigMenuBase
 	{
+		private const string DebugModeTitle = "Debug mode";
 		private const string BlockInputTitle = "Mod inputs can block game actions";
 
 		private readonly IOwmlConfig _config;
@@ -24,19 +25,22 @@ namespace OWML.ModHelper.Menus
 
 		protected override void AddInputs()
 		{
-			AddConfigInput(BlockInputTitle, _config.BlockInput, 2);
+			AddConfigInput(DebugModeTitle, _config.DebugMode, 2);
+			AddConfigInput(BlockInputTitle, _config.BlockInput, 3);
 			UpdateNavigation();
 			SelectFirst();
 		}
 
 		protected override void UpdateUIValues()
 		{
+			GetToggleInput(DebugModeTitle).Value = _config.DebugMode;
 			GetToggleInput(BlockInputTitle).Value = _config.BlockInput;
 		}
 
 		protected override void OnSave()
 		{
-			_config.BlockInput = (bool)GetInputValue(BlockInputTitle);
+			_config.DebugMode = GetInputValue<bool>(DebugModeTitle);
+			_config.BlockInput = GetInputValue<bool>(BlockInputTitle);
 			Storage.Save(_config, Constants.OwmlConfigFileName);
 			Close();
 		}
@@ -44,6 +48,7 @@ namespace OWML.ModHelper.Menus
 		protected override void OnReset()
 		{
 			_config.GamePath = _defaultConfig.GamePath;
+			_config.DebugMode = _defaultConfig.DebugMode;
 			_config.BlockInput = _defaultConfig.BlockInput;
 			UpdateUIValues();
 		}

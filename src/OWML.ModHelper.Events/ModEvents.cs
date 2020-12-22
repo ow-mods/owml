@@ -24,17 +24,14 @@ namespace OWML.ModHelper.Events
 
 		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IModConsole _console;
-		private readonly IModLogger _logger;
 
 		public ModEvents(
-			IModLogger logger,
 			IModConsole console,
 			IHarmonyHelper harmonyHelper,
 			IModPlayerEvents playerEvents,
 			IModSceneEvents sceneEvents,
 			IModUnityEvents unityEvents)
 		{
-			_logger = logger;
 			_console = console;
 			_harmonyHelper = harmonyHelper;
 			Player = playerEvents;
@@ -50,13 +47,13 @@ namespace OWML.ModHelper.Events
 			var type = behaviour.GetType();
 			if (IsSubscribedTo(type, ev))
 			{
-				_logger.Log($"Got subscribed event: {ev} of {type.Name}");
+				_console.WriteLine($"Got subscribed event: {ev} of {type.Name}", MessageType.Debug);
 				OnEvent?.Invoke(behaviour, ev);
 				Event?.Invoke(behaviour, ev);
 			}
 			else
 			{
-				_logger.Log($"Not subscribed to: {ev} of {type.Name}");
+				_console.WriteLine($"Not subscribed to: {ev} of {type.Name}", MessageType.Debug);
 			}
 		}
 
@@ -71,7 +68,7 @@ namespace OWML.ModHelper.Events
 			var type = typeof(T);
 			if (IsSubscribedTo(type, ev))
 			{
-				_logger.Log($"Already subscribed to {ev} of {type.Name}");
+				_console.WriteLine($"Already subscribed to {ev} of {type.Name}", MessageType.Debug);
 				return;
 			}
 			AddToEventList(_subscribedEvents, type, ev);
@@ -82,7 +79,7 @@ namespace OWML.ModHelper.Events
 			var type = typeof(T);
 			if (InEventList(PatchedEvents, type, ev))
 			{
-				_logger.Log($"Event is already patched: {ev} of {type.Name}");
+				_console.WriteLine($"Event is already patched: {ev} of {type.Name}", MessageType.Debug);
 				return;
 			}
 			AddToEventList(PatchedEvents, type, ev);

@@ -41,10 +41,8 @@ namespace OWML.ModHelper.Menus
 		protected LayoutGroup Layout;
 		protected IModConsole Console;
 
-		public ModMenu(IModConsole console)
-		{
+		public ModMenu(IModConsole console) =>
 			Console = console;
-		}
 
 		public virtual void Initialize(Menu menu)
 		{
@@ -81,20 +79,14 @@ namespace OWML.ModHelper.Menus
 		}
 
 		[Obsolete("Use GetTitleButton instead")]
-		public IModButton GetButton(string title)
-		{
-			return GetTitleButton(title);
-		}
+		public IModButton GetButton(string title) =>
+			GetTitleButton(title);
 
-		public IModButton GetTitleButton(string title)
-		{
-			return GetTitleButton(title, Buttons);
-		}
+		public IModButton GetTitleButton(string title) =>
+			GetTitleButton(title, Buttons);
 
-		public IModPromptButton GetPromptButton(string title)
-		{
-			return GetTitleButton(title, PromptButtons);
-		}
+		public IModPromptButton GetPromptButton(string title) =>
+			GetTitleButton(title, PromptButtons);
 
 		private T GetTitleButton<T>(string title, List<T> buttons) where T : IModButton
 		{
@@ -107,21 +99,15 @@ namespace OWML.ModHelper.Menus
 		}
 
 		[Obsolete("Use AddButton(IModButtonBase) instead.")]
-		public IModButton AddButton(IModButton button)
-		{
-			return AddButton(button, button.Index);
-		}
+		public IModButton AddButton(IModButton button) =>
+			AddButton(button, button.Index);
 
 		[Obsolete("Use AddButton(IModButtonBase, int) instead.")]
-		public virtual IModButton AddButton(IModButton button, int index)
-		{
-			return (IModButton)AddButton((IModButtonBase)button, index);
-		}
+		public virtual IModButton AddButton(IModButton button, int index) =>
+			(IModButton)AddButton((IModButtonBase)button, index);
 
-		public IModButtonBase AddButton(IModButtonBase button)
-		{
-			return AddButton(button, button.Index);
-		}
+		public IModButtonBase AddButton(IModButtonBase button) =>
+			AddButton(button, button.Index);
 
 		public virtual IModButtonBase AddButton(IModButtonBase button, int index)
 		{
@@ -135,15 +121,11 @@ namespace OWML.ModHelper.Menus
 			return button;
 		}
 
-		public IModToggleInput GetToggleInput(string title)
-		{
-			return ToggleInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModToggleInput GetToggleInput(string title) =>
+			ToggleInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
-		public IModToggleInput AddToggleInput(IModToggleInput input)
-		{
-			return AddToggleInput(input, input.Index);
-		}
+		public IModToggleInput AddToggleInput(IModToggleInput input) =>
+			AddToggleInput(input, input.Index);
 
 		public IModToggleInput AddToggleInput(IModToggleInput input, int index)
 		{
@@ -152,15 +134,11 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModSliderInput GetSliderInput(string title)
-		{
-			return SliderInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModSliderInput GetSliderInput(string title) =>
+			SliderInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
-		public IModSliderInput AddSliderInput(IModSliderInput input)
-		{
-			return AddSliderInput(input, input.Index);
-		}
+		public IModSliderInput AddSliderInput(IModSliderInput input) =>
+			AddSliderInput(input, input.Index);
 
 		public IModSliderInput AddSliderInput(IModSliderInput input, int index)
 		{
@@ -169,15 +147,11 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModSelectorInput GetSelectorInput(string title)
-		{
-			return SelectorInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModSelectorInput GetSelectorInput(string title) =>
+			SelectorInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
-		public IModSelectorInput AddSelectorInput(IModSelectorInput input)
-		{
-			return AddSelectorInput(input, input.Index);
-		}
+		public IModSelectorInput AddSelectorInput(IModSelectorInput input) =>
+			AddSelectorInput(input, input.Index);
 
 		public IModSelectorInput AddSelectorInput(IModSelectorInput input, int index)
 		{
@@ -186,15 +160,11 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModTextInput GetTextInput(string title)
-		{
-			return TextInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModTextInput GetTextInput(string title) =>
+			TextInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
-		public IModTextInput AddTextInput(IModTextInput input)
-		{
-			return AddTextInput(input, input.Index);
-		}
+		public IModTextInput AddTextInput(IModTextInput input) =>
+			AddTextInput(input, input.Index);
 
 		public IModTextInput AddTextInput(IModTextInput input, int index)
 		{
@@ -203,15 +173,11 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModComboInput GetComboInput(string title)
-		{
-			return ComboInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModComboInput GetComboInput(string title) =>
+			ComboInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
-		public IModComboInput AddComboInput(IModComboInput input)
-		{
-			return AddComboInput(input, input.Index);
-		}
+		public IModComboInput AddComboInput(IModComboInput input) =>
+			AddComboInput(input, input.Index);
 
 		public IModComboInput AddComboInput(IModComboInput input, int index)
 		{
@@ -220,15 +186,11 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModNumberInput GetNumberInput(string title)
-		{
-			return NumberInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModNumberInput GetNumberInput(string title) =>
+			NumberInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
-		public IModNumberInput AddNumberInput(IModNumberInput input)
-		{
-			return AddNumberInput(input, input.Index);
-		}
+		public IModNumberInput AddNumberInput(IModNumberInput input) =>
+			AddNumberInput(input, input.Index);
 
 		public IModNumberInput AddNumberInput(IModNumberInput input, int index)
 		{
@@ -247,10 +209,8 @@ namespace OWML.ModHelper.Menus
 			input.Element.transform.localScale = scale;
 		}
 
-		public IModSeparator AddSeparator(IModSeparator separator)
-		{
-			return AddSeparator(separator, separator.Index);
-		}
+		public IModSeparator AddSeparator(IModSeparator separator) =>
+			AddSeparator(separator, separator.Index);
 
 		public IModSeparator AddSeparator(IModSeparator separator, int index)
 		{
@@ -264,10 +224,11 @@ namespace OWML.ModHelper.Menus
 			return separator;
 		}
 
-		public IModSeparator GetSeparator(string title)
-		{
-			return Separators.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-		}
+		public IModSeparator GetSeparator(string title) =>
+			Separators.FirstOrDefault(x => x.Title == title || x.Element.name == title);
+
+		public T GetInputValue<T>(string key) =>
+			(T)GetInputValue(key);
 
 		public object GetInputValue(string key)
 		{
@@ -352,10 +313,8 @@ namespace OWML.ModHelper.Menus
 			Console.WriteLine("Error - No input found with name " + key, MessageType.Error);
 		}
 
-		protected void InvokeOnInit()
-		{
+		protected void InvokeOnInit() =>
 			OnInit?.Invoke();
-		}
 
 		public virtual void SelectFirst()
 		{
@@ -384,6 +343,5 @@ namespace OWML.ModHelper.Menus
 				.Where(x => x != null).ToList();
 			UpdateNavigation(selectables);
 		}
-
 	}
 }

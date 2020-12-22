@@ -20,6 +20,8 @@
 
 		bool BlockInput { get; set; }
 
+		bool DebugMode { get; set; }
+
 		int SocketPort { get; set; }
 	}
 }

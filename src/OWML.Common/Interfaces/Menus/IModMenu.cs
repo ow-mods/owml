@@ -79,9 +79,12 @@ namespace OWML.Common.Menus
 		IModSeparator AddSeparator(IModSeparator separator);
 
 		IModSeparator AddSeparator(IModSeparator separator, int index);
+		
 		IModSeparator GetSeparator(string title);
 
 		object GetInputValue(string key);
+
+		T GetInputValue<T>(string key);
 
 		void SetInputValue(string key, object value);
 
