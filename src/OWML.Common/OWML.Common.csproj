@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net35</TargetFramework>
@@ -7,7 +7,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Json.Net.Unity3D" Version="9.0.1" />
-		<PackageReference Include="OW.Unity.Dlls" Version="1.0.8">
+		<PackageReference Include="OW.Unity.Dlls" Version="1.0.9">
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</PackageReference>
 	</ItemGroup>
