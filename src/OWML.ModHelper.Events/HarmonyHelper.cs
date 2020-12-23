@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Harmony;
 using OWML.Common;
@@ -17,7 +19,7 @@ namespace OWML.ModHelper.Events
 			_console = console;
 			_manifest = manifest;
 			_owmlConfig = owmlConfig;
-			
+
 			_harmony = CreateInstance();
 		}
 
@@ -43,30 +45,8 @@ namespace OWML.ModHelper.Events
 			return harmony;
 		}
 
-		private MethodInfo GetMethod<T>(string methodName)
-		{
-			var targetType = typeof(T);
-			MethodInfo result = null;
-			try
-			{
-				_console.WriteLine($"Getting method {methodName} of {targetType.Name}", MessageType.Debug);
-				result = Utils.TypeExtensions.GetAnyMethod(targetType, methodName);
-			}
-			catch (Exception ex)
-			{
-				_console.WriteLine($"Exception while getting method {methodName} of {targetType.Name}: {ex}", MessageType.Error);
-			}
-			if (result == null)
-			{
-				_console.WriteLine($"Error - Original method {methodName} of class {targetType} not found.", MessageType.Error);
-			}
-			return result;
-		}
-
-		public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName)
-		{
+		public void AddPrefix<T>(string methodName, Type patchType, string patchMethodName) =>
 			AddPrefix(GetMethod<T>(methodName), patchType, patchMethodName);
-		}
 
 		public void AddPrefix(MethodBase original, Type patchType, string patchMethodName)
 		{
@@ -79,7 +59,7 @@ namespace OWML.ModHelper.Events
 			Patch(original, prefix, null, null);
 		}
 
-		public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName) => 
+		public void AddPostfix<T>(string methodName, Type patchType, string patchMethodName) =>
 			AddPostfix(GetMethod<T>(methodName), patchType, patchMethodName);
 
 		public void AddPostfix(MethodBase original, Type patchType, string patchMethodName)
@@ -93,13 +73,13 @@ namespace OWML.ModHelper.Events
 			Patch(original, null, postfix, null);
 		}
 
-		public void EmptyMethod<T>(string methodName) => 
+		public void EmptyMethod<T>(string methodName) =>
 			EmptyMethod(GetMethod<T>(methodName));
 
-		public void EmptyMethod(MethodBase methodInfo) => 
+		public void EmptyMethod(MethodBase methodInfo) =>
 			Transpile(methodInfo, typeof(Patches), nameof(Patches.EmptyMethod));
 
-		public void Transpile<T>(string methodName, Type patchType, string patchMethodName) => 
+		public void Transpile<T>(string methodName, Type patchType, string patchMethodName) =>
 			Transpile(GetMethod<T>(methodName), patchType, patchMethodName);
 
 		public void Transpile(MethodBase original, Type patchType, string patchMethodName)
@@ -111,6 +91,38 @@ namespace OWML.ModHelper.Events
 				return;
 			}
 			Patch(original, null, null, patchMethod);
+		}
+
+		public void Unpatch<T>(string methodName, PatchType patchType = PatchType.All)
+		{
+			_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
+
+			var sharedState = (Dictionary<MethodBase, byte[]>)typeof(HarmonySharedState).GetAnyMethod("GetState").Invoke(null, null); // todo TypeExtension
+			var method = sharedState.Keys.First(m => m.DeclaringType == typeof(T) && m.Name == methodName);
+			var patchInfo = PatchInfoSerialization.Deserialize(sharedState.GetValueSafe(method));
+
+			switch (patchType)
+			{
+				case PatchType.Prefix:
+					patchInfo.RemovePrefix(_manifest.UniqueName);
+					break;
+				case PatchType.Postfix:
+					patchInfo.RemovePostfix(_manifest.UniqueName);
+					break;
+				case PatchType.Transpiler:
+					patchInfo.RemoveTranspiler(_manifest.UniqueName);
+					break;
+				case PatchType.All:
+					patchInfo.RemovePostfix(_manifest.UniqueName);
+					patchInfo.RemovePrefix(_manifest.UniqueName);
+					patchInfo.RemoveTranspiler(_manifest.UniqueName);
+					break;
+			}
+
+			PatchFunctions.UpdateWrapper(method, patchInfo, _manifest.UniqueName);
+			sharedState[method] = patchInfo.Serialize();
+
+			_console.WriteLine($"Unpatched {typeof(T).Name}.{methodName}!", MessageType.Debug);
 		}
 
 		private void Patch(MethodBase original, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
@@ -132,6 +144,26 @@ namespace OWML.ModHelper.Events
 			catch (Exception ex)
 			{
 				_console.WriteLine($"Exception while patching {fullName}: {ex}", MessageType.Error);
+			}
+		}
+
+		private MethodInfo GetMethod<T>(string methodName)
+		{
+			var fullName = $"{typeof(T).Name}.{methodName}";
+			try
+			{
+				_console.WriteLine($"Getting method {fullName}", MessageType.Debug);
+				var result = Utils.TypeExtensions.GetAnyMethod(typeof(T), methodName);
+				if (result == null)
+				{
+					_console.WriteLine($"Error - method {fullName} not found.", MessageType.Error);
+				}
+				return result;
+			}
+			catch (Exception ex)
+			{
+				_console.WriteLine($"Exception while getting method {fullName}: {ex}", MessageType.Error);
+				return null;
 			}
 		}
 	}
