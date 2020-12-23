@@ -97,7 +97,7 @@ namespace OWML.ModHelper.Events
 		{
 			_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
 
-			var sharedState = (Dictionary<MethodBase, byte[]>)typeof(HarmonySharedState).GetAnyMethod("GetState").Invoke(null, null); // todo TypeExtension
+			var sharedState = Utils.TypeExtensions.Invoke<Dictionary<MethodBase, byte[]>>(typeof(HarmonySharedState), "GetState");
 			var method = sharedState.Keys.First(m => m.DeclaringType == typeof(T) && m.Name == methodName);
 			var patchInfo = PatchInfoSerialization.Deserialize(sharedState.GetValueSafe(method));
 

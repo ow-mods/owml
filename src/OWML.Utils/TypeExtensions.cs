@@ -44,5 +44,8 @@ namespace OWML.Utils
 
 		public static T Invoke<T>(this object obj, string name, params object[] parameters) => 
 			(T)obj.GetType().GetAnyMethod(name)?.Invoke(obj, parameters);
+		
+		public static T Invoke<T>(this Type type, string name, params object[] parameters) =>
+			(T)type.GetAnyMethod(name).Invoke(null, parameters);
 	}
 }
