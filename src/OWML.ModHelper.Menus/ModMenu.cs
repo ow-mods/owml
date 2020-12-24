@@ -18,28 +18,30 @@ namespace OWML.ModHelper.Menus
 
 		public List<IModButtonBase> BaseButtons { get; private set; }
 
-		public List<IModToggleInput> ToggleInputs { get; private set; }
-
-		public List<IModSliderInput> SliderInputs { get; private set; }
-
-		public List<IModSelectorInput> SelectorInputs { get; private set; }
-
-		public List<IModTextInput> TextInputs { get; private set; }
-
-		public List<IModComboInput> ComboInputs { get; private set; }
-
-		public List<IModNumberInput> NumberInputs { get; private set; }
-
 		public List<IModButton> Buttons => BaseButtons.OfType<IModButton>().ToList();
 
 		public List<IModLayoutButton> LayoutButtons => BaseButtons.OfType<IModLayoutButton>().ToList();
 
 		public List<IModPromptButton> PromptButtons => BaseButtons.OfType<IModPromptButton>().ToList();
 
+		public List<IModToggleInput> ToggleInputs => _inputs.OfType<IModToggleInput>().ToList();
+
+		public List<IModSliderInput> SliderInputs => _inputs.OfType<IModSliderInput>().ToList();
+
+		public List<IModSelectorInput> SelectorInputs => _inputs.OfType<IModSelectorInput>().ToList();
+
+		public List<IModTextInput> TextInputs => _inputs.OfType<IModTextInput>().ToList();
+
+		public List<IModComboInput> ComboInputs => _inputs.OfType<IModComboInput>().ToList();
+
+		public List<IModNumberInput> NumberInputs => _inputs.OfType<IModNumberInput>().ToList();
+
 		public List<IModSeparator> Separators { get; private set; }
 
 		protected LayoutGroup Layout;
 		protected IModConsole Console;
+
+		private List<IModInputBase> _inputs;
 
 		public ModMenu(IModConsole console) =>
 			Console = console;
@@ -58,23 +60,18 @@ namespace OWML.ModHelper.Menus
 			Menu = menu;
 			Layout = layoutGroup;
 
-			var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
-				.Select(x => x.GetComponent<Button>()).ToList();
-			BaseButtons = promptButtons.Select(x => new ModPromptButton(x, this, Console)).Cast<IModButtonBase>().ToList();
+			var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>()).ToList();
+			BaseButtons = new List<IModButtonBase>()
+				.Concat(promptButtons.Select(x => new ModPromptButton(x, this, Console)).Cast<IModButtonBase>())
+				.Concat(Menu.GetComponentsInChildren<Button>(true).Except(promptButtons).Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>())
+				.ToList();
 
-			var ordinaryButtons = Menu.GetComponentsInChildren<Button>(true).Except(promptButtons);
-			BaseButtons.AddRange(ordinaryButtons.Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>().ToList());
+			_inputs = new List<IModInputBase>()
+				.Concat(Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
+				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModInputBase>())
+				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModInputBase>())
+				.ToList();
 
-			ToggleInputs = Menu.GetComponentsInChildren<TwoButtonToggleElement>(true)
-				.Select(x => new ModToggleInput(x, this)).Cast<IModToggleInput>().ToList();
-			SliderInputs = Menu.GetComponentsInChildren<SliderElement>(true)
-				.Select(x => new ModSliderInput(x, this)).Cast<IModSliderInput>().ToList();
-			SelectorInputs = Menu.GetComponentsInChildren<OptionsSelectorElement>(true)
-				.Select(x => new ModSelectorInput(x, this)).Cast<IModSelectorInput>().ToList();
-
-			TextInputs = new List<IModTextInput>();
-			NumberInputs = new List<IModNumberInput>();
-			ComboInputs = new List<IModComboInput>();
 			Separators = new List<IModSeparator>();
 		}
 
@@ -129,7 +126,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModToggleInput AddToggleInput(IModToggleInput input, int index)
 		{
-			ToggleInputs.Add(input);
+			_inputs.Add(input);
 			AddInput(input, index);
 			return input;
 		}
@@ -142,7 +139,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModSliderInput AddSliderInput(IModSliderInput input, int index)
 		{
-			SliderInputs.Add(input);
+			_inputs.Add(input);
 			AddInput(input, index);
 			return input;
 		}
@@ -155,7 +152,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModSelectorInput AddSelectorInput(IModSelectorInput input, int index)
 		{
-			SelectorInputs.Add(input);
+			_inputs.Add(input);
 			AddInput(input, index);
 			return input;
 		}
@@ -168,7 +165,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModTextInput AddTextInput(IModTextInput input, int index)
 		{
-			TextInputs.Add(input);
+			_inputs.Add(input);
 			AddInput(input, index);
 			return input;
 		}
@@ -181,7 +178,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModComboInput AddComboInput(IModComboInput input, int index)
 		{
-			ComboInputs.Add(input);
+			_inputs.Add(input);
 			AddInput(input, index);
 			return input;
 		}
@@ -194,7 +191,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModNumberInput AddNumberInput(IModNumberInput input, int index)
 		{
-			NumberInputs.Add(input);
+			_inputs.Add(input);
 			AddInput(input, index);
 			return input;
 		}
