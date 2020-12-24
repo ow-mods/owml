@@ -34,6 +34,7 @@ namespace OWML.Logging
 			{
 				LogType.Error => MessageType.Error,
 				LogType.Exception => MessageType.Error,
+				LogType.Warning => MessageType.Warning,
 				_ => MessageType.Debug
 			};
 
