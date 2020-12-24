@@ -1,6 +1,6 @@
 # Outer Wilds Mod Loader
 
-OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds to load mods, and provides mods with a framework to interact with the game. OWML is inspired by SMAPI for Stardew Valley.
+OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds to load mods, and provides mods a framework to interact with the game. OWML is inspired by SMAPI for Stardew Valley.
 
 ## How it works
 
@@ -20,21 +20,13 @@ Manual install:
 2. [Download Outer Wilds mods](https://outerwildsmods.com/mods) and put them in the Mods folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
 
-## Sample mod
-
-One mod is included as an example. It's disabled by default, enable in manifest.json.
-
-|Sample mod|Description|
-|----------|-----------|
-|OWML.EnableDebugMode|Enables the built-in debug mode in the game. Highlights: cycle through debug UIs with F1, warp to planets with the number keys, and explode the sun with the End key.|
-
 ## For modders
 
-Refer to the sample mods for examples.
+Refer to the sample mods in the source code for examples. These mods are not included in releases.
 
 ### Get started
 
-1. Create a class library project targeting .Net Framework 3.5.
+1. Create a C# class library project targeting .Net Framework 3.5.
 2. Install the [OWML Nuget package](https://www.nuget.org/packages/OWML/).
 3. Reference the following files in {gamePath}\OuterWilds_Data\Managed:
     * Assembly-CSharp.dll
@@ -46,11 +38,12 @@ For more info, see [For modders](https://github.com/amazingalek/owml/wiki/For-mo
 
 ## Configuration
 
-OWML is configured by OWML.Config.json:
+OWML is configured in the in-game MODS menu, or in OWML.Config.json:
 
 |Key|Description|
 |---|-----------|
 |gamePath|The path to the game files. OWML will try to locate the game automatically.|
+|debugMode|If enabled, a lot more information is written to the console. Intended for developers.|
 |combinationsBlockInput|If this is true, mod input combinations will block game input.|
 
 Each mod is defined in a manifest.json file:
@@ -65,7 +58,7 @@ Each mod is defined in a manifest.json file:
 |owmlVersion|The version of OWML the mod was built for.|
 |dependencies|Array of dependency names. Make sure to use the unique name.|
 
-Each mod can be configured with an **optional** config.json file:
+Each mod can be configured in the in-game MODS menu, or in config.json:
 
 |Key|Description|
 |---|-----------|
