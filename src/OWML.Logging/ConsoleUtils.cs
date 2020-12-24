@@ -20,7 +20,7 @@ namespace OWML.Logging
 				MessageType.Message => ConsoleColor.White,
 				MessageType.Info => ConsoleColor.Cyan,
 				MessageType.Fatal => ConsoleColor.Magenta,
-				MessageType.Debug => ConsoleColor.Gray,
+				MessageType.Debug => ConsoleColor.DarkGray,
 				_ => ConsoleColor.White
 			};
 
