@@ -17,15 +17,14 @@ namespace OWML.Logging
 				MessageType.Error => ConsoleColor.Red,
 				MessageType.Warning => ConsoleColor.Yellow,
 				MessageType.Success => ConsoleColor.Green,
-				MessageType.Message => ConsoleColor.Gray,
+				MessageType.Message => ConsoleColor.White,
 				MessageType.Info => ConsoleColor.Cyan,
 				MessageType.Fatal => ConsoleColor.Magenta,
-				MessageType.Debug => ConsoleColor.Blue,
-				_ => ConsoleColor.Gray
+				MessageType.Debug => ConsoleColor.Gray,
+				_ => ConsoleColor.White
 			};
 
 			Console.WriteLine(line);
-			Console.ForegroundColor = ConsoleColor.Gray;
 		}
 	}
 }
