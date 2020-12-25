@@ -9,6 +9,10 @@ namespace OWML.Tests.Setup
 {
 	public class OWMLTests
 	{
+		protected string EpicGamePath => "C:/Program Files/Epic Games/OuterWilds";
+		
+		protected string SteamGamePath => "C:/Program Files (x86)/Steam/steamapps/common/Outer Wilds";
+
 		protected string OwmlSolutionPath => GetSolutionPath();
 
 		protected string OwmlReleasePath => $"{OwmlSolutionPath}/src/OWML.Launcher/bin/Debug/net48/";
@@ -22,9 +26,7 @@ namespace OWML.Tests.Setup
 		protected Mock<IGameObjectHelper> GOHelper { get; } = new();
 
 		protected IOwmlConfig Config { get; } = new OwmlConfig();
-
-		private const string GamePath = "C:/Program Files/Epic Games/OuterWilds";
-
+		
 		private readonly ITestOutputHelper _outputHelper;
 
 		public OWMLTests(ITestOutputHelper outputHelper)
@@ -32,10 +34,10 @@ namespace OWML.Tests.Setup
 			_outputHelper = outputHelper;
 
 			Config.OWMLPath = OwmlReleasePath;
-			Config.GamePath = GamePath;
+			Config.GamePath = SteamGamePath;
 
 			AppHelper.Setup(s => s.DataPath)
-				.Returns(() => $"{GamePath}/OuterWilds_Data");
+				.Returns(() => $"{SteamGamePath}/OuterWilds_Data");
 			AppHelper.Setup(s => s.Version)
 				.Returns(() => "1.3.3.7");
 

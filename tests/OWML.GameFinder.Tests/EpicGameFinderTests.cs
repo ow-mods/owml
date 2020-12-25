@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using OWML.Common;
 using OWML.Tests.Setup;
 using Xunit;
@@ -20,7 +21,7 @@ namespace OWML.GameFinder.Tests
 			
 			var gamePath = pathFinder.FindGamePath();
 
-			Assert.Equal(new DirectoryInfo(Config.GamePath).FullName, new DirectoryInfo(gamePath).FullName);
+			Assert.Equal(new DirectoryInfo(EpicGamePath).FullName, new DirectoryInfo(gamePath).FullName, StringComparer.InvariantCultureIgnoreCase);
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace OWML.Launcher.Tests
 			var app = container.Resolve<App>();
 			app.Run();
 
-			processHelper.Verify(s => s.Start(Config.ExePath, new string[] { }), Times.Once);
+			processHelper.Verify(s => s.Start($"{SteamGamePath}/OuterWilds.exe", new string[] { }), Times.Once);
 		}
 	}
 }
