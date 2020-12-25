@@ -129,9 +129,16 @@ namespace OWML.ModLoader
 			{
 				return assembly.GetTypes().FirstOrDefault(x => x.IsSubclassOf(typeof(ModBehaviour)));
 			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				_console.WriteLine($"ReflectionTypeLoadException while trying to load {nameof(ModBehaviour)} of mod {modData.Manifest.UniqueName}: {ex.Message}\n" +
+								   "Top 5 LoaderExceptions:\n" +
+								   $"* {string.Join("\n* ", ex.LoaderExceptions.Take(5).ToList().Select(e => e.Message).ToArray())}", MessageType.Error);
+				return null;
+			}
 			catch (Exception ex)
 			{
-				_console.WriteLine($"Error while trying to get {typeof(ModBehaviour)}: {ex.Message}", MessageType.Error);
+				_console.WriteLine($"Exception while trying to get {nameof(ModBehaviour)} of mod {modData.Manifest.UniqueName}: {ex.Message}", MessageType.Error);
 				return null;
 			}
 		}
