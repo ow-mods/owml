@@ -51,7 +51,8 @@ namespace OWML.ModHelper.Menus
 		public IModMessagePopup CreateMessagePopup(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
 		{
 			var newPopup = _messagePopup.Copy();
-			newPopup.ShowMessage(message, addCancel, okMessage, cancelMessage);
+			_events.Unity.FireOnNextUpdate(() =>
+				newPopup.ShowMessage(message, addCancel, okMessage, cancelMessage));
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
 			newPopup.OnConfirm += () => OnPopupClose(newPopup);
 			return newPopup;
@@ -60,7 +61,8 @@ namespace OWML.ModHelper.Menus
 		public IModInputMenu CreateInputPopup(InputType inputType, string value)
 		{
 			var newPopup = _inputPopup.Copy();
-			newPopup.Open(inputType, value);
+			_events.Unity.FireOnNextUpdate(() =>
+				newPopup.Open(inputType, value));
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
 			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;
@@ -70,7 +72,8 @@ namespace OWML.ModHelper.Menus
 			IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
 		{
 			var newPopup = _combinationPopup.Copy();
-			newPopup.Open(value, comboName, combinationMenu, element);
+			_events.Unity.FireOnNextUpdate(() =>
+				newPopup.Open(value, comboName, combinationMenu, element));
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
 			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;
