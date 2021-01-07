@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Harmony;
@@ -29,7 +30,11 @@ namespace OWML.ModHelper.Events
 			try
 			{
 				_console.WriteLine($"Creating harmony instance: {_manifest.UniqueName}", MessageType.Debug);
-				HarmonyInstance.DEBUG = true;
+				if (File.Exists($"{_owmlConfig.LogsPath}/harmony.log.txt"))
+				{
+					File.WriteAllText($"{_owmlConfig.LogsPath}/harmony.log.txt", String.Empty);
+				}
+				HarmonyInstance.DEBUG = _owmlConfig.DebugMode;
 				FileLog.logPath = $"{_owmlConfig.LogsPath}/harmony.log.txt";
 				harmony = HarmonyInstance.Create(_manifest.UniqueName);
 			}
