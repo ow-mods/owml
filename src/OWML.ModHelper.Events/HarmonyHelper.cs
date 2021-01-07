@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Harmony;
+using OWML.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Harmony;
-using OWML.Common;
 
 namespace OWML.ModHelper.Events
 {
@@ -29,8 +29,12 @@ namespace OWML.ModHelper.Events
 			try
 			{
 				_console.WriteLine($"Creating harmony instance: {_manifest.UniqueName}", MessageType.Debug);
-				HarmonyInstance.DEBUG = true;
-				FileLog.logPath = $"{_owmlConfig.LogsPath}/harmony.log.txt";
+				if (_owmlConfig.DebugMode)
+				{
+					_console.WriteLine("Enabling Harmony debug mode.", MessageType.Debug);
+					FileLog.logPath = $"{_owmlConfig.LogsPath}/Harmony.Log.{DateTime.Now:dd-MM-yyyy-HH.mm.ss}.txt";
+					HarmonyInstance.DEBUG = true;
+				}
 				harmony = HarmonyInstance.Create(_manifest.UniqueName);
 			}
 			catch (TypeLoadException ex)
