@@ -14,7 +14,6 @@ namespace OWML.ModHelper.Menus
 
 		public IModConfigMenuBase OwmlMenu { get; }
 
-		private readonly IModInputHandler _inputHandler;
 		private readonly IModEvents _events;
 		private readonly IModStorage _storage;
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
@@ -22,14 +21,12 @@ namespace OWML.ModHelper.Menus
 
 		public ModsMenu(
 			IModConfigMenuBase owmlMenu,
-			IModInputHandler inputHandler,
 			IModEvents events,
 			IModStorage storage,
 			IModConsole console)
 				: base(console)
 		{
 			OwmlMenu = owmlMenu;
-			_inputHandler = inputHandler;
 			_events = events;
 			_storage = storage;
 		}
@@ -72,22 +69,9 @@ namespace OWML.ModHelper.Menus
 		private void InitCombinationMenu(IModTabbedMenu options)
 		{
 			options.OnClosed += () => OnDeactivateOptions(options);
-			if (_menus.InputCombinationMenu.Menu != null)
-			{
-				return;
-			}
 			
 			var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
-			var comboElementTemplate = new ModInputCombinationElement(
-				toggleTemplate,
-				_menus.InputCombinationMenu,
-				_menus.PopupManager,
-				_inputHandler,
-				Console);
-			
-			comboElementTemplate.Hide();
 			var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
-			_menus.InputCombinationMenu.Initialize(rebindMenuTemplate, comboElementTemplate);
 		}
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
@@ -144,13 +128,11 @@ namespace OWML.ModHelper.Menus
 			var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
 			var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
 			textInputTemplate.Hide();
-			var comboInputTemplate = new ModComboInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.InputCombinationMenu, _inputHandler);
-			comboInputTemplate.Hide();
 			var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
 			numberInputTemplate.Hide();
 			var rebindMenuCopy = options.RebindingMenu.Copy().Menu;
 			modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate,
-				numberInputTemplate, comboInputTemplate, selectorTemplate);
+				numberInputTemplate, selectorTemplate);
 		}
 
 		private void OnDeactivateOptions(IModTabbedMenu options)

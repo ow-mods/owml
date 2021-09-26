@@ -15,7 +15,6 @@ namespace OWML.ModHelper.Menus
 		private IModSliderInput _sliderTemplate;
 		private IModSelectorInput _selectorTemplate;
 		private IModTextInput _textInputTemplate;
-		private IModComboInput _comboInputTemplate;
 		private IModNumberInput _numberInputTemplate;
 
 		protected abstract void AddInputs();
@@ -31,13 +30,12 @@ namespace OWML.ModHelper.Menus
 
 		public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
 			IModTextInput textInputTemplate, IModNumberInput numberInputTemplate,
-			IModComboInput comboInputTemplate, IModSelectorInput selectorTemplate)
+			IModSelectorInput selectorTemplate)
 		{
 			_toggleTemplate = toggleTemplate;
 			_sliderTemplate = sliderTemplate;
 			_textInputTemplate = textInputTemplate;
 			_numberInputTemplate = numberInputTemplate;
-			_comboInputTemplate = comboInputTemplate;
 			_selectorTemplate = selectorTemplate;
 
 			base.Initialize(menu);
@@ -85,9 +83,6 @@ namespace OWML.ModHelper.Menus
 						return;
 					case "selector":
 						AddSelectorInput(key, obj, index);
-						return;
-					case "input":
-						AddComboInput(key, index);
 						return;
 					default:
 						Console.WriteLine("Error - Unrecognized complex setting: " + value, MessageType.Error);
@@ -143,13 +138,6 @@ namespace OWML.ModHelper.Menus
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
 			textInput.Show();
-		}
-
-		private void AddComboInput(string key, int index)
-		{
-			var comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
-			comboInput.Element.name = key;
-			comboInput.Show();
 		}
 
 		private void AddNumberInput(string key, int index)

@@ -2,7 +2,6 @@
 using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Menus;
-using OWML.ModHelper.Input;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
 using OWML.Abstractions;
@@ -34,13 +33,11 @@ namespace OWML.ModLoader
 				throw new UnityException("Can't load OWML config or manifest.");
 			}
 
-			var bindingChangeListener = goHelper.CreateAndAdd<IBindingChangeListener, BindingChangeListener>("GameBindingsChangeListener");
 			var unityEvents = goHelper.CreateAndAdd<IModUnityEvents, ModUnityEvents>();
 
 			return new Container()
 				.Add(appHelper)
 				.Add(goHelper)
-				.Add(bindingChangeListener)
 				.Add(unityEvents)
 				.Add<IOwmlConfig>(owmlConfig)
 				.Add<IModManifest>(owmlManifest)
@@ -54,7 +51,6 @@ namespace OWML.ModLoader
 				.Add<IModPlayerEvents, ModPlayerEvents>()
 				.Add<IModSceneEvents, ModSceneEvents>()
 				.Add<IModEvents, ModEvents>()
-				.Add<IModInputHandler, ModInputHandler>()
 				.Add<IModStorage, ModStorage>()
 				.Add<IModConfigMenuBase, OwmlConfigMenu>()
 				.Add<IModTabbedMenu, ModOptionsMenu>()
@@ -62,11 +58,8 @@ namespace OWML.ModLoader
 				.Add<IModPauseMenu, ModPauseMenu>()
 				.Add<IModsMenu, ModsMenu>()
 				.Add<IModInputMenu, ModInputMenu>()
-				.Add<IModInputTextures, ModInputTextures>()
 				.Add<IModMessagePopup, ModMessagePopup>()
-				.Add<IModInputCombinationElementMenu, ModInputCombinationElementMenu>()
 				.Add<IModPopupManager, ModPopupManager>()
-				.Add<IModInputCombinationMenu, ModInputCombinationMenu>()
 				.Add<IModMenus, ModMenus>()
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()
