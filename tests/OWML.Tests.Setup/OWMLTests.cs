@@ -60,8 +60,6 @@ namespace OWML.Tests.Setup
 				});
 			GOHelper.Setup(s => s.CreateAndAdd<IModUnityEvents, It.IsAnyType>(It.IsAny<string>()))
 				.Returns(() => new Mock<IModUnityEvents>().Object);
-			GOHelper.Setup(s => s.CreateAndAdd<IBindingChangeListener, It.IsAnyType>(It.IsAny<string>()))
-				.Returns(() => new Mock<IBindingChangeListener>().Object);
 		}
 
 		private string GetSolutionPath() =>

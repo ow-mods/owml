@@ -19,7 +19,6 @@ namespace OWML.ModLoader
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IModMenus _menus;
-		private readonly IModInputHandler _inputHandler;
 		private readonly IModSorter _sorter;
 		private readonly IUnityLogger _unityLogger;
 		private readonly IModSocket _socket;
@@ -35,7 +34,6 @@ namespace OWML.ModLoader
 			IModConsole console,
 			IOwmlConfig owmlConfig,
 			IModMenus menus,
-			IModInputHandler inputHandler,
 			IModSorter sorter,
 			IUnityLogger unityLogger,
 			IModSocket socket,
@@ -49,7 +47,6 @@ namespace OWML.ModLoader
 			_console = console;
 			_owmlConfig = owmlConfig;
 			_menus = menus;
-			_inputHandler = inputHandler;
 			_sorter = sorter;
 			_unityLogger = unityLogger;
 			_socket = socket;
@@ -152,7 +149,6 @@ namespace OWML.ModLoader
 				.Add(_objImporter)
 				.Add(_modList)
 				.Add(_menus)
-				.Add(_inputHandler)
 				.Add(_processHelper)
 				.Add(_unityEvents)
 				.Add<IHarmonyHelper, HarmonyHelper>()
