@@ -8,7 +8,7 @@ namespace OWML.Patcher
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IBinaryPatcher _binaryPatcher;
 		private readonly IVRFilePatcher _vrFilePatcher;
-		private readonly IModLogger _logger;
+		private readonly IModConsole _console;
 
 		private static readonly string[] PluginFilenames =
 		{
@@ -16,25 +16,25 @@ namespace OWML.Patcher
 			"OVRPlugin.dll"
 		};
 
-		public VRPatcher(IOwmlConfig owmlConfig, IBinaryPatcher binaryPatcher, IVRFilePatcher vrFilePatcher, IModLogger logger)
+		public VRPatcher(IOwmlConfig owmlConfig, IBinaryPatcher binaryPatcher, IVRFilePatcher vrFilePatcher, IModConsole console)
 		{
 			_owmlConfig = owmlConfig;
 			_binaryPatcher = binaryPatcher;
 			_vrFilePatcher = vrFilePatcher;
-			_logger = logger;
+			_console = console;
 		}
 
 		public void PatchVR(bool enableVR)
 		{
 			if (enableVR)
 			{
-				_logger.Log("Patching globalgamemanagers for VR and adding VR plugins");
+				_console.WriteLine("Patching globalgamemanagers for VR and adding VR plugins", MessageType.Debug);
 				_vrFilePatcher.Patch();
 				AddPluginFiles();
 			}
 			else
 			{
-				_logger.Log("Restoring globalgamemanagers and removing VR plugins");
+				_console.WriteLine("Restoring globalgamemanagers and removing VR plugins", MessageType.Debug);
 				_binaryPatcher.RestoreFromBackup();
 				RemovePluginFiles();
 			}
@@ -46,7 +46,7 @@ namespace OWML.Patcher
 			{
 				var from = $"{_owmlConfig.OWMLPath}lib/{filename}";
 				var to = $"{_owmlConfig.PluginsPath}/{filename}";
-				_logger.Log($"Copying {from} to {to}");
+				_console.WriteLine($"Copying {from} to {to}", MessageType.Debug);
 				File.Copy(from, to, true);
 			}
 		}
@@ -58,12 +58,12 @@ namespace OWML.Patcher
 				var path = $"{_owmlConfig.PluginsPath}/{filename}";
 				if (File.Exists(path))
 				{
-					_logger.Log($"Deleting {path}");
+					_console.WriteLine($"Deleting {path}", MessageType.Debug);
 					File.Delete(path);
 				}
 				else
 				{
-					_logger.Log($"{path} doesn't exist, nothing to delete.");
+					_console.WriteLine($"{path} doesn't exist, nothing to delete.", MessageType.Debug);
 				}
 			}
 		}

@@ -1,46 +1,44 @@
-﻿using System.Linq;
-using OWML.Common;
+﻿using OWML.Common;
 using UnityEngine;
 
 namespace OWML.Logging
 {
 	public class UnityLogger : IUnityLogger
 	{
-		private readonly LogType[] _relevantTypes = {
-			LogType.Error,
-			LogType.Exception
-		};
-
-		private readonly IModSocket _socket;
 		private readonly IApplicationHelper _appHelper;
-		private readonly IModLogger _logger;
+		private readonly IModConsole _console;
+		private readonly IOwmlConfig _config;
 
-		public UnityLogger(IModSocket socket, IApplicationHelper appHelper, IModLogger logger)
+		public UnityLogger(IApplicationHelper appHelper, IModConsole console, IOwmlConfig config)
 		{
-			_socket = socket;
 			_appHelper = appHelper;
-			_logger = logger;
+			_console = console;
+			_config = config;
 		}
 
-		public void Start() => 
+		public void Start() =>
 			_appHelper.AddLogCallback(OnLogMessageReceived);
 
 		private void OnLogMessageReceived(string message, string stackTrace, LogType type)
 		{
-			if (!_relevantTypes.Contains(type))
+			if (type != LogType.Error
+			    && type != LogType.Exception 
+			    && !_config.DebugMode)
 			{
 				return;
 			}
 
 			var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
-			_logger.Log(line);
-			_socket.WriteToSocket(new ModSocketMessage
+
+			var messageType = type switch
 			{
-				Type = MessageType.Error,
-				Message = line,
-				SenderName = "Unity",
-				SenderType = type.ToString()
-			});
+				LogType.Error => MessageType.Error,
+				LogType.Exception => MessageType.Error,
+				LogType.Warning => MessageType.Warning,
+				_ => MessageType.Debug
+			};
+
+			_console.WriteLine(line, messageType, "Unity");
 		}
 	}
 }

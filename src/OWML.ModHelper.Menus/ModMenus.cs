@@ -65,9 +65,9 @@ namespace OWML.ModHelper.Menus
 				PopupManager.Initialize(inputMenu);
 				ModsMenu.Initialize(this, MainMenu);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				_console.WriteLine("Menu system crashed.", MessageType.Error);
+				_console.WriteLine($"Menu system crashed: {ex}", MessageType.Error);
 			}
 		}
 
@@ -78,9 +78,9 @@ namespace OWML.ModHelper.Menus
 				PauseMenu.Initialize(settingsManager);
 				ModsMenu.Initialize(this, PauseMenu);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				_console.WriteLine("Menu system crashed.", MessageType.Error);
+				_console.WriteLine($"Menu system crashed: {ex}", MessageType.Error);
 			}
 		}
 	}

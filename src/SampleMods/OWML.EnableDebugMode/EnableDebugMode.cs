@@ -58,6 +58,13 @@ namespace OWML.EnableDebugMode
 				CycleGUIMode();
 			}
 
+			HandleWarping();
+
+			TestUnpatching();
+		}
+
+		private void HandleWarping()
+		{
 			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Interloper"]))
 			{
 				WarpTo(SpawnLocation.Comet);
@@ -111,6 +118,21 @@ namespace OWML.EnableDebugMode
 		{
 			ModHelper.Console.WriteLine($"Warping to {location}!");
 			_playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
+		}
+
+		private void TestUnpatching()
+		{
+			if (Input.GetKeyDown(KeyCode.F7))
+			{
+				ModHelper.Console.WriteLine("Removing Jump");
+				ModHelper.HarmonyHelper.EmptyMethod<PlayerCharacterController>("ApplyJump");
+			}
+
+			if (Input.GetKeyDown(KeyCode.F8))
+			{
+				ModHelper.Console.WriteLine("Restoring Jump");
+				ModHelper.HarmonyHelper.Unpatch<PlayerCharacterController>("ApplyJump");
+			}
 		}
 	}
 }

@@ -1,5 +1,6 @@
 {
 	"gamePath": "C:/Program Files/Epic Games/OuterWilds",
+	"debugMode": false,
 	"combinationsBlockInput": false,
 	"socketPort": 0
 }

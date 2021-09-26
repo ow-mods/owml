@@ -21,9 +21,11 @@ namespace OWML.Logging
 			}
 		}
 
+		[Obsolete("Use ModHelper.Console.WriteLine with messageType = Debug instead.")]
 		public void Log(string s) =>
 			LogInternal($"[{_manifest.Name}]: {s}");
 
+		[Obsolete("Use ModHelper.Console.WriteLine with messageType = Debug instead.")]
 		public void Log(params object[] objects) =>
 			Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
 

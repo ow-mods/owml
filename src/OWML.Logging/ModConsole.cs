@@ -5,6 +5,7 @@ namespace OWML.Logging
 {
 	public abstract class ModConsole : IModConsole
 	{
+		[Obsolete("Use ModHelper.Console instead.")]
 		public static ModConsole OwmlConsole { get; private set; }
 
 		protected readonly IModLogger Logger;

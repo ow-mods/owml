@@ -13,11 +13,11 @@ namespace OWML.ModHelper.Menus
 
 		private PopupInputMenu _inputMenu;
 
-		public ModInputMenu(IModConsole console) 
+		public ModInputMenu(IModConsole console)
 			: base(console)
 		{
 		}
-		
+
 		public void Initialize(PopupInputMenu menu)
 		{
 			if (Menu != null)
@@ -69,15 +69,11 @@ namespace OWML.ModHelper.Menus
 			_inputMenu = null;
 		}
 
-		private bool OnValidateNumber()
-		{
-			return float.TryParse(_inputMenu.GetInputText(), out _);
-		}
+		private bool OnValidateNumber() =>
+			float.TryParse(_inputMenu.GetInputText(), out _);
 
-		private bool OnValidateCharNumber(char c)
-		{
-			return "0123456789.".Contains("" + c);
-		}
+		private bool OnValidateCharNumber(char c) =>
+			"0123456789.".Contains("" + c);
 
 		protected override void OnPopupConfirm()
 		{

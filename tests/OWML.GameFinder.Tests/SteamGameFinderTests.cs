@@ -7,18 +7,18 @@ using Xunit.Abstractions;
 
 namespace OWML.GameFinder.Tests
 {
-	public class GameFinderTests : OWMLTests
+	public class SteamGameFinderTests : OWMLTests
 	{
-		public GameFinderTests(ITestOutputHelper outputHelper)
+		public SteamGameFinderTests(ITestOutputHelper outputHelper)
 			: base(outputHelper)
 		{
 		}
 
 		[Fact]
-		public void PathFinder_FindGamePath()
+		public void SteamGameFinder_FindGamePath()
 		{
-			var pathFinder = new PathFinder(new OwmlConfig(), Console.Object);
-
+			var pathFinder = new SteamGameFinder(new OwmlConfig(), Console.Object);
+			
 			var gamePath = pathFinder.FindGamePath();
 
 			Assert.Equal(new DirectoryInfo(SteamGamePath).FullName, new DirectoryInfo(gamePath).FullName, StringComparer.InvariantCultureIgnoreCase);
