@@ -14,6 +14,8 @@ namespace OWML.ModLoader
 
 		public IModConfig DefaultConfig { get; }
 
+        public IModStorage Storage { get; }
+
 		public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
 
 		public bool RequireVR => Manifest.RequireVR;
@@ -23,14 +25,13 @@ namespace OWML.ModLoader
 
 		private IModConfig _configSnapshot;
 
-		private readonly IModStorage _storage;
 
 		public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModStorage storage)
 		{
 			Manifest = manifest;
 			Config = config;
 			DefaultConfig = defaultConfig;
-			_storage = storage;
+			Storage = storage;
 
 			UpdateSnapshot();
 		}
@@ -53,7 +54,7 @@ namespace OWML.ModLoader
 				settingsChanged = !MakeConfigConsistentWithDefault();
 			}
 
-			_storage.Save(Config, Constants.ModConfigFileName);
+			Storage.Save(Config, Constants.ModConfigFileName);
 			UpdateSnapshot();
 			return settingsChanged;
 		}
