@@ -58,7 +58,6 @@ namespace OWML.ModLoader
 				.Add<IModPauseMenu, ModPauseMenu>()
 				.Add<IModsMenu, ModsMenu>()
 				.Add<IModInputMenu, ModInputMenu>()
-
 				.Add<IModMessagePopup, ModMessagePopup>()
 				.Add<IModPopupManager, ModPopupManager>()
 				.Add<IModMenus, ModMenus>()
