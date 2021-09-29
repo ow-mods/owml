@@ -38,10 +38,10 @@ namespace OWML.Launcher.Tests
 				"dnlib.dll",
 				"dnpatch.dll",
 				"Gameloop.Vdf.dll",
-				"Microsoft.Practices.Unity.dll",
+				//"Microsoft.Practices.Unity.dll",
 				"NAudio-Unity.dll",
-				"Newtonsoft.Json.dll",
-				"System.Runtime.Serialization.dll"
+				//"Newtonsoft.Json.dll",
+				//"System.Runtime.Serialization.dll"
 			});
 
 			AssertFolderContainsFiles($"{OwmlReleasePath}/lib", new[]
