@@ -32,8 +32,8 @@ namespace OWML.ModHelper.Menus
 			ModsMenu = modsMenu;
 			PopupManager = popupManager;
 
-			events.Subscribe<SettingsManager>(Events.AfterStart);
-			events.Subscribe<TitleScreenManager>(Events.AfterStart);
+			//events.Subscribe<SettingsManager>(Events.AfterStart);
+			//events.Subscribe<TitleScreenManager>(Events.AfterStart);
 			events.Event += OnEvent;
 		}
 
