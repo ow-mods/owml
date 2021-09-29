@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net40</TargetFramework>
@@ -6,8 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Json.Net.Unity3D" Version="9.0.1" />
     <PackageReference Include="Unity" Version="2.1.505.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="netstandard">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
