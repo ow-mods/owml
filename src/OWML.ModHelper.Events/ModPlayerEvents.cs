@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Events
 
 		public void Init(IModEvents events)
 		{
-			events.Subscribe<PlayerBody>(Common.Events.AfterAwake);
+			//events.Subscribe<PlayerBody>(Common.Events.AfterAwake);
 			events.Event += OnEvent;
 		}
 
