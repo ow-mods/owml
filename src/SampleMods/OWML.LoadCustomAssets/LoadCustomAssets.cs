@@ -138,22 +138,22 @@ namespace OWML.LoadCustomAssets
 
 		public void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.F9))
-			{
-				SendFatalMessage();
-			}
-			if (!_isInSolarSystem || OWTime.IsPaused())
-			{
-				return;
-			}
-			if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
-			{
-				ShootDuck();
-			}
-			else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
-			{
-				CreateCube();
-			}
+			//if (Input.GetKeyDown(KeyCode.F9))
+			//{
+			//	SendFatalMessage();
+			//}
+			//if (!_isInSolarSystem || OWTime.IsPaused())
+			//{
+			//	return;
+			//}
+			//if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
+			//{
+			//	ShootDuck();
+			//}
+			//else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
+			//{
+			//	CreateCube();
+			//}
 		}
 
 		private void SendFatalMessage()

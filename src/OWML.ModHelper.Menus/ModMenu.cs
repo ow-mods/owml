@@ -308,10 +308,10 @@ namespace OWML.ModHelper.Menus
 
 		public virtual void UpdateNavigation()
 		{
-			var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
-				.Select(x => x.GetComponent<Selectable>())
-				.Where(x => x != null).ToList();
-			UpdateNavigation(selectables);
+			//var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
+			//	.Select(x => x.GetComponent<Selectable>())
+			//	.Where(x => x != null).ToList();
+			//UpdateNavigation(selectables);
 		}
 	}
 }

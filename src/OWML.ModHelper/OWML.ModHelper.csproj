@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net35</TargetFramework>
+    <TargetFramework>net40</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
 	  <Version>1.1.0</Version>
   </PropertyGroup>
@@ -12,6 +12,12 @@
     <ProjectReference Include="..\OWML.ModHelper.Input\OWML.ModHelper.Input.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Interaction\OWML.ModHelper.Interaction.csproj" />
     <ProjectReference Include="..\OWML.ModHelper.Menus\OWML.ModHelper.Menus.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
