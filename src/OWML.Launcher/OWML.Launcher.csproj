@@ -25,8 +25,8 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Events\bin\Debug\net35\0Harmony.dll&quot; $(TargetDir)
-			xcopy /i /y &quot;$(SolutionDir)src\OWML.Common\bin\Debug\net35\System.Runtime.Serialization.dll&quot; $(TargetDir)" />
+    <Exec Command="xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Events\bin\Debug\net40\0Harmony.dll&quot; $(TargetDir)		
+      xcopy /i /y &quot;$(SolutionDir)src\OWML.Common\bin\Debug\net40\System.Runtime.Serialization.dll&quot; $(TargetDir)" />
   </Target>
 
 </Project>
