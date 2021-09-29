@@ -34,11 +34,11 @@ namespace OWML.ModHelper
 			IModEvents events,
 			IModAssets assets,
 			IModStorage storage,
-			IModMenus menus,
+			//IModMenus menus,
 			IModManifest manifest,
 			IModConfig config,
-			IOwmlConfig owmlConfig,
-			IModInteraction interaction)
+			IOwmlConfig owmlConfig)
+			//IModInteraction interaction)
 		{
 			Logger = logger;
 			Console = console;
@@ -46,11 +46,11 @@ namespace OWML.ModHelper
 			Events = events;
 			Assets = assets;
 			Storage = storage;
-			Menus = menus;
+			//Menus = menus;
 			Manifest = manifest;
 			Config = config;
 			OwmlConfig = owmlConfig;
-			Interaction = interaction;
+			//Interaction = interaction;
 		}
 	}
 }

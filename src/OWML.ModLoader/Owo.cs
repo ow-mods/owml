@@ -18,7 +18,7 @@ namespace OWML.ModLoader
 		private readonly IModFinder _modFinder;
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
-		private readonly IModMenus _menus;
+		//private readonly IModMenus _menus;
 		private readonly IModSorter _sorter;
 		private readonly IUnityLogger _unityLogger;
 		private readonly IModSocket _socket;
@@ -33,7 +33,7 @@ namespace OWML.ModLoader
 			IModFinder modFinder,
 			IModConsole console,
 			IOwmlConfig owmlConfig,
-			IModMenus menus,
+			//IModMenus menus,
 			IModSorter sorter,
 			IUnityLogger unityLogger,
 			IModSocket socket,
@@ -46,7 +46,7 @@ namespace OWML.ModLoader
 			_modFinder = modFinder;
 			_console = console;
 			_owmlConfig = owmlConfig;
-			_menus = menus;
+			//_menus = menus;
 			_sorter = sorter;
 			_unityLogger = unityLogger;
 			_socket = socket;
@@ -87,13 +87,13 @@ namespace OWML.ModLoader
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
-					_menus.ModsMenu?.AddMod(modData, null);
+					//_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
 
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
-				_menus.ModsMenu?.AddMod(modData, initMod);
+				//_menus.ModsMenu?.AddMod(modData, initMod);
 				_modList.Add(initMod);
 			}
 		}
@@ -148,7 +148,7 @@ namespace OWML.ModLoader
 				.Add(_socket)
 				.Add(_objImporter)
 				.Add(_modList)
-				.Add(_menus)
+				//.Add(_menus)
 				.Add(_processHelper)
 				.Add(_unityEvents)
 				.Add<IHarmonyHelper, HarmonyHelper>()
@@ -159,8 +159,8 @@ namespace OWML.ModLoader
 				.Add<IModPlayerEvents, ModPlayerEvents>()
 				.Add<IModSceneEvents, ModSceneEvents>()
 				.Add<IModEvents, ModEvents>()
-				.Add<IInterfaceProxyFactory, InterfaceProxyFactory>()
-				.Add<IModInteraction, ModInteraction>()
+				//.Add<IInterfaceProxyFactory, InterfaceProxyFactory>()
+				//.Add<IModInteraction, ModInteraction>()
 				.Add<IModHelper, ModHelper.ModHelper>()
 				.Resolve<IModHelper>();
 

@@ -1,7 +1,7 @@
 ﻿using OWML.Common;
 using System;
 using System.Reflection;
-using HarmonyLib;
+using Harmony;
 
 namespace OWML.ModHelper.Events
 {
@@ -10,7 +10,7 @@ namespace OWML.ModHelper.Events
         private readonly IModConsole _console;
         private readonly IModManifest _manifest;
         private readonly IOwmlConfig _owmlConfig;
-        private readonly Harmony _harmony;
+        private readonly HarmonyInstance _harmony;
 
         public HarmonyHelper(IModConsole console, IModManifest manifest, IOwmlConfig owmlConfig)
         {
@@ -21,9 +21,9 @@ namespace OWML.ModHelper.Events
             _harmony = CreateInstance();
         }
 
-        private Harmony CreateInstance()
+        private HarmonyInstance CreateInstance()
         {
-            Harmony harmony;
+            HarmonyInstance harmony;
             try
             {
                 _console.WriteLine($"Creating harmony instance: {_manifest.UniqueName}", MessageType.Debug);
@@ -31,9 +31,9 @@ namespace OWML.ModHelper.Events
                 {
                     _console.WriteLine("Enabling Harmony debug mode.", MessageType.Debug);
                     FileLog.logPath = $"{_owmlConfig.LogsPath}/Harmony.Log.{DateTime.Now:dd-MM-yyyy-HH.mm.ss}.txt";
-                    Harmony.DEBUG = true;
+                    HarmonyInstance.DEBUG = true;
                 }
-                harmony = new Harmony(_manifest.UniqueName);
+                harmony = HarmonyInstance.Create(_manifest.UniqueName);
             }
             catch (TypeLoadException ex)
             {
