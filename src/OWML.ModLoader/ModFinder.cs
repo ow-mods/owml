@@ -40,7 +40,7 @@ namespace OWML.ModLoader
 
 		private IModData InitModData(IModManifest manifest)
 		{
-			var storage = new ModStorage(manifest);
+			var storage = new ModStorage(manifest, _console);
 			var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
 			var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName) ?? new ModConfig();
 			return new ModData(manifest, config, defaultConfig, storage);

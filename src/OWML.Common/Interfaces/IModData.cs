@@ -8,6 +8,8 @@
 
 		IModConfig DefaultConfig { get; }
 
+		IModStorage Storage { get; }
+
 		bool Enabled { get; }
 
 		bool RequireVR { get; }

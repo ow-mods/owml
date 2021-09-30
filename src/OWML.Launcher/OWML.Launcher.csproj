@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Json.Net.Unity3D" Version="9.0.1" />
+    <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
+    <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
-    <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
+    <Reference Include="netstandard">
+      <HintPath>E:\Steam\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>E:\Steam\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -25,8 +30,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Events\bin\Debug\net35\0Harmony.dll&quot; $(TargetDir)
-			xcopy /i /y &quot;$(SolutionDir)src\OWML.Common\bin\Debug\net35\System.Runtime.Serialization.dll&quot; $(TargetDir)" />
+    <Exec Command="xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Events\bin\Debug\net35\0Harmony.dll&quot; $(TargetDir)&#xD;&#xA;			xcopy /i /y &quot;$(SolutionDir)src\OWML.Common\bin\Debug\net35\System.Runtime.Serialization.dll&quot; $(TargetDir)" />
   </Target>
 
 </Project>

@@ -9,22 +9,17 @@ namespace OWML.ModHelper.Menus
 	{
 		private readonly IModInputMenu _inputPopup;
 		private readonly IModMessagePopup _messagePopup;
-		private readonly IModInputCombinationElementMenu _combinationPopup;
 		private readonly List<IModTemporaryPopup> _toDestroy = new();
 		private readonly IModEvents _events;
 
 		public ModPopupManager(
 			IModEvents events,
 			IModInputMenu inputPopup,
-			IModMessagePopup messagePopup,
-			IModInputCombinationElementMenu combinationPopup)
+			IModMessagePopup messagePopup)
 		{
 			_events = events;
 			_inputPopup = inputPopup;
 			_messagePopup = messagePopup;
-			_combinationPopup = combinationPopup;
-
-			_combinationPopup.Init(this);
 		}
 
 		public void Initialize(PopupInputMenu popupInputMenu)
@@ -45,7 +40,6 @@ namespace OWML.ModHelper.Menus
 
 			_inputPopup.Initialize(inputMenu);
 			_messagePopup.Initialize(messageMenu);
-			_combinationPopup.Initialize(combinationMenu);
 		}
 
 		public IModMessagePopup CreateMessagePopup(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
@@ -63,17 +57,6 @@ namespace OWML.ModHelper.Menus
 			var newPopup = _inputPopup.Copy();
 			_events.Unity.FireOnNextUpdate(() =>
 				newPopup.Open(inputType, value));
-			newPopup.OnCancel += () => OnPopupClose(newPopup);
-			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
-			return newPopup;
-		}
-
-		public IModInputCombinationElementMenu CreateCombinationInput(string value, string comboName,
-			IModInputCombinationMenu combinationMenu = null, IModInputCombinationElement element = null)
-		{
-			var newPopup = _combinationPopup.Copy();
-			_events.Unity.FireOnNextUpdate(() =>
-				newPopup.Open(value, comboName, combinationMenu, element));
 			newPopup.OnCancel += () => OnPopupClose(newPopup);
 			newPopup.OnConfirm += _ => OnPopupClose(newPopup);
 			return newPopup;

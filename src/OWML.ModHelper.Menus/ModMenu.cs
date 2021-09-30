@@ -32,8 +32,6 @@ namespace OWML.ModHelper.Menus
 
 		public List<IModTextInput> TextInputs => _inputs.OfType<IModTextInput>().ToList();
 
-		public List<IModComboInput> ComboInputs => _inputs.OfType<IModComboInput>().ToList();
-
 		public List<IModNumberInput> NumberInputs => _inputs.OfType<IModNumberInput>().ToList();
 
 		public List<IModSeparator> Separators { get; private set; }
@@ -71,7 +69,6 @@ namespace OWML.ModHelper.Menus
 				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModInputBase>())
 				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModInputBase>())
 				.ToList();
-
 			Separators = new List<IModSeparator>();
 		}
 
@@ -170,19 +167,6 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModComboInput GetComboInput(string title) =>
-			ComboInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-
-		public IModComboInput AddComboInput(IModComboInput input) =>
-			AddComboInput(input, input.Index);
-
-		public IModComboInput AddComboInput(IModComboInput input, int index)
-		{
-			_inputs.Add(input);
-			AddInput(input, index);
-			return input;
-		}
-
 		public IModNumberInput GetNumberInput(string title) =>
 			NumberInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
@@ -249,11 +233,6 @@ namespace OWML.ModHelper.Menus
 			{
 				return textInput.Value;
 			}
-			var comboInput = GetComboInput(key);
-			if (comboInput != null)
-			{
-				return comboInput.Value;
-			}
 			var numberInput = GetNumberInput(key);
 			if (numberInput != null)
 			{
@@ -291,13 +270,6 @@ namespace OWML.ModHelper.Menus
 			{
 				var val = value is JObject obj ? obj["value"] : value;
 				textInput.Value = Convert.ToString(val);
-				return;
-			}
-			var comboInput = GetComboInput(key);
-			if (comboInput != null)
-			{
-				var val = value is JObject obj ? obj["value"] : value;
-				comboInput.Value = Convert.ToString(val);
 				return;
 			}
 			var numberInput = GetNumberInput(key);

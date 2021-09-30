@@ -14,8 +14,6 @@ namespace OWML.ModHelper.Menus
 
 		public IModsMenu ModsMenu { get; }
 
-		public IModInputCombinationMenu InputCombinationMenu { get; }
-
 		public IModPopupManager PopupManager { get; }
 
 		private readonly IModConsole _console;
@@ -26,7 +24,6 @@ namespace OWML.ModHelper.Menus
 			IModPauseMenu pauseMenu,
 			IModsMenu modsMenu,
 			IModPopupManager popupManager,
-			IModInputCombinationMenu inputComboMenu,
 			IModConsole console)
 		{
 			_console = console;
@@ -34,7 +31,6 @@ namespace OWML.ModHelper.Menus
 			PauseMenu = pauseMenu;
 			ModsMenu = modsMenu;
 			PopupManager = popupManager;
-			InputCombinationMenu = inputComboMenu;
 
 			events.Subscribe<SettingsManager>(Events.AfterStart);
 			events.Subscribe<TitleScreenManager>(Events.AfterStart);

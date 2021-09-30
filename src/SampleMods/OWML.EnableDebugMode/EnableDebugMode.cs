@@ -11,20 +11,19 @@ namespace OWML.EnableDebugMode
 		private int _renderValue;
 		private bool _isStarted;
 		private PlayerSpawner _playerSpawner;
-		private readonly Dictionary<string, IModInputCombination> _inputs = new();
 
 		public override void Configure(IModConfig config)
 		{
-			foreach (var input in _inputs)
-			{
-				ModHelper.Input.UnregisterCombination(input.Value);
-			}
+			//foreach (var input in _inputs)
+			//{
+				//ModHelper.Input.UnregisterCombination(input.Value);
+			//}
 			foreach (var key in config.Settings.Keys)
 			{
 				var value = config.GetSettingsValue<string>(key);
 				if (!string.IsNullOrEmpty(value))
 				{
-					_inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
+					//_inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
 				}
 			}
 		}
@@ -52,11 +51,12 @@ namespace OWML.EnableDebugMode
 			{
 				return;
 			}
-
+			/*
 			if (ModHelper.Input.IsNewlyPressed(_inputs["Cycle GUI mode"]))
 			{
 				CycleGUIMode();
 			}
+			*/
 
 			HandleWarping();
 
@@ -65,6 +65,7 @@ namespace OWML.EnableDebugMode
 
 		private void HandleWarping()
 		{
+			/*
 			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Interloper"]))
 			{
 				WarpTo(SpawnLocation.Comet);
@@ -101,6 +102,7 @@ namespace OWML.EnableDebugMode
 			{
 				WarpTo(SpawnLocation.LunarLookout);
 			}
+			*/
 		}
 
 		private void CycleGUIMode()
