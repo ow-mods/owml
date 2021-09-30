@@ -1,6 +1,6 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 
 namespace OWML.ModHelper.Events
