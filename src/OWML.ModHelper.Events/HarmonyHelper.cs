@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using HarmonyLib;
+using HarmonyLib.Tools;
 
 namespace OWML.ModHelper.Events
 {
@@ -30,7 +31,7 @@ namespace OWML.ModHelper.Events
                 {
                     _console.WriteLine("Enabling Harmony debug mode.", MessageType.Debug);
                     FileLog.logPath = $"{_owmlConfig.LogsPath}/Harmony.Log.{DateTime.Now:dd-MM-yyyy-HH.mm.ss}.txt";
-                    Harmony.DEBUG = true;
+                    HarmonyFileLog.Enabled = true;
                 }
                 harmony = new Harmony(_manifest.UniqueName);
             }
