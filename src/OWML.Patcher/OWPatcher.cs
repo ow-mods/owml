@@ -25,7 +25,7 @@ namespace OWML.Patcher
 		public void PatchGame()
 		{
 			CopyFiles();
-			//PatchAssembly();
+			PatchAssembly();
 		}
 
 		private void CopyFiles()
@@ -97,5 +97,73 @@ namespace OWML.Patcher
 				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
 			}
 		}
+
+        private void PatchAssembly()
+        {
+            var patcher = new dnpatch.Patcher($"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll");
+
+            var target = new Target
+            {
+                Class = PatchClass,
+                Method = PatchMethod
+            };
+
+            var instructions = patcher.GetInstructions(target).ToList();
+            var patchedInstructions = GetPatchedInstructions(instructions);
+
+            if (patchedInstructions.Count == 1)
+            {
+                _writer.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
+                return;
+            }
+
+            if (patchedInstructions.Count > 1)
+            {
+                _writer.WriteLine($"Removing corrupted patch from {PatchClass}.{PatchMethod}.");
+                foreach (var patchedInstruction in patchedInstructions)
+                {
+                    instructions.Remove(patchedInstruction);
+                }
+            }
+
+            _writer.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
+
+            var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
+            instructions.Insert(instructions.Count - 1, newInstruction);
+
+            target.Instructions = instructions.ToArray();
+
+            Patch(patcher, target);
+            Save(patcher);
+        }
+
+        private List<Instruction> GetPatchedInstructions(List<Instruction> instructions) =>
+            instructions.Where(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader))).ToList();
+
+        private void Patch(dnpatch.Patcher patcher, Target target)
+        {
+            try
+            {
+                patcher.Patch(target);
+            }
+            catch (Exception ex)
+            {
+                _writer.WriteLine($"Error while patching: {ex}", MessageType.Error);
+                throw;
+            }
+        }
+
+        private void Save(dnpatch.Patcher patcher)
+        {
+            try
+            {
+                patcher.Save(true);
+            }
+            catch (Exception ex)
+            {
+                _writer.WriteLine($"Error while saving patched game assembly: {ex}", MessageType.Error);
+                throw;
+            }
+        }
 	}
 }
