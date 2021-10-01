@@ -9,19 +9,19 @@ namespace OWML.Utils
         public Container Add<TInterface>(TInterface instance)
             where TInterface : class
         {
-            _builder.RegisterInstance(instance).SingleInstance();
+            _builder.RegisterInstance(instance);
             return this;
         }
 
         public Container Add<TInterface, TImplementation>() where TImplementation : TInterface
         {
-            _builder.RegisterType<TImplementation>().As<TInterface>().SingleInstance();
+            _builder.RegisterType<TImplementation>().As<TInterface>();
             return this;
         }
 
         public Container Add<TImplementation>()
         {
-            _builder.RegisterType<TImplementation>().SingleInstance();
+            _builder.RegisterType<TImplementation>();
             return this;
         }
 
