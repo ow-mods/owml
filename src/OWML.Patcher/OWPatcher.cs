@@ -78,30 +78,6 @@ namespace OWML.Patcher
 				_writer.WriteLine("Warning - Failed to copy the following files to managed :", MessageType.Warning);
 				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
 			}
-
-			var filesToCopyToRoot = new[] {
-				"winhttp.dll",
-				"doorstop_config.ini"
-			};
-
-			var uncopiedFilesToRoot = new List<string>();
-			foreach (var filename in filesToCopyToRoot)
-			{
-				try
-				{
-					File.Copy(filename, $"{_owmlConfig.GamePath}/{filename}", true);
-				}
-				catch
-				{
-					uncopiedFilesToRoot.Add(filename);
-				}
-			}
-
-			if (uncopiedFilesToRoot.Any())
-			{
-				_writer.WriteLine("Warning - Failed to copy the following files to root :", MessageType.Warning);
-				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
-			}
 		}
 
 		private void PatchAssembly()
