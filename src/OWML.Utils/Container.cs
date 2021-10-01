@@ -9,7 +9,7 @@ namespace OWML.Utils
         public Container Add<TInterface>(TInterface instance)
             where TInterface : class
         {
-            _builder.RegisterInstance(instance);
+            _builder.RegisterInstance(instance); // todo singletons?
             return this;
         }
 
