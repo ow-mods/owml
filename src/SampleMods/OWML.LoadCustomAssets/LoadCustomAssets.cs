@@ -46,7 +46,7 @@ namespace OWML.LoadCustomAssets
 
             TestLogging();
 
-            TestPopup();
+            //TestPopup();
         }
 
         private void TestPopup()
