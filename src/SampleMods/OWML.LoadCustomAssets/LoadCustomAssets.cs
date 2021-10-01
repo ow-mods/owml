@@ -116,6 +116,7 @@ namespace OWML.LoadCustomAssets
         {
             _playerBody = playerBody;
             _playerTransform = playerBody.transform;
+            ModHelper.Console.WriteLine("Player loaded!");
 
             LoadDuck();
             LoadGunSound();

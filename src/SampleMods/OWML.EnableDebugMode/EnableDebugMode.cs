@@ -6,66 +6,67 @@ using OWML.Utils;
 
 namespace OWML.EnableDebugMode
 {
-	public class EnableDebugMode : ModBehaviour
-	{
-		private int _renderValue;
-		private bool _isStarted;
-		private PlayerSpawner _playerSpawner;
+    public class EnableDebugMode : ModBehaviour
+    {
+        private int _renderValue;
+        private bool _isStarted;
+        private PlayerSpawner _playerSpawner;
 
-		public override void Configure(IModConfig config)
-		{
-			//foreach (var input in _inputs)
-			//{
-				//ModHelper.Input.UnregisterCombination(input.Value);
-			//}
-			foreach (var key in config.Settings.Keys)
-			{
-				var value = config.GetSettingsValue<string>(key);
-				if (!string.IsNullOrEmpty(value))
-				{
-					//_inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
-				}
-			}
-		}
+        public override void Configure(IModConfig config)
+        {
+            //foreach (var input in _inputs)
+            //{
+            //ModHelper.Input.UnregisterCombination(input.Value);
+            //}
+            foreach (var key in config.Settings.Keys)
+            {
+                var value = config.GetSettingsValue<string>(key);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    //_inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
+                }
+            }
+        }
 
-		public void Start()
-		{
-			ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
-			//ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
-			ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
-			ModHelper.Events.Event += OnEvent;
-		}
+        public void Start()
+        {
+            ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
+            //ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
+            ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
+            ModHelper.Events.Event += OnEvent;
+        }
 
-		private void OnEvent(MonoBehaviour behaviour, Events ev)
-		{
-			if (behaviour is PlayerSpawner playerSpawner && ev == Events.AfterAwake)
-			{
-				_playerSpawner = playerSpawner;
-				_isStarted = true;
-			}
-		}
+        private void OnEvent(MonoBehaviour behaviour, Events ev)
+        {
+            if (behaviour is PlayerSpawner playerSpawner && ev == Events.AfterAwake)
+            {
+                ModHelper.Console.WriteLine("Player spawner loaded!");
+                _playerSpawner = playerSpawner;
+                _isStarted = true;
+            }
+        }
 
-		public void Update()
-		{
-			if (!_isStarted)
-			{
-				return;
-			}
-			/*
+        public void Update()
+        {
+            if (!_isStarted)
+            {
+                return;
+            }
+            /*
 			if (ModHelper.Input.IsNewlyPressed(_inputs["Cycle GUI mode"]))
 			{
 				CycleGUIMode();
 			}
 			*/
 
-			HandleWarping();
+            HandleWarping();
 
-			//TestUnpatching();
-		}
+            //TestUnpatching();
+        }
 
-		private void HandleWarping()
-		{
-			/*
+        private void HandleWarping()
+        {
+            /*
 			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Interloper"]))
 			{
 				WarpTo(SpawnLocation.Comet);
@@ -103,23 +104,23 @@ namespace OWML.EnableDebugMode
 				WarpTo(SpawnLocation.LunarLookout);
 			}
 			*/
-		}
+        }
 
-		private void CycleGUIMode()
-		{
-			_renderValue++;
-			if (_renderValue >= 8)
-			{
-				_renderValue = 0;
-			}
-			ModHelper.Console.WriteLine("Render value: " + _renderValue);
-			typeof(GUIMode).GetAnyMember("_renderMode").SetValue(null, _renderValue);
-		}
+        private void CycleGUIMode()
+        {
+            _renderValue++;
+            if (_renderValue >= 8)
+            {
+                _renderValue = 0;
+            }
+            ModHelper.Console.WriteLine("Render value: " + _renderValue);
+            typeof(GUIMode).GetAnyMember("_renderMode").SetValue(null, _renderValue);
+        }
 
-		private void WarpTo(SpawnLocation location)
-		{
-			ModHelper.Console.WriteLine($"Warping to {location}!");
-			_playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
-		}
+        private void WarpTo(SpawnLocation location)
+        {
+            ModHelper.Console.WriteLine($"Warping to {location}!");
+            _playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
+        }
     }
 }
