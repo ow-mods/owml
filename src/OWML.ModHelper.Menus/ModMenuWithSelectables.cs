@@ -26,11 +26,11 @@ namespace OWML.ModHelper.Menus
 		{
 			var listenerObject = new GameObject("ConfigurationMenu_Listener");
 			CommandListener = listenerObject.AddComponent<ModCommandListener>();
-			CommandListener.AddToListener(InputLibrary.confirm);
-			CommandListener.AddToListener(InputLibrary.enter2); // keypad's Enter
-			CommandListener.AddToListener(InputLibrary.cancel);
-			CommandListener.AddToListener(InputLibrary.escape);
-			CommandListener.AddToListener(InputLibrary.setDefaults);
+			//CommandListener.AddToListener(InputLibrary.confirm);
+			//CommandListener.AddToListener(InputLibrary.enter2); // keypad's Enter
+			//CommandListener.AddToListener(InputLibrary.cancel);
+			//CommandListener.AddToListener(InputLibrary.escape);
+			//CommandListener.AddToListener(InputLibrary.setDefaults);
 		}
 
 		protected virtual void SetupButtons()
@@ -88,15 +88,15 @@ namespace OWML.ModHelper.Menus
 
 		public override void SelectFirst()
 		{
-			Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
+			//Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
 			Menu.SetSelectOnActivate(Selectables[0]);
 		}
 
 		public override void UpdateNavigation()
 		{
-			Selectables = Layout.GetComponentsInChildren<TooltipSelectable>()
-				.Select(x => x.GetComponent<Selectable>())
-				.Where(x => x != null).ToList();
+			//Selectables = Layout.GetComponentsInChildren<TooltipSelectable>()
+			//	.Select(x => x.GetComponent<Selectable>())
+			//	.Where(x => x != null).ToList();
 			UpdateNavigation(Selectables);
 		}
 
@@ -152,31 +152,31 @@ namespace OWML.ModHelper.Menus
 
 		protected virtual void OnActivateMenu()
 		{
-			CommandListener.OnNewlyReleased += OnButton;
+			//CommandListener.OnNewlyReleased += OnButton;
 		}
 
 		protected virtual void OnDeactivateMenu()
 		{
-			CommandListener.OnNewlyReleased -= OnButton;
+			//CommandListener.OnNewlyReleased -= OnButton;
 		}
 
-		protected virtual void OnButton(SingleAxisCommand command)
-		{
-			command.ConsumeInput();
-			if (command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease"))
-				|| command == InputLibrary.enter2)
-			{
-				OnSave();
-			}
-			if (command == InputLibrary.cancel || command == InputLibrary.escape)
-			{
-				OnExit();
-			}
-			if (command == InputLibrary.setDefaults)
-			{
-				OnReset();
-			}
-		}
+		//protected virtual void OnButton(SingleAxisCommand command)
+		//{
+		//	command.ConsumeInput();
+		//	if (command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease"))
+		//		|| command == InputLibrary.enter2)
+		//	{
+		//		OnSave();
+		//	}
+		//	if (command == InputLibrary.cancel || command == InputLibrary.escape)
+		//	{
+		//		OnExit();
+		//	}
+		//	if (command == InputLibrary.setDefaults)
+		//	{
+		//		OnReset();
+		//	}
+		//}
 
 		protected virtual void OnSave()
 		{

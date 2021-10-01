@@ -1,13 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net35</TargetFramework>
+    <TargetFramework>net40</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Json.Net.Unity3D" Version="9.0.1" />
-    <PackageReference Include="Unity" Version="2.1.505.2" />
+    <PackageReference Include="Autofac" Version="3.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
   </ItemGroup>
 
 </Project>

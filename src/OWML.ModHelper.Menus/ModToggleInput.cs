@@ -27,7 +27,7 @@ namespace OWML.ModHelper.Menus
 
 		public override bool Value
 		{
-			get => Toggle.GetValue();
+			get => Toggle.GetValue() > 0; // todo
 			set
 			{
 				Toggle.Initialize(value);

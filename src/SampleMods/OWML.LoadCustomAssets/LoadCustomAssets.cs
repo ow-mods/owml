@@ -37,16 +37,16 @@ namespace OWML.LoadCustomAssets
 
 			var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
 			_cube = assetBundle.LoadAsset<GameObject>("Cube");
-			
+
 			ModHelper.Events.Player.OnPlayerAwake += OnPlayerAwake;
 			ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
 			ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
 
-			var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
+			//var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
 
 			TestLogging();
 
-			TestPopup();
+			//TestPopup();
 		}
 
 		private void TestPopup()
@@ -105,7 +105,7 @@ namespace OWML.LoadCustomAssets
 		{
 			var duck = ModHelper.Assets.Get3DObject("duck.obj", "duck.png");
 			ModHelper.Console.WriteLine("Duck loaded!");
-			
+
 			duck.AddComponent<SphereCollider>();
 			duck.AddComponent<Rigidbody>();
 			_duckBody = duck.AddComponent<OWRigidbody>();
@@ -116,6 +116,7 @@ namespace OWML.LoadCustomAssets
 		{
 			_playerBody = playerBody;
 			_playerTransform = playerBody.transform;
+			ModHelper.Console.WriteLine("Player loaded!");
 
 			LoadDuck();
 			LoadGunSound();
@@ -138,22 +139,22 @@ namespace OWML.LoadCustomAssets
 
 		public void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.F9))
-			{
-				SendFatalMessage();
-			}
-			if (!_isInSolarSystem || OWTime.IsPaused())
-			{
-				return;
-			}
-			if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
-			{
-				ShootDuck();
-			}
-			else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
-			{
-				CreateCube();
-			}
+			//if (Input.GetKeyDown(KeyCode.F9))
+			//{
+			//	SendFatalMessage();
+			//}
+			//if (!_isInSolarSystem || OWTime.IsPaused())
+			//{
+			//	return;
+			//}
+			//if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
+			//{
+			//	ShootDuck();
+			//}
+			//else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
+			//{
+			//	CreateCube();
+			//}
 		}
 
 		private void SendFatalMessage()

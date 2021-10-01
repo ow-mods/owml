@@ -1,9 +1,8 @@
-﻿using Harmony;
-using OWML.Common;
+﻿using OWML.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
+using HarmonyLib;
+using HarmonyLib.Tools;
 
 namespace OWML.ModHelper.Events
 {
@@ -12,20 +11,19 @@ namespace OWML.ModHelper.Events
 		private readonly IModConsole _console;
 		private readonly IModManifest _manifest;
 		private readonly IOwmlConfig _owmlConfig;
-		private readonly HarmonyInstance _harmony;
+		private readonly Harmony _harmony;
 
 		public HarmonyHelper(IModConsole console, IModManifest manifest, IOwmlConfig owmlConfig)
 		{
 			_console = console;
 			_manifest = manifest;
 			_owmlConfig = owmlConfig;
-
 			_harmony = CreateInstance();
 		}
 
-		private HarmonyInstance CreateInstance()
+		private Harmony CreateInstance()
 		{
-			HarmonyInstance harmony;
+			Harmony harmony;
 			try
 			{
 				_console.WriteLine($"Creating harmony instance: {_manifest.UniqueName}", MessageType.Debug);
@@ -33,18 +31,14 @@ namespace OWML.ModHelper.Events
 				{
 					_console.WriteLine("Enabling Harmony debug mode.", MessageType.Debug);
 					FileLog.logPath = $"{_owmlConfig.LogsPath}/Harmony.Log.{DateTime.Now:dd-MM-yyyy-HH.mm.ss}.txt";
-					HarmonyInstance.DEBUG = true;
+					HarmonyFileLog.Enabled = true;
 				}
-				harmony = HarmonyInstance.Create(_manifest.UniqueName);
+				harmony = new Harmony(_manifest.UniqueName);
 			}
 			catch (TypeLoadException ex)
 			{
 				_console.WriteLine($"TypeLoadException ({ex.TypeName}) while creating harmony instance: {ex}", MessageType.Error);
 				return null;
-			}
-			if (harmony == null)
-			{
-				_console.WriteLine("Error - Harmony instance is null.", MessageType.Error);
 			}
 			return harmony;
 		}
@@ -99,34 +93,34 @@ namespace OWML.ModHelper.Events
 
 		public void Unpatch<T>(string methodName, PatchType patchType = PatchType.All)
 		{
-			_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
+			//_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
 
-			var sharedState = Utils.TypeExtensions.Invoke<Dictionary<MethodBase, byte[]>>(typeof(HarmonySharedState), "GetState");
-			var method = sharedState.Keys.First(m => m.DeclaringType == typeof(T) && m.Name == methodName);
-			var patchInfo = PatchInfoSerialization.Deserialize(sharedState.GetValueSafe(method));
+			//var sharedState = Utils.TypeExtensions.Invoke<Dictionary<MethodBase, byte[]>>(typeof(HarmonySharedState), "GetState");
+			//var method = sharedState.Keys.First(m => m.DeclaringType == typeof(T) && m.Name == methodName);
+			//var patchInfo = PatchInfoSerialization.Deserialize(sharedState.GetValueSafe(method));
 
-			switch (patchType)
-			{
-				case PatchType.Prefix:
-					patchInfo.RemovePrefix(_manifest.UniqueName);
-					break;
-				case PatchType.Postfix:
-					patchInfo.RemovePostfix(_manifest.UniqueName);
-					break;
-				case PatchType.Transpiler:
-					patchInfo.RemoveTranspiler(_manifest.UniqueName);
-					break;
-				case PatchType.All:
-					patchInfo.RemovePostfix(_manifest.UniqueName);
-					patchInfo.RemovePrefix(_manifest.UniqueName);
-					patchInfo.RemoveTranspiler(_manifest.UniqueName);
-					break;
-			}
+			//switch (patchType)
+			//{
+			//	case PatchType.Prefix:
+			//		patchInfo.RemovePrefix(_manifest.UniqueName);
+			//		break;
+			//	case PatchType.Postfix:
+			//		patchInfo.RemovePostfix(_manifest.UniqueName);
+			//		break;
+			//	case PatchType.Transpiler:
+			//		patchInfo.RemoveTranspiler(_manifest.UniqueName);
+			//		break;
+			//	case PatchType.All:
+			//		patchInfo.RemovePostfix(_manifest.UniqueName);
+			//		patchInfo.RemovePrefix(_manifest.UniqueName);
+			//		patchInfo.RemoveTranspiler(_manifest.UniqueName);
+			//		break;
+			//}
 
-			PatchFunctions.UpdateWrapper(method, patchInfo, _manifest.UniqueName);
-			sharedState[method] = patchInfo.Serialize();
+			//PatchFunctions.UpdateWrapper(method, patchInfo, _manifest.UniqueName);
+			//sharedState[method] = patchInfo.Serialize();
 
-			_console.WriteLine($"Unpatched {typeof(T).Name}.{methodName}!", MessageType.Debug);
+			//_console.WriteLine($"Unpatched {typeof(T).Name}.{methodName}!", MessageType.Debug);
 		}
 
 		private void Patch(MethodBase original, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)

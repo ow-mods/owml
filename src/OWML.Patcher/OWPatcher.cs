@@ -42,11 +42,19 @@ namespace OWML.Patcher
 				"OWML.Logging.dll",
 				"OWML.Utils.dll",
 				"OWML.Abstractions.dll",
-				"Newtonsoft.Json.dll",
-				"System.Runtime.Serialization.dll",
+				//"Newtonsoft.Json.dll",
+				//"System.Runtime.Serialization.dll",
 				"0Harmony.dll",
+				"Mono.Cecil.dll",
+				"Mono.Cecil.Mdb.dll",
+				"Mono.Cecil.Pdb.dll",
+				"Mono.Cecil.Rocks.dll",
+				"MonoMod.RuntimeDetour.dll",
+				"MonoMod.Utils.dll",
 				"NAudio-Unity.dll",
-				"Microsoft.Practices.Unity.dll",
+				//"Microsoft.Practices.Unity.dll",
+				//"Unity.Container.dll",
+				"Autofac.dll",
 				Constants.OwmlManifestFileName,
 				Constants.OwmlConfigFileName,
 				Constants.OwmlDefaultConfigFileName
@@ -67,7 +75,7 @@ namespace OWML.Patcher
 
 			if (uncopiedFiles.Any())
 			{
-				_writer.WriteLine("Warning - Failed to copy the following files:", MessageType.Warning);
+				_writer.WriteLine("Warning - Failed to copy the following files to managed :", MessageType.Warning);
 				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
 			}
 		}
@@ -111,7 +119,7 @@ namespace OWML.Patcher
 			Save(patcher);
 		}
 
-		private List<Instruction> GetPatchedInstructions(List<Instruction> instructions) => 
+		private List<Instruction> GetPatchedInstructions(List<Instruction> instructions) =>
 			instructions.Where(x => x.Operand != null && x.Operand.ToString().Contains(nameof(ModLoader.ModLoader))).ToList();
 
 		private void Patch(dnpatch.Patcher patcher, Target target)

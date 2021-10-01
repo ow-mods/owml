@@ -12,8 +12,7 @@ namespace OWML.Common
 		Mesh GetMesh(string filename);
 
 		Texture2D GetTexture(string filename);
-
-
+		
 		AudioClip GetAudio(string filename);
 		
 		[Obsolete("Use Get3DObject instead.")]
