@@ -152,29 +152,30 @@ namespace OWML.ModHelper.Menus
 
 		protected virtual void OnActivateMenu()
 		{
-            CommandListener.OnNewlyReleased += OnButton;
+            CommandListener.OnNewlyPressed += OnButton;
         }
 
 		protected virtual void OnDeactivateMenu()
 		{
-            CommandListener.OnNewlyReleased -= OnButton;
+            CommandListener.OnNewlyPressed -= OnButton;
         }
 
         protected virtual void OnButton(IInputCommands command)
         {
-            command.ConsumeInput();
-            if (command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease"))
-                || command == InputLibrary.enter2)
-            {
-                OnSave();
+            if (command == InputLibrary.confirm || command == InputLibrary.enter2)
+			{
+				command.ConsumeInput();
+				OnSave();
             }
             if (command == InputLibrary.cancel || command == InputLibrary.escape)
-            {
-                OnExit();
+			{
+				command.ConsumeInput();
+				OnExit();
             }
             if (command == InputLibrary.setDefaults)
-            {
-                OnReset();
+			{
+				command.ConsumeInput();
+				OnReset();
             }
         }
 

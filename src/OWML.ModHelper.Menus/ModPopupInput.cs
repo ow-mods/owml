@@ -58,7 +58,6 @@ namespace OWML.ModHelper.Menus
             if (IsSelected && _openCommands.Contains(command))
             {
                 command.ConsumeInput();
-                command.BlockNextRelease();
                 Open();
             }
         }
