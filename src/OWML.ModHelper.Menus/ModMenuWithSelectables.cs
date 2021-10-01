@@ -88,7 +88,7 @@ namespace OWML.ModHelper.Menus
 
 		public override void SelectFirst()
 		{
-			Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
+			//Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
 			Menu.SetSelectOnActivate(Selectables[0]);
 		}
 

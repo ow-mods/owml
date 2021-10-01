@@ -288,9 +288,9 @@ namespace OWML.ModHelper.Menus
 
 		public virtual void SelectFirst()
 		{
-			var firstSelectable = Menu.GetComponentInChildren<Selectable>();
-			Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
-			Menu.SetSelectOnActivate(firstSelectable);
+			//var firstSelectable = Menu.GetComponentInChildren<Selectable>();
+			//Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
+			//Menu.SetSelectOnActivate(firstSelectable);
 		}
 
 		protected void UpdateNavigation(List<Selectable> selectables)
