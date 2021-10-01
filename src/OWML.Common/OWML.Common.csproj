@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="OWML_Temp" Version="1.0.2" />
+	  <PackageReference Include="OW.Unity.Dlls" Version="1.1.3" />
 	</ItemGroup>
 
 </Project>
