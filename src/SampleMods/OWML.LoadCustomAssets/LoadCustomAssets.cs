@@ -42,11 +42,11 @@ namespace OWML.LoadCustomAssets
 			ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
 			ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
 
-			//var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
+			var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
 
 			TestLogging();
 
-			//TestPopup();
+			TestPopup();
 		}
 
 		private void TestPopup()
