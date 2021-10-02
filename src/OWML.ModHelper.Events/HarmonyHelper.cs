@@ -6,13 +6,6 @@ using HarmonyLib.Tools;
 
 namespace OWML.ModHelper.Events
 {
-	public static class ClearPatch
-	{
-		public static bool Prefix()
-		{
-			return false;
-		}
-	}
 	public class HarmonyHelper : IHarmonyHelper
 	{
 		private readonly IModConsole _console;
@@ -79,11 +72,10 @@ namespace OWML.ModHelper.Events
 		}
 
 		public void EmptyMethod<T>(string methodName) => 
-			AddPrefix<T>(methodName, typeof(ClearPatch), "Prefix");
-			//EmptyMethod(GetMethod<T>(methodName));
+			EmptyMethod(GetMethod<T>(methodName));
 
 		public void EmptyMethod(MethodBase methodInfo) =>
-			AddPrefix(methodInfo, typeof(ClearPatch), "Prefix");
+			AddPrefix(methodInfo, typeof(Patches), "EmptyMethodPrefix");
 			//Transpile(methodInfo, typeof(Patches), nameof(Patches.EmptyMethod));
 
 		public void Transpile<T>(string methodName, Type patchType, string patchMethodName) =>

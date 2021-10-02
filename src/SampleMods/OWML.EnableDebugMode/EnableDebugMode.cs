@@ -43,15 +43,12 @@ namespace OWML.EnableDebugMode
 			{
 				ModHelper.Console.WriteLine("Player spawner loaded!");
 				_playerSpawner = playerSpawner;
-				_isStarted = true;
 				if (Keyboard.current == null)
 				{
-					ModHelper.Console.WriteLine("Keyboard is null!", MessageType.Error);
+					ModHelper.Console.WriteLine("Keyboard object is null!", MessageType.Error);
+					return;
 				}
-				if (Mouse.current == null)
-				{
-					ModHelper.Console.WriteLine("Mouse is null!", MessageType.Error);
-				}
+				_isStarted = true;
 			}
 		}
 
@@ -61,7 +58,7 @@ namespace OWML.EnableDebugMode
 			{
 				return;
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.F1].wasPressedThisFrame)
+			if (Keyboard.current[Key.F1].wasPressedThisFrame)
 			{
 				CycleGUIMode();
 			}
@@ -75,43 +72,43 @@ namespace OWML.EnableDebugMode
 		private void HandleWarping()
 		{
 
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad1].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad1].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.Comet);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad2].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad2].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.HourglassTwin_1);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad3].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad3].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.TimberHearth);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad4].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad4].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.BrittleHollow);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad5].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad5].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.GasGiant);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad6].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad6].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.DarkBramble);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad0].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad0].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.Ship);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad7].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad7].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.QuantumMoon);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad8].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad8].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.LunarLookout);
 			}
-			if (Keyboard.current != null && Keyboard.current[Key.Numpad9].wasPressedThisFrame)
+			if (Keyboard.current[Key.Numpad9].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.InvisiblePlanet);
 			}
@@ -121,12 +118,12 @@ namespace OWML.EnableDebugMode
 		private void CycleGUIMode()
 		{
 			_renderValue++;
-			if (_renderValue >= 8)
+			if (_renderValue > 8)
 			{
 				_renderValue = 0;
 			}
-			ModHelper.Console.WriteLine("Render value: " + _renderValue);
-			typeof(GUIMode).GetAnyMember("_renderMode").SetValue(null, _renderValue);
+			ModHelper.Console.WriteLine("Render value: " + (GUIMode.RenderMode)_renderValue);
+			GUIMode.SetRenderMode((GUIMode.RenderMode)_renderValue);
 		}
 
 		private void WarpTo(SpawnLocation location)

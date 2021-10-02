@@ -134,13 +134,24 @@ namespace OWML.LoadCustomAssets
 
 		private void OnCompleteSceneChange(OWScene oldScene, OWScene newScene)
 		{
-			_isInSolarSystem = newScene == OWScene.SolarSystem;
+			bool ready = true;
+			if (Mouse.current == null)
+			{
+				ModHelper.Console.WriteLine("Mouse object is null!", MessageType.Error);
+				ready = false;
+			}
+			if (Keyboard.current == null)
+			{
+				ModHelper.Console.WriteLine("Keyboard object is null!", MessageType.Error);
+				ready = false;
+			}
+			_isInSolarSystem = newScene == OWScene.SolarSystem && ready;
 			ToggleMusic(ModHelper.Config.GetSettingsValue<bool>("enableMusic"));
 		}
 
 		public void Update()
 		{
-			if (Keyboard.current != null && Keyboard.current[Key.F9].wasPressedThisFrame)
+			if (Keyboard.current[Key.F9].wasPressedThisFrame)
 			{
 				SendFatalMessage();
 			}
@@ -148,11 +159,12 @@ namespace OWML.LoadCustomAssets
 			{
 				return;
 			}
-			if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && _isDucksEnabled)
+			if (Mouse.current.leftButton.wasPressedThisFrame && _isDucksEnabled)
 			{
 				ShootDuck();
+				return;
 			}
-			else if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && _isCubesEnabled)
+			if (Mouse.current.rightButton.wasPressedThisFrame && _isCubesEnabled)
 			{
 				CreateCube();
 			}
