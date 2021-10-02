@@ -11,6 +11,7 @@ namespace OWML.EnableDebugMode
 	{
 		private int _renderValue;
 		private bool _isStarted;
+		private bool _debugOn;
 		private PlayerSpawner _playerSpawner;
 
 		public override void Configure(IModConfig config)
@@ -53,11 +54,15 @@ namespace OWML.EnableDebugMode
 			{
 				return;
 			}
+			if (Keyboard.current[Key.Pause].wasPressedThisFrame)
+			{
+				ToogleDebug();
+			}
+
 			if (Keyboard.current[Key.F1].wasPressedThisFrame)
 			{
 				CycleGUIMode();
 			}
-
 
 			HandleWarping();
 
@@ -66,6 +71,10 @@ namespace OWML.EnableDebugMode
 
 		private void HandleWarping()
 		{
+			if (_debugOn && Keyboard.current[Key.Minus].isPressed)
+			{
+				return;
+			}
 
 			if (Keyboard.current[Key.Numpad1].wasPressedThisFrame)
 			{
@@ -119,6 +128,13 @@ namespace OWML.EnableDebugMode
 			}
 			ModHelper.Console.WriteLine("Render value: " + (GUIMode.RenderMode)_renderValue);
 			GUIMode.SetRenderMode((GUIMode.RenderMode)_renderValue);
+		}
+
+		private void ToogleDebug()
+		{
+			_debugOn = !_debugOn;
+			var debug = FindObjectOfType<DebugInputManager>();
+			debug.SetValue("_debugInputMode", _debugOn ? 1 : 0);
 		}
 
 		private void WarpTo(SpawnLocation location)
