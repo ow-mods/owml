@@ -71,11 +71,12 @@ namespace OWML.ModHelper.Events
 			Patch(original, null, postfix, null);
 		}
 
-		public void EmptyMethod<T>(string methodName) =>
+		public void EmptyMethod<T>(string methodName) => 
 			EmptyMethod(GetMethod<T>(methodName));
 
 		public void EmptyMethod(MethodBase methodInfo) =>
-			Transpile(methodInfo, typeof(Patches), nameof(Patches.EmptyMethod));
+			AddPrefix(methodInfo, typeof(Patches), "EmptyMethodPrefix");
+			//Transpile(methodInfo, typeof(Patches), nameof(Patches.EmptyMethod));
 
 		public void Transpile<T>(string methodName, Type patchType, string patchMethodName) =>
 			Transpile(GetMethod<T>(methodName), patchType, patchMethodName);
