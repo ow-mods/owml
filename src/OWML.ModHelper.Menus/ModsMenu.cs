@@ -61,12 +61,12 @@ namespace OWML.ModHelper.Menus
 		{
 			var modsTab = CreateTab(options, ModsTitle);
 
-			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);//.RebindingButton.Copy(Constants.OwmlTitle);
+			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			var owmlTab = CreateTab(options, Constants.OwmlTitle);
 			owmlTab.HideButton();
 			InitConfigMenu(OwmlMenu, options, owmlTab);
-			owmlButton.OnClick += () => owmlTab.Open();//OwmlMenu.Open();
+			owmlButton.OnClick += () => owmlTab.Open();
 
 			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
 			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
@@ -98,7 +98,7 @@ namespace OWML.ModHelper.Menus
 				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
 				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
-				modButton.OnClick += modTab.Open;//modConfigMenu.Open;
+				modButton.OnClick += modTab.Open;
 				menu.AddButton((IModButtonBase)modButton, index++);
 			}
 			return index;

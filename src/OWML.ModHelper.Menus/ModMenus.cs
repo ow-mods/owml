@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (behaviour is PauseMenuManager pauseMenuManager &&
 				ev == Events.AfterStart &&
-				pauseMenuManager.name == "PauseMenuManagers") // todo
+				pauseMenuManager.name == "PauseMenuManagers")
 			{
 				InitPauseMenu(pauseMenuManager);
 			}

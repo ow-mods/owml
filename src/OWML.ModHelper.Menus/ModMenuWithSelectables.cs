@@ -56,14 +56,6 @@ namespace OWML.ModHelper.Menus
 
 		public override void Initialize(Menu menu)
 		{
-			//var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true)
-			//	.Single(x => x.name == "RebindingModeBlocker");
-			//blocker.gameObject.SetActive(false);
-
-			//var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot")
-			//	.GetComponentInChildren<HorizontalLayoutGroup>(true);
-			//labelPanel.gameObject.SetActive(false);
-
 			var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true)
 				.Single(x => x.name == "Content");
 			Initialize(menu, layoutGroup);
@@ -73,9 +65,6 @@ namespace OWML.ModHelper.Menus
 				SetupCommands();
 			}
 			//SetupButtons();
-
-			//GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
-			//GetTitleButton("UIElement-KeyRebinder")?.Hide();
 
 			foreach (Transform child in layoutGroup.transform)
 			{

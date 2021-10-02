@@ -17,10 +17,6 @@ namespace OWML.ModHelper.Menus
 
 		public IModTabMenu GraphicsTab { get; private set; }
 
-		//public IModButton RebindingButton { get; private set; }
-
-		//public IModPopupMenu RebindingMenu { get; private set; }
-
 		public new TabbedMenu Menu { get; private set; }
 
 		private List<IModTabMenu> _tabMenus;
@@ -48,9 +44,6 @@ namespace OWML.ModHelper.Menus
 			AudioTab = GetTab("Button-Audio");
 			InputTab = GetTab("Button-Input");
 			GraphicsTab = GetTab("Button-Graphics");
-
-			//RebindingButton = InputTab.GetTitleButton("UIElement-RemapControls");
-			//RebindingMenu = GetRebindingMenu();
 
 			InvokeOnInit();
 		}
@@ -101,15 +94,5 @@ namespace OWML.ModHelper.Menus
 		{
 			return _tabMenus.Single(x => x.TabButton.name == tabName);
 		}
-
-		//private IModPopupMenu GetRebindingMenu()
-		//{
-		//	var menu = RebindingButton.Button
-		//		.GetComponent<SubmitActionMenu>()
-		//		.GetValue<Menu>("_menuToOpen");
-		//	var rebindingMenu = new ModPopupMenu(Console);
-		//	rebindingMenu.Initialize(menu);
-		//	return rebindingMenu;
-		//}
 	}
 }
