@@ -65,9 +65,9 @@ namespace OWML.ModHelper.Menus
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
 			var modsTab = options.GameplayTab.Copy(ModsTitle);
-			//modsTab.BaseButtons.ForEach(x => x.Hide());
+			modsTab.BaseButtons.ForEach(x => x.Hide());
 			//modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
-			//modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
+			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
 			options.AddTab(modsTab);
 
 			var owmlButton = options.GameplayTab.Buttons.First();//.RebindingButton.Copy(Constants.OwmlTitle);
