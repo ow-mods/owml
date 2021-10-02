@@ -7,13 +7,6 @@ using OWML.Utils;
 
 namespace OWML.EnableDebugMode
 {
-	public static class ClearPatch
-    {
-		public static bool prefP()
-        {
-			return false;
-		}
-    }
 	public class EnableDebugMode : ModBehaviour
 	{
 		private int _renderValue;
@@ -39,8 +32,7 @@ namespace OWML.EnableDebugMode
 		public void Start()
 		{
 			ModHelper.Console.WriteLine($"In {nameof(EnableDebugMode)}!", MessageType.Info);
-			//ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
-			ModHelper.HarmonyHelper.AddPrefix<DebugInputManager>("Awake", typeof(ClearPatch), "prefP");
+			ModHelper.HarmonyHelper.EmptyMethod<DebugInputManager>("Awake");
 			ModHelper.Events.Subscribe<PlayerSpawner>(Events.AfterAwake);
 			ModHelper.Events.Event += OnEvent;
 		}
@@ -69,11 +61,11 @@ namespace OWML.EnableDebugMode
 			{
 				return;
 			}
-			if (Keyboard.current!=null&&Keyboard.current[Key.F1].wasPressedThisFrame)
+			if (Keyboard.current != null && Keyboard.current[Key.F1].wasPressedThisFrame)
 			{
 				CycleGUIMode();
 			}
-			
+
 
 			HandleWarping();
 
@@ -82,8 +74,8 @@ namespace OWML.EnableDebugMode
 
 		private void HandleWarping()
 		{
-			
-			if (Keyboard.current!=null&&Keyboard.current[Key.Numpad1].wasPressedThisFrame)
+
+			if (Keyboard.current != null && Keyboard.current[Key.Numpad1].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.Comet);
 			}

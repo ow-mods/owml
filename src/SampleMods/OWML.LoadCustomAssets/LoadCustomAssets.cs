@@ -140,23 +140,23 @@ namespace OWML.LoadCustomAssets
 
 		public void Update()
 		{
-            if (Keyboard.current != null && Keyboard.current[Key.F9].wasPressedThisFrame)
-            {
-                SendFatalMessage();
-            }
-            if (!_isInSolarSystem || OWTime.IsPaused())
-            {
-                return;
-            }
-            if (Mouse.current != null&&Mouse.current.leftButton.wasPressedThisFrame && _isDucksEnabled)
-            {
-                ShootDuck();
-            }
-            else if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && _isCubesEnabled)
-            {
-                CreateCube();
-            }
-        }
+			if (Keyboard.current != null && Keyboard.current[Key.F9].wasPressedThisFrame)
+			{
+				SendFatalMessage();
+			}
+			if (!_isInSolarSystem || OWTime.IsPaused())
+			{
+				return;
+			}
+			if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && _isDucksEnabled)
+			{
+				ShootDuck();
+			}
+			else if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && _isCubesEnabled)
+			{
+				CreateCube();
+			}
+		}
 
 		private void SendFatalMessage()
 		{
