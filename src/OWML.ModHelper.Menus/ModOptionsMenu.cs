@@ -60,9 +60,21 @@ namespace OWML.ModHelper.Menus
 			_tabMenus.Add(tabMenu);
 			var tabs = _tabMenus.Select(x => x.TabButton).ToArray();
 			Menu.SetValue("_menuTabs", tabs);
+			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
 			tabMenu.TabButton.transform.parent = parent;
 			UpdateTabNavigation();
+		}
+
+		private void AddSelectablePair(IModTabMenu tabMenu)
+		{
+			var selectablePairs = Menu.GetValue<TabbedMenu.TabSelectablePair[]>("_tabSelectablePairs").ToList();
+			selectablePairs.Add(new TabbedMenu.TabSelectablePair
+			{
+				tabButton = tabMenu.TabButton,
+				selectable = tabMenu.TabButton.GetComponent<Selectable>()
+			});
+			Menu.SetValue("_tabSelectablePairs", selectablePairs.ToArray());
 		}
 
 		private void UpdateTabNavigation()
