@@ -91,6 +91,7 @@ namespace OWML.LoadCustomAssets
 		{
 			_music = new GameObject().AddComponent<AudioSource>();
 			_music.clip = ModHelper.Assets.GetAudio("spiral-mountain.mp3");
+			_music.loop = true;
 			ModHelper.Console.WriteLine("Music loaded!");
 		}
 
