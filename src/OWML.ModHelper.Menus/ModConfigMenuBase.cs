@@ -2,6 +2,7 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
 {
@@ -39,6 +40,7 @@ namespace OWML.ModHelper.Menus
 			_selectorTemplate = selectorTemplate;
 
 			base.Initialize(menu);
+			menu.SetValue("_menuOptions", new MenuOption[] { });
 
 			Title = Manifest.Name;
 
