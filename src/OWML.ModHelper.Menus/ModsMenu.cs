@@ -59,16 +59,14 @@ namespace OWML.ModHelper.Menus
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
-			var modsTab = options.GameplayTab.Copy(ModsTitle);
-			modsTab.BaseButtons.ForEach(x => x.Hide());
-			//modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
-			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
-			options.AddTab(modsTab);
+			var modsTab = CreateTab(options, ModsTitle);
 
 			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);//.RebindingButton.Copy(Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
-			InitConfigMenu(OwmlMenu, options);
-			owmlButton.OnClick += () => OwmlMenu.Open();
+			var owmlTab = CreateTab(options, Constants.OwmlTitle);
+			owmlTab.TabButton.gameObject.SetActive(false);
+			InitConfigMenu(OwmlMenu, options, owmlTab);
+			owmlButton.OnClick += () => owmlTab.Open();//OwmlMenu.Open();
 
 			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
 			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
@@ -97,14 +95,16 @@ namespace OWML.ModHelper.Menus
 			{
 				var modButton = options.GameplayTab.Buttons.First().Copy(modConfigMenu.Manifest.Name);
 				modButton.Button.enabled = true;
-				InitConfigMenu(modConfigMenu, options);
-				modButton.OnClick += modConfigMenu.Open;
+				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
+				modTab.TabButton.gameObject.SetActive(false);
+				InitConfigMenu(modConfigMenu, options, modTab);
+				modButton.OnClick += modTab.Open;//modConfigMenu.Open;
 				menu.AddButton((IModButtonBase)modButton, index++);
 			}
 			return index;
 		}
 
-		private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options)
+		private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options, IModTabMenu modTabMenu)
 		{
 			var toggleTemplate = options.GraphicsTab.ToggleInputs[0];
 			var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
@@ -113,16 +113,17 @@ namespace OWML.ModHelper.Menus
 			//textInputTemplate.Hide();
 			//var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
 			//numberInputTemplate.Hide();
-			var menuCopy = CreateMenuTemplate(options);
-			modConfigMenu.Initialize(menuCopy, toggleTemplate, sliderTemplate, null, null, /*textInputTemplate, numberInputTemplate,*/ selectorTemplate);
+			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, null, null, /*textInputTemplate, numberInputTemplate,*/ selectorTemplate);
 		}
 
-		private static Menu CreateMenuTemplate(IModTabbedMenu options)
+		private static IModTabMenu CreateTab(IModTabbedMenu options, string name)
 		{
-			var modTabMenu = options.AudioTab.Copy();
-			modTabMenu.TabButton.gameObject.SetActive(false);
-			var menuCopy = modTabMenu.Menu; //RebindingMenu.Copy().Menu;
-			return menuCopy;
+			var modsTab = options.AudioTab.Copy(name);
+			modsTab.BaseButtons.ForEach(x => x.Hide());
+			//modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
+			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
+			options.AddTab(modsTab);
+			return modsTab;
 		}
 	}
 }
