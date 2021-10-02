@@ -28,7 +28,8 @@ namespace OWML.ModHelper.Menus
 			TabButton = tabButton;
 			TabButton.OnTabSelect += t => SelectFirst();
 			var menu = tabButton.GetValue<Menu>("_tabbedMenu");
-			Initialize(menu);
+			var verticalLayout = menu.GetComponentInChildren<VerticalLayoutGroup>(true);
+			Initialize(menu, verticalLayout);
 			InvokeOnInit();
 		}
 
