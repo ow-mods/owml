@@ -4,6 +4,6 @@
   "uniqueName": "Alek.OWML",
   "version": "2.0.0",
   "description": "The mod loader and mod framework for Outer Wilds",
-  "minGameVersion": "1.1.10",
-  "maxGameVersion": "1.1.10"
+  "minGameVersion": "1.1.8",
+  "maxGameVersion": "1.1.10.47"
 }
