@@ -38,8 +38,6 @@ namespace OWML.Launcher
 				.Add<IPathFinder, PathFinder>()
 				.Add<IOWPatcher, OWPatcher>()
 				.Add<IBinaryPatcher, BinaryPatcher>()
-				.Add<IVRFilePatcher, VRFilePatcher>()
-				.Add<IVRPatcher, VRPatcher>()
 				.Add<IGameVersionReader, GameVersionReader>()
 				.Add<IGameVersionHandler, GameVersionHandler>()
 				.Add<IProcessHelper, ProcessHelper>()
