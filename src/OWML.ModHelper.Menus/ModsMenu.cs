@@ -14,20 +14,17 @@ namespace OWML.ModHelper.Menus
 
 		public IModConfigMenuBase OwmlMenu { get; }
 
-		private readonly IModEvents _events;
 		private readonly IModStorage _storage;
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
 		private IModMenus _menus;
 
 		public ModsMenu(
 			IModConfigMenuBase owmlMenu,
-			IModEvents events,
 			IModStorage storage,
 			IModConsole console)
 				: base(console)
 		{
 			OwmlMenu = owmlMenu;
-			_events = events;
 			_storage = storage;
 		}
 
@@ -59,19 +56,9 @@ namespace OWML.ModHelper.Menus
 			var modsButton = owMenu.OptionsButton.Duplicate(ModsTitle);
 			var options = owMenu.OptionsMenu;
 
-			InitCombinationMenu(options);
-
 			var modsMenu = CreateModsMenu(options);
 			modsButton.OnClick += () => modsMenu.Open();
 			Menu = owMenu.Menu;
-		}
-
-		private void InitCombinationMenu(IModTabbedMenu options)
-		{
-			options.OnClosed += () => OnDeactivateOptions(options);
-			
-			var toggleTemplate = options.InputTab.ToggleInputs[0].Copy().Toggle;
-			var rebindMenuTemplate = options.RebindingMenu.Copy().Menu;
 		}
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
@@ -82,7 +69,7 @@ namespace OWML.ModHelper.Menus
 			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
 			options.AddTab(modsTab);
 
-			var owmlButton = options.RebindingButton.Copy(Constants.OwmlTitle);
+			var owmlButton = options.GameplayTab.Buttons.First();//.RebindingButton.Copy(Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			InitConfigMenu(OwmlMenu, options);
 			owmlButton.OnClick += () => OwmlMenu.Open();
@@ -109,10 +96,10 @@ namespace OWML.ModHelper.Menus
 				Title = title
 			};
 			menu.AddSeparator(separator, index++);
-			separator.Element.transform.localScale = options.RebindingButton.Button.transform.localScale;
+			separator.Element.transform.localScale = options.GameplayTab.Buttons.First()/*; RebindingButton*/.Button.transform.localScale;
 			foreach (var modConfigMenu in configMenus)
 			{
-				var modButton = options.RebindingButton.Copy(modConfigMenu.Manifest.Name);
+				var modButton = options.GameplayTab.Buttons.First()/*RebindingButton*/.Copy(modConfigMenu.Manifest.Name);
 				modButton.Button.enabled = true;
 				InitConfigMenu(modConfigMenu, options);
 				modButton.OnClick += modConfigMenu.Open;
@@ -130,31 +117,8 @@ namespace OWML.ModHelper.Menus
 			textInputTemplate.Hide();
 			var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
 			numberInputTemplate.Hide();
-			var rebindMenuCopy = options.RebindingMenu.Copy().Menu;
-			modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate,
-				numberInputTemplate, selectorTemplate);
+			//var rebindMenuCopy = options.GameplayTab.TabButton.GetMenu();//.transform.Fin.GameplayTab..Menu;//RebindingMenu.Copy().Menu;
+			//modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
 		}
-
-		private void OnDeactivateOptions(IModTabbedMenu options)
-		{
-			if (!options.Menu.IsMenuEnabled() &&
-				_modConfigMenus.Any(modMenu => modMenu.ModData.RequireReload))
-			{
-				_events.Unity.FireInNUpdates(ShowReloadWarning, 2);
-			}
-		}
-
-		private void ShowReloadWarning()
-		{
-			var popup = _menus.PopupManager.CreateMessagePopup("Some changes in mod settings\nrequire a game reload\nto take effect", true, "Close game", "Reload later");
-			popup.OnConfirm += OnPopupConfirm;
-			popup.OnCancel += OnPopupCancel;
-		}
-
-		private void OnPopupCancel() => 
-			_modConfigMenus.ForEach(modMenu => modMenu.ModData.UpdateSnapshot());
-
-		private void OnPopupConfirm() => 
-			Application.Quit();
 	}
 }

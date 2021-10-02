@@ -10,9 +10,9 @@
 
 		IModTabMenu GraphicsTab { get; }
 
-		IModButton RebindingButton { get; }
+		//IModButton RebindingButton { get; }
 
-		IModPopupMenu RebindingMenu { get; }
+		//IModPopupMenu RebindingMenu { get; }
 
 		new IModTabbedMenu Copy();
 
