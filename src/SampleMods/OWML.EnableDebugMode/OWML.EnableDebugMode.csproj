@@ -18,4 +18,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="md &quot;$(SolutionDir)release\mods&quot;&#xD;&#xA;xcopy /i /y $(TargetPath) &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)manifest.json&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)default-config.json&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;" />
+  </Target>
+
 </Project>

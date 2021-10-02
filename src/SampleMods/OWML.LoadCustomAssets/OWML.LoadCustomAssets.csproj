@@ -51,4 +51,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="md &quot;$(SolutionDir)release\mods&quot;&#xD;&#xA;xcopy /i /y $(TargetPath) &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)manifest.json&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)default-config.json&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)blaster-firing.wav&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)cubebundle&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)cubebundle.manifest&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)duck.obj&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)duck.png&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)savefile.json&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)spiral-mountain.mp3&quot; &quot;$(SolutionDir)release\mods\$(ProjectName)\&quot;" />
+  </Target>
+
 </Project>
