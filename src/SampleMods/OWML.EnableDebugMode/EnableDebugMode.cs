@@ -43,11 +43,6 @@ namespace OWML.EnableDebugMode
 			{
 				ModHelper.Console.WriteLine("Player spawner loaded!");
 				_playerSpawner = playerSpawner;
-				if (Keyboard.current == null)
-				{
-					ModHelper.Console.WriteLine("Keyboard object is null!", MessageType.Error);
-					return;
-				}
 				_isStarted = true;
 			}
 		}
