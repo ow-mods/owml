@@ -113,8 +113,16 @@ namespace OWML.ModHelper.Menus
 			//textInputTemplate.Hide();
 			//var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
 			//numberInputTemplate.Hide();
-			var menuCopy = options.AudioTab.Copy().Menu;//RebindingMenu.Copy().Menu;
+			var menuCopy = CreateMenuTemplate(options);
 			modConfigMenu.Initialize(menuCopy, toggleTemplate, sliderTemplate, null, null, /*textInputTemplate, numberInputTemplate,*/ selectorTemplate);
+		}
+
+		private static Menu CreateMenuTemplate(IModTabbedMenu options)
+		{
+			var modTabMenu = options.AudioTab.Copy();
+			modTabMenu.TabButton.gameObject.SetActive(false);
+			var menuCopy = modTabMenu.Menu; //RebindingMenu.Copy().Menu;
+			return menuCopy;
 		}
 	}
 }
