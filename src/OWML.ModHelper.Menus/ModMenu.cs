@@ -65,7 +65,7 @@ namespace OWML.ModHelper.Menus
 				.ToList();
 
 			_inputs = new List<IModInputBase>()
-				.Concat(Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
+				.Concat(Menu.GetComponentsInChildren<ToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
 				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModInputBase>())
 				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModInputBase>())
 				.ToList();
@@ -288,9 +288,9 @@ namespace OWML.ModHelper.Menus
 
 		public virtual void SelectFirst()
 		{
-			//var firstSelectable = Menu.GetComponentInChildren<Selectable>();
+			var firstSelectable = Menu.GetComponentInChildren<Selectable>();
 			//Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
-			//Menu.SetSelectOnActivate(firstSelectable);
+			Menu.SetSelectOnActivate(firstSelectable);
 		}
 
 		protected void UpdateNavigation(List<Selectable> selectables)
@@ -308,10 +308,10 @@ namespace OWML.ModHelper.Menus
 
 		public virtual void UpdateNavigation()
 		{
-			//var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
-			//	.Select(x => x.GetComponent<Selectable>())
-			//	.Where(x => x != null).ToList();
-			//UpdateNavigation(selectables);
+			var selectables = Menu.GetComponentsInChildren<MenuOption>()
+				.Select(x => x.GetComponent<Selectable>())
+				.Where(x => x != null).ToList();
+			UpdateNavigation(selectables);
 		}
 	}
 }
