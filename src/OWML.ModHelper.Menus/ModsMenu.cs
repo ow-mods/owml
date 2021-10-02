@@ -70,7 +70,7 @@ namespace OWML.ModHelper.Menus
 			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
 			options.AddTab(modsTab);
 
-			var owmlButton = options.GameplayTab.Buttons.First();//.RebindingButton.Copy(Constants.OwmlTitle);
+			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);//.RebindingButton.Copy(Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			InitConfigMenu(OwmlMenu, options);
 			owmlButton.OnClick += () => OwmlMenu.Open();
