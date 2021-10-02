@@ -2,6 +2,7 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
 {
@@ -39,6 +40,7 @@ namespace OWML.ModHelper.Menus
 			_selectorTemplate = selectorTemplate;
 
 			base.Initialize(menu);
+			menu.SetValue("_menuOptions", new MenuOption[] { });
 
 			Title = Manifest.Name;
 
@@ -73,7 +75,8 @@ namespace OWML.ModHelper.Menus
 
 			if (value is JObject obj)
 			{
-				switch ((string)obj["type"])
+				var settingType = (string)obj["type"];
+				switch (settingType)
 				{
 					case "slider":
 						AddSliderInput(key, obj, index);
@@ -85,19 +88,19 @@ namespace OWML.ModHelper.Menus
 						AddSelectorInput(key, obj, index);
 						return;
 					default:
-						Console.WriteLine("Error - Unrecognized complex setting: " + value, MessageType.Error);
+						Console.WriteLine("Unrecognized complex setting type: " + settingType, MessageType.Warning);
 						return;
 				}
 			}
 
-			Console.WriteLine("Error - Unrecognized setting type: " + value.GetType(), MessageType.Error);
+			Console.WriteLine("Unrecognized setting type: " + value.GetType(), MessageType.Error);
 		}
 
 		private void AddToggleInput(string key, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.YesButton.Title = "Yes";
-			toggle.NoButton.Title = "No";
+			//toggle.YesButton.Title = "Yes";
+			//toggle.NoButton.Title = "No";
 			toggle.Element.name = key;
 			toggle.Title = key;
 			toggle.Show();
@@ -106,8 +109,8 @@ namespace OWML.ModHelper.Menus
 		private void AddToggleInput(string key, JObject obj, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.YesButton.Title = (string)obj["yes"];
-			toggle.NoButton.Title = (string)obj["no"];
+			//toggle.YesButton.Title = (string)obj["yes"];
+			//toggle.NoButton.Title = (string)obj["no"];
 			toggle.Element.name = key;
 			toggle.Title = (string)obj["title"] ?? key;
 			toggle.Show();
@@ -135,16 +138,16 @@ namespace OWML.ModHelper.Menus
 
 		private void AddTextInput(string key, int index)
 		{
-			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
-			textInput.Element.name = key;
-			textInput.Show();
+			//var textInput = AddTextInput(_textInputTemplate.Copy(key), index); todo
+			//textInput.Element.name = key;
+			//textInput.Show();
 		}
 
 		private void AddNumberInput(string key, int index)
 		{
-			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
-			numberInput.Element.name = key;
-			numberInput.Show();
+			//var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index); todo
+			//numberInput.Element.name = key;
+			//numberInput.Show();
 		}
 	}
 }

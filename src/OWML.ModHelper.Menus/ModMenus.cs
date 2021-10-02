@@ -32,18 +32,18 @@ namespace OWML.ModHelper.Menus
 			ModsMenu = modsMenu;
 			PopupManager = popupManager;
 
-			events.Subscribe<SettingsManager>(Events.AfterStart);
+			events.Subscribe<PauseMenuManager>(Events.AfterStart);
 			events.Subscribe<TitleScreenManager>(Events.AfterStart);
 			events.Event += OnEvent;
 		}
 
 		private void OnEvent(MonoBehaviour behaviour, Events ev)
 		{
-			if (behaviour is SettingsManager settingsManager &&
+			if (behaviour is PauseMenuManager pauseMenuManager &&
 				ev == Events.AfterStart &&
-				settingsManager.name == "PauseMenuManagers")
+				pauseMenuManager.name == "PauseMenuManagers")
 			{
-				InitPauseMenu(settingsManager);
+				InitPauseMenu(pauseMenuManager);
 			}
 			else if (behaviour is TitleScreenManager titleScreenManager &&
 					 ev == Events.AfterStart)
@@ -67,11 +67,11 @@ namespace OWML.ModHelper.Menus
 			}
 		}
 
-		private void InitPauseMenu(SettingsManager settingsManager)
+		private void InitPauseMenu(PauseMenuManager pauseMenuManager)
 		{
 			try
 			{
-				PauseMenu.Initialize(settingsManager);
+				PauseMenu.Initialize(pauseMenuManager);
 				ModsMenu.Initialize(this, PauseMenu);
 			}
 			catch (Exception ex)

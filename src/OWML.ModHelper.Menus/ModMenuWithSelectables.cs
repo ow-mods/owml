@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
 
 			if (saveButton == null || resetButton == null || cancelButton == null)
 			{
-				Console.WriteLine("Error - Failed to setup menu with selectables.");
+				Console.WriteLine("Failed to setup menu with selectables.", MessageType.Error);
 				return;
 			}
 
@@ -56,14 +56,6 @@ namespace OWML.ModHelper.Menus
 
 		public override void Initialize(Menu menu)
 		{
-			var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true)
-				.Single(x => x.name == "RebindingModeBlocker");
-			blocker.gameObject.SetActive(false);
-
-			var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot")
-				.GetComponentInChildren<HorizontalLayoutGroup>(true);
-			labelPanel.gameObject.SetActive(false);
-
 			var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true)
 				.Single(x => x.name == "Content");
 			Initialize(menu, layoutGroup);
@@ -72,10 +64,7 @@ namespace OWML.ModHelper.Menus
 			{
 				SetupCommands();
 			}
-			SetupButtons();
-
-			GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
-			GetTitleButton("UIElement-KeyRebinder")?.Hide();
+			//SetupButtons();
 
 			foreach (Transform child in layoutGroup.transform)
 			{
@@ -94,9 +83,9 @@ namespace OWML.ModHelper.Menus
 
 		public override void UpdateNavigation()
 		{
-			//Selectables = Layout.GetComponentsInChildren<TooltipSelectable>()
-			//	.Select(x => x.GetComponent<Selectable>())
-			//	.Where(x => x != null).ToList();
+			Selectables = Layout.GetComponentsInChildren<MenuOption>()
+				.Select(x => x.GetComponent<Selectable>())
+				.Where(x => x != null).ToList();
 			UpdateNavigation(Selectables);
 		}
 
