@@ -44,7 +44,7 @@ namespace OWML.ModHelper.Menus
 				_tabMenus.Add(tabMenu);
 			}
 
-			GameplayTab = GetTab("Button-GamePlay");
+			GameplayTab = GetTab("Button-GamePlayOG");
 			AudioTab = GetTab("Button-Audio");
 			InputTab = GetTab("Button-Input");
 			GraphicsTab = GetTab("Button-Graphics");
