@@ -14,7 +14,7 @@ namespace OWML.Patcher
 		private const string FileName = "globalgamemanagers";
 		private const string BackupSuffix = ".bak";
 		private const int BlockAddressOffset = 0x1000;
-		private const int FirstAddressIndex = 0x1D4;
+		private const int FirstAddressIndex = 0x204;
 		private const int AddressStructureSize = 0x14;
 		private const int SizeOffset = 0x4;
 		private const int SectorCount = 20;
