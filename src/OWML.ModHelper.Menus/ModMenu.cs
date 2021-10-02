@@ -288,30 +288,30 @@ namespace OWML.ModHelper.Menus
 
 		public virtual void SelectFirst()
 		{
-			//var firstSelectable = Menu.GetComponentInChildren<Selectable>();
+			var firstSelectable = Menu.GetComponentInChildren<Selectable>();
 			//Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
-			//Menu.SetSelectOnActivate(firstSelectable);
+			Menu.SetSelectOnActivate(firstSelectable);
 		}
 
 		protected void UpdateNavigation(List<Selectable> selectables)
 		{
-			//for (var i = 0; i < selectables.Count; i++)
-			//{
-			//	var upIndex = (i - 1 + selectables.Count) % selectables.Count;
-			//	var downIndex = (i + 1) % selectables.Count;
-			//	var navigation = selectables[i].navigation;
-			//	navigation.selectOnUp = selectables[upIndex];
-			//	navigation.selectOnDown = selectables[downIndex];
-			//	selectables[i].navigation = navigation;
-			//}
+			for (var i = 0; i < selectables.Count; i++)
+			{
+				var upIndex = (i - 1 + selectables.Count) % selectables.Count;
+				var downIndex = (i + 1) % selectables.Count;
+				var navigation = selectables[i].navigation;
+				navigation.selectOnUp = selectables[upIndex];
+				navigation.selectOnDown = selectables[downIndex];
+				selectables[i].navigation = navigation;
+			}
 		}
 
 		public virtual void UpdateNavigation()
 		{
-			//var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
-			//	.Select(x => x.GetComponent<Selectable>())
-			//	.Where(x => x != null).ToList();
-			//UpdateNavigation(selectables);
+			var selectables = Menu.GetComponentsInChildren<MenuOption>()
+				.Select(x => x.GetComponent<Selectable>())
+				.Where(x => x != null).ToList();
+			UpdateNavigation(selectables);
 		}
 	}
 }

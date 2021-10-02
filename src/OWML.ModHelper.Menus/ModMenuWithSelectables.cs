@@ -41,7 +41,7 @@ namespace OWML.ModHelper.Menus
 
 			if (saveButton == null || resetButton == null || cancelButton == null)
 			{
-				Console.WriteLine("Error - Failed to setup menu with selectables.");
+				Console.WriteLine("Failed to setup menu with selectables.", MessageType.Error);
 				return;
 			}
 
@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
 			{
 				SetupCommands();
 			}
-			SetupButtons();
+			//SetupButtons();
 
 			//GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
 			//GetTitleButton("UIElement-KeyRebinder")?.Hide();
@@ -89,13 +89,13 @@ namespace OWML.ModHelper.Menus
 		public override void SelectFirst()
 		{
 			//Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
-			//Menu.SetSelectOnActivate(Selectables[0]);
+			Menu.SetSelectOnActivate(Selectables[0]);
 		}
 
 		public override void UpdateNavigation()
 		{
-			Selectables = Layout.GetComponentsInChildren<Selectable>()
-				//.Select(x => x.GetComponent<Selectable>())
+			Selectables = Layout.GetComponentsInChildren<MenuOption>()
+				.Select(x => x.GetComponent<Selectable>())
 				.Where(x => x != null).ToList();
 			UpdateNavigation(Selectables);
 		}

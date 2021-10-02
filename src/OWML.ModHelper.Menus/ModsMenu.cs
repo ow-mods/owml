@@ -53,12 +53,13 @@ namespace OWML.ModHelper.Menus
 		public void Initialize(IModMenus menus, IModOWMenu owMenu)
 		{
 			_menus = menus;
+			Menu = owMenu.Menu;
+
 			var modsButton = owMenu.OptionsButton.Duplicate(ModsTitle);
 			var options = owMenu.OptionsMenu;
 
 			var modsMenu = CreateModsMenu(options);
 			modsButton.OnClick += () => modsMenu.Open();
-			Menu = owMenu.Menu;
 		}
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
