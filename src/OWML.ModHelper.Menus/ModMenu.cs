@@ -65,7 +65,7 @@ namespace OWML.ModHelper.Menus
 				.ToList();
 
 			_inputs = new List<IModInputBase>()
-				.Concat(Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
+				.Concat(Menu.GetComponentsInChildren<ToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
 				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModInputBase>())
 				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModInputBase>())
 				.ToList();
@@ -295,15 +295,15 @@ namespace OWML.ModHelper.Menus
 
 		protected void UpdateNavigation(List<Selectable> selectables)
 		{
-			for (var i = 0; i < selectables.Count; i++)
-			{
-				var upIndex = (i - 1 + selectables.Count) % selectables.Count;
-				var downIndex = (i + 1) % selectables.Count;
-				var navigation = selectables[i].navigation;
-				navigation.selectOnUp = selectables[upIndex];
-				navigation.selectOnDown = selectables[downIndex];
-				selectables[i].navigation = navigation;
-			}
+			//for (var i = 0; i < selectables.Count; i++)
+			//{
+			//	var upIndex = (i - 1 + selectables.Count) % selectables.Count;
+			//	var downIndex = (i + 1) % selectables.Count;
+			//	var navigation = selectables[i].navigation;
+			//	navigation.selectOnUp = selectables[upIndex];
+			//	navigation.selectOnDown = selectables[downIndex];
+			//	selectables[i].navigation = navigation;
+			//}
 		}
 
 		public virtual void UpdateNavigation()

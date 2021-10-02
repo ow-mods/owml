@@ -110,15 +110,15 @@ namespace OWML.ModHelper.Menus
 
 		private void InitConfigMenu(IModConfigMenuBase modConfigMenu, IModTabbedMenu options)
 		{
-			var toggleTemplate = options.InputTab.ToggleInputs[0];
+			var toggleTemplate = options.GraphicsTab.ToggleInputs[0];
 			var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
 			var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
-			var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
-			textInputTemplate.Hide();
-			var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
-			numberInputTemplate.Hide();
-			//var rebindMenuCopy = options.GameplayTab.TabButton.GetMenu();//.transform.Fin.GameplayTab..Menu;//RebindingMenu.Copy().Menu;
-			//modConfigMenu.Initialize(rebindMenuCopy, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
+			//var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
+			//textInputTemplate.Hide();
+			//var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
+			//numberInputTemplate.Hide();
+			var menuCopy = options.AudioTab.Copy().Menu;//RebindingMenu.Copy().Menu;
+			modConfigMenu.Initialize(menuCopy, toggleTemplate, sliderTemplate, null, null, /*textInputTemplate, numberInputTemplate,*/ selectorTemplate);
 		}
 	}
 }

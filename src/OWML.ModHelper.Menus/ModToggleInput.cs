@@ -7,22 +7,22 @@ namespace OWML.ModHelper.Menus
 {
 	public class ModToggleInput : ModInput<bool>, IModToggleInput
 	{
-		public IModButton YesButton { get; }
+		//public IModButton YesButton { get; }
 
-		public IModButton NoButton { get; }
+		//public IModButton NoButton { get; }
 
-		public TwoButtonToggleElement Toggle { get; }
+		public ToggleElement Toggle { get; }
 
 		public override bool IsSelected => Toggle.GetValue<bool>("_amISelected");
 
-		public ModToggleInput(TwoButtonToggleElement toggle, IModMenu menu)
+		public ModToggleInput(ToggleElement toggle, IModMenu menu)
 			: base(toggle, menu)
 		{
 			Toggle = toggle;
-			YesButton = new ModTitleButton(Toggle.GetValue<Button>("_buttonTrue"), menu);
-			YesButton.OnClick += () => InvokeOnChange(true);
-			NoButton = new ModTitleButton(Toggle.GetValue<Button>("_buttonFalse"), menu);
-			NoButton.OnClick += () => InvokeOnChange(false);
+			//YesButton = new ModTitleButton(Toggle.GetValue<Button>("_buttonTrue"), menu);
+			//YesButton.OnClick += () => InvokeOnChange(true);
+			//NoButton = new ModTitleButton(Toggle.GetValue<Button>("_buttonFalse"), menu);
+			//NoButton.OnClick += () => InvokeOnChange(false);
 		}
 
 		public override bool Value

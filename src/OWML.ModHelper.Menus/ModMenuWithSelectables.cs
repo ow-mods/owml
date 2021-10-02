@@ -56,13 +56,13 @@ namespace OWML.ModHelper.Menus
 
 		public override void Initialize(Menu menu)
 		{
-			var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true)
-				.Single(x => x.name == "RebindingModeBlocker");
-			blocker.gameObject.SetActive(false);
+			//var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true)
+			//	.Single(x => x.name == "RebindingModeBlocker");
+			//blocker.gameObject.SetActive(false);
 
-			var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot")
-				.GetComponentInChildren<HorizontalLayoutGroup>(true);
-			labelPanel.gameObject.SetActive(false);
+			//var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot")
+			//	.GetComponentInChildren<HorizontalLayoutGroup>(true);
+			//labelPanel.gameObject.SetActive(false);
 
 			var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true)
 				.Single(x => x.name == "Content");
@@ -74,8 +74,8 @@ namespace OWML.ModHelper.Menus
 			}
 			SetupButtons();
 
-			GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
-			GetTitleButton("UIElement-KeyRebinder")?.Hide();
+			//GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
+			//GetTitleButton("UIElement-KeyRebinder")?.Hide();
 
 			foreach (Transform child in layoutGroup.transform)
 			{
@@ -89,14 +89,14 @@ namespace OWML.ModHelper.Menus
 		public override void SelectFirst()
 		{
 			//Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
-			Menu.SetSelectOnActivate(Selectables[0]);
+			//Menu.SetSelectOnActivate(Selectables[0]);
 		}
 
 		public override void UpdateNavigation()
 		{
-			//Selectables = Layout.GetComponentsInChildren<TooltipSelectable>()
-			//	.Select(x => x.GetComponent<Selectable>())
-			//	.Where(x => x != null).ToList();
+			Selectables = Layout.GetComponentsInChildren<Selectable>()
+				//.Select(x => x.GetComponent<Selectable>())
+				.Where(x => x != null).ToList();
 			UpdateNavigation(Selectables);
 		}
 

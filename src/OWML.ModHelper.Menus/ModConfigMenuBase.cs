@@ -96,8 +96,8 @@ namespace OWML.ModHelper.Menus
 		private void AddToggleInput(string key, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.YesButton.Title = "Yes";
-			toggle.NoButton.Title = "No";
+			//toggle.YesButton.Title = "Yes";
+			//toggle.NoButton.Title = "No";
 			toggle.Element.name = key;
 			toggle.Title = key;
 			toggle.Show();
@@ -106,8 +106,8 @@ namespace OWML.ModHelper.Menus
 		private void AddToggleInput(string key, JObject obj, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.YesButton.Title = (string)obj["yes"];
-			toggle.NoButton.Title = (string)obj["no"];
+			//toggle.YesButton.Title = (string)obj["yes"];
+			//toggle.NoButton.Title = (string)obj["no"];
 			toggle.Element.name = key;
 			toggle.Title = (string)obj["title"] ?? key;
 			toggle.Show();

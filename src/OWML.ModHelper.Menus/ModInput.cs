@@ -58,6 +58,5 @@ namespace OWML.ModHelper.Menus
 		{
 			Menu = menu;
 		}
-
 	}
 }
