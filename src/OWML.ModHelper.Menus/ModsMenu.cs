@@ -28,11 +28,6 @@ namespace OWML.ModHelper.Menus
 			_storage = storage;
 		}
 
-		public void Init(IModMenus menus)
-		{
-			_menus = menus;
-		}
-
 		public void AddMod(IModData modData, IModBehaviour mod)
 		{
 			_modConfigMenus.Add(new ModConfigMenu(modData, mod, _storage, Console));
@@ -97,10 +92,10 @@ namespace OWML.ModHelper.Menus
 				Title = title
 			};
 			menu.AddSeparator(separator, index++);
-			separator.Element.transform.localScale = options.GameplayTab.Buttons.First()/*; RebindingButton*/.Button.transform.localScale;
+			separator.Element.transform.localScale = options.GameplayTab.Buttons.First().Button.transform.localScale;
 			foreach (var modConfigMenu in configMenus)
 			{
-				var modButton = options.GameplayTab.Buttons.First()/*RebindingButton*/.Copy(modConfigMenu.Manifest.Name);
+				var modButton = options.GameplayTab.Buttons.First().Copy(modConfigMenu.Manifest.Name);
 				modButton.Button.enabled = true;
 				InitConfigMenu(modConfigMenu, options);
 				modButton.OnClick += modConfigMenu.Open;

@@ -87,13 +87,13 @@ namespace OWML.ModLoader
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
-					//_menus.ModsMenu?.AddMod(modData, null);
+					_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
 
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
-				//_menus.ModsMenu?.AddMod(modData, initMod);
+				_menus.ModsMenu?.AddMod(modData, initMod);
 				_modList.Add(initMod);
 			}
 		}
