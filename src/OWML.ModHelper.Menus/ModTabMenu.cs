@@ -49,6 +49,8 @@ namespace OWML.ModHelper.Menus
 			_optionsMenu.Menu.Invoke("SelectTabButton", TabButton);
 		}
 
+		public void HideButton() => TabButton.gameObject.SetActive(false);
+
 		public new IModTabMenu Copy()
 		{
 			var tabButton = GameObject.Instantiate(TabButton, TabButton.transform.parent);

@@ -64,7 +64,7 @@ namespace OWML.ModHelper.Menus
 			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);//.RebindingButton.Copy(Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			var owmlTab = CreateTab(options, Constants.OwmlTitle);
-			owmlTab.TabButton.gameObject.SetActive(false);
+			owmlTab.HideButton();
 			InitConfigMenu(OwmlMenu, options, owmlTab);
 			owmlButton.OnClick += () => owmlTab.Open();//OwmlMenu.Open();
 
@@ -96,7 +96,7 @@ namespace OWML.ModHelper.Menus
 				var modButton = options.GameplayTab.Buttons.First().Copy(modConfigMenu.Manifest.Name);
 				modButton.Button.enabled = true;
 				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
-				modTab.TabButton.gameObject.SetActive(false);
+				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
 				modButton.OnClick += modTab.Open;//modConfigMenu.Open;
 				menu.AddButton((IModButtonBase)modButton, index++);
