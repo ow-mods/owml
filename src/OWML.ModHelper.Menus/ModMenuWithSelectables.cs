@@ -26,12 +26,12 @@ namespace OWML.ModHelper.Menus
 		{
 			var listenerObject = new GameObject("ConfigurationMenu_Listener");
 			CommandListener = listenerObject.AddComponent<ModCommandListener>();
-            CommandListener.AddToListener(InputLibrary.confirm);
-            CommandListener.AddToListener(InputLibrary.enter2); // keypad's Enter
-            CommandListener.AddToListener(InputLibrary.cancel);
-            CommandListener.AddToListener(InputLibrary.escape);
-            CommandListener.AddToListener(InputLibrary.setDefaults);
-        }
+			CommandListener.AddToListener(InputLibrary.confirm);
+			CommandListener.AddToListener(InputLibrary.enter2); // keypad's Enter
+			CommandListener.AddToListener(InputLibrary.cancel);
+			CommandListener.AddToListener(InputLibrary.escape);
+			CommandListener.AddToListener(InputLibrary.setDefaults);
+		}
 
 		protected virtual void SetupButtons()
 		{
@@ -152,34 +152,34 @@ namespace OWML.ModHelper.Menus
 
 		protected virtual void OnActivateMenu()
 		{
-            CommandListener.OnNewlyPressed += OnButton;
-        }
+			CommandListener.OnNewlyPressed += OnButton;
+		}
 
 		protected virtual void OnDeactivateMenu()
 		{
-            CommandListener.OnNewlyPressed -= OnButton;
-        }
+			CommandListener.OnNewlyPressed -= OnButton;
+		}
 
-        protected virtual void OnButton(IInputCommands command)
-        {
-            if (command == InputLibrary.confirm || command == InputLibrary.enter2)
+		protected virtual void OnButton(IInputCommands command)
+		{
+			if (command == InputLibrary.confirm || command == InputLibrary.enter2)
 			{
 				command.ConsumeInput();
 				OnSave();
-            }
-            if (command == InputLibrary.cancel || command == InputLibrary.escape)
+			}
+			if (command == InputLibrary.cancel || command == InputLibrary.escape)
 			{
 				command.ConsumeInput();
 				OnExit();
-            }
-            if (command == InputLibrary.setDefaults)
+			}
+			if (command == InputLibrary.setDefaults)
 			{
 				command.ConsumeInput();
 				OnReset();
-            }
-        }
+			}
+		}
 
-        protected virtual void OnSave()
+		protected virtual void OnSave()
 		{
 			Close();
 		}
