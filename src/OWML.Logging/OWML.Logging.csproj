@@ -9,4 +9,8 @@
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="md &quot;$(SolutionDir)release&quot;&#xD;&#xA;xcopy /i /y $(TargetPath) &quot;$(SolutionDir)release\&quot;" />
+  </Target>
+
 </Project>

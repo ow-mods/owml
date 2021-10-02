@@ -14,4 +14,8 @@
     <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="md &quot;$(SolutionDir)release&quot;&#xD;&#xA;xcopy /i /y $(TargetPath) &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\0Harmony.dll&quot; &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\Mono.Cecil.dll&quot; &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\Mono.Cecil.Mdb.dll&quot; &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\Mono.Cecil.Pdb.dll&quot; &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\Mono.Cecil.Rocks.dll&quot; &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\MonoMod.RuntimeDetour.dll&quot; &quot;$(SolutionDir)release\&quot;&#xD;&#xA;xcopy /i /y &quot;$(ProjectDir)bin\Debug\net40\MonoMod.Utils.dll&quot; &quot;$(SolutionDir)release\&quot;" />
+  </Target>
+
 </Project>
