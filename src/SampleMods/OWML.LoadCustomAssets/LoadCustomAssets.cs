@@ -2,6 +2,7 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 namespace OWML.LoadCustomAssets
@@ -139,22 +140,23 @@ namespace OWML.LoadCustomAssets
 
 		public void Update()
 		{
-			//if (Input.GetKeyDown(KeyCode.F9))
-			//{
-			//	SendFatalMessage();
-			//}
-			//if (!_isInSolarSystem || OWTime.IsPaused())
-			//{
-			//	return;
-			//}
-			//if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
-			//{
-			//	ShootDuck();
-			//}
-			//else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
-			//{
-			//	CreateCube();
-			//}
+			if (Keyboard.current[Key.F9].wasPressedThisFrame)
+			{
+				SendFatalMessage();
+			}
+			if (!_isInSolarSystem || OWTime.IsPaused())
+			{
+				return;
+			}
+			if (Mouse.current.leftButton.wasPressedThisFrame && _isDucksEnabled)
+			{
+				ShootDuck();
+				return;
+			}
+			if (Mouse.current.rightButton.wasPressedThisFrame && _isCubesEnabled)
+			{
+				CreateCube();
+			}
 		}
 
 		private void SendFatalMessage()

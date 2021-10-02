@@ -39,6 +39,8 @@ namespace OWML.ModHelper.Events
 		public static void AfterDestroy(MonoBehaviour __instance) =>
 			OnEvent?.Invoke(__instance, Common.Events.AfterDestroy);
 
+		public static bool EmptyMethodPrefix() => false;
+
 		public static IEnumerable<CodeInstruction> EmptyMethod(IEnumerable<CodeInstruction> _) => 
 			new List<CodeInstruction>();
 	}
