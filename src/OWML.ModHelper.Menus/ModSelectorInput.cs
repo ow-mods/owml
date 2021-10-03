@@ -17,13 +17,13 @@ namespace OWML.ModHelper.Menus
 
 		public override string Value
 		{
-			get => "value";//_options[_element.GetCurrentIndex()];
+			get => _element.GetSelectedOption();//_options[_element.GetCurrentIndex()];
 			set => _element.Initialize(_options.IndexOf(value));
 		}
 
 		public int SelectedIndex
 		{
-			get => 0;//_element.GetCurrentIndex();
+			get => _element.GetValue<int>("_value");
 			set => _element.Initialize((value % _count + _count) % _count);
 		}
 

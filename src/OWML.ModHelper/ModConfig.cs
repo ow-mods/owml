@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.Logging;
+using UnityEngine;
 
 namespace OWML.ModHelper
 {
@@ -22,22 +22,21 @@ namespace OWML.ModHelper
 				return GetSettingsValue<T>(key, Settings[key]);
 			}
 
-			ModConsole.OwmlConsole.WriteLine($"Error - Setting not found: {key}", MessageType.Error);
+			Debug.LogError($"Setting not found: {key}");
 			return default;
 		}
 
 		private T GetSettingsValue<T>(string key, object setting)
 		{
-			var type = typeof(T);
-
 			try
 			{
+				var type = typeof(T);
 				var value = setting is JObject objectValue ? objectValue["value"] : setting;
 				return type.IsEnum ? ConvertToEnum<T>(value) : (T)Convert.ChangeType(value, type);
 			}
-			catch (InvalidCastException)
+			catch (Exception ex)
 			{
-				ModConsole.OwmlConsole.WriteLine($"Error when converting setting {key} of type {setting.GetType()} to type {type}", MessageType.Error);
+				Debug.LogError($"Error when getting setting {key}: " + ex.Message);
 				return default;
 			}
 		}
@@ -63,7 +62,7 @@ namespace OWML.ModHelper
 			}
 			catch (ArgumentException ex)
 			{
-				ModConsole.OwmlConsole.WriteLine($"Error - Can't convert {valueString} to enum {typeof(T)}: {ex.Message}", MessageType.Error);
+				Debug.LogError($"Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
 				return default;
 			}
 		}
@@ -72,7 +71,7 @@ namespace OWML.ModHelper
 		{
 			if (!Settings.ContainsKey(key))
 			{
-				ModConsole.OwmlConsole.WriteLine("Error - Setting not found: " + key, MessageType.Error);
+				Debug.LogError("Setting not found: " + key);
 				return;
 			}
 
