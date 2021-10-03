@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus
 
 		protected abstract void AddInputs();
 
-		protected abstract void UpdateUIValues();
+		public abstract void UpdateUIValues();
 
 		protected ModConfigMenuBase(IModManifest manifest, IModStorage storage, IModConsole console)
 			: base(console)

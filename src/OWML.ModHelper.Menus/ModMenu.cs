@@ -60,14 +60,14 @@ namespace OWML.ModHelper.Menus
 
 			var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>()).ToList();
 			BaseButtons = new List<IModButtonBase>()
-				.Concat(promptButtons.Select(x => new ModPromptButton(x, this, Console)).Cast<IModButtonBase>())
-				.Concat(Menu.GetComponentsInChildren<Button>(true).Except(promptButtons).Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>())
+				.Concat(promptButtons.Select(x => new ModPromptButton(x, this, Console)))
+				.Concat(Menu.GetComponentsInChildren<Button>(true).Except(promptButtons).Select(x => new ModTitleButton(x, this)))
 				.ToList();
 
 			_inputs = new List<IModInputBase>()
-				.Concat(Menu.GetComponentsInChildren<ToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
-				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModInputBase>())
-				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModInputBase>())
+				.Concat(Menu.GetComponentsInChildren<ToggleElement>(true).Select(x => new ModToggleInput(x, this)))
+				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)))
+				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)))
 				.ToList();
 
 			Separators = new List<IModSeparator>();
