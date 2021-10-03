@@ -4,7 +4,6 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
-using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,13 +32,14 @@ namespace OWML.ModHelper.Menus
 			CommandListener.AddToListener(InputLibrary.setDefaults);
 		}
 
-		protected virtual void SetupButtons()
+		protected virtual void SetupButtons(Menu menu)
 		{
-			var saveButton = GetPromptButton("UIElement-SaveAndExit");
-			var resetButton = GetPromptButton("UIElement-ResetToDefaultsButton");
-			var cancelButton = GetPromptButton("UIElement-DiscardChangesButton");
+			var promptButtons = GetParentPromptButtons(menu);
+			var saveButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-SaveAndExit");
+			var resetButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-ResetToDefaultsButton");
+			//var cancelButton = GetPromptButton("UIElement-DiscardChangesButton");
 
-			if (saveButton == null || resetButton == null || cancelButton == null)
+			if (saveButton == null || resetButton == null/* || cancelButton == null*/)
 			{
 				Console.WriteLine("Failed to setup menu with selectables.", MessageType.Error);
 				return;
@@ -47,12 +47,19 @@ namespace OWML.ModHelper.Menus
 
 			saveButton.OnClick += OnSave;
 			resetButton.OnClick += OnReset;
-			cancelButton.OnClick += OnExit;
+			//cancelButton.OnClick += OnExit;
 
 			saveButton.Prompt = new ScreenPrompt(InputLibrary.confirm, saveButton.DefaultTitle);
-			cancelButton.Prompt = new ScreenPrompt(InputLibrary.cancel, cancelButton.DefaultTitle);
+			//cancelButton.Prompt = new ScreenPrompt(InputLibrary.cancel, cancelButton.DefaultTitle);
 			resetButton.Prompt = new ScreenPrompt(InputLibrary.setDefaults, resetButton.DefaultTitle);
 		}
+
+		private IList<ModPromptButton> GetParentPromptButtons(Menu menu) =>
+			menu.transform.parent
+				.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
+				.Select(x => x.GetComponent<Button>())
+				.Select(x => new ModPromptButton(x, this, Console))
+				.ToList();
 
 		public override void Initialize(Menu menu)
 		{
@@ -64,7 +71,7 @@ namespace OWML.ModHelper.Menus
 			{
 				SetupCommands();
 			}
-			//SetupButtons();
+			SetupButtons(menu);
 
 			foreach (Transform child in layoutGroup.transform)
 			{
