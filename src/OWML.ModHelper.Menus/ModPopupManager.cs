@@ -11,6 +11,7 @@ namespace OWML.ModHelper.Menus
 		private readonly IModMessagePopup _messagePopup;
 		private readonly List<IModTemporaryPopup> _toDestroy = new();
 		private readonly IModEvents _events;
+		private IModTabbedMenu _options;
 
 		public ModPopupManager(
 			IModEvents events,
@@ -22,20 +23,14 @@ namespace OWML.ModHelper.Menus
 			_messagePopup = messagePopup;
 		}
 
-		public void Initialize(PopupInputMenu popupInputMenu)
+		public void Initialize(PopupInputMenu popupInputMenu, IModTabbedMenu options)
 		{
+			_options = options;
 			var popupCanvas = popupInputMenu.transform.parent.gameObject;
 			var newCanvas = GameObject.Instantiate(popupCanvas);
 			newCanvas.AddComponent<DontDestroyOnLoad>();
 
 			var inputMenu = newCanvas.GetComponentInChildren<PopupInputMenu>(true);
-			var combinationMenuObject = GameObject.Instantiate(inputMenu.gameObject);
-
-			combinationMenuObject.transform.SetParent(newCanvas.transform);
-			combinationMenuObject.transform.localScale = inputMenu.transform.localScale;
-			combinationMenuObject.transform.localPosition = inputMenu.transform.localPosition;
-
-			var combinationMenu = combinationMenuObject.GetComponent<PopupInputMenu>();
 			var messageMenu = newCanvas.transform.Find("TwoButton-Popup").GetComponent<PopupMenu>();
 
 			_inputPopup.Initialize(inputMenu);
@@ -44,6 +39,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModMessagePopup CreateMessagePopup(string message, bool addCancel = false, string okMessage = "OK", string cancelMessage = "Cancel")
 		{
+			_options.SetIsBlocking(false);
 			var newPopup = _messagePopup.Copy();
 			_events.Unity.FireOnNextUpdate(() =>
 				newPopup.ShowMessage(message, addCancel, okMessage, cancelMessage));
@@ -54,6 +50,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModInputMenu CreateInputPopup(InputType inputType, string value)
 		{
+			_options.SetIsBlocking(false);
 			var newPopup = _inputPopup.Copy();
 			_events.Unity.FireOnNextUpdate(() =>
 				newPopup.Open(inputType, value));
@@ -66,6 +63,7 @@ namespace OWML.ModHelper.Menus
 		{
 			_toDestroy.Add(closedPopup);
 			_events.Unity.FireOnNextUpdate(CleanUp);
+			_options.SetIsBlocking(true);
 		}
 
 		private void CleanUp()

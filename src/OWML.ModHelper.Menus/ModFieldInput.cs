@@ -9,7 +9,8 @@ namespace OWML.ModHelper.Menus
 
 		protected readonly IModPopupManager PopupManager;
 
-		protected ModFieldInput(OptionsSelectorElement element, IModMenu menu, IModPopupManager popupManager) : base(element, menu)
+		protected ModFieldInput(OptionsSelectorElement element, IModMenu menu, IModPopupManager popupManager) 
+			: base(element, menu)
 		{
 			var button = element.GetComponentInChildren<Button>(); // todo
 			Button = new ModTitleButton(button, menu);
