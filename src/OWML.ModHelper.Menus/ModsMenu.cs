@@ -54,7 +54,7 @@ namespace OWML.ModHelper.Menus
 			var options = owMenu.OptionsMenu;
 
 			var modsMenu = CreateModsMenu(options);
-			modsButton.OnClick += () => modsMenu.Open();
+			modsButton.OnClick += modsMenu.Open;
 		}
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
@@ -109,11 +109,11 @@ namespace OWML.ModHelper.Menus
 			var toggleTemplate = options.GraphicsTab.ToggleInputs[0];
 			var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
 			var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
-			//var textInputTemplate = new ModTextInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
-			//textInputTemplate.Hide();
-			//var numberInputTemplate = new ModNumberInput(toggleTemplate.Copy().Toggle, modConfigMenu, _menus.PopupManager);
-			//numberInputTemplate.Hide();
-			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, null, null, /*textInputTemplate, numberInputTemplate,*/ selectorTemplate);
+			var textInputTemplate = new ModTextInput(selectorTemplate.Copy().SelectorElement, modConfigMenu, _menus.PopupManager);
+			textInputTemplate.Hide();
+			var numberInputTemplate = new ModNumberInput(selectorTemplate.Copy().SelectorElement, modConfigMenu, _menus.PopupManager);
+			numberInputTemplate.Hide();
+			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
 		}
 
 		private static void OnOpenModConfigMenu(IModTabMenu modTab, IModConfigMenu modConfigMenu)
