@@ -126,7 +126,8 @@ namespace OWML.ModHelper.Menus
 		{
 			var modsTab = options.AudioTab.Copy(name);
 			modsTab.BaseButtons.ForEach(x => x.Hide());
-			//modsTab.Menu.GetComponentsInChildren<Selectable>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
+			modsTab.Menu.GetComponentsInChildren<SliderElement>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
+			modsTab.Menu.GetComponentsInChildren<OptionsSelectorElement>(true).ToList().ForEach(x => x.gameObject.transform.localScale = Vector3.zero);
 			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
 			options.AddTab(modsTab);
 			return modsTab;
