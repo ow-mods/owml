@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
 {
@@ -61,10 +63,17 @@ namespace OWML.ModHelper.Menus
 
 		private void OnPopupClose(IModTemporaryPopup closedPopup)
 		{
+			RemoveBlocker();
 			_toDestroy.Add(closedPopup);
 			_events.Unity.FireOnNextUpdate(CleanUp);
 			_options.SetIsBlocking(true);
 		}
+
+		private void RemoveBlocker() =>
+			_options.Menu.transform.parent.parent
+				.GetComponentsInChildren<GraphicRaycaster>()
+				.First(x => x.name == "Blocker")
+				.gameObject.SetActive(false);
 
 		private void CleanUp()
 		{
