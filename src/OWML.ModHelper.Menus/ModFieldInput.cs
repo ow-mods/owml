@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using OWML.Common.Menus;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -15,11 +16,23 @@ namespace OWML.ModHelper.Menus
 		{
 			PopupManager = popupManager;
 
-			var button = element.GetComponentsInChildren<Button>().ToList().First(); // todo
-			Button = new ModTitleButton(button, menu);
+			var buttons = element.GetComponentsInChildren<Button>().ToList();
+
+			var leftButton = buttons.First();
+			leftButton.GetComponentsInChildren<Image>().ToList().ForEach(x => x.gameObject.SetActive(false));
+
+			var center = leftButton.transform.parent.parent.GetChild(1);
+			var centerRect = center.GetComponent<RectTransform>().rect;
+
+			var rightButton = buttons.Last();
+			rightButton.transform.position = center.transform.position;
+			rightButton.GetComponent<RectTransform>().sizeDelta = centerRect.size;
+			rightButton.transform.SetParent(center);
+			rightButton.GetComponentsInChildren<Image>().ToList().ForEach(x => x.gameObject.SetActive(false));
+
+			Button = new ModTitleButton(rightButton, menu);
 			Subscribe(Button);
 
-			var center = button.transform.parent.parent.GetChild(1);
 			var text = center.GetComponentInChildren<Text>();
 			OnChange += value => text.text = value.ToString();
 		}
