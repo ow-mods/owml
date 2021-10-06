@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using System.Linq;
+using OWML.Common.Menus;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -9,13 +10,18 @@ namespace OWML.ModHelper.Menus
 
 		protected readonly IModPopupManager PopupManager;
 
-		protected ModFieldInput(OptionsSelectorElement element, IModMenu menu, IModPopupManager popupManager) 
+		protected ModFieldInput(OptionsSelectorElement element, IModMenu menu, IModPopupManager popupManager)
 			: base(element, menu)
 		{
-			var button = element.GetComponentInChildren<Button>(); // todo
+			PopupManager = popupManager;
+
+			var button = element.GetComponentsInChildren<Button>().ToList().First(); // todo
 			Button = new ModTitleButton(button, menu);
 			Subscribe(Button);
-			PopupManager = popupManager;
+
+			var center = button.transform.parent.parent.GetChild(1);
+			var text = center.GetComponentInChildren<Text>();
+			OnChange += value => text.text = value.ToString();
 		}
 	}
 }
