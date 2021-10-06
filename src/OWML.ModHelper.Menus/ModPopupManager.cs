@@ -71,9 +71,10 @@ namespace OWML.ModHelper.Menus
 
 		private void RemoveBlocker() =>
 			_options.Menu.transform.parent.parent
-				.GetComponentsInChildren<GraphicRaycaster>()
-				.First(x => x.name == "Blocker")
-				.gameObject.SetActive(false);
+				.GetComponentsInChildren<GraphicRaycaster>(true)
+				.Where(r => r.name == "Blocker" && r.transform.parent.name == "TitleCanvas")
+				.ToList()
+				.ForEach(r => r.gameObject.SetActive(false));
 
 		private void CleanUp()
 		{
