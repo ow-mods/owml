@@ -21,6 +21,8 @@ namespace OWML.ModHelper.Menus
 
 		private List<IModTabMenu> _tabMenus;
 
+		private GraphicRaycaster _raycaster;
+
 		public ModOptionsMenu(IModConsole console)
 			: base(console)
 		{
@@ -31,6 +33,7 @@ namespace OWML.ModHelper.Menus
 			base.Initialize(menu);
 			Menu = menu;
 
+			_raycaster = Menu.transform.parent.GetComponent<GraphicRaycaster>();
 			var tabButtons = Menu.GetValue<TabButton[]>("_menuTabs");
 			_tabMenus = new List<IModTabMenu>();
 			foreach (var tabButton in tabButtons)
@@ -58,6 +61,9 @@ namespace OWML.ModHelper.Menus
 			tabMenu.TabButton.transform.parent = parent;
 			UpdateTabNavigation();
 		}
+
+		public void SetIsBlocking(bool isBlocking) =>
+			_raycaster.gameObject.SetActive(isBlocking);
 
 		private void AddSelectablePair(IModTabMenu tabMenu)
 		{

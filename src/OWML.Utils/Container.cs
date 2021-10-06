@@ -4,7 +4,7 @@ namespace OWML.Utils
 {
 	public class Container
 	{
-		private readonly ContainerBuilder _builder = new ContainerBuilder();
+		private readonly ContainerBuilder _builder = new();
 
 		public Container Add<TInterface>(TInterface instance)
 			where TInterface : class

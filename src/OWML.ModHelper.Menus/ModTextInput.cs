@@ -7,7 +7,7 @@ namespace OWML.ModHelper.Menus
 	{
 		private string _value;
 
-		public ModTextInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager)
+		public ModTextInput(OptionsSelectorElement element, IModMenu menu, IModPopupManager popupManager)
 			: base(element, menu, popupManager)
 		{
 		}
@@ -37,7 +37,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModTextInput Copy()
 		{
-			var copy = GameObject.Instantiate(ToggleElement);
+			var copy = GameObject.Instantiate(SelectorElement);
 			GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
 			return new ModTextInput(copy, Menu, PopupManager);
 		}
@@ -48,6 +48,5 @@ namespace OWML.ModHelper.Menus
 			copy.Title = title;
 			return copy;
 		}
-
 	}
 }

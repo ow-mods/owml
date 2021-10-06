@@ -134,16 +134,16 @@ namespace OWML.ModHelper.Menus
 
 		private void AddTextInput(string key, int index)
 		{
-			//var textInput = AddTextInput(_textInputTemplate.Copy(key), index); todo
-			//textInput.Element.name = key;
-			//textInput.Show();
+			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
+			textInput.Element.name = key;
+			textInput.Show();
 		}
 
 		private void AddNumberInput(string key, int index)
 		{
-			//var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index); todo
-			//numberInput.Element.name = key;
-			//numberInput.Show();
+			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
+			numberInput.Element.name = key;
+			numberInput.Show();
 		}
 	}
 }

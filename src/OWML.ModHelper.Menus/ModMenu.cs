@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Menus
 
 		public List<IModNumberInput> NumberInputs => _inputs.OfType<IModNumberInput>().ToList();
 
-		public List<IModSeparator> Separators { get; private set; }
+		public List<IModSeparator> Separators { get; } = new();
 
 		protected LayoutGroup Layout;
 		protected IModConsole Console;
@@ -47,9 +47,9 @@ namespace OWML.ModHelper.Menus
 		public virtual void Initialize(Menu menu)
 		{
 			var root = menu.GetValue<GameObject>("_selectableItemsRoot") ??
-					   menu.GetValue<GameObject>("_menuActivationRoot");
+			           menu.GetValue<GameObject>("_menuActivationRoot");
 			var layoutGroup = root.GetComponent<LayoutGroup>() ??
-							  root.GetComponentInChildren<LayoutGroup>(true);
+			                  root.GetComponentInChildren<LayoutGroup>(true);
 			Initialize(menu, layoutGroup);
 		}
 
@@ -69,8 +69,6 @@ namespace OWML.ModHelper.Menus
 				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)))
 				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)))
 				.ToList();
-
-			Separators = new List<IModSeparator>();
 		}
 
 		[Obsolete("Use GetTitleButton instead")]

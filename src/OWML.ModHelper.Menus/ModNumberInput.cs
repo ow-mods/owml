@@ -8,7 +8,7 @@ namespace OWML.ModHelper.Menus
 	{
 		private float _value;
 
-		public ModNumberInput(TwoButtonToggleElement element, IModMenu menu, IModPopupManager popupManager)
+		public ModNumberInput(OptionsSelectorElement element, IModMenu menu, IModPopupManager popupManager)
 			: base(element, menu, popupManager)
 		{
 		}
@@ -38,7 +38,7 @@ namespace OWML.ModHelper.Menus
 
 		public IModNumberInput Copy()
 		{
-			var copy = GameObject.Instantiate(ToggleElement);
+			var copy = GameObject.Instantiate(SelectorElement);
 			GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
 			return new ModNumberInput(copy, Menu, PopupManager);
 		}
@@ -49,6 +49,5 @@ namespace OWML.ModHelper.Menus
 			copy.Title = title;
 			return copy;
 		}
-
 	}
 }
