@@ -58,6 +58,7 @@ namespace OWML.Logging
 			catch (Exception)
 			{
 				_socket = null;
+				ModConsole.OwmlConsole.WriteLine("Could not connect to console.", MessageType.Warning);
 			}
 		}
 	}
