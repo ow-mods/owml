@@ -18,12 +18,12 @@ namespace OWML.ModHelper.Menus
 			base.Open();
 			var popup = PopupManager.CreateInputPopup(InputType.Number, Value.ToString());
 			popup.OnConfirm += OnConfirm;
+			popup.OnCancel += OnCancel;
 		}
 
-		private void OnConfirm(string text)
-		{
-			Value = Convert.ToSingle(text);
-		}
+		private void OnConfirm(string text) => Value = Convert.ToSingle(text);
+
+		private void OnCancel() => InvokeOnChange(Value);
 
 		public override float Value
 		{
