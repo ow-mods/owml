@@ -37,8 +37,8 @@ namespace OWML.ModHelper
 			IModMenus menus,
 			IModManifest manifest,
 			IModConfig config,
-			IOwmlConfig owmlConfig)
-		//IModInteraction interaction)
+			IOwmlConfig owmlConfig,
+			IModInteraction interaction)
 		{
 			Logger = logger;
 			Console = console;
@@ -50,7 +50,7 @@ namespace OWML.ModHelper
 			Manifest = manifest;
 			Config = config;
 			OwmlConfig = owmlConfig;
-			//Interaction = interaction;
+			Interaction = interaction;
 		}
 	}
 }
