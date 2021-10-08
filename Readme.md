@@ -26,7 +26,7 @@ Refer to the sample mods in the source code for examples. These mods are not inc
 
 ### Get started
 
-1. Create a C# class library project targeting .Net Framework 3.5.
+1. Create a C# class library project targeting .Net Framework 4.0.
 2. Install the [OWML Nuget package](https://www.nuget.org/packages/OWML/).
 3. Reference the following files in {gamePath}\OuterWilds_Data\Managed:
     * Assembly-CSharp.dll
@@ -83,8 +83,7 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Compatible with all versions of Outer Wilds.
-* Custom menus only work with the latest version of Outer Wilds - 1.0.7.
+* Compatible with Outer Wilds version 1.1.8 and above.
 
 ## Feedback
 
@@ -98,7 +97,7 @@ Feature requests, bug reports and PRs are welcome on GitHub.
 Authors:
 * [AmazingAlek](https://github.com/amazingalek)
 * [Raicuparta](https://github.com/Raicuparta/)
-* [Mister_Nebula](https://github.com/misternebula)
+* [_nebula](https://github.com/misternebula)
 * [TAImatem](https://github.com/TAImatem)
 
 Special thanks to:
@@ -110,7 +109,7 @@ Special thanks to:
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)
 * [dnlib](https://github.com/0xd4d/dnlib)
-* [Harmony](https://github.com/pardeike/Harmony)
+* [HarmonyX](https://github.com/BepInEx/HarmonyX)
 * [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
 * [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
 * [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
