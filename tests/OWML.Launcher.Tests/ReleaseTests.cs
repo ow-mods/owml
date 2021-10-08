@@ -38,16 +38,12 @@ namespace OWML.Launcher.Tests
 				"dnlib.dll",
 				"dnpatch.dll",
 				"Gameloop.Vdf.dll",
-				//"Microsoft.Practices.Unity.dll",
-				"NAudio-Unity.dll",
-				//"Newtonsoft.Json.dll",
-				//"System.Runtime.Serialization.dll"
+				"NAudio-Unity.dll"
 			});
 
 			AssertFolderContainsFiles($"{OwmlReleasePath}/lib", new[]
 			{
-				"openvr_api.dll",
-				"OVRPlugin.dll"
+				"mscorlib.dll"
 			});
 		}
 		
@@ -58,6 +54,7 @@ namespace OWML.Launcher.Tests
 			Directory.CreateDirectory($"{OwmlReleasePath}/Mods");
 			CopyMod("OWML.EnableDebugMode");
 			CopyMod("OWML.LoadCustomAssets");
+			CopyMod("OWML.ExampleAPI");
 
 			AssertFolderContainsFiles($"{OwmlReleasePath}/Mods/OWML.EnableDebugMode", new[]
 			{
@@ -79,6 +76,12 @@ namespace OWML.Launcher.Tests
 				"OWML.LoadCustomAssets.dll",
 				"savefile.json",
 				"spiral-mountain.mp3"
+			});
+
+			AssertFolderContainsFiles($"{OwmlReleasePath}/Mods/OWML.ExampleAPI", new[]
+			{
+				"manifest.json",
+				"OWML.ExampleAPI.dll"
 			});
 		}
 
