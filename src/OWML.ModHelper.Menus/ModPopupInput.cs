@@ -26,14 +26,6 @@ namespace OWML.ModHelper.Menus
 			: base(element, menu)
 		{
 			SelectorElement = element;
-
-			//var buttonParent = button.transform.parent;
-			//var layoutGroup = buttonParent.parent.GetComponent<HorizontalLayoutGroup>();
-			//layoutGroup.childControlWidth = true;
-			//layoutGroup.childForceExpandWidth = true;
-
-			//buttonParent.GetComponent<LayoutElement>().preferredWidth = 100;
-
 			SetupCommands();
 		}
 
@@ -45,10 +37,7 @@ namespace OWML.ModHelper.Menus
 			CommandListener.OnNewlyPressed += OnOpenCommand;
 		}
 
-		protected void Subscribe(IModButtonBase button)
-		{
-			button.OnClick += Open;
-		}
+		protected void Subscribe(IModButtonBase button) => button.OnClick += Open;
 
 		protected virtual void OnOpenCommand(IInputCommands command)
 		{
@@ -59,9 +48,7 @@ namespace OWML.ModHelper.Menus
 			}
 		}
 
-		protected virtual void Open()
-		{
-			EventSystem.current.SetSelectedGameObject(SelectorElement.gameObject); // make sure it gets selected after popup closes
-		}
+		protected virtual void Open() => 
+			EventSystem.current.SetSelectedGameObject(SelectorElement.gameObject);
 	}
 }

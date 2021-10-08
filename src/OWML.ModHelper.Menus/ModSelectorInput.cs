@@ -18,7 +18,7 @@ namespace OWML.ModHelper.Menus
 
 		public override string Value
 		{
-			get => SelectorElement.GetSelectedOption();//_options[_element.GetCurrentIndex()];
+			get => SelectorElement.GetSelectedOption();
 			set => SelectorElement.Initialize(_options.IndexOf(value));
 		}
 
