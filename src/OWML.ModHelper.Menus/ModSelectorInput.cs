@@ -9,27 +9,28 @@ namespace OWML.ModHelper.Menus
 {
 	public class ModSelectorInput : ModInput<string>, IModSelectorInput
 	{
-		public override bool IsSelected => _element?.GetValue<bool>("_amISelected") ?? false;
+		public override bool IsSelected => SelectorElement?.GetValue<bool>("_amISelected") ?? false;
 
-		private readonly OptionsSelectorElement _element;
+		public OptionsSelectorElement SelectorElement { get; }
+
 		private int _count;
 		private List<string> _options = new();
 
 		public override string Value
 		{
-			get => "value";//_options[_element.GetCurrentIndex()];
-			set => _element.Initialize(_options.IndexOf(value));
+			get => SelectorElement.GetSelectedOption();
+			set => SelectorElement.Initialize(_options.IndexOf(value));
 		}
 
 		public int SelectedIndex
 		{
-			get => 0;//_element.GetCurrentIndex();
-			set => _element.Initialize((value % _count + _count) % _count);
+			get => SelectorElement.GetValue<int>("_value");
+			set => SelectorElement.Initialize((value % _count + _count) % _count);
 		}
 
 		public ModSelectorInput(OptionsSelectorElement element, IModMenu menu) : base(element, menu)
 		{
-			_element = element;
+			SelectorElement = element;
 			_count = element.GetValue<string[]>("_optionsList").Length;
 			element.OnValueChanged += OnValueChanged;
 		}
@@ -48,12 +49,12 @@ namespace OWML.ModHelper.Menus
 			_options = options.ToList();
 			var index = _options.IndexOf(option);
 			index = Math.Max(index, 0);
-			_element.Initialize(index, options);
+			SelectorElement.Initialize(index, options);
 		}
 
 		public IModSelectorInput Copy()
 		{
-			var copy = GameObject.Instantiate(_element);
+			var copy = GameObject.Instantiate(SelectorElement);
 			GameObject.Destroy(copy.GetComponentInChildren<LocalizedText>(true));
 			return new ModSelectorInput(copy, Menu);
 		}

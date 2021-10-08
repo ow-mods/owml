@@ -21,7 +21,8 @@ namespace OWML.ModHelper.Menus
 		public ModTitleButton(Button button, IModMenu menu)
 			: base(button, menu)
 		{
-			Text = Button.GetComponentInChildren<Text>();
+			Text = Button.GetComponentInChildren<Text>() ??
+			       Button.gameObject.AddComponent<Text>();
 		}
 
 		public new IModButton Copy()
