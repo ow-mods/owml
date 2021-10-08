@@ -25,11 +25,14 @@ namespace OWML.Patcher
 		public void PatchGame()
 		{
 			CopyFiles();
+			CopyLibFiles();
 			PatchAssembly();
 		}
 
 		private void CopyFiles()
 		{
+			_writer.WriteLine("Copying OWML files...");
+
 			var filesToCopy = new[] {
 				"OWML.ModLoader.dll",
 				"OWML.Common.dll",
@@ -42,8 +45,6 @@ namespace OWML.Patcher
 				"OWML.Logging.dll",
 				"OWML.Utils.dll",
 				"OWML.Abstractions.dll",
-				//"Newtonsoft.Json.dll",
-				//"System.Runtime.Serialization.dll",
 				"0Harmony.dll",
 				"Mono.Cecil.dll",
 				"Mono.Cecil.Mdb.dll",
@@ -52,8 +53,6 @@ namespace OWML.Patcher
 				"MonoMod.RuntimeDetour.dll",
 				"MonoMod.Utils.dll",
 				"NAudio-Unity.dll",
-				//"Microsoft.Practices.Unity.dll",
-				//"Unity.Container.dll",
 				"Autofac.dll",
 				Constants.OwmlManifestFileName,
 				Constants.OwmlConfigFileName,
@@ -80,8 +79,38 @@ namespace OWML.Patcher
 			}
 		}
 
+		private void CopyLibFiles()
+		{
+			_writer.WriteLine("Copying replacement OW files...");
+
+			var filesToCopy = new[] {
+				"mscorlib.dll"
+			};
+
+			var uncopiedFiles = new List<string>();
+			foreach (var filename in filesToCopy)
+			{
+				try
+				{
+					File.Copy($"{_owmlConfig.OWMLPath}lib/{filename}", $"{_owmlConfig.ManagedPath}/{filename}", true);
+				}
+				catch
+				{
+					uncopiedFiles.Add(filename);
+				}
+			}
+
+			if (uncopiedFiles.Any())
+			{
+				_writer.WriteLine("Warning - Failed to copy the following lib files to managed :", MessageType.Warning);
+				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
+			}
+		}
+
 		private void PatchAssembly()
 		{
+			_writer.WriteLine("Patching OW assembly...");
+
 			var patcher = new dnpatch.Patcher($"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll");
 
 			var target = new Target
@@ -95,7 +124,7 @@ namespace OWML.Patcher
 
 			if (patchedInstructions.Count == 1)
 			{
-				_writer.WriteLine($"{PatchClass}.{PatchMethod} is already patched.");
+				_writer.WriteLine($"- Assembly is already patched.");
 				return;
 			}
 
@@ -107,8 +136,6 @@ namespace OWML.Patcher
 					instructions.Remove(patchedInstruction);
 				}
 			}
-
-			_writer.WriteLine($"Adding patch in {PatchClass}.{PatchMethod}.");
 
 			var newInstruction = Instruction.Create(OpCodes.Call, patcher.BuildCall(typeof(ModLoader.ModLoader), "LoadMods", typeof(void), new Type[] { }));
 			instructions.Insert(instructions.Count - 1, newInstruction);
