@@ -28,7 +28,9 @@ namespace OWML.Logging
 				return;
 			}
 
-			var line = $"{message}. Stack trace: {stackTrace?.Trim()}";
+			var line = string.IsNullOrEmpty(stackTrace)
+				? $"{message}"
+				: $"{message}\r\nStacktrace: {stackTrace?.Trim()}";
 
 			var messageType = type switch
 			{
