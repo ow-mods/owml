@@ -24,12 +24,12 @@ namespace OWML.Patcher
 
 		public void PatchGame()
 		{
-			CopyFiles();
+			CopyOWMLFiles();
 			CopyLibFiles();
 			PatchAssembly();
 		}
 
-		private void CopyFiles()
+		private void CopyOWMLFiles()
 		{
 			_writer.WriteLine("Copying OWML files...");
 
@@ -59,24 +59,7 @@ namespace OWML.Patcher
 				Constants.OwmlDefaultConfigFileName
 			};
 
-			var uncopiedFiles = new List<string>();
-			foreach (var filename in filesToCopy)
-			{
-				try
-				{
-					File.Copy(filename, $"{_owmlConfig.ManagedPath}/{filename}", true);
-				}
-				catch
-				{
-					uncopiedFiles.Add(filename);
-				}
-			}
-
-			if (uncopiedFiles.Any())
-			{
-				_writer.WriteLine("Warning - Failed to copy the following files to managed :", MessageType.Warning);
-				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
-			}
+			CopyFiles(filesToCopy, "", $"{_owmlConfig.ManagedPath}");
 		}
 
 		private void CopyLibFiles()
@@ -87,12 +70,17 @@ namespace OWML.Patcher
 				"mscorlib.dll"
 			};
 
+			CopyFiles(filesToCopy, $"{_owmlConfig.OWMLPath}lib/", $"{_owmlConfig.ManagedPath}");
+		}
+
+		private void CopyFiles(string[] filesToCopy, string pathPrefix, string destination)
+		{
 			var uncopiedFiles = new List<string>();
 			foreach (var filename in filesToCopy)
 			{
 				try
 				{
-					File.Copy($"{_owmlConfig.OWMLPath}lib/{filename}", $"{_owmlConfig.ManagedPath}/{filename}", true);
+					File.Copy($"{pathPrefix}{filename}", $"{destination}/{filename}", true);
 				}
 				catch
 				{
@@ -102,7 +90,7 @@ namespace OWML.Patcher
 
 			if (uncopiedFiles.Any())
 			{
-				_writer.WriteLine("Warning - Failed to copy the following lib files to managed :", MessageType.Warning);
+				_writer.WriteLine($"Warning - Failed to copy the following files to {destination} :", MessageType.Warning);
 				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
 			}
 		}
