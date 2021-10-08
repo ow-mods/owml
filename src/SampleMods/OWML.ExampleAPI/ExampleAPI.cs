@@ -1,6 +1,6 @@
 ﻿using OWML.ModHelper;
 
-namespace OWML.EnableDebugMode
+namespace OWML.ExampleAPI
 {
 	public class ExampleAPI : ModBehaviour
 	{
