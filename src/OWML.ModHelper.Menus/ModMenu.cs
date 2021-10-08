@@ -47,9 +47,9 @@ namespace OWML.ModHelper.Menus
 		public virtual void Initialize(Menu menu)
 		{
 			var root = menu.GetValue<GameObject>("_selectableItemsRoot") ??
-			           menu.GetValue<GameObject>("_menuActivationRoot");
+					   menu.GetValue<GameObject>("_menuActivationRoot");
 			var layoutGroup = root.GetComponent<LayoutGroup>() ??
-			                  root.GetComponentInChildren<LayoutGroup>(true);
+							  root.GetComponentInChildren<LayoutGroup>(true);
 			Initialize(menu, layoutGroup);
 		}
 
