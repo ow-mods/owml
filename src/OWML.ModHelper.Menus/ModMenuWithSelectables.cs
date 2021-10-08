@@ -37,7 +37,6 @@ namespace OWML.ModHelper.Menus
 			var promptButtons = GetParentPromptButtons(menu);
 			var saveButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-SaveAndExit");
 			var resetButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-ResetToDefaultsButton");
-			//var cancelButton = GetPromptButton("UIElement-DiscardChangesButton");
 
 			if (saveButton == null || resetButton == null/* || cancelButton == null*/)
 			{
@@ -47,10 +46,8 @@ namespace OWML.ModHelper.Menus
 
 			saveButton.OnClick += OnSave;
 			resetButton.OnClick += OnReset;
-			//cancelButton.OnClick += OnExit;
 
 			saveButton.Prompt = new ScreenPrompt(InputLibrary.confirm, saveButton.DefaultTitle);
-			//cancelButton.Prompt = new ScreenPrompt(InputLibrary.cancel, cancelButton.DefaultTitle);
 			resetButton.Prompt = new ScreenPrompt(InputLibrary.setDefaults, resetButton.DefaultTitle);
 		}
 
