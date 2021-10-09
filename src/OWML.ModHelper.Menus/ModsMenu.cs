@@ -67,7 +67,7 @@ namespace OWML.ModHelper.Menus
 			var owmlTab = CreateTab(options, Constants.OwmlTitle);
 			owmlTab.HideButton();
 			InitConfigMenu(OwmlMenu, options, owmlTab);
-			owmlButton.OnClick += () => owmlTab.Open();
+			owmlButton.OnClick += () => OnOpenModConfigMenu(owmlTab, OwmlMenu);
 
 			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
 			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
@@ -117,7 +117,7 @@ namespace OWML.ModHelper.Menus
 			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
 		}
 
-		private static void OnOpenModConfigMenu(IModTabMenu modTab, IModConfigMenu modConfigMenu)
+		private static void OnOpenModConfigMenu(IModTabMenu modTab, IModConfigMenuBase modConfigMenu)
 		{
 			modTab.Open();
 			modConfigMenu.UpdateUIValues();
