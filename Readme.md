@@ -1,3 +1,10 @@
+![logo](owmllogo.png)
+![GitHub](https://img.shields.io/github/license/amazingalek/owml?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/amazingalek/owml?style=flat-square)
+![GitHub Release Date](https://img.shields.io/github/release-date/amazingalek/owml?label=last%20release&style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/amazingalek/owml/total?style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/amazingalek/owml/latest/total?style=flat-square)
+
 # Outer Wilds Mod Loader
 
 OWML is the mod loader and mod framework for Outer Wilds. It patches Outer Wilds to load mods, and provides mods a framework to interact with the game. OWML is inspired by SMAPI for Stardew Valley.
