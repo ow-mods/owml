@@ -12,7 +12,7 @@ namespace OWML.Logging
 	{
 		private const int CloseWaitSeconds = 1;
 
-		private readonly Socket _socket;
+		private Socket _socket;
 		private readonly IOwmlConfig _config;
 
 		public ModSocket(IOwmlConfig config)
@@ -23,6 +23,10 @@ namespace OWML.Logging
 
 		public void WriteToSocket(IModSocketMessage message)
 		{
+			if (_socket == null)
+			{
+				return;
+			}
 			if (!_socket.Connected)
 			{
 				Connect();
@@ -40,14 +44,22 @@ namespace OWML.Logging
 		public void Close()
 		{
 			Thread.Sleep(TimeSpan.FromSeconds(CloseWaitSeconds));
-			_socket.Close();
+			_socket?.Close();
 		}
 
 		private void Connect()
 		{
 			var ipAddress = IPAddress.Parse(Constants.LocalAddress);
 			var endPoint = new IPEndPoint(ipAddress, _config.SocketPort);
-			_socket.Connect(endPoint);
+			try
+			{
+				_socket?.Connect(endPoint);
+			}
+			catch (Exception)
+			{
+				_socket = null;
+				ModConsole.OwmlConsole.WriteLine("Could not connect to console.", MessageType.Warning);
+			}
 		}
 	}
 }

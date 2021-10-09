@@ -1,7 +1,6 @@
 ﻿using OWML.ModHelper;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
 using OWML.Common;
 using OWML.Utils;
 
@@ -13,22 +12,6 @@ namespace OWML.EnableDebugMode
 		private bool _isStarted;
 		private bool _debugOn;
 		private PlayerSpawner _playerSpawner;
-
-		public override void Configure(IModConfig config)
-		{
-			//foreach (var input in _inputs)
-			//{
-			//ModHelper.Input.UnregisterCombination(input.Value);
-			//}
-			foreach (var key in config.Settings.Keys)
-			{
-				var value = config.GetSettingsValue<string>(key);
-				if (!string.IsNullOrEmpty(value))
-				{
-					//_inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
-				}
-			}
-		}
 
 		public void Start()
 		{
@@ -54,6 +37,7 @@ namespace OWML.EnableDebugMode
 			{
 				return;
 			}
+
 			if (Keyboard.current[Key.Pause].wasPressedThisFrame)
 			{
 				ToogleDebug();
@@ -65,8 +49,6 @@ namespace OWML.EnableDebugMode
 			}
 
 			HandleWarping();
-
-			//TestUnpatching();
 		}
 
 		private void HandleWarping()
@@ -116,7 +98,6 @@ namespace OWML.EnableDebugMode
 			{
 				WarpTo(SpawnLocation.InvisiblePlanet);
 			}
-
 		}
 
 		private void CycleGUIMode()

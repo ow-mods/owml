@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Menus
 			SelectFirst();
 		}
 
-		protected override void UpdateUIValues()
+		public override void UpdateUIValues()
 		{
 			GetToggleInput(EnabledTitle).Value = ModData.Config.Enabled;
 			foreach (var setting in ModData.Config.Settings)

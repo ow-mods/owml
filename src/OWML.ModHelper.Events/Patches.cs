@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
 
@@ -42,6 +43,6 @@ namespace OWML.ModHelper.Events
 		public static bool EmptyMethodPrefix() => false;
 
 		public static IEnumerable<CodeInstruction> EmptyMethod(IEnumerable<CodeInstruction> _) => 
-			new List<CodeInstruction>();
+			new List<CodeInstruction>() { new CodeInstruction(OpCodes.Ret) };
 	}
 }

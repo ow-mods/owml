@@ -19,10 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="lib\openvr_api.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\OVRPlugin.dll">
+    <None Update="lib\mscorlib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

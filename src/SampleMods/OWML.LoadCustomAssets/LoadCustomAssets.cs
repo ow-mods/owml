@@ -48,6 +48,14 @@ namespace OWML.LoadCustomAssets
 			TestLogging();
 
 			TestPopup();
+
+			TestAPI();
+		}
+
+		private void TestAPI()
+		{
+			var api = ModHelper.Interaction.GetModApi<IAPI>("_nebula.ExampleAPI");
+			ModHelper.Console.WriteLine(api.Echo("Test API echo!"));
 		}
 
 		private void TestPopup()

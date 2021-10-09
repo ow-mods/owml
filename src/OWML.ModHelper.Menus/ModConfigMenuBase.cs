@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus
 
 		protected abstract void AddInputs();
 
-		protected abstract void UpdateUIValues();
+		public abstract void UpdateUIValues();
 
 		protected ModConfigMenuBase(IModManifest manifest, IModStorage storage, IModConsole console)
 			: base(console)
@@ -99,8 +99,6 @@ namespace OWML.ModHelper.Menus
 		private void AddToggleInput(string key, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			//toggle.YesButton.Title = "Yes";
-			//toggle.NoButton.Title = "No";
 			toggle.Element.name = key;
 			toggle.Title = key;
 			toggle.Show();
@@ -109,8 +107,6 @@ namespace OWML.ModHelper.Menus
 		private void AddToggleInput(string key, JObject obj, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			//toggle.YesButton.Title = (string)obj["yes"];
-			//toggle.NoButton.Title = (string)obj["no"];
 			toggle.Element.name = key;
 			toggle.Title = (string)obj["title"] ?? key;
 			toggle.Show();
@@ -138,16 +134,16 @@ namespace OWML.ModHelper.Menus
 
 		private void AddTextInput(string key, int index)
 		{
-			//var textInput = AddTextInput(_textInputTemplate.Copy(key), index); todo
-			//textInput.Element.name = key;
-			//textInput.Show();
+			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
+			textInput.Element.name = key;
+			textInput.Show();
 		}
 
 		private void AddNumberInput(string key, int index)
 		{
-			//var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index); todo
-			//numberInput.Element.name = key;
-			//numberInput.Show();
+			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
+			numberInput.Element.name = key;
+			numberInput.Show();
 		}
 	}
 }

@@ -159,8 +159,8 @@ namespace OWML.ModLoader
 				.Add<IModPlayerEvents, ModPlayerEvents>()
 				.Add<IModSceneEvents, ModSceneEvents>()
 				.Add<IModEvents, ModEvents>()
-				//.Add<IInterfaceProxyFactory, InterfaceProxyFactory>()
-				//.Add<IModInteraction, ModInteraction>()
+				.Add<IInterfaceProxyFactory, InterfaceProxyFactory>()
+				.Add<IModInteraction, ModInteraction>()
 				.Add<IModHelper, ModHelper.ModHelper>()
 				.Resolve<IModHelper>();
 

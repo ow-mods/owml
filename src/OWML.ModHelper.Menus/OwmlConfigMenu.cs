@@ -31,7 +31,7 @@ namespace OWML.ModHelper.Menus
 			SelectFirst();
 		}
 
-		protected override void UpdateUIValues()
+		public override void UpdateUIValues()
 		{
 			GetToggleInput(DebugModeTitle).Value = _config.DebugMode;
 			GetToggleInput(BlockInputTitle).Value = _config.BlockInput;

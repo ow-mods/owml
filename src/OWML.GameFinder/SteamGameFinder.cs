@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Gameloop.Vdf;
 using Microsoft.Win32;
 using OWML.Common;
@@ -43,14 +44,22 @@ namespace OWML.GameFinder
 
 			var libraryFoldersContent = File.ReadAllText(libraryFoldersFile);
 			var libraryFoldersVdf = VdfConvert.Deserialize(libraryFoldersContent);
-			for (var i = 1; i < MaxLibraryCount; i++)
+			for (var i = 0; i < MaxLibraryCount; i++)
 			{
 				var libraryName = i.ToString();
-				var libraryPath = libraryFoldersVdf.Value[libraryName]?.ToString();
+
+				var libraryBlock = libraryFoldersVdf.Value[libraryName];
+
+				if (libraryBlock is null)
+				{
+					continue;
+				}
+
+				var token = libraryBlock.Children().First().ToString();
+				var libraryPath = token.Substring(8, token.Length - 9);
 				if (string.IsNullOrEmpty(libraryPath))
 				{
-					Writer.WriteLine("Game not found in custom Steam library.");
-					return null;
+					continue;
 				}
 
 				var gamePath = $"{libraryPath}/{GameLocation}";

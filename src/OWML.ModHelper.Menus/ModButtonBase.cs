@@ -11,6 +11,7 @@ namespace OWML.ModHelper.Menus
 		public event Action OnClick;
 
 		public Button Button { get; }
+
 		public IModMenu Menu { get; private set; }
 
 		private int _index;
