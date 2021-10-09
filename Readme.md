@@ -24,7 +24,7 @@ With Outer Wilds Mod Manager (recommended):
 
 Manual install:
 1. Download OWML and extract the zip file anywhere you want.
-2. [Download Outer Wilds mods](https://outerwildsmods.com/mods) and put them in the Mods folder, each mod in a separate folder.
+2. [Download Outer Wilds mods](https://outerwildsmods.com/mods) and put them in the `mods` folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
 
 ## For modders
@@ -51,7 +51,6 @@ OWML is configured in the in-game MODS menu, or in OWML.Config.json:
 |---|-----------|
 |gamePath|The path to the game files. OWML will try to locate the game automatically.|
 |debugMode|If enabled, a lot more information is written to the console. Intended for developers.|
-|combinationsBlockInput|If this is true, mod input combinations will block game input.|
 
 Each mod is defined in a manifest.json file:
 
@@ -70,7 +69,6 @@ Each mod can be configured in the in-game MODS menu, or in config.json:
 |Key|Description|
 |---|-----------|
 |enabled|Whether or not the mod will be loaded. Default: true.|
-|requireVR|Whether or not the mod requires VR to work. Default: false.|
 |settings|An object of mod-specific settings. Default: empty.|
 
 Example:
@@ -90,12 +88,23 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 ## Compatibility
 
-* Compatible with Outer Wilds version 1.1.8 and above.
+|Version|Compatible|
+|-|-|
+|1.1.10 +|Yes|
+|1.1.9|Unknown|
+|1.1.8|Unknown|
+|1.0.0 - 1.0.7|No|
 
-## Feedback
+OWML is compatible with Echoes of the Eye, and works on both Epic and Steam installation.
 
-I'm working tightly with the mod community to improve OWML and aid in mod development. 
-I'm Alek on the [Outer Wilds Discord](https://discord.gg/csKYR3w).
+## Feedback and Support
+
+OWML is developed by the same people making the mods!
+On the [Outer Wilds Discord](https://discord.gg/csKYR3w), we are (in purple role colors) :
+- alek
+- Raicuparta
+- _nebula
+- TAImatem
 
 Feature requests, bug reports and PRs are welcome on GitHub.
 
@@ -112,12 +121,12 @@ Special thanks to:
 * [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * Inspired by (and some code from) [SMAPI](https://smapi.io)
+* OWML logo banner by _nebula
 
 Dependencies:
 * [dnpatch](https://github.com/ioncodes/dnpatch)
 * [dnlib](https://github.com/0xd4d/dnlib)
 * [HarmonyX](https://github.com/BepInEx/HarmonyX)
-* [Json.Net.Unity3D](https://github.com/SaladLab/Json.Net.Unity3D)
 * [ObjImporter](https://wiki.unity3d.com/index.php?title=ObjImporter)
 * [NAudio-Unity](https://github.com/WulfMarius/NAudio-Unity)
 * [Gameloop.Vdf](https://github.com/shravan2x/Gameloop.Vdf)
