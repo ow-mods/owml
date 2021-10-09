@@ -65,7 +65,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (Menu == null)
 			{
-				Console.WriteLine("Warning - Can't open menu, it doesn't exist.", MessageType.Warning);
+				Console.WriteLine("Can't open menu, it doesn't exist.", MessageType.Warning);
 				return;
 			}
 			SelectFirst();
@@ -76,7 +76,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (Menu == null)
 			{
-				Console.WriteLine("Warning - Can't close menu, it doesn't exist.", MessageType.Warning);
+				Console.WriteLine("Can't close menu, it doesn't exist.", MessageType.Warning);
 				return;
 			}
 			Menu.EnableMenu(false);
@@ -98,7 +98,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if (Menu == null)
 			{
-				Console.WriteLine("Warning - Can't copy menu, it doesn't exist.", MessageType.Warning);
+				Console.WriteLine("Can't copy menu, it doesn't exist.", MessageType.Warning);
 				return null;
 			}
 			var menu = GameObject.Instantiate(Menu, Menu.transform.parent);

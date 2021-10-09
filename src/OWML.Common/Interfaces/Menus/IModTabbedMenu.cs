@@ -17,5 +17,7 @@
 		new TabbedMenu Menu { get; }
 
 		void AddTab(IModTabMenu tab);
+
+		void SetIsBlocking(bool isBlocking);
 	}
 }
