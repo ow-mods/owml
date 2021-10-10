@@ -91,7 +91,14 @@ namespace OWML.Launcher
 			var filesToCopy = new[] { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 			foreach (var fileName in filesToCopy)
 			{
-				File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
+				try
+				{
+					File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
+				}
+				catch (Exception ex)
+				{
+					_writer.WriteLine($"Error while copying game file {fileName}: {ex.Message}");
+				}
 			}
 			_writer.WriteLine("Game files copied.");
 		}
