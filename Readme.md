@@ -23,9 +23,16 @@ With Outer Wilds Mod Manager (recommended):
 2. Use the Mod Manager to install OWML and mods, and start the game.
 
 Manual install:
-1. Download OWML and extract the zip file anywhere you want.
+1. Download latest OWML release and extract the zip file anywhere you want.
 2. [Download Outer Wilds mods](https://outerwildsmods.com/mods) and put them in the `mods` folder, each mod in a separate folder.
 3. Start the game with OWML.Launcher.exe.
+
+## Uninstall
+- If using Outer Wilds Mod Manager, first refer to it's uninstall guide.
+- If not, delete OWML folder.
+- Verify integry of game files - OWML edits the game code to load itself, so verification is needed to remove it's changes.
+
+If you want to keep mod data intact but still play without mods, verifying the game files is enough. Just make sure to run the game through Steam/Epic, *not* OWML.Launcher.exe.
 
 ## For modders
 
@@ -42,49 +49,6 @@ Refer to the sample mods in the source code for examples. These mods are not inc
 4. Inherit from ModBehaviour.
 	
 For more info, see [For modders](https://github.com/amazingalek/owml/wiki/For-modders).
-
-## Configuration
-
-OWML is configured in the in-game MODS menu, or in OWML.Config.json:
-
-|Key|Description|
-|---|-----------|
-|gamePath|The path to the game files. OWML will try to locate the game automatically.|
-|debugMode|If enabled, a lot more information is written to the console. Intended for developers.|
-
-Each mod is defined in a manifest.json file:
-
-|Key|Description|
-|---|-----------|
-|filename|The filename of the DLL containing the ModBehaviour class.|
-|author|The name of the author.|
-|name|The name of the mod.|
-|uniqueName|Usually `author.name`.|
-|version|The version number.|
-|owmlVersion|The version of OWML the mod was built for.|
-|dependencies|Array of dependency names. Make sure to use the unique name.|
-
-Each mod can be configured in the in-game MODS menu, or in config.json:
-
-|Key|Description|
-|---|-----------|
-|enabled|Whether or not the mod will be loaded. Default: true.|
-|settings|An object of mod-specific settings. Default: empty.|
-
-Example:
-~~~~
-{
-  "enabled": true,
-  "requireVR": false,
-  "settings": {
-    "enableMusic": true,
-    "foo": "bar",
-    "lol": 1337
-  }
-}
-~~~~
-
-More info about config can be found [here](https://github.com/amazingalek/owml/wiki/For-modders#mod-config).
 
 ## Compatibility
 
