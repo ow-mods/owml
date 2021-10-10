@@ -62,6 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.ExampleAPI", "src\Samp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7F76E72-1CF2-4C0D-8A39-3D13EB868119}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
 		owmllogo.png = owmllogo.png
 		Readme.md = Readme.md
 	EndProjectSection
@@ -200,7 +201,7 @@ Global
 		{F56A9B0D-420F-493F-9B53-0CCD218A895E} = {C447A599-2700-44E1-BBFA-52880B7BFFBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

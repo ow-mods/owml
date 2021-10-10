@@ -59,7 +59,7 @@ Each mod is defined in a manifest.json file:
 |filename|The filename of the DLL containing the ModBehaviour class.|
 |author|The name of the author.|
 |name|The name of the mod.|
-|uniqueName|Usually {author}.{name}.|
+|uniqueName|Usually `author.name`.|
 |version|The version number.|
 |owmlVersion|The version of OWML the mod was built for.|
 |dependencies|Array of dependency names. Make sure to use the unique name.|
