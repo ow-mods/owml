@@ -30,7 +30,7 @@ Manual install:
 ## Uninstall
 - If using Outer Wilds Mod Manager, first refer to it's uninstall guide.
 - If not, delete OWML folder.
-- Verify integrity of game files - OWML edits the game code to load itself, so verification is needed to remove it's changes.
+- Verify integrity of game files - OWML edits the game code to load itself, so verification is needed to remove the changes.
   - Steam : Right click on game > Properties > Local files > Verify integrity of game files
   - Epic : Three dots next to game > Verify
 
