@@ -54,6 +54,8 @@ namespace OWML.Patcher
 				"MonoMod.Utils.dll",
 				"NAudio-Unity.dll",
 				"Autofac.dll",
+				"System.ValueTuple.dll",
+				"OWML.Manifest.json",
 				Constants.OwmlManifestFileName,
 				Constants.OwmlConfigFileName,
 				Constants.OwmlDefaultConfigFileName

@@ -27,6 +27,7 @@ namespace OWML.ModLoader
 		private readonly IApplicationHelper _appHelper;
 		private readonly IProcessHelper _processHelper;
 		private readonly IModUnityEvents _unityEvents;
+		private IModManifest _owmlManifest;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
 		public Owo(
@@ -55,6 +56,7 @@ namespace OWML.ModLoader
 			_appHelper = appHelper;
 			_processHelper = processHelper;
 			_unityEvents = unityEvents;
+			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
 		}
 
 		public void LoadMods()
@@ -84,6 +86,13 @@ namespace OWML.ModLoader
 					: new List<string>();
 
 				missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
+
+				var shouldLoad = CheckModVersion(modData);
+				if (!shouldLoad)
+				{
+					continue;
+				}
+
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
@@ -96,6 +105,62 @@ namespace OWML.ModLoader
 				_menus.ModsMenu?.AddMod(modData, initMod);
 				_modList.Add(initMod);
 			}
+		}
+
+		private bool CheckModVersion(IModData data)
+		{
+			if (_owmlManifest == null)
+			{
+				_console.WriteLine("OWML Manifest is null.", MessageType.Error);
+				return true;
+			}
+
+			var owmlVersion = _owmlManifest.Version;
+
+			(int, int, int) SplitIntoInts(string version)
+			{
+				var split = version.Split('.');
+				if (split.Length < 3)
+				{
+					_console.WriteLine("Version is malformed - less than 3 digits.", MessageType.Error);
+					return (0, 0, 0);
+				}
+
+				var success = true;
+				success &= int.TryParse(split[0], out int int1);
+				success &= int.TryParse(split[1], out int int2);
+				success &= int.TryParse(split[2], out int int3);
+				if (!success)
+				{
+					_console.WriteLine("Version is malformed - could not parse digits.", MessageType.Error);
+					return (0, 0, 0);
+				}
+
+				return (int1, int2, int3);
+			}
+
+			var splitOwmlVersion = SplitIntoInts(owmlVersion);
+			var splitModVersion = SplitIntoInts(data.Manifest.OWMLVersion);
+
+			if (splitOwmlVersion.Item1 != splitModVersion.Item1)
+			{
+				_console.WriteLine($"Refusing to load {data.Manifest.UniqueName}, as its major OWML version does not match. Update this mod! (We are not expecting to have to change OWML major version again. Mods will take time to be fixed.)", MessageType.Error);
+				return false;
+			}
+
+			if (splitOwmlVersion.Item2 != splitModVersion.Item2)
+			{
+				_console.WriteLine($"{data.Manifest.UniqueName}'s minor OWML version does not match. There is a high likelihood this mod will be incompatible.", MessageType.Error);
+				return true;
+			}
+
+			if (splitOwmlVersion.Item3 != splitModVersion.Item3)
+			{
+				_console.WriteLine($"{data.Manifest.UniqueName}'s patch OWML version does not match. There is a chance this mod will be incompatible.", MessageType.Warning);
+				return true;
+			}
+
+			return true;
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)
