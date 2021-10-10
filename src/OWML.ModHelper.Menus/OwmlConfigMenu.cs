@@ -37,7 +37,7 @@ namespace OWML.ModHelper.Menus
 		protected override void OnSave()
 		{
 			_config.DebugMode = GetInputValue<bool>(DebugModeTitle);
-			Storage.Save(_config, Constants.OwmlConfigFileName);
+			JsonHelper.SaveJsonObject($"{_config.OWMLPath}{Constants.OwmlConfigFileName}", _config);
 			Close();
 		}
 
