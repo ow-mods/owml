@@ -59,7 +59,7 @@ Each mod is defined in a manifest.json file:
 |filename|The filename of the DLL containing the ModBehaviour class.|
 |author|The name of the author.|
 |name|The name of the mod.|
-|uniqueName|Usually {author}.{uniqueName}.|
+|uniqueName|Usually {author}.{name}.|
 |version|The version number.|
 |owmlVersion|The version of OWML the mod was built for.|
 |dependencies|Array of dependency names. Make sure to use the unique name.|
@@ -90,12 +90,12 @@ More info about config can be found [here](https://github.com/amazingalek/owml/w
 
 |Version|Compatible|
 |-|-|
-|1.1.10 +|Yes|
+|1.1.10|Yes|
 |1.1.9|Unknown|
 |1.1.8|Unknown|
 |1.0.0 - 1.0.7|No|
 
-OWML is compatible with Echoes of the Eye, and works on both Epic and Steam installation.
+OWML is compatible with Echoes of the Eye, and works on both Epic and Steam installations.
 
 ## Feedback and Support
 
