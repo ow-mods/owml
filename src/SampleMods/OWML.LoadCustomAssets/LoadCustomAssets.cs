@@ -7,6 +7,15 @@ using UnityEngine;
 
 namespace OWML.LoadCustomAssets
 {
+	public class Patches
+	{ 
+		public static bool TestUnpatch()
+		{
+			Debug.LogError("UPDATE");
+			return true;
+		}
+	}
+
 	public class LoadCustomAssets : ModBehaviour
 	{
 		private enum ABC
@@ -50,12 +59,28 @@ namespace OWML.LoadCustomAssets
 			TestPopup();
 
 			TestAPI();
+
+			TestUnpatching();
 		}
 
 		private void TestAPI()
 		{
 			var api = ModHelper.Interaction.GetModApi<IAPI>("_nebula.ExampleAPI");
 			ModHelper.Console.WriteLine(api.Echo("Test API echo!"));
+		}
+
+		private void TestUnpatching()
+		{
+			ModHelper.Console.WriteLine("Adding patch...");
+			ModHelper.HarmonyHelper.AddPrefix<TitleScreenAnimation>("Update", typeof(Patches), nameof(Patches.TestUnpatch));
+
+			ModHelper.Events.Unity.FireInNUpdates(Unpatch, 60);
+		}
+
+		private void Unpatch()
+		{
+			ModHelper.Console.WriteLine("Removing patch...");
+			ModHelper.HarmonyHelper.Unpatch<TitleScreenAnimation>("Update");
 		}
 
 		private void TestPopup()
