@@ -4,6 +4,8 @@
 	{
 		IModManifest Manifest { get; }
 
+		void UpdateUIValues();
+
 		void Initialize(
 			Menu modMenuCopy,
 			IModToggleInput toggleTemplate,

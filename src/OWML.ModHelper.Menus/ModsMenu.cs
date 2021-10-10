@@ -99,7 +99,7 @@ namespace OWML.ModHelper.Menus
 				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
 				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
-				modButton.OnClick += () => OnOpenModConfigMenu(modTab, modConfigMenu);
+				modButton.OnClick += () => modTab.Open();
 				menu.AddButton((IModButtonBase)modButton, index++);
 			}
 			return index;
@@ -115,11 +115,6 @@ namespace OWML.ModHelper.Menus
 			var numberInputTemplate = new ModNumberInput(selectorTemplate.Copy().SelectorElement, modConfigMenu, _menus.PopupManager);
 			numberInputTemplate.Hide();
 			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
-		}
-
-		private static void OnOpenModConfigMenu(IModTabMenu modTab, IModConfigMenu modConfigMenu)
-		{
-			modTab.Open();
 			modConfigMenu.UpdateUIValues();
 		}
 

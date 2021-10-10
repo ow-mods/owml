@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace OWML.Utils
@@ -16,7 +17,14 @@ namespace OWML.Utils
 				.Replace("\\\\", "/")
 				.Replace("\\", "/");
 
-			return JsonConvert.DeserializeObject<T>(json);
+			try
+			{
+				return JsonConvert.DeserializeObject<T>(json);
+			}
+			catch (Exception)
+			{
+				return default;
+			}
 		}
 
 		public static void SaveJsonObject<T>(string path, T obj) =>

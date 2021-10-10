@@ -5,7 +5,5 @@
 		IModData ModData { get; }
 
 		IModBehaviour Mod { get; }
-
-		void UpdateUIValues();
 	}
 }
