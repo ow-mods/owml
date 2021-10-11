@@ -118,12 +118,12 @@ namespace OWML.ModLoader
 
 			var owmlVersion = _owmlManifest.Version;
 
-			(int, int, int) SplitIntoInts(string version)
+			(int, int, int) SplitIntoInts(string version, string modname)
 			{
 				var split = version.Split('.');
 				if (split.Length < 3)
 				{
-					_console.WriteLine("Version is malformed - less than 3 digits.", MessageType.Error);
+					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Less than 3 digits.", MessageType.Error);
 					return (0, 0, 0);
 				}
 
@@ -133,25 +133,35 @@ namespace OWML.ModLoader
 				success &= int.TryParse(split[2], out int int3);
 				if (!success)
 				{
-					_console.WriteLine("Version is malformed - could not parse digits.", MessageType.Error);
+					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Could not parse as digits.", MessageType.Error);
 					return (0, 0, 0);
 				}
 
 				return (int1, int2, int3);
 			}
 
-			var splitOwmlVersion = SplitIntoInts(owmlVersion);
-			var splitModVersion = SplitIntoInts(data.Manifest.OWMLVersion);
+			var splitOwmlVersion = SplitIntoInts(owmlVersion, "OWML");
+			var splitModVersion = SplitIntoInts(data.Manifest.OWMLVersion, data.Manifest.UniqueName);
+
+			var mismatchText = $"Mismatch between OWML version expected by {data.Manifest.UniqueName} and installed OWML version." +
+					$"\r\nOWML version expected by {data.Manifest.UniqueName} : {data.Manifest.OWMLVersion}" +
+					$"\r\nOWML version installed : {owmlVersion}\r\n";
 
 			if (splitOwmlVersion.Item1 != splitModVersion.Item1)
 			{
-				_console.WriteLine($"Refusing to load {data.Manifest.UniqueName}, as its major OWML version does not match. Update this mod! (We are not expecting to have to change OWML major version again. Mods will take time to be fixed.)", MessageType.Error);
+				_console.WriteLine(mismatchText + $"As the mismatch affects X.~.~, this mod will not be loaded.", MessageType.Error);
 				return false;
 			}
 
 			if (splitOwmlVersion.Item2 < splitModVersion.Item2)
 			{
-				_console.WriteLine($"{data.Manifest.UniqueName}'s minor OWML version does not match. There is a high likelihood this mod will be incompatible.", MessageType.Error);
+				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is lower, the mod will not be loaded.", MessageType.Error);
+				return true;
+			}
+
+			if (splitOwmlVersion.Item2 > splitModVersion.Item2)
+			{
+				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is higher, the mod will still load.", MessageType.Warning);
 				return true;
 			}
 
