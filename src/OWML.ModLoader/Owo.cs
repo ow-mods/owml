@@ -155,12 +155,6 @@ namespace OWML.ModLoader
 				return true;
 			}
 
-			if (splitOwmlVersion.Item3 != splitModVersion.Item3)
-			{
-				_console.WriteLine($"{data.Manifest.UniqueName}'s patch OWML version does not match. There is a chance this mod will be incompatible.", MessageType.Warning);
-				return true;
-			}
-
 			return true;
 		}
 
