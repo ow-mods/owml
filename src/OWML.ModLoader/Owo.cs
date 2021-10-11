@@ -134,20 +134,23 @@ namespace OWML.ModLoader
 				}
 
 				var success = true;
-				success &= int.TryParse(split[0], out int int1);
-				success &= int.TryParse(split[1], out int int2);
-				success &= int.TryParse(split[2], out int int3);
+				success &= int.TryParse(split[0], out int major);
+				success &= int.TryParse(split[1], out int minor);
+				success &= int.TryParse(split[2], out int patch);
 				if (!success)
 				{
 					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Could not parse as digits. This mod will not be loaded.", MessageType.Error);
 					return (-1, -1, -1);
 				}
 
-				return (int1, int2, int3);
+				return (major, minor, patch);
 			}
 
 			var splitOwmlVersion = SplitIntoInts(owmlVersion, "OWML");
 			var splitModVersion = SplitIntoInts(data.Manifest.OWMLVersion, data.Manifest.UniqueName);
+
+			var (owmlMajor, owmlMinor) = (splitOwmlVersion.Item1, splitOwmlVersion.Item2);
+			var (modMajor, modMinor) = (splitModVersion.Item1, splitModVersion.Item2);
 
 			if (splitOwmlVersion == (-1, -1, -1)|| splitModVersion == (-1, -1, -1))
 			{
@@ -158,19 +161,19 @@ namespace OWML.ModLoader
 					$"\r\nOWML version expected by {data.Manifest.UniqueName} : {data.Manifest.OWMLVersion}" +
 					$"\r\nOWML version installed : {owmlVersion}\r\n";
 
-			if (splitOwmlVersion.Item1 != splitModVersion.Item1)
+			if (owmlMajor != modMajor)
 			{
 				_console.WriteLine(mismatchText + $"As the mismatch affects X.~.~, this mod will not be loaded.", MessageType.Error);
 				return false;
 			}
 
-			if (splitOwmlVersion.Item2 < splitModVersion.Item2)
+			if (owmlMinor < modMinor)
 			{
 				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is lower, the mod will not be loaded.", MessageType.Error);
 				return false;
 			}
 
-			if (splitOwmlVersion.Item2 > splitModVersion.Item2)
+			if (owmlMinor > modMinor)
 			{
 				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is higher, the mod will still load.", MessageType.Warning);
 				return true;
