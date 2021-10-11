@@ -156,7 +156,7 @@ namespace OWML.ModLoader
 			if (splitOwmlVersion.Item2 < splitModVersion.Item2)
 			{
 				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is lower, the mod will not be loaded.", MessageType.Error);
-				return true;
+				return false;
 			}
 
 			if (splitOwmlVersion.Item2 > splitModVersion.Item2)

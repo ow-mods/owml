@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OWML.Logging;
 using OWML.Utils;
+using System.Text.RegularExpressions;
 
 namespace OWML.Launcher
 {
@@ -115,7 +116,12 @@ namespace OWML.Launcher
 					_hasReceivedFatalMessage = true;
 				}
 
-				ConsoleUtils.WriteByType(data.Type, $"[{data.SenderName}.{data.SenderType}] : {data.Message}");
+				var nameTypePrefix = $"[{data.SenderName}.{data.SenderType}] : ";
+
+				var messageData = data.Message;
+				messageData = messageData.Replace("\r\n", $"\r\n{new string(' ', nameTypePrefix.Length)}");
+
+				ConsoleUtils.WriteByType(data.Type, $"{nameTypePrefix}{messageData}");
 			}
 		}
 	}
