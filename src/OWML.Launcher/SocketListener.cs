@@ -119,7 +119,7 @@ namespace OWML.Launcher
 				var nameTypePrefix = $"[{data.SenderName}.{data.SenderType}] : ";
 
 				var messageData = data.Message;
-				messageData = messageData.Replace("\r\n", $"\r\n{new string(' ', nameTypePrefix.Length)}");
+				messageData = messageData.Replace("\n", $"\n{new string(' ', nameTypePrefix.Length)}");
 
 				ConsoleUtils.WriteByType(data.Type, $"{nameTypePrefix}{messageData}");
 			}

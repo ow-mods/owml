@@ -120,11 +120,17 @@ namespace OWML.ModLoader
 
 			(int, int, int) SplitIntoInts(string version, string modname)
 			{
+				if (string.IsNullOrEmpty(version))
+				{
+					_console.WriteLine($"Could not read OWML version of \"{modname}\" - No version found.", MessageType.Error);
+					return (-1, -1, -1);
+				}
+
 				var split = version.Split('.');
 				if (split.Length < 3)
 				{
 					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Less than 3 digits.", MessageType.Error);
-					return (0, 0, 0);
+					return (-1, -1, -1);
 				}
 
 				var success = true;
@@ -134,7 +140,7 @@ namespace OWML.ModLoader
 				if (!success)
 				{
 					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Could not parse as digits.", MessageType.Error);
-					return (0, 0, 0);
+					return (-1, -1, -1);
 				}
 
 				return (int1, int2, int3);
@@ -142,6 +148,11 @@ namespace OWML.ModLoader
 
 			var splitOwmlVersion = SplitIntoInts(owmlVersion, "OWML");
 			var splitModVersion = SplitIntoInts(data.Manifest.OWMLVersion, data.Manifest.UniqueName);
+
+			if (splitOwmlVersion == (-1, -1, -1)|| splitModVersion == (-1, -1, -1))
+			{
+				return false;
+			}
 
 			var mismatchText = $"Mismatch between OWML version expected by {data.Manifest.UniqueName} and installed OWML version." +
 					$"\r\nOWML version expected by {data.Manifest.UniqueName} : {data.Manifest.OWMLVersion}" +
