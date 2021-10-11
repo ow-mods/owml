@@ -122,14 +122,14 @@ namespace OWML.ModLoader
 			{
 				if (string.IsNullOrEmpty(version))
 				{
-					_console.WriteLine($"Could not read OWML version of \"{modname}\" - No version found.", MessageType.Error);
+					_console.WriteLine($"Could not read OWML version of \"{modname}\" - No version found. This mod will not be loaded.", MessageType.Error);
 					return (-1, -1, -1);
 				}
 
 				var split = version.Split('.');
 				if (split.Length < 3)
 				{
-					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Less than 3 digits.", MessageType.Error);
+					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Less than 3 digits. This mod will not be loaded.", MessageType.Error);
 					return (-1, -1, -1);
 				}
 
@@ -139,7 +139,7 @@ namespace OWML.ModLoader
 				success &= int.TryParse(split[2], out int int3);
 				if (!success)
 				{
-					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Could not parse as digits.", MessageType.Error);
+					_console.WriteLine($"Could not read OWML version of \"{modname}\" - Could not parse as digits. This mod will not be loaded.", MessageType.Error);
 					return (-1, -1, -1);
 				}
 
