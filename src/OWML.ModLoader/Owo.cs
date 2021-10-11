@@ -149,7 +149,7 @@ namespace OWML.ModLoader
 				return false;
 			}
 
-			if (splitOwmlVersion.Item2 != splitModVersion.Item2)
+			if (splitOwmlVersion.Item2 < splitModVersion.Item2)
 			{
 				_console.WriteLine($"{data.Manifest.UniqueName}'s minor OWML version does not match. There is a high likelihood this mod will be incompatible.", MessageType.Error);
 				return true;
