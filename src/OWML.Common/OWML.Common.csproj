@@ -6,7 +6,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="OW.Unity.Dlls" Version="1.1.3" />
+	  <PackageReference Include="OW.Unity.Dlls" Version="1.1.3">
+	    <ExcludeAssets>runtime</ExcludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>
