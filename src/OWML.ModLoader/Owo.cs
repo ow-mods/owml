@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using OWML.Common;
@@ -27,6 +28,8 @@ namespace OWML.ModLoader
 		private readonly IApplicationHelper _appHelper;
 		private readonly IProcessHelper _processHelper;
 		private readonly IModUnityEvents _unityEvents;
+		private readonly IModManifest _owmlManifest;
+		private readonly IModVersionChecker _modVersionChecker;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
 		public Owo(
@@ -41,7 +44,8 @@ namespace OWML.ModLoader
 			IGameObjectHelper goHelper,
 			IApplicationHelper appHelper,
 			IProcessHelper processHelper,
-			IModUnityEvents unityEvents)
+			IModUnityEvents unityEvents,
+			IModVersionChecker modVersionChecker)
 		{
 			_modFinder = modFinder;
 			_console = console;
@@ -55,6 +59,8 @@ namespace OWML.ModLoader
 			_appHelper = appHelper;
 			_processHelper = processHelper;
 			_unityEvents = unityEvents;
+			_modVersionChecker = modVersionChecker;
+			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
 		}
 
 		public void LoadMods()
@@ -84,6 +90,13 @@ namespace OWML.ModLoader
 					: new List<string>();
 
 				missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
+
+				var shouldLoad = _modVersionChecker.CheckModVersion(modData);
+				if (!shouldLoad)
+				{
+					continue;
+				}
+
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
@@ -118,8 +131,16 @@ namespace OWML.ModLoader
 				return null;
 			}
 
-			_console.WriteLine($"Loading assembly: {modData.Manifest.AssemblyPath}", MessageType.Debug);
-			var assembly = Assembly.LoadFile(modData.Manifest.AssemblyPath);
+			var assemblyPath = modData.Manifest.AssemblyPath;
+
+			if (!File.Exists(assemblyPath))
+			{
+				_console.WriteLine($"Could not find DLL for {modData.Manifest.UniqueName}.", MessageType.Error);
+				return null;
+			}
+
+			_console.WriteLine($"Loading assembly: {assemblyPath}", MessageType.Debug);
+			var assembly = Assembly.LoadFile(assemblyPath);
 			_console.WriteLine($"Loaded {assembly.FullName}", MessageType.Debug);
 
 			try

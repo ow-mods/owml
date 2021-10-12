@@ -69,6 +69,7 @@ namespace OWML.ModLoader
 				.Add<IModMenus, ModMenus>()
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()
+				.Add<IModVersionChecker, ModVersionChecker>()
 				.Add<Owo>();
 		}
 	}
