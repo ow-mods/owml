@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Reflection;
 
 namespace OWML.Common
@@ -22,6 +21,6 @@ namespace OWML.Common
 
 		void Transpile(MethodBase methodInfo, Type patchType, string patchMethodName);
 
-		void Unpatch<T>(string methodName, HarmonyPatchType patchType = HarmonyPatchType.All);
+		void Unpatch<T>(string methodName, PatchType patchType = PatchType.All);
 	}
 }

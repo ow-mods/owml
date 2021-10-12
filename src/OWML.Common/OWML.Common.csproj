@@ -6,7 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="HarmonyX" Version="2.5.5" />
 	  <PackageReference Include="OW.Unity.Dlls" Version="1.1.3" />
 	</ItemGroup>
 

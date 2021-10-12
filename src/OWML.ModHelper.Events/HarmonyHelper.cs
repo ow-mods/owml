@@ -102,7 +102,7 @@ namespace OWML.ModHelper.Events
 			Patch(original, null, null, patchMethod);
 		}
 
-		public void Unpatch<T>(string methodName, HarmonyPatchType patchType = HarmonyPatchType.All)
+		public void Unpatch<T>(string methodName, PatchType patchType = PatchType.All)
 		{
 			_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
 
@@ -111,24 +111,24 @@ namespace OWML.ModHelper.Events
 
 			switch (patchType)
 			{
-				case HarmonyPatchType.Prefix:
+				case PatchType.Prefix:
 					patchInfo.RemovePrefix(_manifest.UniqueName);
 					break;
-				case HarmonyPatchType.Postfix:
+				case PatchType.Postfix:
 					patchInfo.RemovePostfix(_manifest.UniqueName);
 					break;
-				case HarmonyPatchType.Transpiler:
+				case PatchType.Transpiler:
 					patchInfo.RemoveTranspiler(_manifest.UniqueName);
 					break;
-				case HarmonyPatchType.Finalizer:
+				case PatchType.Finalizer:
 					patchInfo.RemoveFinalizer(_manifest.UniqueName);
 					break;
-				case HarmonyPatchType.ILManipulator:
+				case PatchType.ILManipulator:
 					patchInfo.RemoveILManipulator(_manifest.UniqueName);
 					break;
-				case HarmonyPatchType.ReversePatch:
+				case PatchType.ReversePatch:
 					throw new NotImplementedException("Cannot unpatch ReversePatch");
-				case HarmonyPatchType.All:
+				case PatchType.All:
 					patchInfo.RemovePostfix(_manifest.UniqueName);
 					patchInfo.RemovePrefix(_manifest.UniqueName);
 					patchInfo.RemoveTranspiler(_manifest.UniqueName);
