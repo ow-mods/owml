@@ -84,7 +84,7 @@ namespace OWML.ModHelper.Assets
 			_console.WriteLine($"Loading texture from {path}");
 			var data = File.ReadAllBytes(path);
 			var texture = new Texture2D(2, 2);
-			texture.LoadRawTextureData(data);
+			texture.LoadImage(data);
 			return texture;
 		}
 
