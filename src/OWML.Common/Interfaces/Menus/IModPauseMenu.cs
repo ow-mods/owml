@@ -10,6 +10,6 @@
 
 		IModButton ResumeButton { get; }
 
-		void Initialize(SettingsManager settingsManager);
+		void Initialize(PauseMenuManager pauseMenuManager);
 	}
 }

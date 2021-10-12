@@ -10,10 +10,6 @@
 
 		IModTabMenu GraphicsTab { get; }
 
-		IModButton RebindingButton { get; }
-
-		IModPopupMenu RebindingMenu { get; }
-
 		new IModTabbedMenu Copy();
 
 		void Initialize(TabbedMenu menu);
@@ -21,5 +17,7 @@
 		new TabbedMenu Menu { get; }
 
 		void AddTab(IModTabMenu tab);
+
+		void SetIsBlocking(bool isBlocking);
 	}
 }

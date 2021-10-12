@@ -21,14 +21,14 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Debug\net35\OWML.ModHelper.Assets.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.ModHelper.Events.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.ModHelper.Menus.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.ModHelper.Input.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.ModHelper.Interaction.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.Common.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.Logging.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\OWML.Utils.dll" target="lib\net35" />
-    <file src="bin\Debug\net35\NAudio-Unity.dll" target="lib\net35" />
+    <file src="bin\Debug\net40\OWML.ModHelper.Assets.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.ModHelper.Events.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.ModHelper.Menus.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.ModHelper.Input.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.ModHelper.Interaction.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.Common.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.Logging.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\OWML.Utils.dll" target="lib\net40" />
+    <file src="bin\Debug\net40\NAudio-Unity.dll" target="lib\net40" />
   </files>
 </package>

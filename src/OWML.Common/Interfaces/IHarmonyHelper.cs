@@ -13,9 +13,9 @@ namespace OWML.Common
 
 		void AddPostfix(MethodBase methodInfo, Type patchType, string patchMethodName);
 
-		void EmptyMethod<T>(string methodName);
+		void EmptyMethod<T>(string methodName, bool useTranspile = false);
 
-		void EmptyMethod(MethodBase methodInfo);
+		void EmptyMethod(MethodBase methodInfo, bool useTranspile = false);
 
 		void Transpile<T>(string methodName, Type patchType, string patchMethodName);
 

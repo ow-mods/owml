@@ -8,8 +8,6 @@
 
 		IModsMenu ModsMenu { get; }
 
-		IModInputCombinationMenu InputCombinationMenu { get; }
-
 		IModPopupManager PopupManager { get; }
 	}
 }

@@ -4,13 +4,14 @@
 	{
 		IModManifest Manifest { get; }
 
+		void UpdateUIValues();
+
 		void Initialize(
 			Menu modMenuCopy,
 			IModToggleInput toggleTemplate,
 			IModSliderInput sliderTemplate,
 			IModTextInput textInputTemplate,
 			IModNumberInput numberInputTemplate,
-			IModComboInput comboInputTemplate,
 			IModSelectorInput selectorTemplate);
 	}
 }

@@ -32,11 +32,9 @@ namespace OWML.ModHelper.Menus
 
 		public List<IModTextInput> TextInputs => _inputs.OfType<IModTextInput>().ToList();
 
-		public List<IModComboInput> ComboInputs => _inputs.OfType<IModComboInput>().ToList();
-
 		public List<IModNumberInput> NumberInputs => _inputs.OfType<IModNumberInput>().ToList();
 
-		public List<IModSeparator> Separators { get; private set; }
+		public List<IModSeparator> Separators { get; } = new();
 
 		protected LayoutGroup Layout;
 		protected IModConsole Console;
@@ -62,17 +60,15 @@ namespace OWML.ModHelper.Menus
 
 			var promptButtons = Menu.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true).Select(x => x.GetComponent<Button>()).ToList();
 			BaseButtons = new List<IModButtonBase>()
-				.Concat(promptButtons.Select(x => new ModPromptButton(x, this, Console)).Cast<IModButtonBase>())
-				.Concat(Menu.GetComponentsInChildren<Button>(true).Except(promptButtons).Select(x => new ModTitleButton(x, this)).Cast<IModButtonBase>())
+				.Concat(promptButtons.Select(x => new ModPromptButton(x, this, Console)))
+				.Concat(Menu.GetComponentsInChildren<Button>(true).Except(promptButtons).Select(x => new ModTitleButton(x, this)))
 				.ToList();
 
 			_inputs = new List<IModInputBase>()
-				.Concat(Menu.GetComponentsInChildren<TwoButtonToggleElement>(true).Select(x => new ModToggleInput(x, this)).Cast<IModInputBase>())
-				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)).Cast<IModInputBase>())
-				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)).Cast<IModInputBase>())
+				.Concat(Menu.GetComponentsInChildren<ToggleElement>(true).Select(x => new ModToggleInput(x, this)))
+				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)))
+				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)))
 				.ToList();
-
-			Separators = new List<IModSeparator>();
 		}
 
 		[Obsolete("Use GetTitleButton instead")]
@@ -170,19 +166,6 @@ namespace OWML.ModHelper.Menus
 			return input;
 		}
 
-		public IModComboInput GetComboInput(string title) =>
-			ComboInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
-
-		public IModComboInput AddComboInput(IModComboInput input) =>
-			AddComboInput(input, input.Index);
-
-		public IModComboInput AddComboInput(IModComboInput input, int index)
-		{
-			_inputs.Add(input);
-			AddInput(input, index);
-			return input;
-		}
-
 		public IModNumberInput GetNumberInput(string title) =>
 			NumberInputs.FirstOrDefault(x => x.Title == title || x.Element.name == title);
 
@@ -249,11 +232,6 @@ namespace OWML.ModHelper.Menus
 			{
 				return textInput.Value;
 			}
-			var comboInput = GetComboInput(key);
-			if (comboInput != null)
-			{
-				return comboInput.Value;
-			}
 			var numberInput = GetNumberInput(key);
 			if (numberInput != null)
 			{
@@ -293,13 +271,6 @@ namespace OWML.ModHelper.Menus
 				textInput.Value = Convert.ToString(val);
 				return;
 			}
-			var comboInput = GetComboInput(key);
-			if (comboInput != null)
-			{
-				var val = value is JObject obj ? obj["value"] : value;
-				comboInput.Value = Convert.ToString(val);
-				return;
-			}
 			var numberInput = GetNumberInput(key);
 			if (numberInput != null)
 			{
@@ -316,7 +287,7 @@ namespace OWML.ModHelper.Menus
 		public virtual void SelectFirst()
 		{
 			var firstSelectable = Menu.GetComponentInChildren<Selectable>();
-			Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
+			//Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
 			Menu.SetSelectOnActivate(firstSelectable);
 		}
 
@@ -335,7 +306,7 @@ namespace OWML.ModHelper.Menus
 
 		public virtual void UpdateNavigation()
 		{
-			var selectables = Menu.GetComponentsInChildren<TooltipSelectable>()
+			var selectables = Menu.GetComponentsInChildren<MenuOption>()
 				.Select(x => x.GetComponent<Selectable>())
 				.Where(x => x != null).ToList();
 			UpdateNavigation(selectables);

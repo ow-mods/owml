@@ -2,6 +2,7 @@
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Menus
 {
@@ -15,12 +16,11 @@ namespace OWML.ModHelper.Menus
 		private IModSliderInput _sliderTemplate;
 		private IModSelectorInput _selectorTemplate;
 		private IModTextInput _textInputTemplate;
-		private IModComboInput _comboInputTemplate;
 		private IModNumberInput _numberInputTemplate;
 
 		protected abstract void AddInputs();
 
-		protected abstract void UpdateUIValues();
+		public abstract void UpdateUIValues();
 
 		protected ModConfigMenuBase(IModManifest manifest, IModStorage storage, IModConsole console)
 			: base(console)
@@ -31,16 +31,16 @@ namespace OWML.ModHelper.Menus
 
 		public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
 			IModTextInput textInputTemplate, IModNumberInput numberInputTemplate,
-			IModComboInput comboInputTemplate, IModSelectorInput selectorTemplate)
+			IModSelectorInput selectorTemplate)
 		{
 			_toggleTemplate = toggleTemplate;
 			_sliderTemplate = sliderTemplate;
 			_textInputTemplate = textInputTemplate;
 			_numberInputTemplate = numberInputTemplate;
-			_comboInputTemplate = comboInputTemplate;
 			_selectorTemplate = selectorTemplate;
 
 			base.Initialize(menu);
+			menu.SetValue("_menuOptions", new MenuOption[] { });
 
 			Title = Manifest.Name;
 
@@ -75,7 +75,8 @@ namespace OWML.ModHelper.Menus
 
 			if (value is JObject obj)
 			{
-				switch ((string)obj["type"])
+				var settingType = (string)obj["type"];
+				switch (settingType)
 				{
 					case "slider":
 						AddSliderInput(key, obj, index);
@@ -86,23 +87,18 @@ namespace OWML.ModHelper.Menus
 					case "selector":
 						AddSelectorInput(key, obj, index);
 						return;
-					case "input":
-						AddComboInput(key, index);
-						return;
 					default:
-						Console.WriteLine("Error - Unrecognized complex setting: " + value, MessageType.Error);
+						Console.WriteLine("Unrecognized complex setting type: " + settingType, MessageType.Warning);
 						return;
 				}
 			}
 
-			Console.WriteLine("Error - Unrecognized setting type: " + value.GetType(), MessageType.Error);
+			Console.WriteLine("Unrecognized setting type: " + value.GetType(), MessageType.Error);
 		}
 
 		private void AddToggleInput(string key, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.YesButton.Title = "Yes";
-			toggle.NoButton.Title = "No";
 			toggle.Element.name = key;
 			toggle.Title = key;
 			toggle.Show();
@@ -111,8 +107,6 @@ namespace OWML.ModHelper.Menus
 		private void AddToggleInput(string key, JObject obj, int index)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.YesButton.Title = (string)obj["yes"];
-			toggle.NoButton.Title = (string)obj["no"];
 			toggle.Element.name = key;
 			toggle.Title = (string)obj["title"] ?? key;
 			toggle.Show();
@@ -143,13 +137,6 @@ namespace OWML.ModHelper.Menus
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
 			textInput.Show();
-		}
-
-		private void AddComboInput(string key, int index)
-		{
-			var comboInput = AddComboInput(_comboInputTemplate.Copy(key), index);
-			comboInput.Element.name = key;
-			comboInput.Show();
 		}
 
 		private void AddNumberInput(string key, int index)

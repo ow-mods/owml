@@ -2,10 +2,20 @@
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 namespace OWML.LoadCustomAssets
 {
+	public class Patches
+	{ 
+		public static bool TestUnpatch()
+		{
+			Debug.LogError("UPDATE");
+			return true;
+		}
+	}
+
 	public class LoadCustomAssets : ModBehaviour
 	{
 		private enum ABC
@@ -37,7 +47,7 @@ namespace OWML.LoadCustomAssets
 
 			var assetBundle = ModHelper.Assets.LoadBundle("cubebundle");
 			_cube = assetBundle.LoadAsset<GameObject>("Cube");
-			
+
 			ModHelper.Events.Player.OnPlayerAwake += OnPlayerAwake;
 			ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
 			ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
@@ -47,6 +57,30 @@ namespace OWML.LoadCustomAssets
 			TestLogging();
 
 			TestPopup();
+
+			TestAPI();
+
+			TestUnpatching();
+		}
+
+		private void TestAPI()
+		{
+			var api = ModHelper.Interaction.GetModApi<IAPI>("_nebula.ExampleAPI");
+			ModHelper.Console.WriteLine(api.Echo("Test API echo!"));
+		}
+
+		private void TestUnpatching()
+		{
+			ModHelper.Console.WriteLine("Adding patch...");
+			ModHelper.HarmonyHelper.AddPrefix<TitleScreenAnimation>("Update", typeof(Patches), nameof(Patches.TestUnpatch));
+
+			ModHelper.Events.Unity.FireInNUpdates(Unpatch, 60);
+		}
+
+		private void Unpatch()
+		{
+			ModHelper.Console.WriteLine("Removing patch...");
+			ModHelper.HarmonyHelper.Unpatch<TitleScreenAnimation>("Update");
 		}
 
 		private void TestPopup()
@@ -105,7 +139,7 @@ namespace OWML.LoadCustomAssets
 		{
 			var duck = ModHelper.Assets.Get3DObject("duck.obj", "duck.png");
 			ModHelper.Console.WriteLine("Duck loaded!");
-			
+
 			duck.AddComponent<SphereCollider>();
 			duck.AddComponent<Rigidbody>();
 			_duckBody = duck.AddComponent<OWRigidbody>();
@@ -116,6 +150,7 @@ namespace OWML.LoadCustomAssets
 		{
 			_playerBody = playerBody;
 			_playerTransform = playerBody.transform;
+			ModHelper.Console.WriteLine("Player loaded!");
 
 			LoadDuck();
 			LoadGunSound();
@@ -138,7 +173,7 @@ namespace OWML.LoadCustomAssets
 
 		public void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.F9))
+			if (Keyboard.current[Key.F9].wasPressedThisFrame)
 			{
 				SendFatalMessage();
 			}
@@ -146,11 +181,12 @@ namespace OWML.LoadCustomAssets
 			{
 				return;
 			}
-			if (Input.GetMouseButtonDown(0) && _isDucksEnabled)
+			if (Mouse.current.leftButton.wasPressedThisFrame && _isDucksEnabled)
 			{
 				ShootDuck();
+				return;
 			}
-			else if (Input.GetMouseButtonDown(1) && _isCubesEnabled)
+			if (Mouse.current.rightButton.wasPressedThisFrame && _isCubesEnabled)
 			{
 				CreateCube();
 			}

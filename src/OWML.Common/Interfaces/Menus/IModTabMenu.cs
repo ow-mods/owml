@@ -6,6 +6,8 @@
 
 		TabButton TabButton { get; }
 
+		void HideButton();
+
 		new IModTabMenu Copy();
 
 		new IModTabMenu Copy(string title);

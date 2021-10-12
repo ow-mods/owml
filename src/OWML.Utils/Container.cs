@@ -1,30 +1,31 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Autofac;
 
 namespace OWML.Utils
 {
 	public class Container
 	{
-		private readonly IUnityContainer _container = new UnityContainer();
+		private readonly ContainerBuilder _builder = new();
 
 		public Container Add<TInterface>(TInterface instance)
+			where TInterface : class
 		{
-			_container.RegisterInstance(instance, new ContainerControlledLifetimeManager());
+			_builder.RegisterInstance(instance).SingleInstance();
 			return this;
 		}
 
 		public Container Add<TInterface, TImplementation>() where TImplementation : TInterface
 		{
-			_container.RegisterType<TInterface, TImplementation>(new ContainerControlledLifetimeManager());
+			_builder.RegisterType<TImplementation>().As<TInterface>().SingleInstance();
 			return this;
 		}
 
 		public Container Add<TImplementation>()
 		{
-			_container.RegisterType<TImplementation>(new ContainerControlledLifetimeManager());
+			_builder.RegisterType<TImplementation>().SingleInstance();
 			return this;
 		}
 
-		public T Resolve<T>() => 
-			_container.Resolve<T>();
+		public T Resolve<T>() =>
+			_builder.Build().Resolve<T>();
 	}
 }
