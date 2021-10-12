@@ -1,6 +1,6 @@
 ﻿using OWML.ModHelper;
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using OWML.Common;
 using OWML.Utils;
 
@@ -10,24 +10,8 @@ namespace OWML.EnableDebugMode
 	{
 		private int _renderValue;
 		private bool _isStarted;
+		private bool _debugOn;
 		private PlayerSpawner _playerSpawner;
-		private readonly Dictionary<string, IModInputCombination> _inputs = new();
-
-		public override void Configure(IModConfig config)
-		{
-			foreach (var input in _inputs)
-			{
-				ModHelper.Input.UnregisterCombination(input.Value);
-			}
-			foreach (var key in config.Settings.Keys)
-			{
-				var value = config.GetSettingsValue<string>(key);
-				if (!string.IsNullOrEmpty(value))
-				{
-					_inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
-				}
-			}
-		}
 
 		public void Start()
 		{
@@ -41,6 +25,7 @@ namespace OWML.EnableDebugMode
 		{
 			if (behaviour is PlayerSpawner playerSpawner && ev == Events.AfterAwake)
 			{
+				ModHelper.Console.WriteLine("Player spawner loaded!");
 				_playerSpawner = playerSpawner;
 				_isStarted = true;
 			}
@@ -53,86 +38,90 @@ namespace OWML.EnableDebugMode
 				return;
 			}
 
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Cycle GUI mode"]))
+			if (Keyboard.current[Key.Pause].wasPressedThisFrame)
+			{
+				ToogleDebug();
+			}
+
+			if (Keyboard.current[Key.F1].wasPressedThisFrame)
 			{
 				CycleGUIMode();
 			}
 
 			HandleWarping();
-
-			TestUnpatching();
 		}
 
 		private void HandleWarping()
 		{
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Interloper"]))
+			if (_debugOn && Keyboard.current[Key.Minus].isPressed)
+			{
+				return;
+			}
+
+			if (Keyboard.current[Key.Numpad1].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.Comet);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Twins"]))
+			if (Keyboard.current[Key.Numpad2].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.HourglassTwin_1);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Timber Hearth"]))
+			if (Keyboard.current[Key.Numpad3].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.TimberHearth);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Brittle Hollows"]))
+			if (Keyboard.current[Key.Numpad4].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.BrittleHollow);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Giants Deep"]))
+			if (Keyboard.current[Key.Numpad5].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.GasGiant);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Dark Bramble"]))
+			if (Keyboard.current[Key.Numpad6].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.DarkBramble);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Ship"]))
+			if (Keyboard.current[Key.Numpad0].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.Ship);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Quantum Moon"]))
+			if (Keyboard.current[Key.Numpad7].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.QuantumMoon);
 			}
-			if (ModHelper.Input.IsNewlyPressed(_inputs["Warp to Attlerock"]))
+			if (Keyboard.current[Key.Numpad8].wasPressedThisFrame)
 			{
 				WarpTo(SpawnLocation.LunarLookout);
+			}
+			if (Keyboard.current[Key.Numpad9].wasPressedThisFrame)
+			{
+				WarpTo(SpawnLocation.InvisiblePlanet);
 			}
 		}
 
 		private void CycleGUIMode()
 		{
 			_renderValue++;
-			if (_renderValue >= 8)
+			if (_renderValue > 8)
 			{
 				_renderValue = 0;
 			}
-			ModHelper.Console.WriteLine("Render value: " + _renderValue);
-			typeof(GUIMode).GetAnyMember("_renderMode").SetValue(null, _renderValue);
+			ModHelper.Console.WriteLine("Render value: " + (GUIMode.RenderMode)_renderValue);
+			GUIMode.SetRenderMode((GUIMode.RenderMode)_renderValue);
+		}
+
+		private void ToogleDebug()
+		{
+			_debugOn = !_debugOn;
+			var debug = FindObjectOfType<DebugInputManager>();
+			debug.SetValue("_debugInputMode", _debugOn ? 1 : 0);
 		}
 
 		private void WarpTo(SpawnLocation location)
 		{
 			ModHelper.Console.WriteLine($"Warping to {location}!");
 			_playerSpawner.DebugWarp(_playerSpawner.GetSpawnPoint(location));
-		}
-
-		private void TestUnpatching()
-		{
-			if (Input.GetKeyDown(KeyCode.F7))
-			{
-				ModHelper.Console.WriteLine("Removing Jump");
-				ModHelper.HarmonyHelper.EmptyMethod<PlayerCharacterController>("ApplyJump");
-			}
-
-			if (Input.GetKeyDown(KeyCode.F8))
-			{
-				ModHelper.Console.WriteLine("Restoring Jump");
-				ModHelper.HarmonyHelper.Unpatch<PlayerCharacterController>("ApplyJump");
-			}
 		}
 	}
 }

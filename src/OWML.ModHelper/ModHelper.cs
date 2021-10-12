@@ -25,8 +25,6 @@ namespace OWML.ModHelper
 
 		public IOwmlConfig OwmlConfig { get; }
 
-		public IModInputHandler Input { get; }
-
 		public IModInteraction Interaction { get; }
 
 		public ModHelper(
@@ -40,7 +38,6 @@ namespace OWML.ModHelper
 			IModManifest manifest,
 			IModConfig config,
 			IOwmlConfig owmlConfig,
-			IModInputHandler inputHandler,
 			IModInteraction interaction)
 		{
 			Logger = logger;
@@ -53,7 +50,6 @@ namespace OWML.ModHelper
 			Manifest = manifest;
 			Config = config;
 			OwmlConfig = owmlConfig;
-			Input = inputHandler;
 			Interaction = interaction;
 		}
 	}

@@ -14,8 +14,6 @@ namespace OWML.ModHelper.Menus
 
 		public IModsMenu ModsMenu { get; }
 
-		public IModInputCombinationMenu InputCombinationMenu { get; }
-
 		public IModPopupManager PopupManager { get; }
 
 		private readonly IModConsole _console;
@@ -26,7 +24,6 @@ namespace OWML.ModHelper.Menus
 			IModPauseMenu pauseMenu,
 			IModsMenu modsMenu,
 			IModPopupManager popupManager,
-			IModInputCombinationMenu inputComboMenu,
 			IModConsole console)
 		{
 			_console = console;
@@ -34,20 +31,19 @@ namespace OWML.ModHelper.Menus
 			PauseMenu = pauseMenu;
 			ModsMenu = modsMenu;
 			PopupManager = popupManager;
-			InputCombinationMenu = inputComboMenu;
 
-			events.Subscribe<SettingsManager>(Events.AfterStart);
+			events.Subscribe<PauseMenuManager>(Events.AfterStart);
 			events.Subscribe<TitleScreenManager>(Events.AfterStart);
 			events.Event += OnEvent;
 		}
 
 		private void OnEvent(MonoBehaviour behaviour, Events ev)
 		{
-			if (behaviour is SettingsManager settingsManager &&
+			if (behaviour is PauseMenuManager pauseMenuManager &&
 				ev == Events.AfterStart &&
-				settingsManager.name == "PauseMenuManagers")
+				pauseMenuManager.name == "PauseMenuManagers")
 			{
-				InitPauseMenu(settingsManager);
+				InitPauseMenu(pauseMenuManager);
 			}
 			else if (behaviour is TitleScreenManager titleScreenManager &&
 					 ev == Events.AfterStart)
@@ -62,7 +58,7 @@ namespace OWML.ModHelper.Menus
 			{
 				MainMenu.Initialize(titleScreenManager);
 				var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
-				PopupManager.Initialize(inputMenu);
+				PopupManager.Initialize(inputMenu, MainMenu.OptionsMenu);
 				ModsMenu.Initialize(this, MainMenu);
 			}
 			catch (Exception ex)
@@ -71,11 +67,11 @@ namespace OWML.ModHelper.Menus
 			}
 		}
 
-		private void InitPauseMenu(SettingsManager settingsManager)
+		private void InitPauseMenu(PauseMenuManager pauseMenuManager)
 		{
 			try
 			{
-				PauseMenu.Initialize(settingsManager);
+				PauseMenu.Initialize(pauseMenuManager);
 				ModsMenu.Initialize(this, PauseMenu);
 			}
 			catch (Exception ex)

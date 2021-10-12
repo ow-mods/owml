@@ -4,7 +4,6 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
-using OWML.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,37 +32,34 @@ namespace OWML.ModHelper.Menus
 			CommandListener.AddToListener(InputLibrary.setDefaults);
 		}
 
-		protected virtual void SetupButtons()
+		protected virtual void SetupButtons(Menu menu)
 		{
-			var saveButton = GetPromptButton("UIElement-SaveAndExit");
-			var resetButton = GetPromptButton("UIElement-ResetToDefaultsButton");
-			var cancelButton = GetPromptButton("UIElement-DiscardChangesButton");
+			var promptButtons = GetParentPromptButtons(menu);
+			var saveButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-SaveAndExit");
+			var resetButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-ResetToDefaultsButton");
 
-			if (saveButton == null || resetButton == null || cancelButton == null)
+			if (saveButton == null || resetButton == null/* || cancelButton == null*/)
 			{
-				Console.WriteLine("Error - Failed to setup menu with selectables.");
+				Console.WriteLine("Failed to setup menu with selectables.", MessageType.Error);
 				return;
 			}
 
 			saveButton.OnClick += OnSave;
 			resetButton.OnClick += OnReset;
-			cancelButton.OnClick += OnExit;
 
 			saveButton.Prompt = new ScreenPrompt(InputLibrary.confirm, saveButton.DefaultTitle);
-			cancelButton.Prompt = new ScreenPrompt(InputLibrary.cancel, cancelButton.DefaultTitle);
 			resetButton.Prompt = new ScreenPrompt(InputLibrary.setDefaults, resetButton.DefaultTitle);
 		}
 
+		private IList<ModPromptButton> GetParentPromptButtons(Menu menu) =>
+			menu.transform.parent
+				.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
+				.Select(x => x.GetComponent<Button>())
+				.Select(x => new ModPromptButton(x, this, Console))
+				.ToList();
+
 		public override void Initialize(Menu menu)
 		{
-			var blocker = menu.GetComponentsInChildren<GraphicRaycaster>(true)
-				.Single(x => x.name == "RebindingModeBlocker");
-			blocker.gameObject.SetActive(false);
-
-			var labelPanel = menu.GetValue<GameObject>("_selectableItemsRoot")
-				.GetComponentInChildren<HorizontalLayoutGroup>(true);
-			labelPanel.gameObject.SetActive(false);
-
 			var layoutGroup = menu.GetComponentsInChildren<VerticalLayoutGroup>(true)
 				.Single(x => x.name == "Content");
 			Initialize(menu, layoutGroup);
@@ -72,10 +68,7 @@ namespace OWML.ModHelper.Menus
 			{
 				SetupCommands();
 			}
-			SetupButtons();
-
-			GetTitleButton("UIElement-CancelOutOfRebinding")?.Hide();
-			GetTitleButton("UIElement-KeyRebinder")?.Hide();
+			SetupButtons(menu);
 
 			foreach (Transform child in layoutGroup.transform)
 			{
@@ -86,41 +79,14 @@ namespace OWML.ModHelper.Menus
 			UpdateNavigation();
 		}
 
-		public override void SelectFirst()
-		{
-			Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
-			Menu.SetSelectOnActivate(Selectables[0]);
-		}
+		public override void SelectFirst() => Menu.SetSelectOnActivate(Selectables[0]);
 
 		public override void UpdateNavigation()
 		{
-			Selectables = Layout.GetComponentsInChildren<TooltipSelectable>()
+			Selectables = Layout.GetComponentsInChildren<MenuOption>()
 				.Select(x => x.GetComponent<Selectable>())
 				.Where(x => x != null).ToList();
 			UpdateNavigation(Selectables);
-		}
-
-		protected virtual void RemoveSelectable(Selectable selectable)
-		{
-			var index = Selectables.IndexOf(selectable);
-			var upIndex = (index - 1 + Selectables.Count) % Selectables.Count;
-			var downIndex = (index + 1) % Selectables.Count;
-			var navigation = Selectables[upIndex].navigation;
-			navigation.selectOnDown = Selectables[downIndex];
-			Selectables[upIndex].navigation = navigation;
-			navigation = Selectables[downIndex].navigation;
-			navigation.selectOnUp = Selectables[upIndex];
-			Selectables[downIndex].navigation = navigation;
-			if (downIndex == 0)
-			{
-				Selectables[upIndex].Select();
-			}
-			else
-			{
-				Selectables[downIndex].Select();
-			}
-
-			Selectables.RemoveAt(index);
 		}
 
 		protected virtual void AddSelectable(Selectable selectable, int index)
@@ -152,29 +118,29 @@ namespace OWML.ModHelper.Menus
 
 		protected virtual void OnActivateMenu()
 		{
-			CommandListener.OnNewlyReleased += OnButton;
-			CommandListener.BlockNextRelease();
+			CommandListener.OnNewlyPressed += OnButton;
 		}
 
 		protected virtual void OnDeactivateMenu()
 		{
-			CommandListener.OnNewlyReleased -= OnButton;
+			CommandListener.OnNewlyPressed -= OnButton;
 		}
 
-		protected virtual void OnButton(SingleAxisCommand command)
+		protected virtual void OnButton(IInputCommands command)
 		{
-			command.ConsumeInput();
-			if (command == InputLibrary.confirm && (OWInput.IsGamepadEnabled() || !InputLibrary.enter.GetValue<bool>("_blockNextRelease"))
-				|| command == InputLibrary.enter2)
+			if (command == InputLibrary.confirm || command == InputLibrary.enter2)
 			{
+				command.ConsumeInput();
 				OnSave();
 			}
 			if (command == InputLibrary.cancel || command == InputLibrary.escape)
 			{
+				command.ConsumeInput();
 				OnExit();
 			}
 			if (command == InputLibrary.setDefaults)
 			{
+				command.ConsumeInput();
 				OnReset();
 			}
 		}

@@ -15,7 +15,6 @@ namespace OWML.Launcher
 		private readonly IModFinder _modFinder;
 		private readonly IPathFinder _pathFinder;
 		private readonly IOWPatcher _owPatcher;
-		private readonly IVRPatcher _vrPatcher;
 		private readonly IGameVersionHandler _versionHandler;
 		private readonly IProcessHelper _processHelper;
 		private readonly IArgumentHelper _argumentHelper;
@@ -27,7 +26,6 @@ namespace OWML.Launcher
 			IModFinder modFinder,
 			IPathFinder pathFinder,
 			IOWPatcher owPatcher,
-			IVRPatcher vrPatcher,
 			IGameVersionHandler versionHandler,
 			IProcessHelper processHelper,
 			IArgumentHelper argumentHelper)
@@ -38,7 +36,6 @@ namespace OWML.Launcher
 			_modFinder = modFinder;
 			_pathFinder = pathFinder;
 			_owPatcher = owPatcher;
-			_vrPatcher = vrPatcher;
 			_versionHandler = versionHandler;
 			_processHelper = processHelper;
 			_argumentHelper = argumentHelper;
@@ -58,7 +55,7 @@ namespace OWML.Launcher
 
 			ShowModList(mods);
 
-			PatchGame(mods);
+			_owPatcher.PatchGame();
 
 			var hasPortArgument = _argumentHelper.HasArgument(Constants.ConsolePortArgument);
 
@@ -94,7 +91,14 @@ namespace OWML.Launcher
 			var filesToCopy = new[] { "UnityEngine.CoreModule.dll", "Assembly-CSharp.dll" };
 			foreach (var fileName in filesToCopy)
 			{
-				File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
+				try
+				{
+					File.Copy($"{_owmlConfig.ManagedPath}/{fileName}", fileName, true);
+				}
+				catch (Exception ex)
+				{
+					_writer.WriteLine($"Error while copying game file {fileName}: {ex.Message}");
+				}
 			}
 			_writer.WriteLine("Game files copied.");
 		}
@@ -113,29 +117,6 @@ namespace OWML.Launcher
 				var stateText = modData.Enabled ? "" : "(disabled)";
 				var type = modData.Enabled ? MessageType.Message : MessageType.Warning;
 				_writer.WriteLine($"* {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}", type);
-			}
-		}
-
-		private bool HasVrMod(IList<IModData> mods)
-		{
-			var vrMod = mods.FirstOrDefault(x => x.RequireVR && x.Enabled);
-			var hasVrMod = vrMod != null;
-			_writer.WriteLine(hasVrMod ? $"{vrMod.Manifest.UniqueName} requires VR." : "No mods require VR.");
-			return hasVrMod;
-		}
-
-		private void PatchGame(IList<IModData> mods)
-		{
-			_owPatcher.PatchGame();
-
-			try
-			{
-				var enableVR = HasVrMod(mods);
-				_vrPatcher.PatchVR(enableVR);
-			}
-			catch (Exception ex)
-			{
-				_writer.WriteLine($"Error while applying VR patch: {ex}", MessageType.Error);
 			}
 		}
 

@@ -38,8 +38,6 @@ namespace OWML.Launcher
 				.Add<IPathFinder, PathFinder>()
 				.Add<IOWPatcher, OWPatcher>()
 				.Add<IBinaryPatcher, BinaryPatcher>()
-				.Add<IVRFilePatcher, VRFilePatcher>()
-				.Add<IVRPatcher, VRPatcher>()
 				.Add<IGameVersionReader, GameVersionReader>()
 				.Add<IGameVersionHandler, GameVersionHandler>()
 				.Add<IProcessHelper, ProcessHelper>()
@@ -65,7 +63,7 @@ namespace OWML.Launcher
 			}
 		}
 
-		private static IOwmlConfig GetOwmlConfig() => 
+		private static IOwmlConfig GetOwmlConfig() =>
 			JsonHelper.LoadJsonObject<OwmlConfig>(Constants.OwmlConfigFileName);
 
 		private static IOwmlConfig CreateOwmlConfig()
@@ -81,7 +79,7 @@ namespace OWML.Launcher
 			JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
 		}
 
-		private static IModManifest GetOwmlManifest() => 
+		private static IModManifest GetOwmlManifest() =>
 			JsonHelper.LoadJsonObject<ModManifest>(Constants.OwmlManifestFileName);
 
 		private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort) =>

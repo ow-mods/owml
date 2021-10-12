@@ -9,6 +9,7 @@ namespace OWML.ModHelper.Menus
 		private const string EnabledTitle = "Enabled";
 
 		public IModData ModData { get; }
+
 		public IModBehaviour Mod { get; }
 
 		public ModConfigMenu(IModData modData, IModBehaviour mod, IModStorage storage, IModConsole console)
@@ -30,7 +31,7 @@ namespace OWML.ModHelper.Menus
 			SelectFirst();
 		}
 
-		protected override void UpdateUIValues()
+		public override void UpdateUIValues()
 		{
 			GetToggleInput(EnabledTitle).Value = ModData.Config.Enabled;
 			foreach (var setting in ModData.Config.Settings)
@@ -48,7 +49,7 @@ namespace OWML.ModHelper.Menus
 				var value = GetInputValue(key);
 				ModData.Config.SetSettingsValue(key, value);
 			}
-			Storage.Save(ModData.Config, Constants.ModConfigFileName);
+			ModData.Storage.Save(ModData.Config, Constants.ModConfigFileName);
 			Mod?.Configure(ModData.Config);
 			Close();
 		}

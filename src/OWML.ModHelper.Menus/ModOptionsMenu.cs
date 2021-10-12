@@ -17,13 +17,11 @@ namespace OWML.ModHelper.Menus
 
 		public IModTabMenu GraphicsTab { get; private set; }
 
-		public IModButton RebindingButton { get; private set; }
-
-		public IModPopupMenu RebindingMenu { get; private set; }
-
 		public new TabbedMenu Menu { get; private set; }
 
 		private List<IModTabMenu> _tabMenus;
+
+		private GraphicRaycaster _raycaster;
 
 		public ModOptionsMenu(IModConsole console)
 			: base(console)
@@ -35,6 +33,7 @@ namespace OWML.ModHelper.Menus
 			base.Initialize(menu);
 			Menu = menu;
 
+			_raycaster = Menu.transform.parent.GetComponent<GraphicRaycaster>();
 			var tabButtons = Menu.GetValue<TabButton[]>("_menuTabs");
 			_tabMenus = new List<IModTabMenu>();
 			foreach (var tabButton in tabButtons)
@@ -44,13 +43,10 @@ namespace OWML.ModHelper.Menus
 				_tabMenus.Add(tabMenu);
 			}
 
-			GameplayTab = GetTab("Button-GamePlay");
+			GameplayTab = GetTab("Button-GamePlayOG");
 			AudioTab = GetTab("Button-Audio");
 			InputTab = GetTab("Button-Input");
 			GraphicsTab = GetTab("Button-Graphics");
-
-			RebindingButton = InputTab.GetTitleButton("UIElement-RemapControls");
-			RebindingMenu = GetRebindingMenu();
 
 			InvokeOnInit();
 		}
@@ -60,9 +56,24 @@ namespace OWML.ModHelper.Menus
 			_tabMenus.Add(tabMenu);
 			var tabs = _tabMenus.Select(x => x.TabButton).ToArray();
 			Menu.SetValue("_menuTabs", tabs);
+			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
 			tabMenu.TabButton.transform.parent = parent;
 			UpdateTabNavigation();
+		}
+
+		public void SetIsBlocking(bool isBlocking) =>
+			_raycaster.gameObject.SetActive(isBlocking);
+
+		private void AddSelectablePair(IModTabMenu tabMenu)
+		{
+			var selectablePairs = Menu.GetValue<TabbedMenu.TabSelectablePair[]>("_tabSelectablePairs").ToList();
+			selectablePairs.Add(new TabbedMenu.TabSelectablePair
+			{
+				tabButton = tabMenu.TabButton,
+				selectable = tabMenu.TabButton.GetComponent<Selectable>()
+			});
+			Menu.SetValue("_tabSelectablePairs", selectablePairs.ToArray());
 		}
 
 		private void UpdateTabNavigation()
@@ -88,16 +99,6 @@ namespace OWML.ModHelper.Menus
 		private IModTabMenu GetTab(string tabName)
 		{
 			return _tabMenus.Single(x => x.TabButton.name == tabName);
-		}
-
-		private IModPopupMenu GetRebindingMenu()
-		{
-			var menu = RebindingButton.Button
-				.GetComponent<SubmitActionMenu>()
-				.GetValue<Menu>("_menuToOpen");
-			var rebindingMenu = new ModPopupMenu(Console);
-			rebindingMenu.Initialize(menu);
-			return rebindingMenu;
 		}
 	}
 }

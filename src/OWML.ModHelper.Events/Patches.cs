@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony;
+using System.Reflection.Emit;
+using HarmonyLib;
 using UnityEngine;
 
 namespace OWML.ModHelper.Events
@@ -39,7 +40,9 @@ namespace OWML.ModHelper.Events
 		public static void AfterDestroy(MonoBehaviour __instance) =>
 			OnEvent?.Invoke(__instance, Common.Events.AfterDestroy);
 
+		public static bool EmptyMethodPrefix() => false;
+
 		public static IEnumerable<CodeInstruction> EmptyMethod(IEnumerable<CodeInstruction> _) => 
-			new List<CodeInstruction>();
+			new List<CodeInstruction>() { new CodeInstruction(OpCodes.Ret) };
 	}
 }

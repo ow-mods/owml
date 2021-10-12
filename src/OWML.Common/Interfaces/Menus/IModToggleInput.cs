@@ -2,11 +2,9 @@
 {
 	public interface IModToggleInput : IModInput<bool>
 	{
-		TwoButtonToggleElement Toggle { get; }
+		ToggleElement Toggle { get; }
 
-		IModButton YesButton { get; }
-
-		IModButton NoButton { get; }
+		public IModButton Button { get; }
 
 		IModToggleInput Copy();
 
