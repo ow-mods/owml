@@ -33,13 +33,6 @@ namespace OWML.ModHelper.Menus
 			InvokeOnInit();
 		}
 
-		public override void SelectFirst()
-		{
-			//var firstSelectable = Menu.GetComponentInChildren<Selectable>();
-			//Locator.GetMenuInputModule().SelectOnNextUpdate(firstSelectable);
-			//Menu.SetSelectOnActivate(firstSelectable);
-		}
-
 		public override void Open()
 		{
 			if (!_optionsMenu.IsOpen)

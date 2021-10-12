@@ -79,11 +79,7 @@ namespace OWML.ModHelper.Menus
 			UpdateNavigation();
 		}
 
-		public override void SelectFirst()
-		{
-			//Locator.GetMenuInputModule().SelectOnNextUpdate(Selectables[0]);
-			Menu.SetSelectOnActivate(Selectables[0]);
-		}
+		public override void SelectFirst() => Menu.SetSelectOnActivate(Selectables[0]);
 
 		public override void UpdateNavigation()
 		{
@@ -91,29 +87,6 @@ namespace OWML.ModHelper.Menus
 				.Select(x => x.GetComponent<Selectable>())
 				.Where(x => x != null).ToList();
 			UpdateNavigation(Selectables);
-		}
-
-		protected virtual void RemoveSelectable(Selectable selectable)
-		{
-			var index = Selectables.IndexOf(selectable);
-			var upIndex = (index - 1 + Selectables.Count) % Selectables.Count;
-			var downIndex = (index + 1) % Selectables.Count;
-			var navigation = Selectables[upIndex].navigation;
-			navigation.selectOnDown = Selectables[downIndex];
-			Selectables[upIndex].navigation = navigation;
-			navigation = Selectables[downIndex].navigation;
-			navigation.selectOnUp = Selectables[upIndex];
-			Selectables[downIndex].navigation = navigation;
-			if (downIndex == 0)
-			{
-				Selectables[upIndex].Select();
-			}
-			else
-			{
-				Selectables[downIndex].Select();
-			}
-
-			Selectables.RemoveAt(index);
 		}
 
 		protected virtual void AddSelectable(Selectable selectable, int index)
