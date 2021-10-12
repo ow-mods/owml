@@ -3,6 +3,9 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using HarmonyLib.Tools;
+using System.Collections.Generic;
+using HarmonyLib.Public.Patching;
+using System.Linq;
 
 namespace OWML.ModHelper.Events
 {
@@ -101,34 +104,47 @@ namespace OWML.ModHelper.Events
 
 		public void Unpatch<T>(string methodName, PatchType patchType = PatchType.All)
 		{
-			//_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
+			_console.WriteLine($"Unpatching {typeof(T).Name}.{methodName}", MessageType.Debug);
 
-			//var sharedState = Utils.TypeExtensions.Invoke<Dictionary<MethodBase, byte[]>>(typeof(HarmonySharedState), "GetState");
-			//var method = sharedState.Keys.First(m => m.DeclaringType == typeof(T) && m.Name == methodName);
-			//var patchInfo = PatchInfoSerialization.Deserialize(sharedState.GetValueSafe(method));
+			var method = GetMethod<T>(methodName);
+			var patchInfo = method.ToPatchInfo();
 
-			//switch (patchType)
-			//{
-			//	case PatchType.Prefix:
-			//		patchInfo.RemovePrefix(_manifest.UniqueName);
-			//		break;
-			//	case PatchType.Postfix:
-			//		patchInfo.RemovePostfix(_manifest.UniqueName);
-			//		break;
-			//	case PatchType.Transpiler:
-			//		patchInfo.RemoveTranspiler(_manifest.UniqueName);
-			//		break;
-			//	case PatchType.All:
-			//		patchInfo.RemovePostfix(_manifest.UniqueName);
-			//		patchInfo.RemovePrefix(_manifest.UniqueName);
-			//		patchInfo.RemoveTranspiler(_manifest.UniqueName);
-			//		break;
-			//}
+			switch (patchType)
+			{
+				case PatchType.Prefix:
+					patchInfo.RemovePrefix(_manifest.UniqueName);
+					break;
+				case PatchType.Postfix:
+					patchInfo.RemovePostfix(_manifest.UniqueName);
+					break;
+				case PatchType.Transpiler:
+					patchInfo.RemoveTranspiler(_manifest.UniqueName);
+					break;
+				case PatchType.Finalizer:
+					patchInfo.RemoveFinalizer(_manifest.UniqueName);
+					break;
+				case PatchType.ILManipulator:
+					patchInfo.RemoveILManipulator(_manifest.UniqueName);
+					break;
+				case PatchType.ReversePatch:
+					throw new NotImplementedException("Cannot unpatch ReversePatch");
+				case PatchType.All:
+					patchInfo.RemovePostfix(_manifest.UniqueName);
+					patchInfo.RemovePrefix(_manifest.UniqueName);
+					patchInfo.RemoveTranspiler(_manifest.UniqueName);
+					patchInfo.RemoveFinalizer(_manifest.UniqueName);
+					patchInfo.RemoveILManipulator(_manifest.UniqueName);
+					break;
+			}
 
-			//PatchFunctions.UpdateWrapper(method, patchInfo, _manifest.UniqueName);
-			//sharedState[method] = patchInfo.Serialize();
+			var patchFunctions = typeof(PatchInfo).Assembly.GetTypes().First(x => x.Name == "PatchFunctions"); // what the fuck
+			var updateWrapperMethod = patchFunctions.GetMethod("UpdateWrapper", BindingFlags.Static | BindingFlags.NonPublic);
+			var replacement = (MethodInfo)updateWrapperMethod.Invoke(null, new object[] { method, patchInfo });
 
-			//_console.WriteLine($"Unpatched {typeof(T).Name}.{methodName}!", MessageType.Debug);
+			var addReplacementOriginalMethod = typeof(PatchManager).GetMethod("AddReplacementOriginal", BindingFlags.Static | BindingFlags.NonPublic);
+			addReplacementOriginalMethod.Invoke(null, new object[] { method, replacement });
+
+			_console.WriteLine($"Unpatched {typeof(T).Name}.{methodName}!", MessageType.Debug);
 		}
 
 		private void Patch(MethodBase original, MethodInfo prefix, MethodInfo postfix, MethodInfo transpiler)
