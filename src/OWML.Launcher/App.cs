@@ -124,14 +124,14 @@ namespace OWML.Launcher
 
 		private void ExecutePatchers(IList<IModData> mods)
         {
-			if (!mods.Any(x => !String.IsNullOrEmpty(x.Manifest.PatcherPath)))
+			if (!mods.Any(x => !String.IsNullOrEmpty(x.Manifest.Patcher)))
 			{
 				_writer.WriteLine("No patchers to run...", MessageType.Info);
 				return;
 			}
 
 			_writer.WriteLine("Running patchers...", MessageType.Info);
-			foreach (var modData in mods.Where(x => !String.IsNullOrEmpty(x.Manifest.PatcherPath)))
+			foreach (var modData in mods.Where(x => !String.IsNullOrEmpty(x.Manifest.Patcher)))
 			{
 				var stateText = modData.Enabled ? "" : "(disabled)";
 				var type = modData.Enabled ? MessageType.Message : MessageType.Warning;
