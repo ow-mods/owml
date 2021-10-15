@@ -123,7 +123,7 @@ namespace OWML.Launcher
 		}
 
 		private void ExecutePatchers(IList<IModData> mods)
-        {
+		{
 			if (!mods.Any(x => !String.IsNullOrEmpty(x.Manifest.Patcher)))
 			{
 				_writer.WriteLine("No patchers to run...", MessageType.Info);
@@ -138,7 +138,7 @@ namespace OWML.Launcher
 				_writer.WriteLine($"Patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}", type);
 
 				if(modData.Enabled)
-                {
+				{
 					var domaininfo = new AppDomainSetup();
 					domaininfo.ApplicationBase = _owmlConfig.GamePath;
 					AppDomain domain = AppDomain.CreateDomain($"{modData.Manifest.UniqueName}.Patcher", AppDomain.CurrentDomain.Evidence, domaininfo);

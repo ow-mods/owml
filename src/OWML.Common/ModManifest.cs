@@ -20,7 +20,7 @@ namespace OWML.Common
 		public string UniqueName { get; private set; }
 
 		[JsonProperty("version")]
-		public string Version { get; private set; }
+        public string Version { get; private set; }
 
 		[JsonProperty("owmlVersion")]
 		public string OWMLVersion { get; private set; }
