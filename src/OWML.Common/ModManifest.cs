@@ -7,6 +7,9 @@ namespace OWML.Common
 		[JsonProperty("filename")]
 		public string Filename { get; private set; }
 
+		[JsonProperty("patcher")]
+		public string Patcher { get; private set; }
+
 		[JsonProperty("author")]
 		public string Author { get; private set; }
 
@@ -36,6 +39,9 @@ namespace OWML.Common
 
 		[JsonIgnore]
 		public string AssemblyPath => ModFolderPath + Filename;
+
+		[JsonIgnore]
+		public string PatcherPath => ModFolderPath + Patcher;
 
 		[JsonProperty("minGameVersion")]
 		public string MinGameVersion { get; private set; } = "";

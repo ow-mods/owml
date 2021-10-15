@@ -4,6 +4,8 @@
 	{
 		string Filename { get; }
 
+		string Patcher { get; }
+
 		string Author { get; }
 
 		string Name { get; }
@@ -13,6 +15,8 @@
 		string OWMLVersion { get; }
 
 		string AssemblyPath { get; }
+
+		string PatcherPath { get; }
 
 		string UniqueName { get; }
 
