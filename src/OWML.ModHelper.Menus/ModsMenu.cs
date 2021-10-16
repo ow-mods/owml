@@ -56,6 +56,7 @@ namespace OWML.ModHelper.Menus
 			var modsMenu = CreateModsMenu(options);
 			modsButton.OnClick += modsMenu.Open;
 			_modConfigMenus.ForEach(x => x.OnClosed += modsMenu.Open);
+			OwmlMenu.OnClosed += modsMenu.Open;
 		}
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
