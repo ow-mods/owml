@@ -35,10 +35,17 @@ namespace OWML.ModHelper.Menus
 
 		public override void Open()
 		{
+			if(TabButton == null)
+			{
+				Console.WriteLine($"Open called on a menu instance that is referencing dead objects!", MessageType.Error);
+				return;
+			}
+
 			if (!_optionsMenu.IsOpen)
 			{
 				_optionsMenu.Open();
 			}
+
 			_optionsMenu.Menu.Invoke("SelectTabButton", TabButton);
 		}
 

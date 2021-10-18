@@ -113,5 +113,22 @@ namespace OWML.ModHelper.Menus
 			copy.Title = title;
 			return copy;
 		}
+
+		public void RemoveAllListeners()
+		{
+			UnregisterAllFromActionEvent(ref OnOpened);
+			UnregisterAllFromActionEvent(ref OnClosed);
+			OnOpen = null;
+			OnClose = null;
+		}
+
+		private void UnregisterAllFromActionEvent(ref Action evt)
+		{
+			if (evt == null) return;
+			foreach (Delegate d in evt.GetInvocationList())
+			{
+				evt -= (Action)d;
+			}
+		}
 	}
 }
