@@ -125,7 +125,7 @@ namespace OWML.ModHelper.Menus
 		private void UnregisterAllFromActionEvent(ref Action evt)
 		{
 			if (evt == null) return;
-			foreach (Delegate d in evt.GetInvocationList())
+			foreach (var d in evt.GetInvocationList())
 			{
 				evt -= (Action)d;
 			}

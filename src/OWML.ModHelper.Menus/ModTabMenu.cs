@@ -37,7 +37,7 @@ namespace OWML.ModHelper.Menus
 		{
 			if(TabButton == null)
 			{
-				Console.WriteLine($"Open called on a menu instance that is referencing dead objects!", MessageType.Error);
+				Console.WriteLine("Open called on a menu instance that is referencing dead objects!", MessageType.Error);
 				return;
 			}
 
