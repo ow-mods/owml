@@ -116,19 +116,10 @@ namespace OWML.ModHelper.Menus
 
 		public void RemoveAllListeners()
 		{
-			UnregisterAllFromActionEvent(ref OnOpened);
-			UnregisterAllFromActionEvent(ref OnClosed);
+			OnOpened = null;
+			OnClosed = null;
 			OnOpen = null;
 			OnClose = null;
-		}
-
-		private void UnregisterAllFromActionEvent(ref Action evt)
-		{
-			if (evt == null) return;
-			foreach (var d in evt.GetInvocationList())
-			{
-				evt -= (Action)d;
-			}
 		}
 	}
 }
