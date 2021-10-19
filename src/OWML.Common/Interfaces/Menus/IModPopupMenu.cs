@@ -32,5 +32,7 @@ namespace OWML.Common.Menus
 		void Initialize(Menu menu);
 
 		void Initialize(Menu menu, LayoutGroup layoutGroup);
+
+		void RemoveAllListeners();
 	}
 }

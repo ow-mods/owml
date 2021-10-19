@@ -128,12 +128,12 @@ namespace OWML.ModHelper.Menus
 
 		protected virtual void OnButton(IInputCommands command)
 		{
-			if (command == InputLibrary.confirm || command == InputLibrary.enter2)
+			if (command == InputLibrary.confirm || command == InputLibrary.enter2 || command == InputLibrary.cancel)
 			{
 				command.ConsumeInput();
 				OnSave();
 			}
-			if (command == InputLibrary.cancel || command == InputLibrary.escape)
+			if (command == InputLibrary.escape)
 			{
 				command.ConsumeInput();
 				OnExit();

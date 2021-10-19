@@ -113,5 +113,13 @@ namespace OWML.ModHelper.Menus
 			copy.Title = title;
 			return copy;
 		}
+
+		public void RemoveAllListeners()
+		{
+			OnOpened = null;
+			OnClosed = null;
+			OnOpen = null;
+			OnClose = null;
+		}
 	}
 }
