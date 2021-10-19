@@ -12,8 +12,6 @@
 
 		bool Enabled { get; }
 
-		bool RequireVR { get; }
-
 		bool RequireReload { get; }
 
 		void UpdateSnapshot();
