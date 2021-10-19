@@ -34,9 +34,6 @@ namespace OWML.Common
 		[JsonIgnore]
 		public string ModFolderPath { get; set; }
 
-		[JsonProperty("requireVR")]
-		public bool RequireVR { get; private set; }
-
 		[JsonIgnore]
 		public string AssemblyPath => ModFolderPath + Filename;
 

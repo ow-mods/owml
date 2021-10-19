@@ -18,8 +18,6 @@ namespace OWML.ModLoader
 
 		public bool RequireReload => Config.Enabled != _configSnapshot.Enabled;
 
-		public bool RequireVR => Manifest.RequireVR;
-
 		public bool Enabled => Config != null && Config.Enabled ||
 							   Config == null && DefaultConfig.Enabled;
 

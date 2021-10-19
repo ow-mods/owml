@@ -26,8 +26,6 @@
 
 		bool PriorityLoad { get; }
 
-		bool RequireVR { get; }
-
 		string MinGameVersion { get; }
 
 		string MaxGameVersion { get; }
