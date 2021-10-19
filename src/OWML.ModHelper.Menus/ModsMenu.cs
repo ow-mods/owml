@@ -47,6 +47,9 @@ namespace OWML.ModHelper.Menus
 
 		public void Initialize(IModMenus menus, IModOWMenu owMenu)
 		{
+			_modConfigMenus.ForEach(x => x.RemoveAllListeners());
+			OwmlMenu.RemoveAllListeners();
+
 			_menus = menus;
 			Menu = owMenu.Menu;
 
