@@ -68,6 +68,13 @@ namespace OWML.ModHelper.Menus
 		{
 			var modButton = options.GameplayTab.Buttons.First().Copy(name);
 			modButton.Button.enabled = true;
+			if ((modButton.Button.FindSelectableOnRight()!=null)|| (modButton.Button.FindSelectableOnLeft() != null))
+			{
+				var nav = modButton.Button.navigation;
+				nav.selectOnLeft = null;
+				nav.selectOnRight = null;
+				modButton.Button.navigation = nav;
+			}
 			GameObject.Destroy(modButton.Button.GetComponent<TabButton>());
 			var menuOpt = modButton.Button.gameObject.AddComponent<MenuOption>();
 			menuOpt.SetSelectable(modButton.Button);
