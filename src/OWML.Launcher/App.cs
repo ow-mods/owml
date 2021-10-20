@@ -131,9 +131,9 @@ namespace OWML.Launcher
 				.ForEach(ExecutePatcher);
 		}
 
-		private static bool ShouldExecutePatcher(IModData x) =>
-			!string.IsNullOrEmpty(x.Manifest.Patcher)
-			&& x.Enabled;
+		private static bool ShouldExecutePatcher(IModData modData) =>
+			!string.IsNullOrEmpty(modData.Manifest.Patcher)
+			&& modData.Enabled;
 
 		private void ExecutePatcher(IModData modData)
 		{
