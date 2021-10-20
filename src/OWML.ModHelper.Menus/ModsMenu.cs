@@ -77,6 +77,7 @@ namespace OWML.ModHelper.Menus
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
+			_menuOptions.Clear();
 			var modsTab = CreateTab(options, ModsTitle);
 
 			var owmlButton = MakeButton(options, Constants.OwmlTitle);
