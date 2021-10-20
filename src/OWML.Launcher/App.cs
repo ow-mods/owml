@@ -139,19 +139,16 @@ namespace OWML.Launcher
 		{
 			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
 
-			var domain = AppDomain.CreateDomain($"{modData.Manifest.UniqueName}.Patcher", AppDomain.CurrentDomain.Evidence, new AppDomainSetup
-			{
-				ApplicationBase = _owmlConfig.GamePath
-			});
-
-			var paths = new[]
-			{
-				Path.GetDirectoryName(modData.Manifest.PatcherPath)
-			};
+			var domain = AppDomain.CreateDomain(
+				$"{modData.Manifest.UniqueName}.Patcher",
+				AppDomain.CurrentDomain.Evidence,
+				new AppDomainSetup { ApplicationBase = _owmlConfig.GamePath });
 
 			try
 			{
-				domain.ExecuteAssembly(modData.Manifest.PatcherPath, paths);
+				domain.ExecuteAssembly(
+					modData.Manifest.PatcherPath,
+					new[] { Path.GetDirectoryName(modData.Manifest.PatcherPath) });
 			}
 			catch (Exception ex)
 			{
