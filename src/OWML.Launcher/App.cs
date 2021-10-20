@@ -122,30 +122,41 @@ namespace OWML.Launcher
 			}
 		}
 
-		private void ExecutePatchers(IList<IModData> mods)
+		private void ExecutePatchers(IEnumerable<IModData> mods)
 		{
-			_writer.WriteLine("Running patchers...", MessageType.Info);
-			foreach (var modData in mods.Where(x => !String.IsNullOrEmpty(x.Manifest.Patcher)))
-			{
-				var stateText = modData.Enabled ? "" : "(disabled)";
-				var type = modData.Enabled ? MessageType.Message : MessageType.Warning;
-				_writer.WriteLine($"Patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version} {stateText}", type);
+			_writer.WriteLine("Executing patchers...", MessageType.Debug);
+			mods
+				.Where(ShouldExecutePatcher)
+				.ToList()
+				.ForEach(ExecutePatcher);
+		}
 
-				if(modData.Enabled)
-				{
-					var domaininfo = new AppDomainSetup();
-					domaininfo.ApplicationBase = _owmlConfig.GamePath;
-					AppDomain domain = AppDomain.CreateDomain($"{modData.Manifest.UniqueName}.Patcher", AppDomain.CurrentDomain.Evidence, domaininfo);
-					try
-					{
-						domain.ExecuteAssembly(modData.Manifest.PatcherPath, new [] { Path.GetDirectoryName(modData.Manifest.PatcherPath) });
-					}
-					catch (Exception ex)
-					{
-						_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex.Message}", MessageType.Error);
-					}
-					finally { AppDomain.Unload(domain); }
-				}
+		private static bool ShouldExecutePatcher(IModData modData) =>
+			!string.IsNullOrEmpty(modData.Manifest.Patcher)
+			&& modData.Enabled;
+
+		private void ExecutePatcher(IModData modData)
+		{
+			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
+
+			var domain = AppDomain.CreateDomain(
+				$"{modData.Manifest.UniqueName}.Patcher",
+				AppDomain.CurrentDomain.Evidence,
+				new AppDomainSetup { ApplicationBase = _owmlConfig.GamePath });
+
+			try
+			{
+				domain.ExecuteAssembly(
+					modData.Manifest.PatcherPath,
+					new[] { Path.GetDirectoryName(modData.Manifest.PatcherPath) });
+			}
+			catch (Exception ex)
+			{
+				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex.Message}", MessageType.Error);
+			}
+			finally
+			{
+				AppDomain.Unload(domain);
 			}
 		}
 
