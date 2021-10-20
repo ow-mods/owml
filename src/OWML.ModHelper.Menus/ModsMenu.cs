@@ -16,6 +16,7 @@ namespace OWML.ModHelper.Menus
 
 		private readonly IModStorage _storage;
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
+		private readonly List<MenuOption> _menuOptions = new();
 		private IModMenus _menus;
 
 		public ModsMenu(
@@ -62,11 +63,23 @@ namespace OWML.ModHelper.Menus
 			OwmlMenu.OnClosed += modsMenu.Open;
 		}
 
+
+		private IModButton MakeButton(IModTabbedMenu options, string name)
+		{
+			var modButton = options.GameplayTab.Buttons.First().Copy(name);
+			modButton.Button.enabled = true;
+			GameObject.Destroy(modButton.Button.GetComponent<TabButton>());
+			var menuOpt = modButton.Button.gameObject.AddComponent<MenuOption>();
+			menuOpt.SetSelectable(modButton.Button);
+			_menuOptions.Add(menuOpt);
+			return modButton;
+		}
+
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
 			var modsTab = CreateTab(options, ModsTitle);
 
-			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);
+			var owmlButton = MakeButton(options, Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			var owmlTab = CreateTab(options, Constants.OwmlTitle);
 			owmlTab.HideButton();
@@ -78,8 +91,7 @@ namespace OWML.ModHelper.Menus
 			var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
 			CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
 
-			modsTab.UpdateNavigation();
-			modsTab.SelectFirst();
+			modsTab.Menu.SetValue("_menuOptions", _menuOptions.ToArray());
 			return modsTab;
 		}
 
@@ -98,8 +110,7 @@ namespace OWML.ModHelper.Menus
 			separator.Element.transform.localScale = options.GameplayTab.Buttons.First().Button.transform.localScale;
 			foreach (var modConfigMenu in configMenus)
 			{
-				var modButton = options.GameplayTab.Buttons.First().Copy(modConfigMenu.Manifest.Name);
-				modButton.Button.enabled = true;
+				var modButton = MakeButton(options, modConfigMenu.Manifest.Name);
 				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
 				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
