@@ -16,6 +16,7 @@ namespace OWML.ModHelper.Menus
 
 		private readonly IModStorage _storage;
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
+		private readonly List<MenuOption> _menuOptions = new();
 		private IModMenus _menus;
 
 		public ModsMenu(
@@ -64,9 +65,10 @@ namespace OWML.ModHelper.Menus
 
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
+			_menuOptions.Clear();
 			var modsTab = CreateTab(options, ModsTitle);
 
-			var owmlButton = options.GameplayTab.Buttons.First().Copy(Constants.OwmlTitle);
+			var owmlButton = CreateButton(options, Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			var owmlTab = CreateTab(options, Constants.OwmlTitle);
 			owmlTab.HideButton();
@@ -78,8 +80,7 @@ namespace OWML.ModHelper.Menus
 			var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
 			CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
 
-			modsTab.UpdateNavigation();
-			modsTab.SelectFirst();
+			modsTab.Menu.SetValue("_menuOptions", _menuOptions.ToArray());
 			return modsTab;
 		}
 
@@ -98,8 +99,7 @@ namespace OWML.ModHelper.Menus
 			separator.Element.transform.localScale = options.GameplayTab.Buttons.First().Button.transform.localScale;
 			foreach (var modConfigMenu in configMenus)
 			{
-				var modButton = options.GameplayTab.Buttons.First().Copy(modConfigMenu.Manifest.Name);
-				modButton.Button.enabled = true;
+				var modButton = CreateButton(options, modConfigMenu.Manifest.Name);
 				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
 				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
@@ -120,6 +120,24 @@ namespace OWML.ModHelper.Menus
 			numberInputTemplate.Hide();
 			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
 			modConfigMenu.UpdateUIValues();
+		}
+
+		private IModButton CreateButton(IModTabbedMenu options, string name)
+		{
+			var modButton = options.GameplayTab.Buttons.First().Copy(name);
+			modButton.Button.enabled = true;
+			if ((modButton.Button.FindSelectableOnRight() != null) || (modButton.Button.FindSelectableOnLeft() != null))
+			{
+				var nav = modButton.Button.navigation;
+				nav.selectOnLeft = null;
+				nav.selectOnRight = null;
+				modButton.Button.navigation = nav;
+			}
+			GameObject.Destroy(modButton.Button.GetComponent<TabButton>());
+			var menuOpt = modButton.Button.gameObject.AddComponent<MenuOption>();
+			menuOpt.SetSelectable(modButton.Button);
+			_menuOptions.Add(menuOpt);
+			return modButton;
 		}
 
 		private static IModTabMenu CreateTab(IModTabbedMenu options, string name)
