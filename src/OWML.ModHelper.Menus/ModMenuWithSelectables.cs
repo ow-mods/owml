@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OWML.Utils;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.ModHelper.Input;
@@ -83,6 +84,8 @@ namespace OWML.ModHelper.Menus
 
 		public override void UpdateNavigation()
 		{
+			var options = Layout.GetComponentsInChildren<MenuOption>();
+			Menu.SetValue("_menuOptions", options.ToArray());
 			Selectables = Layout.GetComponentsInChildren<MenuOption>()
 				.Select(x => x.GetComponent<Selectable>())
 				.Where(x => x != null).ToList();
