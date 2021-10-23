@@ -51,7 +51,7 @@ namespace OWML.ModHelper.Menus
 			InvokeOnInit();
 		}
 
-		public void AddTab(IModTabMenu tabMenu)
+		public void AddTab(IModTabMenu tabMenu, bool enable = true)
 		{
 			_tabMenus.Add(tabMenu);
 			var tabs = _tabMenus.Select(x => x.TabButton).ToArray();
@@ -59,7 +59,18 @@ namespace OWML.ModHelper.Menus
 			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
 			tabMenu.TabButton.transform.parent = parent;
-			UpdateTabNavigation();
+			if (enable)
+			{
+				UpdateTabNavigation();
+			}
+			else
+			{
+				var navigation = tabMenu.TabButton.GetSelectable().navigation;
+				navigation.selectOnLeft = null;
+				navigation.selectOnRight = null;
+				tabMenu.TabButton.GetSelectable().navigation = navigation;
+				tabMenu.HideButton();
+			}
 		}
 
 		public void SetIsBlocking(bool isBlocking) =>
@@ -76,7 +87,7 @@ namespace OWML.ModHelper.Menus
 			Menu.SetValue("_tabSelectablePairs", selectablePairs.ToArray());
 		}
 
-		public void UpdateTabNavigation()
+		private void UpdateTabNavigation()
 		{
 			Selectable prev = null, cur, first = null;
 			for (var i = 0; i < _tabMenus.Count; i++)

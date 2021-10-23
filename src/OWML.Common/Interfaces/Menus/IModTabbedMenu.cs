@@ -16,9 +16,7 @@
 
 		new TabbedMenu Menu { get; }
 
-		void AddTab(IModTabMenu tab);
-
-		void UpdateTabNavigation();
+		void AddTab(IModTabMenu tab, bool enable = true);
 
 		void SetIsBlocking(bool isBlocking);
 	}

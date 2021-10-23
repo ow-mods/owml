@@ -66,11 +66,11 @@ namespace OWML.ModHelper.Menus
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
 			_menuOptions.Clear();
-			var modsTab = CreateTab(options, ModsTitle);
+			var modsTab = CreateTab(options, ModsTitle, true);
 
 			var owmlButton = CreateButton(options, Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
-			var owmlTab = CreateTab(options, Constants.OwmlTitle);
+			var owmlTab = CreateTab(options, Constants.OwmlTitle, false);
 			owmlTab.HideButton();
 			InitConfigMenu(OwmlMenu, options, owmlTab);
 			owmlButton.OnClick += () => owmlTab.Open();
@@ -81,7 +81,6 @@ namespace OWML.ModHelper.Menus
 			CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
 
 			modsTab.Menu.SetValue("_menuOptions", _menuOptions.ToArray());
-			options.UpdateTabNavigation();
 			return modsTab;
 		}
 
@@ -101,7 +100,7 @@ namespace OWML.ModHelper.Menus
 			foreach (var modConfigMenu in configMenus)
 			{
 				var modButton = CreateButton(options, modConfigMenu.Manifest.Name);
-				var modTab = CreateTab(options, modConfigMenu.Manifest.Name);
+				var modTab = CreateTab(options, modConfigMenu.Manifest.Name, false);
 				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
 				modButton.OnClick += () => modTab.Open();
@@ -141,14 +140,14 @@ namespace OWML.ModHelper.Menus
 			return modButton;
 		}
 
-		private static IModTabMenu CreateTab(IModTabbedMenu options, string name)
+		private static IModTabMenu CreateTab(IModTabbedMenu options, string name, bool enable)
 		{
 			var modsTab = options.AudioTab.Copy(name);
 			modsTab.BaseButtons.ForEach(x => x.Hide());
 			modsTab.Menu.GetComponentsInChildren<SliderElement>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
 			modsTab.Menu.GetComponentsInChildren<OptionsSelectorElement>(true).ToList().ForEach(x => x.gameObject.transform.localScale = Vector3.zero);
 			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
-			options.AddTab(modsTab);
+			options.AddTab(modsTab, enable);
 			return modsTab;
 		}
 	}
