@@ -18,6 +18,8 @@
 
 		void AddTab(IModTabMenu tab);
 
+		void UpdateTabNavigation();
+
 		void SetIsBlocking(bool isBlocking);
 	}
 }

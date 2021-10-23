@@ -76,18 +76,39 @@ namespace OWML.ModHelper.Menus
 			Menu.SetValue("_tabSelectablePairs", selectablePairs.ToArray());
 		}
 
-		private void UpdateTabNavigation()
+		public void UpdateTabNavigation()
 		{
+			Selectable prev = null, cur, first = null;
 			for (var i = 0; i < _tabMenus.Count; i++)
 			{
-				var leftIndex = (i - 1 + _tabMenus.Count) % _tabMenus.Count;
-				var rightIndex = (i + 1) % _tabMenus.Count;
-				_tabMenus[i].TabButton.GetComponent<Button>().navigation = new Navigation
+				cur = _tabMenus[i].TabButton.GetSelectable();
+				if (!cur.gameObject.activeSelf)
 				{
-					selectOnLeft = _tabMenus[leftIndex].TabButton.GetComponent<Button>(),
-					selectOnRight = _tabMenus[rightIndex].TabButton.GetComponent<Button>(),
-					mode = Navigation.Mode.Explicit
-				};
+					continue;
+				}
+				if (first == null)
+				{
+					first = cur;
+				}
+				if (prev != null)
+				{
+					Navigation prevnav = prev.navigation;
+					Navigation curnav = cur.navigation;
+					prevnav.selectOnRight = cur;
+					curnav.selectOnLeft = prev;
+					cur.navigation = curnav;
+					prev.navigation = prevnav;
+				}
+				prev = cur;
+			}
+			if (first != null && prev != null)
+			{
+				Navigation prevnav = prev.navigation;
+				Navigation curnav = first.navigation;
+				prevnav.selectOnRight = first;
+				curnav.selectOnLeft = prev;
+				first.navigation = curnav;
+				prev.navigation = prevnav;
 			}
 		}
 

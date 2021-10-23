@@ -81,6 +81,7 @@ namespace OWML.ModHelper.Menus
 			CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
 
 			modsTab.Menu.SetValue("_menuOptions", _menuOptions.ToArray());
+			options.UpdateTabNavigation();
 			return modsTab;
 		}
 
