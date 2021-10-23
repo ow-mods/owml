@@ -71,7 +71,6 @@ namespace OWML.ModHelper.Menus
 			var owmlButton = CreateButton(options, Constants.OwmlTitle);
 			modsTab.AddButton((IModButtonBase)owmlButton, 0);
 			var owmlTab = CreateTab(options, Constants.OwmlTitle, false);
-			owmlTab.HideButton();
 			InitConfigMenu(OwmlMenu, options, owmlTab);
 			owmlButton.OnClick += () => owmlTab.Open();
 
@@ -101,7 +100,6 @@ namespace OWML.ModHelper.Menus
 			{
 				var modButton = CreateButton(options, modConfigMenu.Manifest.Name);
 				var modTab = CreateTab(options, modConfigMenu.Manifest.Name, false);
-				modTab.HideButton();
 				InitConfigMenu(modConfigMenu, options, modTab);
 				modButton.OnClick += () => modTab.Open();
 				menu.AddButton((IModButtonBase)modButton, index++);
