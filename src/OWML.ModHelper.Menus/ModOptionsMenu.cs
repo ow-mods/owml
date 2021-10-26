@@ -62,15 +62,13 @@ namespace OWML.ModHelper.Menus
 			if (enable)
 			{
 				UpdateTabNavigation();
+				return;
 			}
-			else
-			{
-				var navigation = tabMenu.TabButton.GetSelectable().navigation;
-				navigation.selectOnLeft = null;
-				navigation.selectOnRight = null;
-				tabMenu.TabButton.GetSelectable().navigation = navigation;
-				tabMenu.HideButton();
-			}
+			var navigation = tabMenu.TabButton.GetSelectable().navigation;
+			navigation.selectOnLeft = null;
+			navigation.selectOnRight = null;
+			tabMenu.TabButton.GetSelectable().navigation = navigation;
+			tabMenu.HideButton();
 		}
 
 		public void SetIsBlocking(bool isBlocking) =>
@@ -89,38 +87,38 @@ namespace OWML.ModHelper.Menus
 
 		private void UpdateTabNavigation()
 		{
-			Selectable prev = null, cur, first = null;
+			Selectable previous = null, current, first = null;
 			for (var i = 0; i < _tabMenus.Count; i++)
 			{
-				cur = _tabMenus[i].TabButton.GetSelectable();
-				if (!cur.gameObject.activeSelf)
+				current = _tabMenus[i].TabButton.GetSelectable();
+				if (!(current?.gameObject.activeSelf??false))
 				{
 					continue;
 				}
 				if (first == null)
 				{
-					first = cur;
+					first = current;
 				}
-				if (prev != null)
+				if (previous != null)
 				{
-					Navigation prevnav = prev.navigation;
-					Navigation curnav = cur.navigation;
-					prevnav.selectOnRight = cur;
-					curnav.selectOnLeft = prev;
-					cur.navigation = curnav;
-					prev.navigation = prevnav;
+					LinkNavigation(previous, current);
 				}
-				prev = cur;
+				previous = current;
 			}
-			if (first != null && prev != null)
+			if (first != null && previous != null)
 			{
-				Navigation prevnav = prev.navigation;
-				Navigation curnav = first.navigation;
-				prevnav.selectOnRight = first;
-				curnav.selectOnLeft = prev;
-				first.navigation = curnav;
-				prev.navigation = prevnav;
+				LinkNavigation(previous, first);
 			}
+		}
+
+		private void LinkNavigation(Selectable first, Selectable second)
+		{
+			var prevNav = first.navigation;
+			var curNav = second.navigation;
+			prevNav.selectOnRight = second;
+			curNav.selectOnLeft = first;
+			second.navigation = curNav;
+			first.navigation = prevNav;
 		}
 
 		public new IModTabbedMenu Copy()
