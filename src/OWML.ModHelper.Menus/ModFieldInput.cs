@@ -36,5 +36,10 @@ namespace OWML.ModHelper.Menus
 			var text = center.GetComponentInChildren<Text>();
 			OnChange += value => text.text = value.ToString();
 		}
+
+		public void Initialize(string value)
+		{
+			SelectorElement.Initialize(0, new string[] { value });
+		}
 	}
 }
