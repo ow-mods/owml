@@ -63,13 +63,13 @@ namespace OWML.ModHelper.Menus
 
 			if (value is string)
 			{
-				AddTextInput(key, index);
+				AddTextInput(key, (string)value, index);
 				return;
 			}
 
 			if (new[] { typeof(long), typeof(int), typeof(float), typeof(double) }.Contains(value.GetType()))
 			{
-				AddNumberInput(key, index);
+				AddNumberInput(key, value.ToString(), index);
 				return;
 			}
 
@@ -132,17 +132,19 @@ namespace OWML.ModHelper.Menus
 			selector.Show();
 		}
 
-		private void AddTextInput(string key, int index)
+		private void AddTextInput(string key, string value, int index)
 		{
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
+			textInput.Initialize(value);
 			textInput.Show();
 		}
 
-		private void AddNumberInput(string key, int index)
+		private void AddNumberInput(string key, string value, int index)
 		{
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
+			numberInput.Initialize(value);
 			numberInput.Show();
 		}
 	}
