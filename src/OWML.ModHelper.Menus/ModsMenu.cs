@@ -113,7 +113,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var toggleTemplate = options.GraphicsTab.ToggleInputs[0];
 			var sliderTemplate = options.GraphicsTab.SliderInputs.Find(sliderInput => sliderInput.HasValueText) ?? options.InputTab.SliderInputs[0];
-			var selectorTemplate = options.GraphicsTab.SelectorInputs[0];
+			var selectorTemplate = options.GraphicsTab.SelectorInputs.Find(selectorInput => selectorInput.SelectorElement && selectorInput.SelectorElement.ShouldEnable());
 			var textInputTemplate = new ModTextInput(selectorTemplate.Copy().SelectorElement, modConfigMenu, _menus.PopupManager);
 			textInputTemplate.Hide();
 			var numberInputTemplate = new ModNumberInput(selectorTemplate.Copy().SelectorElement, modConfigMenu, _menus.PopupManager);
