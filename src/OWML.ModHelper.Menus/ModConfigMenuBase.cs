@@ -17,6 +17,7 @@ namespace OWML.ModHelper.Menus
 		private IModSelectorInput _selectorTemplate;
 		private IModTextInput _textInputTemplate;
 		private IModNumberInput _numberInputTemplate;
+		private IModSeparator _seperatorTemplate;
 
 		protected abstract void AddInputs();
 
@@ -31,13 +32,14 @@ namespace OWML.ModHelper.Menus
 
 		public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
 			IModTextInput textInputTemplate, IModNumberInput numberInputTemplate,
-			IModSelectorInput selectorTemplate)
+			IModSelectorInput selectorTemplate, IModSeparator seperatorTemplate)
 		{
 			_toggleTemplate = toggleTemplate;
 			_sliderTemplate = sliderTemplate;
 			_textInputTemplate = textInputTemplate;
 			_numberInputTemplate = numberInputTemplate;
 			_selectorTemplate = selectorTemplate;
+			_seperatorTemplate = seperatorTemplate;
 
 			base.Initialize(menu);
 			menu.SetValue("_menuOptions", new MenuOption[] { });
@@ -78,6 +80,9 @@ namespace OWML.ModHelper.Menus
 				var settingType = (string)obj["type"];
 				switch (settingType)
 				{
+					case "separator":
+						AddSeparator(key, obj, index);
+						return;
 					case "slider":
 						AddSliderInput(key, obj, index);
 						return;
@@ -143,6 +148,14 @@ namespace OWML.ModHelper.Menus
 		{
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
+			numberInput.Show();
+		}
+
+		private void AddSeparator(string key, JObject obj, int index)
+		{
+			var numberInput = AddSeparator(_seperatorTemplate.Copy("Inputs"), index);
+			numberInput.Element.name = key;
+			numberInput.Title = (string)obj["title"] ?? key;
 			numberInput.Show();
 		}
 	}
