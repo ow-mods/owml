@@ -284,7 +284,7 @@ namespace OWML.ModHelper.Menus
 				return;
 			}
 			var separator = GetSeparator(key);
-			if (numberInput != null)
+			if (separator != null)
 			{
 				return;
 			}
