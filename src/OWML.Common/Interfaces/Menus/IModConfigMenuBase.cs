@@ -12,6 +12,7 @@
 			IModSliderInput sliderTemplate,
 			IModTextInput textInputTemplate,
 			IModNumberInput numberInputTemplate,
-			IModSelectorInput selectorTemplate);
+			IModSelectorInput selectorTemplate,
+			IModSeparator seperatorTemplate);
 	}
 }
