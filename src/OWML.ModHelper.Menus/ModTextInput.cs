@@ -31,6 +31,7 @@ namespace OWML.ModHelper.Menus
 			{
 				_value = value;
 				Button.Title = value;
+				SelectorElement.Initialize(0, new string[] { value });
 				InvokeOnChange(value);
 			}
 		}
