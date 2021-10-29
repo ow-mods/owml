@@ -51,7 +51,7 @@ namespace OWML.ModHelper.Menus
 			InvokeOnInit();
 		}
 
-		public void AddTab(IModTabMenu tabMenu)
+		public void AddTab(IModTabMenu tabMenu, bool enable = true)
 		{
 			_tabMenus.Add(tabMenu);
 			var tabs = _tabMenus.Select(x => x.TabButton).ToArray();
@@ -59,7 +59,16 @@ namespace OWML.ModHelper.Menus
 			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
 			tabMenu.TabButton.transform.parent = parent;
-			UpdateTabNavigation();
+			if (enable)
+			{
+				UpdateTabNavigation();
+				return;
+			}
+			var navigation = tabMenu.TabButton.GetSelectable().navigation;
+			navigation.selectOnLeft = null;
+			navigation.selectOnRight = null;
+			tabMenu.TabButton.GetSelectable().navigation = navigation;
+			tabMenu.HideButton();
 		}
 
 		public void SetIsBlocking(bool isBlocking) =>
@@ -78,17 +87,38 @@ namespace OWML.ModHelper.Menus
 
 		private void UpdateTabNavigation()
 		{
+			Selectable previous = null, current, first = null;
 			for (var i = 0; i < _tabMenus.Count; i++)
 			{
-				var leftIndex = (i - 1 + _tabMenus.Count) % _tabMenus.Count;
-				var rightIndex = (i + 1) % _tabMenus.Count;
-				_tabMenus[i].TabButton.GetComponent<Button>().navigation = new Navigation
+				current = _tabMenus[i].TabButton.GetSelectable();
+				if (!(current?.gameObject.activeSelf??false))
 				{
-					selectOnLeft = _tabMenus[leftIndex].TabButton.GetComponent<Button>(),
-					selectOnRight = _tabMenus[rightIndex].TabButton.GetComponent<Button>(),
-					mode = Navigation.Mode.Explicit
-				};
+					continue;
+				}
+				if (first == null)
+				{
+					first = current;
+				}
+				if (previous != null)
+				{
+					LinkNavigation(previous, current);
+				}
+				previous = current;
 			}
+			if (first != null && previous != null)
+			{
+				LinkNavigation(previous, first);
+			}
+		}
+
+		private void LinkNavigation(Selectable first, Selectable second)
+		{
+			var prevNav = first.navigation;
+			var curNav = second.navigation;
+			prevNav.selectOnRight = second;
+			curNav.selectOnLeft = first;
+			second.navigation = curNav;
+			first.navigation = prevNav;
 		}
 
 		public new IModTabbedMenu Copy()
