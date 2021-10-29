@@ -87,14 +87,12 @@ namespace OWML.ModHelper.Menus
 
 		private void UpdateTabNavigation()
 		{
-			Selectable previous = null, current, first = null;
-			for (var i = 0; i < _tabMenus.Count; i++)
+			Selectable previous = null, first = null;
+			var tabMenus = _tabMenus
+				.Select(tabMenu => tabMenu.TabButton.GetSelectable())
+				.Where(current => current?.gameObject.activeSelf ?? false);
+			foreach (var current in tabMenus)
 			{
-				current = _tabMenus[i].TabButton.GetSelectable();
-				if (!(current?.gameObject.activeSelf??false))
-				{
-					continue;
-				}
 				if (first == null)
 				{
 					first = current;
