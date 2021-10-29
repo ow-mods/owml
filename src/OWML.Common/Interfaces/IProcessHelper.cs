@@ -2,7 +2,7 @@
 {
 	public interface IProcessHelper
 	{
-		void Start(string path, string[] args);
+		void Start(string path, string[] args = null);
 
 		void KillCurrentProcess();
 	}
