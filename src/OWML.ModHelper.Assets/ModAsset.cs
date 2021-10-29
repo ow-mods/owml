@@ -8,15 +8,11 @@ namespace OWML.ModHelper.Assets
 	{
 		public event Action<T> Loaded;
 
-		[Obsolete("Use Loaded instead.")]
-		public Action<T> OnLoaded { get; set; }
-
 		public T Asset { get; private set; }
 
 		public void SetAsset(T asset)
 		{
 			Asset = asset;
-			OnLoaded?.Invoke(asset);
 			Loaded?.Invoke(asset);
 		}
 

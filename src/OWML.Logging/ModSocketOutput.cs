@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using OWML.Common;
 
 namespace OWML.Logging
@@ -10,18 +9,11 @@ namespace OWML.Logging
 		private readonly IModSocket _socket;
 		private readonly IProcessHelper _processHelper;
 
-		public ModSocketOutput(IOwmlConfig config, IModManifest manifest, IModLogger logger, IModSocket socket, IProcessHelper processHelper)
-			: base(config, logger, manifest)
+		public ModSocketOutput(IOwmlConfig config, IModManifest manifest, IModSocket socket, IProcessHelper processHelper)
+			: base(config, manifest)
 		{
 			_socket = socket;
 			_processHelper = processHelper;
-		}
-
-		[Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
-		public override void WriteLine(params object[] objects)
-		{
-			var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
-			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
 		}
 
 		public override void WriteLine(string line) =>
@@ -32,8 +24,6 @@ namespace OWML.Logging
 
 		public override void WriteLine(string line, MessageType type, string senderType)
 		{
-			Logger?.Log($"{type}: {line}");
-
 			if (type != MessageType.Debug || OwmlConfig.DebugMode)
 			{
 				_socket.WriteToSocket(new ModSocketMessage

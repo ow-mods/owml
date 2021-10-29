@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Input
 			_commands.Add(command);
 		}
 
-		private void Update()
+		public void Update()
 		{
 			foreach (var command in _commands)
 			{

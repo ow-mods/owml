@@ -1,15 +1,9 @@
-﻿using OWML.Common;
-using OWML.Logging;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OWML.ModHelper
 {
 	public class OwmlBehaviour : MonoBehaviour
 	{
-		public void Start() =>
-			DontDestroyOnLoad(gameObject);
-
-		public void OnApplicationQuit() =>
-			ModConsole.OwmlConsole.WriteLine("", MessageType.Quit);
+		public void Start() => DontDestroyOnLoad(gameObject);
 	}
 }

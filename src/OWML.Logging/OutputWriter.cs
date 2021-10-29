@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using OWML.Common;
+﻿using OWML.Common;
 
 namespace OWML.Logging
 {
@@ -10,10 +8,6 @@ namespace OWML.Logging
 
 		public OutputWriter(IOwmlConfig config) => 
 			_config = config;
-
-		[Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
-		public void WriteLine(params object[] objects) =>
-			WriteLine(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
 
 		public void WriteLine(string line) =>
 			WriteLine(line, MessageType.Message);

@@ -9,12 +9,6 @@ namespace OWML.Common.Menus
 
 		event Action OnClosed;
 
-		[Obsolete("Use OnOpened instead.")]
-		Action OnOpen { get; set; }
-
-		[Obsolete("Use OnClosed instead.")]
-		Action OnClose { get; set; }
-
 		bool IsOpen { get; }
 
 		string Title { get; set; }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 using OWML.Common;
+using UnityEngine;
 
 namespace OWML.Logging
 {
@@ -58,7 +59,7 @@ namespace OWML.Logging
 			catch (Exception)
 			{
 				_socket = null;
-				ModConsole.OwmlConsole.WriteLine("Could not connect to console.", MessageType.Warning);
+				Debug.LogWarning("Could not connect to console.");
 			}
 		}
 	}

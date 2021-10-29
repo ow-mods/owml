@@ -8,7 +8,7 @@ using UnityEngine;
 namespace OWML.LoadCustomAssets
 {
 	public class Patches
-	{ 
+	{
 		public static bool TestUnpatch()
 		{
 			Debug.LogError("UPDATE");
@@ -102,12 +102,12 @@ namespace OWML.LoadCustomAssets
 			ToggleMusic(config.GetSettingsValue<bool>("enableMusic"));
 			_isDucksEnabled = config.GetSettingsValue<bool>("enableDucks");
 			_isCubesEnabled = config.GetSettingsValue<bool>("enableCubes");
-			var speed = config.GetSettingsValue<float>("speed");
-			var power = config.GetSettingsValue<float>("power");
-			var enableSuperMode = config.GetSettingsValue<bool>("enableSuperMode");
+			config.GetSettingsValue<float>("speed");
+			config.GetSettingsValue<float>("power");
+			config.GetSettingsValue<bool>("enableSuperMode");
 			var selectedEnum = config.GetSettingsValue<ABC>("thing");
 			var selectedString = config.GetSettingsValue<string>("thing");
-			var selectedInt = config.GetSettingsValue<int>("integer thing");
+			config.GetSettingsValue<int>("integer thing");
 			ModHelper.Console.WriteLine($"Selected enum = {selectedEnum}, string = {selectedString}");
 		}
 

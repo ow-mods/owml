@@ -13,12 +13,6 @@ namespace OWML.ModHelper.Menus
 
 		public event Action OnClosed;
 
-		[Obsolete("Use OnOpened instead.")]
-		public Action OnOpen { get; set; }
-
-		[Obsolete("Use OnClosed instead.")]
-		public Action OnClose { get; set; }
-
 		public bool IsOpen { get; private set; }
 
 		private Text _title;
@@ -50,14 +44,12 @@ namespace OWML.ModHelper.Menus
 		private void OnDeactivateMenu()
 		{
 			IsOpen = false;
-			OnClose?.Invoke();
 			OnClosed?.Invoke();
 		}
 
 		private void OnActivateMenu()
 		{
 			IsOpen = true;
-			OnOpen?.Invoke();
 			OnOpened?.Invoke();
 		}
 
@@ -118,8 +110,6 @@ namespace OWML.ModHelper.Menus
 		{
 			OnOpened = null;
 			OnClosed = null;
-			OnOpen = null;
-			OnClose = null;
 		}
 	}
 }

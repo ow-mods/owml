@@ -10,7 +10,7 @@ namespace OWML.Tests.Setup
 	public class OWMLTests
 	{
 		protected string EpicGamePath => "C:/Program Files/Epic Games/OuterWilds";
-		
+
 		protected string SteamGamePath => "C:/Program Files (x86)/Steam/steamapps/common/Outer Wilds";
 
 		protected string OwmlSolutionPath => GetSolutionPath();
@@ -19,14 +19,12 @@ namespace OWML.Tests.Setup
 
 		protected Mock<IModConsole> Console { get; } = new();
 
-		protected Mock<IModLogger> Logger { get; } = new();
-
 		protected Mock<IApplicationHelper> AppHelper { get; } = new();
 
 		protected Mock<IGameObjectHelper> GOHelper { get; } = new();
 
 		protected IOwmlConfig Config { get; } = new OwmlConfig();
-		
+
 		private readonly ITestOutputHelper _outputHelper;
 
 		public OWMLTests(ITestOutputHelper outputHelper)
@@ -45,9 +43,6 @@ namespace OWML.Tests.Setup
 				.Callback((string s) => WriteLine(s));
 			Console.Setup(s => s.WriteLine(It.IsAny<string>(), It.IsAny<MessageType>()))
 				.Callback((string s, MessageType type) => WriteLine($"{type}: {s}"));
-
-			Logger.Setup(s => s.Log(It.IsAny<string>()))
-				.Callback((string s) => WriteLine(s));
 
 			GOHelper.Setup(s => s.CreateAndAdd<IModBehaviour>(It.IsAny<Type>(), It.IsAny<string>()))
 				.Returns(() =>
