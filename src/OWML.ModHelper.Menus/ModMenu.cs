@@ -237,6 +237,11 @@ namespace OWML.ModHelper.Menus
 			{
 				return numberInput.Value;
 			}
+			var separator = GetSeparator(key);
+			if (separator != null)
+			{
+				return null;
+			}
 			Console.WriteLine($"Error - No input found with name {key}", MessageType.Error);
 			return null;
 		}
@@ -276,6 +281,11 @@ namespace OWML.ModHelper.Menus
 			{
 				var val = value is JObject obj ? obj["value"] : value;
 				numberInput.Value = Convert.ToSingle(val);
+				return;
+			}
+			var separator = GetSeparator(key);
+			if (separator != null)
+			{
 				return;
 			}
 			Console.WriteLine("Error - No input found with name " + key, MessageType.Error);

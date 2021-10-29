@@ -116,7 +116,8 @@ namespace OWML.ModHelper.Menus
 			textInputTemplate.Hide();
 			var numberInputTemplate = new ModNumberInput(selectorTemplate.Copy().SelectorElement, modConfigMenu, _menus.PopupManager);
 			numberInputTemplate.Hide();
-			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate);
+			var seperatorTemplate = new ModSeparator(modConfigMenu);
+			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate, seperatorTemplate);
 			modConfigMenu.UpdateUIValues();
 		}
 
