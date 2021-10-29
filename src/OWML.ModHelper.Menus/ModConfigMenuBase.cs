@@ -92,6 +92,12 @@ namespace OWML.ModHelper.Menus
 					case "selector":
 						AddSelectorInput(key, obj, index);
 						return;
+					case "text":
+						AddTextInput(key, obj, index);
+						return;
+					case "number":
+						AddNumberInput(key, obj, index);
+						return;
 					default:
 						Console.WriteLine("Unrecognized complex setting type: " + settingType, MessageType.Warning);
 						return;
@@ -137,17 +143,35 @@ namespace OWML.ModHelper.Menus
 			selector.Show();
 		}
 
+		private void AddTextInput(string key, JObject obj, int index)
+		{
+			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
+			textInput.Element.name = key;
+			textInput.Title = (string)obj["title"] ?? key;
+			textInput.Show();
+		}
+
 		private void AddTextInput(string key, int index)
 		{
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
+			textInput.Title = key;
 			textInput.Show();
+		}
+
+		private void AddNumberInput(string key, JObject obj, int index)
+		{
+			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
+			numberInput.Element.name = key;
+			numberInput.Title = (string)obj["title"] ?? key;
+			numberInput.Show();
 		}
 
 		private void AddNumberInput(string key, int index)
 		{
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
+			numberInput.Title = key;
 			numberInput.Show();
 		}
 
