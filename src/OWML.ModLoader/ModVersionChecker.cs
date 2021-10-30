@@ -52,7 +52,7 @@ namespace OWML.ModLoader
 
 			if (owmlMinor > modMinor)
 			{
-				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is higher, the mod will still load.", MessageType.Warning);
+				_console.WriteLine(mismatchText + $"As the the mismatch affects ~.X.~, and the OWML version is higher, the mod will still load.", MessageType.Debug);
 				return true;
 			}
 
