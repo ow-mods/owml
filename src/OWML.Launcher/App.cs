@@ -166,22 +166,32 @@ namespace OWML.Launcher
 
 			try
 			{
-				if (_owmlConfig.GamePath.Contains("Epic"))
+				void StartGameViaExe()
+				{
+					_writer.WriteLine("Starting game via exe...");
+					_processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
+				}
+
+				if (_owmlConfig.ForceExe)
+				{
+					StartGameViaExe();
+					return;
+				}
+
+				if (_owmlConfig.GamePath.ToLower().Contains("epic"))
 				{
 					_writer.WriteLine("Starting game via Epic Launcher...");
 					_processHelper.Start("\"com.epicgames.launcher://apps/starfish%3A601d0668cef146bd8eef75d43c6bbb0b%3AStarfish?action=launch&silent=true\"");
 				}
-				else if (_owmlConfig.GamePath.Contains("Steam"))
+				else if (_owmlConfig.GamePath.ToLower().Contains("steam"))
 				{
 					_writer.WriteLine("Starting game via Steam...");
 					_processHelper.Start("steam://rungameid/753640");
 				}
 				else
 				{
-					_writer.WriteLine("Starting game via exe...");
-					_processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
+					StartGameViaExe();
 				}
-				
 			}
 			catch (Exception ex)
 			{
