@@ -18,9 +18,9 @@
 
 		string LogsPath { get; }
 
-		bool BlockInput { get; set; }
-
 		bool DebugMode { get; set; }
+
+		bool ForceExe { get; set; }
 
 		int SocketPort { get; set; }
 	}
