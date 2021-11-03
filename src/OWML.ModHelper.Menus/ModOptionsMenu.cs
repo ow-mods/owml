@@ -101,7 +101,7 @@ namespace OWML.ModHelper.Menus
 		private void OnTabOpen(IModTabMenu tabMenu)
 		{
 			var selectablesStack = MenuStackManager.SharedInstance.GetValue<Stack<Selectable>>("_lastSelectedStack");
-			if (selectablesStack.Count == MenuStackManager.SharedInstance.GetMenuCount())
+			if ((selectablesStack.Count + _menuStackCount) == MenuStackManager.SharedInstance.GetMenuCount())
 			{
 				Menu.SetValue("_firstSelectedTabButton", tabMenu.TabButton);
 			}
@@ -109,7 +109,7 @@ namespace OWML.ModHelper.Menus
 
 		private void OnTabClose()
 		{
-			if (MenuStackManager.SharedInstance.GetMenuCount()<= _menuStackCount)
+			if (MenuStackManager.SharedInstance.GetMenuCount() <= _menuStackCount)
 			{
 				Menu.SetValue("_firstSelectedTabButton", _defaultTab.TabButton);
 			}
