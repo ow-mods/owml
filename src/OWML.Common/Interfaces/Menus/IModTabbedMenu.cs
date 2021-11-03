@@ -12,7 +12,7 @@
 
 		new IModTabbedMenu Copy();
 
-		void Initialize(TabbedMenu menu);
+		void Initialize(TabbedMenu menu, int menuStackCount);
 
 		new TabbedMenu Menu { get; }
 
