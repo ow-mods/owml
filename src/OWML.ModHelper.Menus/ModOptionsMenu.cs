@@ -100,16 +100,17 @@ namespace OWML.ModHelper.Menus
 
 		private void OnTabOpen(IModTabMenu tabMenu)
 		{
-			Console.WriteLine($"Setting Mod Tab OnActivate {tabMenu.TabButton.gameObject.name}");
-			Menu.SetValue("_firstSelectedTabButton", tabMenu.TabButton);
+			var selectablesStack = MenuStackManager.SharedInstance.GetValue<Stack<Selectable>>("_lastSelectedStack");
+			if (selectablesStack.Count == MenuStackManager.SharedInstance.GetMenuCount())
+			{
+				Menu.SetValue("_firstSelectedTabButton", tabMenu.TabButton);
+			}
 		}
 
 		private void OnTabClose()
 		{
-			Console.WriteLine($"Checking MenuCount {MenuStackManager.SharedInstance.GetMenuCount()}");
 			if (MenuStackManager.SharedInstance.GetMenuCount()<= _menuStackCount)
 			{
-				Console.WriteLine("Setting default Tab OnActivate");
 				Menu.SetValue("_firstSelectedTabButton", _defaultTab.TabButton);
 			}
 		}
