@@ -23,13 +23,18 @@ namespace OWML.ModHelper.Menus
 
 		private GraphicRaycaster _raycaster;
 
+		private IModTabMenu _defaultTab;
+
+		private int _menuStackCount;
+
 		public ModOptionsMenu(IModConsole console)
 			: base(console)
 		{
 		}
 
-		public void Initialize(TabbedMenu menu)
+		public void Initialize(TabbedMenu menu, int menuStackCount)
 		{
+			_menuStackCount = menuStackCount;
 			base.Initialize(menu);
 			Menu = menu;
 
@@ -44,9 +49,14 @@ namespace OWML.ModHelper.Menus
 			}
 
 			GameplayTab = GetTab("Button-GamePlayOG");
+			_defaultTab = GameplayTab;
+			GameplayTab.OnClosed += OnTabClose;
 			AudioTab = GetTab("Button-Audio");
+			AudioTab.OnClosed += OnTabClose;
 			InputTab = GetTab("Button-Input");
+			InputTab.OnClosed += OnTabClose;
 			GraphicsTab = GetTab("Button-Graphics");
+			GraphicsTab.OnClosed += OnTabClose;
 
 			InvokeOnInit();
 		}
@@ -59,6 +69,9 @@ namespace OWML.ModHelper.Menus
 			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
 			tabMenu.TabButton.transform.parent = parent;
+			tabMenu.OnOpened += () => OnTabOpen(tabMenu);
+			tabMenu.OnClosed += OnTabClose;
+
 			if (enable)
 			{
 				UpdateTabNavigation();
@@ -83,6 +96,22 @@ namespace OWML.ModHelper.Menus
 				selectable = tabMenu.TabButton.GetComponent<Selectable>()
 			});
 			Menu.SetValue("_tabSelectablePairs", selectablePairs.ToArray());
+		}
+
+		private void OnTabOpen(IModTabMenu tabMenu)
+		{
+			Console.WriteLine($"Setting Mod Tab OnActivate {tabMenu.TabButton.gameObject.name}");
+			Menu.SetValue("_firstSelectedTabButton", tabMenu.TabButton);
+		}
+
+		private void OnTabClose()
+		{
+			Console.WriteLine($"Checking MenuCount {MenuStackManager.SharedInstance.GetMenuCount()}");
+			if (MenuStackManager.SharedInstance.GetMenuCount()<= _menuStackCount)
+			{
+				Console.WriteLine("Setting default Tab OnActivate");
+				Menu.SetValue("_firstSelectedTabButton", _defaultTab.TabButton);
+			}
 		}
 
 		private void UpdateTabNavigation()

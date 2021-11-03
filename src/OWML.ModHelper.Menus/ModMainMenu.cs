@@ -45,7 +45,7 @@ namespace OWML.ModHelper.Menus
 			QuitButton = GetTitleButton("Button-Exit");
 
 			var tabbedMenu = titleScreenManager.GetValue<TabbedMenu>("_optionsMenu");
-			OptionsMenu.Initialize(tabbedMenu);
+			OptionsMenu.Initialize(tabbedMenu, 0);
 			InvokeOnInit();
 		}
 

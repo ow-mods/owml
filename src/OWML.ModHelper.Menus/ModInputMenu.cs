@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Menus
 		}
 
 		public void Open(InputType inputType, string value)
-		{
+		{			
 			RegisterEvents();
 			if (inputType == InputType.Number)
 			{
@@ -43,8 +43,9 @@ namespace OWML.ModHelper.Menus
 			}
 			var message = inputType == InputType.Number ? "Write a number" : "Write some text";
 
-			_inputMenu.Invoke("InitializeMenu");
-			_inputMenu.Activate();
+			_inputMenu.EnableMenu(true);
+			//_inputMenu.Invoke("InitializeMenu");
+			//_inputMenu.Activate();
 
 			var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK");
 			var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
@@ -60,6 +61,7 @@ namespace OWML.ModHelper.Menus
 			var newPopupObject = CopyMenu();
 			var newPopup = new ModInputMenu(Console);
 			newPopup.Initialize(newPopupObject.GetComponent<PopupInputMenu>());
+			newPopup._inputMenu.SetValue("_initialized", false);
 			return newPopup;
 		}
 

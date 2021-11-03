@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Menus
 		public void Initialize(PauseMenuManager pauseMenuManager)
 		{
 			var optionsMenu = pauseMenuManager.transform.parent.GetComponentInChildren<TabbedMenu>(true);
-			OptionsMenu.Initialize(optionsMenu);
+			OptionsMenu.Initialize(optionsMenu, 1);
 
 			var pauseMenu = pauseMenuManager.GetValue<Menu>("_pauseMenu");
 			base.Initialize(pauseMenu);
