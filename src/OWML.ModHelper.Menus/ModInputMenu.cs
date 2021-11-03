@@ -44,8 +44,6 @@ namespace OWML.ModHelper.Menus
 			var message = inputType == InputType.Number ? "Write a number" : "Write some text";
 
 			_inputMenu.EnableMenu(true);
-			//_inputMenu.Invoke("InitializeMenu");
-			//_inputMenu.Activate();
 
 			var okPrompt = new ScreenPrompt(InputLibrary.confirm2, "OK");
 			var cancelCommand = OWInput.UsingGamepad() ? InputLibrary.cancel : InputLibrary.escape;
