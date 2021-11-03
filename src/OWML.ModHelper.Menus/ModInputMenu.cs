@@ -34,7 +34,7 @@ namespace OWML.ModHelper.Menus
 		}
 
 		public void Open(InputType inputType, string value)
-		{			
+		{
 			RegisterEvents();
 			if (inputType == InputType.Number)
 			{
