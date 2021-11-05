@@ -141,11 +141,12 @@ namespace OWML.ModHelper.Menus
 
 		private static IModTabMenu CreateTab(IModTabbedMenu options, string name, bool enable)
 		{
-			var modsTab = options.AudioTab.Copy(name);
+			var modsTab = options.GraphicsTab.Copy(name);
 			modsTab.BaseButtons.ForEach(x => x.Hide());
 			modsTab.Menu.GetComponentsInChildren<SliderElement>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
 			modsTab.Menu.GetComponentsInChildren<OptionsSelectorElement>(true).ToList().ForEach(x => x.gameObject.transform.localScale = Vector3.zero);
 			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
+			modsTab.TabButton.gameObject.name = name + "_tab";
 			options.AddTab(modsTab, enable);
 			return modsTab;
 		}
