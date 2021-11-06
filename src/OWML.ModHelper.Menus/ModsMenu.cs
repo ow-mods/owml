@@ -55,6 +55,7 @@ namespace OWML.ModHelper.Menus
 			Menu = owMenu.Menu;
 
 			var modsButton = owMenu.OptionsButton.Duplicate(ModsTitle);
+			modsButton.Button.name = ModsTitle + "_button";
 			var options = owMenu.OptionsMenu;
 
 			var modsMenu = CreateModsMenu(options);
