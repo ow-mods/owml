@@ -55,6 +55,7 @@ namespace OWML.ModHelper.Menus
 			Menu = owMenu.Menu;
 
 			var modsButton = owMenu.OptionsButton.Duplicate(ModsTitle);
+			modsButton.Button.name = ModsTitle + "_button";
 			var options = owMenu.OptionsMenu;
 
 			var modsMenu = CreateModsMenu(options);
@@ -132,6 +133,7 @@ namespace OWML.ModHelper.Menus
 				nav.selectOnRight = null;
 				modButton.Button.navigation = nav;
 			}
+			modButton.Button.gameObject.name = name + "_button";
 			GameObject.Destroy(modButton.Button.GetComponent<TabButton>());
 			var menuOpt = modButton.Button.gameObject.AddComponent<MenuOption>();
 			menuOpt.SetSelectable(modButton.Button);
@@ -146,6 +148,7 @@ namespace OWML.ModHelper.Menus
 			modsTab.Menu.GetComponentsInChildren<SliderElement>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
 			modsTab.Menu.GetComponentsInChildren<OptionsSelectorElement>(true).ToList().ForEach(x => x.gameObject.transform.localScale = Vector3.zero);
 			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
+			modsTab.Menu.gameObject.name = name;
 			modsTab.TabButton.gameObject.name = name + "_tab";
 			options.AddTab(modsTab, enable);
 			return modsTab;
