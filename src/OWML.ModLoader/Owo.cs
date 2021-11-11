@@ -193,6 +193,17 @@ namespace OWML.ModLoader
 			{
 				var mod = _goHelper.CreateAndAdd<IModBehaviour>(modType, helper.Manifest.UniqueName);
 				_console.WriteLine("Added! Initializing...", MessageType.Debug);
+
+				if (mod == default)
+				{
+					// AddComponent() will return null sometimes... seems to happen when a
+					// type references a DLL that hasn't been loaded/couldn't be found, but
+					// not sure on the true cause.
+
+					_console.WriteLine($"Error initializing {helper.Manifest.UniqueName} - Unity could not load the modtype \"{modType.FullName}\". (The type could be referencing an unloaded DLL?)", MessageType.Error);
+					return null;
+				}
+
 				mod.Init(helper);
 				return mod;
 			}
