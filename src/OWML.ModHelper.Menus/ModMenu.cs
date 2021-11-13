@@ -237,7 +237,10 @@ namespace OWML.ModHelper.Menus
 			{
 				return numberInput.Value;
 			}
-			Console.WriteLine($"Error - No input found with name {key}", MessageType.Error);
+			if (GetSeparator(key) == null)
+			{
+				Console.WriteLine($"Error - No input found with name {key}", MessageType.Error);
+			}
 			return null;
 		}
 
@@ -278,7 +281,10 @@ namespace OWML.ModHelper.Menus
 				numberInput.Value = Convert.ToSingle(val);
 				return;
 			}
-			Console.WriteLine("Error - No input found with name " + key, MessageType.Error);
+			if (GetSeparator(key) == null)
+			{
+				Console.WriteLine("Error - No input found with name " + key, MessageType.Error);
+			}
 		}
 
 		protected void InvokeOnInit() =>

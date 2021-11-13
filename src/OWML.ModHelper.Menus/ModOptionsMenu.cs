@@ -23,13 +23,18 @@ namespace OWML.ModHelper.Menus
 
 		private GraphicRaycaster _raycaster;
 
+		private IModTabMenu _defaultTab;
+
+		private int _menuStackCount;
+
 		public ModOptionsMenu(IModConsole console)
 			: base(console)
 		{
 		}
 
-		public void Initialize(TabbedMenu menu)
+		public void Initialize(TabbedMenu menu, int menuStackCount)
 		{
+			_menuStackCount = menuStackCount;
 			base.Initialize(menu);
 			Menu = menu;
 
@@ -44,14 +49,19 @@ namespace OWML.ModHelper.Menus
 			}
 
 			GameplayTab = GetTab("Button-GamePlayOG");
+			_defaultTab = GameplayTab;
+			GameplayTab.OnClosed += OnTabClose;
 			AudioTab = GetTab("Button-Audio");
+			AudioTab.OnClosed += OnTabClose;
 			InputTab = GetTab("Button-Input");
+			InputTab.OnClosed += OnTabClose;
 			GraphicsTab = GetTab("Button-Graphics");
+			GraphicsTab.OnClosed += OnTabClose;
 
 			InvokeOnInit();
 		}
 
-		public void AddTab(IModTabMenu tabMenu)
+		public void AddTab(IModTabMenu tabMenu, bool enable = true)
 		{
 			_tabMenus.Add(tabMenu);
 			var tabs = _tabMenus.Select(x => x.TabButton).ToArray();
@@ -59,7 +69,19 @@ namespace OWML.ModHelper.Menus
 			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
 			tabMenu.TabButton.transform.parent = parent;
-			UpdateTabNavigation();
+			tabMenu.OnOpened += () => OnTabOpen(tabMenu);
+			tabMenu.OnClosed += OnTabClose;
+
+			if (enable)
+			{
+				UpdateTabNavigation();
+				return;
+			}
+			var navigation = tabMenu.TabButton.GetSelectable().navigation;
+			navigation.selectOnLeft = null;
+			navigation.selectOnRight = null;
+			tabMenu.TabButton.GetSelectable().navigation = navigation;
+			tabMenu.HideButton();
 		}
 
 		public void SetIsBlocking(bool isBlocking) =>
@@ -76,19 +98,55 @@ namespace OWML.ModHelper.Menus
 			Menu.SetValue("_tabSelectablePairs", selectablePairs.ToArray());
 		}
 
+		private void OnTabOpen(IModTabMenu tabMenu)
+		{
+			var selectablesStack = MenuStackManager.SharedInstance.GetValue<Stack<Selectable>>("_lastSelectedStack");
+			if ((selectablesStack.Count + _menuStackCount) == MenuStackManager.SharedInstance.GetMenuCount())
+			{
+				Menu.SetValue("_firstSelectedTabButton", tabMenu.TabButton);
+			}
+		}
+
+		private void OnTabClose()
+		{
+			if (MenuStackManager.SharedInstance.GetMenuCount() <= _menuStackCount)
+			{
+				Menu.SetValue("_firstSelectedTabButton", _defaultTab.TabButton);
+			}
+		}
+
 		private void UpdateTabNavigation()
 		{
-			for (var i = 0; i < _tabMenus.Count; i++)
+			Selectable previous = null, first = null;
+			var tabMenus = _tabMenus
+				.Select(tabMenu => tabMenu.TabButton.GetSelectable())
+				.Where(current => current?.gameObject.activeSelf ?? false);
+			foreach (var current in tabMenus)
 			{
-				var leftIndex = (i - 1 + _tabMenus.Count) % _tabMenus.Count;
-				var rightIndex = (i + 1) % _tabMenus.Count;
-				_tabMenus[i].TabButton.GetComponent<Button>().navigation = new Navigation
+				if (first == null)
 				{
-					selectOnLeft = _tabMenus[leftIndex].TabButton.GetComponent<Button>(),
-					selectOnRight = _tabMenus[rightIndex].TabButton.GetComponent<Button>(),
-					mode = Navigation.Mode.Explicit
-				};
+					first = current;
+				}
+				if (previous != null)
+				{
+					LinkNavigation(previous, current);
+				}
+				previous = current;
 			}
+			if (first != null && previous != null)
+			{
+				LinkNavigation(previous, first);
+			}
+		}
+
+		private void LinkNavigation(Selectable first, Selectable second)
+		{
+			var prevNav = first.navigation;
+			var curNav = second.navigation;
+			prevNav.selectOnRight = second;
+			curNav.selectOnLeft = first;
+			second.navigation = curNav;
+			first.navigation = prevNav;
 		}
 
 		public new IModTabbedMenu Copy()

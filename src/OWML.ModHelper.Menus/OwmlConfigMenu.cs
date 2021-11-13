@@ -6,6 +6,7 @@ namespace OWML.ModHelper.Menus
 	public class OwmlConfigMenu : ModConfigMenuBase
 	{
 		private const string DebugModeTitle = "Debug mode";
+		private const string ForceExeTitle = "Force run through .exe";
 
 		private readonly IOwmlConfig _config;
 		private readonly IOwmlConfig _defaultConfig;
@@ -25,6 +26,7 @@ namespace OWML.ModHelper.Menus
 		protected override void AddInputs()
 		{
 			AddConfigInput(DebugModeTitle, _config.DebugMode, 2);
+			AddConfigInput(ForceExeTitle, _config.ForceExe, 3);
 			UpdateNavigation();
 			SelectFirst();
 		}
@@ -32,11 +34,13 @@ namespace OWML.ModHelper.Menus
 		public override void UpdateUIValues()
 		{
 			GetToggleInput(DebugModeTitle).Value = _config.DebugMode;
+			GetToggleInput(ForceExeTitle).Value = _config.ForceExe;
 		}
 
 		protected override void OnSave()
 		{
 			_config.DebugMode = GetInputValue<bool>(DebugModeTitle);
+			_config.ForceExe = GetInputValue<bool>(ForceExeTitle);
 			JsonHelper.SaveJsonObject($"{_config.OWMLPath}{Constants.OwmlConfigFileName}", _config);
 			Close();
 		}
@@ -45,7 +49,7 @@ namespace OWML.ModHelper.Menus
 		{
 			_config.GamePath = _defaultConfig.GamePath;
 			_config.DebugMode = _defaultConfig.DebugMode;
-			_config.BlockInput = _defaultConfig.BlockInput;
+			_config.ForceExe = _defaultConfig.ForceExe;
 			UpdateUIValues();
 		}
 	}

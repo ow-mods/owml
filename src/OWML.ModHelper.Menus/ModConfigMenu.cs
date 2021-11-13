@@ -47,7 +47,10 @@ namespace OWML.ModHelper.Menus
 			foreach (var key in keys)
 			{
 				var value = GetInputValue(key);
-				ModData.Config.SetSettingsValue(key, value);
+				if (value != null)
+				{
+					ModData.Config.SetSettingsValue(key, value);
+				}
 			}
 			ModData.Storage.Save(ModData.Config, Constants.ModConfigFileName);
 			Mod?.Configure(ModData.Config);

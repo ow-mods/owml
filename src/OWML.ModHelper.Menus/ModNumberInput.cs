@@ -32,6 +32,7 @@ namespace OWML.ModHelper.Menus
 			{
 				_value = value;
 				Button.Title = value.ToString();
+				SelectorElement.Initialize(0, new string[] { value.ToString() });
 				InvokeOnChange(value);
 			}
 		}
