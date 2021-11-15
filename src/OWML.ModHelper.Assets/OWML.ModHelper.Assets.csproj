@@ -14,5 +14,19 @@
       <HintPath>lib\NAudio-Unity.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup Condition="Exists($(OuterWildsRootDirectory))">
+		<Reference Include="UnityEngine.AudioModule">
+			<HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+		</Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

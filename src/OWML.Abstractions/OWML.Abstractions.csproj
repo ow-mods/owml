@@ -8,5 +8,10 @@
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="Exists($(OuterWildsRootDirectory))">
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

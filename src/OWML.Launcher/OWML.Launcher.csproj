@@ -10,7 +10,11 @@
     <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
     <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  
   <ItemGroup>
     <None Update="OWML.DefaultConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

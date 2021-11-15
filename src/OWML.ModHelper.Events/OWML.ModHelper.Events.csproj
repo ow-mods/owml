@@ -13,5 +13,16 @@
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
     <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="Exists($(OuterWildsRootDirectory))">
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

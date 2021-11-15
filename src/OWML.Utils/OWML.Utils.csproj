@@ -12,5 +12,13 @@
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="Exists($(OuterWildsRootDirectory))">
+    <Reference Include="netstandard">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(OuterWildsRootDirectory)\OuterWilds_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
