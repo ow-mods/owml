@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net40</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<LangVersion>9.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="OW.Unity.Dlls" Version="1.1.3">
-	    <ExcludeAssets>runtime</ExcludeAssets>
-	  </PackageReference>
+	  <PackageReference Include="OuterWildsGameLibs" Version="1.1.11.72" />
 	</ItemGroup>
 
 </Project>
