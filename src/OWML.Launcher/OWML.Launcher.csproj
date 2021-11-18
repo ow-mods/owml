@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Events\bin\Debug\net40\0Harmony.dll&quot; $(TargetDir)&#xD;&#xA;xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Assets\bin\Debug\net40\NAudio-Unity.dll&quot; $(TargetDir)&#xD;&#xA;xcopy /i /y &quot;$(SolutionDir)src\OWML.Temp\bin\Debug\net48\Newtonsoft.Json.dll&quot; $(TargetDir)" />
+    <Exec Command="xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Events\bin\Debug\net48\0Harmony.dll&quot; $(TargetDir)&#xD;&#xA;xcopy /i /y &quot;$(SolutionDir)src\OWML.ModHelper.Assets\bin\Debug\net48\NAudio-Unity.dll&quot; $(TargetDir)&#xD;&#xA;xcopy /i /y &quot;$(SolutionDir)src\OWML.Temp\bin\Debug\net48\Newtonsoft.Json.dll&quot; $(TargetDir)" />
   </Target>
 
 </Project>

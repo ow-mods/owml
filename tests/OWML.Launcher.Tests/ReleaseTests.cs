@@ -94,7 +94,7 @@ namespace OWML.Launcher.Tests
 
 		private void CopyMod(string modName)
 		{
-			var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug/net40";
+			var fromModPath = $"{OwmlSolutionPath}/src/SampleMods/{modName}/bin/Debug/net48";
 			var toModPath = $"{OwmlReleasePath}/Mods/{modName}";
 			Directory.CreateDirectory(toModPath);
 			var modFiles = Directory.GetFiles(fromModPath);
