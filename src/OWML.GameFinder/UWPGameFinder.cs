@@ -7,7 +7,6 @@ namespace OWML.GameFinder
 	public class UWPGameFinder : BaseFinder
 	{
 		private const string RegistryPath = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\Repository\Packages";
-		private const int MaxLibraryCount = 10;
 
 		public UWPGameFinder(IOwmlConfig config, IModConsole writer)
 			: base(config, writer)
