@@ -18,6 +18,7 @@ namespace OWML.GameFinder
 			FindPathWith<CurrentPathFinder>() ??
 			FindPathWith<SteamGameFinder>() ??
 			FindPathWith<EpicGameFinder>() ??
+			FindPathWith<UWPGameFinder>() ??
 			FindPathWith<DefaultLocationFinder>() ??
 			FindPathWith<PromptGameFinder>();
 
