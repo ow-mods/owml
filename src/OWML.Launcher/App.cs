@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using OWML.Common;
 using OWML.Utils;
 
@@ -178,18 +179,24 @@ namespace OWML.Launcher
 					return;
 				}
 
-				if (_owmlConfig.GamePath.ToLower().Contains("epic"))
+				var gameDll = $"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll";
+				var assembly = Assembly.LoadFrom(gameDll);
+				var isEpic = assembly.GetTypes().Any(x => x.Name == "EpicEntitlementRetriever");
+				var isSteam = assembly.GetTypes().Any(x => x.Name == "SteamEntitlementRetriever");
+
+				if (isEpic && !isSteam)
 				{
 					_writer.WriteLine("Starting game via Epic Launcher...");
 					_processHelper.Start("\"com.epicgames.launcher://apps/starfish%3A601d0668cef146bd8eef75d43c6bbb0b%3AStarfish?action=launch&silent=true\"");
 				}
-				else if (_owmlConfig.GamePath.ToLower().Contains("steam"))
+				else if (!isEpic && isSteam)
 				{
 					_writer.WriteLine("Starting game via Steam...");
 					_processHelper.Start("steam://rungameid/753640");
 				}
 				else
 				{
+					// the fuck??
 					StartGameViaExe();
 				}
 			}
