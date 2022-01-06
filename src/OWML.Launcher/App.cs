@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using OWML.Common;
 using OWML.Utils;
 
@@ -167,10 +168,7 @@ namespace OWML.Launcher
 			try
 			{
 				void StartGameViaExe()
-				{
-					_writer.WriteLine("Starting game via exe...");
-					_processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
-				}
+					=> _processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
 
 				if (_owmlConfig.ForceExe)
 				{
@@ -178,18 +176,37 @@ namespace OWML.Launcher
 					return;
 				}
 
-				if (_owmlConfig.GamePath.ToLower().Contains("epic"))
+				var gameDll = $"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll";
+				var assembly = Assembly.LoadFrom(gameDll);
+				var types = assembly.GetTypes();
+				var isEpic = types.Any(x => x.Name == "EpicEntitlementRetriever");
+				var isSteam = types.Any(x => x.Name == "SteamEntitlementRetriever");
+				var isUWP = types.Any(x => x.Name == "MSStoreEntitlementRetriever");
+
+				if (isEpic && !isSteam && !isUWP)
 				{
-					_writer.WriteLine("Starting game via Epic Launcher...");
+					_writer.WriteLine("Identified as an Epic install. Launching...");
 					_processHelper.Start("\"com.epicgames.launcher://apps/starfish%3A601d0668cef146bd8eef75d43c6bbb0b%3AStarfish?action=launch&silent=true\"");
 				}
-				else if (_owmlConfig.GamePath.ToLower().Contains("steam"))
+				else if (!isEpic && isSteam && !isUWP)
 				{
-					_writer.WriteLine("Starting game via Steam...");
+					_writer.WriteLine("Identified as a Steam install. Launching...");
 					_processHelper.Start("steam://rungameid/753640");
+				}
+				else if (!isEpic && !isSteam && isUWP)
+				{
+					_writer.WriteLine("Identified as an Xbox Game Pass install. Launching...");
+					StartGameViaExe();
 				}
 				else
 				{
+					// This should be impossible to get to?!
+					_writer.WriteLine("This game isn't from Epic, Steam, or the MSStore...? Wha?\r\n" +
+						"Either this game is really specifically corrupted, or you're running Outer Wilds from a new exciting vendor.\r\n" +
+						"In any case, this has a 0% chance of appearing in normal use (right now), so I can make this message as long as I want.\r\n" +
+						"Suck it, command window! You bend to my will now!\r\n" +
+						"Though, if you *are* using Steam, Epic, or Game Pass, and you're seeing this... please let us know! Because you aren't meant to see this. :P\r\n" +
+						"Anyway, back to scheduled programming. Launching...");
 					StartGameViaExe();
 				}
 			}
