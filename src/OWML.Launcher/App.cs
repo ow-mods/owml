@@ -200,7 +200,7 @@ namespace OWML.Launcher
 				}
 				else
 				{
-					// the fuck?
+					// the fuck??
 					_writer.WriteLine("Unknown install type. Launching...");
 					StartGameViaExe();
 				}
