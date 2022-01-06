@@ -5,8 +5,10 @@ namespace OWML.GameFinder
 {
 	public abstract class BaseFinder
 	{
-		private const string ManagedPath = "OuterWilds_Data/Managed";
+		private readonly string ManagedPath = Path.Combine("OuterWilds_Data", "Managed");
 		private const string ExePath = "OuterWilds.exe";
+		private readonly string SpacedManagedPath = Path.Combine("Outer Wilds_Data", "Managed");
+		private const string SpacedExePath = "Outer Wilds.exe";
 
 		protected IOwmlConfig Config;
 		protected IModConsole Writer;
@@ -22,7 +24,14 @@ namespace OWML.GameFinder
 		protected bool IsValidGamePath(string gamePath) =>
 			!string.IsNullOrEmpty(gamePath) &&
 			Directory.Exists(gamePath) &&
-			Directory.Exists($"{gamePath}/{ManagedPath}") &&
-			File.Exists($"{gamePath}/{ExePath}");
+			(HasGameFiles(gamePath) || HasSpacedGameFiles(gamePath));
+
+		private bool HasGameFiles(string gamePath) => 
+			Directory.Exists(Path.Combine(gamePath, ManagedPath)) && 
+			File.Exists(Path.Combine(gamePath, ExePath));
+
+		private bool HasSpacedGameFiles(string gamePath) => 
+			Directory.Exists(Path.Combine(gamePath, SpacedManagedPath)) && 
+			File.Exists(Path.Combine(gamePath, SpacedExePath));
 	}
 }

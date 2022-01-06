@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
+using Newtonsoft.Json;
 
 namespace OWML.Common
 {
@@ -14,16 +15,19 @@ namespace OWML.Common
 		public bool ForceExe { get; set; }
 
 		[JsonIgnore]
-		public string DataPath => $"{GamePath}/OuterWilds_Data";
+		public bool IsSpaced => Directory.Exists(Path.Combine(GamePath, "Outer Wilds_Data"));
 
 		[JsonIgnore]
-		public string ExePath => $"{GamePath}/OuterWilds.exe";
+		public string DataPath => Path.Combine(GamePath, IsSpaced ? "Outer Wilds_Data" : "OuterWilds_Data");
 
 		[JsonIgnore]
-		public string ManagedPath => $"{DataPath}/Managed";
+		public string ExePath => Path.Combine(GamePath, IsSpaced ? "Outer Wilds.exe" : "OuterWilds.exe");
 
 		[JsonIgnore]
-		public string PluginsPath => $"{DataPath}/Plugins";
+		public string ManagedPath => Path.Combine(DataPath, "Managed");
+
+		[JsonIgnore]
+		public string PluginsPath => Path.Combine(DataPath, "Plugins");
 
 		[JsonProperty("owmlPath")]
 		public string OWMLPath { get; set; }
