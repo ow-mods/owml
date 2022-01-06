@@ -168,10 +168,7 @@ namespace OWML.Launcher
 			try
 			{
 				void StartGameViaExe()
-				{
-					_writer.WriteLine("Starting game via exe...");
-					_processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
-				}
+					=> _processHelper.Start(_owmlConfig.ExePath, _argumentHelper.Arguments);
 
 				if (_owmlConfig.ForceExe)
 				{
@@ -181,22 +178,30 @@ namespace OWML.Launcher
 
 				var gameDll = $"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll";
 				var assembly = Assembly.LoadFrom(gameDll);
-				var isEpic = assembly.GetTypes().Any(x => x.Name == "EpicEntitlementRetriever");
-				var isSteam = assembly.GetTypes().Any(x => x.Name == "SteamEntitlementRetriever");
+				var types = assembly.GetTypes();
+				var isEpic = types.Any(x => x.Name == "EpicEntitlementRetriever");
+				var isSteam = types.Any(x => x.Name == "SteamEntitlementRetriever");
+				var isUWP = types.Any(x => x.Name == "MSStoreEntitlementRetriever");
 
-				if (isEpic && !isSteam)
+				if (isEpic && !isSteam && !isUWP)
 				{
-					_writer.WriteLine("Starting game via Epic Launcher...");
+					_writer.WriteLine("Identified as an Epic install. Launching...");
 					_processHelper.Start("\"com.epicgames.launcher://apps/starfish%3A601d0668cef146bd8eef75d43c6bbb0b%3AStarfish?action=launch&silent=true\"");
 				}
-				else if (!isEpic && isSteam)
+				else if (!isEpic && isSteam && !isUWP)
 				{
-					_writer.WriteLine("Starting game via Steam...");
+					_writer.WriteLine("Identified as a Steam install. Launching...");
 					_processHelper.Start("steam://rungameid/753640");
+				}
+				else if (!isEpic && !isSteam && isUWP)
+				{
+					_writer.WriteLine("Identified as an Xbox Game Pass install. Launching...");
+					StartGameViaExe();
 				}
 				else
 				{
-					// the fuck??
+					// the fuck?
+					_writer.WriteLine("Unknown install type. Launching...");
 					StartGameViaExe();
 				}
 			}
