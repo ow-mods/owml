@@ -200,8 +200,13 @@ namespace OWML.Launcher
 				}
 				else
 				{
-					// the fuck??
-					_writer.WriteLine("Unknown install type. Launching...");
+					// This should be impossible to get to?!
+					_writer.WriteLine("This game isn't from Epic, Steam, or the MSStore...? Wha?\r\n" +
+						"Either this game is really specifically corrupted, or you're running Outer Wilds from a new exciting vendor.\r\n" +
+						"In any case, this has a 0% chance of appearing in normal use (right now), so I can make this message as long as I want.\r\n" +
+						"Suck it, command window! You bend to my will now!\r\n" +
+						"Though, if you *are* using Steam, Epic, or Game Pass, and you're seeing this... please let us know! Because you aren't meant to see this. :P\r\n" +
+						"Anyway, back to scheduled programming. Launching...");
 					StartGameViaExe();
 				}
 			}
