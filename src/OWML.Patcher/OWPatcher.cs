@@ -81,7 +81,7 @@ namespace OWML.Patcher
 			{
 				try
 				{
-					File.Copy($"{pathPrefix}{filename}", $"{destination}/{filename}", true);
+					File.Copy($"{pathPrefix}{filename}", Path.Combine(destination, filename), true);
 				}
 				catch
 				{
@@ -100,7 +100,7 @@ namespace OWML.Patcher
 		{
 			_writer.WriteLine("Patching OW assembly...");
 
-			var patcher = new dnpatch.Patcher($"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll");
+			var patcher = new dnpatch.Patcher(Path.Combine(_owmlConfig.ManagedPath, "Assembly-CSharp.dll"));
 
 			var target = new Target
 			{
