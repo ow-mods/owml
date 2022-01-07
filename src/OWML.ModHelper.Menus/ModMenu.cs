@@ -69,6 +69,8 @@ namespace OWML.ModHelper.Menus
 				.Concat(Menu.GetComponentsInChildren<SliderElement>(true).Select(x => new ModSliderInput(x, this)))
 				.Concat(Menu.GetComponentsInChildren<OptionsSelectorElement>(true).Select(x => new ModSelectorInput(x, this)))
 				.ToList();
+
+			Separators.Clear();
 		}
 
 		[Obsolete("Use GetTitleButton instead")]
