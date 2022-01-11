@@ -83,8 +83,8 @@ Authors:
 * [TAImatem](https://github.com/TAImatem)
 
 Special thanks to:
-* [Outer Wilds](http://www.outerwilds.com
-* [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds))
+* [Outer Wilds](http://www.outerwilds.com)
+* [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * The unnofficial Outer Wilds Discord
 * Inspired by (and some code from) [SMAPI](https://smapi.io)
 * OWML logo banner by _nebula
