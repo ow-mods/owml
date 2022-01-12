@@ -65,8 +65,8 @@ OWML is compatible with Echoes of the Eye, and works on both Epic and Steam inst
 
 ## Feedback and Support
 
-OWML is developed by the same people making the mods!
-On the [Outer Wilds Discord](https://discord.gg/csKYR3w), we are (in purple role colors) :
+OWML is developed by some of the same people making the mods!
+On the [Outer Wilds Modding Discord](https://discord.gg/9vE5aHxcF9), we are:
 - alek
 - Raicuparta
 - _nebula
@@ -84,8 +84,8 @@ Authors:
 
 Special thanks to:
 * [Outer Wilds](http://www.outerwilds.com)
-* [Outer Wilds on Discord](https://discord.gg/csKYR3w)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
+* The unnofficial Outer Wilds Discord
 * Inspired by (and some code from) [SMAPI](https://smapi.io)
 * OWML logo banner by _nebula
 
