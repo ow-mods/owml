@@ -42,7 +42,7 @@ Refer to the sample mods in the source code for examples. These mods are not inc
 
 ### Get started
 
-1. Create a C# class library project targeting .Net Framework 4.0.
+1. Create a C# class library project targeting .Net Framework 4.8.
 2. Install the [OWML Nuget package](https://www.nuget.org/packages/OWML/).
 3. Reference the following files in {gamePath}\OuterWilds_Data\Managed:
     * Assembly-CSharp.dll
