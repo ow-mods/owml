@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus
 		}
 
 		private IList<ModPromptButton> GetParentPromptButtons(Menu menu) =>
-			menu.transform.parent
+			menu.transform.parent.parent
 				.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
 				.Select(x => x.GetComponent<Button>())
 				.Select(x => new ModPromptButton(x, this, Console))
