@@ -52,12 +52,22 @@ namespace OWML.ModHelper.Menus
 			resetButton.Prompt = new ScreenPrompt(InputLibrary.setDefaults, resetButton.DefaultTitle);
 		}
 
-		private IList<ModPromptButton> GetParentPromptButtons(Menu menu) =>
-			menu.transform.parent.parent
+		private IList<ModPromptButton> GetParentPromptButtons(Menu menu)
+		{
+			var parent = menu.transform.parent;
+
+			if (parent.Find("OptionsButtons") == null)
+			{
+				parent = parent.parent;
+			}
+
+			return parent
 				.GetComponentsInChildren<ButtonWithHotkeyImageElement>(true)
 				.Select(x => x.GetComponent<Button>())
 				.Select(x => new ModPromptButton(x, this, Console))
 				.ToList();
+		}
+			
 
 		public override void Initialize(Menu menu)
 		{
