@@ -7,10 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="3.5.2" />
+    <PackageReference Include="HarmonyX" Version="2.5.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj" />
   </ItemGroup>
 
 </Project>

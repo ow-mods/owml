@@ -70,6 +70,7 @@ namespace OWML.ModLoader
 
 			_goHelper.CreateAndAdd<OwmlBehaviour>();
 			_unityLogger.Start();
+			EnumUtils.Initialize(_console);
 			var mods = _modFinder.GetMods();
 
 			var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
