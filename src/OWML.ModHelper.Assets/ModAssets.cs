@@ -103,7 +103,7 @@ namespace OWML.ModHelper.Assets
 			using var reader = new AudioFileReader(path);
 			var outputBytes = new float[reader.Length];
 			reader.Read(outputBytes, 0, (int)reader.Length);
-			var clip = AudioClip.Create(path, (int)reader.Length, reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
+			var clip = AudioClip.Create(path, (int)(reader.TotalTime.TotalSeconds * reader.WaveFormat.SampleRate), reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
 			clip.SetData(outputBytes, 0);
 			return clip;
 		}
