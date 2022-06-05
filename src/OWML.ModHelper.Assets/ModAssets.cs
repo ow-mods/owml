@@ -101,10 +101,11 @@ namespace OWML.ModHelper.Assets
 			var path = _manifest.ModFolderPath + filename;
 			_console.WriteLine($"Loading audio from {path}");
 			using var reader = new AudioFileReader(path);
-			var outputBytes = new float[reader.Length];
-			reader.Read(outputBytes, 0, (int)reader.Length);
-			var clip = AudioClip.Create(path, (int)(reader.TotalTime.TotalSeconds * reader.WaveFormat.SampleRate), reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
-			clip.SetData(outputBytes, 0);
+			var sampleCount = (int)(reader.Length * 8 / reader.WaveFormat.BitsPerSample);
+			var outputSamples = new float[sampleCount];
+			reader.Read(outputSamples, 0, sampleCount);
+			var clip = AudioClip.Create(path, sampleCount / reader.WaveFormat.Channels, reader.WaveFormat.Channels, reader.WaveFormat.SampleRate, false);
+			clip.SetData(outputSamples, 0);
 			return clip;
 		}
 	}
