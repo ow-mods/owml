@@ -66,14 +66,23 @@ namespace OWML.ModHelper.Interaction
 		}
 
 		public IModBehaviour GetMod(string uniqueName) => 
-			_modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
+			_modList.FirstOrDefault(m => m.ModHelper.Manifest.UniqueName == uniqueName);
 
-		private object GetApi(string uniqueName) => 
-			GetMod(uniqueName).Api;
+		private object GetApi(string uniqueName)
+		{
+			var mod = GetMod(uniqueName);
+			return mod == default ? default : mod.Api;
+		}
 
 		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
 		{
 			var api = GetApi(uniqueName);
+
+			if (api == default)
+			{
+				return default;
+			}
+
 			return api switch
 			{
 				null => null,
