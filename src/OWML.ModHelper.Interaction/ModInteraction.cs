@@ -66,29 +66,44 @@ namespace OWML.ModHelper.Interaction
 			return _dependencyDict[uniqueName];
 		}
 
-		public IModBehaviour GetMod(string uniqueName) => 
-			_modList.FirstOrDefault(m => m.ModHelper.Manifest.UniqueName == uniqueName);
+		public IModBehaviour TryGetMod(string uniqueName)
+			=> _modList.FirstOrDefault(m => m.ModHelper.Manifest.UniqueName == uniqueName);
 
-		private object GetApi(string uniqueName)
+		private object TryGetApi(string uniqueName)
 		{
-			var mod = GetMod(uniqueName);
+			var mod = TryGetMod(uniqueName);
 			return mod == default ? default : mod.Api;
 		}
 
-		public TInterface GetModApi<TInterface>(string uniqueName, bool throwException = true) where TInterface : class
+		public TInterface TryGetModApi<TInterface>(string uniqueName) where TInterface : class
 		{
-			var api = GetApi(uniqueName);
+			var api = TryGetApi(uniqueName);
 
 			if (api == default)
 			{
-				if (throwException)
-				{
-					throw new Exception($"{uniqueName} is not installed / enabled.");
-				}
-
 				return default;
 			}
 
+			return api switch
+			{
+				null => null,
+				TInterface inter => inter,
+				_ => _proxyFactory.CreateProxy<TInterface>(api, _manifest.UniqueName, uniqueName)
+			};
+		}
+
+		[Obsolete("Use TryGetMod instead.")]
+		public IModBehaviour GetMod(string uniqueName) => 
+			_modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
+
+		[Obsolete("Use TryGetApi instead.")]
+		private object GetApi(string uniqueName)
+			=> GetMod(uniqueName).Api;
+
+		[Obsolete("Use TryGetModApi instead.")]
+		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
+		{
+			var api = GetApi(uniqueName);
 			return api switch
 			{
 				null => null,
