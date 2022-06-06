@@ -81,12 +81,12 @@ namespace OWML.ModHelper.Interaction
 
 			if (api == default)
 			{
+				if (throwException)
+				{
+					throw new Exception($"{uniqueName} is not installed / enabled.");
+				}
+
 				return default;
-			}
-			
-			if (throwException && api == default)
-			{
-				throw new Exception($"{uniqueName} is not installed / enabled.");
 			}
 
 			return api switch
