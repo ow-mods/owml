@@ -82,6 +82,11 @@ Authors:
 * [_nebula](https://github.com/misternebula)
 * [TAImatem](https://github.com/TAImatem)
 
+Contributors:
+* [salomj](https://github.com/salomj) - Helped with menus and inputs.
+* [artum](https://github.com/artumino) - Helped with menus and patchers.
+* [JohnCorby](https://github.com/JohnCorby) - Helped with audio loading stuff.
+
 Special thanks to:
 * [Outer Wilds](http://www.outerwilds.com)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
