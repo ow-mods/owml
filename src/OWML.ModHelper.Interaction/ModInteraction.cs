@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 
@@ -74,13 +75,18 @@ namespace OWML.ModHelper.Interaction
 			return mod == default ? default : mod.Api;
 		}
 
-		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
+		public TInterface GetModApi<TInterface>(string uniqueName, bool throwException = true) where TInterface : class
 		{
 			var api = GetApi(uniqueName);
 
 			if (api == default)
 			{
 				return default;
+			}
+			
+			if (throwException && api == default)
+			{
+				throw new Exception($"{uniqueName} is not installed / enabled.");
 			}
 
 			return api switch

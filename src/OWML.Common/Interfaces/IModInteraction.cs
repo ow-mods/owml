@@ -12,7 +12,7 @@ namespace OWML.Common
 
 		IModBehaviour GetMod(string uniqueName);
 
-		TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class;
+		TInterface GetModApi<TInterface>(string uniqueName, bool throwException = true) where TInterface : class;
 
 		bool ModExists(string uniqueName);
 	}
