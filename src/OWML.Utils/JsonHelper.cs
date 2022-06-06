@@ -6,20 +6,27 @@ namespace OWML.Utils
 {
 	public static class JsonHelper
 	{
-		public static T LoadJsonObject<T>(string path)
+		public static T LoadJsonObject<T>(string path, bool fixBackslashes = true, JsonSerializerSettings settings = null)
 		{
 			if (!File.Exists(path))
 			{
 				return default;
 			}
 
-			var json = File.ReadAllText(path)
-				.Replace("\\\\", "/")
-				.Replace("\\", "/");
+			var json = File.ReadAllText(path);
+
+			if (fixBackslashes)
+			{
+				json = json
+					.Replace("\\\\", "/")
+					.Replace("\\", "/");
+			}
 
 			try
 			{
-				return JsonConvert.DeserializeObject<T>(json);
+				return settings != null
+					? JsonConvert.DeserializeObject<T>(json, settings)
+					: JsonConvert.DeserializeObject<T>(json);
 			}
 			catch (Exception)
 			{

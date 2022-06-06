@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 
@@ -65,12 +66,41 @@ namespace OWML.ModHelper.Interaction
 			return _dependencyDict[uniqueName];
 		}
 
+		public IModBehaviour TryGetMod(string uniqueName)
+			=> _modList.FirstOrDefault(m => m.ModHelper.Manifest.UniqueName == uniqueName);
+
+		private object TryGetApi(string uniqueName)
+		{
+			var mod = TryGetMod(uniqueName);
+			return mod == default ? default : mod.Api;
+		}
+
+		public TInterface TryGetModApi<TInterface>(string uniqueName) where TInterface : class
+		{
+			var api = TryGetApi(uniqueName);
+
+			if (api == default)
+			{
+				return default;
+			}
+
+			return api switch
+			{
+				null => null,
+				TInterface inter => inter,
+				_ => _proxyFactory.CreateProxy<TInterface>(api, _manifest.UniqueName, uniqueName)
+			};
+		}
+
+		[Obsolete("Use TryGetMod instead.")]
 		public IModBehaviour GetMod(string uniqueName) => 
 			_modList.First(m => m.ModHelper.Manifest.UniqueName == uniqueName);
 
-		private object GetApi(string uniqueName) => 
-			GetMod(uniqueName).Api;
+		[Obsolete("Use TryGetApi instead.")]
+		private object GetApi(string uniqueName)
+			=> GetMod(uniqueName).Api;
 
+		[Obsolete("Use TryGetModApi instead.")]
 		public TInterface GetModApi<TInterface>(string uniqueName) where TInterface : class
 		{
 			var api = GetApi(uniqueName);
