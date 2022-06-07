@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using Newtonsoft.Json;
+using OWML.Common;
 using OWML.Utils;
 
 namespace OWML.ModHelper
@@ -14,11 +15,11 @@ namespace OWML.ModHelper
 			_console = console;
 		}
 
-		public T Load<T>(string filename)
+		public T Load<T>(string filename, bool fixBackslashes = true, JsonSerializerSettings settings = null)
 		{
 			var path = _manifest.ModFolderPath + filename;
 			_console.WriteLine($"Loading config from {path}", MessageType.Debug);
-			return JsonHelper.LoadJsonObject<T>(path);
+			return JsonHelper.LoadJsonObject<T>(path, fixBackslashes, settings);
 		}
 
 		public void Save<T>(T obj, string filename)
