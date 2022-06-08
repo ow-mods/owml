@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OWML.Common;
 using OWML.Utils;
-using System;
 
 namespace OWML.ModHelper
 {
@@ -16,11 +15,8 @@ namespace OWML.ModHelper
 			_console = console;
 		}
 
-		[Obsolete]
 		public T Load<T>(string filename)
-		{
-			return Load<T>(filename, true, null);
-		}
+			=> Load<T>(filename, true, null);
 
 		public T Load<T>(string filename, bool fixBackslashes, JsonSerializerSettings settings = null)
 		{

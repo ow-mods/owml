@@ -6,11 +6,8 @@ namespace OWML.Utils
 {
 	public static class JsonHelper
 	{
-		[Obsolete]
 		public static T LoadJsonObject<T>(string path)
-		{
-			return LoadJsonObject<T>(path, true, null);
-		}
+			=> LoadJsonObject<T>(path, true, null);
 
 		public static T LoadJsonObject<T>(string path, bool fixBackslashes, JsonSerializerSettings settings = null)
 		{
