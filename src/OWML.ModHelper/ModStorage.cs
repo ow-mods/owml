@@ -15,7 +15,10 @@ namespace OWML.ModHelper
 			_console = console;
 		}
 
-		public T Load<T>(string filename, bool fixBackslashes = true, JsonSerializerSettings settings = null)
+		public T Load<T>(string filename)
+			=> Load<T>(filename, true, null);
+
+		public T Load<T>(string filename, bool fixBackslashes, JsonSerializerSettings settings = null)
 		{
 			var path = _manifest.ModFolderPath + filename;
 			_console.WriteLine($"Loading config from {path}", MessageType.Debug);
