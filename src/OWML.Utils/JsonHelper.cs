@@ -12,7 +12,7 @@ namespace OWML.Utils
 			return LoadJsonObject<T>(path, true, null);
 		}
 
-		public static T LoadJsonObject<T>(string path, bool fixBackslashes = true, JsonSerializerSettings settings = null)
+		public static T LoadJsonObject<T>(string path, bool fixBackslashes, JsonSerializerSettings settings = null)
 		{
 			if (!File.Exists(path))
 			{

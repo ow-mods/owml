@@ -8,7 +8,7 @@ namespace OWML.Common
 		[Obsolete]
 		T Load<T>(string filename);
 
-		T Load<T>(string filename, bool fixBackslashes = true, JsonSerializerSettings settings = null);
+		T Load<T>(string filename, bool fixBackslashes, JsonSerializerSettings settings = null);
 
 		void Save<T>(T obj, string filename);
 	}
