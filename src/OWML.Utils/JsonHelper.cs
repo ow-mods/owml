@@ -6,7 +6,13 @@ namespace OWML.Utils
 {
 	public static class JsonHelper
 	{
-		public static T LoadJsonObject<T>(string path, bool fixBackslashes = true, JsonSerializerSettings settings = null)
+		[Obsolete]
+		public static T LoadJsonObject<T>(string path)
+		{
+			return LoadJsonObject<T>(path, true, null);
+		}
+
+		public static T LoadJsonObject<T>(string path, bool fixBackslashes, JsonSerializerSettings settings = null)
 		{
 			if (!File.Exists(path))
 			{
