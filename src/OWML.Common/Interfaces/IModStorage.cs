@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace OWML.Common
 {
 	public interface IModStorage
 	{
-		[Obsolete]
 		T Load<T>(string filename);
 
 		T Load<T>(string filename, bool fixBackslashes, JsonSerializerSettings settings = null);
