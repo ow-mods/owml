@@ -1,6 +1,7 @@
 ﻿using OWML.Common;
-using System.Linq;
 using OWML.Common.Menus;
+using System;
+using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
@@ -53,7 +54,17 @@ namespace OWML.ModHelper.Menus
 				}
 			}
 			ModData.Storage.Save(ModData.Config, Constants.ModConfigFileName);
-			Mod?.Configure(ModData.Config);
+
+			// Fixes "If one mod throws an exception in Configure all mod settings break" (#452)
+			try
+			{
+				Mod?.Configure(ModData.Config);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Exception thrown when changing settings for {Mod?.ModHelper?.Manifest?.UniqueName} : {e.Message}, {e.StackTrace}", MessageType.Error);
+			}
+
 			Close();
 		}
 
