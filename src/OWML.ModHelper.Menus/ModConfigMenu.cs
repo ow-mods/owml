@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace OWML.ModHelper.Menus
 {
-    public class ModConfigMenu : ModConfigMenuBase, IModConfigMenu
+	public class ModConfigMenu : ModConfigMenuBase, IModConfigMenu
 	{
 		private const string EnabledTitle = "Enabled";
 
