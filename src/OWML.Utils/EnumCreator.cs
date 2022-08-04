@@ -14,8 +14,6 @@ namespace OWML.Utils
 {
     public static partial class EnumUtils
     {
-        private static Harmony _harmony = new Harmony("OWML.Utils.EnumUtils");
-
         private static readonly HashSet<Type> _flagsTypes = new HashSet<Type>
         {
             typeof(DreamLanternType),
@@ -41,12 +39,12 @@ namespace OWML.Utils
             typeof(SignalFrequency),
         };
 
-        internal static void Initialize(IModConsole console)
+        internal static void Initialize(IModConsole console, IHarmonyHelper _harmonyHelper)
         {
             console.WriteLine("Initializing enum creator");
             try
             {
-                _harmony.Patch(AccessTools.Method(Type.GetType("System.Enum"), "GetCachedValuesAndNames"), null, null, new HarmonyMethod(TypeExtensions.GetAnyMethod(typeof(EnumInfoPatch), nameof(EnumInfoPatch.Transpiler))));
+                _harmonyHelper.Transpile(AccessTools.Method(Type.GetType("System.Enum"), "GetCachedValuesAndNames"), typeof(EnumInfoPatch), nameof(EnumInfoPatch.Transpiler));
             }
             catch (Exception ex)
             {

@@ -30,6 +30,7 @@ namespace OWML.ModLoader
 		private readonly IModUnityEvents _unityEvents;
 		private readonly IModManifest _owmlManifest;
 		private readonly IModVersionChecker _modVersionChecker;
+		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
 		public Owo(
@@ -45,7 +46,8 @@ namespace OWML.ModLoader
 			IApplicationHelper appHelper,
 			IProcessHelper processHelper,
 			IModUnityEvents unityEvents,
-			IModVersionChecker modVersionChecker)
+			IModVersionChecker modVersionChecker,
+			IHarmonyHelper harmonyHelper)
 		{
 			_modFinder = modFinder;
 			_console = console;
@@ -60,6 +62,7 @@ namespace OWML.ModLoader
 			_processHelper = processHelper;
 			_unityEvents = unityEvents;
 			_modVersionChecker = modVersionChecker;
+			_harmonyHelper = harmonyHelper;
 			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
 		}
 
@@ -70,7 +73,7 @@ namespace OWML.ModLoader
 
 			_goHelper.CreateAndAdd<OwmlBehaviour>();
 			_unityLogger.Start();
-			EnumUtils.Initialize(_console);
+			EnumUtils.Initialize(_console, _harmonyHelper);
 			var mods = _modFinder.GetMods();
 
 			var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
