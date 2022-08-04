@@ -153,7 +153,7 @@ namespace OWML.Utils
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
             if (AlreadyHasName(enumType, name) || IsDefined(enumType, name)) throw new Exception($"The enum ({enumType.FullName}) already has a value with the name \"{name}\"");
 
-            if (!patches.TryGetValue(enumType, out var patch))
+            if (!TryGetRawPatch(enumType, out var patch))
             {
                 patch = new EnumPatch();
                 patches.Add(enumType, patch);
@@ -163,6 +163,37 @@ namespace OWML.Utils
 
             // Clear enum cache
             ClearEnumCache(enumType);
+        }
+
+        public static void Remove<T>(string name) where T : Enum => Remove(typeof(T), name);
+
+        public static void Remove<T>(object value) where T : Enum => Remove(typeof(T), value);
+
+        public static void Remove(Type enumType, string name)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+            if (TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasName(name))
+            {
+                patch.RemoveValue(name);
+
+                // Clear enum cache
+                ClearEnumCache(enumType);
+            }
+        }
+
+        public static void Remove(Type enumType, object value)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+            ulong uvalue = (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+            if (TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue))
+            {
+                patch.RemoveValue(uvalue);
+
+                // Clear enum cache
+                ClearEnumCache(enumType);
+            }
         }
 
         private static bool TryAsNumber(this object value, Type type, out object result)
@@ -267,6 +298,11 @@ namespace OWML.Utils
                 return pairs;
             }
 
+            public bool HasValue(ulong value)
+            {
+                return values.Keys.Contains(value);
+            }
+
             public bool HasName(string name)
             {
                 foreach (string enumName in this.values.Values.SelectMany(l => l))
@@ -283,6 +319,14 @@ namespace OWML.Utils
                     values[enumValue].Add(name);
                 else
                     values.Add(enumValue, new List<string> { name });
+            }
+
+            public void RemoveValue(ulong enumValue) => values.Remove(enumValue);
+
+            public void RemoveValue(string name)
+            {
+                if (string.IsNullOrEmpty(name)) return;
+                foreach (var pair in values) pair.Value.Remove(name);
             }
         }
 
