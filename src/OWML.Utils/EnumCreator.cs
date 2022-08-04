@@ -14,7 +14,10 @@ namespace OWML.Utils
 {
     public static partial class EnumUtils
     {
-        private static readonly HashSet<Type> _flagsTypes = new HashSet<Type>
+        /// <summary>
+        /// Any enum with flags uses numbers that a power of two. Some other enums also use it because mobius.
+        /// </summary>
+        private static readonly HashSet<Type> _powerOfTwoTypes = new HashSet<Type>
         {
             typeof(DreamLanternType),
             typeof(Detector.Name),
@@ -225,12 +228,12 @@ namespace OWML.Utils
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static bool IsFlagsEnum<T>() where T : Enum => _flagsTypes.Contains(typeof(T)) || typeof(T).IsDefined(typeof(FlagsAttribute), false);
-        public static bool IsFlagsEnum(Type enumType)
+        public static bool IsPowerOfTwoEnum<T>() where T : Enum => _powerOfTwoTypes.Contains(typeof(T)) || typeof(T).IsDefined(typeof(FlagsAttribute), false);
+        public static bool IsPowerOfTwoEnum(Type enumType)
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
-            return _flagsTypes.Contains(enumType) || enumType.IsDefined(typeof(FlagsAttribute), false);
+            return _powerOfTwoTypes.Contains(enumType) || enumType.IsDefined(typeof(FlagsAttribute), false);
         }
 
         public static T GetFirstFreeValue<T>() where T : Enum => (T)GetFirstFreeValue(typeof(T));
@@ -241,11 +244,11 @@ namespace OWML.Utils
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
 
             var vals = Enum.GetValues(enumType);
-            var flags = IsFlagsEnum(enumType);
+            var usesPowerOfTwo = IsPowerOfTwoEnum(enumType);
             long l = 0;
             for (ulong i = 0; i <= ulong.MaxValue; i++)
             {
-                if (flags && !IsPowerOfTwo(i)) continue;
+                if (usesPowerOfTwo && !IsPowerOfTwo(i)) continue;
                 if (!i.TryAsNumber(enumType, out var v))
                     break;
                 for (; l < vals.LongLength; l++)
@@ -254,7 +257,7 @@ namespace OWML.Utils
                 return v;
             skip:;
             }
-            if (flags) goto no_negatives;
+            if (usesPowerOfTwo) goto no_negatives;
             for (long i = -1; i >= long.MinValue; i--)
             {
                 if (!i.TryAsNumber(enumType, out var v))
@@ -266,7 +269,7 @@ namespace OWML.Utils
             skip:;
             }
             no_negatives:
-            throw new Exception((flags ? "No unused values in flags enum " : "No unused values in enum ") + enumType.FullName);
+            throw new Exception((usesPowerOfTwo ? "No unused values in power of two enum " : "No unused values in enum ") + enumType.FullName);
         }
 
         private static bool TryGetRawPatch<T>(out EnumPatch patch) where T : Enum => TryGetRawPatch(typeof(T), out patch);
