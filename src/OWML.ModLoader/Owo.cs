@@ -149,6 +149,18 @@ namespace OWML.ModLoader
 
 			try
 			{
+				foreach (var module in assembly.Modules)
+				{
+					EnumUtils.RegisterAllEnums(module);
+				}
+			}
+			catch (Exception ex)
+			{
+				_console.WriteLine($"Exception while registering enum holders of mod {modData.Manifest.UniqueName}: {ex.Message}", MessageType.Error);
+			}
+
+			try
+			{
 				return assembly.GetTypes().FirstOrDefault(x => x.IsSubclassOf(typeof(ModBehaviour)));
 			}
 			catch (ReflectionTypeLoadException ex)

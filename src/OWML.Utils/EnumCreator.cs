@@ -285,5 +285,28 @@ namespace OWML.Utils
                     values.Add(enumValue, new List<string> { name });
             }
         }
+
+        internal static void RegisterAllEnums(Module module)
+        {
+            foreach (var type in module.GetTypes())
+            {
+                if (type.GetCustomAttributes(true).Any((x) => x is EnumHolderAttribute))
+                {
+                    foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                    {
+                        if (!field.FieldType.IsEnum) continue;
+
+                        if (Convert.ToInt64(field.GetValue(null)) == 0)
+                        {
+                            field.SetValue(null, Create(field.FieldType, field.Name));
+                        }
+                        else
+                            Create(field.FieldType, field.GetValue(null), field.Name);
+                    }
+                }
+            }
+        }
     }
+
+    public class EnumHolderAttribute : Attribute { }
 }
