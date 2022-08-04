@@ -16,6 +16,31 @@ namespace OWML.Utils
     {
         private static Harmony _harmony = new Harmony("OWML.Utils.EnumUtils");
 
+        private static readonly HashSet<Type> _flagsTypes = new HashSet<Type>
+        {
+            typeof(DreamLanternType),
+            typeof(Detector.Name),
+            typeof(GroupControlFlags),
+            typeof(InputConsts.InputType),
+            typeof(InputMode),
+            typeof(ItemType),
+            typeof(LightSourceType),
+            typeof(NotificationTarget),
+            typeof(ProxyShadowCascade.Flags),
+            typeof(StartupPopups),
+            typeof(ToolMode),
+            typeof(WarpCoreType),
+            typeof(Credits.Platform),
+            typeof(Credits.CreditsType),
+            typeof(DynamicOccupant),
+            typeof(GhostNode.NodeLayer),
+            typeof(HazardVolume.HazardType),
+            typeof(InputUtil.XInputButton),
+            typeof(InputUtil.ScePadButton),
+            typeof(Shape.Layer),
+            typeof(SignalFrequency),
+        };
+
         internal static void Initialize(IModConsole console)
         {
             console.WriteLine("Initializing enum creator");
@@ -166,6 +191,19 @@ namespace OWML.Utils
             return false;
         }
 
+        private static bool IsPowerOfTwo(this ulong x)
+        {
+            return x > 0 && (x & (x - 1)) == 0;
+        }
+
+        public static bool IsFlagsEnum<T>() where T : Enum => _flagsTypes.Contains(typeof(T)) || typeof(T).IsDefined(typeof(FlagsAttribute), false);
+        public static bool IsFlagsEnum(Type enumType)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+            return _flagsTypes.Contains(enumType) || enumType.IsDefined(typeof(FlagsAttribute), false);
+        }
+
         public static T GetFirstFreeValue<T>() where T : Enum => (T)GetFirstFreeValue(typeof(T));
 
         public static object GetFirstFreeValue(Type enumType)
@@ -174,28 +212,32 @@ namespace OWML.Utils
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
 
             var vals = Enum.GetValues(enumType);
+            var flags = IsFlagsEnum(enumType);
             long l = 0;
             for (ulong i = 0; i <= ulong.MaxValue; i++)
             {
+                if (flags && !IsPowerOfTwo(i)) continue;
                 if (!i.TryAsNumber(enumType, out var v))
                     break;
-                for (; l < vals.Length; l++)
+                for (; l < vals.LongLength; l++)
                     if (vals.GetValue(l).Equals(v))
                         goto skip;
                 return v;
             skip:;
             }
+            if (flags) goto no_negatives;
             for (long i = -1; i >= long.MinValue; i--)
             {
                 if (!i.TryAsNumber(enumType, out var v))
                     break;
-                for (; l < vals.Length; l++)
+                for (; l < vals.LongLength; l++)
                     if (vals.GetValue(l).Equals(v))
                         goto skip;
                 return v;
             skip:;
             }
-            throw new Exception("No unused values in enum " + enumType.FullName);
+            no_negatives:
+            throw new Exception((flags ? "No unused values in flags enum " : "No unused values in enum ") + enumType.FullName);
         }
 
         private static bool TryGetRawPatch<T>(out EnumPatch patch) where T : Enum => TryGetRawPatch(typeof(T), out patch);
