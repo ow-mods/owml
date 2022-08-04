@@ -15,7 +15,7 @@ namespace OWML.Utils
     public static partial class EnumUtils
     {
         /// <summary>
-        /// Any enum with flags uses numbers that a power of two. Some other enums also use it because mobius.
+        /// Any enum with flags uses numbers that are a power of two. Some other enums also use it because mobius.
         /// </summary>
         private static readonly HashSet<Type> _powerOfTwoTypes = new HashSet<Type>
         {
