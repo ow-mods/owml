@@ -337,7 +337,7 @@ namespace OWML.Utils
         {
             foreach (var type in module.GetTypes())
             {
-                if (type.GetCustomAttributes(true).Any((x) => x is EnumHolderAttribute))
+                if (type.IsDefined(typeof(EnumHolderAttribute), true))
                 {
                     foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                     {
