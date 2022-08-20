@@ -116,31 +116,207 @@ namespace OWML.Utils
         private static FieldInfo cache = AccessTools.Field(AccessTools.TypeByName("System.RuntimeType"), "GenericCache");
         private static void ClearEnumCache(Type enumType) => cache.SetValue(enumType, null);
 
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name) where T : Enum => (T)Create(typeof(T), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static void Create<T>(string name, T value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, short value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, ushort value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, int value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, uint value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, long value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, ulong value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, byte value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(string name, sbyte value) where T : Enum => Create<T>(value, name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(short value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(ushort value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(int value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(uint value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(long value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(ulong value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(byte value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
+
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(sbyte value, string name) where T : Enum => Create<T>(Enum.ToObject(typeof(T), value), name);
 
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static T Create<T>(object value, string name) where T : Enum
         {
             Create(typeof(T), value, name);
             return (T)value;
         }
 
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns>The created enum value</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static object Create(Type enumType, string name)
         {
             var newVal = GetFirstFreeValue(enumType);
@@ -148,8 +324,26 @@ namespace OWML.Utils
             return newVal;
         }
 
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <param name="value">Value of the enum</param>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static void Create(Type enumType, string name, object value) => Create(enumType, value, name);
 
+        /// <summary>
+        /// Creates an actual enum value associated with a name
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="value">Value of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        /// <exception cref="Exception">The enum already has a value with the same name</exception>
         public static void Create(Type enumType, object value, string name)
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
@@ -168,10 +362,27 @@ namespace OWML.Utils
             ClearEnumCache(enumType);
         }
 
+        /// <summary>
+        /// Removes a custom enum value from being associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
         public static void Remove<T>(string name) where T : Enum => Remove(typeof(T), name);
 
+        /// <summary>
+        /// Removes a custom enum value from being associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to remove</param>
         public static void Remove<T>(object value) where T : Enum => Remove(typeof(T), value);
 
+        /// <summary>
+        /// Removes a custom enum value from being associated with a name
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static void Remove(Type enumType, string name)
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
@@ -185,6 +396,13 @@ namespace OWML.Utils
             }
         }
 
+        /// <summary>
+        /// Removes a custom enum value from being associated with a name
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="value">Value of the enum</param>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static void Remove(Type enumType, object value)
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
@@ -228,7 +446,20 @@ namespace OWML.Utils
             return x > 0 && (x & (x - 1)) == 0;
         }
 
+        /// <summary>
+        /// Does this enum use power of twos?
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
         public static bool IsPowerOfTwoEnum<T>() where T : Enum => _powerOfTwoTypes.Contains(typeof(T)) || typeof(T).IsDefined(typeof(FlagsAttribute), false);
+
+        /// <summary>
+        /// Does this enum use power of twos?
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static bool IsPowerOfTwoEnum(Type enumType)
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
@@ -236,8 +467,24 @@ namespace OWML.Utils
             return _powerOfTwoTypes.Contains(enumType) || enumType.IsDefined(typeof(FlagsAttribute), false);
         }
 
+        /// <summary>
+        /// Get first undefined value in an enum
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>The first undefined enum value</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        /// <exception cref="Exception">No unused values in the enum</exception>
         public static T GetFirstFreeValue<T>() where T : Enum => (T)GetFirstFreeValue(typeof(T));
 
+        /// <summary>
+        /// Get first undefined value in an enum
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <returns>The first undefined enum value</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        /// <exception cref="Exception">No unused values in the enum</exception>
         public static object GetFirstFreeValue(Type enumType)
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
@@ -355,5 +602,8 @@ namespace OWML.Utils
         }
     }
 
+    /// <summary>
+    /// Add this attribute to a class, and any static enum fields will have an enum value created with the name of the field.
+    /// </summary>
     public class EnumHolderAttribute : Attribute { }
 }
