@@ -89,12 +89,6 @@ namespace OWML.ModLoader
 
 			foreach (var modData in sortedMods)
 			{
-                // Don't show incompatible OWML version error for disabled mods #369
-                if (!modData.Config.Enabled)
-                {
-                    continue;
-                }
-
                 var missingDependencies = modData.Config.Enabled
 					? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
 					: new List<string>();
