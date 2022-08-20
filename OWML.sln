@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.88
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5F23B5A9-FEFC-4016-9A00-5DDE76798B85}"
 EndProject
@@ -66,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		owmllogo.png = owmllogo.png
 		Readme.md = Readme.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.EnumExample", "src\SampleMods\OWML.EnumExample\OWML.EnumExample.csproj", "{739D16FB-7848-4047-A173-500CE7C40399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,6 +171,10 @@ Global
 		{F56A9B0D-420F-493F-9B53-0CCD218A895E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F56A9B0D-420F-493F-9B53-0CCD218A895E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F56A9B0D-420F-493F-9B53-0CCD218A895E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739D16FB-7848-4047-A173-500CE7C40399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739D16FB-7848-4047-A173-500CE7C40399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739D16FB-7848-4047-A173-500CE7C40399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739D16FB-7848-4047-A173-500CE7C40399}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -199,9 +205,10 @@ Global
 		{DA74E671-FA8A-4834-90B7-368054990690} = {5F23B5A9-FEFC-4016-9A00-5DDE76798B85}
 		{2E866A8D-1C5B-43C2-80D1-632E785A6F3B} = {CEAC0A30-FF6F-4618-9C55-E2A0D81B863A}
 		{F56A9B0D-420F-493F-9B53-0CCD218A895E} = {C447A599-2700-44E1-BBFA-52880B7BFFBA}
+		{739D16FB-7848-4047-A173-500CE7C40399} = {C447A599-2700-44E1-BBFA-52880B7BFFBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
 	EndGlobalSection
 EndGlobal

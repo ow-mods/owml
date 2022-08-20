@@ -73,7 +73,11 @@ namespace OWML.ModLoader
 
 			_goHelper.CreateAndAdd<OwmlBehaviour>();
 			_unityLogger.Start();
+
+			EnumUtils.Initialize(_console, _harmonyHelper);
+
 			_harmonyHelper.AddPrefix<TabbedMenu>(nameof(TabbedMenu.OnUpdateInputDevice), typeof(Owo), nameof(TabbedMenu_OnUpdateInputDevice));
+
 			var mods = _modFinder.GetMods();
 
 			var changedSettings = mods.Where(mod => mod.FixConfigs()).Select(mod => mod.Manifest.Name).ToArray();
@@ -146,6 +150,18 @@ namespace OWML.ModLoader
 			_console.WriteLine($"Loading assembly: {assemblyPath}", MessageType.Debug);
 			var assembly = Assembly.LoadFile(assemblyPath);
 			_console.WriteLine($"Loaded {assembly.FullName}", MessageType.Debug);
+
+			try
+			{
+				foreach (var module in assembly.Modules)
+				{
+					EnumUtils.RegisterAllEnums(module);
+				}
+			}
+			catch (Exception ex)
+			{
+				_console.WriteLine($"Exception while registering enum holders of mod {modData.Manifest.UniqueName}: {ex.Message}", MessageType.Error);
+			}
 
 			try
 			{
