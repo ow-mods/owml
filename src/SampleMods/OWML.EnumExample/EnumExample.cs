@@ -20,6 +20,7 @@ namespace OWML.EnumExample
 			ModHelper.Console.WriteLine($"Checking name of enums", MessageType.Info);
 
 			var createdEnum = EnumUtils.Create<Sector.Name>("Test");
+			var createdEnumWithValue = EnumUtils.Create<Sector.Name>(-1, "HahaFunny");
 
 
 			if (CustomEnums.Magic.ToString() == nameof(CustomEnums.Magic))
