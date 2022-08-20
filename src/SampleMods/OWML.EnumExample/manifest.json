@@ -1,0 +1,9 @@
+{
+	"filename": "OWML.EnumExample.dll",
+	"author": "MegaPiggy",
+	"name": "Enum Example",
+	"uniqueName": "MegaPiggy.EnumExample",
+	"version": "1.0.0",
+	"owmlVersion": "2.6.0",
+	"description": "Example for testing enum creator"
+}
