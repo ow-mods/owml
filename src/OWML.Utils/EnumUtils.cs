@@ -400,91 +400,73 @@ namespace OWML.Utils
         /// <summary>
         /// Converts a number to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(object value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts a <see cref="sbyte"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(sbyte value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts a <see cref="byte"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(byte value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts a <see cref="short"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(short value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts an <see cref="ushort"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(ushort value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts an <see cref="int"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(int value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts an <see cref="uint"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(uint value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts a <see cref="long"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(long value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
         /// <summary>
         /// Converts an <see cref="ulong"/> to an enum.
         /// </summary>
-        /// <param name="enumType">Type of the enum</param>
+        /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">Value to convert</param>
         /// <returns>The number as an enum</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         public static T FromObject<T>(ulong value) where T : Enum => (T)Enum.ToObject(typeof(T), value);
 
 
@@ -499,7 +481,6 @@ namespace OWML.Utils
         /// Gets all enum values in an enum
         /// </summary>
         /// <typeparam name="T">Type of the enum</typeparam>
-        /// <param name="errorReturn">What to return if the parse fails.</param>
         /// <returns>The list of all values in the enum</returns>
         public static T[] GetValues<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().ToArray();
 
@@ -609,15 +590,32 @@ namespace OWML.Utils
     }
 }
 
+/// <summary>
+/// The exception that is thrown when an enum type is needed but the given type is not an enum.
+/// </summary>
 public class NotAnEnumException : Exception
 {
     private Type _type;
+
+    /// <summary>
+    /// The type that is not an enum
+    /// </summary>
     public Type Type => _type;
 
+    /// <summary>
+    /// Initializes a new instance of the NotAnEnumException class with a type that is not an enum.
+    /// </summary>
+    /// <param name="type">The type that is not an enum</param>
     public NotAnEnumException(Type type) : base($"The given type isn't an enum ({type.FullName} isn't an Enum)")
     {
         _type = type;
     }
+
+    /// <summary>
+    /// Initializes a new instance of the NotAnEnumException class with a type that is not an enum and a reference to the inner exception that is the cause of this exception.
+    /// </summary>
+    /// <param name="type">The type that is not an enum</param>
+    /// <param name="innerException">The exception caused the current exception</param>
     public NotAnEnumException(Type type, Exception innerException) : base($"The given type isn't an enum ({type.FullName} isn't an Enum)", innerException)
     {
         _type = type;
