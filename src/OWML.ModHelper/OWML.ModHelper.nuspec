@@ -15,7 +15,7 @@
     <tags>Outer Wilds</tags>
     <dependencies>
       <group targetFramework=".NETFramework3.5">
-        <dependency id="Lib.Harmony" version="1.2.0.1" />
+        <dependency id="HarmonyX" version="2.5.5" />
         <dependency id="Json.Net.Unity3D" version="9.0.1" />
       </group>
     </dependencies>
