@@ -29,6 +29,7 @@
     <file src="bin\Debug\net48\OWML.Common.dll" target="lib\net48" />
     <file src="bin\Debug\net48\OWML.Logging.dll" target="lib\net48" />
     <file src="bin\Debug\net48\OWML.Utils.dll" target="lib\net48" />
+    <file src="bin\Debug\net48\OWML.Utils.xml" target="lib\net48" />
     <file src="bin\Debug\net48\NAudio-Unity.dll" target="lib\net48" />
   </files>
 </package>
