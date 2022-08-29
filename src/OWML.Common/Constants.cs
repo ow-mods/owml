@@ -19,5 +19,7 @@
 		public const string ModDefaultConfigFileName = "default-config.json";
 
 		public const string ModManifestFileName = "manifest.json";
+
+		public const string GameVersionsURL = "https://raw.githubusercontent.com/ow-mods/ow-mod-db/source/versions.json";
 	}
 }

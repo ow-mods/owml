@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OWML.Common.Enums;
 
 namespace OWML.Common
 {
@@ -45,5 +46,11 @@ namespace OWML.Common
 
 		[JsonProperty("maxGameVersion")]
 		public string MaxGameVersion { get; private set; } = "";
+
+		[JsonProperty("requireLatestVersion")]
+		public bool RequireLatestVersion { get; private set; }
+
+		[JsonProperty("incompatibleVendors")]
+		public GameVendor[] IncompatibleVendors { get; private set; } = { };
 	}
 }

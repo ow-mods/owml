@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using System;
 
 namespace OWML.ModLoader
 {
@@ -6,11 +7,13 @@ namespace OWML.ModLoader
 	{
 		private readonly IModConsole _console;
 		private readonly IModManifest _owmlManifest;
+		private readonly IApplicationHelper _appHelper;
 
-		public ModVersionChecker(IModConsole console, IModManifest owmlManifest)
+		public ModVersionChecker(IModConsole console, IModManifest owmlManifest, IApplicationHelper appHelper)
 		{
 			_console = console;
 			_owmlManifest = owmlManifest;
+			_appHelper = appHelper;
 		}
 
 		public bool CheckModVersion(IModData data)
@@ -91,6 +94,44 @@ namespace OWML.ModLoader
 			}
 
 			return (major, minor, patch);
+		}
+
+		public bool CheckModGameVersion(IModData data, Version latestGameVersion)
+		{
+			var currentGameVersion = new Version(_appHelper.Version);
+
+			var manifest = data.Manifest;
+
+			_console.WriteLine($"Current game version is {currentGameVersion}, latest game version is {latestGameVersion}", MessageType.Debug);
+
+			var isValidMinVersion = Version.TryParse(manifest.MinGameVersion, out var minVersion);
+			var isValidMaxVersion = Version.TryParse(manifest.MaxGameVersion, out var maxVersion);
+
+			if (!isValidMinVersion && !isValidMaxVersion && !manifest.RequireLatestVersion)
+			{
+				_console.WriteLine($"No min/max versions given for {manifest.UniqueName}, and it doesn't require latest version.", MessageType.Debug);
+				return true;
+			}
+
+			if (isValidMinVersion && currentGameVersion < minVersion)
+			{
+				_console.WriteLine($"Not loading {data.Manifest.UniqueName}, as the current game version {currentGameVersion} is lower than the set minimum {minVersion}.", MessageType.Error);
+				return false;
+			}
+
+			if (isValidMaxVersion && maxVersion < currentGameVersion)
+			{
+				_console.WriteLine($"Not loading {data.Manifest.UniqueName}, as the current game version {currentGameVersion} is higher than the set maximum {maxVersion}.", MessageType.Error);
+				return false;
+			}
+
+			if (manifest.RequireLatestVersion && currentGameVersion.ToString() != latestGameVersion.ToString())
+			{
+				_console.WriteLine($"Not loading {data.Manifest.UniqueName}, as the current game version {currentGameVersion} is different to the latest version {latestGameVersion}", MessageType.Error);
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

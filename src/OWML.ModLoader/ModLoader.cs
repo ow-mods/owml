@@ -8,6 +8,7 @@ using OWML.Common.Menus;
 using OWML.ModHelper.Menus;
 using OWML.Utils;
 using UnityEngine;
+using OWML.Common.Interfaces;
 
 namespace OWML.ModLoader
 {
@@ -70,6 +71,7 @@ namespace OWML.ModLoader
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()
 				.Add<IModVersionChecker, ModVersionChecker>()
+				.Add<IGameVendorGetter, GameVendorGetter>()
 				.Add<Owo>();
 		}
 	}
