@@ -65,7 +65,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		owmllogo.png = owmllogo.png
 		Readme.md = Readme.md
-		versions.json = versions.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWML.EnumExample", "src\SampleMods\OWML.EnumExample\OWML.EnumExample.csproj", "{739D16FB-7848-4047-A173-500CE7C40399}"
