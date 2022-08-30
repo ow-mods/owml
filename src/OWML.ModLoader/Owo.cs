@@ -36,6 +36,7 @@ namespace OWML.ModLoader
 		private readonly IModVersionChecker _modVersionChecker;
 		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IGameVendorGetter _vendorChecker;
+		private readonly IGameVersions _gameVersions;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
 		public Owo(
@@ -71,6 +72,7 @@ namespace OWML.ModLoader
 			_harmonyHelper = harmonyHelper;
 			_vendorChecker = vendorChecker;
 			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
+			_gameVersions = JsonHelper.LoadJsonObject<GameVersions>($"{_owmlConfig.ManagedPath}/{Constants.GameVersionsFileName}");
 		}
 
 		public void LoadMods()
@@ -98,8 +100,6 @@ namespace OWML.ModLoader
 			var modNames = mods.Where(mod => mod.Config.Enabled)
 				.Select(mod => mod.Manifest.UniqueName).ToList();
 
-			var (steamVersion, epicVersion, gamepassVersion) = GetLatestGameVersions();
-
 			_console.WriteLine($"Getting game vendor...", MessageType.Debug);
 			var gameVendor = _vendorChecker.GetGameVendor();
 
@@ -107,13 +107,13 @@ namespace OWML.ModLoader
 			switch (gameVendor)
 			{
 				case GameVendor.Steam:
-					latestGameVersion = steamVersion;
+					latestGameVersion = new Version(_gameVersions.Steam);
 					break;
 				case GameVendor.Epic:
-					latestGameVersion = epicVersion;
+					latestGameVersion = new Version(_gameVersions.Epic);
 					break;
 				case GameVendor.Gamepass:
-					latestGameVersion = gamepassVersion;
+					latestGameVersion = new Version(_gameVersions.Gamepass);
 					break;
 			}
 
@@ -149,18 +149,6 @@ namespace OWML.ModLoader
 				_menus.ModsMenu?.AddMod(modData, initMod);
 				_modList.Add(initMod);
 			}
-		}
-
-		public (Version steamVersion, Version epicVersion, Version gamepassVersion) GetLatestGameVersions()
-		{
-			using var webClient = new WebClient();
-			var json = webClient.DownloadString(Constants.GameVersionsURL);
-			var gameVersions = JsonConvert.DeserializeObject<GameVersions>(json);
-			return (
-				new Version(gameVersions.Steam),
-				new Version(gameVersions.Epic),
-				new Version(gameVersions.Gamepass)
-				);
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)

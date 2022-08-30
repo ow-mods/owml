@@ -20,6 +20,6 @@
 
 		public const string ModManifestFileName = "manifest.json";
 
-		public const string GameVersionsURL = "https://raw.githubusercontent.com/ow-mods/ow-mod-db/source/versions.json";
+		public const string GameVersionsFileName = "game-versions.json";
 	}
 }
