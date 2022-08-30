@@ -172,6 +172,7 @@ namespace OWML.Launcher
 
 				if (_owmlConfig.ForceExe)
 				{
+					_writer.WriteLine($"Launching game...");
 					StartGameViaExe();
 					return;
 				}
