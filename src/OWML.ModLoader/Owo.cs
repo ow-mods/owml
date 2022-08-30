@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using Newtonsoft.Json;
 using OWML.Common;
+using OWML.Common.Enums;
+using OWML.Common.Interfaces;
 using OWML.Common.Menus;
 using OWML.Logging;
 using OWML.ModHelper;
@@ -31,6 +35,8 @@ namespace OWML.ModLoader
 		private readonly IModManifest _owmlManifest;
 		private readonly IModVersionChecker _modVersionChecker;
 		private readonly IHarmonyHelper _harmonyHelper;
+		private readonly IGameVendorGetter _vendorChecker;
+		private readonly IGameVersions _gameVersions;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
 		public Owo(
@@ -47,7 +53,8 @@ namespace OWML.ModLoader
 			IProcessHelper processHelper,
 			IModUnityEvents unityEvents,
 			IModVersionChecker modVersionChecker,
-			IHarmonyHelper harmonyHelper)
+			IHarmonyHelper harmonyHelper,
+			IGameVendorGetter vendorChecker)
 		{
 			_modFinder = modFinder;
 			_console = console;
@@ -63,7 +70,9 @@ namespace OWML.ModLoader
 			_unityEvents = unityEvents;
 			_modVersionChecker = modVersionChecker;
 			_harmonyHelper = harmonyHelper;
+			_vendorChecker = vendorChecker;
 			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
+			_gameVersions = JsonHelper.LoadJsonObject<GameVersions>($"{_owmlConfig.ManagedPath}/{Constants.GameVersionsFileName}");
 		}
 
 		public void LoadMods()
@@ -91,6 +100,23 @@ namespace OWML.ModLoader
 			var modNames = mods.Where(mod => mod.Config.Enabled)
 				.Select(mod => mod.Manifest.UniqueName).ToList();
 
+			_console.WriteLine($"Getting game vendor...", MessageType.Debug);
+			var gameVendor = _vendorChecker.GetGameVendor();
+
+			var latestGameVersion = new Version();
+			switch (gameVendor)
+			{
+				case GameVendor.Steam:
+					latestGameVersion = new Version(_gameVersions.Steam);
+					break;
+				case GameVendor.Epic:
+					latestGameVersion = new Version(_gameVersions.Epic);
+					break;
+				case GameVendor.Gamepass:
+					latestGameVersion = new Version(_gameVersions.Gamepass);
+					break;
+			}
+
 			foreach (var modData in sortedMods)
 			{
 				var missingDependencies = modData.Config.Enabled
@@ -99,9 +125,15 @@ namespace OWML.ModLoader
 
 				missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
 
-				var shouldLoad = _modVersionChecker.CheckModVersion(modData);
+				var shouldLoad = _modVersionChecker.CheckModVersion(modData) && _modVersionChecker.CheckModGameVersion(modData, latestGameVersion);
 				if (!shouldLoad)
 				{
+					continue;
+				}
+
+				if (modData.Manifest.IncompatibleVendors.Contains(gameVendor))
+				{
+					_console.WriteLine($"Mod {modData.Manifest.UniqueName} is not compatible with the {gameVendor} vendor.", MessageType.Error);
 					continue;
 				}
 

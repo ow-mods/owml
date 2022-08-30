@@ -57,7 +57,8 @@ namespace OWML.Patcher
 				"System.ValueTuple.dll",
 				Constants.OwmlManifestFileName,
 				Constants.OwmlConfigFileName,
-				Constants.OwmlDefaultConfigFileName
+				Constants.OwmlDefaultConfigFileName,
+				Constants.GameVersionsFileName
 			};
 
 			CopyFiles(filesToCopy, "", $"{_owmlConfig.ManagedPath}");

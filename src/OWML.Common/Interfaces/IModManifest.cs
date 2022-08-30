@@ -1,4 +1,6 @@
-﻿namespace OWML.Common
+﻿using OWML.Common.Enums;
+
+namespace OWML.Common
 {
 	public interface IModManifest
 	{
@@ -29,5 +31,9 @@
 		string MinGameVersion { get; }
 
 		string MaxGameVersion { get; }
+
+		bool RequireLatestVersion { get; }
+
+		GameVendor[] IncompatibleVendors { get; }
 	}
 }

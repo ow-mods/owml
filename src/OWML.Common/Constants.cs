@@ -19,5 +19,7 @@
 		public const string ModDefaultConfigFileName = "default-config.json";
 
 		public const string ModManifestFileName = "manifest.json";
+
+		public const string GameVersionsFileName = "game-versions.json";
 	}
 }
