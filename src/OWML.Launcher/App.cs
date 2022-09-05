@@ -100,7 +100,7 @@ namespace OWML.Launcher
 				}
 				catch (Exception ex)
 				{
-					_writer.WriteLine($"Error while copying game file {fileName}: {ex.Message}");
+					_writer.WriteLine($"Error while copying game file {fileName}: {ex}");
 				}
 			}
 			_writer.WriteLine("Game files copied.");
@@ -153,7 +153,7 @@ namespace OWML.Launcher
 			}
 			catch (Exception ex)
 			{
-				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex.Message}", MessageType.Error);
+				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex}", MessageType.Error);
 			}
 			finally
 			{

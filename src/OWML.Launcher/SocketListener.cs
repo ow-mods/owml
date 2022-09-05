@@ -103,7 +103,7 @@ namespace OWML.Launcher
 				catch (Exception ex)
 				{
 					ConsoleUtils.WriteByType(MessageType.Warning, $"Failed to process following message:{Separator}\n{json}{Separator}");
-					ConsoleUtils.WriteByType(MessageType.Warning, $"Reason: {ex.Message}");
+					ConsoleUtils.WriteByType(MessageType.Warning, $"Reason: {ex}");
 					continue;
 				}
 
