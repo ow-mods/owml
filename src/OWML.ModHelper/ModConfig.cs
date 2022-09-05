@@ -36,7 +36,7 @@ namespace OWML.ModHelper
 			}
 			catch (Exception ex)
 			{
-				Debug.LogError($"Error when getting setting {key}: " + ex.Message);
+				Debug.LogError($"Error when getting setting {key}: {ex}");
 				return default;
 			}
 		}
@@ -62,7 +62,7 @@ namespace OWML.ModHelper
 			}
 			catch (ArgumentException ex)
 			{
-				Debug.LogError($"Can't convert {valueString} to enum {typeof(T)}: {ex.Message}");
+				Debug.LogError($"Can't convert {valueString} to enum {typeof(T)}: {ex}");
 				return default;
 			}
 		}

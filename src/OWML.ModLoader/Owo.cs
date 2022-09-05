@@ -192,7 +192,7 @@ namespace OWML.ModLoader
 			}
 			catch (Exception ex)
 			{
-				_console.WriteLine($"Exception while registering enum holders of mod {modData.Manifest.UniqueName}: {ex.Message}", MessageType.Error);
+				_console.WriteLine($"Exception while registering enum holders of mod {modData.Manifest.UniqueName}: {ex}", MessageType.Error);
 			}
 
 			try
@@ -201,14 +201,14 @@ namespace OWML.ModLoader
 			}
 			catch (ReflectionTypeLoadException ex)
 			{
-				_console.WriteLine($"ReflectionTypeLoadException while trying to load {nameof(ModBehaviour)} of mod {modData.Manifest.UniqueName}: {ex.Message}\n" +
+				_console.WriteLine($"ReflectionTypeLoadException while trying to load {nameof(ModBehaviour)} of mod {modData.Manifest.UniqueName}: {ex}\n" +
 								   "Top 5 LoaderExceptions:\n" +
-								   $"* {string.Join("\n* ", ex.LoaderExceptions.Take(5).ToList().Select(e => e.Message).ToArray())}", MessageType.Error);
+								   $"* {string.Join("\n* ", ex.LoaderExceptions.Take(5).ToList().Select(e => e.ToString()).ToArray())}", MessageType.Error);
 				return null;
 			}
 			catch (Exception ex)
 			{
-				_console.WriteLine($"Exception while trying to get {nameof(ModBehaviour)} of mod {modData.Manifest.UniqueName}: {ex.Message}", MessageType.Error);
+				_console.WriteLine($"Exception while trying to get {nameof(ModBehaviour)} of mod {modData.Manifest.UniqueName}: {ex}", MessageType.Error);
 				return null;
 			}
 		}

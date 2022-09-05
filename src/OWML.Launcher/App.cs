@@ -100,7 +100,7 @@ namespace OWML.Launcher
 				}
 				catch (Exception ex)
 				{
-					_writer.WriteLine($"Error while copying game file {fileName}: {ex.Message}");
+					_writer.WriteLine($"Error while copying game file {fileName}: {ex}");
 				}
 			}
 			_writer.WriteLine("Game files copied.");
@@ -153,7 +153,7 @@ namespace OWML.Launcher
 			}
 			catch (Exception ex)
 			{
-				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex.Message}", MessageType.Error);
+				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex}", MessageType.Error);
 			}
 			finally
 			{
@@ -211,9 +211,15 @@ namespace OWML.Launcher
 					StartGameViaExe();
 				}
 			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				_writer.WriteLine($"ReflectionTypeLoadException while starting game: {ex}\n" +
+								   "Top 5 LoaderExceptions:\n" +
+								   $"* {string.Join("\n* ", ex.LoaderExceptions.Take(5).ToList().Select(e => e.ToString()).ToArray())}", MessageType.Error);
+			}
 			catch (Exception ex)
 			{
-				_writer.WriteLine($"Error while starting game: {ex.Message}", MessageType.Error);
+				_writer.WriteLine($"Error while starting game: {ex}", MessageType.Error);
 			}
 		}
 

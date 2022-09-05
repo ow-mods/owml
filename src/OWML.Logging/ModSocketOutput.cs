@@ -72,7 +72,7 @@ namespace OWML.Logging
 					SenderName = Constants.OwmlTitle,
 					SenderType = nameof(ModSocketOutput),
 					Type = MessageType.Error,
-					Message = $"Error while getting calling type : {ex.Message}"
+					Message = $"Error while getting calling type : {ex}"
 				};
 				_socket.WriteToSocket(message);
 				return string.Empty;

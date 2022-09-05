@@ -62,7 +62,7 @@ namespace OWML.ModHelper.Menus
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"Exception thrown when changing settings for {Mod?.ModHelper?.Manifest?.UniqueName} : {e.Message}, {e.StackTrace}", MessageType.Error);
+				Console.WriteLine($"Exception thrown when changing settings for {Mod?.ModHelper?.Manifest?.UniqueName} : {e}", MessageType.Error);
 			}
 
 			Close();
