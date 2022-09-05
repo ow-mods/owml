@@ -213,13 +213,13 @@ namespace OWML.Launcher
 			}
 			catch (ReflectionTypeLoadException ex)
 			{
-				_writer.WriteLine($"ReflectionTypeLoadException while starting game: {ex.Message}\n" +
+				_writer.WriteLine($"ReflectionTypeLoadException while starting game: {ex}\n" +
 								   "Top 5 LoaderExceptions:\n" +
-								   $"* {string.Join("\n* ", ex.LoaderExceptions.Take(5).ToList().Select(e => e.Message).ToArray())}", MessageType.Error);
+								   $"* {string.Join("\n* ", ex.LoaderExceptions.Take(5).ToList().Select(e => e.ToString()).ToArray())}", MessageType.Error);
 			}
 			catch (Exception ex)
 			{
-				_writer.WriteLine($"Error while starting game: {ex.Message}", MessageType.Error);
+				_writer.WriteLine($"Error while starting game: {ex}", MessageType.Error);
 			}
 		}
 
