@@ -36,7 +36,7 @@ namespace OWML.ModHelper
 			}
 			catch (Exception ex)
 			{
-				Debug.LogError($"Error when getting setting {key}: " + ex);
+				Debug.LogError($"Error when getting setting {key}: {ex}");
 				return default;
 			}
 		}
