@@ -140,17 +140,14 @@ namespace OWML.ModLoader
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
+					_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
 
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
 
-				// dont create menu for mod if it has no settings
-				if (modData.Config.Settings.Count != 0)
-				{
-					_menus.ModsMenu?.AddMod(modData, initMod);
-				}
+				_menus.ModsMenu?.AddMod(modData, initMod);
 
 				_modList.Add(initMod);
 			}

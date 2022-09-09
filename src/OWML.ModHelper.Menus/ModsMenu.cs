@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
@@ -16,6 +17,7 @@ namespace OWML.ModHelper.Menus
 
 		private readonly IModStorage _storage;
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
+		private readonly List<IModData> _noConfigMods = new();
 		private readonly List<MenuOption> _menuOptions = new();
 		private IModMenus _menus;
 
@@ -31,7 +33,14 @@ namespace OWML.ModHelper.Menus
 
 		public void AddMod(IModData modData, IModBehaviour mod)
 		{
-			_modConfigMenus.Add(new ModConfigMenu(modData, mod, _storage, Console));
+			if (modData.Config.Settings.Count != 0)
+			{
+				_modConfigMenus.Add(new ModConfigMenu(modData, mod, _storage, Console));
+			}
+			else
+			{
+				_noConfigMods.Add(modData);
+			}
 		}
 
 		public IModConfigMenu GetModMenu(IModBehaviour modBehaviour)
@@ -64,6 +73,17 @@ namespace OWML.ModHelper.Menus
 			OwmlMenu.OnClosed += modsMenu.Open;
 		}
 
+		private int CreateSeparator(IModTabbedMenu options, IModMenu menu, int index, string text)
+		{
+			var separator = new ModSeparator(menu)
+			{
+				Title = text
+			};
+			menu.AddSeparator(separator, index++);
+			separator.Element.transform.localScale = options.GameplayTab.Buttons.First().Button.transform.localScale;
+			return index;
+		}
+
 		private IModPopupMenu CreateModsMenu(IModTabbedMenu options)
 		{
 			_menuOptions.Clear();
@@ -76,9 +96,20 @@ namespace OWML.ModHelper.Menus
 			owmlButton.OnClick += () => owmlTab.Open();
 
 			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
-			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "ENABLED MODS");
+			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "-- ENABLED MODS --");
+
+			foreach (var mod in _noConfigMods.Where(modData => modData.Config.Enabled))
+			{
+				index = CreateSeparator(options, modsTab, index, mod.Manifest.Name);
+			}
+
 			var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
-			CreateBlockOfButtons(options, modsTab, disabledMods, index, "DISABLED MODS");
+			index = CreateBlockOfButtons(options, modsTab, disabledMods, index, "-- DISABLED MODS --");
+
+			foreach (var mod in _noConfigMods.Where(modData => !modData.Config.Enabled))
+			{
+				index = CreateSeparator(options, modsTab, index, mod.Manifest.Name);
+			}
 
 			modsTab.Menu.SetValue("_menuOptions", _menuOptions.ToArray());
 			return modsTab;
@@ -87,16 +118,13 @@ namespace OWML.ModHelper.Menus
 		private int CreateBlockOfButtons(IModTabbedMenu options, IModTabMenu menu,
 			List<IModConfigMenu> configMenus, int index, string title)
 		{
+			index = CreateSeparator(options, menu, index, $"{Environment.NewLine}{title}{Environment.NewLine}");
+
 			if (configMenus.Count <= 0)
 			{
 				return index;
 			}
-			var separator = new ModSeparator(menu)
-			{
-				Title = title
-			};
-			menu.AddSeparator(separator, index++);
-			separator.Element.transform.localScale = options.GameplayTab.Buttons.First().Button.transform.localScale;
+
 			foreach (var modConfigMenu in configMenus)
 			{
 				var modButton = CreateButton(options, modConfigMenu.Manifest.Name);
