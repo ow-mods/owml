@@ -137,6 +137,7 @@ namespace OWML.ModHelper.Menus
 		protected virtual void OnDeactivateMenu()
 		{
 			CommandListener.OnNewlyPressed -= OnButton;
+			OnSave();
 		}
 
 		protected virtual void OnButton(IInputCommands command)
