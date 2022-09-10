@@ -108,6 +108,19 @@
         "0.1.4"
       ]
     },
+	"requireLatestVersion": {
+	  "type": "boolean",
+	  "description": "Whether this mod needs the very latest game version",
+	  "default": false
+	},
+	"incompatibleVendors": {
+	  "type": "array",
+	  "description": "The vendors this mod does not work on",
+	  "items": {
+	    "type": "string",
+		"enum": ["Steam", "Epic", "Gamepass"]
+	  }
+	},
     "pathsToPreserve": {
       "type": "array",
       "description": "The paths to preserve when updating the mod",
