@@ -91,7 +91,7 @@
     "minGameVersion": {
       "type": "string",
       "description": "The minimum version of the game that this mod is compatible with",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "pattern": "^\\d+\\.\\d+\\.\\d+\\.\\d+$",
       "examples": [
         "1.0.0",
         "2.0.1",
@@ -101,13 +101,26 @@
     "maxGameVersion": {
       "type": "string",
       "description": "The maximum version of the game that this mod is compatible with",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "pattern": "^\\d+\\.\\d+\\.\\d+\\.\\d+$",
       "examples": [
         "1.0.0",
         "2.0.1",
         "0.1.4"
       ]
     },
+	"requireLatestVersion": {
+	  "type": "boolean",
+	  "description": "Whether this mod needs the very latest game version",
+	  "default": false
+	},
+	"incompatibleVendors": {
+	  "type": "array",
+	  "description": "The vendors this mod does not work on",
+	  "items": {
+	    "type": "string",
+		"enum": ["Steam", "Epic", "Gamepass"]
+	  }
+	},
     "pathsToPreserve": {
       "type": "array",
       "description": "The paths to preserve when updating the mod",
