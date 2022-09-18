@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="OuterWildsGameLibs" Version="1.1.12.125" />
+	  <PackageReference Include="OuterWildsGameLibs" Version="1.1.13.393" />
 	</ItemGroup>
 
 </Project>
