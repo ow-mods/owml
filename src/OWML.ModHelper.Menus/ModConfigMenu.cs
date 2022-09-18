@@ -7,8 +7,6 @@ namespace OWML.ModHelper.Menus
 {
 	public class ModConfigMenu : ModConfigMenuBase, IModConfigMenu
 	{
-		private const string EnabledTitle = "Enabled";
-
 		public IModData ModData { get; }
 
 		public IModBehaviour Mod { get; }
@@ -22,8 +20,7 @@ namespace OWML.ModHelper.Menus
 
 		protected override void AddInputs()
 		{
-			var index = 2;
-			AddConfigInput(EnabledTitle, ModData.Config.Enabled, index++);
+			var index = 3;
 			foreach (var setting in ModData.Config.Settings)
 			{
 				AddConfigInput(setting.Key, setting.Value, index++);
@@ -34,7 +31,6 @@ namespace OWML.ModHelper.Menus
 
 		public override void UpdateUIValues()
 		{
-			GetToggleInput(EnabledTitle).Value = ModData.Config.Enabled;
 			foreach (var setting in ModData.Config.Settings)
 			{
 				SetInputValue(setting.Key, setting.Value);
@@ -43,7 +39,6 @@ namespace OWML.ModHelper.Menus
 
 		protected override void OnSave()
 		{
-			ModData.Config.Enabled = GetInputValue<bool>(EnabledTitle);
 			var keys = ModData.Config.Settings.Select(x => x.Key).ToList();
 			foreach (var key in keys)
 			{
@@ -62,7 +57,7 @@ namespace OWML.ModHelper.Menus
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"Exception thrown when changing settings for {Mod?.ModHelper?.Manifest?.UniqueName} : {e.Message}, {e.StackTrace}", MessageType.Error);
+				Console.WriteLine($"Exception thrown when changing settings for {Mod?.ModHelper?.Manifest?.UniqueName} : {e}", MessageType.Error);
 			}
 
 			Close();

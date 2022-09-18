@@ -1,4 +1,5 @@
 {
+	"$schema": "https://raw.githubusercontent.com/ow-mods/owml/dev/schemas/manifest_schema.json",
 	"filename": "OWML.ExampleAPI.dll",
 	"author": "_nebula",
 	"name": "ExampleAPI",

@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="game-versions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="OWML.DefaultConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

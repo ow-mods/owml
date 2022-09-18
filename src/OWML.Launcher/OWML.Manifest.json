@@ -1,8 +1,9 @@
 {
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/dev/schemas/manifest_schema.json",
   "author": "Alek",
   "name": "OWML",
   "uniqueName": "Alek.OWML",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "minGameVersion": "1.1.10.47",
   "maxGameVersion": "1.1.12.201"
 }

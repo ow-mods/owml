@@ -472,8 +472,6 @@ namespace OWML.Utils
         /// </summary>
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <returns>The first undefined enum value</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
-        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
         /// <exception cref="Exception">No unused values in the enum</exception>
         public static T GetFirstFreeValue<T>() where T : Enum => (T)GetFirstFreeValue(typeof(T));
 
