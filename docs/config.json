@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Bwc9876/menagerie/master/menagerie/schemas/config_schema.json",
+  "brand": {
+    "app_name": "Outer Wilds Mod Loader",
+    "short_name": "OWML",
+    "meta": {
+      "description": "The mod loader and mod framework for outer wilds"
+    },
+    "socials": [
+      {
+        "name": "Discord",
+	"link": "#",
+	"icon": "discord"
+      },
+      {
+        "name": "GitHub",
+	"link": "#",
+	"icon": "github"
+      }
+    ]
+  }
+}
