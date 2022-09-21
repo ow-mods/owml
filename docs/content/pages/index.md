@@ -13,10 +13,6 @@ To get started with modding, head to our [getting started guide]({{ "Getting Sta
 
 ## Helpful Links
 
-- [Outer Wilds Mods Website]()
-- [Outer Wilds Mod Database]()
-- [Outer Wilds Modding Discord]()
-
-
-
-
+- [Outer Wilds Mods Website](https://outerwildsmods.com){ target="_blank" }
+- [Outer Wilds Mod Database](https://github.com/ow-mods/ow-mod-db){ target="_blank" }
+- [Outer Wilds Modding Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }

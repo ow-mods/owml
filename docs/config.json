@@ -1,5 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/Bwc9876/menagerie/master/menagerie/schemas/config_schema.json",
+  "themes": {
+    "bootstrap": "/styles/style.min.css",
+    "highlight_js": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/base16/tender.min.css",
+    "theme": "dark"
+  },
   "brand": {
     "app_name": "Outer Wilds Mod Loader",
     "short_name": "OWML",
@@ -9,13 +14,13 @@
     "socials": [
       {
         "name": "Discord",
-	"link": "#",
-	"icon": "discord"
+        "link": "https://discord.gg/wusTQYbYTc",
+        "icon": "discord"
       },
       {
         "name": "GitHub",
-	"link": "#",
-	"icon": "github"
+        "link": "https://github.com/ow-mods/owml",
+        "icon": "github"
       }
     ]
   }
