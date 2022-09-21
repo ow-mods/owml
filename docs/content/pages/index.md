@@ -3,7 +3,7 @@ Title: Home
 Sort_Priority: 100
 ---
 
-![Outer Wilds Mod Loader Banner](https://github.com/ow-mods/owml/raw/master/owmllogo.png)
+![Outer Wilds Mod Loader Banner]({{ "images/owmllogo.webp"|static }})
 
 # Outer Wilds Mod Loader
 

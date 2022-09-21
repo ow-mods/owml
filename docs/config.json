@@ -1,5 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Bwc9876/menagerie/master/menagerie/schemas/config_schema.json",
+  "base_url": "https://owml.outerwildsmods.com/",
   "themes": {
     "bootstrap": "/styles/style.min.css",
     "highlight_js": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/base16/tender.min.css",
@@ -9,7 +10,21 @@
     "app_name": "Outer Wilds Mod Loader",
     "short_name": "OWML",
     "meta": {
-      "description": "The mod loader and mod framework for outer wilds"
+      "description": "The mod loader and framework for Outer Wilds",
+      "image": "images/owmllogo.webp",
+      "image_alt": "The OWML Banner Image",
+      "theme_color": "#ffab8a",
+      "bg_color": "#121416",
+      "categories": [
+        "games",
+        "utility"
+      ],
+      "keywords": [
+        "C#",
+        "Unity",
+        "Outer Wilds",
+        "Framework"
+      ]
     },
     "socials": [
       {

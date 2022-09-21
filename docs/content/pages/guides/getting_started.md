@@ -17,7 +17,7 @@ The recommended IDE for modding is [Visual Studio](https://visualstudio.microsof
 
 Head to the [Visual Studio downloads page](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false){ target="_blank" } and select Community 2022, after downloading and launching the installer, follow instructions until you reach this screen:
 
-![TODO: Installer Image]()
+![Select the module in the installer]({{ "images/getting_started/dotnetinstall.webp"|static }})
 
 We want the "Desktop development with .NET" module, this will provide us with the tools we need to build the mod.
 
@@ -29,7 +29,7 @@ We provide a template to make creating mods easier, this template will handle re
 
 Open up the windows search box and search for "Developer Command Line for Visual Studio 2022", it should look like this:
 
-![TODO: DEV CMD]()
+![Select the developer command line]({{ "images/getting_started/devconsole.webp"|static }})
 
 To install the template, run the following command:
 
