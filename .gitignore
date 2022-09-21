@@ -355,3 +355,8 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/visualstudio
+
+# Docs Site
+
+docs/.m_cache/
+docs/out/
