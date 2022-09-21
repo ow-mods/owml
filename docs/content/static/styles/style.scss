@@ -1,15 +1,13 @@
 
 $primary: #ffab8a;
 $dark: #1e1e1e;
-$light: rgba(255, 255, 255, 0.65);
+$light: rgb(201, 201, 201);
 $body-color: $light;
 $body-bg: #121416;
 
 $dropdown-link-color: $light;
 $dropdown-bg: $dark;
 $dropdown-link-hover-bg: $body-bg;
-
-@import "bootstrap/scss/bootstrap.scss";
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -29,3 +27,5 @@ $dropdown-link-hover-bg: $body-bg;
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+@import "bootstrap/scss/bootstrap.scss";

@@ -3,9 +3,11 @@ Title: Home
 Sort_Priority: 100
 ---
 
+![Outer Wilds Mod Loader Banner](https://github.com/ow-mods/owml/raw/master/owmllogo.png)
+
 # Outer Wilds Mod Loader
 
-This is the documentation site for the Outer Wilds Mod Load (commonly shortened to OWML), a framework for creating and running [Outer Wilds]() mods.
+This is the documentation site for the Outer Wilds Mod Loader (commonly shortened to OWML), a framework for creating and running [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html){ target="_blank" } mods.
 
 ## Getting Started
 
