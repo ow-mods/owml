@@ -33,4 +33,8 @@ $dropdown-link-hover-bg: $body-bg;
     align-items: center;
 }
 
+.toc-link.active {
+    background-color: change-color($color: $primary, $alpha: 0.4) !important;
+}
+
 @import "bootstrap/scss/bootstrap.scss";
