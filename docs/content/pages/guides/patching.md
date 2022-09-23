@@ -96,9 +96,6 @@ public class MyPatchClass {
 }
 ```
 
-!!! alert-info "Info"
-    The method doesn't have to be named like this, however for organizational purposes it's recommended.
-
 !!! alert-warning "Warning"
     All patch methods **must** be static!
 
