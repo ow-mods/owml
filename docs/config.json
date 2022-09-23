@@ -9,6 +9,8 @@
   "brand": {
     "app_name": "Outer Wilds Mod Loader",
     "short_name": "OWML",
+    "navbar_icon": "images/icon.png",
+    "navbar_icon_size": [48, 48],
     "meta": {
       "description": "The mod loader and framework for Outer Wilds",
       "image": "images/owmllogo.webp",

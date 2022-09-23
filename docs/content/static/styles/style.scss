@@ -28,4 +28,9 @@ $dropdown-link-hover-bg: $body-bg;
     background: #555;
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
 @import "bootstrap/scss/bootstrap.scss";
