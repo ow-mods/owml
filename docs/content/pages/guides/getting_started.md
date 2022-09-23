@@ -97,7 +97,7 @@ You may have noticed we use the ModHelper field to achieve console output, ModHe
 
 ## Building The Mod
 
-Now that we know what the mod *should* do, let's make sure it actually does it. Building your mod should be as simple as pressing "Solution -> Build Solution" in the menu bar, if you get an error involving Visual Studio not being able to find a path, please see the section below, otherwise skip to "Running The Game"
+Now that we know what the mod *should* do, let's make sure it actually does it. Building your mod should be as simple as pressing "Solution -> Build Solution" in the menu bar, if you get an error involving Visual Studio not being able to find a path, please see the section below, otherwise skip to "Running The Mod"
 
 ### Fixing .csproj.user
 
