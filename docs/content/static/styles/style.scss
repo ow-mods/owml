@@ -1,13 +1,23 @@
-
 $primary: #ffab8a;
+$info: #007d77;
+$warning: #a97700;
+$secondary: #3d3d3d;
 $dark: #1e1e1e;
 $light: rgb(201, 201, 201);
 $body-color: $light;
 $body-bg: #121416;
-
+$card-color: $light;
+$card-bg: $dark;
+$accordion-active-color: $dark;
+$accordion-border-color: #495057; // gray-700
 $dropdown-link-color: $light;
 $dropdown-bg: $dark;
 $dropdown-link-hover-bg: $body-bg;
+
+.accordion-button:not(.collapsed)::after {
+    color: $light !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%#{$light}'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
 
 ::-webkit-scrollbar {
     width: 10px;
