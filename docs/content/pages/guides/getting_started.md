@@ -93,7 +93,7 @@ We'll focus on `Start()`. In this method we do two things:
 1. We output a message to the console alerting the user that the mod has loaded
 2. We subscribe to the scene loaded event in order to output a message to the log when the SolarSystem scene is loaded.
 
-You may have noticed we use the ModHelper field to achieve console output, ModHelper is a collection of utilities your mod can use to do a variety of things. It will be covered more in a seperate guide.
+You may have noticed we use the ModHelper field to achieve console output, ModHelper is a collection of utilities your mod can use to do a variety of things. It's covered in the "Mod Helper" section of the site.
 
 ## Building The Mod
 

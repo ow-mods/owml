@@ -28,6 +28,7 @@ Used to log a message to the console.
 | **Success** | Logs a successful message to the console, appears as <span class="text-success">green</span> in the manager       |
 | **Warning** | Logs a warning to the console, appears as <span class="text-warning">yellow</span> in the manager                 |
 | **Error**   | Logs an error to the console, appears as <span class="text-danger">red</span> in the manager                      |
+| **Quit**    | Logs a message to the console, and then quits the game.                                                           |
 | **Fatal**   | Logs an error to the console, quits the game, and makes the manager display a message box with the message passed |
 
 ### Example

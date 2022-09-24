@@ -24,13 +24,13 @@ Saves an object (of type &lt;T&gt;) to the given filepath. Creates a new file if
 
 ### Save Parameters
 
-- `string filepath`: The filepath, relative to your mod's directory, of the file to save the object to.
 - `T obj`: The object to save.
+- `string filename`: The filepath, relative to your mod's directory, of the file to save the object to.
 
 ## Example
 
 ```csharp
-public class MyCoolMod : MyModBehaviour {
+public class MyCoolMod : ModBehaviour {
 
     public class MyModData {
         public DateTime lastRunDate = DateTime.now();
