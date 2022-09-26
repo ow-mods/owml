@@ -38,7 +38,7 @@ If you want to keep mod data intact but still play without mods, verifying the g
 
 ## For modders
 
-[Read the OWML docs to learn how to use it.](https://owml.outerwildsmods.com/). Refer to the sample mods in the source code for examples. These mods are not included in releases. 
+[Read the OWML docs to learn how to use it](https://owml.outerwildsmods.com/). Refer to the sample mods in the source code for examples. These mods are not included in releases. 
 
 ### Get started
 
