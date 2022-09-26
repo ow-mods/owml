@@ -117,6 +117,10 @@ You mod should now be ready to run!
 
 Click start game and wait for the title screen to load in. Now search your manager logs (there's a search box) for a message along the lines of "My mod {YourProjectName} is loaded!".  This means your mod was loaded successfully! You can also try loading into the main game and checking the logs for another message from your mod.
 
+## Getting Line Numbers
+
+When developing your mod you may want to get line numbers in your stack trace. To do so, [download this dll file](), and have it replace the one with the same name within `MonoBleedingEdge/EmbedRuntime` of the game's files. Doing this will degrade performance slightly, but will allow all mods that use the `Portable` debug type to have line numbers. If you've used the template to create your mod, simply build with the "Debug" release candidate to have DebugType set to portable.
+
 ## Next Steps
 
 You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. These guides will provide information on how to use various aspects of OWML, but it won't cover everything.  If you ever need help, or even just want to chat about modding, feel free to [join our Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }. There's almost always someone available to help.
