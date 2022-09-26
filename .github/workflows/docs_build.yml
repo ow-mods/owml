@@ -1,0 +1,79 @@
+name: Build Docs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - docs/**
+      - schemas/*.json
+
+env:
+  URL_PREFIX: '/'
+  PIPENV_VENV_IN_PROJECT: 1
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Docs
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "America/New York"
+      
+      - run: mkdir ./.venv
+      
+      - run: cp -r docs/** .
+          
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        id: cache-dependencies
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv
+
+      - name: Install dependecies
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: install --dev
+          
+      - name: Copy Schemas
+        run: cp -rf schemas content/pages/
+          
+      - name: Build Site
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: run menagerie generate
+          
+      - name: Upload Artifact
+        if: success() && github.ref == 'refs/heads/master'
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: out/
+          
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    name: Deploy Docs
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+          
