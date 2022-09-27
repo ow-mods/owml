@@ -16,7 +16,7 @@ Used to log a message to the console.
 
 - `string message`: The message to log
 - *`MessageType type`*: The type of message to log, see below; Defaults to `MessageType.Message`
-- *`string senderType`*: Usually used internally, the type that logged this message, don't pass unless you have to
+- *`string senderType`*: Usually used internally, the type that logged this message, don't pass this unless you have to
 
 ### MessageType Reference
 
