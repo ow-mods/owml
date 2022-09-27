@@ -32,11 +32,11 @@ To prepare for adding patches to our mod we'll do two things:
 
 ### CreateAndPatchAll
 
-To make our patches run, we need to execute `Harmony.CreateAndPatchAll` in our `Start` method (technically it doesn't *need* to be in `Start` but you should try to run it as early as possible)
+To make our patches run, we need to execute `Harmony.CreateAndPatchAll` in our `Awake` method (technically it doesn't *need* to be in `Awake` but you should try to run it as early as possible)
 
 ```csharp
 public class MyCoolMod : ModBehaviour {
-    public void Start() {
+    public void Awake() {
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
     }
 }
