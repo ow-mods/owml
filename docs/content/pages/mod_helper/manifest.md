@@ -18,4 +18,4 @@ These properties are converted from camelCase to PascalCase (ex: `uniqueName` ->
 
 ## ModFolderPath
 
-The absolute filepath to your mod's directory, most OWML methods auto-prepend this.
+The absolute file path to your mod's directory, most OWML methods auto-prepend this.
