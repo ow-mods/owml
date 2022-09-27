@@ -38,6 +38,11 @@
         "name": "GitHub",
         "link": "https://github.com/ow-mods/owml",
         "icon": "github"
+      },
+      {
+        "name": "Nuget",
+        "link": "https://www.nuget.org/packages/OWML",
+        "icon": "boxes"
       }
     ]
   }
