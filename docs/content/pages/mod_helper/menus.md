@@ -4,7 +4,7 @@ Title: Menus
 
 # ModHelper.Menus
 
-Provides utilities to extend base-game menus and ui.
+Provides utilities to extend base-game menus and UI.
 
 ## Interfaces
 
@@ -16,7 +16,7 @@ Represents a menu
 
 ### OnInit
 
-Event that's fired when the menu has been initialized.
+The event that's fired when the menu has been initialized.
 
 ## IModButton
 
@@ -24,7 +24,7 @@ Represents a button
 
 ### OnClick
 
-Event that fires when clicked
+The event that fires when clicked
 
 ### Title
 
@@ -46,11 +46,11 @@ Hides the button
 
 ### OnConfirm
 
-Event that's fired when the confirm button is pressed
+The event that's fired when the confirm button is pressed
 
 ### OnCancel
 
-Event that's fired when the cancel button is pressed
+The event that's fired when the cancel button is pressed
 
 ## IModInputMenu
 
@@ -60,7 +60,7 @@ The event that's fired when the input is confirmed, it expects an Action&lt;stri
 
 ## MainMenu
 
-The main menu of the game, represented by `IModMainMenu`.
+The main menu of the game. It is represented by `IModMainMenu`.
 
 ### IModButtons
 
@@ -73,7 +73,7 @@ The main menu of the game, represented by `IModMainMenu`.
 
 ## PauseMenu
 
-The pause menu, represented by `IModPauseMenu`.
+The pause menu. It is represented by `IModPauseMenu`.
 
 ### IModButtons
 

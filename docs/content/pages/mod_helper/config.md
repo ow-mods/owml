@@ -12,11 +12,11 @@ Whether your mod is enabled.
 
 ## Settings
 
-A `Dictionary<string, object>` containing your mod's settings, it's recommended to use the below methods to access the settings instead of interfacing with this dict directly.
+A `Dictionary<string, object>` containing your mod's settings, it's recommended to use the below methods to access the settings instead of interfacing with this dictionary directly.
 
 ## GetSettingValue&lt;T&gt;
 
-Gets the settings value from the mod's config with the given key. Deserialized into type `T`
+Gets the setting's value from the mod's config with the given key. Deserialized into type `T`
 
 ### Get Parameters
 
@@ -24,7 +24,7 @@ Gets the settings value from the mod's config with the given key. Deserialized i
 
 ## SetSettingsValue
 
-Sets the settings value in the mod's config with the given key to the given value.
+Sets the setting's value in the mod's config with the given key to the given value.
 
 ### Set Parameters
 
