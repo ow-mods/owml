@@ -123,4 +123,12 @@ When developing your mod you may want to get line numbers in your stack trace. T
 
 ## Next Steps
 
-You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. These guides will provide information on how to use various aspects of OWML, but it won't cover everything.  If you ever need help, or even just want to chat about modding, feel free to [join our Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }. There's almost always someone available to help.
+You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. You may want to read the following guides to get an idea of how to make your mod:
+
+- [Patching the game with HarmonyX]({{ "Patching"|route }})
+- [Creating custom mod settings]({{ "Creating Mod Settings"|route }})
+- [Publishing your mod]({{ "Publishing Your Mod"|route }})
+
+These guides will provide information on how to use various aspects of OWML, but they won't cover everything.  If you ever need help, or even just want to chat about modding, feel free to [join our Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }. There's almost always someone available to help.
+
+
