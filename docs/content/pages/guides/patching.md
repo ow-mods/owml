@@ -9,7 +9,7 @@ Patching allows you to run code before and after base-game methods.  It also all
 
 ## Decompiling The Game
 
-In order to examine base-game methods and figure out what you need to patch, we recommend you use [DnSpy](https://github.com/dnSpyEx/dnSpy/releases){target="_blank"}, a tool for decompiling and viewing .NET assemblies.
+To examine base-game methods and figure out what you need to patch, we recommend you use [DnSpy](https://github.com/dnSpyEx/dnSpy/releases){target="_blank"}, a tool for decompiling and viewing .NET assemblies.
 
 Once installed, select File -> Open. Then, navigate to the game's folder and open the `Assembly-CSharp.dll` file located in `OuterWilds_Data/Managed`.
 
@@ -17,9 +17,9 @@ You should now see the assembly loaded on the left, most classes in Outer Wilds'
 
 ![The - Namespace]({{ "images/patching/dnspy.webp"|static }})
 
-Here's some tip for viewing base game code:
+Here are some tips for viewing the base game code:
 
-- If you ever need to find out where a method, class, or variable is used, you can right click it an select "Analyze".
+- If you ever need to find out where a method, class, or variable is used, you can right-click it and select "Analyze".
 - You can jump to the definition of a method, class, or variable by clicking on it, you can also control-click to open it in a new tab.
 - Sometimes the decompiler treats switch statements strangely, it may look like they're simply chaining else ifs when in reality they're using a switch
 
@@ -32,17 +32,17 @@ To prepare for adding patches to our mod we'll do two things:
 
 ### CreateAndPatchAll
 
-To make our patches actually run, we need to execute `Harmony.CreateAndPatchAll` in our `Start` method (technically it doesn't *need* to be in start but you should try to run it as early as possible)
+To make our patches run, we need to execute `Harmony.CreateAndPatchAll` in our `Awake` method (technically it doesn't *need* to be in `Awake` but you should try to run it as early as possible)
 
 ```csharp
 public class MyCoolMod : ModBehaviour {
-    public void Start() {
+    public void Awake() {
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
     }
 }
 ```
 
-And that's it! Now our patches will actually be applied
+And that's it! Now our patches will be applied
 
 ### Using A Singleton
 
@@ -81,9 +81,9 @@ A prefix is code that runs before another method.
 
 To create a prefix, add a new method with the `HarmonyPrefix` attribute.
 
-Then, add the `HarmonyPatch` attribute as well, this attribute takes at least two arguments, the first is the type you want to patch, the second is the name of the method you wish to patch.
+Then, add the `HarmonyPatch` attribute as well, this attribute takes at least two arguments, the first is the type you want to patch, and the second is the name of the method you wish to patch.
 
-Let's say I want to log to the console everytime the player dies, to do so I need to prefix `DeathManager.KillPlayer`, so my patch might look something like this:
+Let's say I want to log to the console every time the player dies, to do so I need to prefix `DeathManager.KillPlayer`, so my patch might look something like this:
 
 ```csharp
 [HarmonyPatch]
@@ -104,7 +104,7 @@ public class MyPatchClass {
 Prefixes also allow you to completely stop the original method from running, to do so, make your method return a bool.
 
 - If the boolean returned from the method is `true` the original method will be skipped
-- If the boolean returned from the method if `false` the original method is still run
+- If the boolean returned from the method is `false` the original method is still run
 
 Let's say instead of simply logging when the player dies, we want to prevent it from happening entirely.
 
@@ -126,7 +126,7 @@ A postfix is code that runs after another method.
 
 To create a postfix, add a new method with the `HarmonyPostfix` attribute.
 
-Also add the `HarmonyPatch` attribute, it functions the exact same as it does with prefixes, you need to provide the type to patch and the name of the method to patch.
+Also add the `HarmonyPatch` attribute, it functions the same as it does with prefixes, you need to provide the type to patch and the name of the method to patch.
 
 We'll use `DeathManager.KillPlayer` as an example again:
 
@@ -147,9 +147,9 @@ These next few sections will apply to both Prefixes and Postfixes, so even if th
 
 ### Getting The Object You're Patching
 
-If you want to be able to access the actual object you'r patching you can make your patch take an argument named `__instance`.
+If you want to be able to access the actual object you're patching you can make your patch take an argument named `__instance`.
 
-Let's say I want to log to the console where the Quantum Moon goes to everytime it's observed:
+Let's say I want to log to the console where the Quantum Moon goes to every time it's observed:
 
 ```csharp
 public class MyPatchClass {
@@ -200,7 +200,7 @@ public class MyPatchClass {
 
 You can patch the getters and setters of properties by passing in a third argument to the `HarmonyPatch` attribute of `MethodType.Getter` and `MethodType.Setter` respectively.
 
-For example if I wanted to log the repair fraction everytime ShipComponent.repairFraction is gotten, I would do:
+For example, if I wanted to log the repair fraction every time ShipComponent.repairFraction is gotten, I would do:
 
 ```csharp
 [HarmonyPatch]
@@ -215,9 +215,9 @@ public class MyPatchClass {
 
 ### Patching Overloads
 
-When you want to patch a specific overload of a method, you need to pass the types of the parameters that overload takes as a `Type[]` as a third argument to `HarmonyPatch`.
+When you want to patch a specific overload of a method, you need to pass the types of the parameters that overload takes as a `Type[]` as the third argument to `HarmonyPatch`.
 
-For example if I wanted to log `ReferenceFrameTracker.UntargetReferenceFrame` but only the overload that takes a single `bool`, I would do:
+For example, if I wanted to log `ReferenceFrameTracker.UntargetReferenceFrame` but only the overload that takes a single `bool`, I would do:
 
 ```csharp
 [HarmonyPatch]

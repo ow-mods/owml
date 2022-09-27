@@ -2,9 +2,6 @@
 Title: Assets
 ---
 
-<!-- TODO: AAAAAAAAAAAAAAAAAA WHY ARE THE SIGNATURES SO WEIRD -->
-<!-- Awaiting context -->
-
 # ModHelper.Assets
 
 This module helps with loading assets from the filesystem.

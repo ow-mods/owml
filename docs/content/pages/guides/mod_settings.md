@@ -9,7 +9,7 @@ This guide outlines how to use OWML's config system to display mod settings in t
 
 ## Editing default-config.json
 
-First things first, you're going to need to define your settings, open up `default-config.json` and add an object called `settings`.
+First things first, you're going to need to define your settings, open up `default-config.json`, and add an object called `settings`.
 
 ```json
 {
@@ -20,7 +20,7 @@ First things first, you're going to need to define your settings, open up `defau
 }
 ```
 
-The settings object is comprised of key-value pairs where the key is the ID of the setting and the value is default value of that setting.  
+The settings object is comprised of key-value pairs where the key is the ID of the setting and the value is the default value of that setting.  
 
 For example, if I wanted a check box called "Party Mode", I would do:
 
@@ -33,7 +33,7 @@ For example, if I wanted a check box called "Party Mode", I would do:
 }
 ```
 
-You can also do other data-types like numbers and strings
+You can also do other data types like numbers and strings
 
 ```json
 {

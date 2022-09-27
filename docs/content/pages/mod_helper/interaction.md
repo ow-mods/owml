@@ -21,7 +21,7 @@ public class MyCoolMod : ModBehaviour {
 
 ## GetDependants
 
-Gets a list of all mods that are dependant on the mod with the given uniqueName
+Gets a list of all mods that are dependent on the mod with the given uniqueName
 
 ```csharp
 public class MyCoolMod : ModBehaviour {
@@ -60,7 +60,7 @@ public class MyCoolMod : ModBehaviour {
 
 ## TryGetModApi&lt;T&gt;
 
-Attempts to get the api for the mod with the given unique name. You must define the mod's api as an interface and pass that in as the `T`. Returns `null` if the API couldn't be loaded.
+Attempts to get the API for the mod with the given unique name. You must define the mod's API as an interface and pass that in as the `T`. Returns `null` if the API couldn't be loaded.
 
 ```csharp
 public class MyCoolMod : ModBehaviour {

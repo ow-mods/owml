@@ -9,7 +9,7 @@ This page will outline how to get a working mod that will simply log a message t
 
 ## Choosing an IDE
 
-An IDE will help`provide the ability to create, edit, and build your mod.
+An IDE will help provide the ability to create, edit, and build your mod.
 
 The recommended IDE for modding is [Visual Studio](https://visualstudio.microsoft.com/){ target="_blank" }, however, stuff like Rider and VSCode can also work. This tutorial will assume you're using Visual Studio.
 
@@ -21,7 +21,7 @@ Head to the [Visual Studio downloads page](https://visualstudio.microsoft.com/th
 
 We want the "Desktop development with .NET" module, this will provide us with the tools we need to build the mod.
 
-After installing Visual Studio, launch it once an then close it, this will ensure certain files are generated.
+After installing Visual Studio, launch it once and then close it, this will ensure certain files are generated.
 
 ## Installing the Template
 
@@ -58,7 +58,7 @@ Now that we have the template installed, open Visual Studio and select "New Proj
 
 Set the project name to the name of your mod, **please note this should NOT have spaces or special characters in it**.  The standard casing for projects is PascalCase, which involves capitalizing the start of every word and removing spaces.
 
-On the next screen, set author name to the name you want to appear in the manager and on the website, **this should also not contain spaces**
+On the next screen, set the author name to the name you want to appear in the manager and on the website, **this should also not contain spaces**
 
 Finally, click "Create Project"
 
@@ -80,30 +80,30 @@ This file is used by OWML to generate the settings menu for your mod, we'll go o
 
 ### {YourProjectName}.csproj
 
-This file tell Visual Studio about your project, it determines stuff like dependencies and versions, you shouldn't need to touch this.
+This file tells Visual Studio about your project, it determines stuff like dependencies and versions, you shouldn't need to touch this.
 
 ## Viewing The C# File
 
-Double-click {YourProjectName}.cs, it should open up in the main editor pane.
+Double-click {YourProjectName}.cs, and it should open up in the main editor pane.
 
 This file should contain a class that has the same name as your project and some methods within that class.
 
 We'll focus on `Start()`. In this method we do two things:
 
 1. We output a message to the console alerting the user that the mod has loaded
-2. We subscribe to the scene loaded event in order to output a message to the log when the SolarSystem scene is loaded.
+2. We subscribe to the scene loaded event to output a message to the log when the SolarSystem scene is loaded.
 
 You may have noticed we use the ModHelper field to achieve console output, ModHelper is a collection of utilities your mod can use to do a variety of things. It's covered in the "Mod Helper" section of the site.
 
 ## Building The Mod
 
-Now that we know what the mod *should* do, let's make sure it actually does it. Building your mod should be as simple as pressing "Solution -> Build Solution" in the menu bar, if you get an error involving Visual Studio not being able to find a path, please see the section below, otherwise skip to "Running The Mod"
+Now that we know what the mod *should* do, let's make sure it does it. Building your mod should be as simple as pressing "Solution -> Build Solution" in the menu bar, if you get an error involving Visual Studio not being able to find a path, please see the section below, otherwise, skip to "Running The Mod"
 
 ### Fixing .csproj.user
 
-Your mod contains a special file called {YourProjectName}.csproj.user, this file tells Visual Studio where to build the mod to, if you've installed the manager in a non-standard location, this file will be incorrect. To fix this, open the manager and select settings, then copy the path in the "OWML Path" field. Copy and paste this value between the `<OutputPath>` and `</OutputPath>`, and add `\Mods` to the end of the path. Then open up your manifest file and copy the `uniqueName` field (don't include the quotes). Paste this value preceded by a `\` a the end of the path.
+Your mod contains a special file called {YourProjectName}.csproj.user, this file tells Visual Studio where to build the mod, if you've installed the manager in a non-standard location, this file will be incorrect. To fix this, open the manager and select settings, then copy the path in the "OWML Path" field. Copy and paste this value between the `<OutputPath>` and `</OutputPath>`, and add `\Mods` to the end of the path. Then open up your manifest file and copy the `uniqueName` field (don't include the quotes). Paste this value preceded by a `\` at the end of the path.
 
-For example, if my mod's uniqueName is `Bwc9876.CoolMod`, my file would look like:
+For example, if my mod's uniqueName is `Bwc9876.CoolMod`, my file would look like this:
 
 ```xml
 <OutputPath>C:\MyCoolFolder\DifferentManagerInstallFolderBcImAHacker\Mods\Bwc9876.CoolMod</OutputPath>
@@ -113,7 +113,7 @@ For example, if my mod's uniqueName is `Bwc9876.CoolMod`, my file would look lik
 
 Now the mod should have appeared in your mod manager at the very bottom, notice how the download count is a dash.
 
-You mod should now be ready to run!
+Your mod should now be ready to run!
 
 Click start game and wait for the title screen to load in. Now search your manager logs (there's a search box) for a message along the lines of "My mod {YourProjectName} is loaded!".  This means your mod was loaded successfully! You can also try loading into the main game and checking the logs for another message from your mod.
 
@@ -123,4 +123,10 @@ When developing your mod you may want to get line numbers in your stack trace. T
 
 ## Next Steps
 
-You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. These guides will provide information on how to use various aspects of OWML, but it won't cover everything.  If you ever need help, or even just want to chat about modding, feel free to [join our Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }. There's almost always someone available to help.
+You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. You may want to read the following guides to get an idea of how to make your mod:
+
+- [Patching the game with HarmonyX]({{ "Patching"|route }})
+- [Creating custom mod settings]({{ "Creating Mod Settings"|route }})
+- [Publishing your mod]({{ "Publishing Your Mod"|route }})
+
+These guides will provide information on how to use various aspects of OWML, but they won't cover everything.  If you ever need help, or even just want to chat about modding, feel free to [join our Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }. There's almost always someone available to help.

@@ -8,24 +8,24 @@ Helps with storing data that persists through different runs using JSON.
 
 ## Load&lt;T&gt;
 
-Loads an object (of type &lt;T&gt;) from the given filepath. Loads the `default` of `T` if the file doesn't exist.
+Loads an object (of type &lt;T&gt;) from the given file path. Loads the `default` of `T` if the file doesn't exist.
 
 ### Load Parameters
 
 (*italicized* = optional)
 
-- `string filename`: The filepath, relative to your mod's directory, of the JSON file to load the object from.
-- *`bool fixBackslashes`*: Replaces back slashes with forward slashes, this can mess up escape characters, defaults to `true`
+- `string filename`: The file path, relative to your mod's directory, of the JSON file to load the object from.
+- *`bool fixBackslashes`*: Replaces backslashes with forward-slashes, this can mess up escape characters; defaults to `true`
 - *`JsonSerializerSettings settings`*: Use custom [JsonSerializerSettings](https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_JsonSerializerSettings.htm){target="_blank"}.
 
 ## Save&lt;T&gt;
 
-Saves an object (of type &lt;T&gt;) to the given filepath. Creates a new file if one doesn't exist.
+Saves an object (of type &lt;T&gt;) to the given file path. Creates a new file if one doesn't exist.
 
 ### Save Parameters
 
 - `T obj`: The object to save.
-- `string filename`: The filepath, relative to your mod's directory, of the file to save the object to.
+- `string filename`: The file path, relative to your mod's directory, of the file to save the object to.
 
 ## Example
 
