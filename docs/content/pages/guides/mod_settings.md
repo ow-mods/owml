@@ -45,15 +45,21 @@ You can also do other data types like numbers and strings
 }
 ```
 
-You can even make a selection field (where you can only select specific values) using arrays
+You can even make a selection field (where you can only select specific values) using an object
 
 ```json
 {
     "enabled": true,
     "settings": {
-        "Favorite Color": ["Purple", "Green", "Wrong >::("]
+        "Favorite Color": {
+	    "type": "selector",
+	    "value": "Green",
+	    "options": ["Purple", "Green", "Wrong >::("]
+	}
     }
 }
+
+
 ```
 
 ## Getting Values In C\#
@@ -81,7 +87,7 @@ If you want to listen for changes to your mod's config, you can override the `Co
 public class MyMod : ModBehaviour {
     public override void Configure(IModConfig config) {
         var newFavorite = config.GetSettingsValue<string>("Favorite Food");
-        ModHelper.Console.WriteLine($"You changed your favorite food to: ${newFavorite}!");
+        ModHelper.Console.WriteLine($"You changed your favorite food to: {newFavorite}!");
     }
 }
 ```
