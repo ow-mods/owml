@@ -152,6 +152,7 @@ If you want to be able to access the actual object you're patching you can make 
 Let's say I want to log to the console where the Quantum Moon goes to every time it's observed:
 
 ```csharp
+[HarmonyPatch]
 public class MyPatchClass {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(QuantumMoon), nameof(QuantumMoon.ChangeQuantumState))]
@@ -160,6 +161,9 @@ public class MyPatchClass {
     }
 }
 ```
+
+!!! alert-info "How can we access that private field?"
+    OWML Publicizes all base-game assemblies for you, meaning you can get and set private fields and call private methods on base-game classes.
 
 ### Getting The Arguments Passed
 
