@@ -76,7 +76,7 @@ public class MyCoolMod : ModBehaviour {
 
 ## ModExists
 
-Checks if there exists a mod with the given uniqueName is installed and enabled.
+Checks if a mod with the given uniqueName is installed and enabled.
 
 ```csharp
 public class MyCoolMod : ModBehaviour {
