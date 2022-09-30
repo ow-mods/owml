@@ -86,3 +86,6 @@ public class MyCoolMod : ModBehaviour {
     }
 }
 ```
+
+!!! alert-info "Tip"
+    If you don't want to check if the mod exists yourself, you can list the mod's uniqueName in [dependencies]({{ "Manifest Schema"|route }}#dependencies){class="link-info"} on your manifest, this will make the manager require the mod to be installed in order to start the game.
