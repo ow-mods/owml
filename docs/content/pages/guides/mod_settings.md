@@ -52,14 +52,16 @@ You can even make a selection field (where you can only select specific values) 
     "enabled": true,
     "settings": {
         "Favorite Color": {
-	    "type": "selector",
-	    "value": "Green",
-	    "options": ["Purple", "Green", "Wrong >::("]
-	}
+            "type": "selector",
+            "value": "Green",
+            "options": [
+                "Purple",
+                "Green",
+                "Wrong >::("
+            ]
+        }
     }
 }
-
-
 ```
 
 ## Getting Values In C\#
