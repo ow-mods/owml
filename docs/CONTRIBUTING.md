@@ -4,7 +4,7 @@ This file will go over how to get a local build of the docs working
 
 ## Requirements
 
-First and foremost, install [Python 3.10](), this guide will assume the python version on your PATH is 3.10, to check this run `python --version`.
+First and foremost, install [Python 3.10](https://python.org/downloads), this guide will assume the python version on your PATH is 3.10, to check this run `python --version`.
 
 ## Installing Pipenv
 
