@@ -60,7 +60,7 @@ public class MyCoolMod : ModBehaviour {
 
 ## TryGetModApi&lt;T&gt;
 
-Attempts to get the API for the mod with the given unique name. You must define the mod's API as an interface and pass that in as the `T`. Returns `null` if the API couldn't be loaded.
+Attempts to get the API for the mod with the given unique name. You must define the mod's API as an interface and pass that in as the `T`. Returns `null` if the API couldn't be loaded. To learn how to create and consume APIs, [check out our tutorial]({{ "Creating APIs"|route }})
 
 ```csharp
 public class MyCoolMod : ModBehaviour {
