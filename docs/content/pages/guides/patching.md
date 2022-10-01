@@ -103,8 +103,8 @@ public class MyPatchClass {
 
 Prefixes also allow you to completely stop the original method from running, to do so, make your method return a bool.
 
-- If the boolean returned from the method is `true` the original method will be skipped
-- If the boolean returned from the method is `false` the original method is still run
+- If the boolean returned from the method is `true` the original method is still run
+- If the boolean returned from the method is `false` the original method will be skipped
 
 Let's say instead of simply logging when the player dies, we want to prevent it from happening entirely.
 
