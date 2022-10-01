@@ -82,11 +82,13 @@ This file is used by OWML to generate the settings menu for your mod, we'll go o
 
 This file tells Visual Studio about your project, it determines stuff like dependencies and versions, you shouldn't need to touch this.
 
-## Viewing The C# File
+## The ModBehaviour File
 
 Double-click {YourProjectName}.cs, and it should open up in the main editor pane.
 
 This file should contain a class that has the same name as your project and some methods within that class.
+
+The class this class inherits from is `ModBehaviour`, which is a special `MonoBehaviour` that not only marks a class as the entry-point for a mod, but also provides various utilities and overridable methods.
 
 We'll focus on `Start()`. In this method we do two things:
 
@@ -94,6 +96,9 @@ We'll focus on `Start()`. In this method we do two things:
 2. We subscribe to the scene loaded event to output a message to the log when the SolarSystem scene is loaded.
 
 You may have noticed we use the ModHelper field to achieve console output, ModHelper is a collection of utilities your mod can use to do a variety of things. It's covered in the "Mod Helper" section of the site.
+
+!!! alert-warning "Warning"
+    There's only one `ModBehaviour` allowed per-mod, to add more components, you'll need to use `AddComponent<>` within your mod behaviour class.
 
 ## Building The Mod
 
