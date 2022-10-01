@@ -44,7 +44,7 @@ After the workflow finishes, head back to the "Code" tab and select "releases" o
 
 Fill out the description with something like "First Release!", and press publish.  
 
-You've successfully creates a release on GitHub!
+You've successfully created a release on GitHub!
 
 ## Adding Your Mod To The Database
 
