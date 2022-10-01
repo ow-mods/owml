@@ -14,7 +14,7 @@ First things first, you're going to need to define your settings, open up `defau
 ```json
 {
     "enabled": true,
-    "settings" {
+    "settings": {
      
     }
 }
