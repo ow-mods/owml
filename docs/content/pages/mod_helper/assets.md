@@ -29,3 +29,7 @@ public class MyCoolMod : ModBehaviour {
     }
 }
 ```
+
+### Creating Asset Bundles
+
+You can use [this unity project template](https://github.com/xen-42/outer-wilds-unity-template){target="_blank"} to make asset bundles, it includes stripped versions of all base-game scripts to make implementing base-game functionality easier.

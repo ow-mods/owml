@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "uniqueName",
+    "author",
+    "filename",
+    "version",
+    "owmlVersion"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The JSON schema for this manifest"
+    },
+    "filename": {
+      "type": "string",
+      "description": "The name of the dll file to load"
+    },
+    "patcher": {
+      "type": "string",
+      "description": "The path to the patcher to use"
+    },
+    "author": {
+      "type": "string",
+      "description": "The author of the mod",
+      "examples": [
+        "John Doe",
+        "Bwc9876",
+        "xen-42"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "The human-readable name of the mod",
+      "examples": [
+        "Example Mod",
+        "My Cool Mod"
+      ]
+    },
+    "uniqueName": {
+      "type": "string",
+      "description": "The unique name of the mod",
+      "examples": [
+        "Bwc9876.TimeSaver",
+        "Me.MyMod",
+        "Me.MyCoolMod"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of the mod (should follow semver)",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": [
+        "1.0.0",
+        "2.0.1",
+        "0.1.4"
+      ]
+    },
+    "owmlVersion": {
+      "type": "string",
+      "description": "The version of the OWML that this mod was created with",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": [
+        "1.0.0",
+        "2.0.1",
+        "0.1.4"
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "The dependencies of the mod",
+      "items": {
+        "type": "string",
+        "description": "The uniqueName of the dependency",
+        "examples": [
+          "Bwc9876.TimeSaver",
+          "Me.MyMod",
+          "Me.MyCoolMod"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "priorityLoad": {
+      "type": "boolean",
+      "description": "Whether or not to load the mod before other mods",
+      "default": false
+    },
+    "minGameVersion": {
+      "type": "string",
+      "description": "The minimum version of the game that this mod is compatible with",
+      "pattern": "^\\d+\\.\\d+\\.\\d+\\.\\d+$",
+      "examples": [
+        "1.0.0",
+        "2.0.1",
+        "0.1.4"
+      ]
+    },
+    "maxGameVersion": {
+      "type": "string",
+      "description": "The maximum version of the game that this mod is compatible with",
+      "pattern": "^\\d+\\.\\d+\\.\\d+\\.\\d+$",
+      "examples": [
+        "1.0.0",
+        "2.0.1",
+        "0.1.4"
+      ]
+    },
+	"requireLatestVersion": {
+	  "type": "boolean",
+	  "description": "Whether this mod needs the very latest game version",
+	  "default": false
+	},
+	"incompatibleVendors": {
+	  "type": "array",
+	  "description": "The vendors this mod does not work on",
+	  "items": {
+	    "type": "string",
+		"enum": ["Steam", "Epic", "Gamepass"]
+	  }
+	},
+    "pathsToPreserve": {
+      "type": "array",
+      "description": "The paths to preserve when updating the mod",
+      "items": {
+        "type": "string",
+        "description": "The path to preserve",
+        "examples": [
+          "MyMod/MyMod.dll",
+          "MyMod/MyMod.xml",
+          "MyMod/MyMod.json"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "conflicts": {
+      "type": "array",
+      "description": "The mods that this mod conflicts with",
+      "items": {
+        "type": "string",
+        "description": "The uniqueName of the conflicting mod",
+        "examples": [
+          "Bwc9876.TimeSaver",
+          "Me.MyMod",
+          "Me.MyCoolMod"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "warning": {
+      "type": "string",
+      "description": "The warning to display when starting the mod for the first time"
+    }
+  }
+}
