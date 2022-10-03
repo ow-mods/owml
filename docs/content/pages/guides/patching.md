@@ -103,8 +103,8 @@ public class MyPatchClass {
 
 Prefixes also allow you to completely stop the original method from running, to do so, make your method return a bool.
 
-- If the boolean returned from the method is `true` the original method will be skipped
-- If the boolean returned from the method is `false` the original method is still run
+- If the boolean returned from the method is `true` the original method is still run
+- If the boolean returned from the method is `false` the original method will be skipped
 
 Let's say instead of simply logging when the player dies, we want to prevent it from happening entirely.
 
@@ -152,6 +152,7 @@ If you want to be able to access the actual object you're patching you can make 
 Let's say I want to log to the console where the Quantum Moon goes to every time it's observed:
 
 ```csharp
+[HarmonyPatch]
 public class MyPatchClass {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(QuantumMoon), nameof(QuantumMoon.ChangeQuantumState))]
@@ -160,6 +161,9 @@ public class MyPatchClass {
     }
 }
 ```
+
+!!! alert-info "How can we access that private field?"
+    OWML Publicizes all base-game assemblies for you, meaning you can get and set private fields and call private methods on base-game classes.
 
 ### Getting The Arguments Passed
 
