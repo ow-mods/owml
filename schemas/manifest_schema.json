@@ -123,7 +123,7 @@
 	},
     "pathsToPreserve": {
       "type": "array",
-      "description": "The paths to preserve when updating the mod",
+      "description": "The paths to preserve when updating the mod\nAutomatically includes config.json, manifest.json, and save.json",
       "items": {
         "type": "string",
         "description": "The path to preserve",
