@@ -56,6 +56,7 @@ namespace OWML.LoadCustomAssets
 		{
 			var api = ModHelper.Interaction.GetModApi<IAPI>("_nebula.ExampleAPI");
 			ModHelper.Console.WriteLine(api.Echo("Test API echo!"));
+			ModHelper.Console.WriteLine("Test API radio: " + api.Radio<ABC>().ToString());
 		}
 
 		private void TestPopup()
