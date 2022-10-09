@@ -131,6 +131,7 @@ When developing your mod you may want to get line numbers in your stack trace. T
 You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. You may want to read the following guides to get an idea of how to make your mod:
 
 - [Patching the game with HarmonyX]({{ "Patching"|route }})
+- [Interacting With Other Mods via APIs]({{ "Creating APIs"|route }})
 - [Creating custom mod settings]({{ "Creating Mod Settings"|route }})
 - [Publishing your mod]({{ "Publishing Your Mod"|route }})
 
