@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-// Adapted from SMAPI code : https://github.com/Pathoschild/SMAPI/tree/0ff82c38e7a5b630256d2cd23a63ac1088d13e39/src/SMAPI/Framework/Reflection
+// Adapted from SMAPI code : https://github.com/Pathoschild/SMAPI/tree/5a92b0cd357776eebb88e001384f9ca1ccdb7d5c/src/SMAPI/Framework/Reflection
 
 namespace OWML.ModHelper.Interaction
 {
@@ -40,14 +40,28 @@ namespace OWML.ModHelper.Interaction
 				}
 			}
 
+			bool AreTypesMatching(Type targetType, Type proxyType, bool parameter)
+			{
+				var typeA = parameter ? targetType : proxyType;
+				var typeB = parameter ? proxyType : targetType;
+
+				if (typeA.IsGenericParameter != typeB.IsGenericParameter)
+					return false;
+
+				return typeA.IsGenericParameter ? typeA.GenericParameterPosition == typeB.GenericParameterPosition : typeA.IsAssignableFrom(typeB);
+			}
+
 			foreach (var proxyMethod in interfaceType.GetMethods())
 			{
 				var proxyMethodParameters = proxyMethod.GetParameters();
+				var proxyMethodGenericArguments = proxyMethod.GetGenericArguments();
 				var targetMethod = allTargetMethods.Where(m =>
 				{
 					if (m.Name != proxyMethod.Name)
 						return false;
-					if (m.ReturnType != proxyMethod.ReturnType)
+					if (m.GetGenericArguments().Length != proxyMethodGenericArguments.Length)
+						return false;
+					if (!AreTypesMatching(m.ReturnType, proxyMethod.ReturnType, false))
 						return false;
 
 					var mParameters = m.GetParameters();
@@ -55,7 +69,7 @@ namespace OWML.ModHelper.Interaction
 						return false;
 					for (int i = 0; i < mParameters.Length; i++)
 					{
-						if (!mParameters[i].ParameterType.IsAssignableFrom(proxyMethodParameters[i].ParameterType))
+						if (!AreTypesMatching(mParameters[i].ParameterType, proxyMethodParameters[i].ParameterType, true))
 							return false;
 					}
 					return true;
@@ -64,7 +78,7 @@ namespace OWML.ModHelper.Interaction
 				{
 					throw new InvalidOperationException($"The {interfaceType.FullName} interface defines method {proxyMethod.Name} which doesn't exist in the API.");
 				}
-				ProxyMethod(proxyBuilder, targetMethod, targetField);
+				ProxyMethod(proxyBuilder, proxyMethod, targetMethod, targetField);
 			}
 
 			_targetType = targetType;
@@ -81,13 +95,26 @@ namespace OWML.ModHelper.Interaction
 			return constructor.Invoke(new[] { targetInstance });
 		}
 
-		private void ProxyMethod(TypeBuilder proxyBuilder, MethodInfo target, FieldBuilder instanceField)
+		private void ProxyMethod(TypeBuilder proxyBuilder, MethodInfo proxy, MethodInfo target, FieldBuilder instanceField)
 		{
-			var argTypes = target.GetParameters().Select(a => a.ParameterType).ToArray();
+			// create method
+			var methodBuilder = proxyBuilder.DefineMethod(proxy.Name, MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.Virtual);
+			// set up generic arguments
+			var proxyGenericArguments = proxy.GetGenericArguments();
+			var genericArgNames = proxyGenericArguments.Select(a => a.Name).ToArray();
+			var genericTypeParameterBuilders = proxyGenericArguments.Length == 0 ? null : methodBuilder.DefineGenericParameters(genericArgNames);
+			for (int i = 0; i < proxyGenericArguments.Length; i++)
+				genericTypeParameterBuilders[i].SetGenericParameterAttributes(proxyGenericArguments[i].GenericParameterAttributes);
 
-			var methodBuilder = proxyBuilder.DefineMethod(target.Name, MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.Virtual);
+			// set up return type
+			methodBuilder.SetReturnType(proxy.ReturnType.IsGenericParameter ? genericTypeParameterBuilders[proxy.ReturnType.GenericParameterPosition] : proxy.ReturnType);
+
+			// set up parameters
+			var argTypes = proxy.GetParameters()
+				.Select(a => a.ParameterType)
+				.Select(t => t.IsGenericParameter ? genericTypeParameterBuilders[t.GenericParameterPosition] : t)
+				.ToArray();
 			methodBuilder.SetParameters(argTypes);
-			methodBuilder.SetReturnType(target.ReturnType);
 
 			CreateProxyMethodBody(methodBuilder, target, instanceField, argTypes);
 		}
