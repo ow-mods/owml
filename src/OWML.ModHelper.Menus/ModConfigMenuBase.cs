@@ -81,22 +81,22 @@ namespace OWML.ModHelper.Menus
 				switch (settingType)
 				{
 					case "separator":
-						AddSeparator(key, obj, index);
+						AddSeparator(key, index, obj);
 						return;
 					case "slider":
-						AddSliderInput(key, obj, index);
+						AddSliderInput(key, index, obj);
 						return;
 					case "toggle":
-						AddToggleInput(key, obj, index);
+						AddToggleInput(key, index, obj);
 						return;
 					case "selector":
-						AddSelectorInput(key, obj, index);
+						AddSelectorInput(key, index, obj);
 						return;
 					case "text":
-						AddTextInput(key, obj, index);
+						AddTextInput(key, index, obj);
 						return;
 					case "number":
-						AddNumberInput(key, obj, index);
+						AddNumberInput(key, index, obj);
 						return;
 					default:
 						Console.WriteLine("Unrecognized complex setting type: " + settingType, MessageType.Warning);
@@ -107,23 +107,15 @@ namespace OWML.ModHelper.Menus
 			Console.WriteLine("Unrecognized setting type: " + value.GetType(), MessageType.Error);
 		}
 
-		private void AddToggleInput(string key, int index)
+		private void AddToggleInput(string key, int index, JObject obj = null)
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
 			toggle.Element.name = key;
-			toggle.Title = key;
+			toggle.Title = (string)obj?["title"] ?? key;
 			toggle.Show();
 		}
 
-		private void AddToggleInput(string key, JObject obj, int index)
-		{
-			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
-			toggle.Element.name = key;
-			toggle.Title = (string)obj["title"] ?? key;
-			toggle.Show();
-		}
-
-		private void AddSliderInput(string key, JObject obj, int index)
+		private void AddSliderInput(string key, int index, JObject obj)
 		{
 			var slider = AddSliderInput(_sliderTemplate.Copy(key), index);
 			slider.Min = (float)obj["min"];
@@ -133,7 +125,7 @@ namespace OWML.ModHelper.Menus
 			slider.Show();
 		}
 
-		private void AddSelectorInput(string key, JObject obj, int index)
+		private void AddSelectorInput(string key, int index, JObject obj)
 		{
 			var options = obj["options"].ToObject<string[]>();
 			var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
@@ -143,43 +135,27 @@ namespace OWML.ModHelper.Menus
 			selector.Show();
 		}
 
-		private void AddTextInput(string key, JObject obj, int index)
+		private void AddTextInput(string key, int index, JObject obj = null)
 		{
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
-			textInput.Title = (string)obj["title"] ?? key;
+			textInput.Title = (string)obj?["title"] ?? key;
 			textInput.Show();
 		}
 
-		private void AddTextInput(string key, int index)
-		{
-			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
-			textInput.Element.name = key;
-			textInput.Title = key;
-			textInput.Show();
-		}
-
-		private void AddNumberInput(string key, JObject obj, int index)
+		private void AddNumberInput(string key, int index, JObject obj = null)
 		{
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
-			numberInput.Title = (string)obj["title"] ?? key;
+			numberInput.Title = (string)obj?["title"] ?? key;
 			numberInput.Show();
 		}
 
-		private void AddNumberInput(string key, int index)
-		{
-			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
-			numberInput.Element.name = key;
-			numberInput.Title = key;
-			numberInput.Show();
-		}
-
-		private void AddSeparator(string key, JObject obj, int index)
+		private void AddSeparator(string key, int index, JObject obj)
 		{
 			var numberInput = AddSeparator(_seperatorTemplate.Copy("Inputs"), index);
 			numberInput.Element.name = key;
-			numberInput.Title = (string)obj["title"] ?? key;
+			numberInput.Title = (string)obj?["title"] ?? key;
 			numberInput.Show();
 		}
 	}
