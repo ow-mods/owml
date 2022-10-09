@@ -17,6 +17,9 @@ namespace OWML.ModHelper.Menus
 		protected List<Selectable> Selectables;
 		protected ModCommandListener CommandListener;
 
+		private ModPromptButton _saveButton;
+		private ModPromptButton _resetButton;
+
 		public ModMenuWithSelectables(IModConsole console)
 			: base(console)
 		{
@@ -36,20 +39,17 @@ namespace OWML.ModHelper.Menus
 		protected virtual void SetupButtons(Menu menu)
 		{
 			var promptButtons = GetParentPromptButtons(menu);
-			var saveButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-SaveAndExit");
-			var resetButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-ResetToDefaultsButton");
+			_saveButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-SaveAndExit");
+			_resetButton = promptButtons.FirstOrDefault(x => x.Button.name == "UIElement-ResetToDefaultsButton");
 
-			if (saveButton == null || resetButton == null/* || cancelButton == null*/)
+			if (_saveButton == null || _resetButton == null/* || cancelButton == null*/)
 			{
 				Console.WriteLine("Failed to setup menu with selectables.", MessageType.Error);
 				return;
 			}
-
-			saveButton.OnClick += OnSave;
-			resetButton.OnClick += OnReset;
-
-			saveButton.Prompt = new ScreenPrompt(InputLibrary.confirm, saveButton.DefaultTitle);
-			resetButton.Prompt = new ScreenPrompt(InputLibrary.setDefaults, resetButton.DefaultTitle);
+			
+			_saveButton.Prompt = new ScreenPrompt(InputLibrary.confirm, _saveButton.DefaultTitle);
+			_resetButton.Prompt = new ScreenPrompt(InputLibrary.setDefaults, _resetButton.DefaultTitle);
 		}
 
 		private IList<ModPromptButton> GetParentPromptButtons(Menu menu)
@@ -132,11 +132,15 @@ namespace OWML.ModHelper.Menus
 		protected virtual void OnActivateMenu()
 		{
 			CommandListener.OnNewlyPressed += OnButton;
+			_saveButton.OnClick += OnSave;
+			_resetButton.OnClick += OnReset;
 		}
 
 		protected virtual void OnDeactivateMenu()
 		{
 			CommandListener.OnNewlyPressed -= OnButton;
+			_saveButton.OnClick -= OnSave;
+			_resetButton.OnClick -= OnReset;
 			OnSave();
 		}
 
