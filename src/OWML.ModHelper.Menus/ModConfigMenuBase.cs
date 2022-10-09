@@ -112,6 +112,7 @@ namespace OWML.ModHelper.Menus
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
 			toggle.Element.name = key;
 			toggle.Title = (string)obj?["title"] ?? key;
+			SetupInputTooltip(toggle);
 			toggle.Show();
 		}
 
@@ -122,6 +123,7 @@ namespace OWML.ModHelper.Menus
 			slider.Max = (float)obj["max"];
 			slider.Element.name = key;
 			slider.Title = (string)obj["title"] ?? key;
+			SetupInputTooltip(slider);
 			slider.Show();
 		}
 
@@ -132,6 +134,7 @@ namespace OWML.ModHelper.Menus
 			selector.Element.name = key;
 			selector.Title = (string)obj["title"] ?? key;
 			selector.Initialize((string)obj["value"], options);
+			SetupInputTooltip(selector);
 			selector.Show();
 		}
 
@@ -140,6 +143,7 @@ namespace OWML.ModHelper.Menus
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
 			textInput.Title = (string)obj?["title"] ?? key;
+			SetupInputTooltip(textInput);
 			textInput.Show();
 		}
 
@@ -148,6 +152,7 @@ namespace OWML.ModHelper.Menus
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
 			numberInput.Title = (string)obj?["title"] ?? key;
+			SetupInputTooltip(numberInput);
 			numberInput.Show();
 		}
 
@@ -157,6 +162,13 @@ namespace OWML.ModHelper.Menus
 			numberInput.Element.name = key;
 			numberInput.Title = (string)obj?["title"] ?? key;
 			numberInput.Show();
+		}
+
+		private void SetupInputTooltip<T>(IModInput<T> input)
+		{
+			var menuOption = input.Element.GetComponent<MenuOption>();
+			menuOption.SetValue("_tooltipTextType", UITextType.None);
+			menuOption.SetValue("_overrideTooltipText", "");
 		}
 	}
 }
