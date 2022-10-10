@@ -7,7 +7,8 @@
 			"value": true,
 			"yes": "Quack",
 			"no": "Queck",
-			"title": "Enable Ducks"
+			"title": "Enable Ducks",
+			"tooltip": "Quack!"
 		},
 		"enableCubes": false,
 		"alphabet": "abc",
@@ -16,7 +17,8 @@
 			"type": "slider",
 			"value": 10,
 			"min": 0,
-			"max": 20
+			"max": 20,
+			"tooltip": "POWER SLIDER"
 		},
 		"negativeMin": {
 			"type": "slider",
@@ -39,6 +41,7 @@
 		"thing": {
 			"type": "selector",
 			"options": [ "A", "B", "C" ],
+			"tooltip": "Select your favorite letter.",
 			"value": "A"
 		},
 		"integer thing": {
@@ -52,6 +55,19 @@
 			"yes": "Absolutely",
 			"no": "Na-ah!",
 			"title": "Enable Super Mode"
+		},
+		"Duck Info": {
+			"type": "separator"
+		},
+		"Duck Name": {
+			"type": "text",
+			"value": "Bonifacio",
+			"tooltip": "Note: Ernesto is already taken"
+		},
+		"Duck Age": {
+			"type": "number",
+			"value": 42,
+			"tooltip": "How old is the duck?"
 		}
 	}
 }
