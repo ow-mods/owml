@@ -112,7 +112,7 @@ namespace OWML.ModHelper.Menus
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
 			toggle.Element.name = key;
 			toggle.Title = (string)obj?["title"] ?? key;
-			SetupInputTooltip(toggle);
+			SetupInputTooltip(toggle, (string)obj?["tooltip"]);
 			toggle.Show();
 		}
 
@@ -123,7 +123,7 @@ namespace OWML.ModHelper.Menus
 			slider.Max = (float)obj["max"];
 			slider.Element.name = key;
 			slider.Title = (string)obj["title"] ?? key;
-			SetupInputTooltip(slider);
+			SetupInputTooltip(slider, (string)obj["tooltip"]);
 			slider.Show();
 		}
 
@@ -134,7 +134,7 @@ namespace OWML.ModHelper.Menus
 			selector.Element.name = key;
 			selector.Title = (string)obj["title"] ?? key;
 			selector.Initialize((string)obj["value"], options);
-			SetupInputTooltip(selector);
+			SetupInputTooltip(selector, (string)obj["tooltip"]);
 			selector.Show();
 		}
 
@@ -143,7 +143,7 @@ namespace OWML.ModHelper.Menus
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
 			textInput.Title = (string)obj?["title"] ?? key;
-			SetupInputTooltip(textInput);
+			SetupInputTooltip(textInput, (string)obj?["tooltip"]);
 			textInput.Show();
 		}
 
@@ -152,23 +152,23 @@ namespace OWML.ModHelper.Menus
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
 			numberInput.Title = (string)obj?["title"] ?? key;
-			SetupInputTooltip(numberInput);
+			SetupInputTooltip(numberInput, (string)obj?["tooltip"]);
 			numberInput.Show();
 		}
 
 		private void AddSeparator(string key, int index, JObject obj)
 		{
-			var numberInput = AddSeparator(_seperatorTemplate.Copy("Inputs"), index);
-			numberInput.Element.name = key;
-			numberInput.Title = (string)obj?["title"] ?? key;
-			numberInput.Show();
+			var separator = AddSeparator(_seperatorTemplate.Copy("Inputs"), index);
+			separator.Element.name = key;
+			separator.Title = (string)obj?["title"] ?? key;
+			separator.Show();
 		}
 
-		private void SetupInputTooltip<T>(IModInput<T> input)
+		private void SetupInputTooltip<T>(IModInput<T> input, string tooltip)
 		{
 			var menuOption = input.Element.GetComponent<MenuOption>();
 			menuOption.SetValue("_tooltipTextType", UITextType.None);
-			menuOption.SetValue("_overrideTooltipText", "");
+			menuOption.SetValue("_overrideTooltipText", tooltip?? "");
 		}
 	}
 }
