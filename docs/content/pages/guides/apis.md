@@ -58,6 +58,3 @@ public class MyCoolMod : ModBehaviour {
 }
 ```
 
-!!! alert-warning "Warning"
-    Generic methods are not supported for mod APIs
-
