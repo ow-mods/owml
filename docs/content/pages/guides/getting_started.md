@@ -7,6 +7,8 @@ Sort_Priority: 90
 
 This page will outline how to get a working mod that will simply log a message to the console when the game starts.
 
+For this guide we'll assume you already have the [Outer Wilds Mod Manager](https://github.com/ow-mods/ow-mod-manager){ target="_blank" } installed.
+
 ## Choosing an IDE
 
 An IDE will help provide the ability to create, edit, and build your mod.
