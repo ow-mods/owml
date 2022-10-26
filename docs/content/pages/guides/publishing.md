@@ -23,11 +23,14 @@ When it asks for the Git Ignore, select "Visual Studio". And for license, select
 
 Now, with our repository created, select "Publish Repository" in the top right, this will push your repo to GitHub.
 
+!!! alert-warning "Warning"
+    Make sure you make the repository public, the database will need to be able to see it.
+
 ### Updating The README
 
 Now head to your GitHub homepage, you should see your new mod in the sidebar on the left, click it.  
 
-Scroll down until you see `README.md` this file is special is it will displayed on the mod website when people click on your mod.  
+Scroll down until you see `README.md` this file is special as it will be displayed on the mod website when people click on your mod.  
 
 Click on it and then select the pencil icon in the top right of the file, this will open the web editor.  
 
