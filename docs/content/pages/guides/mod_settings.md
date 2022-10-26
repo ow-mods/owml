@@ -45,7 +45,9 @@ You can also do other data types like numbers and strings
 }
 ```
 
-You can even make a selection field (where you can only select specific values) using an object
+## Complex Settings
+
+Complex settings use JSON objects to allow for more customization. You can use it to add selectors:
 
 ```json
 {
@@ -60,6 +62,37 @@ You can even make a selection field (where you can only select specific values) 
                 "Wrong >::("
             ]
         }
+    }
+}
+```
+
+And sliders as well:
+
+```json
+{
+    "enabled": true,
+    "settings": {
+        "Bumpscosity": {
+            "type": "slider",
+            "min": 0,
+            "max": 1000,
+            "value": 1
+        }
+    }
+}
+```
+
+You can also seperate your options with separators:
+
+```json
+{
+    "enabled": true,
+    "settings": {
+        "My Cool Value": 50,
+        "My Separator": {
+            "type": "separator"
+        },
+        "My Other Cool Value But It's Below The Separator ::D": "Burger"
     }
 }
 ```
