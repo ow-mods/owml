@@ -7,6 +7,8 @@ Sort_Priority: 90
 
 This page will outline how to get a working mod that will simply log a message to the console when the game starts.
 
+For this guide we'll assume you already have the [Outer Wilds Mod Manager](https://github.com/ow-mods/ow-mod-manager){ target="_blank" } installed.
+
 ## Choosing an IDE
 
 An IDE will help provide the ability to create, edit, and build your mod.
@@ -124,13 +126,14 @@ Click start game and wait for the title screen to load in. Now search your manag
 
 ## Getting Line Numbers
 
-When developing your mod you may want to get line numbers in your stack trace. To do so, [download this dll file](https://cdn.discordapp.com/attachments/929787137895854100/936860223983976448/mono-2.0-bdwgc.dll){target="_blank"}, and have it replace the one with the same name within `MonoBleedingEdge/EmbedRuntime` of the game's files. Doing this will degrade performance slightly, but will allow all mods that use the `Portable` debug type to have line numbers. If you've used the template to create your mod, simply build with the "Debug" release candidate to have DebugType set to portable.
+When developing your mod you may want to get line numbers in your stack trace. To do so, [download this dll file]({{ "mono-2.0-bdwgc.dll"|static }}){target="_blank"}, and have it replace the one with the same name within `MonoBleedingEdge/EmbedRuntime` of the game's files. Doing this will degrade performance slightly, but will allow all mods that use the `Portable` debug type to have line numbers. If you've used the template to create your mod, simply build with the "Debug" release candidate to have DebugType set to portable.
 
 ## Next Steps
 
 You've successfully created and built your first Outer Wilds mod, moving forward may require a bit of knowledge in unity and will depend on what exactly you're trying to do. You may want to read the following guides to get an idea of how to make your mod:
 
 - [Patching the game with HarmonyX]({{ "Patching"|route }})
+- [Interacting With Other Mods via APIs]({{ "Creating APIs"|route }})
 - [Creating custom mod settings]({{ "Creating Mod Settings"|route }})
 - [Publishing your mod]({{ "Publishing Your Mod"|route }})
 

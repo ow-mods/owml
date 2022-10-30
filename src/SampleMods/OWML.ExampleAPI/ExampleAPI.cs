@@ -11,5 +11,8 @@ namespace OWML.ExampleAPI
 	{
 		public string Echo(string text)
 			=> text;
+
+		public T Radio<T>()
+			=> default;
 	}
 }

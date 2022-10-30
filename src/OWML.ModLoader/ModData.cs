@@ -77,6 +77,7 @@ namespace OWML.ModLoader
 			}
 
 			AddMissingDefaults(DefaultConfig);
+			ReorderSettings(DefaultConfig);
 			return wasCompatible;
 		}
 
@@ -96,6 +97,14 @@ namespace OWML.ModLoader
 		private void AddMissingDefaults(IModConfig defaultConfig) =>
 			defaultConfig.Settings.Where(s => !Config.Settings.ContainsKey(s.Key)).ToList()
 				.ForEach(setting => Config.Settings.Add(setting.Key, setting.Value));
+
+		private void ReorderSettings(IModConfig defaultConfig)
+		{
+			// Make the Config settings order match the ones in default
+			Config.Settings = defaultConfig.Settings
+				.Select(s => s.Key)
+				.ToDictionary(k => k, k => Config.Settings[k]);
+		}
 
 		private bool TryUpdate(string key, object userSetting, object modSetting)
 		{

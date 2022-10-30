@@ -175,7 +175,6 @@ namespace OWML.ModHelper.Menus
 			modsTab.BaseButtons.ForEach(x => x.Hide());
 			modsTab.Menu.GetComponentsInChildren<SliderElement>(true).ToList().ForEach(x => x.gameObject.SetActive(false));
 			modsTab.Menu.GetComponentsInChildren<OptionsSelectorElement>(true).ToList().ForEach(x => x.gameObject.transform.localScale = Vector3.zero);
-			modsTab.Menu.GetValue<TooltipDisplay>("_tooltipDisplay").GetComponent<Text>().color = Color.clear;
 			modsTab.Menu.gameObject.name = name;
 			modsTab.TabButton.gameObject.name = name + "_tab";
 			options.AddTab(modsTab, enable);
