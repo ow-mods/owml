@@ -3,7 +3,7 @@
   "author": "Alek",
   "name": "OWML",
   "uniqueName": "Alek.OWML",
-  "version": "2.7.3",
-  "minGameVersion": "1.1.10.47",
-  "maxGameVersion": "1.1.13.393"
+  "version": "2.7.4",
+  "minGameVersion": "1.1.13.393",
+  "maxGameVersion": "1.1.13.450"
 }
