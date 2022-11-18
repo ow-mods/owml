@@ -15,6 +15,7 @@ namespace OWML.Patcher
 
 		private const string PatchClass = "PermanentManager";
 		private const string PatchMethod = "Awake";
+		private const string IncGCProperty = "gc-max-time-slice=3";
 
 		public OWPatcher(IOwmlConfig owmlConfig, IModConsole writer)
 		{
@@ -27,6 +28,7 @@ namespace OWML.Patcher
 			CopyOWMLFiles();
 			CopyLibFiles();
 			PatchAssembly();
+			UpdateIncrementalGC();
 		}
 
 		private void CopyOWMLFiles()
@@ -134,6 +136,29 @@ namespace OWML.Patcher
 
 			Patch(patcher, target);
 			Save(patcher);
+		}
+
+		private void UpdateIncrementalGC()
+		{
+			_writer.WriteLine("Updating incremental GC...");
+
+			var incGCEnabled = _owmlConfig.IncrementalGC;
+
+			var bootConfigPath = Path.Combine(_owmlConfig.DataPath, "boot.config");
+			var bootConfigText = File.ReadAllText(bootConfigPath);
+
+			var alreadyEnabled = bootConfigText.Contains(IncGCProperty + Environment.NewLine);
+
+			if (alreadyEnabled && !incGCEnabled)
+			{
+				_writer.WriteLine("- Disabling incremental GC");
+				File.WriteAllText(bootConfigPath, bootConfigText.Replace(IncGCProperty + Environment.NewLine, ""));
+			}
+			else if (!alreadyEnabled && incGCEnabled)
+			{
+				_writer.WriteLine("- Enabling incremental GC");
+				File.AppendAllText(bootConfigPath, IncGCProperty + Environment.NewLine);
+			}
 		}
 
 		private List<Instruction> GetPatchedInstructions(List<Instruction> instructions) =>
