@@ -14,6 +14,9 @@ namespace OWML.Common
 		[JsonProperty("forceExe")]
 		public bool ForceExe { get; set; }
 
+		[JsonProperty("incrementalGC")]
+		public bool IncrementalGC { get; set; }
+
 		[JsonIgnore]
 		public bool IsSpaced => Directory.Exists(Path.Combine(GamePath, "Outer Wilds_Data"));
 

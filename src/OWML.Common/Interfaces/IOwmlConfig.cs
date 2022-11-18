@@ -22,6 +22,8 @@
 
 		bool ForceExe { get; set; }
 
+		bool IncrementalGC { get; set; }
+
 		int SocketPort { get; set; }
 	}
 }
