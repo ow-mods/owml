@@ -126,3 +126,7 @@ public class MyMod : ModBehaviour {
     }
 }
 ```
+
+## Config Updates
+
+Something important to note is that when the manager pulls and update for your mod, the `config.json` file is preserved. The issue with this is menus are generated from the `config.json` file. When changing options like slider minimums and maximums or choices, you may want to create a new property rather than edit an existing one to make sure the UI is correct.
