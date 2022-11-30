@@ -5,6 +5,16 @@ namespace OWML.Logging
 {
 	public abstract class ModConsole : IModConsole
 	{
+		/*
+		 * For logging to console :
+		 * Unity-side - ModSocketOutput in unity-side -> SocketListener in owml-side -> Console
+		 * Owml-side - OutputWriter in owml-side -> Console
+		 * 
+		 * For logging to manager :
+		 * Unity-side - ModSocketOutput in unity-side -> Manager
+		 * Owml-side - ModSocketOutput in owml-side -> Manager
+		 */
+
 		[Obsolete("Use ModHelper.Console instead.")]
 		public static ModConsole OwmlConsole { get; private set; }
 

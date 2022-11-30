@@ -11,6 +11,10 @@ using System.Text.RegularExpressions;
 
 namespace OWML.Launcher
 {
+	/// <summary>
+	/// Game-side messages : SOCKET -> CONSOLE (for console logging)
+	/// Owml-side messages : not used
+	/// </summary>
 	public class SocketListener
 	{
 		private const string Separator = "\n--------------------------------";

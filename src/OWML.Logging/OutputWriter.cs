@@ -4,6 +4,10 @@ using OWML.Common;
 
 namespace OWML.Logging
 {
+	/// <summary>
+	/// Game-side messages : not used
+	/// Owml-side messages : OWML -> CONSOLE (for console logging)
+	/// </summary>
 	public class OutputWriter : IModConsole
 	{
 		private readonly IOwmlConfig _config;

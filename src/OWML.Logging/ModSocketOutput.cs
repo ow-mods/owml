@@ -5,6 +5,10 @@ using OWML.Common;
 
 namespace OWML.Logging
 {
+	/// <summary>
+	/// Game-side messages : GAME -> SOCKET (for console + manager logging)
+	/// Owml-side messages : OWML -> SOCKET (for manager logging)
+	/// </summary>
 	public class ModSocketOutput : ModConsole
 	{
 		private readonly IModSocket _socket;
