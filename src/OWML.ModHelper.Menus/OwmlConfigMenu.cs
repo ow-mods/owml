@@ -6,8 +6,11 @@ namespace OWML.ModHelper.Menus
 	public class OwmlConfigMenu : ModConfigMenuBase
 	{
 		private const string DebugModeTitle = "Debug mode";
+		private const string DebugModeTooltip = "Enable verbose logging. Some effects only enable/disable when game is reloaded.";
 		private const string ForceExeTitle = "Force run through .exe";
+		private const string ForceExeTooltip = "Force OWML to run the game's exe, rather than going through Steam/Epic.";
 		private const string IncrementalGCTitle = "Enable incremental GC";
+		private const string IncrementalGCTooltip = "Incremental GC (garbage collection) can help reduce lag spikes with some mods. Only has effect after game is reloaded.";
 
 		private readonly IOwmlConfig _config;
 		private readonly IOwmlConfig _defaultConfig;
@@ -35,9 +38,17 @@ namespace OWML.ModHelper.Menus
 
 		public override void UpdateUIValues()
 		{
-			GetToggleInput(DebugModeTitle).Value = _config.DebugMode;
-			GetToggleInput(ForceExeTitle).Value = _config.ForceExe;
-			GetToggleInput(IncrementalGCTitle).Value = _config.IncrementalGC;
+			var debug = GetToggleInput(DebugModeTitle);
+			debug.Value = _config.DebugMode;
+			SetupInputTooltip(debug, DebugModeTooltip);
+
+			var exe = GetToggleInput(ForceExeTitle);
+			exe.Value = _config.ForceExe;
+			SetupInputTooltip(exe, ForceExeTooltip);
+
+			var gc = GetToggleInput(IncrementalGCTitle);
+			gc.Value = _config.IncrementalGC;
+			SetupInputTooltip(gc, IncrementalGCTooltip);
 		}
 
 		protected override void OnSave()

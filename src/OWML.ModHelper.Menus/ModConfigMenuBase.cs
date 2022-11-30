@@ -164,7 +164,7 @@ namespace OWML.ModHelper.Menus
 			separator.Show();
 		}
 
-		private void SetupInputTooltip<T>(IModInput<T> input, string tooltip)
+		internal void SetupInputTooltip<T>(IModInput<T> input, string tooltip)
 		{
 			var menuOption = input.Element.GetComponent<MenuOption>();
 			menuOption.SetValue("_tooltipTextType", UITextType.None);
