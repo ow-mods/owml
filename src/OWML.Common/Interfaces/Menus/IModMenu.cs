@@ -17,18 +17,9 @@ namespace OWML.Common.Menus
 
 		List<IModPromptButton> PromptButtons { get; }
 
-		[Obsolete("Use GetTitleButton instead")]
-		IModButton GetButton(string title);
-
 		IModButton GetTitleButton(string title);
 
 		IModPromptButton GetPromptButton(string title);
-
-		[Obsolete("Use AddButton(IModButtonBase) instead.")]
-		IModButton AddButton(IModButton button);
-
-		[Obsolete("Use AddButton(IModButtonBase, int) instead.")]
-		IModButton AddButton(IModButton button, int index);
 
 		IModButtonBase AddButton(IModButtonBase button);
 

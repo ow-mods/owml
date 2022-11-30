@@ -6,9 +6,6 @@ namespace OWML.Common
 	{
 		event Action<T> Loaded;
 
-		[Obsolete("Use Loaded instead.")]
-		Action<T> OnLoaded { get; set; }
-
 		T Asset { get; }
 	}
 }

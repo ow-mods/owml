@@ -21,13 +21,6 @@ namespace OWML.Logging
 			_processHelper = processHelper;
 		}
 
-		[Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
-		public override void WriteLine(params object[] objects)
-		{
-			var line = string.Join(" ", objects.Select(o => o.ToString()).ToArray());
-			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
-		}
-
 		public override void WriteLine(string line) =>
 			WriteLine(line, MessageType.Message, GetCallingType(new StackTrace()));
 

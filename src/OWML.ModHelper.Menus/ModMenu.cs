@@ -73,10 +73,6 @@ namespace OWML.ModHelper.Menus
 			Separators.Clear();
 		}
 
-		[Obsolete("Use GetTitleButton instead")]
-		public IModButton GetButton(string title) =>
-			GetTitleButton(title);
-
 		public IModButton GetTitleButton(string title) =>
 			GetTitleButton(title, Buttons);
 
@@ -92,14 +88,6 @@ namespace OWML.ModHelper.Menus
 			}
 			return button;
 		}
-
-		[Obsolete("Use AddButton(IModButtonBase) instead.")]
-		public IModButton AddButton(IModButton button) =>
-			AddButton(button, button.Index);
-
-		[Obsolete("Use AddButton(IModButtonBase, int) instead.")]
-		public virtual IModButton AddButton(IModButton button, int index) =>
-			(IModButton)AddButton((IModButtonBase)button, index);
 
 		public IModButtonBase AddButton(IModButtonBase button) =>
 			AddButton(button, button.Index);

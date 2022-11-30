@@ -17,9 +17,6 @@ namespace OWML.ModHelper.Events
 		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action<MonoBehaviour, Common.Events> Event;
 
-		[Obsolete("Use Event instead.")]
-		public Action<MonoBehaviour, Common.Events> OnEvent { get; set; }
-
 		private static readonly List<KeyValuePair<Type, Common.Events>> PatchedEvents = new();
 		private readonly List<KeyValuePair<Type, Common.Events>> _subscribedEvents = new();
 
@@ -49,7 +46,6 @@ namespace OWML.ModHelper.Events
 			if (IsSubscribedTo(type, ev))
 			{
 				_console.WriteLine($"Got subscribed event: {ev} of {type.Name}", MessageType.Debug);
-				OnEvent?.Invoke(behaviour, ev);
 				Event?.Invoke(behaviour, ev);
 			}
 			else

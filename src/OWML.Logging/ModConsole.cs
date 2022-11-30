@@ -21,9 +21,6 @@ namespace OWML.Logging
 		protected readonly IModManifest Manifest;
 		protected readonly IOwmlConfig OwmlConfig;
 
-		[Obsolete("Use WriteLine(string) or WriteLine(string, MessageType) instead.")]
-		public abstract void WriteLine(params object[] objects);
-
 		public abstract void WriteLine(string line);
 
 		public abstract void WriteLine(string line, MessageType type);
