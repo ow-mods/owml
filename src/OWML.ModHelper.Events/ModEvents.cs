@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Events
 
 		public IModUnityEvents Unity { get; }
 
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action<MonoBehaviour, Common.Events> Event;
 
 		[Obsolete("Use Event instead.")]
@@ -57,6 +58,7 @@ namespace OWML.ModHelper.Events
 			}
 		}
 
+		[Obsolete("Use HarmonyHelper instead.")]
 		public void Subscribe<T>(Common.Events ev) where T : MonoBehaviour
 		{
 			SubscribeToEvent<T>(ev);
