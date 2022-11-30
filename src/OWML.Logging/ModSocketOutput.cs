@@ -14,8 +14,8 @@ namespace OWML.Logging
 		private readonly IModSocket _socket;
 		private readonly IProcessHelper _processHelper;
 
-		public ModSocketOutput(IOwmlConfig config, IModManifest manifest, IModLogger logger, IModSocket socket, IProcessHelper processHelper)
-			: base(config, logger, manifest)
+		public ModSocketOutput(IOwmlConfig config, IModManifest manifest, IModSocket socket, IProcessHelper processHelper)
+			: base(config, manifest)
 		{
 			_socket = socket;
 			_processHelper = processHelper;
@@ -36,8 +36,6 @@ namespace OWML.Logging
 
 		public override void WriteLine(string line, MessageType type, string senderType)
 		{
-			Logger?.Log($"{type}: {line}");
-
 			if (type != MessageType.Debug || OwmlConfig.DebugMode)
 			{
 				_socket.WriteToSocket(new ModSocketMessage

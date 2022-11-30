@@ -48,7 +48,6 @@ namespace OWML.ModLoader
 				.Add(unityEvents)
 				.Add<IOwmlConfig>(owmlConfig)
 				.Add<IModManifest>(owmlManifest)
-				.Add<IModLogger, ModLogger>()
 				.Add<IModSocket, ModSocket>()
 				.Add<IUnityLogger, UnityLogger>()
 				.Add<IModConsole, ModSocketOutput>()

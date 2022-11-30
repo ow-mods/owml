@@ -5,8 +5,6 @@ namespace OWML.ModHelper
 {
 	public class ModHelper : IModHelper
 	{
-		public IModLogger Logger { get; }
-
 		public IModConsole Console { get; }
 
 		public IHarmonyHelper HarmonyHelper { get; }
@@ -28,7 +26,6 @@ namespace OWML.ModHelper
 		public IModInteraction Interaction { get; }
 
 		public ModHelper(
-			IModLogger logger,
 			IModConsole console,
 			IHarmonyHelper harmonyHelper,
 			IModEvents events,
@@ -40,7 +37,6 @@ namespace OWML.ModHelper
 			IOwmlConfig owmlConfig,
 			IModInteraction interaction)
 		{
-			Logger = logger;
 			Console = console;
 			HarmonyHelper = harmonyHelper;
 			Events = events;

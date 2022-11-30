@@ -21,7 +21,6 @@ namespace OWML.Launcher.Tests
 			var container = Program.CreateContainer(new[] { "-consolePort", "1337" });
 			container.Add(processHelper.Object);
 			container.Add(Console.Object);
-			container.Add(Logger.Object);
 
 			var app = container.Resolve<App>();
 			app.Run();

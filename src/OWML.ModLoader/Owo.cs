@@ -228,7 +228,6 @@ namespace OWML.ModLoader
 				.Add(_processHelper)
 				.Add(_unityEvents)
 				.Add<IHarmonyHelper, HarmonyHelper>()
-				.Add<IModLogger, ModLogger>()
 				.Add<IModConsole, ModSocketOutput>()
 				.Add<IModAssets, ModAssets>()
 				.Add<IModStorage, ModStorage>()

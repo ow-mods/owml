@@ -33,7 +33,6 @@ namespace OWML.Launcher
 				.Add(owmlManifest)
 				.Add(consoleWriter)
 				.Add<IArgumentHelper>(argumentHelper)
-				.Add<IModLogger, ModLogger>()
 				.Add<IModFinder, ModFinder>()
 				.Add<IPathFinder, PathFinder>()
 				.Add<IOWPatcher, OWPatcher>()
@@ -84,7 +83,7 @@ namespace OWML.Launcher
 
 		private static IModConsole CreateConsoleWriter(IOwmlConfig owmlConfig, IModManifest owmlManifest, bool hasConsolePort) =>
 			hasConsolePort
-				? new ModSocketOutput(owmlConfig, owmlManifest, null, new ModSocket(owmlConfig), new ProcessHelper())
+				? new ModSocketOutput(owmlConfig, owmlManifest, new ModSocket(owmlConfig), new ProcessHelper())
 				: (IModConsole)new OutputWriter(owmlConfig);
 	}
 }

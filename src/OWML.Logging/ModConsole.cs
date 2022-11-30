@@ -18,7 +18,6 @@ namespace OWML.Logging
 		[Obsolete("Use ModHelper.Console instead.")]
 		public static ModConsole OwmlConsole { get; private set; }
 
-		protected readonly IModLogger Logger;
 		protected readonly IModManifest Manifest;
 		protected readonly IOwmlConfig OwmlConfig;
 
@@ -31,9 +30,8 @@ namespace OWML.Logging
 
 		public abstract void WriteLine(string line, MessageType type, string senderType);
 
-		protected ModConsole(IOwmlConfig config, IModLogger logger, IModManifest manifest)
+		protected ModConsole(IOwmlConfig config, IModManifest manifest)
 		{
-			Logger = logger;
 			Manifest = manifest;
 			OwmlConfig = config;
 
