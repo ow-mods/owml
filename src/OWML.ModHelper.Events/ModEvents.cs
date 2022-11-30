@@ -6,12 +6,16 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Events
 {
+	[Obsolete("Use HarmonyHelper instead.")]
 	public class ModEvents : IModEvents
 	{
+		[Obsolete("Use HarmonyHelper instead.")]
 		public IModPlayerEvents Player { get; }
 
+		[Obsolete("Use HarmonyHelper instead.")]
 		public IModSceneEvents Scenes { get; }
 
+		[Obsolete("Use HarmonyHelper instead.")]
 		public IModUnityEvents Unity { get; }
 
 		[Obsolete("Use HarmonyHelper instead.")]
