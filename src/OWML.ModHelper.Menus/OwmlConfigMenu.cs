@@ -6,7 +6,11 @@ namespace OWML.ModHelper.Menus
 	public class OwmlConfigMenu : ModConfigMenuBase
 	{
 		private const string DebugModeTitle = "Debug mode";
+		private const string DebugModeTooltip = "Enable verbose logging. Some effects only enable/disable when game is reloaded.";
 		private const string ForceExeTitle = "Force run through .exe";
+		private const string ForceExeTooltip = "Force OWML to run the game's exe, rather than going through Steam/Epic.";
+		private const string IncrementalGCTitle = "Enable incremental GC";
+		private const string IncrementalGCTooltip = "Incremental GC (garbage collection) can help reduce lag spikes with some mods. Only has effect after game is reloaded.";
 
 		private readonly IOwmlConfig _config;
 		private readonly IOwmlConfig _defaultConfig;
@@ -27,20 +31,31 @@ namespace OWML.ModHelper.Menus
 		{
 			AddConfigInput(DebugModeTitle, _config.DebugMode, 2);
 			AddConfigInput(ForceExeTitle, _config.ForceExe, 3);
+			AddConfigInput(IncrementalGCTitle, _config.IncrementalGC, 4);
 			UpdateNavigation();
 			SelectFirst();
 		}
 
 		public override void UpdateUIValues()
 		{
-			GetToggleInput(DebugModeTitle).Value = _config.DebugMode;
-			GetToggleInput(ForceExeTitle).Value = _config.ForceExe;
+			var debug = GetToggleInput(DebugModeTitle);
+			debug.Value = _config.DebugMode;
+			SetupInputTooltip(debug, DebugModeTooltip);
+
+			var exe = GetToggleInput(ForceExeTitle);
+			exe.Value = _config.ForceExe;
+			SetupInputTooltip(exe, ForceExeTooltip);
+
+			var gc = GetToggleInput(IncrementalGCTitle);
+			gc.Value = _config.IncrementalGC;
+			SetupInputTooltip(gc, IncrementalGCTooltip);
 		}
 
 		protected override void OnSave()
 		{
 			_config.DebugMode = GetInputValue<bool>(DebugModeTitle);
 			_config.ForceExe = GetInputValue<bool>(ForceExeTitle);
+			_config.IncrementalGC = GetInputValue<bool>(IncrementalGCTitle);
 			JsonHelper.SaveJsonObject($"{_config.OWMLPath}{Constants.OwmlConfigFileName}", _config);
 			Close();
 		}
@@ -50,6 +65,7 @@ namespace OWML.ModHelper.Menus
 			_config.GamePath = _defaultConfig.GamePath;
 			_config.DebugMode = _defaultConfig.DebugMode;
 			_config.ForceExe = _defaultConfig.ForceExe;
+			_config.IncrementalGC = _defaultConfig.IncrementalGC;
 			UpdateUIValues();
 		}
 	}

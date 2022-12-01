@@ -7,10 +7,13 @@ namespace OWML.ModHelper.Events
 {
 	public class ModUnityEvents : MonoBehaviour, IModUnityEvents
 	{
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action OnUpdate;
 
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action OnFixedUpdate;
 
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action OnLateUpdate;
 
 		public void FireOnNextUpdate(Action action) => 

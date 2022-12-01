@@ -5,7 +5,9 @@ namespace OWML.ModHelper.Events
 {
 	public class ModSceneEvents : IModSceneEvents
 	{
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action<OWScene, OWScene> OnStartSceneChange;
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action<OWScene, OWScene> OnCompleteSceneChange;
 
 		public ModSceneEvents()

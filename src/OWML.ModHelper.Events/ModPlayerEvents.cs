@@ -6,6 +6,7 @@ namespace OWML.ModHelper.Events
 {
 	public class ModPlayerEvents : IModPlayerEvents
 	{
+		[Obsolete("Use HarmonyHelper instead.")]
 		public event Action<PlayerBody> OnPlayerAwake;
 
 		public void Init(IModEvents events)
