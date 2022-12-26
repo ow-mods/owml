@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="game-versions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
