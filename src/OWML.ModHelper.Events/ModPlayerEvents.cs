@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace OWML.ModHelper.Events
 {
-	[Obsolete("Use HarmonyHelper instead.")]
+	[Obsolete("Use Harmony patches instead.")]
 	public class ModPlayerEvents : IModPlayerEvents
 	{
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		public event Action<PlayerBody> OnPlayerAwake;
 
 		public void Init(IModEvents events)

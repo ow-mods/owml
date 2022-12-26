@@ -8,14 +8,14 @@ namespace OWML.ModHelper.Events
 {
 	public class ModEvents : IModEvents
 	{
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		public IModPlayerEvents Player { get; }
 
 		public IModSceneEvents Scenes { get; }
 
 		public IModUnityEvents Unity { get; }
 
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		public event Action<MonoBehaviour, Common.Events> Event;
 
 		[Obsolete("Use Event instead.")]
@@ -59,7 +59,7 @@ namespace OWML.ModHelper.Events
 			}
 		}
 
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		public void Subscribe<T>(Common.Events ev) where T : MonoBehaviour
 		{
 			SubscribeToEvent<T>(ev);
