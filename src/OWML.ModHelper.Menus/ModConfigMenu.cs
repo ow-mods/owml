@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using Newtonsoft.Json.Linq;
+using OWML.Common;
 using OWML.Common.Menus;
 using System;
 using System.Linq;
@@ -23,8 +24,32 @@ namespace OWML.ModHelper.Menus
 			var index = 3;
 			foreach (var setting in ModData.Config.Settings)
 			{
-				AddConfigInput(setting.Key, setting.Value, index++);
+				if (setting.Value is not JObject obj)
+				{
+					AddConfigInput(setting.Key, setting.Value, index++);
+					continue;
+				}
+
+				if (Convert.ToBoolean(obj["dlcOnly"]))
+				{
+					var ownsDlc = EntitlementsManager.IsDlcOwned();
+					if (ownsDlc == EntitlementsManager.AsyncOwnershipStatus.NotReady)
+					{
+						Console.WriteLine("Tried to add inputs while DLC ownership status was not determined.", MessageType.Error);
+						AddConfigInput(setting.Key, setting.Value, index++);
+					}
+
+					if (ownsDlc == EntitlementsManager.AsyncOwnershipStatus.Owned)
+					{
+						AddConfigInput(setting.Key, setting.Value, index++);
+					}
+				}
+				else
+				{
+					AddConfigInput(setting.Key, setting.Value, index++);
+				}
 			}
+
 			UpdateNavigation();
 			SelectFirst();
 		}

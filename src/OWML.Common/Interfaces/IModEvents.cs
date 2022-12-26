@@ -3,19 +3,16 @@ using UnityEngine;
 
 namespace OWML.Common
 {
-	[Obsolete("Use HarmonyHelper instead.")]
 	public interface IModEvents
 	{
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		IModPlayerEvents Player { get; }
 
-		[Obsolete("Use HarmonyHelper instead.")]
 		IModSceneEvents Scenes { get; }
 
-		[Obsolete("Use HarmonyHelper instead.")]
 		IModUnityEvents Unity { get; }
 
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		event Action<MonoBehaviour, Events> Event;
 
 		[Obsolete("Use Event instead.")]

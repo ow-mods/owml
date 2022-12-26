@@ -4,13 +4,13 @@ namespace OWML.Common
 {
 	public interface IModUnityEvents
 	{
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		event Action OnUpdate;
 
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		event Action OnFixedUpdate;
 
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		event Action OnLateUpdate;
 
 		void FireOnNextUpdate(Action action);

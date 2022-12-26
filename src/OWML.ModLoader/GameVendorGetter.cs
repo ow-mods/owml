@@ -2,11 +2,9 @@
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OWML.ModLoader
 {
@@ -30,8 +28,19 @@ namespace OWML.ModLoader
 				return _gameVendor;
 			}
 
-			var gameDll = $"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll";
-			var assembly = Assembly.LoadFrom(gameDll);
+			var gameDll = Path.Combine(_owmlConfig.ManagedPath, "Assembly-CSharp.dll");
+
+			Assembly assembly = null;
+			try
+			{
+				assembly = Assembly.LoadFrom(gameDll);
+			}
+			catch (Exception ex)
+			{
+				_console.WriteLine($"Exception while trying to load game assembly to determine vendor: {ex}", MessageType.Error);
+				return _gameVendor = GameVendor.None;
+			}
+
 			var types = assembly.GetTypes();
 
 			if (types.Any(x => x.Name == "EpicEntitlementRetriever"))

@@ -2,9 +2,10 @@
 
 namespace OWML.Common
 {
+	[Obsolete("Use Harmony patches instead.")]
 	public interface IModPlayerEvents
 	{
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		event Action<PlayerBody> OnPlayerAwake;
 
 		void Init(IModEvents events);

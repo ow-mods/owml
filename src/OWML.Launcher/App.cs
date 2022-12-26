@@ -177,8 +177,20 @@ namespace OWML.Launcher
 					return;
 				}
 
-				var gameDll = $"{_owmlConfig.ManagedPath}/Assembly-CSharp.dll";
-				var assembly = Assembly.LoadFrom(gameDll);
+				var gameDll = Path.Combine(_owmlConfig.ManagedPath, "Assembly-CSharp.dll");
+
+				Assembly assembly = null;
+				try
+				{
+					assembly = Assembly.LoadFrom(gameDll);
+				}
+				catch (Exception ex)
+				{
+					_writer.WriteLine($"Exception while trying to load game assembly: {ex}\nLaunching game directly...", MessageType.Error);
+					StartGameViaExe();
+					return;
+				}
+
 				var types = assembly.GetTypes();
 				var isEpic = types.Any(x => x.Name == "EpicEntitlementRetriever");
 				var isSteam = types.Any(x => x.Name == "SteamEntitlementRetriever");
