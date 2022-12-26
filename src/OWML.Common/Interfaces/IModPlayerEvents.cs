@@ -2,6 +2,7 @@
 
 namespace OWML.Common
 {
+	[Obsolete("Use HarmonyHelper instead.")]
 	public interface IModPlayerEvents
 	{
 		[Obsolete("Use HarmonyHelper instead.")]
