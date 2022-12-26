@@ -5,14 +5,14 @@ namespace OWML.Common
 {
 	public interface IModEvents
 	{
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		IModPlayerEvents Player { get; }
 
 		IModSceneEvents Scenes { get; }
 
 		IModUnityEvents Unity { get; }
 
-		[Obsolete("Use HarmonyHelper instead.")]
+		[Obsolete("Use Harmony patches instead.")]
 		event Action<MonoBehaviour, Events> Event;
 
 		[Obsolete("Use Event instead.")]
