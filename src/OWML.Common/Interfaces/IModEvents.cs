@@ -8,7 +8,6 @@ namespace OWML.Common
 		[Obsolete("Use HarmonyHelper instead.")]
 		IModPlayerEvents Player { get; }
 
-		[Obsolete("Use HarmonyHelper instead.")]
 		IModSceneEvents Scenes { get; }
 
 		IModUnityEvents Unity { get; }
