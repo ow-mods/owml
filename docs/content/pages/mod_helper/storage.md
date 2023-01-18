@@ -40,7 +40,7 @@ public class MyCoolMod : ModBehaviour {
         var myData = ModHelper.Storage.Load<MyModData>("save.json");
         ModHelper.Console.WriteLine($"You last used my mod on {myData.lastRunDate.ToShortDateString()}");
         myData.lastRunDate = DateTime.now();
-        ModHelper.Storage.Save<MyModData>("save.json", myData);
+        ModHelper.Storage.Save<MyModData>(myData, "save.json");
     }
 
 }
