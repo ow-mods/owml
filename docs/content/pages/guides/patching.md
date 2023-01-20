@@ -212,7 +212,7 @@ public class MyPatchClass {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(ShipComponent), nameof(ShipComponent.repairFraction), MethodType.Getter)]
     public static void ShipComponent_RepairFraction_Get(ref float __result) {
-        MyCoolMod.Instance.ModHelper.Console.WriteLine($"This component is at {__result * 100}%!")
+        MyCoolMod.Instance.ModHelper.Console.WriteLine($"This component is at {__result * 100}%!");
     }
 }
 ```
@@ -230,7 +230,7 @@ public class MyPatchClass {
     [HarmonyPatch(typeof(ReferenceFrameTracker), nameof(ReferenceFrameTracker.UntargetReferenceFrame), new System.Type[] { typeof(bool) })]
     public static void ReferenceFrameTracker_UntargetReferenceFrame(bool playAudio)
     {
-        MyCoolMod.Instance.ModHelper.Console.WriteLine($"playAudio is {playAudio}!")
+        MyCoolMod.Instance.ModHelper.Console.WriteLine($"playAudio is {playAudio}!");
     }
 }
 ```

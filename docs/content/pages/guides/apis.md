@@ -52,7 +52,7 @@ Now, use `ModHelper.Interaction.TryGetModApi` to obtain the API for the mod.
 ```csharp
 public class MyCoolMod : ModBehaviour {
     public void Start() {
-        var myApi = ModHelper.TryGetModApi<IMyCoolApi>("Bwc9876.MyCoolMod");
+        var myApi = ModHelper.Interaction.TryGetModApi<IMyCoolApi>("Bwc9876.MyCoolMod");
         ModHelper.Console.WriteLine(myApi.Echo("Hello, World!"));
     }
 }
