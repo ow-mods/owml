@@ -3,5 +3,6 @@
 	"debugMode": false,
 	"forceExe": false,
 	"incrementalGC": true,
+	"checkVersion": true,
   "socketPort": 0
 }

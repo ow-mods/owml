@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using OWML.Common;
 
 namespace OWML.Launcher
@@ -28,37 +28,17 @@ namespace OWML.Launcher
 			var minVersion = new Version(_owmlManifest.MinGameVersion);
 			var maxVersion = new Version(_owmlManifest.MaxGameVersion);
 
-			var showPopup = false;
-			var reason = "";
-
 			if (!isValidFormat)
 			{
-				showPopup = true;
-				reason = "Invalid game version format.";
-				_writer.WriteLine("Warning - Invalid game version format", MessageType.Warning);
+				_writer.WriteLine("Invalid game version format. You can disable this check in the OWML config.", MessageType.Warning);
 			}
 			else if (gameVersion > maxVersion)
 			{
-				showPopup = true;
-				reason = $"New Outer Wilds version. This version of OWML was built for {maxVersion}.";
-				_writer.WriteLine($"New Outer Wilds version. This version of OWML was built for {maxVersion}.", MessageType.Warning);
+				_writer.WriteLine($"New Outer Wilds version ({gameVersionString}). This version of OWML was built for {maxVersion}. You can disable this check in the OWML config.", MessageType.Warning);
 			}
 			else if (gameVersion < minVersion)
 			{
-				showPopup = true;
-				reason = $"Outdated Outer Wilds version. The oldest compatible version is {minVersion}.";
-				_writer.WriteLine($"Outdated Outer Wilds version. The oldest compatible version is {minVersion}.", MessageType.Warning);
-			}
-
-			if (showPopup)
-			{
-				var result = MessageBox.Show($"OWML could not verify if it will work on this version of Outer Wilds ({gameVersionString}).\n\n" +
-					$"Reason: {reason}\n\n" +
-					$"Do you want to continue?", "OWML.Launcher.GameVersionHandler", MessageBoxButtons.YesNo);
-				if (result == DialogResult.No)
-				{
-					_processHelper.KillCurrentProcess();
-				}
+				_writer.WriteLine($"Outdated Outer Wilds version ({gameVersionString}). The oldest compatible version is {minVersion}. You can disable this check in the OWML config.", MessageType.Fatal);
 			}
 		}
 	}

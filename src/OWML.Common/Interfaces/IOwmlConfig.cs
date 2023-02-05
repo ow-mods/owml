@@ -24,6 +24,8 @@
 
 		bool IncrementalGC { get; set; }
 
+		bool CheckVersion { get; set; }
+
 		int SocketPort { get; set; }
 	}
 }

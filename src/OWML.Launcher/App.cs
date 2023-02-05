@@ -86,7 +86,10 @@ namespace OWML.Launcher
 
 		private void CheckGameVersion()
 		{
-			_versionHandler.CompareVersions();
+			if (_owmlConfig.CheckVersion)
+			{
+				_versionHandler.CompareVersions();
+			}
 		}
 
 		private void CopyGameFiles()
