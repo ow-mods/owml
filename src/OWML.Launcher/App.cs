@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
 using OWML.Common;
 using OWML.Utils;
@@ -143,24 +140,13 @@ namespace OWML.Launcher
 		{
 			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
 
-			var domain = AppDomain.CreateDomain(
-				$"{modData.Manifest.UniqueName}.Patcher",
-				AppDomain.CurrentDomain.Evidence,
-				new AppDomainSetup { ApplicationBase = _owmlConfig.GamePath });
-
 			try
 			{
-				domain.ExecuteAssembly(
-					modData.Manifest.PatcherPath,
-					new[] { Path.GetDirectoryName(modData.Manifest.PatcherPath) });
+				Process.Start(modData.Manifest.PatcherPath, Path.GetDirectoryName(modData.Manifest.PatcherPath));
 			}
 			catch (Exception ex)
 			{
 				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex}", MessageType.Error);
-			}
-			finally
-			{
-				AppDomain.Unload(domain);
 			}
 		}
 
