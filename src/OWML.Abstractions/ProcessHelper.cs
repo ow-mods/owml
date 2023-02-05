@@ -7,13 +7,18 @@ namespace OWML.Abstractions
 	{
 		public void Start(string path, string[] args = null)
 		{
-			if (args is null)
+			var processStartInfo = new ProcessStartInfo
 			{
-				Process.Start(path);
-				return;
+				FileName = path,
+				UseShellExecute = true
+			};
+
+			if (args != null)
+			{
+				processStartInfo.Arguments = string.Join(" ", args);
 			}
 
-			Process.Start(path, string.Join(" ", args));
+			Process.Start(processStartInfo);
 		}
 
 		public void KillCurrentProcess() =>
