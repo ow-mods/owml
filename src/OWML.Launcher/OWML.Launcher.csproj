@@ -1,18 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-	  <LangVersion>9.0</LangVersion>
-	  <OutputType>Exe</OutputType>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OWML.Abstractions\OWML.Abstractions.csproj" />
+    <ProjectReference Include="..\OWML.Common\OWML.Common.csproj" />
     <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
+    <ProjectReference Include="..\OWML.Logging\OWML.Logging.csproj" />
+    <ProjectReference Include="..\OWML.ModLoader\OWML.ModLoader.csproj" />
     <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <ProjectReference Include="..\OWML.Utils\OWML.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
