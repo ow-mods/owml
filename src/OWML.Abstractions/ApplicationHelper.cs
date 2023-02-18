@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using OWML.Common;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace OWML.Abstractions
 {
 	public class ApplicationHelper : IApplicationHelper
 	{
-		public string DataPath => Application.dataPath;
+		public string DataPath => Path.GetFullPath(Application.dataPath);
 
 		public string Version => Application.version;
 
