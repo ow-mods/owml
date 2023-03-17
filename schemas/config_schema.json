@@ -1,0 +1,199 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "$docs": {
+        "Hide_In_Nav": true
+    },
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "enabled"
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "The JSON schema for this config"
+        },
+        "enabled": {
+            "type": "boolean",
+            "description": "Should this mod be loaded?"
+        },
+        "settings": {
+            "description": "Options for users to edit",
+            "$ref": "#/definitions/options"
+        }
+    },
+    "definitions": {
+        "options": {
+            "type": "object",
+            "additionalProperties": {
+                "oneOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "boolean"
+                    },
+                    {
+                        "type": "number"
+                    },
+                    {
+                        "$ref": "#/definitions/optionsObject"
+                    }
+                ]
+            }
+        },
+        "optionsObject": {
+            "allOf": [
+                {
+                    "type": "object",
+                    "required": [
+                        "type"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "separator",
+                                "slider",
+                                "toggle",
+                                "selector",
+                                "text",
+                                "number"
+                            ]
+                        },
+                        "dlcOnly": {
+                            "type": "boolean",
+                            "description": "Should this setting only show when the DLC is owned?"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "Label to show in the options menu"
+                        },
+                        "tooltip": {
+                            "type": "string",
+                            "description": "Tooltip to show when hovering on the option"
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "separator" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsSeparator"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "toggle" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsToggle"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "number" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsNumber"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "text" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsText"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "slider" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsSlider"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "selector" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsSelector"
+                    }
+                }
+            ]
+        },
+        "optionsSeparator": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "optionsToggle": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "optionsNumber": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "number"
+                }
+            }
+        },
+        "optionsText": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "optionsSlider": {
+            "type": "object",
+            "required": [
+                "min",
+                "max"
+            ],
+            "properties": {
+                "value": {
+                    "type": "number"
+                },
+                "min": {
+                    "type": "number",
+                    "description": "Minimum value for this slider"
+                },
+                "max": {
+                    "type": "number",
+                    "description": "Maximum value for this slider"
+                }
+            }
+        },
+        "optionsSelector": {
+            "type": "object",
+            "required": [
+                "options"
+            ],
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "options": {
+                    "type": "array",
+                    "description": "List of options the user selects from",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
