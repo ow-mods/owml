@@ -13,6 +13,7 @@ First things first, you're going to need to define your settings, open up `defau
 
 ```json
 {
+    "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
     "enabled": true,
     "settings": {
      
@@ -26,6 +27,7 @@ For example, if I wanted a check box called "Party Mode", I would do:
 
 ```json
 {
+    "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
     "enabled": true,
     "settings": {
         "Party Mode": true
@@ -37,6 +39,7 @@ You can also do other data types like numbers and strings
 
 ```json
 {
+    "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
     "enabled": true,
     "settings": {
         "Number Of Ducks": 5,
@@ -51,6 +54,7 @@ Complex settings use JSON objects to allow for more customization. You can use i
 
 ```json
 {
+    "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
     "enabled": true,
     "settings": {
         "Favorite Color": {
@@ -70,6 +74,7 @@ And sliders as well:
 
 ```json
 {
+    "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
     "enabled": true,
     "settings": {
         "Bumpscosity": {
@@ -82,10 +87,11 @@ And sliders as well:
 }
 ```
 
-You can also seperate your options with separators:
+You can also separate your options with separators:
 
 ```json
 {
+    "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
     "enabled": true,
     "settings": {
         "My Cool Value": 50,
@@ -96,6 +102,8 @@ You can also seperate your options with separators:
     }
 }
 ```
+
+For a full list of the types of inputs, check [our schema](https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json).
 
 ## Getting Values In C\#
 
