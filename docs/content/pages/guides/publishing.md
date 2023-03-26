@@ -49,6 +49,10 @@ Fill out the description with something like "First Release!", and press publish
 
 You've successfully created a release on GitHub!
 
+### 403 Error
+
+If you get a 403 error, head to the repository settings page, and under "Actions -> General" scroll to the bottom under "Workflow permissions" and click "Read and Write Permissions", then click save. This will enable GitHub actions to create releases on your repo.
+
 ## Adding Your Mod To The Database
 
 Now all that's left is to add your mod to the database, you can do so by following [this form](https://github.com/ow-mods/ow-mod-db/issues/new?assignees=&labels=add-mod&template=add-mod.yml&title=%5BYour+mod+name+here%5D){target="_blank"}. An admin will review your mod, make sure everything is setup correctly, and approve it into the database.  
