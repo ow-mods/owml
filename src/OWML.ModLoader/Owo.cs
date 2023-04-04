@@ -183,7 +183,7 @@ namespace OWML.ModLoader
 			}
 
 			_console.WriteLine($"Loading assembly: {assemblyPath}", MessageType.Debug);
-			var assembly = Assembly.LoadFile(assemblyPath);
+			var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyPath));
 			_console.WriteLine($"Loaded {assembly.FullName}", MessageType.Debug);
 
 			try
