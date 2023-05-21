@@ -7,6 +7,7 @@ using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Input;
 using OWML.ModHelper.Interaction;
 using OWML.Utils;
 using System;
@@ -237,6 +238,7 @@ namespace OWML.ModLoader
 				.Add<IModEvents, ModEvents>()
 				.Add<IInterfaceProxyFactory, InterfaceProxyFactory>()
 				.Add<IModInteraction, ModInteraction>()
+				.Add<IRebindingHelper, RebindingHelper>()
 				.Add<IModHelper, ModHelper.ModHelper>()
 				.Resolve<IModHelper>();
 

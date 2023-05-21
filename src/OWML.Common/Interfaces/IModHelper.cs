@@ -25,5 +25,7 @@ namespace OWML.Common
 		IOwmlConfig OwmlConfig { get; }
 
 		IModInteraction Interaction { get; }
+
+		IRebindingHelper RebindingHelper { get; }
 	}
 }
