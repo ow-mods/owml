@@ -90,7 +90,16 @@ namespace OWML.ModHelper.Menus
 			UpdateNavigation();
 		}
 
-		public override void SelectFirst() => Menu.SetSelectOnActivate(Selectables[0]);
+		public override void SelectFirst()
+		{
+			if (Selectables == null || Selectables.Count == 0)
+			{
+				Console.WriteLine("No selectables in ModMenuWithSelectables", MessageType.Error);
+				return;
+			}
+
+			Menu.SetSelectOnActivate(Selectables[0]);
+		}
 
 		public override void UpdateNavigation()
 		{

@@ -17,7 +17,7 @@ namespace OWML.ModHelper.Menus
 
 		private readonly IModStorage _storage;
 		private readonly List<IModConfigMenu> _modConfigMenus = new();
-		private readonly List<IModData> _noConfigMods = new();
+		private readonly List<(IModData data, IModBehaviour mod)> _noConfigMods = new();
 		private readonly List<MenuOption> _menuOptions = new();
 		private IModMenus _menus;
 
@@ -39,7 +39,7 @@ namespace OWML.ModHelper.Menus
 			}
 			else
 			{
-				_noConfigMods.Add(modData);
+				_noConfigMods.Add((modData, mod));
 			}
 		}
 
@@ -57,6 +57,19 @@ namespace OWML.ModHelper.Menus
 
 		public void Initialize(IModMenus menus, IModOWMenu owMenu)
 		{
+			var modsToRemove = new List<(IModData data, IModBehaviour mod)>();
+
+			foreach (var item in _noConfigMods)
+			{
+				if (item.mod.ModHelper.RebindingHelper.Rebindables.Count != 0)
+				{
+					modsToRemove.Add(item);
+					_modConfigMenus.Add(new ModConfigMenu(item.data, item.mod, _storage, Console));
+				}
+			}
+
+			_noConfigMods.RemoveAll(x => modsToRemove.Contains(x));
+
 			_modConfigMenus.ForEach(x => x.RemoveAllListeners());
 			OwmlMenu.RemoveAllListeners();
 
@@ -98,17 +111,17 @@ namespace OWML.ModHelper.Menus
 			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
 			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "-- ENABLED MODS --");
 
-			foreach (var mod in _noConfigMods.Where(modData => modData.Config.Enabled))
+			foreach (var (data, mod) in _noConfigMods.Where(x => x.data.Config.Enabled))
 			{
-				index = CreateSeparator(options, modsTab, index, mod.Manifest.Name);
+				index = CreateSeparator(options, modsTab, index, data.Manifest.Name);
 			}
 
 			var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
 			index = CreateBlockOfButtons(options, modsTab, disabledMods, index, "-- DISABLED MODS --");
 
-			foreach (var mod in _noConfigMods.Where(modData => !modData.Config.Enabled))
+			foreach (var (data, mod) in _noConfigMods.Where(x => !x.data.Config.Enabled))
 			{
-				index = CreateSeparator(options, modsTab, index, mod.Manifest.Name);
+				index = CreateSeparator(options, modsTab, index, data.Manifest.Name);
 			}
 
 			modsTab.Menu.SetValue("_menuOptions", _menuOptions.ToArray());
@@ -118,6 +131,8 @@ namespace OWML.ModHelper.Menus
 		private int CreateBlockOfButtons(IModTabbedMenu options, IModTabMenu menu,
 			List<IModConfigMenu> configMenus, int index, string title)
 		{
+			Console.WriteLine($"CreateBlockOfButtons - {configMenus.Count} mods");
+
 			index = CreateSeparator(options, menu, index, $"{Environment.NewLine}{title}{Environment.NewLine}");
 
 			if (configMenus.Count <= 0)
@@ -132,6 +147,9 @@ namespace OWML.ModHelper.Menus
 				InitConfigMenu(modConfigMenu, options, modTab);
 				modButton.OnClick += () => modTab.Open();
 				menu.AddButton((IModButtonBase)modButton, index++);
+
+				var rebindButton = CreateButton(options, "Rebinding");
+				modTab.AddButton((IModButtonBase)rebindButton, 0);
 			}
 			return index;
 		}
