@@ -34,7 +34,7 @@ namespace OWML.ModLoader
 		private IModData GetMod(string manifestFilename)
 		{
 			var manifest = JsonHelper.LoadJsonObject<ModManifest>(manifestFilename);
-			manifest.ModFolderPath = manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName));
+			manifest.ModFolderPath = Path.GetFullPath(manifestFilename.Substring(0, manifestFilename.IndexOf(Constants.ModManifestFileName)));
 			return InitModData(manifest);
 		}
 
