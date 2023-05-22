@@ -21,6 +21,10 @@ namespace OWML.ModHelper.Input
 
 			// this adds the prefix once per mod, but it shouldn't affect anything?
 			harmony.AddPrefix(typeof(InputCommandManager).GetMethod("LoadActions", new Type[] { typeof(string) }), typeof(Patches), nameof(Patches.LoadActions));
+
+			//harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateInputCommands", BindingFlags.Static | BindingFlags.Public), typeof(Patches), nameof(Patches.TryCreateInputCommands));
+			//harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateBasicAction", BindingFlags.Static | BindingFlags.NonPublic), typeof(Patches), nameof(Patches.TryCreateBasicAction));
+			//harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateAxisAction", BindingFlags.Static | BindingFlags.NonPublic), typeof(Patches), nameof(Patches.TryCreateAxisAction));
 		}
 
 		public IInputCommands GetCommand(InputConsts.InputCommandType commandType) => InputLibrary.GetInputCommand(commandType);

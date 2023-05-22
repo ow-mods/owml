@@ -147,9 +147,7 @@ namespace OWML.ModHelper.Menus
 				InitConfigMenu(modConfigMenu, options, modTab);
 				modButton.OnClick += () => modTab.Open();
 				menu.AddButton((IModButtonBase)modButton, index++);
-
-				var rebindButton = CreateButton(options, "Rebinding");
-				modTab.AddButton((IModButtonBase)rebindButton, 0);
+				InitRebindingOptions(modConfigMenu, options, modTab);
 			}
 			return index;
 		}
@@ -166,6 +164,27 @@ namespace OWML.ModHelper.Menus
 			var seperatorTemplate = new ModSeparator(modConfigMenu);
 			modConfigMenu.Initialize(modTabMenu.Menu, toggleTemplate, sliderTemplate, textInputTemplate, numberInputTemplate, selectorTemplate, seperatorTemplate);
 			modConfigMenu.UpdateUIValues();
+		}
+
+		private void InitRebindingOptions(IModConfigMenu modConfigMenu, IModTabbedMenu options, IModTabMenu menu)
+		{
+			if (!modConfigMenu.ModData.Config.Enabled)
+			{
+				return;
+			}
+
+			var rebindableIds = modConfigMenu.Mod.ModHelper.RebindingHelper.Rebindables;
+			var rebindingElementTemplate = options.InputTab.Menu.transform.Find("MenuGeneral").Find("UIElement-Pause");
+
+			foreach (var id in rebindableIds)
+			{
+				// sorry, but i have no idea how to extend the current menu system for this. so im just doing it the hacky way
+				var newRebindingElement = UnityEngine.Object.Instantiate(rebindingElementTemplate);
+				newRebindingElement.transform.parent = menu.Menu.transform.Find("Scroll View").Find("Viewport").Find("Content");
+				newRebindingElement.transform.localScale = Vector3.one;
+				newRebindingElement.GetComponent<KeyRebindingElement>().SetValue("_rebindId", id);
+				newRebindingElement.GetComponent<KeyRebindingElement>().Initialize();
+			}
 		}
 
 		private IModButton CreateButton(IModTabbedMenu options, string name)
