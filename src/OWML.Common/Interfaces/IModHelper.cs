@@ -1,6 +1,4 @@
-﻿using OWML.Common.Menus;
-
-namespace OWML.Common
+﻿namespace OWML.Common
 {
 	public interface IModHelper
 	{
@@ -15,8 +13,6 @@ namespace OWML.Common
 		IModAssets Assets { get; }
 
 		IModStorage Storage { get; }
-
-		IModMenus Menus { get; }
 
 		IModManifest Manifest { get; }
 

@@ -2,13 +2,13 @@
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
-using OWML.Common.Menus;
 using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using OWML.ModHelper.Interaction;
+using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,6 @@ namespace OWML.ModLoader
 		private readonly IModFinder _modFinder;
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
-		private readonly IModMenus _menus;
 		private readonly IModSorter _sorter;
 		private readonly IUnityLogger _unityLogger;
 		private readonly IModSocket _socket;
@@ -38,6 +37,7 @@ namespace OWML.ModLoader
 		private readonly IModVersionChecker _modVersionChecker;
 		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IGameVendorGetter _vendorChecker;
+		private readonly IMenuManager _menuManager;
 		private readonly IGameVersions _gameVersions;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
@@ -45,7 +45,6 @@ namespace OWML.ModLoader
 			IModFinder modFinder,
 			IModConsole console,
 			IOwmlConfig owmlConfig,
-			IModMenus menus,
 			IModSorter sorter,
 			IUnityLogger unityLogger,
 			IModSocket socket,
@@ -56,12 +55,12 @@ namespace OWML.ModLoader
 			IModUnityEvents unityEvents,
 			IModVersionChecker modVersionChecker,
 			IHarmonyHelper harmonyHelper,
-			IGameVendorGetter vendorChecker)
+			IGameVendorGetter vendorChecker,
+			IMenuManager menuManager)
 		{
 			_modFinder = modFinder;
 			_console = console;
 			_owmlConfig = owmlConfig;
-			_menus = menus;
 			_sorter = sorter;
 			_unityLogger = unityLogger;
 			_socket = socket;
@@ -73,6 +72,7 @@ namespace OWML.ModLoader
 			_modVersionChecker = modVersionChecker;
 			_harmonyHelper = harmonyHelper;
 			_vendorChecker = vendorChecker;
+			_menuManager = menuManager;
 			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
 			_gameVersions = JsonHelper.LoadJsonObject<GameVersions>($"{_owmlConfig.ManagedPath}/{Constants.GameVersionsFileName}");
 		}
@@ -142,17 +142,21 @@ namespace OWML.ModLoader
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
-					_menus.ModsMenu?.AddMod(modData, null);
+					//_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
 
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
 
-				_menus.ModsMenu?.AddMod(modData, initMod);
+				//_menus.ModsMenu?.AddMod(modData, initMod);
 
 				_modList.Add(initMod);
 			}
+
+			_menuManager.OptionsMenuManager.CreateTabWithSubTabs("MODS");
+
+			_menuManager.TitleMenuManager.CreateTitleButton("MODS", 1, false);
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)
@@ -225,7 +229,6 @@ namespace OWML.ModLoader
 				.Add(_socket)
 				.Add(_objImporter)
 				.Add(_modList)
-				.Add(_menus)
 				.Add(_processHelper)
 				.Add(_unityEvents)
 				.Add<IHarmonyHelper, HarmonyHelper>()

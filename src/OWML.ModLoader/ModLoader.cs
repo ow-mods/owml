@@ -4,11 +4,12 @@ using OWML.ModHelper.Events;
 using OWML.Logging;
 using OWML.ModHelper.Assets;
 using OWML.Abstractions;
-using OWML.Common.Menus;
 using OWML.ModHelper.Menus;
 using OWML.Utils;
 using UnityEngine;
 using OWML.Common.Interfaces;
+using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
+using OWML.ModHelper.Menus.NewMenuSystem;
 
 namespace OWML.ModLoader
 {
@@ -59,15 +60,16 @@ namespace OWML.ModLoader
 				.Add<IModSceneEvents, ModSceneEvents>()
 				.Add<IModEvents, ModEvents>()
 				.Add<IModStorage, ModStorage>()
-				.Add<IModConfigMenuBase, OwmlConfigMenu>()
-				.Add<IModTabbedMenu, ModOptionsMenu>()
-				.Add<IModMainMenu, ModMainMenu>()
-				.Add<IModPauseMenu, ModPauseMenu>()
-				.Add<IModsMenu, ModsMenu>()
-				.Add<IModInputMenu, ModInputMenu>()
-				.Add<IModMessagePopup, ModMessagePopup>()
-				.Add<IModPopupManager, ModPopupManager>()
-				.Add<IModMenus, ModMenus>()
+				//.Add<IModConfigMenuBase, OwmlConfigMenu>()
+				//.Add<IModTabbedMenu, ModOptionsMenu>()
+				//.Add<IModMainMenu, ModMainMenu>()
+				//.Add<IModPauseMenu, ModPauseMenu>()
+				//.Add<IModsMenu, ModsMenu>()
+				//.Add<IModInputMenu, ModInputMenu>()
+				//.Add<IModMessagePopup, ModMessagePopup>()
+				//.Add<IModPopupManager, ModPopupManager>()
+				//.Add<IModMenus, ModMenus>()
+				.Add<IMenuManager, MenuManager>()
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()
 				.Add<IModVersionChecker, ModVersionChecker>()
