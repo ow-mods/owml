@@ -1,6 +1,8 @@
 ﻿using OWML.Common;
 using OWML.Utils;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine.InputSystem;
 
 namespace OWML.ModHelper.Input
@@ -13,14 +15,16 @@ namespace OWML.ModHelper.Input
 
 		private readonly IModConsole _console;
 
-		public RebindingHelper(IModConsole console)
+		public RebindingHelper(IModConsole console, IHarmonyHelper harmony)
 		{
 			_console = console;
+
+			// this adds the prefix once per mod, but it shouldn't affect anything?
+			harmony.AddPrefix(typeof(InputCommandManager).GetMethod("LoadActions", new Type[] { typeof(string) }), typeof(Patches), nameof(Patches.LoadActions));
 		}
 
 		public IInputCommands GetCommand(InputConsts.InputCommandType commandType) => InputLibrary.GetInputCommand(commandType);
 
-		// must be called in Start()
 		public InputConsts.InputCommandType RegisterRebindableAxis(string name, string primary)
 		{
 			_console.WriteLine($"RegisterRebindableAxis name:{name} primary:{primary}");
@@ -30,6 +34,22 @@ namespace OWML.ModHelper.Input
 
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
 			inputCommandData.TrySetAsAxis(rebindableId, primary);
+			InputCommandDefinitions.AddInputCommandData(inputCommandData);
+
+			Rebindables.Add(rebindableId);
+
+			return commandType;
+		}
+
+		public InputConsts.InputCommandType RegisterRebindableAxis(string name, string primary, string secondary)
+		{
+			_console.WriteLine($"RegisterRebindableAxis name:{name} primary:{primary} secondary:{secondary}");
+
+			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(name);
+			var rebindableId = EnumUtils.Create<RebindableID>(primary);
+
+			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
+			inputCommandData.TrySetAsAxis(rebindableId, primary, secondary);
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 
 			Rebindables.Add(rebindableId);
