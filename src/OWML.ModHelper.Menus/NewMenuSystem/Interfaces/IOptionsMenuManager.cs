@@ -18,6 +18,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		/// Creates a tab that has sub tabs - for example, the Input tab.
 		/// </summary>
 		/// <param name="name">The name of the tab.</param>
-		public void CreateTabWithSubTabs(string name);
+		public TabbedSubMenu CreateTabWithSubTabs(string name);
 	}
 }

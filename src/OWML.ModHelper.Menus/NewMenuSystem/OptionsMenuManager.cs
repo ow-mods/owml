@@ -1,4 +1,6 @@
-﻿using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
+﻿using OWML.Common;
+using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
+using OWML.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,20 +12,50 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 {
 	internal class OptionsMenuManager : IOptionsMenuManager
 	{
+		private readonly IModConsole _console;
+
+		public OptionsMenuManager(IModConsole console)
+		{
+			_console = console;
+		}
+
 		public void CreateStandardTab(string name)
 		{
 
 		}
 
-		public void CreateTabWithSubTabs(string name)
+		public TabbedSubMenu CreateTabWithSubTabs(string name)
 		{
+			_console.WriteLine($"CreateTabWithSubTabs");
 			var existingTabbedSubMenu = Resources.FindObjectsOfTypeAll<TabbedSubMenu>().Single(x => x.name == "GameplayMenu").gameObject;
 
+			var newSubMenu = Object.Instantiate(existingTabbedSubMenu);
+			newSubMenu.transform.parent = existingTabbedSubMenu.transform.parent;
+			newSubMenu.transform.localScale = Vector3.one;
+			var rectTransform = newSubMenu.GetComponent<RectTransform>();
+			rectTransform.SetLeft(75);
+			rectTransform.SetRight(75);
+			rectTransform.SetHeight(665);
+			rectTransform.SetPosY(-130);
 
-			CreateTabButton(name, null);
+			var tabbedSubMenu = newSubMenu.GetComponent<TabbedSubMenu>();
+
+			var tabButton = CreateTabButton(name, tabbedSubMenu);
+
+			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			optionsMenu._subMenus = optionsMenu._subMenus.Add(tabbedSubMenu);
+			optionsMenu._menuTabs = optionsMenu._menuTabs.Add(tabButton);
+			optionsMenu._tabSelectablePairs = optionsMenu._tabSelectablePairs.Add(
+				new TabbedMenu.TabSelectablePair()
+				{
+					tabButton = tabButton,
+					selectable = null
+				});
+
+			return tabbedSubMenu;
 		}
 
-		private void CreateTabButton(string name, TabbedMenu menu)
+		private TabButton CreateTabButton(string name, TabbedMenu menu)
 		{
 			var existingButton = Resources.FindObjectsOfTypeAll<TabButton>().Single(x => x.name == "Button-Graphics");
 
@@ -40,7 +72,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			text.text = name;
 
 			var tabButton = newButton.GetComponent<TabButton>();
-			tabButton._tabbedMenu = menu;
+			tabButton._tabbedMenu = menu ?? throw new System.Exception("Menu cannot be null.");
+
+			return tabButton;
 		}
 
 		private void RecalculateNavigation(List<Button> tabButtons)

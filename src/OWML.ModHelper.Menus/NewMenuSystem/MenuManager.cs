@@ -1,4 +1,5 @@
-﻿using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
+﻿using OWML.Common;
+using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 {
 	public class MenuManager : IMenuManager
 	{
+		private readonly IModConsole _console;
+
 		public ITitleMenuManager TitleMenuManager { get; private set; }
 		public IPauseMenuManager PauseMenuManager { get; private set; }
 		public IOptionsMenuManager OptionsMenuManager { get; private set; }
 
-		public MenuManager()
+		public MenuManager(IModConsole console, IHarmonyHelper harmony)
 		{
+			_console = console;
 			TitleMenuManager = new TitleMenuManager();
-			OptionsMenuManager = new OptionsMenuManager();
+			OptionsMenuManager = new OptionsMenuManager(console);
 		}
 	}
 }
