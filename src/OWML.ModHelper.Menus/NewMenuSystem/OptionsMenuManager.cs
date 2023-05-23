@@ -33,10 +33,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenu.transform.parent = existingTabbedSubMenu.transform.parent;
 			newSubMenu.transform.localScale = Vector3.one;
 			var rectTransform = newSubMenu.GetComponent<RectTransform>();
-			rectTransform.SetLeft(75);
-			rectTransform.SetRight(75);
-			rectTransform.SetHeight(665);
-			rectTransform.SetPosY(-130);
+			rectTransform.anchorMin = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMin;
+			rectTransform.anchorMax = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMax;
+			rectTransform.anchoredPosition3D = existingTabbedSubMenu.GetComponent<RectTransform>().anchoredPosition3D;
+			rectTransform.offsetMin = existingTabbedSubMenu.GetComponent<RectTransform>().offsetMin;
+			rectTransform.offsetMax = existingTabbedSubMenu.GetComponent<RectTransform>().offsetMax;
+			rectTransform.sizeDelta = existingTabbedSubMenu.GetComponent<RectTransform>().sizeDelta;
 
 			var tabbedSubMenu = newSubMenu.GetComponent<TabbedSubMenu>();
 
