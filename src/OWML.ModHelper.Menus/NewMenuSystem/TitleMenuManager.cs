@@ -30,7 +30,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButton.GetComponent<CanvasGroup>().alpha = 0;
 			var animController = GameObject.Find("TitleMenuManagers").GetComponent<TitleAnimationController>();
 			var list = animController._buttonFadeControllers.ToList();
-			list.Insert(newButton.transform.GetSiblingIndex() - 2, new CanvasGroupFadeController
+			list.Insert(newButton.transform.GetSiblingIndex() - 3, new CanvasGroupFadeController
 			{
 				group = newButton.GetComponent<CanvasGroup>()
 			});
@@ -53,7 +53,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var indexToSetTo = fromTop
 				? index + 2
-				: buttonAction.transform.parent.childCount - 2 - index;
+				: buttonAction.transform.parent.childCount - 3 - index;
 
 			buttonAction.transform.SetSiblingIndex(indexToSetTo);
 		}
