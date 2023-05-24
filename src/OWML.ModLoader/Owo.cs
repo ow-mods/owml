@@ -154,7 +154,9 @@ namespace OWML.ModLoader
 				_modList.Add(initMod);
 			}
 
-			_menuManager.OptionsMenuManager.CreateTabWithSubTabs("MODS");
+			var modsMenu = _menuManager.OptionsMenuManager.CreateTabWithSubTabs("MODS");
+			_menuManager.OptionsMenuManager.AddSubTab(modsMenu, "OWML");
+			_menuManager.OptionsMenuManager.AddSubTab(modsMenu, "MODS");
 
 			_menuManager.TitleMenuManager.CreateTitleButton("MODS", 1, false);
 		}

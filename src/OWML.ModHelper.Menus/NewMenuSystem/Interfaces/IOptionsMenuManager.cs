@@ -19,5 +19,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		/// </summary>
 		/// <param name="name">The name of the tab.</param>
 		public TabbedSubMenu CreateTabWithSubTabs(string name);
+
+		public Menu AddSubTab(TabbedSubMenu menu, string name);
 	}
 }

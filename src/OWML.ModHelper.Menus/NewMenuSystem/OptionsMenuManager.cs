@@ -54,7 +54,64 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					selectable = null
 				});
 
+			Object.Destroy(tabbedSubMenu._subMenus[0].gameObject);
+			Object.Destroy(tabbedSubMenu._subMenus[1].gameObject);
+			Object.Destroy(tabbedSubMenu._subMenus[2].gameObject);
+			tabbedSubMenu._subMenus = null;
+			Object.Destroy(tabbedSubMenu._tabSelectablePairs[0].tabButton.gameObject);
+			Object.Destroy(tabbedSubMenu._tabSelectablePairs[1].tabButton.gameObject);
+			Object.Destroy(tabbedSubMenu._tabSelectablePairs[2].tabButton.gameObject);
+			tabbedSubMenu._tabSelectablePairs = null;
+			tabbedSubMenu._selectOnActivate = null;
+
 			return tabbedSubMenu;
+		}
+
+		public Menu AddSubTab(TabbedSubMenu menu, string name)
+		{
+			var existingTabbedSubMenu = Resources.FindObjectsOfTypeAll<TabbedSubMenu>().Single(x => x.name == "GameplayMenu").gameObject;
+
+			var existingSubMenu = existingTabbedSubMenu.GetComponent<TabbedSubMenu>()._subMenus[0].gameObject;
+			var existingSubMenuTabButton = existingTabbedSubMenu.GetComponent<TabbedSubMenu>()._tabSelectablePairs[0].tabButton.gameObject;
+
+			var newSubMenuTabButton = Object.Instantiate(existingSubMenuTabButton);
+			newSubMenuTabButton.transform.parent = menu.transform.Find("SubMenuTabs");
+			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 2);
+			newSubMenuTabButton.name = $"Button-{name}Tab";
+			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
+			newSubMenuTabButton.GetComponentInChildren<Text>().text = name;
+
+			var newSubMenu = Object.Instantiate(existingSubMenu);
+			newSubMenu.transform.parent = menu.transform;
+			newSubMenu.name = $"Menu{name}";
+
+			var rt = newSubMenu.GetComponent<RectTransform>();
+			var ert = existingSubMenu.GetComponent<RectTransform>();
+			rt.anchorMin = ert.anchorMin;
+			rt.anchorMax = ert.anchorMax;
+			rt.anchoredPosition3D = ert.anchoredPosition3D;
+			rt.offsetMin = ert.offsetMin;
+			rt.offsetMax = ert.offsetMax;
+			rt.sizeDelta = ert.sizeDelta;
+
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newSubMenuTabButton.GetComponent<Button>();
+			}
+
+			menu._subMenus = menu._subMenus == null
+				? (new[] { newSubMenu.GetComponent<Menu>() })
+				: menu._subMenus.Add(newSubMenu.GetComponent<Menu>());
+
+			menu._tabSelectablePairs = menu._tabSelectablePairs == null
+				? (new TabbedMenu.TabSelectablePair[] { new TabbedMenu.TabSelectablePair() { tabButton = newSubMenuTabButton.GetComponent<TabButton>() } })
+				: menu._tabSelectablePairs.Add(new TabbedMenu.TabSelectablePair() { tabButton = newSubMenuTabButton.GetComponent<TabButton>() });
+
+			newSubMenuTabButton.GetComponent<TabButton>()._tabbedMenu = newSubMenu.GetComponent<Menu>();
+
+			RecalculateNavigation(menu._tabSelectablePairs.Select(x => x.tabButton.GetComponent<Button>()).ToList());
+
+			return newSubMenu.GetComponent<Menu>();
 		}
 
 		private TabButton CreateTabButton(string name, TabbedMenu menu)
@@ -81,6 +138,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		private void RecalculateNavigation(List<Button> tabButtons)
 		{
+			if (tabButtons.Count == 1)
+			{
+				SetSelectOnLeft(tabButtons[0], tabButtons[0]);
+				SetSelectOnRight(tabButtons[0], tabButtons[0]);
+				return;
+			}
+
 			// deal with edge rollover
 			SetSelectOnLeft(tabButtons[0], tabButtons.Last());
 			SetSelectOnRight(tabButtons.Last(), tabButtons[0]);
