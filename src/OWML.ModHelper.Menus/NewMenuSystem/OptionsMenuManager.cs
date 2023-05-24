@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.ModHelper.Menus.CustomInputs;
 using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
 using System.Collections.Generic;
@@ -115,6 +116,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				Object.Destroy(item.gameObject);
 			}
 
+			newSubMenu.GetComponent<Menu>()._menuOptions = new MenuOption[] { };
+
 			return newSubMenu.GetComponent<Menu>();
 		}
 
@@ -125,6 +128,37 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var tabButton = optionsMenu._menuTabs.Single(x => x._tabbedMenu == tab);
 			optionsMenu.SelectTabButton(tabButton);
+		}
+
+		public OWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue)
+		{
+			var existingCheckbox = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+				.Single(x => x.name == "GameplayMenu").transform
+				.Find("MenuGameplayBasic")
+				.Find("UIElement-InvertPlayerLook").gameObject;
+
+			var newCheckbox = Object.Instantiate(existingCheckbox);
+			newCheckbox.transform.parent = menu.transform;
+			newCheckbox.transform.localScale = Vector3.one;
+			newCheckbox.transform.name = $"UIElement-{label}";
+
+			var oldCheckbox = newCheckbox.GetComponent<ToggleElement>();
+
+			var customCheckboxScript = newCheckbox.AddComponent<OWMLToggleElement>();
+			customCheckboxScript._label = oldCheckbox._label;
+			customCheckboxScript._overrideTooltipText = tooltip;
+			customCheckboxScript._displayText = oldCheckbox._displayText;
+			customCheckboxScript._displayText.text = label;
+			customCheckboxScript._toggleGraphic = oldCheckbox._toggleGraphic;
+			customCheckboxScript._toggleElementButton = oldCheckbox._toggleElementButton;
+
+			customCheckboxScript.Initialize(initialValue);
+
+			Object.Destroy(oldCheckbox);
+
+			menu._menuOptions = menu._menuOptions.Add(customCheckboxScript);
+
+			return customCheckboxScript;
 		}
 
 		private TabButton CreateTabButton(string name, TabbedMenu menu)

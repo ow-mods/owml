@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using Epic.OnlineServices;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
@@ -142,24 +144,126 @@ namespace OWML.ModLoader
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
-					//_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
 
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
 
-				//_menus.ModsMenu?.AddMod(modData, initMod);
-
 				_modList.Add(initMod);
 			}
 
+			GenerateOWMLMenus();
+		}
+
+		public void GenerateOWMLMenus()
+		{
+			void SaveConfig()
+			{
+				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
+			}
+
 			var modsMenu = _menuManager.OptionsMenuManager.CreateTabWithSubTabs("MODS");
-			_menuManager.OptionsMenuManager.AddSubTab(modsMenu, "OWML");
-			_menuManager.OptionsMenuManager.AddSubTab(modsMenu, "MODS");
+			var owmlTab = _menuManager.OptionsMenuManager.AddSubTab(modsMenu, "OWML");
+			var modsTab = _menuManager.OptionsMenuManager.AddSubTab(modsMenu, "MODS");
 
 			var modsButton = _menuManager.TitleMenuManager.CreateTitleButton("MODS", 1, false);
 			modsButton.OnSubmitAction += () => _menuManager.OptionsMenuManager.OpenOptionsAtTab(modsMenu);
+
+			var debugModeCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(
+				owmlTab,
+				"Debug Mode",
+				"Enables verbose logging.",
+				_owmlConfig.DebugMode);
+			debugModeCheckbox.OnValueChanged += (int newValue) =>
+			{
+				_owmlConfig.DebugMode = newValue == 1;
+				SaveConfig();
+			};
+
+			var forceExeCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(
+				owmlTab,
+				"Force EXE",
+				"Forces OWML to run the .exe directly, instead of going through Steam or Epic.",
+				_owmlConfig.ForceExe);
+			forceExeCheckbox.OnValueChanged += (int newValue) =>
+			{
+				_owmlConfig.ForceExe = newValue == 1;
+				SaveConfig();
+			};
+
+			var incrementalGCCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(
+				owmlTab,
+				"Incremental GC",
+				"Incremental GC (garbage collection) can help reduce lag with some mods.",
+				_owmlConfig.IncrementalGC);
+			incrementalGCCheckbox.OnValueChanged += (int newValue) =>
+			{
+				_owmlConfig.IncrementalGC = newValue == 1;
+				SaveConfig();
+			};
+
+			// .OrderBy does false first, then true
+			foreach (var mod in _modList.OrderByDescending(x => x.ModHelper.Config.Settings.Count == 0))
+			{
+				if (mod.ModHelper.Config.Settings.Count == 0)
+				{
+					// do label
+					continue;
+				}
+
+				foreach (var (name, setting) in mod.ModHelper.Config.Settings)
+				{
+					var configPath = $"{mod.ModHelper.Manifest.ModFolderPath}{Constants.ModConfigFileName}";
+
+					var settingType = GetSettingType(setting);
+					_console.WriteLine($"{name} ({setting.GetType().Name}) is settingType:{settingType}");
+
+					var label = name;
+					var tooltip = "";
+
+					if (setting is JObject settingObject)
+					{
+						label = settingObject["title"]?.ToString();
+						tooltip = settingObject["tooltip"]?.ToString();
+					}
+
+					switch (settingType)
+					{
+						case "checkbox":
+							var currentValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
+							var settingCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(modsTab, label, tooltip, currentValue);
+							settingCheckbox.OnValueChanged += (int newValue) =>
+							{
+								mod.ModHelper.Config.SetSettingsValue(name, newValue == 1);
+								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+							};
+							break;
+						case "slider":
+							break;
+						case "selector":
+							break;
+						case "toggle":
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
+
+		private string GetSettingType(object setting)
+		{
+			if (setting is bool)
+			{
+				return "checkbox";
+			}
+			else if (setting is JObject settingObject && settingObject["type"].ToString() == "toggle")
+			{
+				return "toggle";
+			}
+
+			return "unknown";
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)

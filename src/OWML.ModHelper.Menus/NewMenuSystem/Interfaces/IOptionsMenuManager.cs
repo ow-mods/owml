@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OWML.ModHelper.Menus.CustomInputs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,5 +34,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		/// </summary>
 		/// <param name="tab">Which tab to open.</param>
 		public void OpenOptionsAtTab(Menu tab);
+
+		public OWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue);
 	}
 }
