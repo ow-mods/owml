@@ -24,7 +24,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Object.Destroy(newButton.GetComponent<SubmitActionConfirm>());
 			var submitAction = newButton.AddComponent<SubmitAction>();
 
-			SetButtonIndex(submitAction, 0, true);
+			SetButtonIndex(submitAction, index, fromTop);
 			SetButtonText(submitAction, text);
 
 			newButton.GetComponent<CanvasGroup>().alpha = 0;
