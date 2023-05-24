@@ -110,6 +110,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			RecalculateNavigation(menu._tabSelectablePairs.Select(x => x.tabButton.GetComponent<Button>()).ToList());
 
+			foreach (var item in newSubMenu.GetComponent<Menu>()._menuOptions)
+			{
+				Object.Destroy(item.gameObject);
+			}
+
 			return newSubMenu.GetComponent<Menu>();
 		}
 
