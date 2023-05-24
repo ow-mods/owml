@@ -26,7 +26,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public TabbedSubMenu CreateTabWithSubTabs(string name)
 		{
-			_console.WriteLine($"CreateTabWithSubTabs");
 			var existingTabbedSubMenu = Resources.FindObjectsOfTypeAll<TabbedSubMenu>().Single(x => x.name == "GameplayMenu").gameObject;
 
 			var newSubMenu = Object.Instantiate(existingTabbedSubMenu);
@@ -112,6 +111,15 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			RecalculateNavigation(menu._tabSelectablePairs.Select(x => x.tabButton.GetComponent<Button>()).ToList());
 
 			return newSubMenu.GetComponent<Menu>();
+		}
+
+		public void OpenOptionsAtTab(Menu tab)
+		{
+			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			optionsMenu.EnableMenu(true);
+
+			var tabButton = optionsMenu._menuTabs.Single(x => x._tabbedMenu == tab);
+			optionsMenu.SelectTabButton(tabButton);
 		}
 
 		private TabButton CreateTabButton(string name, TabbedMenu menu)

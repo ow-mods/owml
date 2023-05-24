@@ -158,7 +158,8 @@ namespace OWML.ModLoader
 			_menuManager.OptionsMenuManager.AddSubTab(modsMenu, "OWML");
 			_menuManager.OptionsMenuManager.AddSubTab(modsMenu, "MODS");
 
-			_menuManager.TitleMenuManager.CreateTitleButton("MODS", 1, false);
+			var modsButton = _menuManager.TitleMenuManager.CreateTitleButton("MODS", 1, false);
+			modsButton.OnSubmitAction += () => _menuManager.OptionsMenuManager.OpenOptionsAtTab(modsMenu);
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)
