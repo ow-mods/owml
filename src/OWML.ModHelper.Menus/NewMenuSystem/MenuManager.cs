@@ -1,5 +1,7 @@
-﻿using OWML.Common;
+﻿using HarmonyLib;
+using OWML.Common;
 using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
+using OWML.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_console = console;
 			TitleMenuManager = new TitleMenuManager();
 			OptionsMenuManager = new OptionsMenuManager(console);
+
+			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
+			harmonyInstance.PatchAll(typeof(Patches));
 		}
 	}
 }
