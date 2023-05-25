@@ -36,5 +36,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		public void OpenOptionsAtTab(Menu tab);
 
 		public OWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue);
+
+		public OWMLTwoButtonToggleElement AddToggleInput(Menu menu, string label, string leftButtonString, string rightButtonString, string tooltip, bool initialValue);
+
+		public OWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue);
 	}
 }

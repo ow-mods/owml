@@ -175,9 +175,9 @@ namespace OWML.ModLoader
 				"Debug Mode",
 				"Enables verbose logging.",
 				_owmlConfig.DebugMode);
-			debugModeCheckbox.OnValueChanged += (int newValue) =>
+			debugModeCheckbox.OnValueChanged += (bool newValue) =>
 			{
-				_owmlConfig.DebugMode = newValue == 1;
+				_owmlConfig.DebugMode = newValue;
 				SaveConfig();
 			};
 
@@ -186,9 +186,9 @@ namespace OWML.ModLoader
 				"Force EXE",
 				"Forces OWML to run the .exe directly, instead of going through Steam or Epic.",
 				_owmlConfig.ForceExe);
-			forceExeCheckbox.OnValueChanged += (int newValue) =>
+			forceExeCheckbox.OnValueChanged += (bool newValue) =>
 			{
-				_owmlConfig.ForceExe = newValue == 1;
+				_owmlConfig.ForceExe = newValue;
 				SaveConfig();
 			};
 
@@ -197,9 +197,9 @@ namespace OWML.ModLoader
 				"Incremental GC",
 				"Incremental GC (garbage collection) can help reduce lag with some mods.",
 				_owmlConfig.IncrementalGC);
-			incrementalGCCheckbox.OnValueChanged += (int newValue) =>
+			incrementalGCCheckbox.OnValueChanged += (bool newValue) =>
 			{
-				_owmlConfig.IncrementalGC = newValue == 1;
+				_owmlConfig.IncrementalGC = newValue;
 				SaveConfig();
 			};
 
@@ -217,33 +217,58 @@ namespace OWML.ModLoader
 					var configPath = $"{mod.ModHelper.Manifest.ModFolderPath}{Constants.ModConfigFileName}";
 
 					var settingType = GetSettingType(setting);
-					_console.WriteLine($"{name} ({setting.GetType().Name}) is settingType:{settingType}");
-
 					var label = name;
 					var tooltip = "";
 
-					if (setting is JObject settingObject)
+					var settingObject = setting as JObject;
+
+					if (settingObject != default(JObject))
 					{
-						label = settingObject["title"]?.ToString();
-						tooltip = settingObject["tooltip"]?.ToString();
+						if (settingObject["title"] != null)
+						{
+							label = settingObject["title"].ToString();
+						}
+
+						if (settingObject["tooltip"] != null)
+						{
+							tooltip = settingObject["tooltip"].ToString();
+						}
 					}
 
 					switch (settingType)
 					{
 						case "checkbox":
-							var currentValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
-							var settingCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(modsTab, label, tooltip, currentValue);
-							settingCheckbox.OnValueChanged += (int newValue) =>
+							var currentCheckboxValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
+							var settingCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(modsTab, label, tooltip, currentCheckboxValue);
+							settingCheckbox.OnValueChanged += (bool newValue) =>
 							{
-								mod.ModHelper.Config.SetSettingsValue(name, newValue == 1);
+								mod.ModHelper.Config.SetSettingsValue(name, newValue);
+								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+							};
+							break;
+						case "toggle":
+							var currentToggleValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
+							var yes = settingObject["yes"].ToString();
+							var no = settingObject["no"].ToString();
+							var settingToggle = _menuManager.OptionsMenuManager.AddToggleInput(modsTab, label, yes, no, tooltip, currentToggleValue);
+							settingToggle.OnValueChanged += (bool newValue) =>
+							{
+								mod.ModHelper.Config.SetSettingsValue(name, newValue);
 								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
 							};
 							break;
 						case "slider":
 							break;
 						case "selector":
-							break;
-						case "toggle":
+							var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
+							var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
+							var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
+							var settingSelector = _menuManager.OptionsMenuManager.AddSelectorInput(modsTab, label, options, tooltip, true, currentSelectedIndex);
+							settingSelector.OnValueChanged += (int newIndex, string newSelection) =>
+							{
+								mod.ModHelper.Config.SetSettingsValue(name, newSelection);
+								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+							};
 							break;
 						default:
 							break;
@@ -254,13 +279,19 @@ namespace OWML.ModLoader
 
 		private string GetSettingType(object setting)
 		{
+			var settingObject = setting as JObject;
+
 			if (setting is bool)
 			{
 				return "checkbox";
 			}
-			else if (setting is JObject settingObject && settingObject["type"].ToString() == "toggle")
+			else if (settingObject != null && settingObject["type"].ToString() == "toggle")
 			{
 				return "toggle";
+			}
+			else if (settingObject != null && settingObject["type"].ToString() == "selector")
+			{
+				return "selector";
 			}
 
 			return "unknown";

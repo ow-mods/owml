@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.Logging;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
@@ -14,10 +16,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 	internal class OptionsMenuManager : IOptionsMenuManager
 	{
 		private readonly IModConsole _console;
+		private readonly IModUnityEvents _unityEvents;
 
-		public OptionsMenuManager(IModConsole console)
+		public OptionsMenuManager(IModConsole console, IModUnityEvents unityEvents)
 		{
 			_console = console;
+			_unityEvents = unityEvents;
 		}
 
 		public void CreateStandardTab(string name)
@@ -159,6 +163,79 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			menu._menuOptions = menu._menuOptions.Add(customCheckboxScript);
 
 			return customCheckboxScript;
+		}
+
+		public OWMLTwoButtonToggleElement AddToggleInput(Menu menu, string label, string leftButtonString, string rightButtonString, string tooltip, bool initialValue)
+		{
+			var existingToggle = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+				.Single(x => x.name == "InputMenu").transform
+				.Find("MenuGeneral")
+				.Find("UIElement-ConfirmToggle").gameObject;
+
+			var script = existingToggle.GetComponent<TwoButtonToggleElement>();
+			var text = script._buttonTrue.GetComponent<UIStyleApplier>()._textItems[0];
+			var prefab = text.transform.root.gameObject;
+
+			var newToggle = Object.Instantiate(prefab);
+			newToggle.transform.parent = menu.transform;
+			newToggle.transform.localScale = Vector3.one;
+			newToggle.transform.name = $"UIElement-{label}";
+
+			// no idea why, but the prefab doesnt have this
+			newToggle.GetComponent<LayoutElement>().preferredHeight = 70;
+
+			var oldToggle = newToggle.GetComponent<TwoButtonToggleElement>();
+			var newScript = newToggle.AddComponent<OWMLTwoButtonToggleElement>();
+			newScript._label = oldToggle._label;
+			newScript._label.text = label;
+			newScript._overrideTooltipText = tooltip;
+			newScript.ButtonTrue = oldToggle._buttonTrue;
+			newScript.ButtonFalse = oldToggle._buttonFalse;
+
+			newScript.ButtonTrue.GetComponent<UIStyleApplier>()._textItems[0].text = leftButtonString;
+			newScript.ButtonFalse.GetComponent<UIStyleApplier>()._textItems[0].text = rightButtonString;
+
+
+			_unityEvents.FireOnNextUpdate(() => newScript.Initialize(initialValue ? 1 : 0));
+
+			Object.Destroy(oldToggle);
+
+			menu._menuOptions = menu._menuOptions.Add(newScript);
+
+			return newScript;
+		}
+
+		public OWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue)
+		{
+			var existingSelector = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+				.Single(x => x.name == "GameplayMenu").transform
+				.Find("MenuGameplayBasic")
+				.Find("UIElement-ControllerProfile").gameObject;
+
+			var newSelector = Object.Instantiate(existingSelector);
+			newSelector.transform.parent = menu.transform;
+			newSelector.transform.localScale = Vector3.one;
+			newSelector.transform.name = $"UIElement-{label}";
+
+			var oldSelector = newSelector.GetComponent<OptionsSelectorElement>();
+			var newScript = newSelector.AddComponent<OWMLOptionsSelectorElement>();
+			newScript._label = oldSelector._label;
+			newScript._label.text = label;
+			newScript._overrideTooltipText = tooltip;
+			newScript._loopAround = loopsAround;
+			newScript._optionsList = options;
+			newScript._displayText = oldSelector._displayText;
+			newScript._optionsBoxStyleApplier = oldSelector._optionsBoxStyleApplier;
+			newScript._selectOnLeft = oldSelector._selectOnLeft;
+			newScript._selectOnRight = oldSelector._selectOnRight;
+
+			_unityEvents.FireOnNextUpdate(() => newScript.Initialize(initialValue));
+
+			Object.Destroy(oldSelector);
+
+			menu._menuOptions = menu._menuOptions.Add(newScript);
+
+			return newScript;
 		}
 
 		private TabButton CreateTabButton(string name, TabbedMenu menu)

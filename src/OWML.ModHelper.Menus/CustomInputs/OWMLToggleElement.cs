@@ -21,6 +21,9 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		protected bool _uiElementSelected;
 		private bool _mouseClickInElement;
 
+		public event OptionValueChangedEvent OnValueChanged;
+		public delegate void OptionValueChangedEvent(bool newValue);
+
 		public delegate void ElementUIEvent(BaseEventData eventData, OWMLToggleElement selectable);
 		public delegate void ToggleEvent(OWMLToggleElement selectable);
 
@@ -76,7 +79,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			{
 				OnToggle(this);
 			}*/
-			OnOptionValueChanged();
+			OnValueChanged?.Invoke(_value == 1);
 			UpdateToggleColors();
 			Locator.GetMenuAudioController().PlayOptionToggle();
 		}

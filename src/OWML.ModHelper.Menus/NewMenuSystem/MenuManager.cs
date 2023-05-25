@@ -18,11 +18,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public IPauseMenuManager PauseMenuManager { get; private set; }
 		public IOptionsMenuManager OptionsMenuManager { get; private set; }
 
-		public MenuManager(IModConsole console, IHarmonyHelper harmony)
+		public MenuManager(IModConsole console, IHarmonyHelper harmony, IModUnityEvents unityEvents)
 		{
 			_console = console;
 			TitleMenuManager = new TitleMenuManager();
-			OptionsMenuManager = new OptionsMenuManager(console);
+			OptionsMenuManager = new OptionsMenuManager(console, unityEvents);
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
