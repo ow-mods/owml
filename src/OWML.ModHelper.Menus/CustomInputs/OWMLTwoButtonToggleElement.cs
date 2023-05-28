@@ -66,11 +66,9 @@ namespace OWML.ModHelper.Menus.CustomInputs
 				_falseButtonEventListener.OnPointerUpEvent += OnPointerUpInToggleButton;
 			}
 
-			ModConsole.OwmlConsole.WriteLine("getting ui style applier");
 			_navigationButtonStyleApplier = base.GetComponent<UIStyleApplier>();
 			if (_navigationButtonStyleApplier != null && EventSystem.current.currentSelectedGameObject != base.gameObject)
 			{
-				ModConsole.OwmlConsole.WriteLine("getting ui style applier");
 				_navigationButtonStyleApplier.ChangeState(UIElementState.NORMAL, true);
 			}
 

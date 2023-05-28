@@ -5,10 +5,12 @@ using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
@@ -24,12 +26,53 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_unityEvents = unityEvents;
 		}
 
-		public void CreateStandardTab(string name)
+		public (Menu menu, TabButton button) CreateStandardTab(string name)
 		{
+			var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "TextAudioMenu").gameObject;
 
+			var newMenu = Object.Instantiate(existingMenu);
+			newMenu.transform.parent = existingMenu.transform.parent;
+			newMenu.transform.localScale = Vector3.one;
+			var rt = newMenu.GetComponent<RectTransform>();
+			var ert = existingMenu.GetComponent<RectTransform>();
+			rt.anchorMin = ert.anchorMin;
+			rt.anchorMax = ert.anchorMax;
+			rt.anchoredPosition3D = ert.anchoredPosition3D;
+			rt.offsetMin = ert.offsetMin;
+			rt.offsetMax = ert.offsetMax;
+			rt.sizeDelta = ert.sizeDelta;
+
+			var menu = newMenu.GetComponent<Menu>();
+
+			var tabButton = CreateTabButton(name, menu);
+
+			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			optionsMenu._subMenus = optionsMenu._subMenus.Add(menu);
+			optionsMenu._menuTabs = optionsMenu._menuTabs.Add(tabButton);
+			optionsMenu._tabSelectablePairs = optionsMenu._tabSelectablePairs.Add(
+				new TabbedMenu.TabSelectablePair()
+				{
+					tabButton = tabButton,
+					selectable = null
+				});
+
+			if (optionsMenu._tabSelectablesInitialized)
+			{
+				tabButton.OnTabSelect += optionsMenu.OnTabButtonSelected;
+			}
+
+			foreach (var item in menu._menuOptions)
+			{
+				Object.Destroy(item.gameObject);
+			}
+
+			menu._menuOptions = new MenuOption[] { };
+			menu._selectOnActivate = null;
+
+			return (menu, tabButton);
 		}
 
-		public TabbedSubMenu CreateTabWithSubTabs(string name)
+		public (TabbedSubMenu menu, TabButton button) CreateTabWithSubTabs(string name)
 		{
 			var existingTabbedSubMenu = Resources.FindObjectsOfTypeAll<TabbedSubMenu>().Single(x => x.name == "GameplayMenu").gameObject;
 
@@ -58,6 +101,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					selectable = null
 				});
 
+			if (optionsMenu._tabSelectablesInitialized)
+			{
+				tabButton.OnTabSelect += optionsMenu.OnTabButtonSelected;
+			}
+
 			Object.Destroy(tabbedSubMenu._subMenus[0].gameObject);
 			Object.Destroy(tabbedSubMenu._subMenus[1].gameObject);
 			Object.Destroy(tabbedSubMenu._subMenus[2].gameObject);
@@ -68,10 +116,38 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			tabbedSubMenu._tabSelectablePairs = null;
 			tabbedSubMenu._selectOnActivate = null;
 
-			return tabbedSubMenu;
+			return (tabbedSubMenu, tabButton);
 		}
 
-		public Menu AddSubTab(TabbedSubMenu menu, string name)
+		public void RemoveTab(Menu tab)
+		{
+			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+
+			var tabButton = optionsMenu._menuTabs.SingleOrDefault(x => x._tabbedMenu == tab);
+
+			if (tabButton == null)
+			{
+				return;
+			}
+
+			optionsMenu._subMenus = optionsMenu._subMenus.Remove(tab);
+			optionsMenu._menuTabs = optionsMenu._menuTabs.Remove(tabButton);
+			var tempList = optionsMenu._tabSelectablePairs.ToList();
+			tempList.RemoveAll(x => x.tabButton == tabButton);
+			optionsMenu._tabSelectablePairs = tempList.ToArray();
+
+			foreach (var item in tab._menuOptions)
+			{
+				Object.Destroy(item.gameObject);
+			}
+
+			RecalculateNavigation(tabButton.transform.parent.GetComponentsInChildren<Button>(true).Where(x => x != tabButton.GetComponent<Button>()).ToList());
+
+			Object.Destroy(tab.gameObject);
+			Object.Destroy(tabButton.gameObject);
+		}
+
+		public (Menu subTabMenu, TabButton subTabButton) AddSubTab(TabbedSubMenu menu, string name)
 		{
 			var existingTabbedSubMenu = Resources.FindObjectsOfTypeAll<TabbedSubMenu>().Single(x => x.name == "GameplayMenu").gameObject;
 
@@ -122,16 +198,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newSubMenu.GetComponent<Menu>()._menuOptions = new MenuOption[] { };
 
-			return newSubMenu.GetComponent<Menu>();
+			return (newSubMenu.GetComponent<Menu>(), newSubMenuTabButton.GetComponent<TabButton>());
 		}
 
-		public void OpenOptionsAtTab(Menu tab)
+		public void OpenOptionsAtTab(TabButton button)
 		{
 			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
 			optionsMenu.EnableMenu(true);
-
-			var tabButton = optionsMenu._menuTabs.Single(x => x._tabbedMenu == tab);
-			optionsMenu.SelectTabButton(tabButton);
+			optionsMenu.SelectTabButton(button);
 		}
 
 		public OWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue)
@@ -142,14 +216,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-InvertPlayerLook").gameObject;
 
 			var newCheckbox = Object.Instantiate(existingCheckbox);
-			newCheckbox.transform.parent = menu.transform;
+			newCheckbox.transform.parent = GetParentForAddedElements(menu);
 			newCheckbox.transform.localScale = Vector3.one;
 			newCheckbox.transform.name = $"UIElement-{label}";
 
+			Object.Destroy(newCheckbox.GetComponentInChildren<LocalizedText>());
+			
 			var oldCheckbox = newCheckbox.GetComponent<ToggleElement>();
-
 			var customCheckboxScript = newCheckbox.AddComponent<OWMLToggleElement>();
+			customCheckboxScript._tooltipTextType = UITextType.None;
 			customCheckboxScript._label = oldCheckbox._label;
+			customCheckboxScript._label.text = label;
 			customCheckboxScript._overrideTooltipText = tooltip;
 			customCheckboxScript._displayText = oldCheckbox._displayText;
 			customCheckboxScript._displayText.text = label;
@@ -161,6 +238,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Object.Destroy(oldCheckbox);
 
 			menu._menuOptions = menu._menuOptions.Add(customCheckboxScript);
+
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newCheckbox.GetComponent<Selectable>();
+			}
 
 			return customCheckboxScript;
 		}
@@ -177,15 +259,18 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var prefab = text.transform.root.gameObject;
 
 			var newToggle = Object.Instantiate(prefab);
-			newToggle.transform.parent = menu.transform;
+			newToggle.transform.parent = GetParentForAddedElements(menu);
 			newToggle.transform.localScale = Vector3.one;
 			newToggle.transform.name = $"UIElement-{label}";
 
 			// no idea why, but the prefab doesnt have this
 			newToggle.GetComponent<LayoutElement>().preferredHeight = 70;
 
+			Object.Destroy(newToggle.GetComponentInChildren<LocalizedText>());
+
 			var oldToggle = newToggle.GetComponent<TwoButtonToggleElement>();
 			var newScript = newToggle.AddComponent<OWMLTwoButtonToggleElement>();
+			newScript._tooltipTextType = UITextType.None;
 			newScript._label = oldToggle._label;
 			newScript._label.text = label;
 			newScript._overrideTooltipText = tooltip;
@@ -202,6 +287,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			menu._menuOptions = menu._menuOptions.Add(newScript);
 
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newToggle.GetComponent<Selectable>();
+			}
+
 			return newScript;
 		}
 
@@ -213,12 +303,15 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-ControllerProfile").gameObject;
 
 			var newSelector = Object.Instantiate(existingSelector);
-			newSelector.transform.parent = menu.transform;
+			newSelector.transform.parent = GetParentForAddedElements(menu);
 			newSelector.transform.localScale = Vector3.one;
 			newSelector.transform.name = $"UIElement-{label}";
 
+			Object.Destroy(newSelector.GetComponentInChildren<LocalizedText>());
+
 			var oldSelector = newSelector.GetComponent<OptionsSelectorElement>();
 			var newScript = newSelector.AddComponent<OWMLOptionsSelectorElement>();
+			newScript._tooltipTextType = UITextType.None;
 			newScript._label = oldSelector._label;
 			newScript._label.text = label;
 			newScript._overrideTooltipText = tooltip;
@@ -235,10 +328,111 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			menu._menuOptions = menu._menuOptions.Add(newScript);
 
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newSelector.GetComponent<Selectable>();
+			}
+
+			newSelector.SetActive(true);
+
 			return newScript;
 		}
 
-		private TabButton CreateTabButton(string name, TabbedMenu menu)
+		public GameObject AddSeparator(Menu menu, bool dots)
+		{
+			var separatorObj = new GameObject("separator");
+			var layoutElement = separatorObj.AddComponent<LayoutElement>();
+			layoutElement.flexibleWidth = 1;
+			layoutElement.preferredHeight = 70;
+
+			separatorObj.transform.parent = GetParentForAddedElements(menu);
+			separatorObj.transform.localScale = Vector3.one;
+
+			if (!dots)
+			{
+				return separatorObj;
+			}
+
+			var dotsSprite = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+				.Single(x => x.name == "GameplayMenu").transform
+				.Find("MenuGameplayBasic")
+				.Find("UIElement-ControllerProfile")
+				.Find("HorizontalLayoutGroup")
+				.Find("LabelBlock")
+				.Find("LineBreak_Dots")
+				.GetComponent<Image>()
+				.sprite;
+
+			var imageObj = new GameObject("dots");
+			imageObj.transform.parent = separatorObj.transform;
+			imageObj.transform.localPosition = Vector3.zero;
+			imageObj.transform.localScale = Vector3.one;
+
+			var rt = imageObj.GetAddComponent<RectTransform>();
+			rt.anchorMin = new Vector2(0, 0.5f);
+			rt.anchorMax = new Vector2(1, 0.5f);
+			rt.pivot = new Vector2(0.5f, 0.5f);
+			rt.sizeDelta = new Vector2(0, 5);
+			rt.offsetMin = new Vector2(0, rt.offsetMin.y);
+			rt.offsetMax = new Vector2(0, rt.offsetMax.y);
+			rt.anchoredPosition = new Vector2(0, 0);
+			rt.localScale = Vector3.one;
+
+			var image = imageObj.AddComponent<Image>();
+			image.sprite = dotsSprite;
+			image.color = new Color(0.2196079f, 0.2196079f, 0.2196079f);
+			image.type = Image.Type.Tiled;
+			image.preserveAspect = true;
+
+			return separatorObj;
+		}
+
+		public SubmitAction CreateButton(Menu menu, string label, string tooltip, MenuSide side)
+		{
+			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
+				.Single(x => x.name == "GraphicsMenu").transform
+				.Find("Scroll View")
+				.Find("Viewport")
+				.Find("Content")
+				.Find("GammaButtonPanel").gameObject;
+
+			var newButtonObj = Object.Instantiate(existingButton);
+			newButtonObj.transform.parent = GetParentForAddedElements(menu);
+			newButtonObj.transform.localScale = Vector3.one;
+
+			// the thing we're copying is already LEFT, so dont need to handle it
+			if (side == MenuSide.CENTER)
+			{
+				Object.Destroy(newButtonObj.transform.Find("RightSpacer").gameObject);
+			}
+			else if (side == MenuSide.RIGHT)
+			{
+				newButtonObj.transform.Find("RightSpacer").SetAsFirstSibling();
+			}
+
+			var uielement = newButtonObj.transform.Find("UIElement-GammaButton").gameObject;
+
+			Object.Destroy(uielement.GetComponent<SubmitActionMenu>());
+			var submitAction = uielement.AddComponent<SubmitAction>();
+
+			Object.Destroy(uielement.GetComponentInChildren<LocalizedText>());
+
+			var menuOption = uielement.GetComponent<MenuOption>();
+			menuOption._tooltipTextType = UITextType.None;
+			menuOption._overrideTooltipText = tooltip;
+			menuOption._label.text = label;
+
+			menu._menuOptions = menu._menuOptions.Add(menuOption);
+
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
+			}
+
+			return submitAction;
+		}
+
+		private TabButton CreateTabButton(string name, Menu menu)
 		{
 			var existingButton = Resources.FindObjectsOfTypeAll<TabButton>().Single(x => x.name == "Button-Graphics");
 
@@ -253,6 +447,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var text = newButton.GetComponentInChildren<Text>();
 			Object.Destroy(text.GetComponent<LocalizedText>());
 			text.text = name;
+			text.horizontalOverflow = HorizontalWrapMode.Wrap;
 
 			var tabButton = newButton.GetComponent<TabButton>();
 			tabButton._tabbedMenu = menu ?? throw new System.Exception("Menu cannot be null.");
@@ -303,6 +498,16 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var navigation = button.navigation;
 			navigation.selectOnRight = selectable;
 			button.navigation = navigation;
+		}
+
+		private Transform GetParentForAddedElements(Menu menu)
+		{
+			if (menu.transform.Find("Content") != null)
+			{
+				return menu.transform.Find("Content");
+			}
+
+			return menu.transform;
 		}
 	}
 }

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModLoader
@@ -153,148 +154,7 @@ namespace OWML.ModLoader
 				_modList.Add(initMod);
 			}
 
-			GenerateOWMLMenus();
-		}
-
-		public void GenerateOWMLMenus()
-		{
-			void SaveConfig()
-			{
-				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
-			}
-
-			var modsMenu = _menuManager.OptionsMenuManager.CreateTabWithSubTabs("MODS");
-			var owmlTab = _menuManager.OptionsMenuManager.AddSubTab(modsMenu, "OWML");
-			var modsTab = _menuManager.OptionsMenuManager.AddSubTab(modsMenu, "MODS");
-
-			var modsButton = _menuManager.TitleMenuManager.CreateTitleButton("MODS", 1, false);
-			modsButton.OnSubmitAction += () => _menuManager.OptionsMenuManager.OpenOptionsAtTab(modsMenu);
-
-			var debugModeCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(
-				owmlTab,
-				"Debug Mode",
-				"Enables verbose logging.",
-				_owmlConfig.DebugMode);
-			debugModeCheckbox.OnValueChanged += (bool newValue) =>
-			{
-				_owmlConfig.DebugMode = newValue;
-				SaveConfig();
-			};
-
-			var forceExeCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(
-				owmlTab,
-				"Force EXE",
-				"Forces OWML to run the .exe directly, instead of going through Steam or Epic.",
-				_owmlConfig.ForceExe);
-			forceExeCheckbox.OnValueChanged += (bool newValue) =>
-			{
-				_owmlConfig.ForceExe = newValue;
-				SaveConfig();
-			};
-
-			var incrementalGCCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(
-				owmlTab,
-				"Incremental GC",
-				"Incremental GC (garbage collection) can help reduce lag with some mods.",
-				_owmlConfig.IncrementalGC);
-			incrementalGCCheckbox.OnValueChanged += (bool newValue) =>
-			{
-				_owmlConfig.IncrementalGC = newValue;
-				SaveConfig();
-			};
-
-			// .OrderBy does false first, then true
-			foreach (var mod in _modList.OrderByDescending(x => x.ModHelper.Config.Settings.Count == 0))
-			{
-				if (mod.ModHelper.Config.Settings.Count == 0)
-				{
-					// do label
-					continue;
-				}
-
-				foreach (var (name, setting) in mod.ModHelper.Config.Settings)
-				{
-					var configPath = $"{mod.ModHelper.Manifest.ModFolderPath}{Constants.ModConfigFileName}";
-
-					var settingType = GetSettingType(setting);
-					var label = name;
-					var tooltip = "";
-
-					var settingObject = setting as JObject;
-
-					if (settingObject != default(JObject))
-					{
-						if (settingObject["title"] != null)
-						{
-							label = settingObject["title"].ToString();
-						}
-
-						if (settingObject["tooltip"] != null)
-						{
-							tooltip = settingObject["tooltip"].ToString();
-						}
-					}
-
-					switch (settingType)
-					{
-						case "checkbox":
-							var currentCheckboxValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
-							var settingCheckbox = _menuManager.OptionsMenuManager.AddCheckboxInput(modsTab, label, tooltip, currentCheckboxValue);
-							settingCheckbox.OnValueChanged += (bool newValue) =>
-							{
-								mod.ModHelper.Config.SetSettingsValue(name, newValue);
-								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
-							};
-							break;
-						case "toggle":
-							var currentToggleValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
-							var yes = settingObject["yes"].ToString();
-							var no = settingObject["no"].ToString();
-							var settingToggle = _menuManager.OptionsMenuManager.AddToggleInput(modsTab, label, yes, no, tooltip, currentToggleValue);
-							settingToggle.OnValueChanged += (bool newValue) =>
-							{
-								mod.ModHelper.Config.SetSettingsValue(name, newValue);
-								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
-							};
-							break;
-						case "slider":
-							break;
-						case "selector":
-							var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-							var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
-							var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
-							var settingSelector = _menuManager.OptionsMenuManager.AddSelectorInput(modsTab, label, options, tooltip, true, currentSelectedIndex);
-							settingSelector.OnValueChanged += (int newIndex, string newSelection) =>
-							{
-								mod.ModHelper.Config.SetSettingsValue(name, newSelection);
-								JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
-							};
-							break;
-						default:
-							break;
-					}
-				}
-			}
-		}
-
-		private string GetSettingType(object setting)
-		{
-			var settingObject = setting as JObject;
-
-			if (setting is bool)
-			{
-				return "checkbox";
-			}
-			else if (settingObject != null && settingObject["type"].ToString() == "toggle")
-			{
-				return "toggle";
-			}
-			else if (settingObject != null && settingObject["type"].ToString() == "selector")
-			{
-				return "selector";
-			}
-
-			return "unknown";
+			_menuManager.CreateOWMLMenus(_modList);
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)
