@@ -94,11 +94,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			#endregion
 
-			var modsWithSettings = modList.Where(x => x.ModHelper.Config.Settings.Count != 0);
-			var modsWithNoSettings = modList.Where(x => x.ModHelper.Config.Settings.Count == 0);
-
 			// Create buttons for each mod
-			foreach (var mod in modsWithSettings)
+			foreach (var mod in modList)
 			{
 				var button = OptionsMenuManager.CreateButton(modsSubTab, mod.ModHelper.Manifest.Name, "", MenuSide.CENTER);
 				button.OnSubmitAction += () =>
@@ -190,6 +187,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			}
 		}
 
+		// This is to prevent the "AUDIO & LANGUAGE" tab text from overflowing it's boundaries when more tabs are added
 		private void EditExistingMenus()
 		{
 			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
@@ -204,7 +202,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var settingObject = setting as JObject;
 
-			if (setting is bool)
+			if (setting is bool || (settingObject != null && settingObject["type"].ToString() == "toggle" && (settingObject["yes"] == null || settingObject["no"] == null)))
 			{
 				return "checkbox";
 			}
