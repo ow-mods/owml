@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using OWML.Common;
-using OWML.Common.Menus;
 using OWML.ModHelper;
 using UnityEngine.InputSystem;
 using UnityEngine;
@@ -43,8 +42,6 @@ namespace OWML.LoadCustomAssets
 			ModHelper.Events.Scenes.OnStartSceneChange += OnStartSceneChange;
 			ModHelper.Events.Scenes.OnCompleteSceneChange += OnCompleteSceneChange;
 
-			var modMenu = ModHelper.Menus.ModsMenu.GetModMenu(this);
-
 			TestLogging();
 
 			TestPopup();
@@ -61,7 +58,7 @@ namespace OWML.LoadCustomAssets
 
 		private void TestPopup()
 		{
-			ModHelper.Menus.PauseMenu.OnInit += () =>
+			/*ModHelper.Menus.PauseMenu.OnInit += () =>
 			{
 				var popupButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate("POPUP TEST");
 				popupButton.OnClick += () =>
@@ -70,7 +67,7 @@ namespace OWML.LoadCustomAssets
 					var popup = ModHelper.Menus.PopupManager.CreateInputPopup(InputType.Text, "Event Name");
 					popup.OnConfirm += s => ModHelper.Console.WriteLine("clicked confirm");
 				};
-			};
+			};*/
 		}
 
 		public override void Configure(IModConfig config)

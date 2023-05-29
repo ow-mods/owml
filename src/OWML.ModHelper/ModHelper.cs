@@ -1,5 +1,4 @@
 ﻿using OWML.Common;
-using OWML.Common.Menus;
 
 namespace OWML.ModHelper
 {
@@ -16,9 +15,6 @@ namespace OWML.ModHelper
 		public IModAssets Assets { get; }
 
 		public IModStorage Storage { get; }
-
-		public IModMenus Menus { get; }
-
 		public IModManifest Manifest { get; }
 
 		public IModConfig Config { get; }
@@ -36,7 +32,6 @@ namespace OWML.ModHelper
 			IModEvents events,
 			IModAssets assets,
 			IModStorage storage,
-			IModMenus menus,
 			IModManifest manifest,
 			IModConfig config,
 			IOwmlConfig owmlConfig,
@@ -49,7 +44,6 @@ namespace OWML.ModHelper
 			Events = events;
 			Assets = assets;
 			Storage = storage;
-			Menus = menus;
 			Manifest = manifest;
 			Config = config;
 			OwmlConfig = owmlConfig;
