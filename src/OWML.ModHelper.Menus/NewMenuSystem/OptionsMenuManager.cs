@@ -1,7 +1,6 @@
 ﻿using OWML.Common;
 using OWML.Logging;
 using OWML.ModHelper.Menus.CustomInputs;
-using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
 using System.Collections.Generic;
 using System.Linq;
@@ -208,7 +207,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			optionsMenu.SelectTabButton(button);
 		}
 
-		public OWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue)
+		public IOWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue)
 		{
 			var existingCheckbox = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
@@ -247,7 +246,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return customCheckboxScript;
 		}
 
-		public OWMLTwoButtonToggleElement AddToggleInput(Menu menu, string label, string leftButtonString, string rightButtonString, string tooltip, bool initialValue)
+		public IOWMLTwoButtonToggleElement AddToggleInput(Menu menu, string label, string leftButtonString, string rightButtonString, string tooltip, bool initialValue)
 		{
 			var existingToggle = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "InputMenu").transform
@@ -295,7 +294,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return newScript;
 		}
 
-		public OWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue)
+		public IOWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue)
 		{
 			var existingSelector = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform

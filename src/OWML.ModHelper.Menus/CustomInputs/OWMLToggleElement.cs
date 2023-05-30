@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using OWML.Common;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
-	public class OWMLToggleElement : OWMLMenuValueOption, ISelectHandler, IEventSystemHandler, IDeselectHandler, ISubmitHandler, ICancelHandler
+	public class OWMLToggleElement : OWMLMenuValueOption, ISelectHandler, IEventSystemHandler, IDeselectHandler, ISubmitHandler, ICancelHandler, IOWMLToggleElement
 	{
 		public Text _displayText;
 		public Graphic _toggleGraphic;
@@ -21,11 +17,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		protected bool _uiElementSelected;
 		private bool _mouseClickInElement;
 
-		public event OptionValueChangedEvent OnValueChanged;
-		public delegate void OptionValueChangedEvent(bool newValue);
-
-		public delegate void ElementUIEvent(BaseEventData eventData, OWMLToggleElement selectable);
-		public delegate void ToggleEvent(OWMLToggleElement selectable);
+		public event BoolOptionValueChangedEvent OnValueChanged;
 
 		private void Update()
 		{

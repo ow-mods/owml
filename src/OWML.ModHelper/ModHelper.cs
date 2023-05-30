@@ -15,6 +15,7 @@ namespace OWML.ModHelper
 		public IModAssets Assets { get; }
 
 		public IModStorage Storage { get; }
+
 		public IModManifest Manifest { get; }
 
 		public IModConfig Config { get; }
@@ -22,6 +23,8 @@ namespace OWML.ModHelper
 		public IOwmlConfig OwmlConfig { get; }
 
 		public IModInteraction Interaction { get; }
+
+		public IMenuManager Menus { get; }
 
 		public ModHelper(
 			IModLogger logger,
@@ -33,7 +36,8 @@ namespace OWML.ModHelper
 			IModManifest manifest,
 			IModConfig config,
 			IOwmlConfig owmlConfig,
-			IModInteraction interaction)
+			IModInteraction interaction,
+			IMenuManager menus)
 		{
 			Logger = logger;
 			Console = console;
@@ -45,6 +49,7 @@ namespace OWML.ModHelper
 			Config = config;
 			OwmlConfig = owmlConfig;
 			Interaction = interaction;
+			Menus = menus;
 		}
 	}
 }

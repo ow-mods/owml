@@ -1,12 +1,11 @@
-﻿using OWML.ModHelper.Menus.CustomInputs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
+namespace OWML.Common
 {
 	public interface IOptionsMenuManager
 	{
@@ -36,11 +35,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		/// <param name="tab">Which tab to open.</param>
 		public void OpenOptionsAtTab(TabButton button);
 
-		public OWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue);
+		public IOWMLToggleElement AddCheckboxInput(Menu menu, string label, string tooltip, bool initialValue);
 
-		public OWMLTwoButtonToggleElement AddToggleInput(Menu menu, string label, string leftButtonString, string rightButtonString, string tooltip, bool initialValue);
+		public IOWMLTwoButtonToggleElement AddToggleInput(Menu menu, string label, string leftButtonString, string rightButtonString, string tooltip, bool initialValue);
 
-		public OWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue);
+		public IOWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue);
 
 		public GameObject AddSeparator(Menu menu, bool dots);
 

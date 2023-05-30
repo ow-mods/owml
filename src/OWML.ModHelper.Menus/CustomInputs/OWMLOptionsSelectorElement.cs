@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using OWML.Common;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
-	public class OWMLOptionsSelectorElement : OWMLMenuValueOption, IMoveHandler, IEventSystemHandler, ISelectHandler, IDeselectHandler, IPointerExitHandler
+	public class OWMLOptionsSelectorElement : OWMLMenuValueOption, IMoveHandler, IEventSystemHandler, ISelectHandler, IDeselectHandler, IPointerExitHandler, IOWMLOptionsSelectorElement
 	{
 		internal bool _loopAround;
 		internal string[] _optionsList;
@@ -15,7 +16,6 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		internal Selectable _selectOnRight;
 
 		public event OptionValueChangedEvent OnValueChanged;
-		public delegate void OptionValueChangedEvent(int newIndex, string newSelection);
 
 		protected bool _initOnNextFrame;
 		protected bool _amISelected;

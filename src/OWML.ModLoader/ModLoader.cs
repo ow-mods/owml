@@ -8,7 +8,6 @@ using OWML.ModHelper.Menus;
 using OWML.Utils;
 using UnityEngine;
 using OWML.Common.Interfaces;
-using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.ModHelper.Menus.NewMenuSystem;
 using OWML.ModHelper.Input;
 

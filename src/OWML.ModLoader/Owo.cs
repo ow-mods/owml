@@ -10,7 +10,6 @@ using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using OWML.ModHelper.Interaction;
-using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;
@@ -229,6 +228,7 @@ namespace OWML.ModLoader
 				.Add(_modList)
 				.Add(_processHelper)
 				.Add(_unityEvents)
+				.Add(_menuManager)
 				.Add<IHarmonyHelper, HarmonyHelper>()
 				.Add<IModLogger, ModLogger>()
 				.Add<IModConsole, ModSocketOutput>()

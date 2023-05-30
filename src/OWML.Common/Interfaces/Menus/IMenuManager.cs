@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
+namespace OWML.Common
 {
 	public interface IMenuManager
 	{
@@ -14,6 +14,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		public IPauseMenuManager PauseMenuManager { get; }
 
 		public IOptionsMenuManager OptionsMenuManager { get; }
+
+		public IStartupPopupManager StartupPopupManager { get; }
 
 		public void CreateOWMLMenus(IList<IModBehaviour> modList);
 	}

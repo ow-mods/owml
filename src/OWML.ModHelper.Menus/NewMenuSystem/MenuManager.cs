@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;
@@ -22,6 +21,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public ITitleMenuManager TitleMenuManager { get; private set; }
 		public IPauseMenuManager PauseMenuManager { get; private set; }
 		public IOptionsMenuManager OptionsMenuManager { get; private set; }
+		public IStartupPopupManager StartupPopupManager { get; private set; }
 
 		public MenuManager(
 			IModConsole console,
@@ -34,6 +34,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_unityEvents = unityEvents;
 			TitleMenuManager = new TitleMenuManager();
 			OptionsMenuManager = new OptionsMenuManager(console, unityEvents);
+			StartupPopupManager = new StartupPopupManager(console, harmony);
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));

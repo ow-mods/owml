@@ -21,5 +21,7 @@
 		IOwmlConfig OwmlConfig { get; }
 
 		IModInteraction Interaction { get; }
+
+		IMenuManager Menus { get; }
 	}
 }

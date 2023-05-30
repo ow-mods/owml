@@ -1,4 +1,4 @@
-﻿namespace OWML.ModHelper.Menus.NewMenuSystem
+﻿namespace OWML.Common
 {
 	public enum MenuSide
 	{

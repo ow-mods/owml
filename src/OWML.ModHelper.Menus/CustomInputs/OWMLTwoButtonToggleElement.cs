@@ -1,4 +1,5 @@
-﻿using OWML.Logging;
+﻿using OWML.Common;
+using OWML.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
-	public class OWMLTwoButtonToggleElement : OWMLToggleElement, IMoveHandler, IEventSystemHandler, ISelectHandler, IDeselectHandler
+	public class OWMLTwoButtonToggleElement : OWMLToggleElement, IMoveHandler, IEventSystemHandler, ISelectHandler, IDeselectHandler, IOWMLTwoButtonToggleElement
 	{
 		public Button ButtonTrue;
 		public Button ButtonFalse;
@@ -21,8 +22,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		private InputEventListener _trueButtonEventListener;
 		private InputEventListener _falseButtonEventListener;
 
-		public new event OptionValueChangedEvent OnValueChanged;
-		public new delegate void OptionValueChangedEvent(bool newValue);
+		public new event BoolOptionValueChangedEvent OnValueChanged;
 
 		private void Update()
 		{
