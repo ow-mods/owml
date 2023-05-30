@@ -182,12 +182,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 						}
 					}
 
-					foreach (var item in mod.ModHelper.RebindingHelper.Rebindables)
-					{
-						_console.WriteLine($"KEY REBINDING ELEMENT - {item}");
-						OptionsMenuManager.CreateRebinding(newModTab, "test", "test", item);
-					}
-
 					OptionsMenuManager.OpenOptionsAtTab(newModTabButton);
 				};
 			}

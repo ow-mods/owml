@@ -23,8 +23,6 @@ namespace OWML.ModHelper
 
 		public IModInteraction Interaction { get; }
 
-		public IRebindingHelper RebindingHelper { get; }
-
 		public ModHelper(
 			IModLogger logger,
 			IModConsole console,
@@ -35,8 +33,7 @@ namespace OWML.ModHelper
 			IModManifest manifest,
 			IModConfig config,
 			IOwmlConfig owmlConfig,
-			IModInteraction interaction,
-			IRebindingHelper rebinding)
+			IModInteraction interaction)
 		{
 			Logger = logger;
 			Console = console;
@@ -48,7 +45,6 @@ namespace OWML.ModHelper
 			Config = config;
 			OwmlConfig = owmlConfig;
 			Interaction = interaction;
-			RebindingHelper = rebinding;
 		}
 	}
 }

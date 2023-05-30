@@ -47,7 +47,5 @@ namespace OWML.ModHelper.Menus.NewMenuSystem.Interfaces
 		public SubmitAction CreateButton(Menu menu, string label, string tooltip, MenuSide side);
 
 		public void RemoveTab(Menu tab);
-
-		public KeyRebindingElement CreateRebinding(Menu menu, string label, string tooltip, RebindableID id);
 	}
 }
