@@ -9,21 +9,23 @@ namespace OWML.ModHelper.Input
 	{
 		public static bool LoadActions(InputCommandManager __instance, string json, ref bool __result)
 		{
+			ModConsole.OwmlConsole.WriteLine($"LoadActions");
 			var flag = false;
 			try
 			{
 				var inputActionAsset = InputActionAsset.FromJson(json);
 
-				foreach (var action in RebindingHelper.CustomActionMap.actions)
+				ModConsole.OwmlConsole.WriteLine($"Actions in CustomActionMap :");
+				foreach (var action in OWMLRebinding.CustomActionMap.actions)
 				{
 					ModConsole.OwmlConsole.WriteLine($"- name:{action.name}");
 				}
 
-				var existingActionMap = inputActionAsset.FindActionMap(RebindingHelper.CustomActionMap.name);
+				var existingActionMap = inputActionAsset.FindActionMap(OWMLRebinding.CustomActionMap.name);
 				if (existingActionMap != null)
 				{
 					ModConsole.OwmlConsole.WriteLine("Found existing custom action map");
-					foreach (var newAction in RebindingHelper.CustomActionMap.actions)
+					foreach (var newAction in OWMLRebinding.CustomActionMap.actions)
 					{
 						if (existingActionMap.FindAction(newAction.name) == null)
 						{
@@ -39,7 +41,7 @@ namespace OWML.ModHelper.Input
 				else
 				{
 					ModConsole.OwmlConsole.WriteLine("Inserting custom action map");
-					inputActionAsset.AddActionMap(RebindingHelper.CustomActionMap);
+					inputActionAsset.AddActionMap(OWMLRebinding.CustomActionMap);
 				}
 
 				

@@ -10,6 +10,7 @@ using UnityEngine;
 using OWML.Common.Interfaces;
 using OWML.ModHelper.Menus.NewMenuSystem.Interfaces;
 using OWML.ModHelper.Menus.NewMenuSystem;
+using OWML.ModHelper.Input;
 
 namespace OWML.ModLoader
 {
@@ -69,6 +70,7 @@ namespace OWML.ModLoader
 				//.Add<IModMessagePopup, ModMessagePopup>()
 				//.Add<IModPopupManager, ModPopupManager>()
 				//.Add<IModMenus, ModMenus>()
+				.Add<IOWMLRebinding, OWMLRebinding>()
 				.Add<IMenuManager, MenuManager>()
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()

@@ -432,6 +432,31 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return submitAction;
 		}
 
+		public KeyRebindingElement CreateRebinding(Menu menu, string label, string tooltip, RebindableID id)
+		{
+			var existingRebinding = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+							.Single(x => x.name == "InputMenu").transform
+							.Find("MenuGeneral")
+							.Find("UIElement-Pause").gameObject;
+
+			var newRebinding = UnityEngine.Object.Instantiate(existingRebinding);
+			newRebinding.transform.parent = GetParentForAddedElements(menu);
+			newRebinding.transform.localScale = Vector3.one;
+			newRebinding.name = $"UIElement-{id}";
+
+			UnityEngine.Object.Destroy(newRebinding.GetComponentInChildren<LocalizedText>());
+			var text = newRebinding.GetComponentInChildren<Text>();
+			text.text = label;
+
+			var rebindingElement = newRebinding.GetComponent<KeyRebindingElement>();
+			rebindingElement._rebindID = id;
+			rebindingElement._overrideTooltipText = tooltip;
+
+			menu._menuOptions = menu._menuOptions.Add(rebindingElement);
+
+			return rebindingElement;
+		}
+
 		private TabButton CreateTabButton(string name, Menu menu)
 		{
 			var existingButton = Resources.FindObjectsOfTypeAll<TabButton>().Single(x => x.name == "Button-Graphics");

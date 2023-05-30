@@ -9,8 +9,6 @@ namespace OWML.ModHelper.Input
 {
 	public class RebindingHelper : IRebindingHelper
 	{
-		public static InputActionMap CustomActionMap = new("OWMLCustomActionMap");
-
 		public List<RebindableID> Rebindables { get; } = new List<RebindableID>();
 
 		private readonly IModConsole _console;
@@ -18,13 +16,6 @@ namespace OWML.ModHelper.Input
 		public RebindingHelper(IModConsole console, IHarmonyHelper harmony)
 		{
 			_console = console;
-
-			// this adds the prefix once per mod, but it shouldn't affect anything?
-			harmony.AddPrefix(typeof(InputCommandManager).GetMethod("LoadActions", new Type[] { typeof(string) }), typeof(Patches), nameof(Patches.LoadActions));
-
-			//harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateInputCommands", BindingFlags.Static | BindingFlags.Public), typeof(Patches), nameof(Patches.TryCreateInputCommands));
-			//harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateBasicAction", BindingFlags.Static | BindingFlags.NonPublic), typeof(Patches), nameof(Patches.TryCreateBasicAction));
-			//harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateAxisAction", BindingFlags.Static | BindingFlags.NonPublic), typeof(Patches), nameof(Patches.TryCreateAxisAction));
 		}
 
 		public IInputCommands GetCommand(InputConsts.InputCommandType commandType) => InputLibrary.GetInputCommand(commandType);
@@ -62,7 +53,7 @@ namespace OWML.ModHelper.Input
 		}
 
 		public InputAction RegisterCustomAction(string name)
-			=> CustomActionMap.AddAction(
+			=> OWMLRebinding.CustomActionMap.AddAction(
 				name,
 				InputActionType.Button,
 				interactions: "OWInput",
@@ -70,6 +61,6 @@ namespace OWML.ModHelper.Input
 				expectedControlLayout: "Button");
 
 		public void AddBinding(InputAction action, string control)
-			=> CustomActionMap.AddBinding(control, action, groups: "KeyboardMouse");
+			=> OWMLRebinding.CustomActionMap.AddBinding(control, action, groups: "KeyboardMouse");
 	}
 }

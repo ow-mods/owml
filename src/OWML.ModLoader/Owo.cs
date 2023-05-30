@@ -42,6 +42,7 @@ namespace OWML.ModLoader
 		private readonly IGameVendorGetter _vendorChecker;
 		private readonly IMenuManager _menuManager;
 		private readonly IGameVersions _gameVersions;
+		private readonly IOWMLRebinding _rebindingCore;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
 		public Owo(
@@ -59,7 +60,8 @@ namespace OWML.ModLoader
 			IModVersionChecker modVersionChecker,
 			IHarmonyHelper harmonyHelper,
 			IGameVendorGetter vendorChecker,
-			IMenuManager menuManager)
+			IMenuManager menuManager,
+			IOWMLRebinding rebindingCore)
 		{
 			_modFinder = modFinder;
 			_console = console;
@@ -78,6 +80,7 @@ namespace OWML.ModLoader
 			_menuManager = menuManager;
 			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
 			_gameVersions = JsonHelper.LoadJsonObject<GameVersions>($"{_owmlConfig.ManagedPath}/{Constants.GameVersionsFileName}");
+			_rebindingCore = rebindingCore;
 		}
 
 		public void LoadMods()
