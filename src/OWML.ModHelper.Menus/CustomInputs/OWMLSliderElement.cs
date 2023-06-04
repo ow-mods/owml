@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using Mono.Cecil;
+using OWML.Common;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
-	internal class OWMLSliderElement : OWMLMenuValueOption, IMoveHandler, IEventSystemHandler
+	internal class OWMLSliderElement : OWMLMenuValueOption, IMoveHandler, IEventSystemHandler, IOWMLSliderElement
 	{
 		private Slider _slider;
 		private Selectable _rootSelectable;
@@ -15,15 +18,18 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		private float _lower = 0;
 		private float _upper = 10;
 
-		public event OptionValueChangedEvent OnValueChanged;
-		public delegate void OptionValueChangedEvent(float newValue);
+		public event FloatOptionValueChangedEvent OnValueChanged;
 
 		public static float Map(float value, float fromSource, float toSource, float fromTarget, float toTarget)
 			=> ((value - fromSource) / (toSource - fromSource) * (toTarget - fromTarget)) + fromTarget;
 
-		public virtual void Initialize(int startingValue, float lower, float upper)
+		public virtual void Initialize(float startingValue, float lower, float upper)
 		{
-			Initialize(Mathf.RoundToInt(Map(startingValue, _lower, _upper, 0, 10)));
+			Debug.LogError($"Initialize startingValue:{startingValue}, lower:{lower}, upper:{upper}");
+			var mappedValue = Map(startingValue, lower, upper, 0f, 10f);
+			var intValue = Mathf.RoundToInt(mappedValue);
+			Debug.LogError($"- mappedValue:{mappedValue}, intValue:{intValue}");
+			Initialize(intValue);
 			_lower = lower;
 			_upper = upper;
 		}

@@ -178,6 +178,18 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 							case "separator":
 								OptionsMenuManager.AddSeparator(newModTab, false);
 								break;
+							case "slider":
+								var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
+								var lower = settingObject["min"].ToObject<float>();
+								var upper = settingObject["max"].ToObject<float>();
+								var settingSlider = OptionsMenuManager.AddSliderInput(newModTab, label, lower, upper, tooltip, currentSliderValue);
+								settingSlider.OnValueChanged += (float newValue) =>
+								{
+									_console.WriteLine($"changed to {newValue}");
+									mod.ModHelper.Config.SetSettingsValue(name, newValue);
+									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+								};
+								break;
 							default:
 								_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);
 								break;

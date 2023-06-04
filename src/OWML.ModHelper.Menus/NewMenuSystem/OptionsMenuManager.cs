@@ -337,6 +337,40 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return newScript;
 		}
 
+		public IOWMLSliderElement AddSliderInput(Menu menu, string label, float lower, float upper, string tooltip, float initialValue)
+		{
+			var existingSlider = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+				.Single(x => x.name == "GameplayMenu").transform
+				.Find("MenuGameplayBasic")
+				.Find("UIElement-LookSensitivity").gameObject;
+
+			var newSlider = Object.Instantiate(existingSlider);
+			newSlider.transform.parent = GetParentForAddedElements(menu);
+			newSlider.transform.localScale = Vector3.one;
+			newSlider.transform.name = $"UIElement-{label}";
+
+			Object.Destroy(newSlider.GetComponentInChildren<LocalizedText>());
+
+			var oldScript = newSlider.GetComponent<SliderElement>();
+			var newScript = newSlider.AddComponent<OWMLSliderElement>();
+			newScript._label = oldScript._label;
+			newScript._label.text = label;
+			newScript._overrideTooltipText = tooltip;
+
+			_unityEvents.FireOnNextUpdate(() => newScript.Initialize(initialValue, lower, upper));
+
+			Object.Destroy(oldScript);
+
+			menu._menuOptions = menu._menuOptions.Add(newScript);
+
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newSlider.GetComponent<Selectable>();
+			}
+
+			return newScript;
+		}
+
 		public GameObject AddSeparator(Menu menu, bool dots)
 		{
 			var separatorObj = new GameObject("separator");
