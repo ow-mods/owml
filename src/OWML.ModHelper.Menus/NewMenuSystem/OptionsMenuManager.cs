@@ -27,7 +27,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public (Menu menu, TabButton button) CreateStandardTab(string name)
 		{
-			var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "TextAudioMenu").gameObject;
+			//var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "TextAudioMenu").gameObject;
+
+			var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "GraphicsMenu").gameObject;
 
 			var newMenu = Object.Instantiate(existingMenu);
 			newMenu.transform.parent = existingMenu.transform.parent;
@@ -572,6 +574,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		private Transform GetParentForAddedElements(Menu menu)
 		{
+			if (menu.transform.Find("Scroll View") != null)
+			{
+				return menu.transform.Find("Scroll View").Find("Viewport").Find("Content");
+			}
+
 			if (menu.transform.Find("Content") != null)
 			{
 				return menu.transform.Find("Content");

@@ -25,11 +25,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 
 		public virtual void Initialize(float startingValue, float lower, float upper)
 		{
-			Debug.LogError($"Initialize startingValue:{startingValue}, lower:{lower}, upper:{upper}");
-			var mappedValue = Map(startingValue, lower, upper, 0f, 10f);
-			var intValue = Mathf.RoundToInt(mappedValue);
-			Debug.LogError($"- mappedValue:{mappedValue}, intValue:{intValue}");
-			Initialize(intValue);
+			Initialize(Mathf.RoundToInt(Map(startingValue, lower, upper, 0f, 10f)));
 			_lower = lower;
 			_upper = upper;
 		}
