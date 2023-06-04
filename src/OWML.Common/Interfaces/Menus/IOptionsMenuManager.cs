@@ -46,5 +46,7 @@ namespace OWML.Common
 		public SubmitAction CreateButton(Menu menu, string label, string tooltip, MenuSide side);
 
 		public void RemoveTab(Menu tab);
+
+		public void CreateLabel(Menu menu, string label);
 	}
 }

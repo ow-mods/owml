@@ -103,6 +103,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				{
 					var (newModTab, newModTabButton) = OptionsMenuManager.CreateStandardTab("MOD OPTIONS");
 
+					OptionsMenuManager.CreateLabel(newModTab, $"{mod.ModHelper.Manifest.Name}\nVersion: {mod.ModHelper.Manifest.Version}\nAuthor(s): {mod.ModHelper.Manifest.Author}");
+
 					var returnButton = OptionsMenuManager.CreateButton(newModTab, "Return", "Return to the mod selection list.", MenuSide.CENTER);
 					returnButton.OnSubmitAction += () =>
 					{

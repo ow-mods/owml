@@ -431,6 +431,43 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return submitAction;
 		}
 
+		public void CreateLabel(Menu menu, string label)
+		{
+			var newObj = new GameObject("Label");
+			
+			var layoutElement = newObj.AddComponent<LayoutElement>();
+			layoutElement.flexibleWidth = 1;
+
+			var verticalLayout = newObj.AddComponent<VerticalLayoutGroup>();
+			verticalLayout.padding = new RectOffset(100, 100, 0, 30);
+			verticalLayout.spacing = 0;
+			verticalLayout.childAlignment = TextAnchor.MiddleCenter;
+			verticalLayout.childForceExpandHeight = false;
+			verticalLayout.childForceExpandWidth = false;
+			verticalLayout.childControlHeight = true;
+			verticalLayout.childControlWidth = true;
+			verticalLayout.childScaleHeight = false;
+			verticalLayout.childScaleWidth = false;
+
+			var textObj = new GameObject("Text");
+			
+			var text = textObj.AddComponent<Text>();
+			text.text = label;
+			text.font = Resources.Load<Font>("fonts/english - latin/Adobe - SerifGothicStd");
+			text.fontSize = 36;
+			text.alignment = TextAnchor.MiddleCenter;
+			text.horizontalOverflow = HorizontalWrapMode.Wrap;
+			text.verticalOverflow = VerticalWrapMode.Truncate;
+
+			textObj.transform.parent = newObj.transform;
+			textObj.transform.localScale = Vector3.one;
+			textObj.transform.localPosition = Vector3.zero;
+
+			newObj.transform.parent = GetParentForAddedElements(menu);
+			newObj.transform.localScale = Vector3.one;
+			newObj.transform.localPosition = Vector3.zero;
+		}
+
 		private TabButton CreateTabButton(string name, Menu menu)
 		{
 			var existingButton = Resources.FindObjectsOfTypeAll<TabButton>().Single(x => x.name == "Button-Graphics");
