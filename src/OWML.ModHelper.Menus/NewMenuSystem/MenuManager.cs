@@ -103,7 +103,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				{
 					var (newModTab, newModTabButton) = OptionsMenuManager.CreateStandardTab("MOD OPTIONS");
 
-					OptionsMenuManager.CreateLabel(newModTab, $"{mod.ModHelper.Manifest.Name}\nVersion: {mod.ModHelper.Manifest.Version}\nAuthor(s): {mod.ModHelper.Manifest.Author}");
+					OptionsMenuManager.CreateLabel(newModTab, $"{mod.ModHelper.Manifest.Name} {mod.ModHelper.Manifest.Version} by {mod.ModHelper.Manifest.Author}");
 
 					var returnButton = OptionsMenuManager.CreateButton(newModTab, "Return", "Return to the mod selection list.", MenuSide.CENTER);
 					returnButton.OnSubmitAction += () =>
@@ -164,8 +164,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
 								};
 								break;
-							case "slider":
-								break;
 							case "selector":
 								var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
 								var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
@@ -181,6 +179,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								OptionsMenuManager.AddSeparator(newModTab, false);
 								break;
 							default:
+								_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);
 								break;
 						}
 					}
@@ -190,7 +189,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			}
 		}
 
-		// This is to prevent the "AUDIO & LANGUAGE" tab text from overflowing it's boundaries when more tabs are added
+		// This is to prevent the "AUDIO & LANGUAGE" tab text from overflowing its boundaries when more tabs are added
 		private void EditExistingMenus()
 		{
 			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
@@ -213,7 +212,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				return "text";
 			}
-			else if (setting is int || (settingObject != null && settingObject["type"].ToString() == "number"))
+			else if (setting is int || setting is long || (settingObject != null && settingObject["type"].ToString() == "number"))
 			{
 				return "number";
 			}
@@ -234,6 +233,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				return "separator";
 			}
 
+			_console.WriteLine($"Couldn't work out setting type. Type:{setting.GetType().Name} SettingObjectType:{settingObject?["type"].ToString()}", MessageType.Error);
 			return "unknown";
 		}
 	}
