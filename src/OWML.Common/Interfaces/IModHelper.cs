@@ -1,4 +1,6 @@
-﻿namespace OWML.Common
+﻿using OWML.Common.Menus;
+
+namespace OWML.Common
 {
 	public interface IModHelper
 	{
@@ -14,6 +16,8 @@
 
 		IModStorage Storage { get; }
 
+		IModMenus Menus { get; }
+
 		IModManifest Manifest { get; }
 
 		IModConfig Config { get; }
@@ -22,6 +26,6 @@
 
 		IModInteraction Interaction { get; }
 
-		IMenuManager Menus { get; }
+		IMenuManager MenuHelper { get; }
 	}
 }

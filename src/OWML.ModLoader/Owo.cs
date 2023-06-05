@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
+using OWML.Common.Menus;
 using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
@@ -27,6 +28,7 @@ namespace OWML.ModLoader
 		private readonly IModFinder _modFinder;
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
+		private readonly IModMenus _menus;
 		private readonly IModSorter _sorter;
 		private readonly IUnityLogger _unityLogger;
 		private readonly IModSocket _socket;
@@ -47,6 +49,7 @@ namespace OWML.ModLoader
 			IModFinder modFinder,
 			IModConsole console,
 			IOwmlConfig owmlConfig,
+			IModMenus menus,
 			IModSorter sorter,
 			IUnityLogger unityLogger,
 			IModSocket socket,
@@ -63,6 +66,7 @@ namespace OWML.ModLoader
 			_modFinder = modFinder;
 			_console = console;
 			_owmlConfig = owmlConfig;
+			_menus = menus;
 			_sorter = sorter;
 			_unityLogger = unityLogger;
 			_socket = socket;
@@ -226,6 +230,7 @@ namespace OWML.ModLoader
 				.Add(_socket)
 				.Add(_objImporter)
 				.Add(_modList)
+				.Add(_menus)
 				.Add(_processHelper)
 				.Add(_unityEvents)
 				.Add(_menuManager)

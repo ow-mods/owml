@@ -48,7 +48,7 @@ namespace OWML.LoadCustomAssets
 
 			TestAPI();
 
-			ModHelper.Menus.StartupPopupManager.RegisterStartupPopup("Test Startup Popup");
+			ModHelper.MenuHelper.StartupPopupManager.RegisterStartupPopup("Test Startup Popup");
 		}
 
 		private void TestAPI()

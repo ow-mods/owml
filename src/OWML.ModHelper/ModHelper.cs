@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.Common.Menus;
 
 namespace OWML.ModHelper
 {
@@ -16,6 +17,8 @@ namespace OWML.ModHelper
 
 		public IModStorage Storage { get; }
 
+		public IModMenus Menus { get; }
+
 		public IModManifest Manifest { get; }
 
 		public IModConfig Config { get; }
@@ -24,7 +27,7 @@ namespace OWML.ModHelper
 
 		public IModInteraction Interaction { get; }
 
-		public IMenuManager Menus { get; }
+		public IMenuManager MenuHelper { get; }
 
 		public ModHelper(
 			IModLogger logger,
@@ -33,11 +36,12 @@ namespace OWML.ModHelper
 			IModEvents events,
 			IModAssets assets,
 			IModStorage storage,
+			IModMenus menus,
 			IModManifest manifest,
 			IModConfig config,
 			IOwmlConfig owmlConfig,
 			IModInteraction interaction,
-			IMenuManager menus)
+			IMenuManager menuHelper)
 		{
 			Logger = logger;
 			Console = console;
@@ -45,11 +49,12 @@ namespace OWML.ModHelper
 			Events = events;
 			Assets = assets;
 			Storage = storage;
+			Menus = menus;
 			Manifest = manifest;
 			Config = config;
 			OwmlConfig = owmlConfig;
 			Interaction = interaction;
-			Menus = menus;
+			MenuHelper = menuHelper;
 		}
 	}
 }
