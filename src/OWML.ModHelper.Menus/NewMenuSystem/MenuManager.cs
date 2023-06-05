@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Epic.OnlineServices.Platform;
+using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Utils;
@@ -95,8 +96,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			#endregion
 
+			var modsWithSettings = modList.Where(x => x.ModHelper.Config.Settings.Count != 0);
+			var modsWithoutSettings = modList.Where(x => x.ModHelper.Config.Settings.Count == 0);
+
 			// Create buttons for each mod
-			foreach (var mod in modList)
+			foreach (var mod in modsWithSettings)
 			{
 				var button = OptionsMenuManager.CreateButton(modsSubTab, mod.ModHelper.Manifest.Name, "", MenuSide.CENTER);
 				button.OnSubmitAction += () =>
@@ -197,7 +201,15 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					}
 
 					OptionsMenuManager.OpenOptionsAtTab(newModTabButton);
+					Locator.GetMenuAudioController().PlayChangeTab();
 				};
+			}
+
+			OptionsMenuManager.AddSeparator(modsSubTab, true);
+
+			foreach (var mod in modsWithoutSettings)
+			{
+				OptionsMenuManager.CreateLabel(modsSubTab, mod.ModHelper.Manifest.Name);
 			}
 		}
 

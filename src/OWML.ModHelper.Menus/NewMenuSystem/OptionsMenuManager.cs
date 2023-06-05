@@ -27,8 +27,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public (Menu menu, TabButton button) CreateStandardTab(string name)
 		{
-			//var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "TextAudioMenu").gameObject;
-
 			var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "GraphicsMenu").gameObject;
 
 			var newMenu = Object.Instantiate(existingMenu);
@@ -66,6 +64,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				Object.Destroy(item.gameObject);
 			}
+
+			Object.Destroy(menu.transform.Find("Scroll View").Find("Viewport").Find("Content").Find("GammaButtonPanel").gameObject);
 
 			menu._menuOptions = new MenuOption[] { };
 			menu._selectOnActivate = null;
@@ -464,6 +464,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
 			}
 
+			uielement.AddComponent<SelectableAudioPlayer>();
+
 			return submitAction;
 		}
 
@@ -475,7 +477,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			layoutElement.flexibleWidth = 1;
 
 			var verticalLayout = newObj.AddComponent<VerticalLayoutGroup>();
-			verticalLayout.padding = new RectOffset(100, 100, 0, 30);
+			verticalLayout.padding = new RectOffset(100, 100, 0, 0);
 			verticalLayout.spacing = 0;
 			verticalLayout.childAlignment = TextAnchor.MiddleCenter;
 			verticalLayout.childForceExpandHeight = false;
@@ -494,6 +496,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			text.alignment = TextAnchor.MiddleCenter;
 			text.horizontalOverflow = HorizontalWrapMode.Wrap;
 			text.verticalOverflow = VerticalWrapMode.Truncate;
+
+			var textLayoutElement = textObj.AddComponent<LayoutElement>();
+			textLayoutElement.minHeight = 70;
 
 			textObj.transform.parent = newObj.transform;
 			textObj.transform.localScale = Vector3.one;
