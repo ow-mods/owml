@@ -32,9 +32,9 @@ namespace OWML.ModHelper.Menus
 			ModsMenu = modsMenu;
 			PopupManager = popupManager;
 
-			events.Subscribe<PauseMenuManager>(Events.AfterStart);
-			events.Subscribe<TitleScreenManager>(Events.AfterStart);
-			events.Event += OnEvent;
+			//events.Subscribe<PauseMenuManager>(Events.AfterStart);
+			//events.Subscribe<TitleScreenManager>(Events.AfterStart);
+			//events.Event += OnEvent;
 		}
 
 		private void OnEvent(MonoBehaviour behaviour, Events ev)
