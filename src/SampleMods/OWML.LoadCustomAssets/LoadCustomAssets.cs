@@ -60,6 +60,25 @@ namespace OWML.LoadCustomAssets
 
 		private void TestPopup()
 		{
+			var twoChoiceButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("TWO CHOICE POPUP TEST");
+			var twoChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup("test two choice popup", "oak", "narp");
+
+			twoChoiceButton.OnSubmitAction += () => twoChoicePopup.EnableMenu(true);
+
+			var infoButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INFO POPUP TEST");
+			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
+
+			infoButton.OnSubmitAction += () => infoPopup.EnableMenu(true);
+
+			var textButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INPUT POPUP TEST");
+			var textPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup("test text popup", "type a funny thing!", "ok", "cancel");
+
+			textButton.OnSubmitAction += () => textPopup.EnableMenu(true);
+			textPopup.OnPopupConfirm += () =>
+			{
+				ModHelper.Console.WriteLine(textPopup.GetInputText());
+			};
+
 			/*ModHelper.Menus.PauseMenu.OnInit += () =>
 			{
 				var popupButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate("POPUP TEST");
