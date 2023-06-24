@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OWML.Common
 {
-	public interface IStartupPopupManager
+	public interface IPopupMenuManager
 	{
 		public void RegisterStartupPopup(string message);
 	}

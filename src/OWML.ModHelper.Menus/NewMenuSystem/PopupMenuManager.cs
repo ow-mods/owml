@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
-	public class StartupPopupManager : IStartupPopupManager
+	public class PopupMenuManager : IPopupMenuManager
 	{
 		private readonly IModConsole _console;
 
@@ -20,7 +20,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			"BASEGAME2"
 		};
 
-		public StartupPopupManager(IModConsole console, IHarmonyHelper harmony)
+		public PopupMenuManager(IModConsole console, IHarmonyHelper harmony)
 		{
 			_console = console;
 
@@ -43,18 +43,18 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			if (__instance._profileManager.currentProfileGameSave.version == "NONE")
 			{
-				StartupPopupManager.PopupsToShow.Add(0);
+				PopupMenuManager.PopupsToShow.Add(0);
 			}
 
 			var flag = EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.Owned;
 			if (flag && (__instance._profileManager.currentProfileGameSave.shownPopups & StartupPopups.ReducedFrights) == StartupPopups.None)
 			{
-				StartupPopupManager.PopupsToShow.Add(1);
+				PopupMenuManager.PopupsToShow.Add(1);
 			}
 
 			if (flag && (__instance._profileManager.currentProfileGameSave.shownPopups & StartupPopups.NewExhibit) == StartupPopups.None)
 			{
-				StartupPopupManager.PopupsToShow.Add(2);
+				PopupMenuManager.PopupsToShow.Add(2);
 			}
 
 			return false;
@@ -62,7 +62,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public static bool TryShowStartupPopupsAndShowMenu(TitleScreenManager __instance)
 		{
-			if (StartupPopupManager.PopupsToShow.Count != 0)
+			if (PopupMenuManager.PopupsToShow.Count != 0)
 			{
 				__instance.TryShowStartupPopups();
 				return false;
@@ -85,11 +85,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			string text = "AAAAGGGGGHH";
 
-			StartupPopupManager.ActivePopup = StartupPopupManager.PopupsToShow.First();
+			PopupMenuManager.ActivePopup = PopupMenuManager.PopupsToShow.First();
 
-			if (StartupPopupManager.ActivePopup <= 2)
+			if (PopupMenuManager.ActivePopup <= 2)
 			{
-				switch(StartupPopupManager.ActivePopup)
+				switch(PopupMenuManager.ActivePopup)
 				{
 					case 0:
 						text = UITextLibrary.GetString(UITextType.MenuMessage_InputUpdate);
@@ -104,7 +104,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			}
 			else
 			{
-				text = StartupPopupManager.Popups[StartupPopupManager.ActivePopup];
+				text = PopupMenuManager.Popups[PopupMenuManager.ActivePopup];
 			}
 
 			__instance._inputModule.EnableInputs();
@@ -126,11 +126,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public static bool OnUserConfirmStartupPopup(TitleScreenManager __instance)
 		{
-			StartupPopupManager.PopupsToShow.Remove(StartupPopupManager.ActivePopup);
+			PopupMenuManager.PopupsToShow.Remove(PopupMenuManager.ActivePopup);
 
-			if (StartupPopupManager.ActivePopup <= 2)
+			if (PopupMenuManager.ActivePopup <= 2)
 			{
-				switch (StartupPopupManager.ActivePopup)
+				switch (PopupMenuManager.ActivePopup)
 				{
 					case 0:
 						PlayerData.SetShownPopups(StartupPopups.ResetInputs);
@@ -146,7 +146,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				PlayerData.SaveCurrentGame();
 			}
 
-			StartupPopupManager.ActivePopup = -1;
+			PopupMenuManager.ActivePopup = -1;
 			__instance._okCancelPopup.OnPopupConfirm -= __instance.OnUserConfirmStartupPopup;
 			__instance._inputModule.DisableInputs();
 			__instance._titleMenuRaycastBlocker.blocksRaycasts = true;

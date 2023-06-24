@@ -15,7 +15,7 @@ namespace OWML.Common
 
 		public IOptionsMenuManager OptionsMenuManager { get; }
 
-		public IStartupPopupManager StartupPopupManager { get; }
+		public IPopupMenuManager PopupMenuManager { get; }
 
 		public void CreateOWMLMenus(IList<IModBehaviour> modList);
 	}
