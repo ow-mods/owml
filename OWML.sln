@@ -63,6 +63,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7F76E72-1CF2-4C0D-8A39-3D13EB868119}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+		.github\workflows\main.yml = .github\workflows\main.yml
 		owmllogo.png = owmllogo.png
 		Readme.md = Readme.md
 	EndProjectSection
@@ -208,7 +209,7 @@ Global
 		{739D16FB-7848-4047-A173-500CE7C40399} = {C447A599-2700-44E1-BBFA-52880B7BFFBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		SolutionGuid = {0E767163-75F9-420A-80EB-320429543CAD}
 	EndGlobalSection
 EndGlobal
