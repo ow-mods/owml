@@ -32,9 +32,9 @@ namespace OWML.ModHelper.Menus
 			ModsMenu = modsMenu;
 			PopupManager = popupManager;
 
-			//events.Subscribe<PauseMenuManager>(Events.AfterStart);
-			//events.Subscribe<TitleScreenManager>(Events.AfterStart);
-			//events.Event += OnEvent;
+			events.Subscribe<PauseMenuManager>(Events.AfterStart);
+			events.Subscribe<TitleScreenManager>(Events.AfterStart);
+			events.Event += OnEvent;
 		}
 
 		private void OnEvent(MonoBehaviour behaviour, Events ev)
@@ -59,7 +59,7 @@ namespace OWML.ModHelper.Menus
 				MainMenu.Initialize(titleScreenManager);
 				var inputMenu = titleScreenManager.GetComponent<ProfileMenuManager>().GetValue<PopupInputMenu>("_createProfileConfirmPopup");
 				PopupManager.Initialize(inputMenu, MainMenu.OptionsMenu);
-				ModsMenu.Initialize(this, MainMenu);
+				//ModsMenu.Initialize(this, MainMenu);
 			}
 			catch (Exception ex)
 			{
@@ -72,7 +72,7 @@ namespace OWML.ModHelper.Menus
 			try
 			{
 				PauseMenu.Initialize(pauseMenuManager);
-				ModsMenu.Initialize(this, PauseMenu);
+				//ModsMenu.Initialize(this, PauseMenu);
 			}
 			catch (Exception ex)
 			{
