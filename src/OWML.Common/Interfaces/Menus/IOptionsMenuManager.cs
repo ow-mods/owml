@@ -88,11 +88,13 @@ namespace OWML.Common
 		/// Creates a button input to a menu.
 		/// </summary>
 		/// <param name="menu">The menu to add the input to.</param>
-		/// <param name="label">The label of the button.</param>
+		/// <param name="buttonLabel">The label of the button.</param>
 		/// <param name="tooltip">The description of the input.</param>
 		/// <param name="side">Where to place the button in the menu.</param>
 		/// <returns></returns>
-		public SubmitAction CreateButton(Menu menu, string label, string tooltip, MenuSide side);
+		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side);
+
+		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip);
 
 		/// <summary>
 		/// Removes a tab from a menu. This removes both the menu, and the tab for the menu.

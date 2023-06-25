@@ -194,6 +194,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
 								};
 								break;
+							case "text":
+								var currentValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
+								var textInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentValue, tooltip);
+								break;
 							default:
 								_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);
 								break;

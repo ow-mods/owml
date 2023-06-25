@@ -1,4 +1,5 @@
-﻿using OWML.Common;
+﻿using Delaunay.LR;
+using OWML.Common;
 using OWML.Logging;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
@@ -422,7 +423,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return separatorObj;
 		}
 
-		public SubmitAction CreateButton(Menu menu, string label, string tooltip, MenuSide side)
+		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side)
 		{
 			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
 				.Single(x => x.name == "GraphicsMenu").transform
@@ -455,7 +456,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var menuOption = uielement.GetComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
 			menuOption._overrideTooltipText = tooltip;
-			menuOption._label.text = label;
+			menuOption._label.text = buttonLabel;
 
 			menu._menuOptions = menu._menuOptions.Add(menuOption);
 
@@ -465,6 +466,103 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			}
 
 			uielement.AddComponent<SelectableAudioPlayer>();
+
+			return submitAction;
+		}
+
+		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip)
+		{
+			ModConsole.OwmlConsole.WriteLine("creating newButtonObj");
+			var newButtonObj = new GameObject($"UIElement-{label}");
+			newButtonObj.transform.parent = GetParentForAddedElements(menu);
+			newButtonObj.transform.localScale = Vector3.one;
+
+			ModConsole.OwmlConsole.WriteLine("- setting up it's layoutElement");
+			var layoutElement = newButtonObj.AddComponent<LayoutElement>();
+			layoutElement.minHeight = 70;
+			layoutElement.flexibleWidth = 1;
+
+			ModConsole.OwmlConsole.WriteLine("finding existingHorizLayout");
+			var existingHorizLayout = Resources.FindObjectsOfTypeAll<Menu>()
+				.Single(x => x.name == "GraphicsMenu").transform
+				.Find("Scroll View")
+				.Find("Viewport")
+				.Find("Content")
+				.Find("UIElement-ResolutionSelect")
+				.Find("HorizontalLayoutGroup").gameObject;
+
+			ModConsole.OwmlConsole.WriteLine("creating newHorizLayout");
+			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			newHorizLayout.transform.parent = newButtonObj.transform;
+			newHorizLayout.transform.localScale = Vector3.one;
+
+			ModConsole.OwmlConsole.WriteLine("- rect transform stuff");
+			var hrt = newHorizLayout.GetComponent<RectTransform>();
+			var ohrt = existingHorizLayout.GetComponent<RectTransform>();
+			hrt.anchorMin = ohrt.anchorMin;
+			hrt.anchorMax = ohrt.anchorMax;
+			hrt.offsetMin = ohrt.offsetMin;
+			hrt.offsetMax = ohrt.offsetMax;
+			hrt.anchoredPosition3D = ohrt.anchoredPosition3D;
+			hrt.sizeDelta = ohrt.sizeDelta;
+
+			Object.Destroy(newHorizLayout.GetComponentInChildren<LocalizedText>());
+
+			newHorizLayout.transform
+				.Find("LabelBlock")
+				.Find("HorizontalLayoutGroup")
+				.Find("Label")
+				.GetComponent<Text>().text = label;
+
+			ModConsole.OwmlConsole.WriteLine("clearing controlBlock");
+			var controlBlock = newHorizLayout.transform.Find("ControlBlock");
+			Object.Destroy(controlBlock.Find("OptionSelectorBG").gameObject);
+			Object.Destroy(controlBlock.Find("HorizontalLayoutGroup").gameObject);
+
+			ModConsole.OwmlConsole.WriteLine("finding existingButton");
+			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
+				.Single(x => x.name == "GraphicsMenu").transform
+				.Find("Scroll View")
+				.Find("Viewport")
+				.Find("Content")
+				.Find("GammaButtonPanel")
+				.Find("UIElement-GammaButton").gameObject;
+
+			ModConsole.OwmlConsole.WriteLine("creating newButton");
+			var newButton = Object.Instantiate(existingButton);
+			newButton.transform.parent = controlBlock;
+			newButton.transform.localScale = Vector3.one;
+
+			ModConsole.OwmlConsole.WriteLine("- rect transform stuff");
+			var rt = newButton.GetComponent<RectTransform>();
+			var ort = existingHorizLayout.transform.Find("ControlBlock").Find("HorizontalLayoutGroup").GetComponent<RectTransform>();
+			rt.anchorMin = ort.anchorMin;
+			rt.anchorMax = ort.anchorMax;
+			rt.offsetMin = ort.offsetMin;
+			rt.offsetMax = ort.offsetMax;
+			rt.anchoredPosition3D = ort.anchoredPosition3D;
+			rt.sizeDelta = ort.sizeDelta;
+
+			ModConsole.OwmlConsole.WriteLine("submit action stuff");
+			Object.Destroy(newButton.GetComponent<SubmitActionMenu>());
+			var submitAction = newButton.AddComponent<SubmitAction>();
+
+			Object.Destroy(newButton.GetComponentInChildren<LocalizedText>());
+
+			ModConsole.OwmlConsole.WriteLine("menu option stuff");
+			var menuOption = newButton.GetComponent<MenuOption>();
+			menuOption._tooltipTextType = UITextType.None;
+			menuOption._overrideTooltipText = tooltip;
+			menuOption._label.text = buttonLabel;
+
+			menu._menuOptions = menu._menuOptions.Add(menuOption);
+
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
+			}
+
+			newButton.AddComponent<SelectableAudioPlayer>();
 
 			return submitAction;
 		}
