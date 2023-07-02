@@ -82,7 +82,7 @@ jobs:
         with:
           name: owml-nuget
       - name: publish
-        uses: myci-actions/publish-nuget@2
+        uses: myci-actions/publish-nuget@5
         with:
           filename: OWML.*.nupkg
           api-key: ${{ secrets.NUGET_KEY }}
