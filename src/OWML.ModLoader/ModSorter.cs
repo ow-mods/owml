@@ -13,7 +13,7 @@ namespace OWML.ModLoader
 
 		public IList<IModData> SortMods(IList<IModData> mods)
 		{
-			// When detecting a cyclic mod dependency we give up on sorting mods at all
+			// #541 When detecting a cyclic mod dependency we give up on sorting mods at all
 			// When this happens because of a disabled mod it will potentially break the rest of the mods for no reason
 			var enabledMods = mods.Where(x => x.Enabled).ToList();
 
