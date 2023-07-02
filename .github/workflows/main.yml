@@ -83,7 +83,7 @@ jobs:
           name: owml-nuget
       - name: publish
         run: |
-          nuget push "OWML.*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source "https://api.nuget.org/v3/index.json"
+          dotnet nuget push "OWML.*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source "https://api.nuget.org/v3/index.json"
           
   release:
     runs-on: ubuntu-latest
