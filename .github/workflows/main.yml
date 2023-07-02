@@ -82,10 +82,8 @@ jobs:
         with:
           name: owml-nuget
       - name: publish
-        uses: myci-actions/publish-nuget@5
-        with:
-          filename: OWML.*.nupkg
-          api-key: ${{ secrets.NUGET_KEY }}
+        run: |
+          nuget push "OWML.*.nupkg" -ApiKey ${{ secrets.NUGET_KEY }} -Source https://api.nuget.org/v3/index.json
           
   release:
     runs-on: ubuntu-latest
