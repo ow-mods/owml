@@ -53,7 +53,7 @@ jobs:
         run: msbuild OWML.sln
         
       - name: pack
-        run: dotnet pack -o . src\OWML.ModHelper\OWML.ModHelper.csproj -p:NuspecFile=OWML.ModHelper.nuspec -p:NuspecBasePath=src\OWML.ModHelper -p:NuspecProperties="version=${{ steps.version.outputs.prop }};"
+        run: dotnet pack -o . src\OWML.ModHelper\OWML.ModHelper.csproj -p:NuspecFile=OWML.ModHelper.nuspec -p:NuspecProperties="version=${{ steps.version.outputs.prop }};"
       - name: upload nuget
         uses: actions/upload-artifact@v2
         with:
