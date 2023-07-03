@@ -46,14 +46,14 @@ jobs:
       - name: setup msbuild
         uses: microsoft/setup-msbuild@v1
       - name: setup nuget
-        uses: NuGet/setup-nuget@v1.0.2
+        uses: NuGet/setup-nuget@v1.0.5
       - name: restore
         run: nuget restore OWML.sln
       - name: build
         run: msbuild OWML.sln
         
       - name: pack
-        run: dotnet pack -o . -p:PackageVersion=${{ steps.version.outputs.prop }} src\OWML.ModHelper\OWML.ModHelper.csproj
+        run: dotnet pack -o . src\OWML.ModHelper\OWML.ModHelper.csproj
       - name: upload nuget
         uses: actions/upload-artifact@v2
         with:
@@ -82,8 +82,10 @@ jobs:
         with:
           name: owml-nuget
       - name: publish
-        run: |
-          dotnet nuget push "OWML.*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source "https://api.nuget.org/v3/index.json"
+        uses: myci-actions/publish-nuget@5
+        with:
+          filename: OWML.*.nupkg
+          api-key: ${{ secrets.NUGET_KEY }}
           
   release:
     runs-on: ubuntu-latest
