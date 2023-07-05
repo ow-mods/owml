@@ -15,7 +15,7 @@ namespace OWML.ModLoader
 		{
 			// #541 When detecting a cyclic mod dependency we give up on sorting mods at all
 			// When this happens because of a disabled mod it will potentially break the rest of the mods for no reason
-			var enabledMods = mods.Where(x => x.Enabled).ToList();
+			var enabledMods = mods.Where(x => x.Enabled).OrderBy(x => x.Manifest.UniqueName).ToList();
 
 			var modDict = new Dictionary<string, IModData>();
 			var set = new List<Edge>();
@@ -30,7 +30,7 @@ namespace OWML.ModLoader
 				}
 				modDict.Add(mod.Manifest.UniqueName, mod);
 
-				foreach (var dependency in mod.Manifest.Dependencies)
+				foreach (var dependency in mod.Manifest.Dependencies.OrderBy(x => x))
 				{
 					if (mod.Manifest.PriorityLoad && !modList.Contains(dependency))
 					{
@@ -58,7 +58,7 @@ namespace OWML.ModLoader
 			var sortedModData = sortedList.Where(modDict.ContainsKey).Select(mod => modDict[mod]).ToList();
 
 			// Include the disabled mods at the end of the list
-			return sortedModData.Union(mods.Where(x => !x.Enabled)).ToList();
+			return sortedModData.Union(mods.Where(x => !x.Enabled).OrderBy(x => x.Manifest.UniqueName)).ToList();
 		}
 
 		// Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
