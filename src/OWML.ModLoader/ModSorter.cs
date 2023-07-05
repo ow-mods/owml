@@ -18,7 +18,7 @@ namespace OWML.ModLoader
 			var enabledMods = mods.Where(x => x.Enabled).ToList();
 
 			var modDict = new Dictionary<string, IModData>();
-			var set = new HashSet<Edge>();
+			var set = new List<Edge>();
 			var modList = enabledMods.Select(mod => mod.Manifest.UniqueName).ToList();
 
 			foreach (var mod in enabledMods)
@@ -45,10 +45,7 @@ namespace OWML.ModLoader
 				}
 			}
 
-			var sortedList = TopologicalSort(
-				new HashSet<string>(modList),
-				new HashSet<Edge>(set)
-			);
+			var sortedList = TopologicalSort(modList, set);
 
 			if (sortedList == null)
 			{
@@ -65,11 +62,11 @@ namespace OWML.ModLoader
 		}
 
 		// Thanks to https://gist.github.com/Sup3rc4l1fr4g1l1571c3xp14l1d0c10u5/3341dba6a53d7171fe3397d13d00ee3f
-		private static List<string> TopologicalSort(HashSet<string> nodes, HashSet<Edge> edges)
+		private static List<string> TopologicalSort(List<string> nodes, List<Edge> edges)
 		{
 			var sortedList = new List<string>();
 
-			var nodesWithNoEdges = new HashSet<string>(nodes.Where(node => edges.All(edge => edge.Second.Equals(node) == false)));
+			var nodesWithNoEdges = nodes.Where(node => edges.All(edge => edge.Second.Equals(node) == false)).ToList();
 
 			while (nodesWithNoEdges.Any())
 			{
