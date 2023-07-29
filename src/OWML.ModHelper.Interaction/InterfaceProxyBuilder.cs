@@ -59,10 +59,16 @@ namespace OWML.ModHelper.Interaction
 				if (!typeA.IsGenericType)
 					return false;
 
-				if (typeA.GetGenericArguments()[0].GenericParameterPosition == typeB.GetGenericArguments()[0].GenericParameterPosition)
-					return true;
+				if (typeA.GetGenericArguments().Length != typeB.GetGenericArguments().Length)
+					return false;
 
-				return false;
+				for (var i = 0; i < typeA.GetGenericArguments().Length; i++)
+				{
+					if (typeA.GetGenericArguments()[i].GenericParameterPosition != typeB.GetGenericArguments()[i].GenericParameterPosition)
+						return false;
+				}
+
+				return true;
 			}
 
 			foreach (var proxyMethod in interfaceType.GetMethods())
