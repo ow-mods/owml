@@ -3,7 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
-	  <Version>1.1.0</Version>
+	  <PackageVersion>2.9.4</PackageVersion>
+	  <PackageId>OWML</PackageId>
+	  <Title>OWML</Title>
+	  <Version>2.9.4</Version>
+	  <Authors>Alek, Nebula, Raicuparta, TAImatem</Authors>
+	  <Description>Mod loader and mod framework for Outer Wilds</Description>
+	  <PackageTags>Outer Wilds</PackageTags>
+	  <PackageProjectUrl>https://github.com/amazingalek/owml</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
