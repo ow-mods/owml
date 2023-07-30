@@ -40,35 +40,56 @@ namespace OWML.ModHelper.Interaction
 				}
 			}
 
-			bool AreTypesMatching(Type targetType, Type proxyType, bool parameter)
+			bool AreGenericTypesMatching(Type a, Type b)
 			{
-				var typeA = parameter ? targetType : proxyType;
-				var typeB = parameter ? proxyType : targetType;
-
-				if (typeA.IsGenericParameter != typeB.IsGenericParameter)
-					return false;
-
-				if (typeA.IsGenericParameter)
+				if (a.GenericTypeArguments.Length != b.GenericTypeArguments.Length)
 				{
-					return typeA.GenericParameterPosition == typeB.GenericParameterPosition;
+					return false;
 				}
 
-				if (typeA.IsAssignableFrom(typeB))
-					return true;
-
-				if (!typeA.IsGenericType)
-					return false;
-
-				if (typeA.GetGenericArguments().Length != typeB.GetGenericArguments().Length)
-					return false;
-
-				for (var i = 0; i < typeA.GetGenericArguments().Length; i++)
+				if (a.GetGenericTypeDefinition() != b.GetGenericTypeDefinition())
 				{
-					if (typeA.GetGenericArguments()[i].GenericParameterPosition != typeB.GetGenericArguments()[i].GenericParameterPosition)
+					return false;
+				}
+
+				for (var i = 0; i < a.GenericTypeArguments.Length; i++)
+				{
+					if (!AreTypesMatching(a.GenericTypeArguments[i], b.GenericTypeArguments[i]))
+					{
 						return false;
+					}
 				}
 
 				return true;
+			}
+
+			bool AreTypesMatching(Type a, Type b)
+			{
+				if (a == null || b == null)
+				{
+					return false;
+				}
+
+				if (a.IsGenericParameter != b.IsGenericParameter
+				    || a.IsGenericType != b.IsGenericType)
+				{
+					return false;
+				}
+
+				if (a.IsGenericParameter)
+				{
+					// most likely the type is T
+					return a.GenericParameterPosition == b.GenericParameterPosition;
+				}
+
+				if (a.IsGenericType)
+				{
+					// the type is something like Action<...>
+					return AreGenericTypesMatching(a, b);
+				}
+
+				// this is just a normal type
+				return a.IsAssignableFrom(b);
 			}
 
 			foreach (var proxyMethod in interfaceType.GetMethods())
@@ -81,7 +102,7 @@ namespace OWML.ModHelper.Interaction
 						return false;
 					if (m.GetGenericArguments().Length != proxyMethodGenericArguments.Length)
 						return false;
-					if (!AreTypesMatching(m.ReturnType, proxyMethod.ReturnType, false))
+					if (!AreTypesMatching(m.ReturnType, proxyMethod.ReturnType))
 						return false;
 
 					var mParameters = m.GetParameters();
@@ -89,7 +110,7 @@ namespace OWML.ModHelper.Interaction
 						return false;
 					for (int i = 0; i < mParameters.Length; i++)
 					{
-						if (!AreTypesMatching(mParameters[i].ParameterType, proxyMethodParameters[i].ParameterType, true))
+						if (!AreTypesMatching(mParameters[i].ParameterType, proxyMethodParameters[i].ParameterType))
 							return false;
 					}
 					return true;
