@@ -79,7 +79,8 @@ namespace OWML.ModHelper.Interaction
 				if (a.IsEnum && b.IsEnum)
 				{
 					if (Enum.GetNames(a).Length != Enum.GetNames(b).Length
-					    || a.Name != b.Name)
+					    || a.Name != b.Name
+						|| a.GetEnumUnderlyingType() != b.GetEnumUnderlyingType())
 					{
 						return false;
 					}
