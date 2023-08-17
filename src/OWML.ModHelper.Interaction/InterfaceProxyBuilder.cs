@@ -76,6 +76,37 @@ namespace OWML.ModHelper.Interaction
 					return false;
 				}
 
+				if (a.IsEnum && b.IsEnum)
+				{
+					if (Enum.GetNames(a).Length != Enum.GetNames(b).Length
+					    || a.Name != b.Name
+						|| a.GetEnumUnderlyingType() != b.GetEnumUnderlyingType())
+					{
+						return false;
+					}
+
+					for (var i = 0; i < Enum.GetNames(a).Length; i++)
+					{
+						var nameA = Enum.GetNames(a)[i];
+						var nameB = Enum.GetNames(b)[i];
+
+						if (nameA != nameB)
+						{
+							return false;
+						}
+
+						var valueA = Convert.ChangeType(Enum.Parse(a, nameA), a.GetEnumUnderlyingType());
+						var valueB = Convert.ChangeType(Enum.Parse(b, nameB), b.GetEnumUnderlyingType());
+
+						if (!valueA.Equals(valueB))
+						{
+							return false;
+						}
+					}
+
+					return true;
+				}
+
 				if (a.IsGenericParameter)
 				{
 					// most likely the type is T
@@ -177,6 +208,10 @@ namespace OWML.ModHelper.Interaction
 
 			// return result
 			il.Emit(OpCodes.Ret);
+
+			// Equivalent code :
+
+			// return __Target.methodname(arg1, arg2, ...);
 		}
 
 		private void CreateConstructor(TypeBuilder proxyBuilder, FieldBuilder targetField, Type targetType)
@@ -190,6 +225,15 @@ namespace OWML.ModHelper.Interaction
 			il.Emit(OpCodes.Ldarg_1);      // load argument
 			il.Emit(OpCodes.Stfld, targetField); // set field to loaded argument
 			il.Emit(OpCodes.Ret);
+
+			// Equivalent code :
+
+			/*
+			 *	public ctor(TargetType targetType)
+			 *	{
+			 *		this.__Target = targetType;
+			 *	}
+			 */
 		}
 	}
 }
