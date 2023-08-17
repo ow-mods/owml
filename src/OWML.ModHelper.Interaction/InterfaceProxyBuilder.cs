@@ -78,9 +78,32 @@ namespace OWML.ModHelper.Interaction
 
 				if (a.IsEnum && b.IsEnum)
 				{
-					// this doesn't check if the actual enum values are identical.... too bad!
-					return Enum.GetNames(a).Length == Enum.GetNames(b).Length
-					       && a.Name == b.Name;
+					if (Enum.GetNames(a).Length != Enum.GetNames(b).Length
+					    || a.Name != b.Name)
+					{
+						return false;
+					}
+
+					for (var i = 0; i < Enum.GetNames(a).Length; i++)
+					{
+						var nameA = Enum.GetNames(a)[i];
+						var nameB = Enum.GetNames(b)[i];
+
+						if (nameA != nameB)
+						{
+							return false;
+						}
+
+						var valueA = Convert.ChangeType(Enum.Parse(a, nameA), a.GetEnumUnderlyingType());
+						var valueB = Convert.ChangeType(Enum.Parse(b, nameB), b.GetEnumUnderlyingType());
+
+						if (!valueA.Equals(valueB))
+						{
+							return false;
+						}
+					}
+
+					return true;
 				}
 
 				if (a.IsGenericParameter)
