@@ -177,6 +177,10 @@ namespace OWML.ModHelper.Interaction
 
 			// return result
 			il.Emit(OpCodes.Ret);
+
+			// Equivalent code :
+
+			// return instance.method(arg1, arg2, ...);
 		}
 
 		private void CreateConstructor(TypeBuilder proxyBuilder, FieldBuilder targetField, Type targetType)
@@ -190,6 +194,14 @@ namespace OWML.ModHelper.Interaction
 			il.Emit(OpCodes.Ldarg_1);      // load argument
 			il.Emit(OpCodes.Stfld, targetField); // set field to loaded argument
 			il.Emit(OpCodes.Ret);
+			// Equivalent code :
+
+			/*
+			 *	public ctor(Type targetType)
+			 *	{
+			 *		this.targetField = targetType;
+			 *	}
+			 */
 		}
 	}
 }
