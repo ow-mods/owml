@@ -76,6 +76,13 @@ namespace OWML.ModHelper.Interaction
 					return false;
 				}
 
+				if (a.IsEnum && b.IsEnum)
+				{
+					// this doesn't check if the actual enum values are identical.... too bad!
+					return Enum.GetNames(a).Length == Enum.GetNames(b).Length
+					       && a.Name == b.Name;
+				}
+
 				if (a.IsGenericParameter)
 				{
 					// most likely the type is T
