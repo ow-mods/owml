@@ -21,6 +21,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="bin\Debug\net48\OWML.ModHelper.dll" target="lib\net48" />
     <file src="bin\Debug\net48\OWML.ModHelper.Assets.dll" target="lib\net48" />
     <file src="bin\Debug\net48\OWML.ModHelper.Events.dll" target="lib\net48" />
     <file src="bin\Debug\net48\OWML.ModHelper.Menus.dll" target="lib\net48" />
