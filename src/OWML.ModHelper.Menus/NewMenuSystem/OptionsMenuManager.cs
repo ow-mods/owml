@@ -472,17 +472,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip)
 		{
-			ModConsole.OwmlConsole.WriteLine("creating newButtonObj");
 			var newButtonObj = new GameObject($"UIElement-{label}");
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
 			newButtonObj.transform.localScale = Vector3.one;
 
-			ModConsole.OwmlConsole.WriteLine("- setting up it's layoutElement");
 			var layoutElement = newButtonObj.AddComponent<LayoutElement>();
 			layoutElement.minHeight = 70;
 			layoutElement.flexibleWidth = 1;
 
-			ModConsole.OwmlConsole.WriteLine("finding existingHorizLayout");
 			var existingHorizLayout = Resources.FindObjectsOfTypeAll<Menu>()
 				.Single(x => x.name == "GraphicsMenu").transform
 				.Find("Scroll View")
@@ -491,12 +488,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-ResolutionSelect")
 				.Find("HorizontalLayoutGroup").gameObject;
 
-			ModConsole.OwmlConsole.WriteLine("creating newHorizLayout");
 			var newHorizLayout = Object.Instantiate(existingHorizLayout);
 			newHorizLayout.transform.parent = newButtonObj.transform;
 			newHorizLayout.transform.localScale = Vector3.one;
 
-			ModConsole.OwmlConsole.WriteLine("- rect transform stuff");
 			var hrt = newHorizLayout.GetComponent<RectTransform>();
 			var ohrt = existingHorizLayout.GetComponent<RectTransform>();
 			hrt.anchorMin = ohrt.anchorMin;
@@ -514,12 +509,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("Label")
 				.GetComponent<Text>().text = label;
 
-			ModConsole.OwmlConsole.WriteLine("clearing controlBlock");
 			var controlBlock = newHorizLayout.transform.Find("ControlBlock");
 			Object.Destroy(controlBlock.Find("OptionSelectorBG").gameObject);
 			Object.Destroy(controlBlock.Find("HorizontalLayoutGroup").gameObject);
 
-			ModConsole.OwmlConsole.WriteLine("finding existingButton");
 			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
 				.Single(x => x.name == "GraphicsMenu").transform
 				.Find("Scroll View")
@@ -528,12 +521,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("GammaButtonPanel")
 				.Find("UIElement-GammaButton").gameObject;
 
-			ModConsole.OwmlConsole.WriteLine("creating newButton");
 			var newButton = Object.Instantiate(existingButton);
 			newButton.transform.parent = controlBlock;
 			newButton.transform.localScale = Vector3.one;
 
-			ModConsole.OwmlConsole.WriteLine("- rect transform stuff");
 			var rt = newButton.GetComponent<RectTransform>();
 			var ort = existingHorizLayout.transform.Find("ControlBlock").Find("HorizontalLayoutGroup").GetComponent<RectTransform>();
 			rt.anchorMin = ort.anchorMin;
@@ -543,13 +534,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			rt.anchoredPosition3D = ort.anchoredPosition3D;
 			rt.sizeDelta = ort.sizeDelta;
 
-			ModConsole.OwmlConsole.WriteLine("submit action stuff");
 			Object.Destroy(newButton.GetComponent<SubmitActionMenu>());
 			var submitAction = newButton.AddComponent<SubmitAction>();
 
 			Object.Destroy(newButton.GetComponentInChildren<LocalizedText>());
 
-			ModConsole.OwmlConsole.WriteLine("menu option stuff");
 			var menuOption = newButton.GetComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
 			menuOption._overrideTooltipText = tooltip;
