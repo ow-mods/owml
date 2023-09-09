@@ -45,7 +45,7 @@ namespace OWML.Common
 		/// </summary>
 		/// <param name="menu">The menu to add the input to.</param>
 		/// <param name="label">The name of the input.</param>
-		/// <param name="leftButtonString">The name of the first (<see langword="false"/>) choice."/></param>
+		/// <param name="leftButtonString">The name of the first (<see langword="false"/>) choice.</param>
 		/// <param name="rightButtonString">The name of the second (<see langword="true"/>) choice.</param>
 		/// <param name="tooltip">The description of the input.</param>
 		/// <param name="initialValue">The value the input should be set to upon creation.</param>
