@@ -115,6 +115,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			UpdateOptionsBoxColors();
 			UpdateArrowSelectables();
 			_initOnNextFrame = false;
+			OnValueChanged?.Invoke(_value, _optionsList[_value]);
 		}
 
 		public virtual string GetSelectedOption() => _optionsList[_value];

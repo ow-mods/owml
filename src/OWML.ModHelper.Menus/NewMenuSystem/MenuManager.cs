@@ -6,10 +6,7 @@ using OWML.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
@@ -23,6 +20,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public IPauseMenuManager PauseMenuManager { get; private set; }
 		public IOptionsMenuManager OptionsMenuManager { get; private set; }
 		public IPopupMenuManager PopupMenuManager { get; private set; }
+
+		internal static Menu OWMLSettingsMenu;
 
 		public MenuManager(
 			IModConsole console,
@@ -54,6 +53,27 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var (modsMenu, modsMenuButton) = OptionsMenuManager.CreateTabWithSubTabs("MODS");
 			var (owmlSubTab, owmlSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "OWML");
 			var (modsSubTab, modsSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "MODS");
+
+			OWMLSettingsMenu = owmlSubTab;
+
+			owmlSubTab.OnActivateMenu += () =>
+			{
+				var settingsMenuView = UnityEngine.Object.FindObjectOfType<SettingsMenuView>();
+				settingsMenuView._resetToDefaultsPrompt.SetText("Default Settings (OWML)");
+				settingsMenuView._resetToDefaultButton.RefreshTextAndImages(false);
+			};
+
+			modsSubTab.OnActivateMenu += () =>
+			{
+				var settingsMenuView = UnityEngine.Object.FindObjectOfType<SettingsMenuView>();
+				settingsMenuView._resetToDefaultButton.gameObject.SetActive(false);
+			};
+
+			modsSubTab.OnDeactivateMenu += () =>
+			{
+				var settingsMenuView = UnityEngine.Object.FindObjectOfType<SettingsMenuView>();
+				settingsMenuView._resetToDefaultButton.gameObject.SetActive(true);
+			};
 
 			// Create button on title screen that opens the mods menu
 			var modsButton = TitleMenuManager.CreateTitleButton("MODS", 1, false);

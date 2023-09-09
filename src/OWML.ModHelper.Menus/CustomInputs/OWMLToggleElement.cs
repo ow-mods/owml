@@ -55,6 +55,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			}
 			UpdateToggleColors();
 			_initOnNextFrame = false;
+			OnValueChanged?.Invoke(_value == 1);
 		}
 
 		public void Toggle()

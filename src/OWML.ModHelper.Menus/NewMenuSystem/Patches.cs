@@ -1,17 +1,37 @@
 ﻿using HarmonyLib;
-using OWML.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OWML.ModHelper.Menus.CustomInputs;
 using UnityEngine;
 using UnityEngine.UI;
+using OWML.Common;
+using OWML.Utils;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
 	public static class Patches
 	{
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(SettingsMenuView), nameof(SettingsMenuView.ResetToDefaultSettings))]
+		public static void ResetToDefaultSettings(SettingsMenuView __instance)
+		{
+			if (MenuManager.OWMLSettingsMenu.IsMenuEnabled())
+			{
+				var owmlDefaultConfig = JsonHelper.LoadJsonObject<OwmlConfig>($"{Application.dataPath}/Managed/{Constants.OwmlDefaultConfigFileName}");
+
+				var debugMode = MenuManager.OWMLSettingsMenu.GetMenuOptions()[0] as OWMLToggleElement;
+				debugMode.Initialize(owmlDefaultConfig.DebugMode);
+
+				var forceExe = MenuManager.OWMLSettingsMenu.GetMenuOptions()[1] as OWMLToggleElement;
+				forceExe.Initialize(owmlDefaultConfig.ForceExe);
+
+				var incremental = MenuManager.OWMLSettingsMenu.GetMenuOptions()[2] as OWMLToggleElement;
+				incremental.Initialize(owmlDefaultConfig.IncrementalGC);
+
+				return;
+			}
+
+			// TODO : the rest of the mod menus
+		}
+
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(TabButton), nameof(TabButton.InitializeNavigation))]
 		public static bool InitializeNavigation(TabButton __instance)

@@ -1,11 +1,4 @@
 ﻿using OWML.Common;
-using OWML.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -74,6 +67,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 
 			UpdateToggleColors();
 			_initOnNextFrame = false;
+			OnValueChanged?.Invoke(_value == 1);
 		}
 
 		protected override void OnPointerUpInToggleButton(PointerEventData eventData, Selectable selectable)

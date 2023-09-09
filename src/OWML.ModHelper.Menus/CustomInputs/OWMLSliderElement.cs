@@ -1,9 +1,7 @@
-﻿using Mono.Cecil;
-using OWML.Common;
+﻿using OWML.Common;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
@@ -57,6 +55,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			var navigation = _rootSelectable.navigation;
 			_slider.navigation = navigation;
 			_initOnNextFrame = false;
+			OnValueChanged?.Invoke(GetFloatValue());
 		}
 
 		private void Update()
