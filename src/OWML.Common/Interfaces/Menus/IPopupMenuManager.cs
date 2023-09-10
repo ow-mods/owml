@@ -15,6 +15,8 @@ namespace OWML.Common
 
 		public PopupMenu CreateInfoPopup(string message, string continueButtonText);
 
+		public IOWMLThreeChoicePopupMenu CreateThreeChoicePopup(string message, string confirm1Text, string confirm2Text, string cancelText);
+
 		public IOWMLPopupInputMenu CreateInputFieldPopup(string message, string placeholderMessage, string confirmText, string cancelText);
 	}
 }
