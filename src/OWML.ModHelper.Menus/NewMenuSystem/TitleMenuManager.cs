@@ -20,6 +20,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButton = Object.Instantiate(existingTitleButton.gameObject);
 			newButton.transform.parent = existingTitleButton.transform.parent;
 			newButton.transform.localScale = existingTitleButton.transform.localScale;
+			newButton.name = $"Button-{text}";
 
 			Object.Destroy(newButton.GetComponent<SubmitActionConfirm>());
 			var submitAction = newButton.AddComponent<SubmitAction>();
@@ -30,7 +31,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButton.GetComponent<CanvasGroup>().alpha = 0;
 			var animController = GameObject.Find("TitleMenuManagers").GetComponent<TitleAnimationController>();
 			var list = animController._buttonFadeControllers.ToList();
-			list.Insert(newButton.transform.GetSiblingIndex() - 3, new CanvasGroupFadeController
+			list.Insert(newButton.transform.GetSiblingIndex() - 2, new CanvasGroupFadeController
 			{
 				group = newButton.GetComponent<CanvasGroup>()
 			});
