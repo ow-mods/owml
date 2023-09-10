@@ -1,5 +1,4 @@
-﻿using Epic.OnlineServices.Platform;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Utils;
@@ -22,6 +21,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public IPopupMenuManager PopupMenuManager { get; private set; }
 
 		internal static Menu OWMLSettingsMenu;
+		internal static List<(IModBehaviour behaviour, Menu modMenu)> ModSettingsMenus = new();
 
 		public MenuManager(
 			IModConsole console,
@@ -127,6 +127,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				{
 					var (newModTab, newModTabButton) = OptionsMenuManager.CreateStandardTab("MOD OPTIONS");
 
+					ModSettingsMenus.Add((mod, newModTab));
+
 					OptionsMenuManager.CreateLabel(newModTab, $"{mod.ModHelper.Manifest.Name} {mod.ModHelper.Manifest.Version} by {mod.ModHelper.Manifest.Author}");
 
 					var returnButton = OptionsMenuManager.CreateButton(newModTab, "Return", "Return to the mod selection list.", MenuSide.CENTER);
@@ -136,6 +138,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 						// Give time for the modsMenu to activate before switching tabs
 						_unityEvents.FireInNUpdates(() => modsMenu.SelectTabButton(modsSubTabButton), 2);
+					};
+
+					newModTab.OnActivateMenu += () =>
+					{
+						var settingsMenuView = UnityEngine.Object.FindObjectOfType<SettingsMenuView>();
+						settingsMenuView._resetToDefaultsPrompt.SetText($"Default Settings ({mod.ModHelper.Manifest.Name})");
+						settingsMenuView._resetToDefaultButton.RefreshTextAndImages(false);
 					};
 
 					newModTab.OnDeactivateMenu += () =>
@@ -171,6 +180,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 							case "checkbox":
 								var currentCheckboxValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
 								var settingCheckbox = OptionsMenuManager.AddCheckboxInput(newModTab, label, tooltip, currentCheckboxValue);
+								settingCheckbox.ModSettingKey = name;
 								settingCheckbox.OnValueChanged += (bool newValue) =>
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
@@ -182,6 +192,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								var yes = settingObject["yes"].ToString();
 								var no = settingObject["no"].ToString();
 								var settingToggle = OptionsMenuManager.AddToggleInput(newModTab, label, yes, no, tooltip, currentToggleValue);
+								settingToggle.ModSettingKey = name;
 								settingToggle.OnValueChanged += (bool newValue) =>
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
@@ -193,6 +204,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
 								var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
 								var settingSelector = OptionsMenuManager.AddSelectorInput(newModTab, label, options, tooltip, true, currentSelectedIndex);
+								settingSelector.ModSettingKey = name;
 								settingSelector.OnValueChanged += (int newIndex, string newSelection) =>
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newSelection);
@@ -207,6 +219,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								var lower = settingObject["min"].ToObject<float>();
 								var upper = settingObject["max"].ToObject<float>();
 								var settingSlider = OptionsMenuManager.AddSliderInput(newModTab, label, lower, upper, tooltip, currentSliderValue);
+								settingSlider.ModSettingKey = name;
 								settingSlider.OnValueChanged += (float newValue) =>
 								{
 									_console.WriteLine($"changed to {newValue}");

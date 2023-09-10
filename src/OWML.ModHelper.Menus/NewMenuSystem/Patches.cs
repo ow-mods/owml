@@ -1,9 +1,12 @@
-﻿using HarmonyLib;
+﻿using System;
+using System.Linq;
+using HarmonyLib;
 using OWML.ModHelper.Menus.CustomInputs;
 using UnityEngine;
 using UnityEngine.UI;
 using OWML.Common;
 using OWML.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
@@ -27,6 +30,50 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				incremental.Initialize(owmlDefaultConfig.IncrementalGC);
 
 				return;
+			}
+
+			foreach (var (behaviour, modMenu) in MenuManager.ModSettingsMenus)
+			{
+				if (!modMenu.IsMenuEnabled())
+				{
+					continue;
+				}
+
+				var settings = behaviour.ModHelper.Config.Settings;
+				var defaultSettings = behaviour.ModHelper.DefaultConfig;
+
+				var options = modMenu.GetMenuOptions().Where(x => x.name != "UIElement-GammaButton").ToArray();
+
+				for (var i = 0; i < options.Length; i++)
+				{
+					var menuOption = options[i];
+
+					if (menuOption is OWMLOptionsSelectorElement selector)
+					{
+						var index = settings.Keys.ToList().IndexOf(selector.ModSettingKey);
+						var settingObject = settings.Values.ElementAt(index) as JObject;
+						var selectorOptions = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
+						var defaultValue = defaultSettings.GetSettingsValue<string>(selector.ModSettingKey);
+						selector.Initialize(Array.IndexOf(selectorOptions, defaultValue), selectorOptions);
+					}
+					else if (menuOption is OWMLSliderElement slider)
+					{
+						var index = settings.Keys.ToList().IndexOf(slider.ModSettingKey);
+						var settingObject = settings.Values.ElementAt(index) as JObject;
+						var lower = settingObject["min"].ToObject<float>();
+						var upper = settingObject["max"].ToObject<float>();
+						slider.Initialize(defaultSettings.GetSettingsValue<float>(slider.ModSettingKey), lower, upper);
+					}
+					// twobutton is the same as toggle, just with an extra visual layer
+					else if (menuOption is OWMLToggleElement toggle)
+					{
+						toggle.Initialize(defaultSettings.GetSettingsValue<bool>(toggle.ModSettingKey));
+					}
+					else
+					{
+						// TODO : text entry
+					}
+				}
 			}
 
 			// TODO : the rest of the mod menus

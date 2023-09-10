@@ -2,6 +2,8 @@
 {
 	public class OWMLMenuValueOption : MenuOption
 	{
+		public string ModSettingKey { get; set; }
+
 		protected int _value;
 
 		public virtual void Initialize(bool inputBool)
