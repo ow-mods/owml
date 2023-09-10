@@ -74,6 +74,13 @@ namespace OWML.LoadCustomAssets
 			threeChoicePopup.OnPopupConfirm1 += () => ModHelper.Console.WriteLine("Confirm 1");
 			threeChoicePopup.OnPopupConfirm2 += () => ModHelper.Console.WriteLine("Confirm 2");
 
+			var fourChoiceButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("FOUR CHOICE");
+			var fourChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateFourChoicePopup("test four choice popup", "oak", "oak (better)", "oak (worse)", "narp");
+			fourChoiceButton.OnSubmitAction += () => fourChoicePopup.EnableMenu(true);
+			fourChoicePopup.OnPopupConfirm1 += () => ModHelper.Console.WriteLine("Confirm 1");
+			fourChoicePopup.OnPopupConfirm2 += () => ModHelper.Console.WriteLine("Confirm 2");
+			fourChoicePopup.OnPopupConfirm3 += () => ModHelper.Console.WriteLine("Confirm 3");
+
 			var textButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INPUT POPUP TEST");
 			var textPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup("test text popup", "type a funny thing!", "ok", "cancel");
 			textButton.OnSubmitAction += () => textPopup.EnableMenu(true);

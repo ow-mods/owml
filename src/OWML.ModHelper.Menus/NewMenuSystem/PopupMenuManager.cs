@@ -231,6 +231,65 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			return popup;
 		}
+
+		public IOWMLFourChoicePopupMenu CreateFourChoicePopup(string message, string confirm1Text, string confirm2Text, string confirm3Text, string cancelText)
+		{
+			var newPopup = Object.Instantiate(_twoChoicePopupBase);
+
+			switch (LoadManager.GetCurrentScene())
+			{
+				case OWScene.TitleScreen:
+					newPopup.transform.parent = GameObject.Find("/TitleMenu/PopupCanvas").transform;
+					break;
+				case OWScene.SolarSystem:
+				case OWScene.EyeOfTheUniverse:
+					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
+					break;
+			}
+
+			newPopup.transform.localPosition = Vector3.zero;
+			newPopup.transform.localScale = Vector3.one;
+			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(Object.Destroy);
+
+			var originalPopup = newPopup.GetComponent<PopupMenu>();
+
+			var ok1Button = originalPopup._confirmButton.gameObject;
+
+			var ok2Button = Object.Instantiate(ok1Button, ok1Button.transform.parent);
+			ok2Button.transform.SetSiblingIndex(1);
+
+			var ok3Button = Object.Instantiate(ok1Button, ok1Button.transform.parent);
+			ok3Button.transform.SetSiblingIndex(2);
+
+			var popup = newPopup.AddComponent<OWMLFourChoicePopupMenu>();
+			popup._labelText = originalPopup._labelText;
+			popup._cancelAction = originalPopup._cancelAction;
+			popup._ok1Action = originalPopup._okAction;
+			popup._ok2Action = ok2Button.GetComponent<SubmitAction>();
+			popup._ok3Action = ok3Button.GetComponent<SubmitAction>();
+			popup._cancelButton = originalPopup._cancelButton;
+			popup._confirmButton1 = originalPopup._confirmButton;
+			popup._confirmButton2 = ok2Button.GetComponent<ButtonWithHotkeyImageElement>();
+			popup._confirmButton3 = ok3Button.GetComponent<ButtonWithHotkeyImageElement>();
+			popup._rootCanvas = originalPopup._rootCanvas;
+			popup._menuActivationRoot = originalPopup._menuActivationRoot;
+			popup._startEnabled = originalPopup._startEnabled;
+			popup._selectOnActivate = originalPopup._selectOnActivate;
+			popup._selectableItemsRoot = originalPopup._selectableItemsRoot;
+			popup._subMenus = originalPopup._subMenus;
+			popup._menuOptions = originalPopup._menuOptions;
+			popup.SetUpPopup(
+				message,
+				InputLibrary.menuConfirm,
+				InputLibrary.confirm2,
+				InputLibrary.signalscope,
+				InputLibrary.cancel,
+				new ScreenPrompt(confirm1Text),
+				new ScreenPrompt(confirm2Text),
+				new ScreenPrompt(confirm3Text),
+				new ScreenPrompt(cancelText));
+			return popup;
+		}
 	}
 
 	public static class StartupPopupPatches
