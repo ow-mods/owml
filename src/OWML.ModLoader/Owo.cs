@@ -227,6 +227,7 @@ namespace OWML.ModLoader
 				.Add(_owmlConfig)
 				.Add(modData.Manifest)
 				.Add(modData.Config)
+				.Add(modData.DefaultConfig)
 				.Add(_socket)
 				.Add(_objImporter)
 				.Add(_modList)
