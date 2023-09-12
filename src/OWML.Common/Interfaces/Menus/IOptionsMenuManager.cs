@@ -27,7 +27,7 @@ namespace OWML.Common
 		/// <summary>
 		/// Opens the options menu to the given tab.
 		/// </summary>
-		/// <param name="tab">Which tab to open.</param>
+		/// <param name="button">Which tab to open.</param>
 		public void OpenOptionsAtTab(TabButton button);
 
 		/// <summary>
@@ -60,8 +60,7 @@ namespace OWML.Common
 		/// <param name="options">The list of options to choose from.</param>
 		/// <param name="tooltip">The description of the input.</param>
 		/// <param name="loopsAround">Whether or not the selection will roll back to the first choice upon going past the last choice.</param>
-		/// <param name="initialValue">The index of <param name="options"> that the input should be set to upon creation.</param>
-		/// <returns></returns>
+		/// <param name="initialValue">The index of <paramref name="options"/> that the input should be set to upon creation.</param>
 		public IOWMLOptionsSelectorElement AddSelectorInput(Menu menu, string label, string[] options, string tooltip, bool loopsAround, int initialValue);
 
 		/// <summary>
@@ -73,7 +72,6 @@ namespace OWML.Common
 		/// <param name="upper">The upper value of the slider.</param>
 		/// <param name="tooltip">The description of the input.</param>
 		/// <param name="initialValue">The starting value of the sider.</param>
-		/// <returns></returns>
 		public IOWMLSliderElement AddSliderInput(Menu menu, string label, float lower, float upper, string tooltip, float initialValue);
 
 		/// <summary>
@@ -81,19 +79,24 @@ namespace OWML.Common
 		/// </summary>
 		/// <param name="menu">The menu to add to.</param>
 		/// <param name="dots">Whether the seperator should have a line of dots or not.</param>
-		/// <returns></returns>
 		public GameObject AddSeparator(Menu menu, bool dots);
 
 		/// <summary>
-		/// Creates a button input to a menu.
+		/// Adds a button input to a menu.
 		/// </summary>
 		/// <param name="menu">The menu to add the input to.</param>
 		/// <param name="buttonLabel">The label of the button.</param>
 		/// <param name="tooltip">The description of the input.</param>
 		/// <param name="side">Where to place the button in the menu.</param>
-		/// <returns></returns>
 		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side);
 
+		/// <summary>
+		/// Adds a button input with a text label to a menu.
+		/// </summary>
+		/// <param name="menu">The menu to add the input to.</param>
+		/// <param name="label">The label next to the button.</param>
+		/// <param name="buttonLabel">The label of the button.</param>
+		/// <param name="tooltip">The description of the input.</param>
 		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip);
 
 		/// <summary>
@@ -104,7 +107,7 @@ namespace OWML.Common
 		public void RemoveTab(Menu tab);
 
 		/// <summary>
-		/// Create a visual label in a menu.
+		/// Adds a visual label in a menu.
 		/// </summary>
 		/// <param name="menu">The menu to add the label to.</param>
 		/// <param name="label">The text of the label.</param>
