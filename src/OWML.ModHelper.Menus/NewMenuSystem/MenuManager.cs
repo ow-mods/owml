@@ -260,6 +260,18 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				OptionsMenuManager.CreateLabel(modsSubTab, mod.ModHelper.Manifest.Name);
 			}
+
+			foreach (var mod in modList)
+			{
+				try
+				{
+					mod.SetupTitleMenus();
+				}
+				catch (Exception ex)
+				{
+					_console.WriteLine($"Exception when setting up title screen menus for {mod.ModHelper.Manifest.UniqueName} : {ex}", MessageType.Error);
+				}
+			}
 		}
 
 		// This is to prevent the "AUDIO & LANGUAGE" tab text from overflowing its boundaries when more tabs are added

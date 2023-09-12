@@ -44,41 +44,15 @@ namespace OWML.LoadCustomAssets
 
 			TestLogging();
 
-			TestPopup();
-
 			TestAPI();
 
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
-
-			TestOptions();
 		}
 
-		private void TestOptions()
+		public override void SetupTitleMenus()
 		{
-			var (tabMenu, tabButton) = ModHelper.MenuHelper.OptionsMenuManager.CreateTabWithSubTabs("TEST");
+			var optionsManager = ModHelper.MenuHelper.OptionsMenuManager;
 
-			var (subTab1Menu, subTab1Button) = ModHelper.MenuHelper.OptionsMenuManager.AddSubTab(tabMenu, "TAB 1");
-			var (subTab2Menu, subTab2Button) = ModHelper.MenuHelper.OptionsMenuManager.AddSubTab(tabMenu, "TAB 2");
-
-			var infoButton = ModHelper.MenuHelper.OptionsMenuManager.CreateButton(subTab1Menu, "Info Popup", "Opens an info popup.", MenuSide.LEFT);
-			var twoButton = ModHelper.MenuHelper.OptionsMenuManager.CreateButton(subTab1Menu, "Two Choice Popup", "Opens a two choice popup.", MenuSide.CENTER);
-			var threeButton = ModHelper.MenuHelper.OptionsMenuManager.CreateButton(subTab1Menu, "Three Choice Popup", "Opens a three choice popup.", MenuSide.RIGHT);
-
-			var checkbox = ModHelper.MenuHelper.OptionsMenuManager.AddCheckboxInput(subTab2Menu, "Test Checkbox", "* It's a test checkbox.", false);
-			var toggle = ModHelper.MenuHelper.OptionsMenuManager.AddToggleInput(subTab2Menu, "Test Toggle", "Option 1", "Option 2", "* It's a test toggle.", false);
-			var selector = ModHelper.MenuHelper.OptionsMenuManager.AddSelectorInput(subTab2Menu, "Test Selector", new[] { "Option 1", "Option 2", "Option 3" }, "* It's a test selector.", true, 0);
-			var slider = ModHelper.MenuHelper.OptionsMenuManager.AddSliderInput(subTab2Menu, "Test Slider", 0, 100, "* It's a test slider.", 50);
-		}
-
-		private void TestAPI()
-		{
-			var api = ModHelper.Interaction.TryGetModApi<IAPI>("_nebula.ExampleAPI");
-			ModHelper.Console.WriteLine(api.Echo("Test API echo!"));
-			ModHelper.Console.WriteLine("Test API radio: " + api.Radio<ABC>().ToString());
-		}
-
-		private void TestPopup()
-		{
 			var infoButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INFO POPUP");
 			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
 			infoButton.OnSubmitAction += () => infoPopup.EnableMenu(true);
@@ -108,6 +82,29 @@ namespace OWML.LoadCustomAssets
 				ModHelper.Console.WriteLine(textPopup.GetInputText());
 			};
 
+			var (tabMenu, tabButton) = optionsManager.CreateTabWithSubTabs("TEST");
+			var (subTab1Menu, subTab1Button) = optionsManager.AddSubTab(tabMenu, "TAB 1");
+			var (subTab2Menu, subTab2Button) = optionsManager.AddSubTab(tabMenu, "TAB 2");
+
+			var infoPopupButton = optionsManager.CreateButton(subTab1Menu, "Info Popup", "Opens an info popup.", MenuSide.LEFT);
+			var twoButton = optionsManager.CreateButton(subTab1Menu, "Two Choice Popup", "Opens a two choice popup.", MenuSide.CENTER);
+			var threeButton = optionsManager.CreateButton(subTab1Menu, "Three Choice Popup", "Opens a three choice popup.", MenuSide.RIGHT);
+
+			var checkbox = optionsManager.AddCheckboxInput(subTab2Menu, "Test Checkbox", "* It's a test checkbox.", false);
+			var toggle = optionsManager.AddToggleInput(subTab2Menu, "Test Toggle", "Option 1", "Option 2", "* It's a test toggle.", false);
+			var selector = optionsManager.AddSelectorInput(subTab2Menu, "Test Selector", new[] { "Option 1", "Option 2", "Option 3" }, "* It's a test selector.", true, 0);
+			var slider = optionsManager.AddSliderInput(subTab2Menu, "Test Slider", 0, 100, "* It's a test slider.", 50);
+		}
+
+		private void TestAPI()
+		{
+			var api = ModHelper.Interaction.TryGetModApi<IAPI>("_nebula.ExampleAPI");
+			ModHelper.Console.WriteLine(api.Echo("Test API echo!"));
+			ModHelper.Console.WriteLine("Test API radio: " + api.Radio<ABC>().ToString());
+		}
+
+		private void TestPopup()
+		{
 			/*ModHelper.Menus.PauseMenu.OnInit += () =>
 			{
 				var popupButton = ModHelper.Menus.PauseMenu.ResumeButton.Duplicate("POPUP TEST");
