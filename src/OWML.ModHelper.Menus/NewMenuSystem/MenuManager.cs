@@ -15,6 +15,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IModUnityEvents _unityEvents;
 
+		private IList<IModBehaviour> _modList;
+
 		public ITitleMenuManager TitleMenuManager { get; private set; }
 		public IPauseMenuManager PauseMenuManager { get; private set; }
 		public IOptionsMenuManager OptionsMenuManager { get; private set; }
@@ -38,6 +40,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
+
+			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
+			{
+				if (newScene == OWScene.TitleScreen)
+				{
+					CreateOWMLMenus(_modList);
+				}
+			};
 		}
 
 		public void CreateOWMLMenus(IList<IModBehaviour> modList)
@@ -46,6 +56,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
 			}
+
+			_modList = modList;
 
 			EditExistingMenus();
 
