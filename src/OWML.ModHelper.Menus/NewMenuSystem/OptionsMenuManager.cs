@@ -158,6 +158,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newSubMenuTabButton = Object.Instantiate(existingSubMenuTabButton);
 			newSubMenuTabButton.transform.parent = menu.transform.Find("SubMenuTabs");
+			newSubMenuTabButton.transform.localScale = Vector3.one;
 			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 2);
 			newSubMenuTabButton.name = $"Button-{name}Tab";
 			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
@@ -165,6 +166,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newSubMenu = Object.Instantiate(existingSubMenu);
 			newSubMenu.transform.parent = menu.transform;
+			newSubMenu.transform.localScale = Vector3.one;
 			newSubMenu.name = $"Menu{name}";
 
 			var rt = newSubMenu.GetComponent<RectTransform>();
