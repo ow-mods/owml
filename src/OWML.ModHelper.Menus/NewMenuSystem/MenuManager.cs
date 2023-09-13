@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
@@ -45,19 +46,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				if (newScene == OWScene.TitleScreen)
 				{
-					CreateOWMLMenus(((IMenuManager)this).ModList);
+					OWMLTitleMenus(((IMenuManager)this).ModList);
 				}
 			};
 
 			modUnityEvents.RunWhen(
 				() => LoadManager.GetCurrentScene() == OWScene.TitleScreen, 
-				() => CreateOWMLMenus(((IMenuManager)this).ModList));
+				() => OWMLTitleMenus(((IMenuManager)this).ModList));
 		}
 
-		private void CreateOWMLMenus(IList<IModBehaviour> modList)
+		private void OWMLTitleMenus(IList<IModBehaviour> modList)
 		{
-			_console.WriteLine($"Current scene is {LoadManager.GetCurrentScene()}", MessageType.Info);
-
 			void SaveConfig()
 			{
 				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
@@ -295,6 +294,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				var text = item.GetComponent<UIStyleApplier>()._textItems[0];
 				text.horizontalOverflow = HorizontalWrapMode.Wrap;
+			}
+
+			var animController = GameObject.Find("TitleMenuManagers").GetComponent<TitleAnimationController>();
+			foreach (var item in animController._buttonFadeControllers)
+			{
+				var layoutElement = item.group.gameObject.GetComponent<LayoutElement>();
+				layoutElement.minHeight = 28; // seems to be the minimum
 			}
 		}
 
