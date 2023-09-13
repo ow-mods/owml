@@ -157,7 +157,7 @@ namespace OWML.ModLoader
 				_modList.Add(initMod);
 			}
 
-			_menuManager.CreateOWMLMenus(_modList);
+			_menuManager.ModList = _modList;
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)

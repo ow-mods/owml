@@ -15,12 +15,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IModUnityEvents _unityEvents;
 
-		private IList<IModBehaviour> _modList;
-
 		public ITitleMenuManager TitleMenuManager { get; private set; }
 		public IPauseMenuManager PauseMenuManager { get; private set; }
 		public IOptionsMenuManager OptionsMenuManager { get; private set; }
 		public IPopupMenuManager PopupMenuManager { get; private set; }
+		IList<IModBehaviour> IMenuManager.ModList { get; set; }
 
 		internal static Menu OWMLSettingsMenu;
 		internal static List<(IModBehaviour behaviour, Menu modMenu)> ModSettingsMenus = new();
@@ -29,7 +28,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			IModConsole console,
 			IHarmonyHelper harmony,
 			IModUnityEvents unityEvents,
-			IOwmlConfig owmlConfig)
+			IOwmlConfig owmlConfig,
+			IModUnityEvents modUnityEvents)
 		{
 			_console = console;
 			_owmlConfig = owmlConfig;
@@ -45,19 +45,23 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				if (newScene == OWScene.TitleScreen)
 				{
-					CreateOWMLMenus(_modList);
+					CreateOWMLMenus(((IMenuManager)this).ModList);
 				}
 			};
+
+			modUnityEvents.RunWhen(
+				() => LoadManager.GetCurrentScene() == OWScene.TitleScreen, 
+				() => CreateOWMLMenus(((IMenuManager)this).ModList));
 		}
 
-		public void CreateOWMLMenus(IList<IModBehaviour> modList)
+		private void CreateOWMLMenus(IList<IModBehaviour> modList)
 		{
+			_console.WriteLine($"Current scene is {LoadManager.GetCurrentScene()}", MessageType.Info);
+
 			void SaveConfig()
 			{
 				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
 			}
-
-			_modList = modList;
 
 			EditExistingMenus();
 
@@ -242,6 +246,15 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 							case "text":
 								var currentValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
 								var textInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentValue, tooltip);
+								var textInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentValue, "Confirm", "Cancel");
+								textInputButton.OnSubmitAction += () => textInputPopup.EnableMenu(true);
+								textInputPopup.OnPopupConfirm += () =>
+								{
+									var newValue = textInputPopup.GetInputText();
+									_console.WriteLine($"changed to {newValue}");
+									mod.ModHelper.Config.SetSettingsValue(name, newValue);
+									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+								};
 								break;
 							default:
 								_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);

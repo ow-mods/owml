@@ -1,4 +1,8 @@
-﻿namespace OWML.Common
+﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("OWML.ModHelper.Menus")]
+[assembly: InternalsVisibleTo("OWML.ModLoader")]
+namespace OWML.Common
 {
 	public class Constants
 	{

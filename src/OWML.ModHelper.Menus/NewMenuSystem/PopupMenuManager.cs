@@ -70,6 +70,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				case OWScene.EyeOfTheUniverse:
 					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
 					break;
+				default:
+					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
+					break;
 			}
 
 			newPopup.transform.localPosition = Vector3.zero;
@@ -93,6 +96,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				case OWScene.SolarSystem:
 				case OWScene.EyeOfTheUniverse:
 					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
+					break;
+				default:
+					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
 					break;
 			}
 
@@ -124,6 +130,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				case OWScene.SolarSystem:
 				case OWScene.EyeOfTheUniverse:
 					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
+					break;
+				default:
+					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
 					break;
 			}
 
@@ -176,6 +185,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				case OWScene.SolarSystem:
 				case OWScene.EyeOfTheUniverse:
 					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
+					break;
+				default:
+					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
 					break;
 			}
 
@@ -244,6 +256,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				case OWScene.SolarSystem:
 				case OWScene.EyeOfTheUniverse:
 					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
+					break;
+				default:
+					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
 					break;
 			}
 
