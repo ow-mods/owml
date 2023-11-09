@@ -420,7 +420,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			__instance._okCancelPopup.OnPopupConfirm -= __instance.OnUserConfirmStartupPopup;
 			__instance._inputModule.DisableInputs();
 			__instance._titleMenuRaycastBlocker.blocksRaycasts = true;
-			__instance.TryShowStartupPopupsAndShowMenu();
+			__instance.TryShowStartupPopupsAndShowMenu(true);
 
 			return false;
 		}
