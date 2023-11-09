@@ -113,5 +113,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			return false;
 		}
+
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.FadeInTitleLogo))]
+		public static void FadeInTitleLogo(TitleScreenManager __instance)
+		{
+			var owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{Application.dataPath}/Managed/{Constants.OwmlManifestFileName}");
+			__instance._gameVersionTextDisplay.text = $"Outer Wilds : {Application.version}{Environment.NewLine}OWML : {owmlManifest.Version}";
+		}
 	}
 }
