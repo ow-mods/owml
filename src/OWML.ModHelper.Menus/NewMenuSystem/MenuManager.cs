@@ -257,6 +257,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								break;
 							default:
 								_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);
+								OptionsMenuManager.CreateLabel(newModTab, $"Unknown {settingType} : {name}");
 								break;
 						}
 					}
