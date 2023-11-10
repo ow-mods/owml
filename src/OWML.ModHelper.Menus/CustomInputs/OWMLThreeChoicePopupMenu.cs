@@ -117,9 +117,12 @@ namespace OWML.ModHelper.Menus.CustomInputs
 
 			_ok1Action.OnSubmitAction += InvokeOk1;
 			_ok2Action.OnSubmitAction += InvokeOk2;
+			// PopupCanvas is disabled after the menus are initialized, and overrideSorting can only be set when it's enabled
+			_menuActivationRoot.gameObject.SetActive(true);
 			_popupCanvas = gameObject.GetAddComponent<Canvas>();
 			_popupCanvas.overrideSorting = true;
 			_popupCanvas.sortingOrder = 30000;
+			_menuActivationRoot.gameObject.SetActive(false);
 			gameObject.GetAddComponent<GraphicRaycaster>();
 			gameObject.GetAddComponent<CanvasGroup>();
 		}

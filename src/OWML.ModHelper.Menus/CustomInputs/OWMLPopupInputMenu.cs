@@ -24,6 +24,18 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			this._inputField.DeactivateInputField();
 		}
 
+		public override void InitializeMenu()
+		{
+			base.InitializeMenu();
+
+			// PopupCanvas is disabled after the menus are initialized, and overrideSorting can only be set when it's enabled
+			_menuActivationRoot.gameObject.SetActive(true);
+			_popupCanvas = gameObject.GetAddComponent<Canvas>();
+			_popupCanvas.overrideSorting = true;
+			_popupCanvas.sortingOrder = 30000;
+			_menuActivationRoot.gameObject.SetActive(false);
+		}
+
 		public override Selectable GetSelectOnActivate()
 		{
 			return this._selectOnActivate;
