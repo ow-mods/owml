@@ -121,5 +121,22 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{Application.dataPath}/Managed/{Constants.OwmlManifestFileName}");
 			__instance._gameVersionTextDisplay.text = $"Outer Wilds : {Application.version}{Environment.NewLine}OWML : {owmlManifest.Version}";
 		}
+
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(PopupMenu), nameof(PopupMenu.EnableMenu))]
+		public static void EnableMenu(PopupMenu __instance)
+		{
+			var rootEnabled = __instance._menuActivationRoot.gameObject.activeSelf;
+
+			// PopupCanvas is disabled after the menus are initialized, and overrideSorting can only be set when it's enabled
+			__instance._menuActivationRoot.gameObject.SetActive(true);
+			__instance._popupCanvas = __instance.gameObject.GetAddComponent<Canvas>();
+			__instance._popupCanvas.overrideSorting = true;
+			__instance._popupCanvas.sortingOrder = 30000;
+			if (!rootEnabled)
+			{
+				__instance._menuActivationRoot.gameObject.SetActive(false);
+			}
+		}
 	}
 }
