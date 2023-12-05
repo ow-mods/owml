@@ -166,6 +166,11 @@
                     "description": "Description of the warning to show in the body of the dialog"
                 }
             }
+        },
+        "donateLink": {
+            "type": "string",
+            "description": "Provide a link for donations. This will appear as a button in the mod manager",
+            "pattern": "(?:^https://(?:www\\.)?patreon\\.com/\\w+$)|(?:^https://(?:www\\.)?paypal\\.me/\\w+$)"
         }
     }
 }
