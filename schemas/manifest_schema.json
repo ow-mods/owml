@@ -169,8 +169,16 @@
         },
         "donateLink": {
             "type": "string",
-            "description": "Provide a link for donations. This will appear as a button in the mod manager",
+            "description": "[DEPRECATED] Please use `donateLinks` instead.",
             "pattern": "(?:^https://(?:www\\.)?patreon\\.com/\\w+$)|(?:^https://(?:www\\.)?paypal\\.me/\\w+$)"
+        },
+        "donateLinks": {
+            "type": "array",
+            "description": "Specify links to be displayed in the mod manager for the mod, currently `PayPal`, `Patreon`, `Buymeacoffee`, `CashApp`, and `Kofi` are available",
+            "items": {
+                "type": "string",
+                "pattern": "^https://(www\\.)?(github.com|outerwildsmods.com|paypal.me|patreon.com|buymeacoffee.com|cash.app|ko-fi.com)/"
+            } 
         }
     }
 }
