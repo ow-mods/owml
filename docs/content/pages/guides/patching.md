@@ -163,7 +163,7 @@ public class MyPatchClass {
 ```
 
 !!! alert-info "How can we access that private field?"
-    We publicize all base-game assemblies for you, meaning you can get and set private fields and call private methods on base-game classes. This is done in [the Outer Wilds game libs package](https://github.com/ow-mods/OuterWildsGameLibs)
+    We publicize all base-game assemblies for you, meaning you can get and set private fields and call private methods on base-game classes. This is done in [the Outer Wilds game libs package](https://github.com/ow-mods/OuterWildsGameLibs){class="link-info"}
 
 ### Getting The Arguments Passed
 
