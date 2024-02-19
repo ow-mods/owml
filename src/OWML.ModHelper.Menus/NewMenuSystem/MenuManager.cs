@@ -4,7 +4,9 @@ using OWML.Common;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +14,19 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 {
 	public class MenuManager : IMenuManager
 	{
+		enum SettingType
+		{
+			NONE,
+			CHECKBOX,
+			TOGGLE,
+			TEXT,
+			NUMBER,
+			NUMBER_FLOAT,
+			SELECTOR,
+			SLIDER,
+			SEPARATOR
+		}
+
 		private readonly IModConsole _console;
 		private readonly IOwmlConfig _owmlConfig;
 		private readonly IModUnityEvents _unityEvents;
@@ -190,7 +205,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 						switch (settingType)
 						{
-							case "checkbox":
+							case SettingType.CHECKBOX:
 								var currentCheckboxValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
 								var settingCheckbox = OptionsMenuManager.AddCheckboxInput(newModTab, label, tooltip, currentCheckboxValue);
 								settingCheckbox.ModSettingKey = name;
@@ -200,7 +215,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
-							case "toggle":
+							case SettingType.TOGGLE:
 								var currentToggleValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
 								var yes = settingObject["yes"].ToString();
 								var no = settingObject["no"].ToString();
@@ -212,7 +227,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
-							case "selector":
+							case SettingType.SELECTOR:
 								var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
 								var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
 								var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
@@ -224,10 +239,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
-							case "separator":
+							case SettingType.SEPARATOR:
 								OptionsMenuManager.AddSeparator(newModTab, false);
 								break;
-							case "slider":
+							case SettingType.SLIDER:
 								var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
 								var lower = settingObject["min"].ToObject<float>();
 								var upper = settingObject["max"].ToObject<float>();
@@ -240,14 +255,36 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
-							case "text":
-								var currentValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-								var textInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentValue, tooltip);
-								var textInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentValue, "Confirm", "Cancel");
+							case SettingType.TEXT:
+								var currentTextValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
+								var textInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentTextValue, tooltip);
+								var textInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentTextValue, "Confirm", "Cancel");
 								textInputButton.OnSubmitAction += () => textInputPopup.EnableMenu(true);
 								textInputPopup.OnPopupConfirm += () =>
 								{
 									var newValue = textInputPopup.GetInputText();
+									_console.WriteLine($"changed to {newValue}");
+									mod.ModHelper.Config.SetSettingsValue(name, newValue);
+									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+								};
+								break;
+							case SettingType.NUMBER:
+							case SettingType.NUMBER_FLOAT:
+								var currentValue = mod.ModHelper.Config.GetSettingsValue<int>(name);
+								var numberInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip);
+								var numberInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentValue.ToString(CultureInfo.CurrentCulture), "Confirm", "Cancel");
+								numberInputPopup.OnInputPopupValidateChar += c =>
+								{
+									var text = numberInputPopup.GetInputText() + c;
+
+									return settingType == SettingType.NUMBER_FLOAT
+										? Regex.IsMatch(text, @"^\d*[,.]?\d*$")
+										: Regex.IsMatch(text, @"^\d*$");
+								};
+								numberInputButton.OnSubmitAction += () => numberInputPopup.EnableMenu(true);
+								numberInputPopup.OnPopupConfirm += () =>
+								{
+									var newValue = int.Parse(numberInputPopup.GetInputText());
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
@@ -303,41 +340,45 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			}
 		}
 
-		private string GetSettingType(object setting)
+		private SettingType GetSettingType(object setting)
 		{
 			var settingObject = setting as JObject;
 
 			if (setting is bool || (settingObject != null && settingObject["type"].ToString() == "toggle" && (settingObject["yes"] == null || settingObject["no"] == null)))
 			{
-				return "checkbox";
+				return SettingType.CHECKBOX;
 			}
 			else if (setting is string || (settingObject != null && settingObject["type"].ToString() == "text"))
 			{
-				return "text";
+				return SettingType.TEXT;
 			}
 			else if (setting is int || setting is long || (settingObject != null && settingObject["type"].ToString() == "number"))
 			{
-				return "number";
+				return SettingType.NUMBER;
+			}
+			else if (setting is float or decimal or double)
+			{
+				return SettingType.NUMBER_FLOAT;
 			}
 			else if (settingObject != null && settingObject["type"].ToString() == "toggle")
 			{
-				return "toggle";
+				return SettingType.TOGGLE;
 			}
 			else if (settingObject != null && settingObject["type"].ToString() == "selector")
 			{
-				return "selector";
+				return SettingType.SELECTOR;
 			}
 			else if (settingObject != null && settingObject["type"].ToString() == "slider")
 			{
-				return "slider";
+				return SettingType.SLIDER;
 			}
 			else if (settingObject != null && settingObject["type"].ToString() == "separator")
 			{
-				return "separator";
+				return SettingType.SEPARATOR;
 			}
 
 			_console.WriteLine($"Couldn't work out setting type. Type:{setting.GetType().Name} SettingObjectType:{settingObject?["type"].ToString()}", MessageType.Error);
-			return "unknown";
+			return SettingType.NONE;
 		}
 	}
 }
