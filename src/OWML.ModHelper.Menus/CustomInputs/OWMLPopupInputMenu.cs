@@ -4,6 +4,7 @@ using UnityEngine;
 using Steamworks;
 using UnityEngine.EventSystems;
 using OWML.Common.Interfaces.Menus;
+using OWML.Logging;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
@@ -64,7 +65,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 				this.OnTextFieldChanged();
 			});
 			InputField inputField = this._inputField;
-			inputField.onValidateInput = (InputField.OnValidateInput)Delegate.Combine(inputField.onValidateInput, new InputField.OnValidateInput(this.OnValidateInput));
+			inputField.onValidateInput += this.OnValidateInput;
 			Transform transform = this._inputField.transform.Find(this._inputField.transform.name + " Input Caret");
 			if (transform != null)
 			{
