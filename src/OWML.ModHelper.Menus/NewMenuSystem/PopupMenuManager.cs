@@ -162,6 +162,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			popup._selectableItemsRoot = originalPopup._selectableItemsRoot;
 			popup._subMenus = originalPopup._subMenus;
 			popup._menuOptions = originalPopup._menuOptions;
+			popup._addToMenuStackManager = true;
 			popup.SetUpPopup(
 				message,
 				InputLibrary.menuConfirm,
@@ -293,6 +294,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			popup._selectableItemsRoot = originalPopup._selectableItemsRoot;
 			popup._subMenus = originalPopup._subMenus;
 			popup._menuOptions = originalPopup._menuOptions;
+			popup._addToMenuStackManager = true;
 			popup.SetUpPopup(
 				message,
 				InputLibrary.menuConfirm,
@@ -330,23 +332,45 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return false;
 		}
 
-		public static bool TryShowStartupPopupsAndShowMenu(TitleScreenManager __instance)
+		public static bool TryShowStartupPopupsAndShowMenu(TitleScreenManager __instance, bool firstTimeRun)
 		{
-			if (PopupMenuManager.PopupsToShow.Count != 0)
+			if (__instance._setGammaMenuCallback)
+			{
+				PlayerData.SetRanFirstRunGammaSetup(true);
+				__instance._setGammaMenuCallback = false;
+				__instance._firstTimeGammaSetup.OnGammaMenuFadeOutComplete -= __instance.TryShowStartupPopupsAndShowMenu;
+			}
+
+			if (!PlayerData.RanFirstRunGammaSetup() && __instance.MainMenuIsActive())
+			{
+				__instance._inputModule.EnableInputs();
+				__instance._setGammaMenuCallback = true;
+				__instance._firstTimeGammaSetup.OnGammaMenuFadeOutComplete += __instance.TryShowStartupPopupsAndShowMenu;
+				__instance._firstTimeGammaSetup.OnDeactivateMenu += __instance.OnGammaMenuDeactivate;
+				__instance._firstTimeGammaSetup.ActivateAsFirstTimeSetup();
+				return false;
+			}
+
+			if (PopupMenuManager.PopupsToShow.Count == 0)
+			{
+				__instance._okCancelPopup.ResetPopup();
+				__instance.SetUpMainMenu();
+
+				if (__instance._autoResumeExpedition)
+				{
+					return false;
+				}
+
+				if (firstTimeRun)
+				{
+					__instance.FadeInMenuOptions();
+					return false;
+				}
+			}
+			else
 			{
 				__instance.TryShowStartupPopups();
-				return false;
 			}
-
-			__instance._okCancelPopup.ResetPopup();
-			__instance.SetUpMainMenu();
-
-			if (__instance._autoResumeExpedition)
-			{
-				return false;
-			}
-
-			__instance.FadeInMenuOptions();
 
 			return false;
 		}
