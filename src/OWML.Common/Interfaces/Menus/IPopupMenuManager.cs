@@ -53,6 +53,14 @@ namespace OWML.Common
 		/// <returns>The IOWMLFourChoicePopupMenu for you to enable/disable, or hook events into.</returns>
 		public IOWMLFourChoicePopupMenu CreateFourChoicePopup(string message, string confirm1Text, string confirm2Text, string confirm3Text, string cancelText);
 
+		/// <summary>
+		/// Creats a popup with a text entry box.
+		/// </summary>
+		/// <param name="message">The message text of the popup.</param>
+		/// <param name="placeholderMessage">The greyed out text that appears when nothing is written in the text box.</param>
+		/// <param name="confirmText">The text that appears on the left/confirm button.</param>
+		/// <param name="cancelText">The text that appears on the right/cancel button.</param>
+		/// <returns></returns>
 		public IOWMLPopupInputMenu CreateInputFieldPopup(string message, string placeholderMessage, string confirmText, string cancelText);
 	}
 }
