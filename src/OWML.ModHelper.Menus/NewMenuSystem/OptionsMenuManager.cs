@@ -248,6 +248,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				menu._selectOnActivate = newCheckbox.GetComponent<Selectable>();
 			}
 
+			var labelBlock = newCheckbox.transform.Find("HorizontalLayoutGroup").Find("LabelBlock").GetComponent<LayoutElement>();
+			labelBlock.minWidth = 860;
+			labelBlock.preferredWidth = -1;
+
 			return customCheckboxScript;
 		}
 
@@ -296,6 +300,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				menu._selectOnActivate = newToggle.GetComponent<Selectable>();
 			}
 
+			var labelBlock = newScript.transform.Find("HorizontalLayoutGroup").Find("LabelBlock").GetComponent<LayoutElement>();
+			labelBlock.minWidth = 860;
+			labelBlock.preferredWidth = -1;
+
 			return newScript;
 		}
 
@@ -339,6 +347,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newSelector.SetActive(true);
 
+			var labelBlock = newScript.transform.Find("HorizontalLayoutGroup").Find("LabelBlock").GetComponent<LayoutElement>();
+			labelBlock.minWidth = 860;
+			labelBlock.preferredWidth = -1;
+
 			return newScript;
 		}
 
@@ -372,6 +384,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				menu._selectOnActivate = newSlider.GetComponent<Selectable>();
 			}
+
+			var labelBlock = newScript.transform.Find("HorizontalLayoutGroup").Find("Panel-Label").GetComponent<LayoutElement>();
+			labelBlock.minWidth = 860;
+			labelBlock.preferredWidth = -1;
 
 			return newScript;
 		}
