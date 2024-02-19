@@ -169,8 +169,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
 					{
-						var configPath = $"{mod.ModHelper.Manifest.ModFolderPath}{Constants.ModConfigFileName}";
-
 						var settingType = GetSettingType(setting);
 						var label = name;
 						var tooltip = "";
@@ -199,7 +197,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								settingCheckbox.OnValueChanged += (bool newValue) =>
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
 							case "toggle":
@@ -211,7 +209,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								settingToggle.OnValueChanged += (bool newValue) =>
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
 							case "selector":
@@ -223,7 +221,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								settingSelector.OnValueChanged += (int newIndex, string newSelection) =>
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newSelection);
-									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
 							case "separator":
@@ -239,7 +237,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
 							case "text":
@@ -252,7 +250,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									var newValue = textInputPopup.GetInputText();
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									JsonHelper.SaveJsonObject(configPath, mod.ModHelper.Config);
+									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 								};
 								break;
 							default:
