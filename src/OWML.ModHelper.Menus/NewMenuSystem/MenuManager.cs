@@ -21,7 +21,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			TOGGLE,
 			TEXT,
 			NUMBER,
-			NUMBER_FLOAT,
 			SELECTOR,
 			SLIDER,
 			SEPARATOR
@@ -269,22 +268,19 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								};
 								break;
 							case SettingType.NUMBER:
-							case SettingType.NUMBER_FLOAT:
-								var currentValue = mod.ModHelper.Config.GetSettingsValue<int>(name);
+								var currentValue = mod.ModHelper.Config.GetSettingsValue<double>(name);
 								var numberInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip);
 								var numberInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentValue.ToString(CultureInfo.CurrentCulture), "Confirm", "Cancel");
 								numberInputPopup.OnInputPopupValidateChar += c =>
 								{
 									var text = numberInputPopup.GetInputText() + c;
 
-									return settingType == SettingType.NUMBER_FLOAT
-										? Regex.IsMatch(text, @"^\d*[,.]?\d*$")
-										: Regex.IsMatch(text, @"^\d*$");
+									return Regex.IsMatch(text, @"^\d*[,.]?\d*$");
 								};
 								numberInputButton.OnSubmitAction += () => numberInputPopup.EnableMenu(true);
 								numberInputPopup.OnPopupConfirm += () =>
 								{
-									var newValue = int.Parse(numberInputPopup.GetInputText());
+									var newValue = double.Parse(numberInputPopup.GetInputText());
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
@@ -352,13 +348,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				return SettingType.TEXT;
 			}
-			else if (setting is int || setting is long || (settingObject != null && settingObject["type"].ToString() == "number"))
+			else if (setting is int || setting is long || setting is float || setting is double || setting is decimal || (settingObject != null && settingObject["type"].ToString() == "number"))
 			{
 				return SettingType.NUMBER;
-			}
-			else if (setting is float or decimal or double)
-			{
-				return SettingType.NUMBER_FLOAT;
 			}
 			else if (settingObject != null && settingObject["type"].ToString() == "toggle")
 			{
