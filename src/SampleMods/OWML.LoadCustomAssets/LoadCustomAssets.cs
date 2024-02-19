@@ -87,8 +87,11 @@ namespace OWML.LoadCustomAssets
 			var (subTab2Menu, subTab2Button) = optionsManager.AddSubTab(tabMenu, "TAB 2");
 
 			var infoPopupButton = optionsManager.CreateButton(subTab1Menu, "Info Popup", "Opens an info popup.", MenuSide.LEFT);
+			infoPopupButton.OnSubmitAction += () => infoPopup.EnableMenu(true);
 			var twoButton = optionsManager.CreateButton(subTab1Menu, "Two Choice Popup", "Opens a two choice popup.", MenuSide.CENTER);
+			twoButton.OnSubmitAction += () => twoChoicePopup.EnableMenu(true);
 			var threeButton = optionsManager.CreateButton(subTab1Menu, "Three Choice Popup", "Opens a three choice popup.", MenuSide.RIGHT);
+			threeButton.OnSubmitAction += () => threeChoicePopup.EnableMenu(true);
 
 			var checkbox = optionsManager.AddCheckboxInput(subTab2Menu, "Test Checkbox", "* It's a test checkbox.", false);
 			var toggle = optionsManager.AddToggleInput(subTab2Menu, "Test Toggle", "Option 1", "Option 2", "* It's a test toggle.", false);
