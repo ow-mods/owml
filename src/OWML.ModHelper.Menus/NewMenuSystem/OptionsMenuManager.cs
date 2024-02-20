@@ -453,6 +453,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButtonObj = Object.Instantiate(existingButton);
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
 			newButtonObj.transform.localScale = Vector3.one;
+			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
 
 			// the thing we're copying is already LEFT, so dont need to handle it
 			if (side == MenuSide.CENTER)
