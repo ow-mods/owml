@@ -138,5 +138,86 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				__instance._menuActivationRoot.gameObject.SetActive(false);
 			}
 		}
+
+		[HarmonyReversePatch]
+		[HarmonyPatch(typeof(Menu), nameof(Menu.Activate))]
+		public static void Menu_Activate_Stub(object instance) { }
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.Activate))]
+		public static bool TabbedMenu_Activate(TabbedMenu __instance)
+		{
+			__instance.Initialize();
+			var tabButton = __instance._firstSelectedTabButton;
+			var selectable = MenuStackManager.SharedInstance.PeekSelectOnActivate();
+
+			if (__instance._lastSelectableOnDeactivate != null)
+			{
+				Menu menu = null;
+
+				foreach (var button in __instance._menuTabs)
+				{
+					var currentTabMenu = button.GetMenu();
+					if (currentTabMenu is TabbedMenu currentTabbedMenu)
+					{
+						foreach (var subMenu in currentTabbedMenu._subMenus)
+						{
+							var menuOptions = subMenu.GetMenuOptions();
+							foreach (var option in menuOptions)
+							{
+								if (option.GetSelectable() != __instance._lastSelectableOnDeactivate)
+								{
+									continue;
+								}
+
+								tabButton = button;
+								menu = subMenu;
+								selectable = __instance._lastSelectableOnDeactivate;
+							}
+						}
+					}
+					else
+					{
+						var menuOptions = currentTabMenu.GetMenuOptions();
+
+						foreach (var option in menuOptions)
+						{
+							if (option.GetSelectable() != __instance._lastSelectableOnDeactivate)
+							{
+								continue;
+							}
+
+							tabButton = button;
+							menu = button.GetMenu();
+							selectable = __instance._lastSelectableOnDeactivate;
+							break;
+						}
+					}
+
+					if (menu != null)
+					{
+						break;
+					}
+				}
+			}
+
+			if (selectable != __instance._lastSelectableOnDeactivate)
+			{
+				for (int k = 0; k < __instance._tabSelectablePairs.Length; k++)
+				{
+					if (selectable == __instance._tabSelectablePairs[k].selectable)
+					{
+						tabButton = __instance._tabSelectablePairs[k].tabButton;
+						break;
+					}
+				}
+			}
+
+			__instance.SelectTabButton(tabButton);
+			Menu_Activate_Stub(__instance);
+			Locator.GetMenuInputModule().OnInputModuleTab += __instance.OnInputModuleTabEvent;
+
+			return false;
+		}
 	}
 }
