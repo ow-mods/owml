@@ -16,7 +16,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 	{
 		public SubmitAction CreateTitleButton(string text, int index, bool fromTop)
 		{
-			var existingTitleButton = Object.FindObjectOfType<TitleScreenManager>().GetValue<SubmitAction>("_resetGameAction");
+			var titleScreenManager = Object.FindObjectOfType<TitleScreenManager>();
+
+			var existingTitleButton = titleScreenManager.GetValue<SubmitAction>("_resetGameAction");
 			var newButton = Object.Instantiate(existingTitleButton.gameObject);
 			newButton.transform.parent = existingTitleButton.transform.parent;
 			newButton.transform.localScale = existingTitleButton.transform.localScale;
@@ -36,6 +38,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				group = newButton.GetComponent<CanvasGroup>()
 			});
 			animController._buttonFadeControllers = list.ToArray();
+
+			titleScreenManager._mainMenuTextFields = titleScreenManager._mainMenuTextFields.Append(submitAction.GetComponentInChildren<Text>()).ToArray();
 
 			return submitAction;
 		}
