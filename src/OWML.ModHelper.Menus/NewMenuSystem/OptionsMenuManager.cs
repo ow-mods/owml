@@ -522,11 +522,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			Object.Destroy(newHorizLayout.GetComponentInChildren<LocalizedText>());
 
-			newHorizLayout.transform
+			var labelComponent = newHorizLayout.transform
 				.Find("LabelBlock")
 				.Find("HorizontalLayoutGroup")
 				.Find("Label")
-				.GetComponent<Text>().text = label;
+				.GetComponent<Text>();
+			labelComponent.text = label;
 
 			var controlBlock = newHorizLayout.transform.Find("ControlBlock");
 			Object.Destroy(controlBlock.Find("OptionSelectorBG").gameObject);
@@ -557,6 +558,46 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var submitAction = newButton.AddComponent<SubmitAction>();
 
 			Object.Destroy(newButton.GetComponentInChildren<LocalizedText>());
+
+			var leftArrow = newHorizLayout.transform
+				.Find("LabelBlock")
+				.Find("HorizontalLayoutGroup")
+				.Find("LeftArrow").GetComponent<Image>();
+
+			var rightArrow = newHorizLayout.transform
+				.Find("LabelBlock")
+				.Find("HorizontalLayoutGroup")
+				.Find("RightArrow").GetComponent<Image>();
+
+			var uiStyleApplier = newButtonObj.AddComponent<UIStyleApplier>();
+			uiStyleApplier._textItems = new Text[] { labelComponent };
+			uiStyleApplier._foregroundGraphics = new Graphic[] { labelComponent };
+			uiStyleApplier._backgroundGraphics = new Graphic[] { };
+			uiStyleApplier._onOffGraphicList = new UIStyleApplier.OnOffGraphic[]
+			{
+				new UIStyleApplier.OnOffGraphic()
+				{
+					graphic = leftArrow,
+					visibleNormal = false,
+					visibleIntermediate = false,
+					visibleHighlighted = true,
+					visiblePressed = true,
+					visibleDisabled = false,
+					visibleMouseRollover = true
+				},
+				new UIStyleApplier.OnOffGraphic()
+				{
+					graphic = rightArrow,
+					visibleNormal = false,
+					visibleIntermediate = false,
+					visibleHighlighted = true,
+					visiblePressed = true,
+					visibleDisabled = false,
+					visibleMouseRollover = true
+				}
+			};
+
+			newButton.AddComponent<SelectableAudioPlayer>();
 
 			var menuOption = newButton.GetComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
