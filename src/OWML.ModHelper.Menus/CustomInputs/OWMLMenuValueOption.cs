@@ -22,9 +22,5 @@
 			base.Initialize();
 			_value = startingValue;
 		}
-
-		public virtual bool GetValueAsBool() => _value > 0;
-
-		public virtual int GetValue() => _value;
 	}
 }

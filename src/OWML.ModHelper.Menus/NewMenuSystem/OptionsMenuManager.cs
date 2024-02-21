@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,11 +20,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 	{
 		private readonly IModConsole _console;
 		private readonly IModUnityEvents _unityEvents;
+		private readonly IPopupMenuManager _popupMenuManager;
 
-		public OptionsMenuManager(IModConsole console, IModUnityEvents unityEvents)
+		public OptionsMenuManager(IModConsole console, IModUnityEvents unityEvents, IPopupMenuManager popupMenuManager)
 		{
 			_console = console;
 			_unityEvents = unityEvents;
+			_popupMenuManager = popupMenuManager;
 		}
 
 		public (Menu menu, TabButton button) CreateStandardTab(string name)
@@ -614,6 +617,36 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButton.AddComponent<SelectableAudioPlayer>();
 
 			return submitAction;
+		}
+
+		public IOWMLTextEntryElement CreateTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric)
+		{
+			var submitAction = CreateButtonWithLabel(menu, label, initialValue, tooltip);
+			var textInputPopup = _popupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", initialValue, "Confirm", "Cancel");
+			submitAction.OnSubmitAction += () => textInputPopup.EnableMenu(true);
+
+			var textEntry = submitAction.gameObject.AddComponent<OWMLTextEntryElement>();
+			textEntry._overrideTooltipText = tooltip;
+			textEntry.RegisterPopup(textInputPopup);
+			textEntry.IsNumeric = isNumeric;
+
+			if (isNumeric)
+			{
+				textInputPopup.OnInputPopupValidateChar += c =>
+				{
+					var text = textInputPopup.GetInputText() + c;
+					return Regex.IsMatch(text, @"^\d*[,.]?\d*$");
+				};
+			}
+
+			menu._menuOptions = menu._menuOptions.Add(textEntry);
+
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = textEntry.GetComponent<Selectable>();
+			}
+
+			return textEntry;
 		}
 
 		public void CreateLabel(Menu menu, string label)

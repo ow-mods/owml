@@ -100,6 +100,16 @@ namespace OWML.Common
 		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip);
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="menu"></param>
+		/// <param name="label"></param>
+		/// <param name="initialValue"></param>
+		/// <param name="tooltip"></param>
+		/// <param name="isNumeric"></param>
+		public IOWMLTextEntryElement CreateTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric);
+
+		/// <summary>
 		/// Removes a tab from a menu. This removes both the menu, and the tab for the menu.
 		/// Does not work for sub-tabs.
 		/// </summary>

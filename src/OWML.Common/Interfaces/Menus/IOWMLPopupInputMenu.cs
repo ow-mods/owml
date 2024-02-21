@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 
 namespace OWML.Common.Interfaces.Menus
 {
@@ -13,6 +14,8 @@ namespace OWML.Common.Interfaces.Menus
 		public void EnableMenu(bool value);
 
 		public string GetInputText();
+
+		public InputField GetInputField();
 
 		public event PopupMenu.PopupConfirmEvent OnPopupConfirm;
 	}

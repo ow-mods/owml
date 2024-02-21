@@ -50,8 +50,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_owmlConfig = owmlConfig;
 			_unityEvents = unityEvents;
 			TitleMenuManager = new TitleMenuManager();
-			OptionsMenuManager = new OptionsMenuManager(console, unityEvents);
 			PopupMenuManager = new PopupMenuManager(console, harmony);
+			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager);
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
@@ -256,12 +256,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								break;
 							case SettingType.TEXT:
 								var currentTextValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-								var textInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentTextValue, tooltip);
-								var textInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentTextValue, "Confirm", "Cancel");
-								textInputButton.OnSubmitAction += () => textInputPopup.EnableMenu(true);
-								textInputPopup.OnPopupConfirm += () =>
+								var textInput = OptionsMenuManager.CreateTextEntryInput(newModTab, label, currentTextValue, tooltip, false);
+								textInput.ModSettingKey = name;
+								textInput.OnConfirmEntry += () =>
 								{
-									var newValue = textInputPopup.GetInputText();
+									var newValue = textInput.GetInputText();
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
@@ -269,18 +268,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								break;
 							case SettingType.NUMBER:
 								var currentValue = mod.ModHelper.Config.GetSettingsValue<double>(name);
-								var numberInputButton = OptionsMenuManager.CreateButtonWithLabel(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip);
-								var numberInputPopup = PopupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", currentValue.ToString(CultureInfo.CurrentCulture), "Confirm", "Cancel");
-								numberInputPopup.OnInputPopupValidateChar += c =>
+								var numberInput = OptionsMenuManager.CreateTextEntryInput(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip, true);
+								numberInput.ModSettingKey = name;
+								numberInput.OnConfirmEntry += () =>
 								{
-									var text = numberInputPopup.GetInputText() + c;
-
-									return Regex.IsMatch(text, @"^\d*[,.]?\d*$");
-								};
-								numberInputButton.OnSubmitAction += () => numberInputPopup.EnableMenu(true);
-								numberInputPopup.OnPopupConfirm += () =>
-								{
-									var newValue = double.Parse(numberInputPopup.GetInputText());
+									var newValue = double.Parse(numberInput.GetInputText());
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);

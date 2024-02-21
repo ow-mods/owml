@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using HarmonyLib;
 using OWML.ModHelper.Menus.CustomInputs;
@@ -69,9 +70,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					{
 						toggle.Initialize(defaultSettings.GetSettingsValue<bool>(toggle.ModSettingKey));
 					}
-					else
+					else if (menuOption is OWMLTextEntryElement textEntry)
 					{
-						// TODO : text entry
+						if (textEntry.IsNumeric)
+						{
+							textEntry.SetCurrentValue(defaultSettings.GetSettingsValue<double>(textEntry.ModSettingKey).ToString(CultureInfo.InvariantCulture));
+						}
+						else
+						{
+							var defaultValue = defaultSettings.GetSettingsValue<string>(textEntry.ModSettingKey);
+							textEntry.SetCurrentValue(defaultValue);
+						}
 					}
 				}
 			}
