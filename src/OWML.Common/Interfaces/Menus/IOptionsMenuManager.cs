@@ -100,13 +100,13 @@ namespace OWML.Common
 		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip);
 
 		/// <summary>
-		/// 
+		/// Adds a button input with a text label, that opens a popup to enter text.
 		/// </summary>
-		/// <param name="menu"></param>
-		/// <param name="label"></param>
-		/// <param name="initialValue"></param>
-		/// <param name="tooltip"></param>
-		/// <param name="isNumeric"></param>
+		/// <param name="menu">The menu to add the input to.</param>
+		/// <param name="label">The label next to the button.</param>
+		/// <param name="initialValue">The label of the button.</param>
+		/// <param name="tooltip">The description of the input.</param>
+		/// <param name="isNumeric">If true, only valid numbers can be typed in. Includes decimal points (both . and ,)</param>
 		public IOWMLTextEntryElement CreateTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric);
 
 		/// <summary>
