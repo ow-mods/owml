@@ -255,7 +255,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								break;
 							case SettingType.TEXT:
 								var currentTextValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-								var textInput = OptionsMenuManager.CreateTextEntryInput(newModTab, label, currentTextValue, tooltip, false);
+								var textInput = OptionsMenuManager.AddTextEntryInput(newModTab, label, currentTextValue, tooltip, false);
 								textInput.ModSettingKey = name;
 								textInput.OnConfirmEntry += () =>
 								{
@@ -267,7 +267,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								break;
 							case SettingType.NUMBER:
 								var currentValue = mod.ModHelper.Config.GetSettingsValue<double>(name);
-								var numberInput = OptionsMenuManager.CreateTextEntryInput(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip, true);
+								var numberInput = OptionsMenuManager.AddTextEntryInput(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip, true);
 								numberInput.ModSettingKey = name;
 								numberInput.OnConfirmEntry += () =>
 								{

@@ -107,7 +107,7 @@ namespace OWML.Common
 		/// <param name="initialValue">The label of the button.</param>
 		/// <param name="tooltip">The description of the input.</param>
 		/// <param name="isNumeric">If true, only valid numbers can be typed in. Includes decimal points (both . and ,)</param>
-		public IOWMLTextEntryElement CreateTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric);
+		public IOWMLTextEntryElement AddTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric);
 
 		/// <summary>
 		/// Removes a tab from a menu. This removes both the menu, and the tab for the menu.

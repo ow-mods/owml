@@ -612,7 +612,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return submitAction;
 		}
 
-		public IOWMLTextEntryElement CreateTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric)
+		public IOWMLTextEntryElement AddTextEntryInput(Menu menu, string label, string initialValue, string tooltip, bool isNumeric)
 		{
 			var submitAction = CreateButtonWithLabel(menu, label, initialValue, tooltip);
 			var textInputPopup = _popupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", initialValue, "Confirm", "Cancel");
