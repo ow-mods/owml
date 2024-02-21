@@ -1,17 +1,10 @@
-﻿using Delaunay.LR;
-using OWML.Common;
-using OWML.Logging;
+﻿using OWML.Common;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
