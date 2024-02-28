@@ -42,7 +42,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var tabButton = CreateTabButton(name, menu);
 
-			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			var optionsMenu = LoadManager.GetCurrentScene() == OWScene.TitleScreen
+				? GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>()
+				: GameObject.Find("PauseMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+
 			optionsMenu._subMenus = optionsMenu._subMenus.Add(menu);
 			optionsMenu._menuTabs = optionsMenu._menuTabs.Add(tabButton);
 			optionsMenu._tabSelectablePairs = optionsMenu._tabSelectablePairs.Add(
@@ -89,7 +92,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var tabButton = CreateTabButton(name, tabbedSubMenu);
 
-			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			var optionsMenu = LoadManager.GetCurrentScene() == OWScene.TitleScreen
+				? GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>()
+				: GameObject.Find("PauseMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+
 			optionsMenu._subMenus = optionsMenu._subMenus.Add(tabbedSubMenu);
 			optionsMenu._menuTabs = optionsMenu._menuTabs.Add(tabButton);
 			optionsMenu._tabSelectablePairs = optionsMenu._tabSelectablePairs.Add(
@@ -119,7 +125,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public void RemoveTab(Menu tab)
 		{
-			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			var optionsMenu = LoadManager.GetCurrentScene() == OWScene.TitleScreen
+				? GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>()
+				: GameObject.Find("PauseMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
 
 			var tabButton = optionsMenu._menuTabs.SingleOrDefault(x => x._tabbedMenu == tab);
 
@@ -203,7 +211,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public void OpenOptionsAtTab(TabButton button)
 		{
-			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			var optionsMenu = LoadManager.GetCurrentScene() == OWScene.TitleScreen
+				? GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>()
+				: GameObject.Find("PauseMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+
 			optionsMenu.EnableMenu(true);
 			optionsMenu.SelectTabButton(button);
 		}
