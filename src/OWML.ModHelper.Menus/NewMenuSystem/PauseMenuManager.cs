@@ -79,14 +79,20 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return newMenu.GetComponent<Menu>();
 		}
 
-		public SubmitAction MakeSimpleButton(string name, Menu customMenu = null)
+		public SubmitAction MakeSimpleButton(string name, int index, bool fromTop, Menu customMenu = null)
 		{
-			var button = CreateBase(name, customMenu);
+			var button = CreateBase(name, index, fromTop, customMenu);
 			button.SetActive(true);
-			return button.AddComponent<SubmitAction>();
+
+			var submitAction = button.AddComponent<SubmitAction>();
+
+			SetButtonText(submitAction, name);
+			SetButtonIndex(submitAction, index, fromTop);
+
+			return submitAction;
 		}
 
-		public GameObject MakeMenuOpenButton(string name, Menu menuToOpen, Menu customMenu = null)
+		public SubmitAction MakeMenuOpenButton(string name, Menu menuToOpen, int index, bool fromTop, Menu customMenu = null)
 		{
 			if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
 			{
@@ -94,16 +100,40 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				return null;
 			}
 
-			var menuRootObject = CreateBase(name, customMenu);
+			var menuRootObject = CreateBase(name, index, fromTop, customMenu);
 
 			var submitActionMenu = menuRootObject.AddComponent<SubmitActionMenu>();
 			submitActionMenu._menuToOpen = menuToOpen;
 
+			SetButtonText(submitActionMenu, name);
+			SetButtonIndex(submitActionMenu, index, fromTop);
+
 			menuRootObject.SetActive(true);
-			return menuRootObject;
+			return submitActionMenu;
 		}
 
-		private GameObject CreateBase(string name, Menu customMenu = null)
+		public void SetButtonText(SubmitAction button, string text)
+		{
+			var textComp = button.GetComponentInChildren<Text>();
+			textComp.text = text;
+			textComp.SetAllDirty();
+		}
+
+		public void SetButtonIndex(SubmitAction button, int index, bool fromTop)
+		{
+			if (index > button.transform.parent.childCount - 4)
+			{
+				throw new IndexOutOfRangeException("Can't set a button to have a higher index than being last!");
+			}
+
+			var indexToSetTo = fromTop
+				? index + 2
+				: button.transform.parent.childCount - 2 - index;
+
+			button.transform.SetSiblingIndex(indexToSetTo);
+		}
+
+		private GameObject CreateBase(string name, int index, bool fromTop, Menu customMenu = null)
 		{
 			if (_pauseMenuItemsTemplate == null)
 			{
@@ -137,10 +167,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			pauseButton.transform.SetSiblingIndex(pauseButton.transform.GetSiblingIndex() - 1); // -1 because no spacer in pause menu
 			pauseButton.SetActive(false);
 			pauseButton.name = $"Button-{name}";
-
-			// Change text, and set mesh to dirty (maybe not needed?)
-			pauseButton.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = name;
-			pauseButton.transform.GetChild(0).GetChild(1).GetComponent<Text>().SetAllDirty();
 
 			if (customMenu.GetSelectOnActivate() == null)
 			{

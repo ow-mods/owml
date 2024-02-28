@@ -113,7 +113,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			else
 			{
 				// Create button on pause screen that opens the mods menu
-				var modsButton = PauseMenuManager.MakeSimpleButton("MODS");
+				var modsButton = PauseMenuManager.MakeSimpleButton("MODS", 2, false);
 				modsButton.OnSubmitAction += () => OptionsMenuManager.OpenOptionsAtTab(modsMenuButton);
 			}
 

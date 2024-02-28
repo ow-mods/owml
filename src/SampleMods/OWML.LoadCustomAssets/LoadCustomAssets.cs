@@ -89,11 +89,11 @@ namespace OWML.LoadCustomAssets
 			var pauseMenuManager = ModHelper.MenuHelper.PauseMenuManager;
 
 			var listMenu = pauseMenuManager.MakePauseListMenu("TEST");
-			var button = pauseMenuManager.MakeMenuOpenButton("TEST", listMenu);
+			var button = pauseMenuManager.MakeMenuOpenButton("TEST", listMenu, 1, true);
 
-			var button1 = pauseMenuManager.MakeSimpleButton("1", listMenu);
-			var button2 = pauseMenuManager.MakeSimpleButton("2", listMenu);
-			var button3 = pauseMenuManager.MakeSimpleButton("3", listMenu);
+			var button1 = pauseMenuManager.MakeSimpleButton("1", 0, true, listMenu);
+			var button2 = pauseMenuManager.MakeSimpleButton("2", 1, true, listMenu);
+			var button3 = pauseMenuManager.MakeSimpleButton("3", 2, true, listMenu);
 		}
 
 		public override void SetupOptionsMenu()
