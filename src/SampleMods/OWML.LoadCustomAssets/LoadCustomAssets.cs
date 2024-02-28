@@ -3,6 +3,7 @@ using OWML.Common;
 using OWML.ModHelper;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System.Linq;
 
 namespace OWML.LoadCustomAssets
 {
@@ -49,10 +50,8 @@ namespace OWML.LoadCustomAssets
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
 		}
 
-		public override void SetupTitleMenus()
+		public override void SetupTitleMenu()
 		{
-			var optionsManager = ModHelper.MenuHelper.OptionsMenuManager;
-
 			var infoButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INFO POPUP");
 			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
 			infoButton.OnSubmitAction += () => infoPopup.EnableMenu(true);
@@ -82,6 +81,28 @@ namespace OWML.LoadCustomAssets
 				ModHelper.Console.WriteLine(textPopup.GetInputText());
 			};
 
+			
+		}
+
+		public override void SetupPauseMenu()
+		{
+			var pauseMenuManager = ModHelper.MenuHelper.PauseMenuManager;
+
+			var listMenu = pauseMenuManager.MakePauseListMenu("TEST");
+			var button = pauseMenuManager.MakeMenuOpenButton("TEST", listMenu);
+
+			var button1 = pauseMenuManager.MakeSimpleButton("1", listMenu);
+			var button2 = pauseMenuManager.MakeSimpleButton("2", listMenu);
+			var button3 = pauseMenuManager.MakeSimpleButton("3", listMenu);
+		}
+
+		public override void SetupOptionsMenu()
+		{
+			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
+			var twoChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup("test two choice popup", "oak", "narp");
+			var threeChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateThreeChoicePopup("test three choice popup", "oak", "oak (better)", "narp");
+
+			var optionsManager = ModHelper.MenuHelper.OptionsMenuManager;
 			var (tabMenu, tabButton) = optionsManager.CreateTabWithSubTabs("TEST");
 			var (subTab1Menu, subTab1Button) = optionsManager.AddSubTab(tabMenu, "TAB 1");
 			var (subTab2Menu, subTab2Button) = optionsManager.AddSubTab(tabMenu, "TAB 2");

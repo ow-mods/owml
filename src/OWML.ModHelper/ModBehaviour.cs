@@ -24,11 +24,15 @@ namespace OWML.ModHelper
 
 		public virtual object GetApi() => null;
 
-		public virtual void SetupTitleMenus()
+		public virtual void SetupTitleMenu()
 		{
 		}
 
-		public virtual void SetupPauseMenus()
+		public virtual void SetupPauseMenu()
+		{
+		}
+
+		public virtual void SetupOptionsMenu()
 		{
 		}
 

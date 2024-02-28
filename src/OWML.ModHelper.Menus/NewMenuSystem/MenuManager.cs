@@ -51,24 +51,25 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			TitleMenuManager = new TitleMenuManager();
 			PopupMenuManager = new PopupMenuManager(console, harmony);
 			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager);
+			PauseMenuManager = new PauseMenuManager(console);
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
 
 			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
 			{
-				if (newScene == OWScene.TitleScreen)
+				if (newScene is OWScene.TitleScreen or OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 				{
-					OWMLTitleMenus(((IMenuManager)this).ModList);
+					SetupMenus(((IMenuManager)this).ModList);
 				}
 			};
 
 			modUnityEvents.RunWhen(
 				() => LoadManager.GetCurrentScene() == OWScene.TitleScreen, 
-				() => OWMLTitleMenus(((IMenuManager)this).ModList));
+				() => SetupMenus(((IMenuManager)this).ModList));
 		}
 
-		private void OWMLTitleMenus(IList<IModBehaviour> modList)
+		private void SetupMenus(IList<IModBehaviour> modList)
 		{
 			void SaveConfig()
 			{
@@ -103,9 +104,18 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				settingsMenuView._resetToDefaultButton.gameObject.SetActive(true);
 			};
 
-			// Create button on title screen that opens the mods menu
-			var modsButton = TitleMenuManager.CreateTitleButton("MODS", 1, false);
-			modsButton.OnSubmitAction += () => OptionsMenuManager.OpenOptionsAtTab(modsMenuButton);
+			if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
+			{
+				// Create button on title screen that opens the mods menu
+				var modsButton = TitleMenuManager.CreateTitleButton("MODS", 1, false);
+				modsButton.OnSubmitAction += () => OptionsMenuManager.OpenOptionsAtTab(modsMenuButton);
+			}
+			else
+			{
+				// Create button on pause screen that opens the mods menu
+				var modsButton = PauseMenuManager.MakeSimpleButton("MODS");
+				modsButton.OnSubmitAction += () => OptionsMenuManager.OpenOptionsAtTab(modsMenuButton);
+			}
 
 			#region OWML Settings
 
@@ -300,11 +310,20 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				try
 				{
-					mod.SetupTitleMenus();
+					if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
+					{
+						mod.SetupTitleMenu();
+					}
+					else if (LoadManager.GetCurrentScene() is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+					{
+						mod.SetupPauseMenu();
+					}
+
+					mod.SetupOptionsMenu();
 				}
 				catch (Exception ex)
 				{
-					_console.WriteLine($"Exception when setting up title screen menus for {mod.ModHelper.Manifest.UniqueName} : {ex}", MessageType.Error);
+					_console.WriteLine($"Exception when setting up menus for {mod.ModHelper.Manifest.UniqueName} : {ex}", MessageType.Error);
 				}
 			}
 		}
@@ -312,18 +331,28 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		// This is to prevent the "AUDIO & LANGUAGE" tab text from overflowing its boundaries when more tabs are added
 		private void EditExistingMenus()
 		{
-			var optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			TabbedMenu optionsMenu;
+
+			if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
+			{
+				optionsMenu = GameObject.Find("TitleMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+
+				var animController = GameObject.Find("TitleMenuManagers").GetComponent<TitleAnimationController>();
+				foreach (var item in animController._buttonFadeControllers)
+				{
+					var layoutElement = item.group.gameObject.GetComponent<LayoutElement>();
+					layoutElement.minHeight = 28; // seems to be the minimum
+				}
+			}
+			else
+			{
+				optionsMenu = GameObject.Find("PauseMenu").transform.Find("OptionsCanvas").Find("OptionsMenu-Panel").GetComponent<TabbedMenu>();
+			}
+
 			foreach (var item in optionsMenu._menuTabs)
 			{
 				var text = item.GetComponent<UIStyleApplier>()._textItems[0];
 				text.horizontalOverflow = HorizontalWrapMode.Wrap;
-			}
-
-			var animController = GameObject.Find("TitleMenuManagers").GetComponent<TitleAnimationController>();
-			foreach (var item in animController._buttonFadeControllers)
-			{
-				var layoutElement = item.group.gameObject.GetComponent<LayoutElement>();
-				layoutElement.minHeight = 28; // seems to be the minimum
 			}
 		}
 
