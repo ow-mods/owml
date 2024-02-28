@@ -16,6 +16,5 @@ namespace OWML.Common
 
 		public GameObject MakeMenuOpenButton(string name, Menu menuToOpen, Menu customMenu = null);
 
-		public GameObject MakeSceneLoadButton(string name, SubmitActionLoadScene.LoadableScenes sceneToLoad, PopupMenu confirmPopup = null, Menu customMenu = null);
 	}
 }

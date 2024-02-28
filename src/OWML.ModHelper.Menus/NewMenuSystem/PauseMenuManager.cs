@@ -103,26 +103,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return menuRootObject;
 		}
 
-		public GameObject MakeSceneLoadButton(string name, SubmitActionLoadScene.LoadableScenes sceneToLoad, PopupMenu confirmPopup = null, Menu customMenu = null)
-		{
-			if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
-			{
-				_console.WriteLine("Error - Cannot create pause button in this scene!", OWML.Common.MessageType.Error);
-				return null;
-			}
-
-			var menuRootObject = CreateBase(name, customMenu);
-
-			var submitActionLoadScene = menuRootObject.AddComponent<OWMLSubmitActionLoadScene>();
-			submitActionLoadScene.SetSceneToLoad(sceneToLoad);
-			submitActionLoadScene.EnableConfirm(confirmPopup != null);
-			submitActionLoadScene._confirmPopup = confirmPopup;
-			submitActionLoadScene._loadingText = menuRootObject.GetComponentInChildren<Text>();
-
-			menuRootObject.SetActive(true);
-			return menuRootObject;
-		}
-
 		private GameObject CreateBase(string name, Menu customMenu = null)
 		{
 			if (_pauseMenuItemsTemplate == null)
