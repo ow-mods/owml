@@ -3,10 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath Condition="Exists('../../OWML.Launcher/bin/Debug/net48/Mods')">../../OWML.Launcher/bin/Debug/net48/Mods/OWML.ExampleAPI</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj" />
+    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj" IncludeAssets="compile" />
   </ItemGroup>
 
   <ItemGroup>
