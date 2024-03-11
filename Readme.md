@@ -46,7 +46,7 @@ To get started, check out [our tutorial on the docs](https://owml.outerwildsmods
 
 ## Compatibility
 
-OWML is only supported on the latest game version, `1.1.13.456`. It may work on older versions, but that cannot be guaranteed.
+OWML is only supported on the latest game version. It may work on older versions, but that cannot be guaranteed.
 
 OWML is compatible with Echoes of the Eye, and works on Epic, Steam, and Microsoft Store installations.
 
