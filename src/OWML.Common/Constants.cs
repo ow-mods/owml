@@ -1,7 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 
+// make everything in OWML.Common visible to these namespaces
+// this is in this file just because it's the first one that comes up in VS :P
 [assembly: InternalsVisibleTo("OWML.ModHelper.Menus")]
 [assembly: InternalsVisibleTo("OWML.ModLoader")]
+
 namespace OWML.Common
 {
 	public class Constants
