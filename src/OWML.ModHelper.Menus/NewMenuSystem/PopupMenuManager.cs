@@ -80,7 +80,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(x => Object.Destroy(x));
 
 			var popup = newPopup.GetComponent<PopupMenu>();
-			popup.SetUpPopup(message, InputLibrary.menuConfirm, InputLibrary.cancel, new ScreenPrompt(confirmText), new ScreenPrompt(cancelText), true, true);
+			popup.SetUpPopup(
+				message,
+				InputLibrary.menuConfirm,
+				InputLibrary.cancel,
+				new ScreenPrompt(InputLibrary.menuConfirm, confirmText),
+				new ScreenPrompt(InputLibrary.cancel, cancelText),
+				true,
+				true);
 			return popup;
 		}
 
@@ -110,8 +117,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			popup.SetUpPopup(
 				message,
 				InputLibrary.menuConfirm,
-				InputLibrary.cancel,
-				new ScreenPrompt(continueButtonText),
+				null,
+				new ScreenPrompt(InputLibrary.menuConfirm, continueButtonText),
 				null,
 				true,
 				false);
@@ -168,9 +175,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				InputLibrary.menuConfirm,
 				InputLibrary.confirm2,
 				InputLibrary.cancel,
-				new ScreenPrompt(confirm1Text),
-				new ScreenPrompt(confirm2Text),
-				new ScreenPrompt(cancelText));
+				new ScreenPrompt(InputLibrary.menuConfirm, confirm1Text),
+				new ScreenPrompt(InputLibrary.confirm2, confirm2Text),
+				new ScreenPrompt(InputLibrary.cancel, cancelText));
 			return popup;
 		}
 
@@ -218,19 +225,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			Object.Destroy(oldpopup);
 
-			var usingGamepad = OWInput.UsingGamepad();
-
 			popup.OnActivateMenu += () =>
 			{
 				var confirmPrompt = new ScreenPrompt(InputLibrary.confirm, confirmText, 0, ScreenPrompt.DisplayState.Normal, false);
 
 				var screenPrompt = new ScreenPrompt(InputLibrary.escape, cancelText, 0, ScreenPrompt.DisplayState.Normal, false);
-				if (usingGamepad)
+				if (OWInput.UsingGamepad())
 				{
 					screenPrompt = new ScreenPrompt(InputLibrary.cancel, cancelText, 0, ScreenPrompt.DisplayState.Normal, false);
 				}
 
-				if (usingGamepad)
+				if (OWInput.UsingGamepad())
 				{
 					popup.SetUpPopup(message, InputLibrary.confirm, InputLibrary.cancel, confirmPrompt, screenPrompt, false, true);
 				}
@@ -301,10 +306,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				InputLibrary.confirm2,
 				InputLibrary.signalscope,
 				InputLibrary.cancel,
-				new ScreenPrompt(confirm1Text),
-				new ScreenPrompt(confirm2Text),
-				new ScreenPrompt(confirm3Text),
-				new ScreenPrompt(cancelText));
+				new ScreenPrompt(InputLibrary.menuConfirm, confirm1Text),
+				new ScreenPrompt(InputLibrary.confirm2, confirm2Text),
+				new ScreenPrompt(InputLibrary.signalscope, confirm3Text),
+				new ScreenPrompt(InputLibrary.cancel, cancelText));
 			return popup;
 		}
 	}
