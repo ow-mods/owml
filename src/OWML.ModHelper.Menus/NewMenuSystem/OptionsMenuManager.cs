@@ -551,6 +551,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButton = Object.Instantiate(existingButton);
 			newButton.transform.parent = controlBlock;
 			newButton.transform.localScale = Vector3.one;
+			newButton.name = $"UIElement-{label}";
 
 			var rt = newButton.GetComponent<RectTransform>();
 			var ort = existingHorizLayout.transform.Find("ControlBlock").Find("HorizontalLayoutGroup").GetComponent<RectTransform>();
@@ -604,7 +605,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				}
 			};
 
-			newButton.AddComponent<SelectableAudioPlayer>();
+			newButton.GetAddComponent<SelectableAudioPlayer>();
 
 			var menuOption = newButton.GetComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
@@ -617,8 +618,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
 			}
-
-			newButton.AddComponent<SelectableAudioPlayer>();
 
 			return submitAction;
 		}
@@ -641,13 +640,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					var text = textInputPopup.GetInputText() + c;
 					return Regex.IsMatch(text, @"^\d*[,.]?\d*$");
 				};
-			}
-
-			menu._menuOptions = menu._menuOptions.Add(textEntry);
-
-			if (menu._selectOnActivate == null)
-			{
-				menu._selectOnActivate = textEntry.GetComponent<Selectable>();
 			}
 
 			return textEntry;
