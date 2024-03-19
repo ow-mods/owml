@@ -519,6 +519,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButtonObj = new GameObject($"UIElement-{label}");
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
 			newButtonObj.transform.localScale = Vector3.one;
+			newButtonObj.transform.localRotation = Quaternion.identity;
 
 			var layoutElement = newButtonObj.AddComponent<LayoutElement>();
 			layoutElement.minHeight = 70;
