@@ -29,6 +29,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newMenu = Object.Instantiate(existingMenu);
 			newMenu.transform.parent = existingMenu.transform.parent;
 			newMenu.transform.localScale = Vector3.one;
+			newMenu.transform.localPosition = Vector3.zero;
 			newMenu.transform.localRotation = Quaternion.identity;
 			var rt = newMenu.GetComponent<RectTransform>();
 			var ert = existingMenu.GetComponent<RectTransform>();
@@ -81,6 +82,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newSubMenu = Object.Instantiate(existingTabbedSubMenu);
 			newSubMenu.transform.parent = existingTabbedSubMenu.transform.parent;
 			newSubMenu.transform.localScale = Vector3.one;
+			newSubMenu.transform.localPosition = Vector3.zero;
 			newSubMenu.transform.localRotation = Quaternion.identity;
 			var rectTransform = newSubMenu.GetComponent<RectTransform>();
 			rectTransform.anchorMin = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMin;
@@ -165,6 +167,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newSubMenuTabButton = Object.Instantiate(existingSubMenuTabButton);
 			newSubMenuTabButton.transform.parent = menu.transform.Find("SubMenuTabs");
 			newSubMenuTabButton.transform.localScale = Vector3.one;
+			newSubMenuTabButton.transform.localPosition = Vector3.zero;
 			newSubMenuTabButton.transform.localRotation = Quaternion.identity;
 			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 2);
 			newSubMenuTabButton.name = $"Button-{name}Tab";
@@ -174,6 +177,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newSubMenu = Object.Instantiate(existingSubMenu);
 			newSubMenu.transform.parent = menu.transform;
 			newSubMenu.transform.localScale = Vector3.one;
+			newSubMenu.transform.localPosition = Vector3.zero;
 			newSubMenu.name = $"Menu{name}";
 			newSubMenu.transform.localRotation = Quaternion.identity;
 
@@ -232,6 +236,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newCheckbox = Object.Instantiate(existingCheckbox);
 			newCheckbox.transform.parent = GetParentForAddedElements(menu);
+			newCheckbox.transform.localPosition = Vector3.zero;
 			newCheckbox.transform.localScale = Vector3.one;
 			newCheckbox.transform.name = $"UIElement-{label}";
 			newCheckbox.transform.localRotation = Quaternion.identity;
@@ -280,6 +285,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newToggle = Object.Instantiate(prefab);
 			newToggle.transform.parent = GetParentForAddedElements(menu);
+			newToggle.transform.localPosition = Vector3.zero;
 			newToggle.transform.localScale = Vector3.one;
 			newToggle.transform.name = $"UIElement-{label}";
 			newToggle.transform.localRotation = Quaternion.identity;
@@ -328,6 +334,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-ControllerProfile").gameObject;
 
 			var newSelector = Object.Instantiate(existingSelector);
+			newSelector.transform.localPosition = Vector3.zero;
 			newSelector.transform.parent = GetParentForAddedElements(menu);
 			newSelector.transform.localScale = Vector3.one;
 			newSelector.transform.name = $"UIElement-{label}";
@@ -377,6 +384,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newSlider = Object.Instantiate(existingSlider);
 			newSlider.transform.parent = GetParentForAddedElements(menu);
+			newSlider.transform.localPosition = Vector3.zero;
 			newSlider.transform.localScale = Vector3.one;
 			newSlider.transform.name = $"UIElement-{label}";
 			newSlider.transform.localRotation = Quaternion.identity;
@@ -467,6 +475,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newButtonObj = Object.Instantiate(existingButton);
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
+			newButtonObj.transform.localPosition = Vector3.zero;
 			newButtonObj.transform.localScale = Vector3.one;
 			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
 			newButtonObj.transform.localRotation = Quaternion.identity;
@@ -525,6 +534,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var newHorizLayout = Object.Instantiate(existingHorizLayout);
 			newHorizLayout.transform.parent = newButtonObj.transform;
+			newHorizLayout.transform.localPosition = Vector3.zero;
 			newHorizLayout.transform.localScale = Vector3.one;
 			newHorizLayout.transform.localRotation = Quaternion.identity;
 
@@ -561,6 +571,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButton = Object.Instantiate(existingButton);
 			newButton.transform.parent = controlBlock;
 			newButton.transform.localScale = Vector3.one;
+			newButton.transform.localPosition = Vector3.zero;
 			newButton.name = $"UIElement-{label}";
 			newButton.transform.localRotation = Quaternion.identity;
 
@@ -690,10 +701,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			textObj.transform.parent = newObj.transform;
 			textObj.transform.localScale = Vector3.one;
 			textObj.transform.localPosition = Vector3.zero;
+			textObj.transform.localRotation = Quaternion.identity;
 
 			newObj.transform.parent = GetParentForAddedElements(menu);
 			newObj.transform.localScale = Vector3.one;
 			newObj.transform.localPosition = Vector3.zero;
+			newObj.transform.localRotation = Quaternion.identity;
 		}
 
 		private TabButton CreateTabButton(string name, Menu menu)
@@ -703,6 +716,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButton = Object.Instantiate(existingButton);
 			newButton.transform.parent = existingButton.transform.parent;
 			newButton.transform.localScale = Vector3.one;
+			newButton.transform.localPosition = Vector3.zero;
 			newButton.transform.SetSiblingIndex(newButton.transform.parent.childCount - 2);
 			newButton.name = $"Button-{name}";
 			newButton.transform.localRotation = Quaternion.identity;
