@@ -133,7 +133,7 @@ namespace OWML.ModLoader
 
 				missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
 
-				var shouldLoad = _modVersionChecker.CheckModVersion(modData) && _modVersionChecker.CheckModGameVersion(modData, latestGameVersion);
+				var shouldLoad = modData.Enabled && _modVersionChecker.CheckModVersion(modData) && _modVersionChecker.CheckModGameVersion(modData, latestGameVersion);
 				if (!shouldLoad)
 				{
 					continue;
