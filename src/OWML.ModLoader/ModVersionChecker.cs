@@ -25,7 +25,7 @@ namespace OWML.ModLoader
 			}
 
 			// Don't show incompatible OWML version error for disabled mods #369
-			if (!data.Config.Enabled)
+			if (!data.Enabled)
 			{
 				return true;
 			}

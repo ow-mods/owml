@@ -105,7 +105,7 @@ namespace OWML.ModLoader
 
 			var sortedMods = SortMods(mods);
 
-			var modNames = mods.Where(mod => mod.Config.Enabled)
+			var modNames = mods.Where(mod => mod.Enabled)
 				.Select(mod => mod.Manifest.UniqueName).ToList();
 
 			_console.WriteLine($"Getting game vendor...", MessageType.Debug);
@@ -127,7 +127,7 @@ namespace OWML.ModLoader
 
 			foreach (var modData in sortedMods)
 			{
-				var missingDependencies = modData.Config.Enabled
+				var missingDependencies = modData.Enabled
 					? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
 					: new List<string>();
 
@@ -174,7 +174,7 @@ namespace OWML.ModLoader
 
 		private Type LoadMod(IModData modData)
 		{
-			if (!modData.Config.Enabled)
+			if (!modData.Enabled)
 			{
 				_console.WriteLine($"{modData.Manifest.UniqueName} is disabled", MessageType.Debug);
 				return null;

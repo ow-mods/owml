@@ -95,10 +95,10 @@ namespace OWML.ModHelper.Menus
 			InitConfigMenu(OwmlMenu, options, owmlTab);
 			owmlButton.OnClick += () => owmlTab.Open();
 
-			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Config.Enabled).ToList();
+			var enabledMods = _modConfigMenus.Where(modConfigMenu => modConfigMenu.ModData.Enabled).ToList();
 			var index = CreateBlockOfButtons(options, modsTab, enabledMods, 1, "-- ENABLED MODS --");
 
-			foreach (var mod in _noConfigMods.Where(modData => modData.Config.Enabled))
+			foreach (var mod in _noConfigMods.Where(modData => modData.Enabled))
 			{
 				index = CreateSeparator(options, modsTab, index, mod.Manifest.Name);
 			}
@@ -106,7 +106,7 @@ namespace OWML.ModHelper.Menus
 			var disabledMods = _modConfigMenus.Except(enabledMods).ToList();
 			index = CreateBlockOfButtons(options, modsTab, disabledMods, index, "-- DISABLED MODS --");
 
-			foreach (var mod in _noConfigMods.Where(modData => !modData.Config.Enabled))
+			foreach (var mod in _noConfigMods.Where(modData => !modData.Enabled))
 			{
 				index = CreateSeparator(options, modsTab, index, mod.Manifest.Name);
 			}
