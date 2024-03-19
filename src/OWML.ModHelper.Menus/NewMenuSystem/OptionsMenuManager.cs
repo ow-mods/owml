@@ -334,8 +334,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-ControllerProfile").gameObject;
 
 			var newSelector = Object.Instantiate(existingSelector);
-			newSelector.transform.localPosition = Vector3.zero;
 			newSelector.transform.parent = GetParentForAddedElements(menu);
+			newSelector.transform.localPosition = Vector3.zero;
 			newSelector.transform.localScale = Vector3.one;
 			newSelector.transform.name = $"UIElement-{label}";
 			newSelector.transform.localRotation = Quaternion.identity;
