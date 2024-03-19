@@ -77,6 +77,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
+			newPopup.transform.localRotation = Quaternion.identity;
 			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(x => Object.Destroy(x));
 
 			var popup = newPopup.GetComponent<PopupMenu>();
@@ -111,6 +112,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
+			newPopup.transform.localRotation = Quaternion.identity;
 			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(Object.Destroy);
 
 			var popup = newPopup.GetComponent<PopupMenu>();
@@ -145,6 +147,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
+			newPopup.transform.localRotation = Quaternion.identity;
 			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(Object.Destroy);
 
 			var originalPopup = newPopup.GetComponent<PopupMenu>();
@@ -201,6 +204,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
+			newPopup.transform.localRotation = Quaternion.identity;
 			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(x => Object.Destroy(x));
 
 			var oldpopup = newPopup.GetComponent<PopupInputMenu>();
@@ -270,6 +274,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
+			newPopup.transform.localRotation = Quaternion.identity;
 			newPopup.GetComponentsInChildren<LocalizedText>().ToList().ForEach(Object.Destroy);
 
 			var originalPopup = newPopup.GetComponent<PopupMenu>();
@@ -278,9 +283,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var ok2Button = Object.Instantiate(ok1Button, ok1Button.transform.parent);
 			ok2Button.transform.SetSiblingIndex(1);
+			ok2Button.transform.localRotation = Quaternion.identity;
 
 			var ok3Button = Object.Instantiate(ok1Button, ok1Button.transform.parent);
 			ok3Button.transform.SetSiblingIndex(2);
+			ok3Button.transform.localRotation = Quaternion.identity;
 
 			var popup = newPopup.AddComponent<OWMLFourChoicePopupMenu>();
 			popup._labelText = originalPopup._labelText;

@@ -29,6 +29,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newMenu = Object.Instantiate(existingMenu);
 			newMenu.transform.parent = existingMenu.transform.parent;
 			newMenu.transform.localScale = Vector3.one;
+			newMenu.transform.localRotation = Quaternion.identity;
 			var rt = newMenu.GetComponent<RectTransform>();
 			var ert = existingMenu.GetComponent<RectTransform>();
 			rt.anchorMin = ert.anchorMin;
@@ -80,6 +81,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newSubMenu = Object.Instantiate(existingTabbedSubMenu);
 			newSubMenu.transform.parent = existingTabbedSubMenu.transform.parent;
 			newSubMenu.transform.localScale = Vector3.one;
+			newSubMenu.transform.localRotation = Quaternion.identity;
 			var rectTransform = newSubMenu.GetComponent<RectTransform>();
 			rectTransform.anchorMin = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMin;
 			rectTransform.anchorMax = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMax;
@@ -163,6 +165,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newSubMenuTabButton = Object.Instantiate(existingSubMenuTabButton);
 			newSubMenuTabButton.transform.parent = menu.transform.Find("SubMenuTabs");
 			newSubMenuTabButton.transform.localScale = Vector3.one;
+			newSubMenuTabButton.transform.localRotation = Quaternion.identity;
 			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 2);
 			newSubMenuTabButton.name = $"Button-{name}Tab";
 			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
@@ -172,6 +175,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenu.transform.parent = menu.transform;
 			newSubMenu.transform.localScale = Vector3.one;
 			newSubMenu.name = $"Menu{name}";
+			newSubMenu.transform.localRotation = Quaternion.identity;
 
 			var rt = newSubMenu.GetComponent<RectTransform>();
 			var ert = existingSubMenu.GetComponent<RectTransform>();
@@ -230,6 +234,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newCheckbox.transform.parent = GetParentForAddedElements(menu);
 			newCheckbox.transform.localScale = Vector3.one;
 			newCheckbox.transform.name = $"UIElement-{label}";
+			newCheckbox.transform.localRotation = Quaternion.identity;
 
 			Object.Destroy(newCheckbox.GetComponentInChildren<LocalizedText>());
 			
@@ -277,6 +282,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newToggle.transform.parent = GetParentForAddedElements(menu);
 			newToggle.transform.localScale = Vector3.one;
 			newToggle.transform.name = $"UIElement-{label}";
+			newToggle.transform.localRotation = Quaternion.identity;
 
 			// no idea why, but the prefab doesnt have this
 			newToggle.GetComponent<LayoutElement>().preferredHeight = 70;
@@ -325,6 +331,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSelector.transform.parent = GetParentForAddedElements(menu);
 			newSelector.transform.localScale = Vector3.one;
 			newSelector.transform.name = $"UIElement-{label}";
+			newSelector.transform.localRotation = Quaternion.identity;
 
 			Object.Destroy(newSelector.GetComponentInChildren<LocalizedText>());
 
@@ -372,6 +379,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSlider.transform.parent = GetParentForAddedElements(menu);
 			newSlider.transform.localScale = Vector3.one;
 			newSlider.transform.name = $"UIElement-{label}";
+			newSlider.transform.localRotation = Quaternion.identity;
 
 			Object.Destroy(newSlider.GetComponentInChildren<LocalizedText>());
 
@@ -461,6 +469,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
 			newButtonObj.transform.localScale = Vector3.one;
 			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
+			newButtonObj.transform.localRotation = Quaternion.identity;
 
 			// the thing we're copying is already LEFT, so dont need to handle it
 			if (side == MenuSide.CENTER)
@@ -517,6 +526,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newHorizLayout = Object.Instantiate(existingHorizLayout);
 			newHorizLayout.transform.parent = newButtonObj.transform;
 			newHorizLayout.transform.localScale = Vector3.one;
+			newHorizLayout.transform.localRotation = Quaternion.identity;
 
 			var hrt = newHorizLayout.GetComponent<RectTransform>();
 			var ohrt = existingHorizLayout.GetComponent<RectTransform>();
@@ -552,6 +562,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButton.transform.parent = controlBlock;
 			newButton.transform.localScale = Vector3.one;
 			newButton.name = $"UIElement-{label}";
+			newButton.transform.localRotation = Quaternion.identity;
 
 			var rt = newButton.GetComponent<RectTransform>();
 			var ort = existingHorizLayout.transform.Find("ControlBlock").Find("HorizontalLayoutGroup").GetComponent<RectTransform>();
@@ -694,6 +705,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButton.transform.localScale = Vector3.one;
 			newButton.transform.SetSiblingIndex(newButton.transform.parent.childCount - 2);
 			newButton.name = $"Button-{name}";
+			newButton.transform.localRotation = Quaternion.identity;
 
 			RecalculateNavigation(newButton.transform.parent.GetComponentsInChildren<Button>(true).ToList());
 

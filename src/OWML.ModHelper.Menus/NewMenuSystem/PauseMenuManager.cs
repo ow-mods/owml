@@ -67,6 +67,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newMenu.transform.parent = GameObject.Find("PauseMenuBlock").transform;
 			newMenu.transform.localScale = Vector3.one;
 			newMenu.transform.localPosition = Vector3.zero;
+			newMenu.transform.localRotation = Quaternion.identity;
 			newMenu.GetComponent<RectTransform>().SetLeft(0);
 			newMenu.GetComponent<RectTransform>().SetRight(0);
 			newMenu.GetComponent<RectTransform>().SetTop(0);
@@ -167,6 +168,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			pauseButton.transform.SetSiblingIndex(pauseButton.transform.GetSiblingIndex() - 1); // -1 because no spacer in pause menu
 			pauseButton.SetActive(false);
 			pauseButton.name = $"Button-{name}";
+			pauseButton.transform.localRotation = Quaternion.identity;
 
 			if (customMenu.GetSelectOnActivate() == null)
 			{

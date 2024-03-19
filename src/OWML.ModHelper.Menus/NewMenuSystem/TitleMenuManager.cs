@@ -18,6 +18,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var newButton = Object.Instantiate(existingTitleButton.gameObject);
 			newButton.transform.parent = existingTitleButton.transform.parent;
 			newButton.transform.localScale = existingTitleButton.transform.localScale;
+			newButton.transform.localRotation = Quaternion.identity;
 			newButton.name = $"Button-{text}";
 
 			Object.Destroy(newButton.GetComponent<SubmitActionConfirm>());
