@@ -65,7 +65,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			};
 
 			modUnityEvents.RunWhen(
-				() => PlayerData.IsLoaded(), 
+				PlayerData.IsLoaded, 
 				() => SetupMenus(((IMenuManager)this).ModList));
 		}
 
