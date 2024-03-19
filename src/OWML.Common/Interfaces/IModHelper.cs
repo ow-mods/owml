@@ -1,4 +1,5 @@
 ﻿using OWML.Common.Menus;
+using System;
 
 namespace OWML.Common
 {
@@ -16,14 +17,19 @@ namespace OWML.Common
 
 		IModStorage Storage { get; }
 
+		[Obsolete("Use the new menu system instead.", true)]
 		IModMenus Menus { get; }
 
 		IModManifest Manifest { get; }
 
 		IModConfig Config { get; }
 
+		IModDefaultConfig DefaultConfig { get; }
+
 		IOwmlConfig OwmlConfig { get; }
 
 		IModInteraction Interaction { get; }
+
+		IMenuManager MenuHelper { get; }
 	}
 }

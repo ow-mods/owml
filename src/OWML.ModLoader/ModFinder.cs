@@ -42,7 +42,7 @@ namespace OWML.ModLoader
 		{
 			var storage = new ModStorage(manifest, _console);
 			var config = storage.Load<ModConfig>(Constants.ModConfigFileName);
-			var defaultConfig = storage.Load<ModConfig>(Constants.ModDefaultConfigFileName) ?? new ModConfig();
+			var defaultConfig = storage.Load<ModDefaultConfig>(Constants.ModDefaultConfigFileName) ?? new ModDefaultConfig();
 			return new ModData(manifest, config, defaultConfig, storage);
 		}
 	}

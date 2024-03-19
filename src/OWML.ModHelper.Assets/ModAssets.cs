@@ -21,7 +21,7 @@ namespace OWML.ModHelper.Assets
 		public AssetBundle LoadBundle(string filename)
 		{
 			var path = _manifest.ModFolderPath + filename;
-			_console.WriteLine("Loading asset bundle from " + path);
+			_console.WriteLine("Loading asset bundle from " + path, MessageType.Debug);
 			var bundle = AssetBundle.LoadFromFile(path);
 			if (bundle == null)
 			{
@@ -74,14 +74,14 @@ namespace OWML.ModHelper.Assets
 		public Mesh GetMesh(string filename)
 		{
 			var path = _manifest.ModFolderPath + filename;
-			_console.WriteLine($"Loading mesh from {path}");
+			_console.WriteLine($"Loading mesh from {path}", MessageType.Debug);
 			return _objImporter.ImportFile(path);
 		}
 
 		public Texture2D GetTexture(string filename)
 		{
 			var path = _manifest.ModFolderPath + filename;
-			_console.WriteLine($"Loading texture from {path}");
+			_console.WriteLine($"Loading texture from {path}", MessageType.Debug);
 			var data = File.ReadAllBytes(path);
 			var texture = new Texture2D(2, 2);
 			texture.LoadImage(data);
@@ -99,7 +99,7 @@ namespace OWML.ModHelper.Assets
 		public AudioClip GetAudio(string filename)
 		{
 			var path = _manifest.ModFolderPath + filename;
-			_console.WriteLine($"Loading audio from {path}");
+			_console.WriteLine($"Loading audio from {path}", MessageType.Debug);
 			using var reader = new AudioFileReader(path);
 			var sampleCount = (int)(reader.Length * 8 / reader.WaveFormat.BitsPerSample);
 			var outputSamples = new float[sampleCount];

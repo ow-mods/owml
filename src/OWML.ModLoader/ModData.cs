@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using UnityEngine;
 
 namespace OWML.ModLoader
 {
@@ -12,7 +13,7 @@ namespace OWML.ModLoader
 
 		public IModConfig Config { get; private set; }
 
-		public IModConfig DefaultConfig { get; }
+		public IModDefaultConfig DefaultConfig { get; }
 
 		public IModStorage Storage { get; }
 
@@ -24,7 +25,7 @@ namespace OWML.ModLoader
 		private IModConfig _configSnapshot;
 
 
-		public ModData(IModManifest manifest, IModConfig config, IModConfig defaultConfig, IModStorage storage)
+		public ModData(IModManifest manifest, IModConfig config, IModDefaultConfig defaultConfig, IModStorage storage)
 		{
 			Manifest = manifest;
 			Config = config;
@@ -85,7 +86,7 @@ namespace OWML.ModLoader
 		{
 			var options = modSetting["options"].ToObject<List<string>>();
 			var userString = userSetting is JObject objectValue ? (string)objectValue["value"] : Convert.ToString(userSetting);
-			Config.Settings[key] = modSetting;
+			Config.Settings[key] = (JObject)modSetting.DeepClone();
 			var isInOptions = options.Contains(userString);
 			if (isInOptions)
 			{
@@ -94,11 +95,11 @@ namespace OWML.ModLoader
 			return isInOptions;
 		}
 
-		private void AddMissingDefaults(IModConfig defaultConfig) =>
+		private void AddMissingDefaults(IModDefaultConfig defaultConfig) =>
 			defaultConfig.Settings.Where(s => !Config.Settings.ContainsKey(s.Key)).ToList()
 				.ForEach(setting => Config.Settings.Add(setting.Key, setting.Value));
 
-		private void ReorderSettings(IModConfig defaultConfig)
+		private void ReorderSettings(IModDefaultConfig defaultConfig)
 		{
 			// Make the Config settings order match the ones in default
 			Config.Settings = defaultConfig.Settings

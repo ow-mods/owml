@@ -6,7 +6,7 @@
 
 		IModConfig Config { get; }
 
-		IModConfig DefaultConfig { get; }
+		IModDefaultConfig DefaultConfig { get; }
 
 		IModStorage Storage { get; }
 

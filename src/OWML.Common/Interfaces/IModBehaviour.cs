@@ -16,6 +16,12 @@ namespace OWML.Common
 
 		object GetApi();
 
+		void SetupTitleMenu();
+
+		void SetupPauseMenu();
+
+		void SetupOptionsMenu();
+
 		void Init(IModHelper helper);
 	}
 }
