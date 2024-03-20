@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using Epic.OnlineServices;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.Common.Enums;
 using OWML.Common.Interfaces;
@@ -7,6 +9,7 @@ using OWML.Logging;
 using OWML.ModHelper;
 using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
+using OWML.ModHelper.Input;
 using OWML.ModHelper.Interaction;
 using OWML.Utils;
 using System;
@@ -14,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModLoader
@@ -37,6 +41,7 @@ namespace OWML.ModLoader
 		private readonly IModVersionChecker _modVersionChecker;
 		private readonly IHarmonyHelper _harmonyHelper;
 		private readonly IGameVendorGetter _vendorChecker;
+		private readonly IMenuManager _menuManager;
 		private readonly IGameVersions _gameVersions;
 		private readonly IList<IModBehaviour> _modList = new List<IModBehaviour>();
 
@@ -55,7 +60,8 @@ namespace OWML.ModLoader
 			IModUnityEvents unityEvents,
 			IModVersionChecker modVersionChecker,
 			IHarmonyHelper harmonyHelper,
-			IGameVendorGetter vendorChecker)
+			IGameVendorGetter vendorChecker,
+			IMenuManager menuManager)
 		{
 			_modFinder = modFinder;
 			_console = console;
@@ -72,6 +78,7 @@ namespace OWML.ModLoader
 			_modVersionChecker = modVersionChecker;
 			_harmonyHelper = harmonyHelper;
 			_vendorChecker = vendorChecker;
+			_menuManager = menuManager;
 			_owmlManifest = JsonHelper.LoadJsonObject<ModManifest>($"{_owmlConfig.ManagedPath}/{Constants.OwmlManifestFileName}");
 			_gameVersions = JsonHelper.LoadJsonObject<GameVersions>($"{_owmlConfig.ManagedPath}/{Constants.GameVersionsFileName}");
 		}
@@ -98,7 +105,7 @@ namespace OWML.ModLoader
 
 			var sortedMods = SortMods(mods);
 
-			var modNames = mods.Where(mod => mod.Config.Enabled)
+			var modNames = mods.Where(mod => mod.Enabled)
 				.Select(mod => mod.Manifest.UniqueName).ToList();
 
 			_console.WriteLine($"Getting game vendor...", MessageType.Debug);
@@ -120,13 +127,13 @@ namespace OWML.ModLoader
 
 			foreach (var modData in sortedMods)
 			{
-				var missingDependencies = modData.Config.Enabled
+				var missingDependencies = modData.Enabled
 					? modData.Manifest.Dependencies.Where(dependency => !modNames.Contains(dependency)).ToList()
 					: new List<string>();
 
 				missingDependencies.ForEach(dependency => _console.WriteLine($"Error! {modData.Manifest.UniqueName} needs {dependency}, but it's disabled/missing!", MessageType.Error));
 
-				var shouldLoad = _modVersionChecker.CheckModVersion(modData) && _modVersionChecker.CheckModGameVersion(modData, latestGameVersion);
+				var shouldLoad = modData.Enabled && _modVersionChecker.CheckModVersion(modData) && _modVersionChecker.CheckModGameVersion(modData, latestGameVersion);
 				if (!shouldLoad)
 				{
 					continue;
@@ -141,17 +148,16 @@ namespace OWML.ModLoader
 				var modType = LoadMod(modData);
 				if (modType == null || missingDependencies.Any())
 				{
-					_menus.ModsMenu?.AddMod(modData, null);
 					continue;
 				}
 
 				var helper = CreateModHelper(modData);
 				var initMod = InitializeMod(modType, helper);
 
-				_menus.ModsMenu?.AddMod(modData, initMod);
-
 				_modList.Add(initMod);
 			}
+
+			_menuManager.ModList = _modList;
 		}
 
 		private IEnumerable<IModData> SortMods(IList<IModData> mods)
@@ -168,7 +174,7 @@ namespace OWML.ModLoader
 
 		private Type LoadMod(IModData modData)
 		{
-			if (!modData.Config.Enabled)
+			if (!modData.Enabled)
 			{
 				_console.WriteLine($"{modData.Manifest.UniqueName} is disabled", MessageType.Debug);
 				return null;
@@ -221,12 +227,14 @@ namespace OWML.ModLoader
 				.Add(_owmlConfig)
 				.Add(modData.Manifest)
 				.Add(modData.Config)
+				.Add(modData.DefaultConfig)
 				.Add(_socket)
 				.Add(_objImporter)
 				.Add(_modList)
 				.Add(_menus)
 				.Add(_processHelper)
 				.Add(_unityEvents)
+				.Add(_menuManager)
 				.Add<IHarmonyHelper, HarmonyHelper>()
 				.Add<IModLogger, ModLogger>()
 				.Add<IModConsole, ModSocketOutput>()
