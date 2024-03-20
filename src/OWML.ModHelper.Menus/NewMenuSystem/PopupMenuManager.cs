@@ -23,9 +23,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		private GameObject _twoChoicePopupBase;
 		private GameObject _inputPopupBase;
 
-		public PopupMenuManager(IModConsole console, IHarmonyHelper harmony)
+		public PopupMenuManager(IModConsole console, IHarmonyHelper harmony, IMenuManager menuManager)
 		{
 			_console = console;
+			StartupPopupPatches.menuManager = menuManager as MenuManager;
 
 			LoadManager.OnCompleteSceneLoad += LoadManager_OnCompleteSceneLoad;
 
@@ -323,6 +324,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 	public static class StartupPopupPatches
 	{
+		public static MenuManager menuManager;
+
 		public static bool DetermineStartupPopups(TitleScreenManager __instance)
 		{
 			if (__instance._profileManager.currentProfileGameSave.version == "NONE")
@@ -363,7 +366,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				return false;
 			}
 
-			if (PopupMenuManager.PopupsToShow.Count == 0)
+			if (PopupMenuManager.PopupsToShow == null || PopupMenuManager.PopupsToShow.Count == 0)
 			{
 				__instance._okCancelPopup.ResetPopup();
 				__instance.SetUpMainMenu();
@@ -375,6 +378,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 				if (firstTimeRun)
 				{
+					menuManager.SetupMenus((menuManager as IMenuManager).ModList);
 					__instance.FadeInMenuOptions();
 					return false;
 				}
@@ -390,6 +394,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public static bool TryShowStartupPopups(TitleScreenManager __instance)
 		{
 			string text = "AAAAGGGGGHH";
+
+			if (PopupMenuManager.PopupsToShow == null || PopupMenuManager.PopupsToShow.Count == 0)
+			{
+				__instance.TryShowStartupPopupsAndShowMenu(true);
+				return false;
+			}
 
 			PopupMenuManager.ActivePopup = PopupMenuManager.PopupsToShow.First();
 

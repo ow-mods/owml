@@ -39,6 +39,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			titleScreenManager._mainMenuTextFields = titleScreenManager._mainMenuTextFields.Append(submitAction.GetComponentInChildren<Text>()).ToArray();
 
+			newButton.SetActive(true);
+
 			return submitAction;
 		}
 

@@ -49,7 +49,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_owmlConfig = owmlConfig;
 			_unityEvents = unityEvents;
 			TitleMenuManager = new TitleMenuManager();
-			PopupMenuManager = new PopupMenuManager(console, harmony);
+			PopupMenuManager = new PopupMenuManager(console, harmony, this);
 			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager);
 			PauseMenuManager = new PauseMenuManager(console);
 
@@ -58,18 +58,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
 			{
-				if (newScene is OWScene.TitleScreen or OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+				if (newScene is  OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 				{
 					SetupMenus(((IMenuManager)this).ModList);
 				}
 			};
-
-			modUnityEvents.RunWhen(
-				PlayerData.IsLoaded, 
-				() => SetupMenus(((IMenuManager)this).ModList));
 		}
 
-		private void SetupMenus(IList<IModBehaviour> modList)
+		internal void SetupMenus(IList<IModBehaviour> modList)
 		{
 			void SaveConfig()
 			{
@@ -221,6 +217,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.TOGGLE:
@@ -233,6 +230,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.SELECTOR:
@@ -245,6 +243,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newSelection);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.SEPARATOR:
@@ -258,9 +257,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								settingSlider.ModSettingKey = name;
 								settingSlider.OnValueChanged += (float newValue) =>
 								{
-									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.TEXT:
@@ -270,9 +269,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								textInput.OnConfirmEntry += () =>
 								{
 									var newValue = textInput.GetInputText();
-									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.NUMBER:
@@ -282,9 +281,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								numberInput.OnConfirmEntry += () =>
 								{
 									var newValue = double.Parse(numberInput.GetInputText());
-									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							default:
