@@ -49,7 +49,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_owmlConfig = owmlConfig;
 			_unityEvents = unityEvents;
 			TitleMenuManager = new TitleMenuManager();
-			PopupMenuManager = new PopupMenuManager(console, harmony);
+			PopupMenuManager = new PopupMenuManager(console, harmony, this);
 			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager);
 			PauseMenuManager = new PauseMenuManager(console);
 
@@ -58,18 +58,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
 			{
-				if (newScene is OWScene.TitleScreen or OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+				if (newScene is  OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 				{
 					SetupMenus(((IMenuManager)this).ModList);
 				}
 			};
-
-			modUnityEvents.RunWhen(
-				PlayerData.IsLoaded, 
-				() => SetupMenus(((IMenuManager)this).ModList));
 		}
 
-		private void SetupMenus(IList<IModBehaviour> modList)
+		internal void SetupMenus(IList<IModBehaviour> modList)
 		{
 			void SaveConfig()
 			{
