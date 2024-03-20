@@ -1,10 +1,8 @@
 ﻿using System;
 using UnityEngine.UI;
 using UnityEngine;
-using Steamworks;
 using UnityEngine.EventSystems;
 using OWML.Common.Interfaces.Menus;
-using OWML.Logging;
 
 namespace OWML.ModHelper.Menus.CustomInputs
 {
@@ -53,13 +51,6 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			base.Activate();
 			this.ClearInputFieldText();
 			this._inputField.ActivateInputField();
-			this._inputFieldEventListener.OnSelectEvent += this.OnInputFieldSelect;
-			this._inputFieldEventListener.OnPointerUpEvent += this.OnPointerUpInInputField;
-			SteamManager.Instance.OnGamepadTextInputDismissed += this.OnSteamVirtualKeyboardDismissed;
-			if (SteamManager.Initialized)
-			{
-				SteamUserStats.RequestCurrentStats();
-			}
 			this._inputField.onValueChanged.AddListener(delegate
 			{
 				this.OnTextFieldChanged();
@@ -90,8 +81,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 
 		protected bool TryOpenVirtualKeyboard()
 		{
-			this._inputField.ActivateInputField();
-			return SteamUtils.IsSteamRunningOnSteamDeck() && SteamUtils.ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode.k_EFloatingGamepadTextInputModeModeSingleLine, 0, 0, 1280, 370);
+			return false;
 		}
 
 		protected void OnSteamVirtualKeyboardDismissed(bool bSubmitted, uint unSubmittedText)
@@ -149,9 +139,6 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			});
 			InputField inputField = this._inputField;
 			inputField.onValidateInput = (InputField.OnValidateInput)Delegate.Remove(inputField.onValidateInput, new InputField.OnValidateInput(this.OnValidateInput));
-			this._inputFieldEventListener.OnSelectEvent -= this.OnInputFieldSelect;
-			this._inputFieldEventListener.OnPointerUpEvent -= this.OnPointerUpInInputField;
-			SteamManager.Instance.OnGamepadTextInputDismissed -= this.OnSteamVirtualKeyboardDismissed;
 			this._virtualKeyboardOpen = false;
 		}
 

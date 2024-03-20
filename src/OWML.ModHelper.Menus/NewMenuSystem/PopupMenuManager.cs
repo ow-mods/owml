@@ -226,7 +226,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			popup._confirmButton = oldpopup._confirmButton;
 			popup._rootCanvas = oldpopup._rootCanvas;
 			popup._inputField = oldpopup._inputField;
-			popup._inputFieldEventListener = oldpopup._inputFieldEventListener;
 
 			Object.Destroy(oldpopup);
 
