@@ -366,7 +366,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				return false;
 			}
 
-			if (PopupMenuManager.PopupsToShow.Count == 0)
+			if (PopupMenuManager.PopupsToShow == null || PopupMenuManager.PopupsToShow.Count == 0)
 			{
 				__instance._okCancelPopup.ResetPopup();
 				__instance.SetUpMainMenu();
@@ -394,6 +394,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public static bool TryShowStartupPopups(TitleScreenManager __instance)
 		{
 			string text = "AAAAGGGGGHH";
+
+			if (PopupMenuManager.PopupsToShow == null || PopupMenuManager.PopupsToShow.Count == 0)
+			{
+				__instance.TryShowStartupPopupsAndShowMenu(true);
+			}
 
 			PopupMenuManager.ActivePopup = PopupMenuManager.PopupsToShow.First();
 
