@@ -221,6 +221,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.TOGGLE:
@@ -233,6 +234,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.SELECTOR:
@@ -245,6 +247,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								{
 									mod.ModHelper.Config.SetSettingsValue(name, newSelection);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.SEPARATOR:
@@ -261,6 +264,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.TEXT:
@@ -273,6 +277,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							case SettingType.NUMBER:
@@ -285,6 +290,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+									mod.Configure(mod.ModHelper.Config);
 								};
 								break;
 							default:
