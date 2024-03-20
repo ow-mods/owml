@@ -257,7 +257,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								settingSlider.ModSettingKey = name;
 								settingSlider.OnValueChanged += (float newValue) =>
 								{
-									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
@@ -270,7 +269,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								textInput.OnConfirmEntry += () =>
 								{
 									var newValue = textInput.GetInputText();
-									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
@@ -283,7 +281,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								numberInput.OnConfirmEntry += () =>
 								{
 									var newValue = double.Parse(numberInput.GetInputText());
-									_console.WriteLine($"changed to {newValue}");
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
