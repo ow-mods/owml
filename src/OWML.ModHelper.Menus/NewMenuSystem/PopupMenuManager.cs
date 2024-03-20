@@ -398,6 +398,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			if (PopupMenuManager.PopupsToShow == null || PopupMenuManager.PopupsToShow.Count == 0)
 			{
 				__instance.TryShowStartupPopupsAndShowMenu(true);
+				return false;
 			}
 
 			PopupMenuManager.ActivePopup = PopupMenuManager.PopupsToShow.First();
