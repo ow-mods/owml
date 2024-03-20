@@ -17,7 +17,7 @@ namespace OWML.Common
 
 		IModStorage Storage { get; }
 
-		[Obsolete("Use the new menu system instead.", true)]
+		[Obsolete("Use the new menu system instead.")]
 		IModMenus Menus { get; }
 
 		IModManifest Manifest { get; }
