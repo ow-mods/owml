@@ -38,6 +38,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		internal static Menu OWMLSettingsMenu;
 		internal static List<(IModBehaviour behaviour, Menu modMenu)> ModSettingsMenus = new();
 
+		private bool _hasSetupMenusThisScene = false;
+
 		public MenuManager(
 			IModConsole console,
 			IHarmonyHelper harmony,
@@ -58,7 +60,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
 			{
-				if (newScene is  OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+				_hasSetupMenusThisScene = false;
+				if (newScene is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 				{
 					SetupMenus(((IMenuManager)this).ModList);
 				}
@@ -67,6 +70,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		internal void SetupMenus(IList<IModBehaviour> modList)
 		{
+			if (_hasSetupMenusThisScene)
+			{
+				return;
+			}
+
+			_hasSetupMenusThisScene = true;
+
 			void SaveConfig()
 			{
 				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
