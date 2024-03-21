@@ -15,13 +15,39 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 	{
 		private IModConsole _console;
 		private FontAndLanguageController _languageController;
-
 		private GameObject _pauseMenuItemsTemplate;
 		private GameObject _buttonPrefab;
+
+		public event Action PauseMenuOpened;
+		public event Action PauseMenuClosed;
 
 		public PauseMenuManager(IModConsole console)
 		{
 			_console = console;
+			LoadManager.OnCompleteSceneLoad += OnSceneLoadCompleted;
+		}
+
+		private void OnSceneLoadCompleted(OWScene old, OWScene newScene)
+		{
+			if (newScene is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+			{
+				var pauseMenuManager = Resources.FindObjectsOfTypeAll<global::PauseMenuManager>()[0];
+				pauseMenuManager._pauseMenu.OnActivateMenu += () =>
+				{
+					if (!pauseMenuManager.IsOpen())
+					{
+						PauseMenuOpened?.SafeInvoke();
+					}
+				};
+
+				pauseMenuManager._pauseMenu.OnDeactivateMenu += () =>
+				{
+					if (MenuStackManager.SharedInstance.GetMenuCount() == 0)
+					{
+						PauseMenuClosed?.SafeInvoke();
+					}
+				};
+			}
 		}
 
 		private void AddToLangController(Text textComponent)
