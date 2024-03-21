@@ -14,6 +14,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 	public class PauseMenuManager : IPauseMenuManager
 	{
 		private IModConsole _console;
+		private FontAndLanguageController _languageController;
 
 		private GameObject _pauseMenuItemsTemplate;
 		private GameObject _buttonPrefab;
@@ -21,6 +22,16 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public PauseMenuManager(IModConsole console)
 		{
 			_console = console;
+		}
+
+		private void AddToLangController(Text textComponent)
+		{
+			if (_languageController == null)
+			{
+				_languageController = Resources.FindObjectsOfTypeAll<global::PauseMenuManager>()[0].transform.GetChild(0).GetComponent<FontAndLanguageController>();
+			}
+
+			_languageController.AddTextElement(textComponent, false);
 		}
 
 		private void MakePauseMenuItemsTemplate()
@@ -89,6 +100,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			SetButtonText(submitAction, name);
 			SetButtonIndex(submitAction, index, fromTop);
+			AddToLangController(submitAction.GetComponentInChildren<Text>());
 
 			return submitAction;
 		}
@@ -108,6 +120,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			SetButtonText(submitActionMenu, name);
 			SetButtonIndex(submitActionMenu, index, fromTop);
+			AddToLangController(submitActionMenu.GetComponentInChildren<Text>());
 
 			menuRootObject.SetActive(true);
 			return submitActionMenu;
