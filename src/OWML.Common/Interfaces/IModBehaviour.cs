@@ -16,11 +16,23 @@ namespace OWML.Common
 
 		object GetApi();
 
-		void SetupTitleMenu();
+		/// <summary>
+		/// Called when the title screen has loaded in.
+		/// Put any code that edits the title menu here.
+		/// </summary>
+		void SetupTitleMenu(ITitleMenuManager titleManager);
 
-		void SetupPauseMenu();
+		/// <summary>
+		/// Called when the SolarSystem or EyeOfTheUniverse scene has loaded in.
+		/// Put any code that edits the pause menu here.
+		/// </summary>
+		void SetupPauseMenu(IPauseMenuManager pauseManager);
 
-		void SetupOptionsMenu();
+		/// <summary>
+		/// Called when the main menu or game has loaded in.
+		/// Put any code that edits the options menu here.
+		/// </summary>
+		void SetupOptionsMenu(IOptionsMenuManager optionsManager);
 
 		void Init(IModHelper helper);
 	}

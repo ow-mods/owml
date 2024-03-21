@@ -321,14 +321,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				{
 					if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
 					{
-						mod.SetupTitleMenu();
+						mod.SetupTitleMenu(mod.ModHelper.MenuHelper.TitleMenuManager);
 					}
 					else if (LoadManager.GetCurrentScene() is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 					{
-						mod.SetupPauseMenu();
+						mod.SetupPauseMenu(mod.ModHelper.MenuHelper.PauseMenuManager);
 					}
 
-					mod.SetupOptionsMenu();
+					mod.SetupOptionsMenu(mod.ModHelper.MenuHelper.OptionsMenuManager);
 				}
 				catch (Exception ex)
 				{

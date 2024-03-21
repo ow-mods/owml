@@ -50,30 +50,30 @@ namespace OWML.LoadCustomAssets
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
 		}
 
-		public override void SetupTitleMenu()
+		public override void SetupTitleMenu(ITitleMenuManager titleManager)
 		{
-			var infoButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INFO POPUP");
+			var infoButton = titleManager.CreateTitleButton("INFO POPUP");
 			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
 			infoButton.OnSubmitAction += () => infoPopup.EnableMenu(true);
 
-			var twoChoiceButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("TWO CHOICE");
+			var twoChoiceButton = titleManager.CreateTitleButton("TWO CHOICE");
 			var twoChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup("test two choice popup", "oak", "narp");
 			twoChoiceButton.OnSubmitAction += () => twoChoicePopup.EnableMenu(true);
 
-			var threeChoiceButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("THREE CHOICE");
+			var threeChoiceButton = titleManager.CreateTitleButton("THREE CHOICE");
 			var threeChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateThreeChoicePopup("test three choice popup", "oak", "oak (better)", "narp");
 			threeChoiceButton.OnSubmitAction += () => threeChoicePopup.EnableMenu(true);
 			threeChoicePopup.OnPopupConfirm1 += () => ModHelper.Console.WriteLine("Confirm 1");
 			threeChoicePopup.OnPopupConfirm2 += () => ModHelper.Console.WriteLine("Confirm 2");
 
-			var fourChoiceButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("FOUR CHOICE");
+			var fourChoiceButton = titleManager.CreateTitleButton("FOUR CHOICE");
 			var fourChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateFourChoicePopup("test four choice popup", "oak", "oak (better)", "oak (worse)", "narp");
 			fourChoiceButton.OnSubmitAction += () => fourChoicePopup.EnableMenu(true);
 			fourChoicePopup.OnPopupConfirm1 += () => ModHelper.Console.WriteLine("Confirm 1");
 			fourChoicePopup.OnPopupConfirm2 += () => ModHelper.Console.WriteLine("Confirm 2");
 			fourChoicePopup.OnPopupConfirm3 += () => ModHelper.Console.WriteLine("Confirm 3");
 
-			var textButton = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("INPUT POPUP TEST");
+			var textButton = titleManager.CreateTitleButton("INPUT POPUP TEST");
 			var textPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup("test text popup", "type a funny thing!", "ok", "cancel");
 			textButton.OnSubmitAction += () => textPopup.EnableMenu(true);
 			textPopup.OnPopupConfirm += () =>
@@ -84,25 +84,25 @@ namespace OWML.LoadCustomAssets
 			
 		}
 
-		public override void SetupPauseMenu()
+		public override void SetupPauseMenu(IPauseMenuManager pauseManager)
 		{
-			var pauseMenuManager = ModHelper.MenuHelper.PauseMenuManager;
+			var listMenu = pauseManager.MakePauseListMenu("TEST");
+			var button = pauseManager.MakeMenuOpenButton("TEST", listMenu, 1, true);
 
-			var listMenu = pauseMenuManager.MakePauseListMenu("TEST");
-			var button = pauseMenuManager.MakeMenuOpenButton("TEST", listMenu, 1, true);
+			var button1 = pauseManager.MakeSimpleButton("1", 0, true, listMenu);
+			var button2 = pauseManager.MakeSimpleButton("2", 1, true, listMenu);
+			var button3 = pauseManager.MakeSimpleButton("3", 2, true, listMenu);
 
-			var button1 = pauseMenuManager.MakeSimpleButton("1", 0, true, listMenu);
-			var button2 = pauseMenuManager.MakeSimpleButton("2", 1, true, listMenu);
-			var button3 = pauseMenuManager.MakeSimpleButton("3", 2, true, listMenu);
+			pauseManager.PauseMenuOpened += () => ModHelper.Console.WriteLine($"PAUSE MENU OPENED!", MessageType.Success);
+			pauseManager.PauseMenuClosed += () => ModHelper.Console.WriteLine($"PAUSE MENU CLOSED!", MessageType.Success);
 		}
 
-		public override void SetupOptionsMenu()
+		public override void SetupOptionsMenu(IOptionsMenuManager optionsManager)
 		{
 			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
 			var twoChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup("test two choice popup", "oak", "narp");
 			var threeChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateThreeChoicePopup("test three choice popup", "oak", "oak (better)", "narp");
 
-			var optionsManager = ModHelper.MenuHelper.OptionsMenuManager;
 			var (tabMenu, tabButton) = optionsManager.CreateTabWithSubTabs("TEST");
 			var (subTab1Menu, subTab1Button) = optionsManager.AddSubTab(tabMenu, "TAB 1");
 			var (subTab2Menu, subTab2Button) = optionsManager.AddSubTab(tabMenu, "TAB 2");
