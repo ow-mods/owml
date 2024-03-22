@@ -4,6 +4,7 @@
     <TargetFramework>net48</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

@@ -46,14 +46,9 @@ To get started, check out [our tutorial on the docs](https://owml.outerwildsmods
 
 ## Compatibility
 
-|Version|Compatible|
-|-|-|
-|1.1.10|Yes|
-|1.1.9|Unknown|
-|1.1.8|Unknown|
-|1.0.0 - 1.0.7|No|
+OWML is only supported on the latest game version. It may work on older versions, but that cannot be guaranteed.
 
-OWML is compatible with Echoes of the Eye, and works on both Epic and Steam installations.
+OWML is compatible with Echoes of the Eye, and works on Epic, Steam, and Microsoft Store installations.
 
 ## Feedback and Support
 
@@ -80,7 +75,7 @@ Contributors:
 * [JohnCorby](https://github.com/JohnCorby) - Helped with audio loading stuff.
 
 Special thanks to:
-* [Outer Wilds](http://www.outerwilds.com)
+* [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html)
 * [Outer Wilds on Reddit](https://www.reddit.com/r/outerwilds)
 * The unnofficial Outer Wilds Discord
 * Inspired by (and some code from) [SMAPI](https://smapi.io)

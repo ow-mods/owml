@@ -18,7 +18,8 @@
 			"value": 10,
 			"min": 0,
 			"max": 20,
-			"tooltip": "POWER SLIDER"
+			"tooltip": "POWER SLIDER",
+			"title": "Power"
 		},
 		"negativeMin": {
 			"type": "slider",
@@ -42,19 +43,23 @@
 			"type": "selector",
 			"options": [ "A", "B", "C" ],
 			"tooltip": "Select your favorite letter.",
-			"value": "A"
+			"value": "A",
+			"title": "Thing"
 		},
 		"integer thing": {
 			"type": "selector",
 			"options": [ 5, 10, 15 ],
-			"value": 10
+			"value": 10,
+			"title": "Integer Thing",
+			"tooltip": "Select your favourite number!"
 		},
 		"enableSuperMode": {
 			"type": "toggle",
 			"value": true,
 			"yes": "Absolutely",
 			"no": "Na-ah!",
-			"title": "Enable Super Mode"
+			"title": "Enable Super Mode",
+			"tooltip": "IF YOUR BODY IS NOT STRONG ENOUGH YOU WILL NEVER BE ABLE TO ACTIVATE DEVIL GUN MODE!"
 		},
 		"Duck Info": {
 			"type": "separator"
