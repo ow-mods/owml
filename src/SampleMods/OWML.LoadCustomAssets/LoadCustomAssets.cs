@@ -55,16 +55,22 @@ namespace OWML.LoadCustomAssets
 			var infoButton = titleManager.CreateTitleButton("INFO POPUP");
 			var infoPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup("test info popup", "yarp");
 			infoButton.OnSubmitAction += () => infoPopup.EnableMenu(true);
+			infoPopup.OnActivateMenu += () => ModHelper.Console.WriteLine("info popup activate");
+			infoPopup.OnDeactivateMenu += () => ModHelper.Console.WriteLine("info popup deactivate");
 
 			var twoChoiceButton = titleManager.CreateTitleButton("TWO CHOICE");
 			var twoChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup("test two choice popup", "oak", "narp");
 			twoChoiceButton.OnSubmitAction += () => twoChoicePopup.EnableMenu(true);
+			twoChoicePopup.OnActivateMenu += () => ModHelper.Console.WriteLine("two popup activate");
+			twoChoicePopup.OnDeactivateMenu += () => ModHelper.Console.WriteLine("two popup deactivate");
 
 			var threeChoiceButton = titleManager.CreateTitleButton("THREE CHOICE");
 			var threeChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateThreeChoicePopup("test three choice popup", "oak", "oak (better)", "narp");
 			threeChoiceButton.OnSubmitAction += () => threeChoicePopup.EnableMenu(true);
 			threeChoicePopup.OnPopupConfirm1 += () => ModHelper.Console.WriteLine("Confirm 1");
 			threeChoicePopup.OnPopupConfirm2 += () => ModHelper.Console.WriteLine("Confirm 2");
+			threeChoicePopup.OnActivateMenu += () => ModHelper.Console.WriteLine("three popup activate");
+			threeChoicePopup.OnDeactivateMenu += () => ModHelper.Console.WriteLine("three popup deactivate");
 
 			var fourChoiceButton = titleManager.CreateTitleButton("FOUR CHOICE");
 			var fourChoicePopup = ModHelper.MenuHelper.PopupMenuManager.CreateFourChoicePopup("test four choice popup", "oak", "oak (better)", "oak (worse)", "narp");
@@ -72,6 +78,8 @@ namespace OWML.LoadCustomAssets
 			fourChoicePopup.OnPopupConfirm1 += () => ModHelper.Console.WriteLine("Confirm 1");
 			fourChoicePopup.OnPopupConfirm2 += () => ModHelper.Console.WriteLine("Confirm 2");
 			fourChoicePopup.OnPopupConfirm3 += () => ModHelper.Console.WriteLine("Confirm 3");
+			fourChoicePopup.OnActivateMenu += () => ModHelper.Console.WriteLine("four popup activate");
+			fourChoicePopup.OnDeactivateMenu += () => ModHelper.Console.WriteLine("four popup deactivate");
 
 			var textButton = titleManager.CreateTitleButton("INPUT POPUP TEST");
 			var textPopup = ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup("test text popup", "type a funny thing!", "ok", "cancel");
@@ -81,7 +89,8 @@ namespace OWML.LoadCustomAssets
 				ModHelper.Console.WriteLine(textPopup.GetInputText());
 			};
 
-			
+			textPopup.OnActivateMenu += () => ModHelper.Console.WriteLine("text popup activate");
+			textPopup.OnDeactivateMenu += () => ModHelper.Console.WriteLine("text popup deactivate");
 		}
 
 		public override void CleanupTitleMenu()
