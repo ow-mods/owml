@@ -58,6 +58,23 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
 
+			LoadManager.OnStartSceneLoad += (oldScene, newScene) =>
+			{
+				foreach (var mod in ((IMenuManager)this).ModList)
+				{
+					if (oldScene == OWScene.TitleScreen)
+					{
+						mod.CleanupTitleMenu();
+						mod.CleanupOptionsMenu();
+					}
+					else if (oldScene is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+					{
+						mod.CleanupPauseMenu();
+						mod.CleanupOptionsMenu();
+					}
+				}
+			};
+
 			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
 			{
 				_hasSetupMenusThisScene = false;

@@ -84,6 +84,11 @@ namespace OWML.LoadCustomAssets
 			
 		}
 
+		public override void CleanupTitleMenu()
+		{
+			ModHelper.Console.WriteLine($"CLEANUP TITLE MENU");
+		}
+
 		public override void SetupPauseMenu(IPauseMenuManager pauseManager)
 		{
 			var listMenu = pauseManager.MakePauseListMenu("TEST");
@@ -93,8 +98,24 @@ namespace OWML.LoadCustomAssets
 			var button2 = pauseManager.MakeSimpleButton("2", 1, true, listMenu);
 			var button3 = pauseManager.MakeSimpleButton("3", 2, true, listMenu);
 
-			pauseManager.PauseMenuOpened += () => ModHelper.Console.WriteLine($"PAUSE MENU OPENED!", MessageType.Success);
-			pauseManager.PauseMenuClosed += () => ModHelper.Console.WriteLine($"PAUSE MENU CLOSED!", MessageType.Success);
+			pauseManager.PauseMenuOpened += LogOpened;
+			pauseManager.PauseMenuClosed += LogClosed;
+		}
+
+		public override void CleanupPauseMenu()
+		{
+			ModHelper.MenuHelper.PauseMenuManager.PauseMenuOpened -= LogOpened;
+			ModHelper.MenuHelper.PauseMenuManager.PauseMenuClosed -= LogClosed;
+		}
+
+		private void LogOpened()
+		{
+			ModHelper.Console.WriteLine($"PAUSE MENU OPENED!", MessageType.Success);
+		}
+
+		private void LogClosed()
+		{
+			ModHelper.Console.WriteLine($"PAUSE MENU CLOSED!", MessageType.Success);
 		}
 
 		public override void SetupOptionsMenu(IOptionsMenuManager optionsManager)
@@ -118,6 +139,11 @@ namespace OWML.LoadCustomAssets
 			var toggle = optionsManager.AddToggleInput(subTab2Menu, "Test Toggle", "Option 1", "Option 2", "* It's a test toggle.", false);
 			var selector = optionsManager.AddSelectorInput(subTab2Menu, "Test Selector", new[] { "Option 1", "Option 2", "Option 3" }, "* It's a test selector.", true, 0);
 			var slider = optionsManager.AddSliderInput(subTab2Menu, "Test Slider", 0, 100, "* It's a test slider.", 50);
+		}
+
+		public override void CleanupOptionsMenu()
+		{
+			ModHelper.Console.WriteLine($"CLEANUP OPTIONS MENU");
 		}
 
 		private void TestAPI()
