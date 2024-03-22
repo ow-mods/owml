@@ -72,6 +72,7 @@
         "dependencies": {
             "type": "array",
             "description": "The dependencies of the mod",
+            "default": [],
             "items": {
                 "type": "string",
                 "description": "The uniqueName of the dependency",
@@ -91,6 +92,7 @@
         "minGameVersion": {
             "type": "string",
             "description": "The minimum version of the game that this mod is compatible with",
+            "default": ""
             "pattern": "^\\d+\\.\\d+\\.\\d+\\.\\d+$",
             "examples": [
                 "1.0.0",
@@ -101,6 +103,7 @@
         "maxGameVersion": {
             "type": "string",
             "description": "The maximum version of the game that this mod is compatible with",
+            "default": ""
             "pattern": "^\\d+\\.\\d+\\.\\d+\\.\\d+$",
             "examples": [
                 "1.0.0",
@@ -116,6 +119,7 @@
         "incompatibleVendors": {
             "type": "array",
             "description": "The vendors this mod does not work on",
+            "default": []
             "items": {
                 "type": "string",
                 "enum": [
