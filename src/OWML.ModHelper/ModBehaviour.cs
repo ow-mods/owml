@@ -24,17 +24,14 @@ namespace OWML.ModHelper
 
 		public virtual object GetApi() => null;
 
-		public virtual void SetupTitleMenu()
-		{
-		}
+		public virtual void SetupTitleMenu(ITitleMenuManager titleManager) { }
+		public virtual void CleanupTitleMenu() { }
 
-		public virtual void SetupPauseMenu()
-		{
-		}
+		public virtual void SetupPauseMenu(IPauseMenuManager pauseManager) { }
+		public virtual void CleanupPauseMenu() { }
 
-		public virtual void SetupOptionsMenu()
-		{
-		}
+		public virtual void SetupOptionsMenu(IOptionsMenuManager optionsManager) { }
+		public virtual void CleanupOptionsMenu() { }
 
 		public IList<IModBehaviour> GetDependants() =>
 			ModHelper.Interaction.GetDependants(ModHelper.Manifest.UniqueName);

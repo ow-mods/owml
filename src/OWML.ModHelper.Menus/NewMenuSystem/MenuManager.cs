@@ -38,6 +38,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		internal static Menu OWMLSettingsMenu;
 		internal static List<(IModBehaviour behaviour, Menu modMenu)> ModSettingsMenus = new();
 
+		private bool _hasSetupMenusThisScene = false;
+
 		public MenuManager(
 			IModConsole console,
 			IHarmonyHelper harmony,
@@ -56,9 +58,27 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
 
+			LoadManager.OnStartSceneLoad += (oldScene, newScene) =>
+			{
+				foreach (var mod in ((IMenuManager)this).ModList)
+				{
+					if (oldScene == OWScene.TitleScreen)
+					{
+						mod.CleanupTitleMenu();
+						mod.CleanupOptionsMenu();
+					}
+					else if (oldScene is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+					{
+						mod.CleanupPauseMenu();
+						mod.CleanupOptionsMenu();
+					}
+				}
+			};
+
 			LoadManager.OnCompleteSceneLoad += (_, newScene) =>
 			{
-				if (newScene is  OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
+				_hasSetupMenusThisScene = false;
+				if (newScene is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 				{
 					SetupMenus(((IMenuManager)this).ModList);
 				}
@@ -67,6 +87,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		internal void SetupMenus(IList<IModBehaviour> modList)
 		{
+			if (_hasSetupMenusThisScene)
+			{
+				return;
+			}
+
+			_hasSetupMenusThisScene = true;
+
 			void SaveConfig()
 			{
 				JsonHelper.SaveJsonObject($"{_owmlConfig.OWMLPath}{Constants.OwmlConfigFileName}", _owmlConfig);
@@ -311,14 +338,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				{
 					if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
 					{
-						mod.SetupTitleMenu();
+						mod.SetupTitleMenu(mod.ModHelper.MenuHelper.TitleMenuManager);
 					}
 					else if (LoadManager.GetCurrentScene() is OWScene.SolarSystem or OWScene.EyeOfTheUniverse)
 					{
-						mod.SetupPauseMenu();
+						mod.SetupPauseMenu(mod.ModHelper.MenuHelper.PauseMenuManager);
 					}
 
-					mod.SetupOptionsMenu();
+					mod.SetupOptionsMenu(mod.ModHelper.MenuHelper.OptionsMenuManager);
 				}
 				catch (Exception ex)
 				{

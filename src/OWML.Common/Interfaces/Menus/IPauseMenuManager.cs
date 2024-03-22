@@ -1,7 +1,20 @@
-﻿namespace OWML.Common
+﻿using System;
+using UnityEngine;
+
+namespace OWML.Common
 {
 	public interface IPauseMenuManager
 	{
+		/// <summary>
+		/// Called when the pause menu is opened.
+		/// </summary>
+		event Action PauseMenuOpened;
+
+		/// <summary>
+		/// Called when the pause menu is closed.
+		/// </summary>
+		event Action PauseMenuClosed;
+
 		/// <summary>
 		/// Makes another list of buttons that can be seen in the pause menu.
 		/// </summary>

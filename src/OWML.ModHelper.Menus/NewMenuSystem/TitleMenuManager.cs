@@ -10,6 +10,18 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 {
 	internal class TitleMenuManager : ITitleMenuManager
 	{
+		private FontAndLanguageController _languageController;
+
+		private void AddToLangController(Text textComponent)
+		{
+			if (_languageController == null)
+			{
+				_languageController = GameObject.Find("MainMenu").GetComponent<FontAndLanguageController>();
+			}
+
+			_languageController.AddTextElement(textComponent, false);
+		}
+
 		public SubmitAction CreateTitleButton(string text, int index, bool fromTop)
 		{
 			var titleScreenManager = Object.FindObjectOfType<TitleScreenManager>();
@@ -27,6 +39,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			SetButtonIndex(submitAction, index, fromTop);
 			SetButtonText(submitAction, text);
+			AddToLangController(submitAction.GetComponentInChildren<Text>());
 
 			newButton.GetComponent<CanvasGroup>().alpha = 0;
 			var animController = GameObject.Find("TitleMenuManagers").GetComponent<TitleAnimationController>();
