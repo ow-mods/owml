@@ -6,5 +6,8 @@
         "everytime",
         "overridable",
         "Untarget"
+    ],
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "master"
     ]
 }
