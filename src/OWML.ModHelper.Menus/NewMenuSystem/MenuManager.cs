@@ -221,6 +221,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 						var settingObject = setting as JObject;
 
+						if (settingObject["dlcOnly"].ToObject<bool>())
+						{
+							if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
+							{
+								continue;
+							}
+						}
+
 						if (settingObject != default(JObject))
 						{
 							if (settingObject["title"] != null)
