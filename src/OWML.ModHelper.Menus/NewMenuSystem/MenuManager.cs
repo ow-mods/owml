@@ -225,12 +225,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 						{
 							if (settingObject["title"] != null)
 							{
-								label = settingObject["title"].ToString();
+								label = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["title"].ToString());
 							}
 
 							if (settingObject["tooltip"] != null)
 							{
-								tooltip = settingObject["tooltip"].ToString();
+								tooltip = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["tooltip"].ToString());
 							}
 						}
 
