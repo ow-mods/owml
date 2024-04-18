@@ -47,7 +47,7 @@ namespace OWML.ModHelper.Menus
 			}
 			catch (Exception ex)
 			{
-				_console.WriteLine(ex.ToString(), MessageType.Error);
+				_console.WriteLine($"Failed to initialize mod option translations {ex}", MessageType.Error);
 			}
 		}
 
@@ -57,8 +57,6 @@ namespace OWML.ModHelper.Menus
 			{
 				Init();
 			}
-
-			_console.WriteLine($"{_translationTable == null} {string.Join(", ", _translationTable.Keys)}", MessageType.Error);
 
 			try
 			{
@@ -86,7 +84,7 @@ namespace OWML.ModHelper.Menus
 			}
 			catch (Exception ex)
 			{
-				_console.WriteLine(ex.ToString(), MessageType.Error);
+				_console.WriteLine($"Failed to load options translation: {ex}", MessageType.Error);
 				return key;
 			}
 		}
