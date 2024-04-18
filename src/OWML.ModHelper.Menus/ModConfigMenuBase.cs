@@ -3,6 +3,7 @@ using System.Linq;
 using OWML.Common;
 using OWML.Common.Menus;
 using OWML.Utils;
+using OWML.Common.Interfaces;
 
 namespace OWML.ModHelper.Menus
 {
@@ -19,6 +20,8 @@ namespace OWML.ModHelper.Menus
 		private IModNumberInput _numberInputTemplate;
 		private IModSeparator _seperatorTemplate;
 
+		private IModTranslations _translations;
+
 		protected abstract void AddInputs();
 
 		public abstract void UpdateUIValues();
@@ -28,6 +31,8 @@ namespace OWML.ModHelper.Menus
 		{
 			Manifest = manifest;
 			Storage = storage;
+
+			_translations = new ModTranslations(manifest, console);
 		}
 
 		public void Initialize(Menu menu, IModToggleInput toggleTemplate, IModSliderInput sliderTemplate,
@@ -111,7 +116,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var toggle = AddToggleInput(_toggleTemplate.Copy(key), index);
 			toggle.Element.name = key;
-			toggle.Title = (string)obj?["title"] ?? key;
+			SetupTitle(toggle, (string)obj?["title"], key);
 			SetupInputTooltip(toggle, (string)obj?["tooltip"]);
 			toggle.Show();
 		}
@@ -122,7 +127,7 @@ namespace OWML.ModHelper.Menus
 			slider.Min = (float)obj["min"];
 			slider.Max = (float)obj["max"];
 			slider.Element.name = key;
-			slider.Title = (string)obj["title"] ?? key;
+			SetupTitle(slider, (string)obj?["title"], key);
 			SetupInputTooltip(slider, (string)obj["tooltip"]);
 			slider.Show();
 		}
@@ -132,7 +137,7 @@ namespace OWML.ModHelper.Menus
 			var options = obj["options"].ToObject<string[]>();
 			var selector = AddSelectorInput(_selectorTemplate.Copy(key), index);
 			selector.Element.name = key;
-			selector.Title = (string)obj["title"] ?? key;
+			SetupTitle(selector, (string)obj?["title"], key);
 			selector.Initialize((string)obj["value"], options);
 			SetupInputTooltip(selector, (string)obj["tooltip"]);
 			selector.Show();
@@ -142,7 +147,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var textInput = AddTextInput(_textInputTemplate.Copy(key), index);
 			textInput.Element.name = key;
-			textInput.Title = (string)obj?["title"] ?? key;
+			SetupTitle(textInput, (string)obj?["title"], key);
 			SetupInputTooltip(textInput, (string)obj?["tooltip"]);
 			textInput.Show();
 		}
@@ -151,7 +156,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var numberInput = AddNumberInput(_numberInputTemplate.Copy(key), index);
 			numberInput.Element.name = key;
-			numberInput.Title = (string)obj?["title"] ?? key;
+			SetupTitle(numberInput, (string)obj?["title"], key);
 			SetupInputTooltip(numberInput, (string)obj?["tooltip"]);
 			numberInput.Show();
 		}
@@ -160,7 +165,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var separator = AddSeparator(_seperatorTemplate.Copy("Inputs"), index);
 			separator.Element.name = key;
-			separator.Title = (string)obj?["title"] ?? key;
+			SetupTitle(separator, (string)obj?["title"], key);
 			separator.Show();
 		}
 
@@ -168,7 +173,12 @@ namespace OWML.ModHelper.Menus
 		{
 			var menuOption = input.Element.GetComponent<MenuOption>();
 			menuOption.SetValue("_tooltipTextType", UITextType.None);
-			menuOption.SetValue("_overrideTooltipText", tooltip?? "");
+			menuOption.SetValue("_overrideTooltipText", _translations.GetLocalizedString(tooltip) ?? "");
+		}
+
+		internal void SetupTitle(IModInputBase input, string title, string key)
+		{
+			input.Title = title == null ? key : _translations.GetLocalizedString(title);
 		}
 	}
 }

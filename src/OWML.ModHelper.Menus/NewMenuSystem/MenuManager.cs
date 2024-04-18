@@ -216,7 +216,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
 					{
 						var settingType = GetSettingType(setting);
-						var label = name;
+						var label = mod.ModHelper.MenuTranslations.GetLocalizedString(name);
 						var tooltip = "";
 
 						var settingObject = setting as JObject;
@@ -233,12 +233,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 						{
 							if (settingObject["title"] != null)
 							{
-								label = settingObject["title"].ToString();
+								label = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["title"].ToString());
 							}
 
 							if (settingObject["tooltip"] != null)
 							{
-								tooltip = settingObject["tooltip"].ToString();
+								tooltip = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["tooltip"].ToString());
 							}
 						}
 
