@@ -216,7 +216,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
 					{
 						var settingType = GetSettingType(setting);
-						var label = name;
+						var label = mod.ModHelper.MenuTranslations.GetLocalizedString(name);
 						var tooltip = "";
 
 						var settingObject = setting as JObject;
