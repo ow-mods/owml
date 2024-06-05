@@ -11,6 +11,7 @@ using OWML.ModHelper.Assets;
 using OWML.ModHelper.Events;
 using OWML.ModHelper.Input;
 using OWML.ModHelper.Interaction;
+using OWML.ModHelper.Menus;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;
@@ -245,6 +246,7 @@ namespace OWML.ModLoader
 				.Add<IModEvents, ModEvents>()
 				.Add<IInterfaceProxyFactory, InterfaceProxyFactory>()
 				.Add<IModInteraction, ModInteraction>()
+				.Add<IModTranslations, ModTranslations>()
 				.Add<IModHelper, ModHelper.ModHelper>()
 				.Resolve<IModHelper>();
 

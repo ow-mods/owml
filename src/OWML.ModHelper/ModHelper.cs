@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.Common.Interfaces;
 using OWML.Common.Menus;
 
 namespace OWML.ModHelper
@@ -31,6 +32,8 @@ namespace OWML.ModHelper
 
 		public IMenuManager MenuHelper { get; }
 
+		public IModTranslations MenuTranslations { get; }
+
 		public ModHelper(
 			IModLogger logger,
 			IModConsole console,
@@ -44,7 +47,8 @@ namespace OWML.ModHelper
 			IModDefaultConfig defaultConfig,
 			IOwmlConfig owmlConfig,
 			IModInteraction interaction,
-			IMenuManager menuHelper)
+			IMenuManager menuHelper,
+			IModTranslations menuTranslations)
 		{
 			Logger = logger;
 			Console = console;
@@ -59,6 +63,7 @@ namespace OWML.ModHelper
 			OwmlConfig = owmlConfig;
 			Interaction = interaction;
 			MenuHelper = menuHelper;
+			MenuTranslations = menuTranslations;
 		}
 	}
 }

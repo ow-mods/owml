@@ -216,21 +216,29 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
 					{
 						var settingType = GetSettingType(setting);
-						var label = name;
+						var label = mod.ModHelper.MenuTranslations.GetLocalizedString(name);
 						var tooltip = "";
 
 						var settingObject = setting as JObject;
+
+						if (settingObject["dlcOnly"].ToObject<bool>())
+						{
+							if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
+							{
+								continue;
+							}
+						}
 
 						if (settingObject != default(JObject))
 						{
 							if (settingObject["title"] != null)
 							{
-								label = settingObject["title"].ToString();
+								label = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["title"].ToString());
 							}
 
 							if (settingObject["tooltip"] != null)
 							{
-								tooltip = settingObject["tooltip"].ToString();
+								tooltip = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["tooltip"].ToString());
 							}
 						}
 

@@ -77,6 +77,27 @@ namespace OWML.ModLoader
 				}
 			}
 
+			// Fix Titles and Tooltips
+			// If a mod update changes the title or tooltip in the default-config, this change does not carry over to an existing config.json file
+			// This data shouldn't even be stored in the config, but whatever!
+			foreach (var key in keysCopy)
+			{
+				if (Config.Settings[key] is JObject configSetting && DefaultConfig.Settings[key] is JObject defaultSetting)
+				{
+					configSetting.Remove("title");
+					configSetting.Remove("tooltip");
+					if (defaultSetting.GetValue("title") != null)
+					{
+						configSetting["title"] = defaultSetting.GetValue("title");
+					}
+					if (defaultSetting.GetValue("tooltip") != null)
+					{
+						configSetting["tooltip"] = defaultSetting.GetValue("tooltip");
+					}
+					Config.Settings[key] = configSetting;
+				}
+			}
+
 			AddMissingDefaults(DefaultConfig);
 			ReorderSettings(DefaultConfig);
 			return wasCompatible;

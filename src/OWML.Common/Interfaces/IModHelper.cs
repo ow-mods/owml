@@ -1,4 +1,5 @@
-﻿using OWML.Common.Menus;
+﻿using OWML.Common.Interfaces;
+using OWML.Common.Menus;
 using System;
 
 namespace OWML.Common
@@ -31,5 +32,7 @@ namespace OWML.Common
 		IModInteraction Interaction { get; }
 
 		IMenuManager MenuHelper { get; }
+
+		IModTranslations MenuTranslations { get; }
 	}
 }

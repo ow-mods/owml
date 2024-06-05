@@ -138,3 +138,22 @@ public class MyMod : ModBehaviour {
 ## Config Updates
 
 Something important to note is that when the manager pulls and update for your mod, the `config.json` file is preserved. The issue with this is menus are generated from the `config.json` file. When changing options like slider minimums and maximums or choices, you may want to create a new property rather than edit an existing one to make sure the UI is correct.
+
+## Translations
+
+Mod config options can be translated in the same way that [New Horizons mods do translations](https://nh.outerwildsmods.com/guides/translation/). First, you need to add a folder named `translations` in the root directory of your mod.
+
+There are 12 supported languages in Outer Wilds: `english`, `spanish_la`, `german`, `french`, `italian`, `polish`, `portuguese_br`, `japanese`, `russian`, `chinese_simple`, `korean`, and `turkish`.
+
+In the `translations` folder you can put json files with the name of the language you want to translate for. This file will contain a single dictionary named `UIDictionary` which will have key-value pairs for the translation.
+
+```json
+{
+    "UIDictionary": {
+        "settingTitle": "My Translated Title",
+        "settingTooltip": "My Translated Tooltip"
+    }
+}
+```
+
+If your mod already uses New Horizons and supports translations, these values are added directly into the same translation files that NH uses.
