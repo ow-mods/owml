@@ -221,16 +221,16 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 						var settingObject = setting as JObject;
 
-						if (settingObject["dlcOnly"].ToObject<bool>())
-						{
-							if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
-							{
-								continue;
-							}
-						}
-
 						if (settingObject != default(JObject))
 						{
+							if (settingObject["dlcOnly"]?.ToObject<bool>() ?? false)
+							{
+								if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
+								{
+									continue;
+								}
+							}
+
 							if (settingObject["title"] != null)
 							{
 								label = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["title"].ToString());
