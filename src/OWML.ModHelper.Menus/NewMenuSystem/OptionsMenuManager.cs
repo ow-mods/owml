@@ -231,8 +231,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingCheckbox = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
-				.Find("UIElement-InvertPlayerLook").gameObject;
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-InvertPlayerLook").gameObject;
 
 			var newCheckbox = Object.Instantiate(existingCheckbox);
 			newCheckbox.transform.parent = GetParentForAddedElements(menu);
@@ -276,8 +275,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingToggle = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "InputMenu").transform
-				.Find("MenuGeneral")
-				.Find("UIElement-ConfirmToggle").gameObject;
+				.Find("MenuGeneral/UIElement-ConfirmToggle").gameObject;
 
 			var script = existingToggle.GetComponent<TwoButtonToggleElement>();
 			var text = script._buttonTrue.GetComponent<UIStyleApplier>()._textItems[0];
@@ -330,8 +328,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingSelector = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
-				.Find("UIElement-ControllerProfile").gameObject;
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-ControllerProfile").gameObject;
 
 			var newSelector = Object.Instantiate(existingSelector);
 			newSelector.transform.parent = GetParentForAddedElements(menu);
@@ -379,8 +376,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingSlider = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
-				.Find("UIElement-LookSensitivity").gameObject;
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-LookSensitivity").gameObject;
 
 			var newSlider = Object.Instantiate(existingSlider);
 			newSlider.transform.parent = GetParentForAddedElements(menu);
@@ -432,7 +428,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var dotsSprite = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content")
 				.Find("UIElement-ControllerProfile")
 				.Find("HorizontalLayoutGroup")
 				.Find("LabelBlock")
@@ -466,12 +462,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side)
 		{
-			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
-				.Single(x => x.name == "GraphicsMenu").transform
-				.Find("Scroll View")
-				.Find("Viewport")
-				.Find("Content")
-				.Find("GammaButtonPanel").gameObject;
+			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue");
 
 			var newButtonObj = Object.Instantiate(existingButton);
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
@@ -480,36 +471,33 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
 			newButtonObj.transform.localRotation = Quaternion.identity;
 
-			// the thing we're copying is already LEFT, so dont need to handle it
-			if (side == MenuSide.CENTER)
+			if (side == MenuSide.LEFT)
 			{
-				Object.Destroy(newButtonObj.transform.Find("RightSpacer").gameObject);
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
+				newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").SetAsFirstSibling();
+			}
+			else if (side == MenuSide.CENTER)
+			{
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
 			}
 			else if (side == MenuSide.RIGHT)
 			{
-				newButtonObj.transform.Find("RightSpacer").SetAsFirstSibling();
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
+				newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").SetAsFirstSibling();
 			}
 
-			var uielement = newButtonObj.transform.Find("UIElement-GammaButton").gameObject;
+			Object.Destroy(newButtonObj.GetComponent<SubmitAction>());
+			var submitAction = newButtonObj.gameObject.AddComponent<SubmitAction>();
 
-			Object.Destroy(uielement.GetComponent<SubmitActionMenu>());
-			var submitAction = uielement.AddComponent<SubmitAction>();
+			Object.Destroy(newButtonObj.gameObject.GetComponentInChildren<LocalizedText>());
 
-			Object.Destroy(uielement.GetComponentInChildren<LocalizedText>());
-
-			var menuOption = uielement.GetComponent<MenuOption>();
-			menuOption._tooltipTextType = UITextType.None;
-			menuOption._overrideTooltipText = tooltip;
-			menuOption._label.text = buttonLabel;
-
-			menu._menuOptions = menu._menuOptions.Add(menuOption);
+			newButtonObj.GetComponentInChildren<Text>().text = buttonLabel;
 
 			if (menu._selectOnActivate == null)
 			{
 				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
 			}
-
-			uielement.AddComponent<SelectableAudioPlayer>();
 
 			return submitAction;
 		}
@@ -562,13 +550,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Object.Destroy(controlBlock.Find("OptionSelectorBG").gameObject);
 			Object.Destroy(controlBlock.Find("HorizontalLayoutGroup").gameObject);
 
-			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
-				.Single(x => x.name == "GraphicsMenu").transform
-				.Find("Scroll View")
-				.Find("Viewport")
-				.Find("Content")
-				.Find("GammaButtonPanel")
-				.Find("UIElement-GammaButton").gameObject;
+			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue").gameObject;
 
 			var newButton = Object.Instantiate(existingButton);
 			newButton.transform.parent = controlBlock;
@@ -586,8 +568,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			rt.anchoredPosition3D = ort.anchoredPosition3D;
 			rt.sizeDelta = ort.sizeDelta;
 
-			Object.Destroy(newButton.GetComponent<SubmitActionMenu>());
-			var submitAction = newButton.AddComponent<SubmitAction>();
+			var submitAction = newButton.GetComponent<SubmitAction>();
 
 			Object.Destroy(newButton.GetComponentInChildren<LocalizedText>());
 
@@ -631,16 +612,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newButton.GetAddComponent<SelectableAudioPlayer>();
 
-			var menuOption = newButton.GetComponent<MenuOption>();
+			var menuOption = newButton.GetAddComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
 			menuOption._overrideTooltipText = tooltip;
+			menuOption._label = newButton.GetComponentInChildren<Text>();
 			menuOption._label.text = buttonLabel;
 
 			menu._menuOptions = menu._menuOptions.Add(menuOption);
 
 			if (menu._selectOnActivate == null)
 			{
-				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
+				menu._selectOnActivate = newButtonObj.GetComponent<Button>();
 			}
 
 			return submitAction;
