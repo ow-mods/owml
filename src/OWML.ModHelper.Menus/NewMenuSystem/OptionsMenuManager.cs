@@ -462,12 +462,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side)
 		{
-			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
-				.Single(x => x.name == "GraphicsMenu").transform
-				.Find("Scroll View")
-				.Find("Viewport")
-				.Find("Content")
-				.Find("GammaButtonPanel").gameObject;
+			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue");
 
 			var newButtonObj = Object.Instantiate(existingButton);
 			newButtonObj.transform.parent = GetParentForAddedElements(menu);
@@ -476,36 +471,33 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
 			newButtonObj.transform.localRotation = Quaternion.identity;
 
-			// the thing we're copying is already LEFT, so dont need to handle it
-			if (side == MenuSide.CENTER)
+			if (side == MenuSide.LEFT)
 			{
-				Object.Destroy(newButtonObj.transform.Find("RightSpacer").gameObject);
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
+				newButtonObj.transform.Find("HorizontalLayoutGroup/LeftSpacer").SetAsFirstSibling();
+			}
+			else if (side == MenuSide.CENTER)
+			{
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
 			}
 			else if (side == MenuSide.RIGHT)
 			{
-				newButtonObj.transform.Find("RightSpacer").SetAsFirstSibling();
+				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
+				newButtonObj.transform.Find("HorizontalLayoutGroup/RightSpacer").SetAsFirstSibling();
 			}
 
-			var uielement = newButtonObj.transform.Find("UIElement-GammaButton").gameObject;
+			Object.Destroy(newButtonObj.GetComponent<SubmitAction>());
+			var submitAction = newButtonObj.gameObject.AddComponent<SubmitAction>();
 
-			Object.Destroy(uielement.GetComponent<SubmitActionMenu>());
-			var submitAction = uielement.AddComponent<SubmitAction>();
+			Object.Destroy(newButtonObj.gameObject.GetComponentInChildren<LocalizedText>());
 
-			Object.Destroy(uielement.GetComponentInChildren<LocalizedText>());
-
-			var menuOption = uielement.GetComponent<MenuOption>();
-			menuOption._tooltipTextType = UITextType.None;
-			menuOption._overrideTooltipText = tooltip;
-			menuOption._label.text = buttonLabel;
-
-			menu._menuOptions = menu._menuOptions.Add(menuOption);
+			newButtonObj.GetComponentInChildren<Text>().text = buttonLabel;
 
 			if (menu._selectOnActivate == null)
 			{
 				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
 			}
-
-			uielement.AddComponent<SelectableAudioPlayer>();
 
 			return submitAction;
 		}
