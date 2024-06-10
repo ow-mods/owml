@@ -474,7 +474,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			if (side == MenuSide.LEFT)
 			{
 				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
-				newButtonObj.transform.Find("HorizontalLayoutGroup/LeftSpacer").SetAsFirstSibling();
+				newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").SetAsFirstSibling();
 			}
 			else if (side == MenuSide.CENTER)
 			{
@@ -484,7 +484,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			else if (side == MenuSide.RIGHT)
 			{
 				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
-				newButtonObj.transform.Find("HorizontalLayoutGroup/RightSpacer").SetAsFirstSibling();
+				newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").SetAsFirstSibling();
 			}
 
 			Object.Destroy(newButtonObj.GetComponent<SubmitAction>());
