@@ -231,8 +231,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingCheckbox = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
-				.Find("UIElement-InvertPlayerLook").gameObject;
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-InvertPlayerLook").gameObject;
 
 			var newCheckbox = Object.Instantiate(existingCheckbox);
 			newCheckbox.transform.parent = GetParentForAddedElements(menu);
@@ -276,8 +275,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingToggle = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "InputMenu").transform
-				.Find("MenuGeneral")
-				.Find("UIElement-ConfirmToggle").gameObject;
+				.Find("MenuGeneral/UIElement-ConfirmToggle").gameObject;
 
 			var script = existingToggle.GetComponent<TwoButtonToggleElement>();
 			var text = script._buttonTrue.GetComponent<UIStyleApplier>()._textItems[0];
@@ -330,8 +328,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingSelector = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
-				.Find("UIElement-ControllerProfile").gameObject;
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-ControllerProfile").gameObject;
 
 			var newSelector = Object.Instantiate(existingSelector);
 			newSelector.transform.parent = GetParentForAddedElements(menu);
@@ -379,8 +376,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingSlider = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
-				.Find("UIElement-LookSensitivity").gameObject;
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-LookSensitivity").gameObject;
 
 			var newSlider = Object.Instantiate(existingSlider);
 			newSlider.transform.parent = GetParentForAddedElements(menu);
@@ -432,7 +428,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var dotsSprite = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "GameplayMenu").transform
-				.Find("MenuGameplayBasic")
+				.Find("MenuGameplayBasic/Scroll View/Viewport/Content")
 				.Find("UIElement-ControllerProfile")
 				.Find("HorizontalLayoutGroup")
 				.Find("LabelBlock")
