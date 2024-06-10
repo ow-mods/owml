@@ -568,8 +568,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			rt.anchoredPosition3D = ort.anchoredPosition3D;
 			rt.sizeDelta = ort.sizeDelta;
 
-			Object.Destroy(newButton.GetComponent<SubmitActionMenu>());
-			var submitAction = newButton.AddComponent<SubmitAction>();
+			var submitAction = newButton.GetComponent<SubmitAction>();
 
 			Object.Destroy(newButton.GetComponentInChildren<LocalizedText>());
 
@@ -616,13 +615,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var menuOption = newButton.GetAddComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
 			menuOption._overrideTooltipText = tooltip;
+			menuOption._label = newButton.GetComponentInChildren<Text>();
 			menuOption._label.text = buttonLabel;
 
 			menu._menuOptions = menu._menuOptions.Add(menuOption);
 
 			if (menu._selectOnActivate == null)
 			{
-				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
+				menu._selectOnActivate = newButtonObj.GetComponent<Button>();
 			}
 
 			return submitAction;
