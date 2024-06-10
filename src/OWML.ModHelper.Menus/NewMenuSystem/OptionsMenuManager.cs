@@ -550,13 +550,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Object.Destroy(controlBlock.Find("OptionSelectorBG").gameObject);
 			Object.Destroy(controlBlock.Find("HorizontalLayoutGroup").gameObject);
 
-			var existingButton = Resources.FindObjectsOfTypeAll<Menu>()
-				.Single(x => x.name == "GraphicsMenu").transform
-				.Find("Scroll View")
-				.Find("Viewport")
-				.Find("Content")
-				.Find("GammaButtonPanel")
-				.Find("UIElement-GammaButton").gameObject;
+			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue").gameObject;
 
 			var newButton = Object.Instantiate(existingButton);
 			newButton.transform.parent = controlBlock;
@@ -619,7 +613,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			newButton.GetAddComponent<SelectableAudioPlayer>();
 
-			var menuOption = newButton.GetComponent<MenuOption>();
+			var menuOption = newButton.GetAddComponent<MenuOption>();
 			menuOption._tooltipTextType = UITextType.None;
 			menuOption._overrideTooltipText = tooltip;
 			menuOption._label.text = buttonLabel;
