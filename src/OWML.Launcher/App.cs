@@ -139,7 +139,8 @@ namespace OWML.Launcher
 			return mods
 				.Where(ShouldExecutePatcher)
 				.Where(mod => !ExecutePatcher(mod))
-				.Select(mod => mod.Manifest.UniqueName).ToList();
+				.Select(mod => mod.Manifest.UniqueName)
+				.ToList();
 		}
 
 		private static bool ShouldExecutePatcher(IModData modData) =>
@@ -158,12 +159,12 @@ namespace OWML.Launcher
 			return mods
 				.Where(modData => !string.IsNullOrEmpty(modData.Manifest.Unpatcher) && !modData.Enabled &&
 				                  needUnpatch.Contains(modData.Manifest.UniqueName))
-				.ToList()
-				.Where(UnpatchMod)
-				.Select(modData => modData.Manifest.UniqueName).ToArray();
+				.Where(ExecuteUnpatcher)
+				.Select(modData => modData.Manifest.UniqueName)
+				.ToArray();
 		}
 		
-		private bool UnpatchMod(IModData modData)
+		private bool ExecuteUnpatcher(IModData modData)
 		{
 			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
 
