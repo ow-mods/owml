@@ -64,4 +64,4 @@ They work exactly like prepatchers and are passed the same thing.
 Setup for an unpatcher is exactly the same as a prepatcher, just set the `unpatcher` field in your manifest to the path of the executable.
 
 !!! alert-warning "Warning"
-    OWML tries its best to only run an unpatcher if your mod was previously enabled, however, it's possible for a unpatcher to run when the corresponding prepatcher didn't, so make sure your unpatcher can handle a state where the mod was never enabled i.e. checking a file exists before deleting it or checking if a file has been modified before reverting it.
+    OWML tries its best to only run an unpatcher if your mod was previously enabled. However, an unpatcher can run when the corresponding prepatcher doesn't. It's important to make sure your unpatcher can handle a state where the mod was never enabled. You can do this by checking if a file exists before deleting it, checking if a file has been modified before reverting it, etc.
