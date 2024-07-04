@@ -25,5 +25,7 @@
 		bool IncrementalGC { get; set; }
 
 		int SocketPort { get; set; }
+
+		string[] PrepatchersExecuted { get; set; }
 	}
 }

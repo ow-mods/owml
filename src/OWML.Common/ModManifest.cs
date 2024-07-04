@@ -10,6 +10,9 @@ namespace OWML.Common
 
 		[JsonProperty("patcher")]
 		public string Patcher { get; private set; }
+		
+		[JsonProperty("unpatcher")] 
+		public string Unpatcher { get; private set; }
 
 		[JsonProperty("author")]
 		public string Author { get; private set; }
@@ -40,6 +43,9 @@ namespace OWML.Common
 
 		[JsonIgnore]
 		public string PatcherPath => ModFolderPath + Patcher;
+
+		[JsonIgnore] 
+		public string UnpatcherPath => ModFolderPath + Unpatcher;
 
 		[JsonProperty("minGameVersion")]
 		public string MinGameVersion { get; private set; } = "";

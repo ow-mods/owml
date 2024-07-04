@@ -23,6 +23,10 @@
             "type": "string",
             "description": "The path to the patcher to use"
         },
+        "unpatcher": {
+            "type": "string",
+            "description": "The path to the unpatcher to use"
+        },
         "author": {
             "type": "string",
             "description": "The author of the mod",

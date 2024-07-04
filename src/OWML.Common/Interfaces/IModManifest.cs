@@ -7,6 +7,7 @@ namespace OWML.Common
 		string Filename { get; }
 
 		string Patcher { get; }
+		string Unpatcher { get; }
 
 		string Author { get; }
 
@@ -19,6 +20,8 @@ namespace OWML.Common
 		string AssemblyPath { get; }
 
 		string PatcherPath { get; }
+
+		string UnpatcherPath { get;  }
 
 		string UniqueName { get; }
 

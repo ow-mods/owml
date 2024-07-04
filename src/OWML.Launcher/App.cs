@@ -58,8 +58,18 @@ namespace OWML.Launcher
 
 			_owPatcher.PatchGame();
 
-			ExecutePatchers(mods);
+			var prepatchersExecuted = ExecutePatchers(mods);
 
+			if (_owmlConfig.PrepatchersExecuted.Length != 0)
+			{
+				var failedUnpatchers = ExecuteUnpatchers(mods, _owmlConfig.PrepatchersExecuted);
+				// If an unpatcher failed we want to try and execute it next time
+				prepatchersExecuted.AddRange(failedUnpatchers);
+			}
+
+			_owmlConfig.PrepatchersExecuted = prepatchersExecuted.ToArray();
+			JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, _owmlConfig);
+			
 			var hasPortArgument = _argumentHelper.HasArgument(Constants.ConsolePortArgument);
 
 			StartGame();
@@ -123,28 +133,72 @@ namespace OWML.Launcher
 			}
 		}
 
-		private void ExecutePatchers(IEnumerable<IModData> mods)
+		private List<string> ExecutePatchers(IEnumerable<IModData> mods)
 		{
 			_writer.WriteLine("Executing patchers...", MessageType.Debug);
-			mods
+			return mods
 				.Where(ShouldExecutePatcher)
 				.ToList()
-				.ForEach(ExecutePatcher);
+				.Where(mod => !ExecutePatcher(mod))
+				.Select(mod => mod.Manifest.UniqueName).ToList();
 		}
 
 		private static bool ShouldExecutePatcher(IModData modData) =>
 			!string.IsNullOrEmpty(modData.Manifest.Patcher)
 			&& modData.Enabled;
 
-		private void ExecutePatcher(IModData modData)
-		{
-			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
-
-			var domain = AppDomain.CreateDomain(
-				$"{modData.Manifest.UniqueName}.Patcher",
+		private AppDomain CreateDomainForMod(IModData modData, string name) =>
+			AppDomain.CreateDomain(
+				$"{modData.Manifest.UniqueName}.{name}",
 				AppDomain.CurrentDomain.Evidence,
 				new AppDomainSetup { ApplicationBase = _owmlConfig.GamePath });
 
+		private string[] ExecuteUnpatchers(IEnumerable<IModData> mods, string[] needUnpatch)
+		{
+			_writer.WriteLine("Executing unpatchers...", MessageType.Debug);
+			return mods
+				.Where(modData => !string.IsNullOrEmpty(modData.Manifest.Unpatcher) && !modData.Enabled &&
+				                  needUnpatch.Contains(modData.Manifest.UniqueName))
+				.ToList()
+				.Where(UnpatchMod)
+				.Select(modData => modData.Manifest.UniqueName).ToArray();
+		}
+		
+		private bool UnpatchMod(IModData modData)
+		{
+			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
+
+			var domain = CreateDomainForMod(modData, "Unpatcher");
+
+			var failed = false;
+			
+			try
+			{
+				domain.ExecuteAssembly(
+					modData.Manifest.UnpatcherPath,
+					new[] { Path.GetDirectoryName(modData.Manifest.UnpatcherPath) });
+			}
+			catch (Exception ex)
+			{
+				failed = true;
+				_writer.WriteLine($"Cannot run unpatcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex}", MessageType.Error);
+			}
+			finally
+			{
+				AppDomain.Unload(domain);
+			}
+
+			return failed;
+		}
+
+		private bool ExecutePatcher(IModData modData)
+		{
+			_writer.WriteLine($"Executing patcher for {modData.Manifest.UniqueName} v{modData.Manifest.Version}", MessageType.Message);
+
+			var domain = CreateDomainForMod(modData, "Patcher");
+
+			var failed = false;
+			
 			try
 			{
 				domain.ExecuteAssembly(
@@ -153,12 +207,15 @@ namespace OWML.Launcher
 			}
 			catch (Exception ex)
 			{
+				failed = true;
 				_writer.WriteLine($"Cannot run patcher for mod {modData.Manifest.UniqueName} v{modData.Manifest.Version}: {ex}", MessageType.Error);
 			}
 			finally
 			{
 				AppDomain.Unload(domain);
 			}
+
+			return failed;
 		}
 
 		private void StartGame()
