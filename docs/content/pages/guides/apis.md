@@ -5,11 +5,11 @@ Sort_Priority: 35
 
 # Creating APIs
 
-To allow for easy interoperability between mods, OWML provides an API system where mods can provide and consume APIs from eachother easily.
+To allow for easy interoperability between mods, OWML provides an API system where mods can provide and consume APIs from each other easily.
 
 ## Creating an API
 
-To create an API start by making an interface with all the methods your api will have. 
+To create an API start by making an interface with all the methods your api will have.
 
 ```csharp
 public interface IMyCoolApi {
@@ -57,4 +57,3 @@ public class MyCoolMod : ModBehaviour {
     }
 }
 ```
-

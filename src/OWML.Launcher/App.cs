@@ -138,7 +138,6 @@ namespace OWML.Launcher
 			_writer.WriteLine("Executing patchers...", MessageType.Debug);
 			return mods
 				.Where(ShouldExecutePatcher)
-				.ToList()
 				.Where(mod => !ExecutePatcher(mod))
 				.Select(mod => mod.Manifest.UniqueName).ToList();
 		}
