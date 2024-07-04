@@ -37,7 +37,7 @@ You'll need to have the prepatcher include libraries like Newtonsoft.Json to rea
 ### Logging
 
 Due to not having access to ModHelper, you'll need to use `Console.WriteLine` to log information.
-This **will not output to the manager window** to test prepatchers, we recommend you launch `OWML.Launcher.exe` in a
+This **will not output to the manager window** to test prepatchers. We recommend you launch `OWML.Launcher.exe` in a
 terminal directly to properly see stdout.
 
 If a prepatcher errors it *should usually* be outputted to the manage window as OWML is setup to catch and
