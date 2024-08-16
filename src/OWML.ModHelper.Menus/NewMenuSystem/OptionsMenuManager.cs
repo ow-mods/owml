@@ -31,6 +31,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newMenu.transform.localScale = Vector3.one;
 			newMenu.transform.localPosition = Vector3.zero;
 			newMenu.transform.localRotation = Quaternion.identity;
+			newMenu.name = $"Menu-{name}";
 			var rt = newMenu.GetComponent<RectTransform>();
 			var ert = existingMenu.GetComponent<RectTransform>();
 			rt.anchorMin = ert.anchorMin;
@@ -84,6 +85,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenu.transform.localScale = Vector3.one;
 			newSubMenu.transform.localPosition = Vector3.zero;
 			newSubMenu.transform.localRotation = Quaternion.identity;
+			newSubMenu.name = $"Menu-{name}";
 			var rectTransform = newSubMenu.GetComponent<RectTransform>();
 			rectTransform.anchorMin = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMin;
 			rectTransform.anchorMax = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMax;
