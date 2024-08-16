@@ -169,7 +169,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenuTabButton.transform.localScale = Vector3.one;
 			newSubMenuTabButton.transform.localPosition = Vector3.zero;
 			newSubMenuTabButton.transform.localRotation = Quaternion.identity;
-			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 2);
+			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 3);
 			newSubMenuTabButton.name = $"Button-{name}Tab";
 			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
 			newSubMenuTabButton.GetComponentInChildren<Text>().text = name;
