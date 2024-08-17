@@ -192,6 +192,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			rt.offsetMax = ert.offsetMax;
 			rt.sizeDelta = ert.sizeDelta;
 
+			var viewportRect = newSubMenu.GetComponentInChildren<ScrollRectFixedSizeHandle>().GetComponent<RectTransform>();
+			viewportRect.anchoredPosition3D = Vector3.zero;
+
 			if (menu._selectOnActivate == null)
 			{
 				menu._selectOnActivate = newSubMenuTabButton.GetComponent<Button>();
