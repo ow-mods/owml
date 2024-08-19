@@ -387,6 +387,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				var text = item.GetComponent<UIStyleApplier>()._textItems[0];
 				text.horizontalOverflow = HorizontalWrapMode.Wrap;
+				
+				// Give a little bit of margin to account for the dividing lines
+				// (as otherwise it can look like the text is on top of them when in mouse mode)
+				float margin = 0.03f;
+				text.rectTransform.anchorMin = new Vector2(margin, 0.0f);
+				text.rectTransform.anchorMax = new Vector2(1f - margin, 1.0f);
 			}
 		}
 
