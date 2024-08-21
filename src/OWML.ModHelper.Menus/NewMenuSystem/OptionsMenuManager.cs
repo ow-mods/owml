@@ -497,7 +497,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			Object.Destroy(newButtonObj.gameObject.GetComponentInChildren<LocalizedText>());
 
-			newButtonObj.GetComponentInChildren<Text>().text = buttonLabel;
+			var menuOption = newButtonObj.gameObject.GetAddComponent<MenuOption>();
+			menuOption._tooltipTextType = UITextType.None;
+			menuOption._overrideTooltipText = tooltip;
+			menuOption._label = newButtonObj.GetComponentInChildren<Text>();
+			menuOption._label.text = buttonLabel;
+
+			menu._menuOptions = menu._menuOptions.Add(menuOption);
 
 			if (menu._selectOnActivate == null)
 			{
