@@ -55,7 +55,7 @@ jobs:
       - name: pack
         run: dotnet pack -o . src\OWML.ModHelper\OWML.ModHelper.csproj -p:NuspecFile=OWML.ModHelper.nuspec -p:NuspecProperties="version=${{ steps.version.outputs.prop }};"
       - name: upload nuget
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: owml-nuget
           path: OWML.*.nupkg
@@ -67,7 +67,7 @@ jobs:
           mkdir Mods
           7z a OWML.zip *
       - name: upload zip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: owml-zip
           path: src\OWML.Launcher\bin\Debug\net48\OWML.zip
