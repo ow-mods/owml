@@ -31,6 +31,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newMenu.transform.localScale = Vector3.one;
 			newMenu.transform.localPosition = Vector3.zero;
 			newMenu.transform.localRotation = Quaternion.identity;
+			newMenu.name = $"Menu-{name}";
 			var rt = newMenu.GetComponent<RectTransform>();
 			var ert = existingMenu.GetComponent<RectTransform>();
 			rt.anchorMin = ert.anchorMin;
@@ -84,6 +85,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenu.transform.localScale = Vector3.one;
 			newSubMenu.transform.localPosition = Vector3.zero;
 			newSubMenu.transform.localRotation = Quaternion.identity;
+			newSubMenu.name = $"Menu-{name}";
 			var rectTransform = newSubMenu.GetComponent<RectTransform>();
 			rectTransform.anchorMin = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMin;
 			rectTransform.anchorMax = existingTabbedSubMenu.GetComponent<RectTransform>().anchorMax;
@@ -169,7 +171,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenuTabButton.transform.localScale = Vector3.one;
 			newSubMenuTabButton.transform.localPosition = Vector3.zero;
 			newSubMenuTabButton.transform.localRotation = Quaternion.identity;
-			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 2);
+			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 3);
 			newSubMenuTabButton.name = $"Button-{name}Tab";
 			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
 			newSubMenuTabButton.GetComponentInChildren<Text>().text = name;
@@ -189,6 +191,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			rt.offsetMin = ert.offsetMin;
 			rt.offsetMax = ert.offsetMax;
 			rt.sizeDelta = ert.sizeDelta;
+
+			var viewportRect = newSubMenu.GetComponentInChildren<ScrollRectFixedSizeHandle>().GetComponent<RectTransform>();
+			viewportRect.anchoredPosition3D = Vector3.zero;
 
 			if (menu._selectOnActivate == null)
 			{
@@ -462,37 +467,96 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side)
 		{
+			var rootObj = new GameObject($"UIElement-{buttonLabel}");
+			rootObj.transform.parent = GetParentForAddedElements(menu);
+			rootObj.transform.localScale = Vector3.one;
+			rootObj.transform.localRotation = Quaternion.identity;
+			rootObj.transform.localPosition = Vector3.zero;
+
+			var layoutElement = rootObj.AddComponent<LayoutElement>();
+			layoutElement.minHeight = 70;
+			layoutElement.flexibleWidth = 1;
+
+			var existingHorizLayout = Resources.FindObjectsOfTypeAll<Menu>()
+				.Single(x => x.name == "GraphicsMenu").transform
+				.Find("Scroll View")
+				.Find("Viewport")
+				.Find("Content")
+				.Find("UIElement-ResolutionSelect")
+				.Find("HorizontalLayoutGroup").gameObject;
+
+			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			newHorizLayout.name = "HorizontalLayoutGroup";
+			newHorizLayout.transform.parent = rootObj.transform;
+			newHorizLayout.transform.localPosition = Vector3.zero;
+			newHorizLayout.transform.localScale = Vector3.one;
+			newHorizLayout.transform.localRotation = Quaternion.identity;
+
+			var hrt = newHorizLayout.GetComponent<RectTransform>();
+			var ohrt = existingHorizLayout.GetComponent<RectTransform>();
+			//hrt.anchorMin = ohrt.anchorMin;
+			//hrt.anchorMax = ohrt.anchorMax;
+			hrt.offsetMin = ohrt.offsetMin;
+			hrt.offsetMax = ohrt.offsetMax;
+			hrt.anchoredPosition3D = ohrt.anchoredPosition3D;
+			hrt.sizeDelta = ohrt.sizeDelta;
+
+			hrt.anchorMax = new Vector2(0.5f, 1f);
+			switch (side)
+			{
+				case MenuSide.LEFT:
+					hrt.anchorMin = new Vector2(0f, 1f);
+					break;
+				case MenuSide.CENTER:
+					hrt.anchorMin = new Vector2(0.25f, 1f);
+					break;
+				case MenuSide.RIGHT:
+					hrt.anchorMin = new Vector2(0.5f, 1f);
+					break;
+			}
+
+			Object.Destroy(newHorizLayout.GetComponentInChildren<LocalizedText>());
+			
+			var oldLabelComponent = newHorizLayout.transform
+				.Find("LabelBlock")
+				.Find("HorizontalLayoutGroup")
+				.Find("Label")
+				.GetComponent<Text>();
+			var labelFont = Resources.FindObjectsOfTypeAll<Font>().First(x => x.name == "Adobe - SerifGothicStd-ExtraBold");
+			var labelFontSize = 28;
+			
+			Object.Destroy(newHorizLayout.transform.Find("LabelBlock").gameObject);
+
+			var controlBlock = newHorizLayout.transform.Find("ControlBlock");
+			Object.Destroy(controlBlock.Find("OptionSelectorBG").gameObject);
+			Object.Destroy(controlBlock.Find("HorizontalLayoutGroup").gameObject);
+
 			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue");
 
 			var newButtonObj = Object.Instantiate(existingButton);
-			newButtonObj.transform.parent = GetParentForAddedElements(menu);
+			newButtonObj.transform.parent = controlBlock;
 			newButtonObj.transform.localPosition = Vector3.zero;
 			newButtonObj.transform.localScale = Vector3.one;
 			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
 			newButtonObj.transform.localRotation = Quaternion.identity;
 
-			if (side == MenuSide.LEFT)
-			{
-				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
-				newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").SetAsFirstSibling();
-			}
-			else if (side == MenuSide.CENTER)
-			{
-				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
-				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
-			}
-			else if (side == MenuSide.RIGHT)
-			{
-				Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
-				newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").SetAsFirstSibling();
-			}
+			Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/RightSpacer").gameObject);
+			Object.Destroy(newButtonObj.transform.Find("ForegroundLayoutGroup/LeftSpacer").gameObject);
 
 			Object.Destroy(newButtonObj.GetComponent<SubmitAction>());
 			var submitAction = newButtonObj.gameObject.AddComponent<SubmitAction>();
 
 			Object.Destroy(newButtonObj.gameObject.GetComponentInChildren<LocalizedText>());
 
-			newButtonObj.GetComponentInChildren<Text>().text = buttonLabel;
+			var menuOption = newButtonObj.gameObject.GetAddComponent<MenuOption>();
+			menuOption._tooltipTextType = UITextType.None;
+			menuOption._overrideTooltipText = tooltip;
+			menuOption._label = newButtonObj.GetComponentInChildren<Text>();
+			menuOption._label.text = buttonLabel;
+			menuOption._label.font = labelFont;
+			menuOption._label.fontSize = labelFontSize;
+
+			menu._menuOptions = menu._menuOptions.Add(menuOption);
 
 			if (menu._selectOnActivate == null)
 			{
@@ -523,6 +587,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("HorizontalLayoutGroup").gameObject;
 
 			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			newHorizLayout.name = "HorizontalLayoutGroup";
 			newHorizLayout.transform.parent = newButtonObj.transform;
 			newHorizLayout.transform.localPosition = Vector3.zero;
 			newHorizLayout.transform.localScale = Vector3.one;
@@ -641,10 +706,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			if (isNumeric)
 			{
-				textInputPopup.OnInputPopupValidateChar += c =>
+				textInputPopup.OnInputPopupValidateChar += (string input, int charIndex, char addedChar) =>
 				{
-					var text = textInputPopup.GetInputText() + c;
-					return Regex.IsMatch(text, @"^\d*[,.]?\d*$");
+					var text = input.Insert(charIndex, addedChar.ToString());
+					return Regex.IsMatch(text, @"^-?\d*[,.]?\d*$");
 				};
 			}
 

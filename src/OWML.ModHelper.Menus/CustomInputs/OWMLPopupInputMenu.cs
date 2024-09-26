@@ -15,7 +15,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		protected bool _virtualKeyboardOpen;
 
 		public event PopupInputMenu.InputPopupTextChangedEvent OnInputPopupTextChanged;
-		public event PopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
+		public event IOWMLPopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
 
 		public override void Awake()
 		{
@@ -158,7 +158,7 @@ namespace OWML.ModHelper.Menus.CustomInputs
 				Delegate[] invocationList = this.OnInputPopupValidateChar.GetInvocationList();
 				for (int i = 0; i < invocationList.Length; i++)
 				{
-					bool flag2 = (bool)invocationList[i].DynamicInvoke(new object[] { addedChar });
+					bool flag2 = (bool)invocationList[i].DynamicInvoke(new object[] { input, charIndex, addedChar });
 					flag = flag && flag2;
 				}
 			}
