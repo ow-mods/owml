@@ -486,6 +486,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("HorizontalLayoutGroup").gameObject;
 
 			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			newHorizLayout.name = "HorizontalLayoutGroup";
 			newHorizLayout.transform.parent = rootObj.transform;
 			newHorizLayout.transform.localPosition = Vector3.zero;
 			newHorizLayout.transform.localScale = Vector3.one;
@@ -586,6 +587,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("HorizontalLayoutGroup").gameObject;
 
 			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			newHorizLayout.name = "HorizontalLayoutGroup";
 			newHorizLayout.transform.parent = newButtonObj.transform;
 			newHorizLayout.transform.localPosition = Vector3.zero;
 			newHorizLayout.transform.localScale = Vector3.one;
