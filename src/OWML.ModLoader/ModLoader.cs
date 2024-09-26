@@ -42,7 +42,7 @@ namespace OWML.ModLoader
 				throw new UnityException($"Can't load OWML manifest: {manifestPath}");
 			}
 
-			var unityEvents = goHelper.CreateAndAdd<IModUnityEvents, ModUnityEvents>();
+			var unityEvents = goHelper.CreateAndAdd<IModUnityEvents, ModUnityEvents>("UnityEvents");
 
 			return new Container()
 				.Add(appHelper)

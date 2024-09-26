@@ -13,6 +13,6 @@ namespace OWML.Abstractions
 			CreateAndAdd<TBehaviour>(typeof(TBehaviour), name);
 
 		public TBehaviour CreateAndAdd<TBehaviour>(Type type, string name = null) =>
-			(TBehaviour)(object)new GameObject(name).AddComponent(type);
+			(TBehaviour)(object)new GameObject(name ?? type.Name).AddComponent(type);
 	}
 }
