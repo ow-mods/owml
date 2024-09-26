@@ -522,8 +522,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("HorizontalLayoutGroup")
 				.Find("Label")
 				.GetComponent<Text>();
-			var labelFont = oldLabelComponent.font;
-			var labelFontSize = oldLabelComponent.fontSize;
+			var labelFont = Resources.FindObjectsOfTypeAll<Font>().First(x => x.name == "Adobe - SerifGothicStd-ExtraBold");
+			var labelFontSize = 28;
 			
 			Object.Destroy(newHorizLayout.transform.Find("LabelBlock").gameObject);
 
