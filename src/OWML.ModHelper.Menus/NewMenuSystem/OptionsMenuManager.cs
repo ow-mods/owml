@@ -706,10 +706,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			if (isNumeric)
 			{
-				textInputPopup.OnInputPopupValidateChar += c =>
+				textInputPopup.OnInputPopupValidateChar += (string input, int charIndex, char addedChar) =>
 				{
-					var text = textInputPopup.GetInputText() + c;
-					return Regex.IsMatch(text, @"^\d*[,.]?\d*$");
+					var text = input.Insert(charIndex, addedChar.ToString());
+					return Regex.IsMatch(text, @"^-?\d*[,.]?\d*$");
 				};
 			}
 

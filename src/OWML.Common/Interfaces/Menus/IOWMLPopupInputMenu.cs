@@ -4,7 +4,9 @@ namespace OWML.Common.Interfaces.Menus
 {
 	public interface IOWMLPopupInputMenu
 	{
-		public event PopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
+		public delegate bool InputPopupValidateCharEvent(string input, int charIndex, char addedChar);
+
+		public event InputPopupValidateCharEvent OnInputPopupValidateChar;
 
 		public void EnableMenu(bool value);
 
