@@ -39,6 +39,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		internal static List<(IModBehaviour behaviour, Menu modMenu)> ModSettingsMenus = new();
 
 		private bool _hasSetupMenusThisScene = false;
+		private bool _forceModOptionsOpen;
 
 		public MenuManager(
 			IModConsole console,
@@ -52,7 +53,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_unityEvents = unityEvents;
 			TitleMenuManager = new TitleMenuManager();
 			PopupMenuManager = new PopupMenuManager(console, harmony, this);
-			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager);
+			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager, this);
 			PauseMenuManager = new PauseMenuManager(console);
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
@@ -83,6 +84,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					SetupMenus(((IMenuManager)this).ModList);
 				}
 			};
+		}
+
+		public void ForceModOptionsOpen(bool force)
+		{
+			_forceModOptionsOpen = force;
 		}
 
 		internal void SetupMenus(IList<IModBehaviour> modList)
@@ -210,6 +216,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 					newModTab.OnDeactivateMenu += () =>
 					{
+						if (_forceModOptionsOpen)
+						{
+							return;
+						}
+
 						// Fixes tab dissapearing when you click on it again
 						// Clicking on a tab closes and opens it again
 						_unityEvents.FireOnNextUpdate(() =>

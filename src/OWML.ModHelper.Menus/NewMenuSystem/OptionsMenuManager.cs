@@ -14,12 +14,14 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		private readonly IModConsole _console;
 		private readonly IModUnityEvents _unityEvents;
 		private readonly IPopupMenuManager _popupMenuManager;
+		private readonly IMenuManager _menuManager;
 
-		public OptionsMenuManager(IModConsole console, IModUnityEvents unityEvents, IPopupMenuManager popupMenuManager)
+		public OptionsMenuManager(IModConsole console, IModUnityEvents unityEvents, IPopupMenuManager popupMenuManager, IMenuManager menuManager)
 		{
 			_console = console;
 			_unityEvents = unityEvents;
 			_popupMenuManager = popupMenuManager;
+			_menuManager = menuManager;
 		}
 
 		public (Menu menu, TabButton button) CreateStandardTab(string name)
@@ -697,12 +699,21 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var submitAction = CreateButtonWithLabel(menu, label, initialValue, tooltip);
 			var textInputPopup = _popupMenuManager.CreateInputFieldPopup($"Enter the new value for \"{label}\".", initialValue, "Confirm", "Cancel");
-			submitAction.OnSubmitAction += () => textInputPopup.EnableMenu(true);
+			submitAction.OnSubmitAction += () =>
+			{
+				_menuManager.ForceModOptionsOpen(true);
+				textInputPopup.EnableMenu(true);
+			};
 
 			var textEntry = submitAction.gameObject.AddComponent<OWMLTextEntryElement>();
 			textEntry._overrideTooltipText = tooltip;
 			textEntry.RegisterPopup(textInputPopup);
 			textEntry.IsNumeric = isNumeric;
+
+			textEntry.OnConfirmEntry += () =>
+			{
+				_menuManager.ForceModOptionsOpen(false);
+			};
 
 			if (isNumeric)
 			{
