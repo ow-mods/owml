@@ -103,8 +103,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			// Create menus and submenus
 			var (modsMenu, modsMenuButton) = OptionsMenuManager.CreateTabWithSubTabs("MODS");
-			var (owmlSubTab, owmlSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "OWML");
 			var (modsSubTab, modsSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "MODS");
+			var (owmlSubTab, owmlSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "OWML");
 
 			OWMLSettingsMenu = owmlSubTab;
 
