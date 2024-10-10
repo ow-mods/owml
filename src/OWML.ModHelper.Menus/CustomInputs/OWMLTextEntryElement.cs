@@ -23,9 +23,14 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			return _popup.GetInputText();
 		}
 
-		public void SetCurrentValue(string text)
+		public void SetText(string text)
 		{
 			gameObject.GetComponentsInChildren<MenuOption>().First(x => x != this)._label.text = text;
+		}
+
+		public void SetCurrentValue(string text)
+		{
+			SetText(text);
 			_popup.GetInputField().text = text;
 			OnConfirmEntry();
 		}

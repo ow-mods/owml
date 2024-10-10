@@ -326,6 +326,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
+									textInput.SetText(newValue);
 								};
 								break;
 							case SettingType.NUMBER:
@@ -338,6 +339,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
+									numberInput.SetText(newValue.ToString());
 								};
 								break;
 							default:
