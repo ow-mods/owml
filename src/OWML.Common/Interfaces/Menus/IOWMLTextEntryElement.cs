@@ -16,6 +16,6 @@
 		/// <summary>
 		/// Sets the underlying option value to the text, and updates the displayed text.
 		/// </summary>
-		public void SetCurrentValue(string text);
+		public void SetValue(string text);
 	}
 }

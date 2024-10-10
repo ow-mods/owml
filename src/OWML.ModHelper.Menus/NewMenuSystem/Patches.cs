@@ -74,12 +74,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					{
 						if (textEntry.IsNumeric)
 						{
-							textEntry.SetCurrentValue(defaultSettings.GetSettingsValue<double>(textEntry.ModSettingKey).ToString(CultureInfo.InvariantCulture));
+							textEntry.SetValue(defaultSettings.GetSettingsValue<double>(textEntry.ModSettingKey).ToString(CultureInfo.InvariantCulture));
 						}
 						else
 						{
 							var defaultValue = defaultSettings.GetSettingsValue<string>(textEntry.ModSettingKey);
-							textEntry.SetCurrentValue(defaultValue);
+							textEntry.SetValue(defaultValue);
 						}
 					}
 				}
