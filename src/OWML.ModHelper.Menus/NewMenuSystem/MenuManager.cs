@@ -210,15 +210,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 					newModTab.OnDeactivateMenu += () =>
 					{
-						// Fixes tab dissapearing when you click on it again
-						// Clicking on a tab closes and opens it again
-						_unityEvents.FireOnNextUpdate(() =>
-						{
-							if (!newModTab._isActivated)
-							{
-								OptionsMenuManager.RemoveTab(newModTab);
-							}
-						});
+						OptionsMenuManager.RemoveTab(newModTab);
 					};
 
 					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
