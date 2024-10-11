@@ -15,7 +15,10 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		protected bool _virtualKeyboardOpen;
 
 		public event PopupInputMenu.InputPopupTextChangedEvent OnInputPopupTextChanged;
-		public event IOWMLPopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
+		public event IOWMLPopupInputMenu.InputPopupValidateCharEvent OnValidateChar;
+
+		[Obsolete("Use OnValidateChar instead.")]
+		public event PopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
 
 		public override void Awake()
 		{
@@ -152,20 +155,32 @@ namespace OWML.ModHelper.Menus.CustomInputs
 
 		private char OnValidateInput(string input, int charIndex, char addedChar)
 		{
-			bool flag = true;
-			if (this.OnInputPopupValidateChar != null)
+			var isValidCharacter = true;
+			if (OnInputPopupValidateChar != null)
 			{
-				Delegate[] invocationList = this.OnInputPopupValidateChar.GetInvocationList();
-				for (int i = 0; i < invocationList.Length; i++)
+				var invocationList = OnInputPopupValidateChar.GetInvocationList();
+				for (var i = 0; i < invocationList.Length; i++)
 				{
-					bool flag2 = (bool)invocationList[i].DynamicInvoke(new object[] { input, charIndex, addedChar });
-					flag = flag && flag2;
+					var flag2 = (bool)invocationList[i].DynamicInvoke(new object[] { addedChar });
+					isValidCharacter = isValidCharacter && flag2;
 				}
 			}
-			if (flag)
+
+			if (OnValidateChar != null && isValidCharacter)
+			{
+				var invocationList = OnValidateChar.GetInvocationList();
+				for (var i = 0; i < invocationList.Length; i++)
+				{
+					var flag2 = (bool)invocationList[i].DynamicInvoke(new object[] { input, charIndex, addedChar });
+					isValidCharacter = isValidCharacter && flag2;
+				}
+			}
+
+			if (isValidCharacter)
 			{
 				return addedChar;
 			}
+
 			return '\0';
 		}
 
