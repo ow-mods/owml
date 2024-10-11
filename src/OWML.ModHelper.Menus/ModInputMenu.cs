@@ -75,7 +75,7 @@ namespace OWML.ModHelper.Menus
 			float.TryParse(_inputMenu.GetInputText(), out _);
 
 		private bool OnValidateCharNumber(char c) =>
-			"0123456789.".Contains("" + c);
+			"0123456789.-".Contains(c.ToString());
 
 		protected override void OnPopupConfirm()
 		{

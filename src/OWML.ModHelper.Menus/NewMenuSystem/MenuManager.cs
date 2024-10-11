@@ -39,6 +39,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		internal static List<(IModBehaviour behaviour, Menu modMenu)> ModSettingsMenus = new();
 
 		private bool _hasSetupMenusThisScene = false;
+		private bool _forceModOptionsOpen;
 
 		public MenuManager(
 			IModConsole console,
@@ -52,7 +53,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			_unityEvents = unityEvents;
 			TitleMenuManager = new TitleMenuManager();
 			PopupMenuManager = new PopupMenuManager(console, harmony, this);
-			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager);
+			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager, this);
 			PauseMenuManager = new PauseMenuManager(console);
 
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
@@ -85,6 +86,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			};
 		}
 
+		public void ForceModOptionsOpen(bool force)
+		{
+			_forceModOptionsOpen = force;
+		}
+
 		internal void SetupMenus(IList<IModBehaviour> modList)
 		{
 			if (_hasSetupMenusThisScene)
@@ -103,8 +109,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			// Create menus and submenus
 			var (modsMenu, modsMenuButton) = OptionsMenuManager.CreateTabWithSubTabs("MODS");
-			var (owmlSubTab, owmlSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "OWML");
 			var (modsSubTab, modsSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "MODS");
+			var (owmlSubTab, owmlSubTabButton) = OptionsMenuManager.AddSubTab(modsMenu, "OWML");
 
 			OWMLSettingsMenu = owmlSubTab;
 
@@ -210,7 +216,20 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 					newModTab.OnDeactivateMenu += () =>
 					{
-						OptionsMenuManager.RemoveTab(newModTab);
+						if (_forceModOptionsOpen)
+						{
+							return;
+						}
+
+						// Fixes tab dissapearing when you click on it again
+						// Clicking on a tab closes and opens it again
+						_unityEvents.FireOnNextUpdate(() =>
+						{
+							if (!newModTab._isActivated)
+							{
+								OptionsMenuManager.RemoveTab(newModTab);
+							}
+						});
 					};
 
 					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
@@ -307,6 +326,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
+									textInput.SetText(newValue);
 								};
 								break;
 							case SettingType.NUMBER:
@@ -319,6 +339,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 									mod.ModHelper.Config.SetSettingsValue(name, newValue);
 									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
 									mod.Configure(mod.ModHelper.Config);
+									numberInput.SetText(newValue.ToString());
 								};
 								break;
 							default:
@@ -387,6 +408,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			{
 				var text = item.GetComponent<UIStyleApplier>()._textItems[0];
 				text.horizontalOverflow = HorizontalWrapMode.Wrap;
+				
+				// Give a little bit of margin to account for the dividing lines
+				// (as otherwise it can look like the text is on top of them when in mouse mode)
+				float margin = 0.03f;
+				text.rectTransform.anchorMin = new Vector2(margin, 0.0f);
+				text.rectTransform.anchorMax = new Vector2(1f - margin, 1.0f);
 			}
 		}
 

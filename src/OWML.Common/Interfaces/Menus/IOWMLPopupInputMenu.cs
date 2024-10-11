@@ -1,10 +1,15 @@
-﻿using UnityEngine.UI;
+﻿using System;
+using UnityEngine.UI;
 
 namespace OWML.Common.Interfaces.Menus
 {
 	public interface IOWMLPopupInputMenu
 	{
+		[Obsolete("Use OnValidateChar instead.")]
 		public event PopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
+
+		public delegate bool InputPopupValidateCharEvent(string input, int charIndex, char addedChar);
+		public event InputPopupValidateCharEvent OnValidateChar;
 
 		public void EnableMenu(bool value);
 
