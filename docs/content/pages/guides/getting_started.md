@@ -62,6 +62,10 @@ Set the project name to the name of your mod, **please note this should NOT have
 
 On the next screen, set the author name to the name you want to appear in the manager and on the website, **this should also not contain spaces**
 
+!!! alert-danger "Important Note"
+    Ensure that the "Put Solution and Project in same directory" is unchecked,
+    the pre-built Action for releasing mods depends on this.
+
 Finally, click "Create Project"
 
 ## General Mod Layout
