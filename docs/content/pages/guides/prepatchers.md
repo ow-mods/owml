@@ -34,6 +34,8 @@ public static void Main(string[] args)
 Keep in mind the `ModHelper` is not available in a prepatcher.
 You'll need to have the prepatcher include libraries like Newtonsoft.Json to read and write JSON files.
 
+As an example, Quantum Space Buddies [utilizes a pre-patcher](https://github.com/qsb-dev/quantum-space-buddies/tree/master/QSBPatcher). You can use this as an example. Notice how it also needs to [set this as `patcher` in its manifest](https://github.com/qsb-dev/quantum-space-buddies/blob/b2e55d61e97b2e9c05b8b6e69cb349c57b59aa93/QSB/manifest.json#L18) in order for OWML to know to run it.
+
 ### Logging
 
 Due to a lack of `ModHelper`, you'll need to use `Console.WriteLine` to log information.
