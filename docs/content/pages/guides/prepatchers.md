@@ -42,7 +42,7 @@ Due to a lack of `ModHelper`, you'll need to use `Console.WriteLine` to log info
 This **will not output to the manager window**. To test prepatchers, we recommend you launch `OWML.Launcher.exe` in a
 terminal directly to properly see stdout.
 
-If a prepatcher errors it *should usually* be outputted to the manage window as OWML is setup to catch and
+If a prepatcher errors it *should usually* be outputted to the manager window as OWML is setup to catch and
 log any exceptions thrown by the prepatcher.
 
 ### Warnings
