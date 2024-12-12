@@ -15,7 +15,7 @@ mod folder.
 
 ## Creating A Prepatcher
 
-A prepatcher is a simple console app that OWML executes, it's only passed the location of your mod folder.
+A prepatcher is a simple console app that OWML executes, its only passed the location of your mod folder.
 However, it is possible to get the game's location by doing `AppDomain.CurrentDomain.BaseDirectory`:
 
 ```csharp
