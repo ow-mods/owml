@@ -15,7 +15,7 @@ mod folder.
 
 ## Creating A Prepatcher
 
-A prepatcher is a simple console app that OWML executes, its only passed the location of your mod folder.
+A prepatcher is a simple console app that OWML executes, it's only passed the location of your mod folder.
 However, it is possible to get the game's location by doing `AppDomain.CurrentDomain.BaseDirectory`:
 
 ```csharp
@@ -50,6 +50,6 @@ log any exceptions thrown by the prepatcher.
 Due to the nature of prepatchers, the manager cannot undo changes made by them. This means the game will continue to be modified even if the
 mod is uninstalled or disabled.
 
-The manager will try it's best to warn the user of this. If your mod has prepatcher and
+The manager will try its best to warn the user of this. If your mod has prepatcher and
 is disabled or uninstalled the manager will show a dialog explaining that
 your mod has modified game files in an irreversible way and encourages them to validate the game files.
