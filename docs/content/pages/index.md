@@ -18,3 +18,5 @@ To get started with modding, head to our [getting started guide]({{ "Getting Sta
 - [Outer Wilds Mods Website](https://outerwildsmods.com){ target="_blank" }
 - [Outer Wilds Mod Database](https://github.com/ow-mods/ow-mod-db){ target="_blank" }
 - [Outer Wilds Modding Discord](https://discord.gg/wusTQYbYTc){ target="_blank" }
+- [New Horizons Docs](https://nh.outerwildsmods.com/){ target="_blank" }
+- [Outer Wilds Unity Wiki](https://github.com/ow-mods/outerwildsmods.com/pull/245){ target="_blank" }
