@@ -129,6 +129,13 @@
                 ]
             }
         },
+        "additionalAssets": {
+            "type": "array",
+            "description": "A list of additonal *ZIP* files the manager should download from the GitHub release of this mod and extract at the root of the mod folder. Use this when you need to bypass the 2 GB limit on GitHub releases",
+            "items": {
+                "type": "string"
+            }
+        },
         "pathsToPreserve": {
             "type": "array",
             "description": "The paths to preserve when updating the mod\nAutomatically includes config.json, manifest.json, and save.json",
