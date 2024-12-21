@@ -131,7 +131,7 @@
         },
         "additionalAssets": {
             "type": "array",
-            "description": "A list of additonal *ZIP* files the manager should download from the GitHub release of this mod and extract at the root of the mod folder. The mods database only sees the first ZIP file of a release, use this when you need to bypass the 2 GB limit on GitHub releases.",
+            "description": "A list of additonal *ZIP* files the manager should download from the GitHub release of this mod and extract at the root of the mod folder. The mods database only sees the first ZIP file of a release, use this when you need to bypass the 2 GB limit on single GitHub release artifacts.",
             "items": {
                 "type": "string"
             }
