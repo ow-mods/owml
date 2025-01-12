@@ -33,7 +33,7 @@ namespace OWML.ModHelper.Events
 				if (_owmlConfig.DebugMode)
 				{
 					_console.WriteLine("Enabling Harmony debug mode.", MessageType.Debug);
-					FileLog.logPath = $"{_owmlConfig.LogsPath}/Harmony.Log.{DateTime.Now:dd-MM-yyyy-HH.mm.ss}.txt";
+					FileLog.logPath = $"{_owmlConfig.LogsPath}/Harmony.Log.{DateTime.Now:yyyy-MM-ddTHH:mm:ss}.txt";
 					HarmonyFileLog.Enabled = true;
 				}
 				harmony = new Harmony(_manifest.UniqueName);

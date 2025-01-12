@@ -9,16 +9,20 @@ namespace OWML.Logging
 	{
 		private readonly IModManifest _manifest;
 		private static string _logFileName;
+		private static string _latestFileName;
 
 		public ModLogger(IOwmlConfig config, IModManifest manifest)
 		{
 			_manifest = manifest;
-			_logFileName = $"{config.LogsPath}/OWML.Log.{DateTime.Now:dd-MM-yyyy-HH.mm.ss}.txt";
+			_logFileName = $"{config.LogsPath}/OWML.Log.{DateTime.Now:yyyy-MM-ddTHH:mm:ss}.txt";
 
 			if (!Directory.Exists(config.LogsPath))
 			{
 				Directory.CreateDirectory(config.LogsPath);
 			}
+
+			_logFileName = $"{config.LogsPath}/latest.txt";
+			File.Delete(_logFileName);
 		}
 
 		[Obsolete("Use ModHelper.Console.WriteLine with messageType = Debug instead.")]
@@ -29,7 +33,11 @@ namespace OWML.Logging
 		public void Log(params object[] objects) =>
 			Log(string.Join(" ", objects.Select(o => o.ToString()).ToArray()));
 
-		private static void LogInternal(string message) =>
-			File.AppendAllText(_logFileName, $"{DateTime.Now}: {message}{Environment.NewLine}");
+		private static void LogInternal(string message)
+		{
+			var text = $"{DateTime.Now}: {message}{Environment.NewLine}";
+			File.AppendAllText(_logFileName, text);
+			File.AppendAllText(_latestFileName, text);
+		}
 	}
 }
