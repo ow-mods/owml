@@ -1,4 +1,6 @@
-﻿namespace OWML.Common
+﻿using System;
+
+namespace OWML.Common
 {
 	public interface IOwmlConfig
 	{
@@ -25,5 +27,7 @@
 		bool IncrementalGC { get; set; }
 
 		int SocketPort { get; set; }
+
+		DateTime LoadTime { get; set; }
 	}
 }
