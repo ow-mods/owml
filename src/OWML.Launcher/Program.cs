@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using OWML.Abstractions;
 using OWML.Common;
 using OWML.GameFinder;
@@ -25,6 +26,7 @@ namespace OWML.Launcher
 			var hasConsolePort = argumentHelper.HasArgument(Constants.ConsolePortArgument);
 			SaveConsolePort(owmlConfig, hasConsolePort, argumentHelper);
 			SaveOwmlPath(owmlConfig);
+			SaveCurrentLogPath(owmlConfig);
 			var owmlManifest = GetOwmlManifest();
 			var consoleWriter = CreateConsoleWriter(owmlConfig, owmlManifest, hasConsolePort);
 
@@ -76,6 +78,17 @@ namespace OWML.Launcher
 		private static void SaveOwmlPath(IOwmlConfig owmlConfig)
 		{
 			owmlConfig.OWMLPath = AppDomain.CurrentDomain.BaseDirectory;
+			JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
+		}
+
+		private static void SaveCurrentLogPath(IOwmlConfig owmlConfig)
+		{
+			if (File.Exists($"{owmlConfig.LogsPath}/latest.txt"))
+			{
+				File.Delete($"{owmlConfig.LogsPath}/latest.txt");
+			}
+
+			owmlConfig.LoadTime = DateTime.Now;
 			JsonHelper.SaveJsonObject(Constants.OwmlConfigFileName, owmlConfig);
 		}
 

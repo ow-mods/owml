@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace OWML.Common
@@ -16,6 +17,9 @@ namespace OWML.Common
 
 		[JsonProperty("incrementalGC")]
 		public bool IncrementalGC { get; set; }
+
+		[JsonProperty("loadTime")]
+		public DateTime LoadTime { get; set; }
 
 		[JsonIgnore]
 		public bool IsSpaced => Directory.Exists(Path.Combine(GamePath, "Outer Wilds_Data"));

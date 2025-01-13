@@ -14,7 +14,7 @@ namespace OWML.Logging
 		public ModLogger(IOwmlConfig config, IModManifest manifest)
 		{
 			_manifest = manifest;
-			_logFileName = $"{config.LogsPath}/OWML.Log.{DateTime.Now:yyyy-MM-ddTHH:mm:ss}.txt";
+			_logFileName = $"{config.LogsPath}/OWML.Log.{config.LoadTime:yyyy-MM-ddTHH.mm.ss}.txt";
 
 			if (!Directory.Exists(config.LogsPath))
 			{
@@ -22,7 +22,6 @@ namespace OWML.Logging
 			}
 
 			_latestFileName = $"{config.LogsPath}/latest.txt";
-			File.Delete(_latestFileName);
 		}
 
 		[Obsolete("Use ModHelper.Console.WriteLine with messageType = Debug instead.")]
