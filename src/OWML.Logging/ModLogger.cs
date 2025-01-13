@@ -21,8 +21,8 @@ namespace OWML.Logging
 				Directory.CreateDirectory(config.LogsPath);
 			}
 
-			_logFileName = $"{config.LogsPath}/latest.txt";
-			File.Delete(_logFileName);
+			_latestFileName = $"{config.LogsPath}/latest.txt";
+			File.Delete(_latestFileName);
 		}
 
 		[Obsolete("Use ModHelper.Console.WriteLine with messageType = Debug instead.")]
