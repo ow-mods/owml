@@ -35,8 +35,15 @@ namespace OWML.Logging
 		private static void LogInternal(string message)
 		{
 			var text = $"{DateTime.Now}: {message}{Environment.NewLine}";
-			File.AppendAllText(_logFileName, text);
-			File.AppendAllText(_latestFileName, text);
+			try
+			{
+				File.AppendAllText(_logFileName, text);
+				File.AppendAllText(_latestFileName, text);
+			}
+			catch
+			{
+				// ignored
+			}
 		}
 	}
 }
