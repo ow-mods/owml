@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - uses: szenius/set-timezone@v1.0
         with:
@@ -38,7 +38,7 @@ jobs:
       - run: cp -r docs/** .
           
       - name: Cache Dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: ./.venv
@@ -61,7 +61,7 @@ jobs:
           
       - name: Upload Artifact
         if: success() && github.ref == 'refs/heads/master'
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: out/
           
@@ -76,5 +76,5 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
           
