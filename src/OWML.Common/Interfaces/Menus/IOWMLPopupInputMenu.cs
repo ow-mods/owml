@@ -21,6 +21,8 @@ namespace OWML.Common.Interfaces.Menus
 
 		public void SetText(string message, string placeholderMessage, string confirmText, string cancelText);
 
+		public void CloseMenuOnOk(bool closeMenuOnOk);
+
 		public event PopupMenu.PopupConfirmEvent OnPopupConfirm;
 		public event Menu.ActivateMenuEvent OnActivateMenu;
 		public event Menu.DeactivateMenuEvent OnDeactivateMenu;
