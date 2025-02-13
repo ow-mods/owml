@@ -20,6 +20,8 @@ namespace OWML.ModHelper.Menus.CustomInputs
 		[Obsolete("Use OnValidateChar instead.")]
 		public event PopupInputMenu.InputPopupValidateCharEvent OnInputPopupValidateChar;
 
+		private bool _setCancelButtonActive;
+
 		public override void Awake()
 		{
 			base.Awake();
@@ -43,8 +45,25 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			return this._selectOnActivate;
 		}
 
+		public void SetText(string message, string placeholderMessage, string confirmText, string cancelText)
+		{
+			var okPrompt = _confirmButton._screenPrompt == null ? null : new ScreenPrompt(_confirmButton._screenPrompt._commandList[0], confirmText);
+			var cancelPrompt = _cancelButton._screenPrompt == null ? null : new ScreenPrompt(_cancelButton._screenPrompt._commandList[0], cancelText);
+			SetUpPopup(
+				message,
+				_okCommand,
+				_cancelCommand,
+				okPrompt,
+				cancelPrompt,
+				_closeMenuOnOk,
+				_setCancelButtonActive);
+			SetInputFieldPlaceholderText(placeholderMessage);
+		}
+
 		public override void SetUpPopup(string message, IInputCommands okCommand, IInputCommands cancelCommand, ScreenPrompt okPrompt, ScreenPrompt cancelPrompt, bool closeMenuOnOk = true, bool setCancelButtonActive = true)
 		{
+			_closeMenuOnOk = closeMenuOnOk;
+			_setCancelButtonActive = setCancelButtonActive;
 			base.SetUpPopup(message, okCommand, cancelCommand, okPrompt, cancelPrompt, closeMenuOnOk, setCancelButtonActive);
 			this._selectOnActivate = this._inputField;
 		}

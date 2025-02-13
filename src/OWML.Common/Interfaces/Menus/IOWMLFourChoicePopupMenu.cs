@@ -9,6 +9,7 @@
 		event PopupCancelEvent OnPopupCancel;
 
 		void EnableMenu(bool value);
+		void SetText(string message, string confirm1Text, string confirm2Text, string confirm3Text, string cancelText);
 
 		public event Menu.ActivateMenuEvent OnActivateMenu;
 		public event Menu.DeactivateMenuEvent OnDeactivateMenu;
