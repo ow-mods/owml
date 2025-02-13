@@ -40,6 +40,24 @@ namespace OWML.ModHelper.Menus.CustomInputs
 			return _usingGamepad ? null : _selectOnActivate;
 		}
 
+		public void SetText(string message, string confirm1Text, string confirm2Text, string confirm3Text, string cancelText)
+		{
+			var ok1prompt = _confirmButton1._screenPrompt == null ? null : new ScreenPrompt(_confirmButton1._screenPrompt._commandList[0], confirm1Text);
+			var ok2prompt = _confirmButton2._screenPrompt == null ? null : new ScreenPrompt(_confirmButton2._screenPrompt._commandList[0], confirm2Text);
+			var ok3prompt = _confirmButton3._screenPrompt == null ? null : new ScreenPrompt(_confirmButton3._screenPrompt._commandList[0], confirm3Text);
+			var cancelprompt = _cancelButton._screenPrompt == null ? null : new ScreenPrompt(_cancelButton._screenPrompt._commandList[0], cancelText);
+			SetUpPopup(
+				message,
+				_ok1Command,
+				_ok2Command,
+				_ok3Command,
+				_cancelCommand,
+				ok1prompt,
+				ok2prompt,
+				ok3prompt,
+				cancelprompt);
+		}
+
 		public virtual void SetUpPopup(
 			string message,
 			IInputCommands ok1Command,
