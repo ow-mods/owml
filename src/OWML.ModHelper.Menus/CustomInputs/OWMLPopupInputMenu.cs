@@ -62,7 +62,6 @@ namespace OWML.ModHelper.Menus.CustomInputs
 
 		public override void SetUpPopup(string message, IInputCommands okCommand, IInputCommands cancelCommand, ScreenPrompt okPrompt, ScreenPrompt cancelPrompt, bool closeMenuOnOk = true, bool setCancelButtonActive = true)
 		{
-			_closeMenuOnOk = closeMenuOnOk;
 			_setCancelButtonActive = setCancelButtonActive;
 			base.SetUpPopup(message, okCommand, cancelCommand, okPrompt, cancelPrompt, closeMenuOnOk, setCancelButtonActive);
 			this._selectOnActivate = this._inputField;
