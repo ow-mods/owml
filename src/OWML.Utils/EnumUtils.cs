@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace OWML.Utils
@@ -286,6 +287,20 @@ namespace OWML.Utils
         }
 
         /// <summary>
+        /// Gets all names in an enum, skipping the first (usually default,none) value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <returns>An array of the names (excluding the first value) in the enum</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static string[] GetNamesWithoutFirst(Type enumType)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+            return System.Enum.GetNames(enumType).Skip(1).ToArray();
+        }
+
+        /// <summary>
         /// Gets all values in an enum
         /// </summary>
         /// <param name="enumType">Type of the enum</param>
@@ -297,6 +312,20 @@ namespace OWML.Utils
             if (enumType == null) throw new ArgumentNullException("enumType");
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
             return System.Enum.GetValues(enumType).Cast<object>().ToArray();
+        }
+
+        /// <summary>
+        /// Gets all enum values in an enum, skipping the first (usually default,none) value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <returns>An array of the values (excluding the first value) in the enum</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static object[] GetValuesWithoutFirst(Type enumType)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+            return System.Enum.GetValues(enumType).Cast<object>().Skip(1).ToArray();
         }
 
         /// <summary>
@@ -660,11 +689,41 @@ namespace OWML.Utils
         public static string[] GetNames<T>() where T : Enum => Enum.GetNames(typeof(T));
 
         /// <summary>
+        /// Gets all names in an enum, skipping the first (usually default,none) value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>The list of all names (excluding the first value) in the enum</returns>
+        public static string[] GetNamesWithoutFirst<T>() where T : Enum => Enum.GetNames(typeof(T)).Skip(1).ToArray();
+
+        /// <summary>
+        /// Gets all names in an enum with exclusions
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="excluded">Enums to exclude from the randomization</param>
+        /// <returns>The list of names in the enum</returns>
+        public static string[] GetNames<T>(params T[] excluded) where T : Enum => GetValues<T>(excluded).Select(GetName).ToArray();
+
+        /// <summary>
         /// Gets all enum values in an enum
         /// </summary>
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <returns>The list of all values in the enum</returns>
         public static T[] GetValues<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+
+        /// <summary>
+        /// Gets all enum values in an enum, skipping the first (usually default,none) value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>The list of all values (excluding the first value) in the enum</returns>
+        public static T[] GetValuesWithoutFirst<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Skip(1).ToArray();
+
+        /// <summary>
+        /// Gets all enum values in an enum with exclusions
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="excluded">Enums to exclude from the randomization</param>
+        /// <returns>The list of all values in the enum</returns>
+        public static T[] GetValues<T>(params T[] excluded) where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Where(v => !excluded.Contains(v)).ToArray();
 
         /// <summary>
         /// Gets all dynamic (custom) enum values in an enum
@@ -832,6 +891,94 @@ namespace OWML.Utils
             var item = Rng.Next(0, values.Length);
             return (T)values.GetValue(item);
         }
+
+        /// <summary>
+        /// Gets a random name from an enum
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>A randomly selected enum name from the given enum type</returns>
+        public static string GetRandomName<T>() where T : Enum
+        {
+            var names = EnumUtils.GetNames<T>();
+            var item = Rng.Next(0, names.Length);
+            return (string)names.GetValue(item);
+        }
+
+        /// <summary>
+        /// Gets a random name from an enum with exclusions
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="excluded">Enums to exclude from the randomization</param>
+        /// <returns>A randomly selected enum name from the given enum type</returns>
+        public static string GetRandomName<T>(params T[] excluded) where T : Enum
+        {
+            var names = Enum.GetNames(typeof(T)).Cast<T>().Where(v => !excluded.Contains(v)).ToArray();
+            var item = Rng.Next(0, names.Length);
+            return (string)names.GetValue(item);
+        }
+
+        /// <summary>
+        /// Returns all enums with their descriptions in a dictionary.
+        /// <see cref="DescriptionAttribute"/> needs to be applied on enum values to set a description text.
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>Dictionary of enum-to-description mappings.</returns>
+        public static IDictionary<T, string> GetDescriptions<T>() where T : Enum
+        {
+            var type = typeof(T);
+            var dictionary = new Dictionary<T, string>();
+
+            foreach (var key in GetValues<T>())
+            {
+                var field = type.GetField($"{key}");
+                string description = null;
+                if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
+                {
+                    description = attribute.Description;
+                }
+
+                dictionary.Add(key, description);
+            }
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Throws a <see cref="NotAnEnumException"/> if <paramref name="type"/> is not an enum.
+        /// </summary>
+        /// <param name="type">Type to check</param>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="type"/> is not an enum</exception>
+        public static void ThrowIfNotEnum(Type type)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (!type.IsEnum) throw new NotAnEnumException(type);
+        }
+
+        /// <summary>
+        /// Throws a <see cref="NotAnEnumException"/> if <typeparamref name="T"/> is not an enum.
+        /// </summary>
+        /// <typeparam name="T">Type to check</typeparam>
+        /// <exception cref="NotAnEnumException"><typeparamref name="T"/> is not an enum</exception>
+        public static void ThrowIfNotEnum<T>()
+        {
+            if (!typeof(T).IsEnum) throw new NotAnEnumException(typeof(T));
+        }
+
+        /// <summary>
+        /// Casts an Enum to a specific type
+        /// </summary>
+        public static T EnumCast<T>(this Enum value) where T : Enum
+        {
+            if (value.GetType() != typeof(T))
+                throw new InvalidCastException("Enums are not of the same type");
+            return (T)(object)value;
+        }
+
+        /// <summary>
+        /// Casts an Enum to a specific type
+        /// </summary>
+        public static IEnumerable<T> EnumCast<T>(this IEnumerable<Enum> values) where T : Enum => values.Select(e => e.EnumCast<T>());
     }
 }
 

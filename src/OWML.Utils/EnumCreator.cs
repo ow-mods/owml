@@ -374,6 +374,13 @@ namespace OWML.Utils
         /// </summary>
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="value">The enum value to remove</param>
+        public static void Remove<T>(T value) where T : Enum => Remove(typeof(T), value);
+
+        /// <summary>
+        /// Removes a custom enum value from being associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to remove</param>
         public static void Remove<T>(object value) where T : Enum => Remove(typeof(T), value);
 
         /// <summary>
