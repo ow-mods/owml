@@ -356,11 +356,14 @@ namespace OWML.Utils
                 patches.Add(enumType, patch);
             }
 
-            patch.AddValue((ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture), name);
+            patch.AddValue(value.ToFriendlyValue(), name);
 
             // Clear enum cache
             ClearEnumCache(enumType);
         }
+
+        internal static ulong ToFriendlyValue<T>(this T value) where T : Enum => (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+        internal static ulong ToFriendlyValue(this object value) => (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Removes a custom enum value from being associated with a name
@@ -414,7 +417,7 @@ namespace OWML.Utils
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
-            ulong uvalue = (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+            ulong uvalue = value.ToFriendlyValue();
             if (TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue))
             {
                 patch.RemoveValue(uvalue);
