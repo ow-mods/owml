@@ -40,6 +40,7 @@ namespace OWML.Utils
             typeof(InputUtil.ScePadButton),
             typeof(Shape.Layer),
             typeof(SignalFrequency),
+            typeof(TitleCodeInputManager.CommandSequenceIds)
         };
 
         internal static void Initialize(IModConsole console, IHarmonyHelper _harmonyHelper)
