@@ -131,8 +131,9 @@ namespace OWML.Utils
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="name">Name of the enum value</param>
         /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
         /// <exception cref="Exception">The enum already has a value with the same name</exception>
-        public static void Create<T>(string name, T value) where T : Enum => Create<T>(value, name);
+        public static T Create<T>(string name, T value) where T : Enum => Create<T>(value, name);
 
         /// <summary>
         /// Creates an actual enum value associated with a name
