@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 
 namespace OWML.Utils
@@ -979,6 +980,103 @@ namespace OWML.Utils
         /// Casts an Enum to a specific type
         /// </summary>
         public static IEnumerable<T> EnumCast<T>(this IEnumerable<Enum> values) where T : Enum => values.Select(e => e.EnumCast<T>());
+
+        /// <inheritdoc cref="Enum.HasFlag(Enum)"/>
+        public static bool HasFlag<T>(T flags, T flag) where T : Enum
+            => flags.HasFlag(flag);
+
+        /// <summary>
+        /// Sets a flag bit to 0 or 1
+        /// </summary>
+        public static T SetFlag<T>(this T flags, T flag, bool setBit) where T : Enum
+            => setBit ? AddFlag(flags, flag) : RemoveFlag(flags, flag);
+
+        /// <summary>
+        /// Adds a flag to an enum
+        /// </summary>
+        public static T AddFlag<T>(this T flags, T flag) where T : Enum
+            => FromObject<T>(flags.ToFriendlyValue() | flag.ToFriendlyValue());
+
+        /// <summary>
+        /// Removes a flag from an enum
+        /// </summary>
+        public static T RemoveFlag<T>(this T flags, T flag) where T : Enum
+            => FromObject<T>(flags.ToFriendlyValue() & ~flag.ToFriendlyValue());
+
+        /// <summary>
+        /// Toggles a flag in an enum
+        /// </summary>
+        public static T ToggleFlag<T>(this T flags, T flag) where T : Enum
+            => FromObject<T>(flags.ToFriendlyValue() ^ flag.ToFriendlyValue());
+
+        /// <summary>
+        /// 1 &lt;&lt; <paramref name="index"/>
+        /// </summary>
+        public static T GetFlagsValue<T>(int index) where T : Enum
+            => FromObject<T>(1 << index);
+
+        /// <summary>
+        /// 0
+        /// </summary>
+        public static T GetNoFlags<T>() where T : Enum
+            => FromObject<T>(0);
+
+        /// <summary>
+        /// ~0
+        /// </summary>
+        public static T GetAllFlags<T>() where T : Enum
+            => FromObject<T>(~0);
+
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="flags">The value to get the flags from.</param>
+        /// <returns>All the flags that the value had.</returns>
+        /// <exception cref="ArgumentException">When the enum doesn't have the flags attribute.</exception>
+        public static T[] GetFlagsValues<T>(this T flags) where T : Enum
+        {
+            if (!IsPowerOfTwoEnum<T>())
+                throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
+
+            Type underlyingType = GetUnderlyingType<T>();
+
+            ulong num = flags.ToFriendlyValue();
+            var enumNameValues = GetValues<T>().Select(ToFriendlyValue);
+            IList<T> selectedFlagsValues = new List<T>();
+
+            foreach (ulong enumNameValue in enumNameValues)
+            {
+                if ((num & enumNameValue) == enumNameValue && enumNameValue != 0)
+                {
+                    selectedFlagsValues.Add((T)Convert.ChangeType(enumNameValue, underlyingType, CultureInfo.CurrentCulture));
+                }
+            }
+
+            if (selectedFlagsValues.Count == 0 && enumNameValues.SingleOrDefault(v => v == 0) != 0)
+            {
+                selectedFlagsValues.Add(default(T));
+            }
+
+            return selectedFlagsValues.ToArray();
+        }
+
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="values"></param>
+        /// <returns>All the flags values combined into one enum value.</returns>
+        /// <exception cref="ArgumentException">When the enum doesn't have the flags attribute.</exception>
+        public static T CombineFlagsValues<T>(this T[] values) where T : Enum
+        {
+            if (!IsPowerOfTwoEnum<T>())
+                throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
+
+            T combined = default(T);
+            if (values != null && values.Length > 0)
+            {
+                foreach (var value in values)
+                {
+                    combined = combined.AddFlag<T>(value);
+                }
+            }
+            return combined;
+        }
     }
 }
 
