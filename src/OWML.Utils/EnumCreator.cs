@@ -417,6 +417,119 @@ namespace OWML.Utils
             }
         }
 
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsDynamic<T>(string name) where T : Enum => IsDynamic(typeof(T), name);
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsDynamic<T>(this T value) where T : Enum => IsDynamic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsDynamic<T>(object value) where T : Enum => IsDynamic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsDynamic(Type enumType, string name)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            return TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasName(name);
+        }
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsDynamic(Type enumType, object value)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            ulong uvalue = value.ToFriendlyValue();
+            return TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue);
+        }
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsStatic<T>(string name) where T : Enum => IsStatic(typeof(T), name);
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsStatic<T>(this T value) where T : Enum => IsStatic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsStatic<T>(object value) where T : Enum => IsStatic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsStatic(Type enumType, string name)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            return !IsDynamic(enumType, name);
+        }
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsStatic(Type enumType, object value)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            return !IsDynamic(enumType, value);
+        }
+
         private static bool TryAsNumber(this object value, Type type, out object result)
         {
             if (type.IsSubclassOf(typeof(IConvertible)))

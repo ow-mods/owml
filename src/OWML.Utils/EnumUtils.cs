@@ -667,6 +667,20 @@ namespace OWML.Utils
         public static T[] GetValues<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().ToArray();
 
         /// <summary>
+        /// Gets all dynamic (custom) enum values in an enum
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>The list of all dynamic values in the enum</returns>
+        public static T[] GetDynamicValues<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Where(IsDynamic).ToArray();
+
+        /// <summary>
+        /// Gets all static (non-custom) enum values in an enum
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <returns>The list of all static values in the enum</returns>
+        public static T[] GetStaticValues<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Where(IsStatic).ToArray();
+
+        /// <summary>
         /// Counts the number of enums values contained in a given enum type.
         /// </summary>
         /// <typeparam name="T">Type of the enum</typeparam>
