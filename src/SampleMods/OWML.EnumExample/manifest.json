@@ -5,6 +5,6 @@
 	"name": "Enum Example",
 	"uniqueName": "MegaPiggy.EnumExample",
 	"version": "1.0.0",
-	"owmlVersion": "2.6.0",
+	"owmlVersion": "2.15.2",
 	"description": "Example for testing enum creator"
 }

@@ -5,7 +5,7 @@
 	"name": "LoadCustomAssets",
 	"uniqueName": "Alek.LoadCustomAssets",
 	"version": "0.7",
-	"owmlVersion": "2.3.1",
+	"owmlVersion": "2.15.2",
 	"description": "A mod for testing loading of custom assets",
 	"dependencies": [
 		"_nebula.ExampleAPI"
