@@ -37,7 +37,7 @@ Click on it and then select the pencil icon in the top right of the file, this w
 This file format is called [Markdown](https://www.markdownguide.org/){target="_blank"}, it's a very simplistic way to write content for websites. If you don't know markdown you can use [this tutorial](https://www.markdowntutorial.com/){target="_blank"} to help you. Make sure your README gives a good description of your mod!
 
 !!! alert-info "Tip"
-    The first image in your README file will be used as the mod's thumbnail on the website, to insert an image, simply paste it inside of the editor. Make sure it's at the very top of your document.
+    The first image in your README file will be used as the mod's thumbnail on the website, to insert an image, simply paste it inside of the editor. Make sure it's at the very top of your document. **This image should be in a 3:1 aspect ratio**.
 
 ## Releasing Your Mod
 
