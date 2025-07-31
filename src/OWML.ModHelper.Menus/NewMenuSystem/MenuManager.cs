@@ -289,7 +289,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								break;
 							case SettingType.SELECTOR:
 								var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-								var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
+								var options = settingObject["options"].ToArray().Select(x => mod.ModHelper.MenuTranslations.GetLocalizedString(x.ToString())).ToArray();
 								var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
 								var settingSelector = OptionsMenuManager.AddSelectorInput(newModTab, label, options, tooltip, true, currentSelectedIndex);
 								settingSelector.ModSettingKey = name;
