@@ -4,7 +4,7 @@
 	"author": "_nebula",
 	"name": "ExampleAPI",
 	"uniqueName": "_nebula.ExampleAPI",
-	"version": "0.3",
-	"owmlVersion": "2.15.2",
+	"version": "0.3.0",
+	"owmlVersion": "2.15.5",
 	"description": "Example API for testing OWML.Interaction"
 }

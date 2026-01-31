@@ -52,6 +52,10 @@ namespace OWML.Patcher
 				"Mono.Cecil.Mdb.dll",
 				"Mono.Cecil.Pdb.dll",
 				"Mono.Cecil.Rocks.dll",
+				"MonoMod.Backports.dll",
+				"MonoMod.Core.dll",
+				"MonoMod.Iced.dll",
+				"MonoMod.ILHelpers.dll",
 				"MonoMod.RuntimeDetour.dll",
 				"MonoMod.Utils.dll",
 				"NAudio-Unity.dll",
@@ -79,23 +83,23 @@ namespace OWML.Patcher
 
 		private void CopyFiles(string[] filesToCopy, string pathPrefix, string destination)
 		{
-			var uncopiedFiles = new List<string>();
+			var uncopiedFiles = new List<(string path, Exception ex)>();
 			foreach (var filename in filesToCopy)
 			{
 				try
 				{
 					File.Copy($"{pathPrefix}{filename}", Path.Combine(destination, filename), true);
 				}
-				catch
+				catch (Exception ex)
 				{
-					uncopiedFiles.Add(filename);
+					uncopiedFiles.Add((filename, ex));
 				}
 			}
 
 			if (uncopiedFiles.Any())
 			{
 				_writer.WriteLine($"Warning - Failed to copy the following files to {destination} :", MessageType.Warning);
-				uncopiedFiles.ForEach(file => _writer.WriteLine($"* {file}", MessageType.Warning));
+				uncopiedFiles.ForEach(t => _writer.WriteLine($"* {t.path} - {t.ex.Message}", MessageType.Warning));
 			}
 		}
 
