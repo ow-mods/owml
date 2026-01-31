@@ -40,6 +40,7 @@ namespace OWML.Utils
             typeof(InputUtil.ScePadButton),
             typeof(Shape.Layer),
             typeof(SignalFrequency),
+            typeof(TitleCodeInputManager.CommandSequenceIds)
         };
 
         internal static void Initialize(IModConsole console, IHarmonyHelper _harmonyHelper)
@@ -131,8 +132,9 @@ namespace OWML.Utils
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="name">Name of the enum value</param>
         /// <param name="value">Value of the enum</param>
+        /// <returns>The created enum value</returns>
         /// <exception cref="Exception">The enum already has a value with the same name</exception>
-        public static void Create<T>(string name, T value) where T : Enum => Create<T>(value, name);
+        public static T Create<T>(string name, T value) where T : Enum => Create<T>(value, name);
 
         /// <summary>
         /// Creates an actual enum value associated with a name
@@ -356,11 +358,14 @@ namespace OWML.Utils
                 patches.Add(enumType, patch);
             }
 
-            patch.AddValue((ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture), name);
+            patch.AddValue(value.ToFriendlyValue(), name);
 
             // Clear enum cache
             ClearEnumCache(enumType);
         }
+
+        internal static ulong ToFriendlyValue<T>(this T value) where T : Enum => (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+        internal static ulong ToFriendlyValue(this object value) => (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Removes a custom enum value from being associated with a name
@@ -368,6 +373,13 @@ namespace OWML.Utils
         /// <typeparam name="T">Type of the enum</typeparam>
         /// <param name="name">Name of the enum value</param>
         public static void Remove<T>(string name) where T : Enum => Remove(typeof(T), name);
+
+        /// <summary>
+        /// Removes a custom enum value from being associated with a name
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to remove</param>
+        public static void Remove<T>(T value) where T : Enum => Remove(typeof(T), value);
 
         /// <summary>
         /// Removes a custom enum value from being associated with a name
@@ -407,7 +419,7 @@ namespace OWML.Utils
         {
             if (enumType == null) throw new ArgumentNullException("enumType");
             if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
-            ulong uvalue = (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+            ulong uvalue = value.ToFriendlyValue();
             if (TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue))
             {
                 patch.RemoveValue(uvalue);
@@ -415,6 +427,119 @@ namespace OWML.Utils
                 // Clear enum cache
                 ClearEnumCache(enumType);
             }
+        }
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsDynamic<T>(string name) where T : Enum => IsDynamic(typeof(T), name);
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsDynamic<T>(this T value) where T : Enum => IsDynamic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsDynamic<T>(object value) where T : Enum => IsDynamic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsDynamic(Type enumType, string name)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            return TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasName(name);
+        }
+
+        /// <summary>
+        /// Check if it is a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsDynamic(Type enumType, object value)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            ulong uvalue = value.ToFriendlyValue();
+            return TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue);
+        }
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsStatic<T>(string name) where T : Enum => IsStatic(typeof(T), name);
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsStatic<T>(this T value) where T : Enum => IsStatic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <typeparam name="T">Type of the enum</typeparam>
+        /// <param name="value">The enum value to check</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        public static bool IsStatic<T>(object value) where T : Enum => IsStatic(typeof(T), value);
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="name">Name of the enum value</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsStatic(Type enumType, string name)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            return !IsDynamic(enumType, name);
+        }
+
+        /// <summary>
+        /// Check if it is <b>not</b> a custom enum value
+        /// </summary>
+        /// <param name="enumType">Type of the enum</param>
+        /// <param name="value">Value of the enum</param>
+        /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+        /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+        public static bool IsStatic(Type enumType, object value)
+        {
+            if (enumType == null) throw new ArgumentNullException("enumType");
+            if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+
+            return !IsDynamic(enumType, value);
         }
 
         private static bool TryAsNumber(this object value, Type type, out object result)
