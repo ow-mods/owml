@@ -84,17 +84,13 @@ namespace OWML.ModLoader
 			{
 				if (Config.Settings[key] is JObject configSetting && DefaultConfig.Settings[key] is JObject defaultSetting)
 				{
-					configSetting.Remove("title");
-					configSetting.Remove("tooltip");
-					if (defaultSetting.GetValue("title") != null)
+					// Copy the default setting and preserve the user's value
+					var defaultClone = (JObject)defaultSetting.DeepClone();
+					if (defaultClone.ContainsKey("value") && configSetting.ContainsKey("value"))
 					{
-						configSetting["title"] = defaultSetting.GetValue("title");
+						defaultClone["value"] = configSetting["value"];
 					}
-					if (defaultSetting.GetValue("tooltip") != null)
-					{
-						configSetting["tooltip"] = defaultSetting.GetValue("tooltip");
-					}
-					Config.Settings[key] = configSetting;
+					Config.Settings[key] = defaultClone;
 				}
 			}
 
