@@ -312,7 +312,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								};
 								break;
 							case SettingType.SEPARATOR:
-								OptionsMenuManager.AddSeparator(newModTab, false);
+								var dots = settingObject["dots"]?.ToObject<bool>() ?? true;
+								OptionsMenuManager.AddSeparator(newModTab, dots);
 								break;
 							case SettingType.SLIDER:
 								var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
