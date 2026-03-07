@@ -22,7 +22,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			NUMBER,
 			SELECTOR,
 			SLIDER,
-			SEPARATOR
+			SEPARATOR,
+			LABEL
 		}
 
 		private readonly IModConsole _console;
@@ -315,6 +316,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 								var dots = settingObject["dots"]?.ToObject<bool>() ?? true;
 								OptionsMenuManager.AddSeparator(newModTab, dots);
 								break;
+							case SettingType.LABEL:
+								OptionsMenuManager.CreateLabel(newModTab, label);
+								break;
 							case SettingType.SLIDER:
 								var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
 								var lower = settingObject["min"].ToObject<float>();
@@ -467,6 +471,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			else if (settingObject != null && settingObject["type"].ToString() == "separator")
 			{
 				return SettingType.SEPARATOR;
+			}
+			else if (settingObject != null && settingObject["type"].ToString() == "label")
+			{
+				return SettingType.LABEL;
 			}
 
 			_console.WriteLine($"Couldn't work out setting type. Type:{setting.GetType().Name} SettingObjectType:{settingObject?["type"].ToString()}", MessageType.Error);
