@@ -1,0 +1,8 @@
+﻿<Project>
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <OutputPath>$(AppData)/OuterWildsModManager/OWML</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' == 'Unix'">
+    <OutputPath>$(HOME)/.local/share/OuterWildsModManager/OWML</OutputPath>
+  </PropertyGroup>
+</Project>

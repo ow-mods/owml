@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="OWML.Launcher.csproj.user" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />
     <ProjectReference Include="..\OWML.Patcher\OWML.Patcher.csproj" />
   </ItemGroup>
