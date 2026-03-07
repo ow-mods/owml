@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-	  <LangVersion>9.0</LangVersion>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

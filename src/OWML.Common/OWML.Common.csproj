@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<LangVersion>9.0</LangVersion>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="OuterWildsGameLibs" Version="1.1.16.1372" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OuterWildsGameLibs" Version="1.1.16.1372" />
+  </ItemGroup>
 
 </Project>
