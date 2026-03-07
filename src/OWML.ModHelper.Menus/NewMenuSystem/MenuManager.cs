@@ -202,177 +202,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			foreach (var mod in modsWithSettings)
 			{
 				var button = OptionsMenuManager.CreateButton(modsSubTab, mod.ModHelper.Manifest.Name, "", MenuSide.CENTER);
-				button.OnSubmitAction += () =>
-				{
-					var (newModTab, newModTabButton) = OptionsMenuManager.CreateStandardTab("MOD OPTIONS");
-
-					ModSettingsMenus.Add((mod, newModTab));
-
-					OptionsMenuManager.CreateLabel(newModTab, $"{mod.ModHelper.Manifest.Name} {mod.ModHelper.Manifest.Version} by {mod.ModHelper.Manifest.Author}");
-
-					var returnButton = OptionsMenuManager.CreateButton(newModTab, "Return", "Return to the mod selection list.", MenuSide.CENTER);
-					returnButton.OnSubmitAction += () =>
-					{
-						OptionsMenuManager.OpenOptionsAtTab(modsMenuButton);
-
-						// Give time for the modsMenu to activate before switching tabs
-						_unityEvents.FireInNUpdates(() => modsMenu.SelectTabButton(modsSubTabButton), 2);
-					};
-
-					newModTab.OnActivateMenu += () =>
-					{
-						var settingsMenuView = UnityEngine.Object.FindObjectOfType<SettingsMenuView>();
-						settingsMenuView._resetToDefaultsPrompt.SetText($"Default Settings ({mod.ModHelper.Manifest.Name})");
-						settingsMenuView._resetToDefaultButton.RefreshTextAndImages(false);
-					};
-
-					newModTab.OnDeactivateMenu += () =>
-					{
-						if (_forceModOptionsOpen)
-						{
-							return;
-						}
-
-						// Fixes tab dissapearing when you click on it again
-						// Clicking on a tab closes and opens it again
-						_unityEvents.FireOnNextUpdate(() =>
-						{
-							if (!newModTab._isActivated)
-							{
-								OptionsMenuManager.RemoveTab(newModTab);
-							}
-						});
-					};
-
-					foreach (var (name, setting) in mod.ModHelper.Config.Settings)
-					{
-						var settingType = GetSettingType(setting);
-						var label = mod.ModHelper.MenuTranslations.GetLocalizedString(name);
-						var tooltip = "";
-
-						var settingObject = setting as JObject;
-
-						if (settingObject != default(JObject))
-						{
-							if (settingObject["dlcOnly"]?.ToObject<bool>() ?? false)
-							{
-								if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
-								{
-									continue;
-								}
-							}
-
-							if (settingObject["title"] != null)
-							{
-								label = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["title"].ToString());
-							}
-
-							if (settingObject["tooltip"] != null)
-							{
-								tooltip = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["tooltip"].ToString());
-							}
-						}
-
-						switch (settingType)
-						{
-							case SettingType.CHECKBOX:
-								var currentCheckboxValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
-								var settingCheckbox = OptionsMenuManager.AddCheckboxInput(newModTab, label, tooltip, currentCheckboxValue);
-								settingCheckbox.ModSettingKey = name;
-								settingCheckbox.OnValueChanged += (bool newValue) =>
-								{
-									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
-									mod.Configure(mod.ModHelper.Config);
-								};
-								break;
-							case SettingType.TOGGLE:
-								var currentToggleValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
-								var yes = settingObject["yes"].ToString();
-								var no = settingObject["no"].ToString();
-								var settingToggle = OptionsMenuManager.AddToggleInput(newModTab, label, yes, no, tooltip, currentToggleValue);
-								settingToggle.ModSettingKey = name;
-								settingToggle.OnValueChanged += (bool newValue) =>
-								{
-									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
-									mod.Configure(mod.ModHelper.Config);
-								};
-								break;
-							case SettingType.SELECTOR:
-								var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-								var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
-								var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
-								var settingSelector = OptionsMenuManager.AddSelectorInput(newModTab, label, options.Select(x => mod.ModHelper.MenuTranslations.GetLocalizedString(x)).ToArray(), tooltip, true, currentSelectedIndex);
-								settingSelector.ModSettingKey = name;
-								settingSelector.OnValueChanged += (int newIndex, string newSelection) =>
-								{
-									mod.ModHelper.Config.SetSettingsValue(name, options[newIndex]);
-									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
-									mod.Configure(mod.ModHelper.Config);
-								};
-								break;
-							case SettingType.SEPARATOR:
-								var dots = settingObject["dots"]?.ToObject<bool>() ?? true;
-								OptionsMenuManager.AddSeparator(newModTab, dots);
-								break;
-							case SettingType.LABEL:
-								OptionsMenuManager.CreateLabel(newModTab, label);
-								break;
-							case SettingType.SLIDER:
-								var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
-								var lower = settingObject["min"].ToObject<float>();
-								var upper = settingObject["max"].ToObject<float>();
-								var settingSlider = OptionsMenuManager.AddSliderInput(newModTab, label, lower, upper, tooltip, currentSliderValue);
-								settingSlider.ModSettingKey = name;
-								settingSlider.OnValueChanged += (float newValue) =>
-								{
-									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
-									mod.Configure(mod.ModHelper.Config);
-								};
-								break;
-							case SettingType.TEXT:
-								var currentTextValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
-								var textInput = OptionsMenuManager.AddTextEntryInput(newModTab, label, currentTextValue, tooltip, false);
-								textInput.ModSettingKey = name;
-								textInput.OnConfirmEntry += () =>
-								{
-									var newValue = textInput.GetInputText();
-									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
-									mod.Configure(mod.ModHelper.Config);
-									textInput.SetText(newValue);
-								};
-								break;
-							case SettingType.NUMBER:
-								var currentValue = mod.ModHelper.Config.GetSettingsValue<double>(name);
-								var numberInput = OptionsMenuManager.AddTextEntryInput(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip, true);
-								numberInput.ModSettingKey = name;
-								numberInput.OnConfirmEntry += () =>
-								{
-									var newValue = double.Parse(numberInput.GetInputText());
-									mod.ModHelper.Config.SetSettingsValue(name, newValue);
-									mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
-									mod.Configure(mod.ModHelper.Config);
-									numberInput.SetText(newValue.ToString());
-								};
-								break;
-							default:
-								_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);
-								OptionsMenuManager.CreateLabel(newModTab, $"Unknown {settingType} : {name}");
-								break;
-						}
-					}
-
-					foreach (var item in mod.ModHelper.RebindingHelper.Rebindables)
-					{
-						OptionsMenuManager.CreateRebinding(newModTab, item.name, item.tooltip, item.id);
-					}
-
-					OptionsMenuManager.OpenOptionsAtTab(newModTabButton);
-					Locator.GetMenuAudioController().PlayChangeTab();
-				};
+				button.OnSubmitAction += () => OpenModOptions(mod, modsSubTab, modsSubTabButton, modsMenu, modsMenuButton);
 			}
 
 			OptionsMenuManager.AddSeparator(modsSubTab, true);
@@ -403,6 +233,196 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				{
 					_console.WriteLine($"Exception when setting up menus for {mod.ModHelper.Manifest.UniqueName} : {ex}", MessageType.Error);
 				}
+			}
+		}
+
+		private void OpenModOptions(IModBehaviour mod, Menu modsSubTab, TabButton modsSubTabButton, TabbedSubMenu modsMenu, TabButton modsMenuButton)
+		{
+			try
+			{
+				var (newModTab, newModTabButton) = OptionsMenuManager.CreateStandardTab("MOD OPTIONS");
+				ModSettingsMenus.Add((mod, newModTab));
+
+				OptionsMenuManager.CreateLabel(newModTab, $"{mod.ModHelper.Manifest.Name} {mod.ModHelper.Manifest.Version} by {mod.ModHelper.Manifest.Author}");
+
+				var returnButton = OptionsMenuManager.CreateButton(newModTab, "Return", "Return to the mod selection list.", MenuSide.CENTER);
+				returnButton.OnSubmitAction += () =>
+				{
+					OptionsMenuManager.OpenOptionsAtTab(modsMenuButton);
+
+					// Give time for the modsMenu to activate before switching tabs
+					_unityEvents.FireInNUpdates(() => modsMenu.SelectTabButton(modsSubTabButton), 2);
+				};
+
+				newModTab.OnActivateMenu += () =>
+				{
+					var settingsMenuView = UnityEngine.Object.FindObjectOfType<SettingsMenuView>();
+					settingsMenuView._resetToDefaultsPrompt.SetText($"Default Settings ({mod.ModHelper.Manifest.Name})");
+					settingsMenuView._resetToDefaultButton.RefreshTextAndImages(false);
+				};
+
+				newModTab.OnDeactivateMenu += () =>
+				{
+					if (_forceModOptionsOpen)
+					{
+						return;
+					}
+
+					// Fixes tab dissapearing when you click on it again
+					// Clicking on a tab closes and opens it again
+					_unityEvents.FireOnNextUpdate(() =>
+					{
+						if (!newModTab._isActivated)
+						{
+							OptionsMenuManager.RemoveTab(newModTab);
+						}
+					});
+				};
+
+				foreach (var (name, setting) in mod.ModHelper.Config.Settings)
+				{
+					try
+					{
+						SetupModSetting(mod, newModTab, name, setting);
+					}
+					catch (Exception ex) {
+						_console.WriteLine($"Exception when setting up mod option {name} for {mod.ModHelper.Manifest.UniqueName} : {ex}", MessageType.Error);
+					}
+				}
+
+				foreach (var item in mod.ModHelper.RebindingHelper.Rebindables)
+				{
+					OptionsMenuManager.CreateRebinding(newModTab, item.name, item.tooltip, item.id);
+				}
+
+				OptionsMenuManager.OpenOptionsAtTab(newModTabButton);
+				Locator.GetMenuAudioController().PlayChangeTab();
+			}
+			catch (Exception ex)
+			{
+				_console.WriteLine($"Exception when setting up mod options for {mod.ModHelper.Manifest.UniqueName} : {ex}", MessageType.Error);
+				return;
+			}
+		}
+
+		private void SetupModSetting(IModBehaviour mod, Menu newModTab, string name, object setting)
+		{
+			var settingType = GetSettingType(setting);
+			var label = mod.ModHelper.MenuTranslations.GetLocalizedString(name);
+			var tooltip = "";
+
+			var settingObject = setting as JObject;
+
+			if (settingObject != default(JObject))
+			{
+				if (settingObject["dlcOnly"]?.ToObject<bool>() ?? false)
+				{
+					if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
+					{
+						return;
+					}
+				}
+
+				if (settingObject["title"] != null)
+				{
+					label = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["title"].ToString());
+				}
+
+				if (settingObject["tooltip"] != null)
+				{
+					tooltip = mod.ModHelper.MenuTranslations.GetLocalizedString(settingObject["tooltip"].ToString());
+				}
+			}
+
+			switch (settingType)
+			{
+				case SettingType.CHECKBOX:
+					var currentCheckboxValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
+					var settingCheckbox = OptionsMenuManager.AddCheckboxInput(newModTab, label, tooltip, currentCheckboxValue);
+					settingCheckbox.ModSettingKey = name;
+					settingCheckbox.OnValueChanged += (bool newValue) =>
+					{
+						mod.ModHelper.Config.SetSettingsValue(name, newValue);
+						mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+						mod.Configure(mod.ModHelper.Config);
+					};
+					break;
+				case SettingType.TOGGLE:
+					var currentToggleValue = mod.ModHelper.Config.GetSettingsValue<bool>(name);
+					var yes = settingObject["yes"].ToString();
+					var no = settingObject["no"].ToString();
+					var settingToggle = OptionsMenuManager.AddToggleInput(newModTab, label, yes, no, tooltip, currentToggleValue);
+					settingToggle.ModSettingKey = name;
+					settingToggle.OnValueChanged += (bool newValue) =>
+					{
+						mod.ModHelper.Config.SetSettingsValue(name, newValue);
+						mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+						mod.Configure(mod.ModHelper.Config);
+					};
+					break;
+				case SettingType.SELECTOR:
+					var currentSelectorValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
+					var options = settingObject["options"].ToArray().Select(x => x.ToString()).ToArray();
+					var currentSelectedIndex = Array.IndexOf(options, currentSelectorValue);
+					var settingSelector = OptionsMenuManager.AddSelectorInput(newModTab, label, options.Select(x => mod.ModHelper.MenuTranslations.GetLocalizedString(x)).ToArray(), tooltip, true, currentSelectedIndex);
+					settingSelector.ModSettingKey = name;
+					settingSelector.OnValueChanged += (int newIndex, string newSelection) =>
+					{
+						mod.ModHelper.Config.SetSettingsValue(name, options[newIndex]);
+						mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+						mod.Configure(mod.ModHelper.Config);
+					};
+					break;
+				case SettingType.SEPARATOR:
+					var dots = settingObject["dots"]?.ToObject<bool>() ?? true;
+					OptionsMenuManager.AddSeparator(newModTab, dots);
+					break;
+				case SettingType.LABEL:
+					OptionsMenuManager.CreateLabel(newModTab, label);
+					break;
+				case SettingType.SLIDER:
+					var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
+					var lower = settingObject["min"].ToObject<float>();
+					var upper = settingObject["max"].ToObject<float>();
+					var settingSlider = OptionsMenuManager.AddSliderInput(newModTab, label, lower, upper, tooltip, currentSliderValue);
+					settingSlider.ModSettingKey = name;
+					settingSlider.OnValueChanged += (float newValue) =>
+					{
+						mod.ModHelper.Config.SetSettingsValue(name, newValue);
+						mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+						mod.Configure(mod.ModHelper.Config);
+					};
+					break;
+				case SettingType.TEXT:
+					var currentTextValue = mod.ModHelper.Config.GetSettingsValue<string>(name);
+					var textInput = OptionsMenuManager.AddTextEntryInput(newModTab, label, currentTextValue, tooltip, false);
+					textInput.ModSettingKey = name;
+					textInput.OnConfirmEntry += () =>
+					{
+						var newValue = textInput.GetInputText();
+						mod.ModHelper.Config.SetSettingsValue(name, newValue);
+						mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+						mod.Configure(mod.ModHelper.Config);
+						textInput.SetText(newValue);
+					};
+					break;
+				case SettingType.NUMBER:
+					var currentValue = mod.ModHelper.Config.GetSettingsValue<double>(name);
+					var numberInput = OptionsMenuManager.AddTextEntryInput(newModTab, label, currentValue.ToString(CultureInfo.CurrentCulture), tooltip, true);
+					numberInput.ModSettingKey = name;
+					numberInput.OnConfirmEntry += () =>
+					{
+						var newValue = double.Parse(numberInput.GetInputText());
+						mod.ModHelper.Config.SetSettingsValue(name, newValue);
+						mod.ModHelper.Storage.Save(mod.ModHelper.Config, Constants.ModConfigFileName);
+						mod.Configure(mod.ModHelper.Config);
+						numberInput.SetText(newValue.ToString());
+					};
+					break;
+				default:
+					_console.WriteLine($"Couldn't generate input for unkown input type {settingType}", MessageType.Error);
+					OptionsMenuManager.CreateLabel(newModTab, $"Unknown {settingType} : {name}");
+					break;
 			}
 		}
 
