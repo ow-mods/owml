@@ -29,5 +29,7 @@ namespace OWML.Common
 		int SocketPort { get; set; }
 
 		DateTime LoadTime { get; set; }
+
+		bool DisableVersionPopup { get; set; }
 	}
 }
