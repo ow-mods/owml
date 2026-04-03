@@ -181,6 +181,17 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				SaveConfig();
 			};
 
+			var versionPopupCheckbox = OptionsMenuManager.AddCheckboxInput(
+				owmlSubTab,
+				"Disable Version Popup",
+				"Disables the windows popup that appears when OWML detects that it might not be compatible with a version of Outer Wilds.",
+				_owmlConfig.DisableVersionPopup);
+			versionPopupCheckbox.OnValueChanged += (bool newValue) =>
+			{
+				_owmlConfig.DisableVersionPopup = newValue;
+				SaveConfig();
+			};
+
 			#endregion
 
 			var modsWithSettings = modList.Where(x => x.ModHelper.Config.Settings.Count != 0);
