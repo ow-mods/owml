@@ -30,6 +30,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				var incremental = MenuManager.OWMLSettingsMenu.GetMenuOptions()[2] as OWMLToggleElement;
 				incremental.Initialize(owmlDefaultConfig.IncrementalGC);
 
+				var versionPopup = MenuManager.OWMLSettingsMenu.GetMenuOptions()[3] as OWMLToggleElement;
+				versionPopup.Initialize(owmlDefaultConfig.DisableVersionPopup);
+
 				return;
 			}
 
