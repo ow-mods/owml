@@ -28,8 +28,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingMenu = Resources.FindObjectsOfTypeAll<Menu>().First(x => x.name == "GraphicsMenu").gameObject;
 
-			var newMenu = Object.Instantiate(existingMenu);
-			newMenu.transform.parent = existingMenu.transform.parent;
+			var newMenu = Object.Instantiate(existingMenu, existingMenu.transform.parent);
 			newMenu.transform.localScale = Vector3.one;
 			newMenu.transform.localPosition = Vector3.zero;
 			newMenu.transform.localRotation = Quaternion.identity;
@@ -82,8 +81,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingTabbedSubMenu = Resources.FindObjectsOfTypeAll<TabbedSubMenu>().Single(x => x.name == "GameplayMenu").gameObject;
 
-			var newSubMenu = Object.Instantiate(existingTabbedSubMenu);
-			newSubMenu.transform.parent = existingTabbedSubMenu.transform.parent;
+			var newSubMenu = Object.Instantiate(existingTabbedSubMenu, existingTabbedSubMenu.transform.parent);
 			newSubMenu.transform.localScale = Vector3.one;
 			newSubMenu.transform.localPosition = Vector3.zero;
 			newSubMenu.transform.localRotation = Quaternion.identity;
@@ -168,8 +166,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var existingSubMenu = existingTabbedSubMenu.GetComponent<TabbedSubMenu>()._subMenus[0].gameObject;
 			var existingSubMenuTabButton = existingTabbedSubMenu.GetComponent<TabbedSubMenu>()._tabSelectablePairs[0].tabButton.gameObject;
 
-			var newSubMenuTabButton = Object.Instantiate(existingSubMenuTabButton);
-			newSubMenuTabButton.transform.parent = menu.transform.Find("SubMenuTabs");
+			var newSubMenuTabButton = Object.Instantiate(existingSubMenuTabButton, menu.transform.Find("SubMenuTabs"));
 			newSubMenuTabButton.transform.localScale = Vector3.one;
 			newSubMenuTabButton.transform.localPosition = Vector3.zero;
 			newSubMenuTabButton.transform.localRotation = Quaternion.identity;
@@ -178,8 +175,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
 			newSubMenuTabButton.GetComponentInChildren<Text>().text = name;
 
-			var newSubMenu = Object.Instantiate(existingSubMenu);
-			newSubMenu.transform.parent = menu.transform;
+			var newSubMenu = Object.Instantiate(existingSubMenu, menu.transform);
 			newSubMenu.transform.localScale = Vector3.one;
 			newSubMenu.transform.localPosition = Vector3.zero;
 			newSubMenu.name = $"Menu{name}";
@@ -240,8 +236,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Single(x => x.name == "GameplayMenu").transform
 				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-InvertPlayerLook").gameObject;
 
-			var newCheckbox = Object.Instantiate(existingCheckbox);
-			newCheckbox.transform.parent = GetParentForAddedElements(menu);
+			var newCheckbox = Object.Instantiate(existingCheckbox, GetParentForAddedElements(menu));
 			newCheckbox.transform.localPosition = Vector3.zero;
 			newCheckbox.transform.localScale = Vector3.one;
 			newCheckbox.transform.name = $"UIElement-{label}";
@@ -288,8 +283,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var text = script._buttonTrue.GetComponent<UIStyleApplier>()._textItems[0];
 			var prefab = text.transform.root.gameObject;
 
-			var newToggle = Object.Instantiate(prefab);
-			newToggle.transform.parent = GetParentForAddedElements(menu);
+			var newToggle = Object.Instantiate(prefab, GetParentForAddedElements(menu));
 			newToggle.transform.localPosition = Vector3.zero;
 			newToggle.transform.localScale = Vector3.one;
 			newToggle.transform.name = $"UIElement-{label}";
@@ -337,8 +331,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Single(x => x.name == "GameplayMenu").transform
 				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-ControllerProfile").gameObject;
 
-			var newSelector = Object.Instantiate(existingSelector);
-			newSelector.transform.parent = GetParentForAddedElements(menu);
+			var newSelector = Object.Instantiate(existingSelector, GetParentForAddedElements(menu));
 			newSelector.transform.localPosition = Vector3.zero;
 			newSelector.transform.localScale = Vector3.one;
 			newSelector.transform.name = $"UIElement-{label}";
@@ -385,8 +378,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Single(x => x.name == "GameplayMenu").transform
 				.Find("MenuGameplayBasic/Scroll View/Viewport/Content/UIElement-LookSensitivity").gameObject;
 
-			var newSlider = Object.Instantiate(existingSlider);
-			newSlider.transform.parent = GetParentForAddedElements(menu);
+			var newSlider = Object.Instantiate(existingSlider, GetParentForAddedElements(menu));
 			newSlider.transform.localPosition = Vector3.zero;
 			newSlider.transform.localScale = Vector3.one;
 			newSlider.transform.name = $"UIElement-{label}";
@@ -487,9 +479,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-ResolutionSelect")
 				.Find("HorizontalLayoutGroup").gameObject;
 
-			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			var newHorizLayout = Object.Instantiate(existingHorizLayout, rootObj.transform);
 			newHorizLayout.name = "HorizontalLayoutGroup";
-			newHorizLayout.transform.parent = rootObj.transform;
 			newHorizLayout.transform.localPosition = Vector3.zero;
 			newHorizLayout.transform.localScale = Vector3.one;
 			newHorizLayout.transform.localRotation = Quaternion.identity;
@@ -535,8 +526,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue");
 
-			var newButtonObj = Object.Instantiate(existingButton);
-			newButtonObj.transform.parent = controlBlock;
+			var newButtonObj = Object.Instantiate(existingButton, controlBlock);
 			newButtonObj.transform.localPosition = Vector3.zero;
 			newButtonObj.transform.localScale = Vector3.one;
 			newButtonObj.name = $"UIElement-Button-{buttonLabel}";
@@ -588,9 +578,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-ResolutionSelect")
 				.Find("HorizontalLayoutGroup").gameObject;
 
-			var newHorizLayout = Object.Instantiate(existingHorizLayout);
+			var newHorizLayout = Object.Instantiate(existingHorizLayout, newButtonObj.transform);
 			newHorizLayout.name = "HorizontalLayoutGroup";
-			newHorizLayout.transform.parent = newButtonObj.transform;
 			newHorizLayout.transform.localPosition = Vector3.zero;
 			newHorizLayout.transform.localScale = Vector3.one;
 			newHorizLayout.transform.localRotation = Quaternion.identity;
@@ -619,8 +608,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var existingButton = Resources.FindObjectsOfTypeAll<Button>().First(x => x.name == "UIElement-ButtonContinue").gameObject;
 
-			var newButton = Object.Instantiate(existingButton);
-			newButton.transform.parent = controlBlock;
+			var newButton = Object.Instantiate(existingButton, controlBlock);
 			newButton.transform.localScale = Vector3.one;
 			newButton.transform.localPosition = Vector3.zero;
 			newButton.name = $"UIElement-{label}";
@@ -773,8 +761,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var existingButton = Resources.FindObjectsOfTypeAll<TabButton>().Single(x => x.name == "Button-Graphics");
 
-			var newButton = Object.Instantiate(existingButton);
-			newButton.transform.parent = existingButton.transform.parent;
+			var newButton = Object.Instantiate(existingButton, existingButton.transform.parent);
 			newButton.transform.localScale = Vector3.one;
 			newButton.transform.localPosition = Vector3.zero;
 			newButton.transform.SetSiblingIndex(newButton.transform.parent.childCount - 2);
