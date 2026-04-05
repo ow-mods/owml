@@ -374,6 +374,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			foreach (var mod in modList)
 			{
+				_console.WriteLine($"Setting up menus for {mod.ModHelper.Manifest.UniqueName}", MessageType.Debug);
+
 				try
 				{
 					if (LoadManager.GetCurrentScene() == OWScene.TitleScreen)
