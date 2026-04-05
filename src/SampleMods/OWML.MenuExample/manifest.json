@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/dev/schemas/manifest_schema.json",
+  "filename": "OWML.MenuExample.dll",
+  "author": "_nebula",
+  "name": "ExampleAPI",
+  "uniqueName": "_nebula.MenuExample",
+  "version": "1.0.0",
+  "owmlVersion": "2.16.0",
+  "description": "Example menus for the OWML menu system"
+}
