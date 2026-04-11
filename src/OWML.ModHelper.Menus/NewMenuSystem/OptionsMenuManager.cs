@@ -784,37 +784,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			rebindingElement._rebindID = id;
 			rebindingElement._overrideTooltipText = tooltip;
 
-			var newRebindingElement = newRebinding.AddComponent<OWMLKeyRebindingElement>();
-			newRebindingElement._settingId = rebindingElement._settingId;
-			newRebindingElement._label = rebindingElement._label;
-			newRebindingElement._overrideTooltipText = tooltip;
-			newRebindingElement._rebindID = id;
-			newRebindingElement._controlButton = rebindingElement._controlButton;
-			newRebindingElement._controlSubmitAction = rebindingElement._controlSubmitAction;
-			newRebindingElement._labelButton = rebindingElement._labelButton;
-			newRebindingElement._referenceButtonImageHeight = rebindingElement._referenceButtonImageHeight;
-			newRebindingElement._gamepadBindingImage1Obj = rebindingElement._gamepadBindingImage1Obj;
-			newRebindingElement._gamepadBindingImage2Obj = rebindingElement._gamepadBindingImage2Obj;
-			newRebindingElement._gamepadBindingImage1 = rebindingElement._gamepadBindingImage1;
-			newRebindingElement._gamepadBindingImage2 = rebindingElement._gamepadBindingImage2;
-			newRebindingElement._keyboardMouseBindingBlockObj = rebindingElement._keyboardMouseBindingBlockObj;
-			newRebindingElement._keyboardMouseBindingImage1Obj = rebindingElement._keyboardMouseBindingImage1Obj;
-			newRebindingElement._keyboardMouseBindingImage2Obj = rebindingElement._keyboardMouseBindingImage2Obj;
-			newRebindingElement._keyboardMouseBindingImage1 = rebindingElement._keyboardMouseBindingImage1;
-			newRebindingElement._keyboardMouseBindingImage2 = rebindingElement._keyboardMouseBindingImage2;
-			newRebindingElement._console = _console;
-
-			Object.Destroy(rebindingElement);
-
 			var settingsMenuView = Resources.FindObjectsOfTypeAll<SettingsMenuView>().Single();
-			settingsMenuView._listRebindableOptions = settingsMenuView._listRebindableOptions.Remove(rebindingElement);
-			OWMLRebinding.ListCustomRebindableOptions.Add(newRebindingElement);
-			//settingsMenuView._listRebindableOptions = settingsMenuView._listRebindableOptions.Add(rebindingElement);
-			//settingsMenuView._model.InitializeInputRebindables(settingsMenuView._listRebindableOptions);
-			for (int i = 0; i < OWMLRebinding.ListCustomRebindableOptions.Count; i++)
-			{
-				OWMLRebinding.ListCustomRebindableOptions[i].Initialize(settingsMenuView._model);
-			}
+			settingsMenuView._listRebindableOptions = settingsMenuView._listRebindableOptions.Add(rebindingElement);
+			settingsMenuView._model.InitializeInputRebindables(settingsMenuView._listRebindableOptions);
 
 			menu._menuOptions = menu._menuOptions.Add(rebindingElement);
 
