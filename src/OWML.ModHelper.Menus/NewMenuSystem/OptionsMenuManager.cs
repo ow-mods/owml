@@ -782,6 +782,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var rebindingElement = newRebinding.GetComponent<KeyRebindingElement>();
 			rebindingElement._rebindID = id;
+			rebindingElement._tooltipTextType = UITextType.None;
 			rebindingElement._overrideTooltipText = tooltip;
 
 			var settingsMenuView = Resources.FindObjectsOfTypeAll<SettingsMenuView>().Single();
