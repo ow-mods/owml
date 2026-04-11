@@ -150,6 +150,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			foreach (var item in tab._menuOptions)
 			{
+				if (item == null)
+				{
+					continue;
+				}
 				Object.Destroy(item.gameObject);
 			}
 
