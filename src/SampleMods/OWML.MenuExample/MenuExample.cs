@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using OWML.Common;
-using OWML.ModHelper;
-using UnityEngine.InputSystem;
-using UnityEngine;
+﻿using OWML.Common;
 using OWML.Common.Interfaces.Menus;
+using OWML.ModHelper;
+using UnityEngine;
 
 namespace OWML.MenuExample
 {
@@ -12,10 +10,16 @@ namespace OWML.MenuExample
 		public void Start()
 		{
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
+
+			rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Single Axis", "<Keyboard>/c", null, "Test Tooltip");
+			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Dual Axis", "<Keyboard>/c", "<Keyboard>/v", "Test Tooltip 2");
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
 		public IOWMLPopupInputMenu PopupInput;
+
+		private InputConsts.InputCommandType rebindOne;
+		private InputConsts.InputCommandType rebindTwo;
 
 		public override void SetupTitleMenu(ITitleMenuManager titleManager)
 		{
@@ -127,6 +131,20 @@ namespace OWML.MenuExample
 
 		public void Update()
 		{
+			var val1 = OWInput.GetAxisValue(InputLibrary.GetInputCommand(rebindOne));
+
+			if (val1 != Vector2.zero)
+			{
+				ModHelper.Console.WriteLine($"COMMAND 1: {val1}");
+			}
+
+			var val2 = OWInput.GetAxisValue(InputLibrary.GetInputCommand(rebindTwo));
+
+			if (val2 != Vector2.zero)
+			{
+				ModHelper.Console.WriteLine($"COMMAND 2: {val2}");
+			}
+
 			if (FourChoicePopupMenu != null)
 			{
 				var rnd = new System.Random();

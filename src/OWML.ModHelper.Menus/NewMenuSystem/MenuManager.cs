@@ -360,6 +360,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 						}
 					}
 
+					foreach (var item in mod.ModHelper.RebindingHelper.Rebindables)
+					{
+						OptionsMenuManager.CreateRebinding(newModTab, item.name, item.tooltip, item.id);
+					}
+
 					OptionsMenuManager.OpenOptionsAtTab(newModTabButton);
 					Locator.GetMenuAudioController().PlayChangeTab();
 				};

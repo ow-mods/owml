@@ -31,6 +31,8 @@ namespace OWML.Common
 
 		IModInteraction Interaction { get; }
 
+		IRebindingHelper RebindingHelper { get; }
+
 		IMenuManager MenuHelper { get; }
 
 		IModTranslations MenuTranslations { get; }

@@ -71,6 +71,7 @@ namespace OWML.ModLoader
 				.Add<IModPopupManager, ModPopupManager>()
 				.Add<IModMenus, ModMenus>()
 				.Add<IMenuManager, MenuManager>()
+				.Add<IOWMLRebinding, OWMLRebinding>()
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()
 				.Add<IModVersionChecker, ModVersionChecker>()

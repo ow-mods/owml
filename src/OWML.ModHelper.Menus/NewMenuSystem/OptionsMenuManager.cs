@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.ModHelper.Input;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
 using System.Collections.Generic;
@@ -759,6 +760,65 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newObj.transform.localScale = Vector3.one;
 			newObj.transform.localPosition = Vector3.zero;
 			newObj.transform.localRotation = Quaternion.identity;
+		}
+
+		public KeyRebindingElement CreateRebinding(Menu menu, string label, string tooltip, RebindableID id)
+		{
+			_console.WriteLine($"Creating rebinding label:{label} tooltip:{tooltip} id:{id}");
+
+			var existingRebinding = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
+				.Single(x => x.name == "InputMenu").transform
+				.Find("MenuGeneral")
+				.Find("UIElement-Pause").gameObject;
+
+			var newRebinding = UnityEngine.Object.Instantiate(existingRebinding);
+			newRebinding.transform.parent = GetParentForAddedElements(menu);
+			newRebinding.transform.localScale = Vector3.one;
+			newRebinding.name = $"UIElement-{id}";
+
+			UnityEngine.Object.Destroy(newRebinding.GetComponentInChildren<LocalizedText>());
+			var text = newRebinding.GetComponentInChildren<Text>();
+			text.text = label;
+
+			var rebindingElement = newRebinding.GetComponent<KeyRebindingElement>();
+			rebindingElement._rebindID = id;
+			rebindingElement._overrideTooltipText = tooltip;
+
+			var newRebindingElement = newRebinding.AddComponent<OWMLKeyRebindingElement>();
+			newRebindingElement._settingId = rebindingElement._settingId;
+			newRebindingElement._label = rebindingElement._label;
+			newRebindingElement._overrideTooltipText = tooltip;
+			newRebindingElement._rebindID = id;
+			newRebindingElement._controlButton = rebindingElement._controlButton;
+			newRebindingElement._controlSubmitAction = rebindingElement._controlSubmitAction;
+			newRebindingElement._labelButton = rebindingElement._labelButton;
+			newRebindingElement._referenceButtonImageHeight = rebindingElement._referenceButtonImageHeight;
+			newRebindingElement._gamepadBindingImage1Obj = rebindingElement._gamepadBindingImage1Obj;
+			newRebindingElement._gamepadBindingImage2Obj = rebindingElement._gamepadBindingImage2Obj;
+			newRebindingElement._gamepadBindingImage1 = rebindingElement._gamepadBindingImage1;
+			newRebindingElement._gamepadBindingImage2 = rebindingElement._gamepadBindingImage2;
+			newRebindingElement._keyboardMouseBindingBlockObj = rebindingElement._keyboardMouseBindingBlockObj;
+			newRebindingElement._keyboardMouseBindingImage1Obj = rebindingElement._keyboardMouseBindingImage1Obj;
+			newRebindingElement._keyboardMouseBindingImage2Obj = rebindingElement._keyboardMouseBindingImage2Obj;
+			newRebindingElement._keyboardMouseBindingImage1 = rebindingElement._keyboardMouseBindingImage1;
+			newRebindingElement._keyboardMouseBindingImage2 = rebindingElement._keyboardMouseBindingImage2;
+			newRebindingElement._console = _console;
+
+			Object.Destroy(rebindingElement);
+
+			var settingsMenuView = Resources.FindObjectsOfTypeAll<SettingsMenuView>().Single();
+			settingsMenuView._listRebindableOptions = settingsMenuView._listRebindableOptions.Remove(rebindingElement);
+			OWMLRebinding.ListCustomRebindableOptions.Add(newRebindingElement);
+			//settingsMenuView._listRebindableOptions = settingsMenuView._listRebindableOptions.Add(rebindingElement);
+			//settingsMenuView._model.InitializeInputRebindables(settingsMenuView._listRebindableOptions);
+			for (int i = 0; i < OWMLRebinding.ListCustomRebindableOptions.Count; i++)
+			{
+				OWMLRebinding.ListCustomRebindableOptions[i].Initialize(settingsMenuView._model);
+			}
+
+			menu._menuOptions = menu._menuOptions.Add(rebindingElement);
+
+			return rebindingElement;
 		}
 
 		private TabButton CreateTabButton(string name, Menu menu)
