@@ -149,12 +149,20 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			tempList.RemoveAll(x => x.tabButton == tabButton);
 			optionsMenu._tabSelectablePairs = tempList.ToArray();
 
+			var settingsMenuView = Resources.FindObjectsOfTypeAll<SettingsMenuView>().Single();
+
 			foreach (var item in tab._menuOptions)
 			{
 				if (item == null)
 				{
 					continue;
 				}
+
+				if (item is KeyRebindingElement rebindingElement)
+				{
+					settingsMenuView._listRebindableOptions = settingsMenuView._listRebindableOptions.Remove(rebindingElement);
+				}
+
 				Object.Destroy(item.gameObject);
 			}
 
