@@ -9,8 +9,16 @@ namespace OWML.Common
 
 		public InputConsts.InputCommandType RegisterRebindable(
 			string name,
-			string primaryKeybind,
-			string secondaryKeybind = null,
-			string tooltip = null);
+			string tooltip,
+			string primaryKeyboardKeybind,
+			string primaryGamepadKeybind);
+
+		public InputConsts.InputCommandType RegisterRebindable(
+			string name,
+			string tooltip,
+			string primaryKeyboardKeybind,
+			string primaryGamepadKeybind,
+			string secondaryKeyboardKeybind,
+			string secondaryGamepadKeybind);
 	}
 }

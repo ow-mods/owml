@@ -11,8 +11,8 @@ namespace OWML.MenuExample
 		{
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
 
-			rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Single Axis", "<Keyboard>/c", null, "Test Tooltip");
-			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Dual Axis", "<Keyboard>/c", "<Keyboard>/v", "Test Tooltip 2");
+			rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Single Axis", "Test Tooltip", "<Keyboard>/c", "<Gamepad>/leftShoulder");
+			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Dual Axis", "Test Tooltip 2", "<Keyboard>/c", "<Gamepad>/rightShoulder", "<Keyboard>/v", "<Gamepad>/rightTrigger");
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;

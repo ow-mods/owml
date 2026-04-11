@@ -2,6 +2,7 @@
 using OWML.Utils;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using static InputCommandDefinitions;
 
 namespace OWML.ModHelper.Input
 {
@@ -20,9 +21,9 @@ namespace OWML.ModHelper.Input
 
 		public InputConsts.InputCommandType RegisterRebindable(
 			string name,
-			string primaryKeybind,
-			string secondaryKeybind = null,
-			string tooltip = null)
+			string tooltip,
+			string primaryKeyboardKeybind,
+			string primaryGamepadKeybind)
 		{
 			var uniqueName = _manifest.UniqueName + name;
 
@@ -30,25 +31,44 @@ namespace OWML.ModHelper.Input
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
 
-			if (string.IsNullOrEmpty(secondaryKeybind))
-			{
-				var primaryName = uniqueName + "Primary";
-				var primaryAction = AddAction(_manifest, primaryName);
-				AddBinding(_manifest, primaryAction, primaryKeybind, primaryName);
+			var primaryName = uniqueName + "Primary";
+			var primaryAction = AddAction(_manifest, primaryName);
+			AddBinding(_manifest, primaryAction, primaryKeyboardKeybind, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, primaryAction, primaryGamepadKeybind, InputConsts.InputControlSchemes.GAMEPAD);
 
-				inputCommandData.TrySetAsAxis(rebindableId, primaryName);
-			}
-			else
-			{
-				var primaryName = uniqueName + "Primary";
-				var secondaryName = uniqueName + "Secondary";
-				var primaryAction = AddAction(_manifest, primaryName);
-				var secondaryAction = AddAction(_manifest, secondaryName);
-				AddBinding(_manifest, primaryAction, primaryKeybind, primaryName);
-				AddBinding(_manifest, secondaryAction, secondaryKeybind, secondaryName);
+			inputCommandData.TrySetAsAxis(rebindableId, primaryName);
 
-				inputCommandData.TrySetAsAxis(rebindableId, primaryName, secondaryName);
-			}
+			InputCommandDefinitions.AddInputCommandData(inputCommandData);
+
+			Rebindables.Add((rebindableId, name, tooltip));
+
+			return commandType;
+		}
+
+		public InputConsts.InputCommandType RegisterRebindable(
+			string name,
+			string tooltip,
+			string primaryKeyboardKeybind,
+			string primaryGamepadKeybind,
+			string secondaryKeyboardKeybind,
+			string secondaryGamepadKeybind)
+		{
+			var uniqueName = _manifest.UniqueName + name;
+
+			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
+			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
+			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
+
+			var primaryName = uniqueName + "Primary";
+			var secondaryName = uniqueName + "Secondary";
+			var primaryAction = AddAction(_manifest, primaryName);
+			var secondaryAction = AddAction(_manifest, secondaryName);
+			AddBinding(_manifest, primaryAction, primaryKeyboardKeybind, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, primaryAction, primaryGamepadKeybind, InputConsts.InputControlSchemes.GAMEPAD);
+			AddBinding(_manifest, secondaryAction, secondaryKeyboardKeybind, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, secondaryAction, secondaryGamepadKeybind, InputConsts.InputControlSchemes.GAMEPAD);
+
+			inputCommandData.TrySetAsAxis(rebindableId, primaryName, secondaryName);
 
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 
@@ -72,11 +92,9 @@ namespace OWML.ModHelper.Input
 				expectedControlLayout: "Button");
 		}
 
-		private void AddBinding(IModManifest manifest, InputAction action, string control, string name)
+		private void AddBinding(IModManifest manifest, InputAction action, string control, string inputControlScheme)
 		{
-			// AddBinding is always called after AddAction, so no need to validate the dict
-			var syntax = OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddBinding(control, action, groups: "KeyboardMouse");
-			syntax.WithName(name);
+			OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddBinding(control, action, groups: inputControlScheme);
 		}
 	}
 }
