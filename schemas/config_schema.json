@@ -53,6 +53,7 @@
                         "type": {
                             "type": "string",
                             "enum": [
+                                "label",
                                 "separator",
                                 "slider",
                                 "toggle",
@@ -73,6 +74,14 @@
                             "type": "string",
                             "description": "Tooltip to show when hovering on the option"
                         }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "type": { "const": "label" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsLabel"
                     }
                 },
                 {
@@ -124,6 +133,14 @@
                     }
                 }
             ]
+        },
+        "optionsLabel": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            }
         },
         "optionsSeparator": {
             "type": "object",
