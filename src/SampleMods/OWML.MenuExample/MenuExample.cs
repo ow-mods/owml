@@ -120,7 +120,9 @@ namespace OWML.MenuExample
 			threeButton.OnSubmitAction += () => threeChoicePopup.EnableMenu(true);
 
 			optionsManager.AddSeparator(subTab2Menu, true);
-			optionsManager.CreateLabel(subTab2Menu, "Test Label");
+			optionsManager.CreateLabel(subTab2Menu, "Test Left Label", MenuSide.LEFT);
+			optionsManager.CreateLabel(subTab2Menu, "Test Center Label", MenuSide.CENTER);
+			optionsManager.CreateLabel(subTab2Menu, "Test Right Label", MenuSide.RIGHT);
 			var checkbox = optionsManager.AddCheckboxInput(subTab2Menu, "Test Checkbox", "* It's a test checkbox.", false);
 			var toggle = optionsManager.AddToggleInput(subTab2Menu, "Test Toggle", "Option 1", "Option 2", "* It's a test toggle.", false);
 			var selector = optionsManager.AddSelectorInput(subTab2Menu, "Test Selector", new[] { "Option 1", "Option 2", "Option 3" }, "* It's a test selector.", true, 0);

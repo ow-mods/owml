@@ -169,6 +169,17 @@
             "allOf": [
                 {
                     "$ref": "#/definitions/optionsLabelBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "side": {
+                            "type": "string",
+                            "enum": ["left", "center", "right"],
+                            "default": "center",
+                            "description": "Alignment of the label"
+                        }
+                    }
                 }
             ]
         },

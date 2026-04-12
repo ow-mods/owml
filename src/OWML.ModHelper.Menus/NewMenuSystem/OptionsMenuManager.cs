@@ -1,4 +1,5 @@
 ﻿using OWML.Common;
+using OWML.Common.Enums;
 using OWML.ModHelper.Input;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
@@ -730,15 +731,23 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public void CreateLabel(Menu menu, string label)
 		{
+			CreateLabel(menu, label, MenuSide.CENTER);
+		}
+
+		public void CreateLabel(Menu menu, string label, MenuSide side)
+		{
 			var newObj = new GameObject("Label");
 			
 			var layoutElement = newObj.AddComponent<LayoutElement>();
 			layoutElement.flexibleWidth = 1;
 
+			var padding = side.GetLabelPadding();
+			var anchor = side.GetTextAnchor();
+
 			var verticalLayout = newObj.AddComponent<VerticalLayoutGroup>();
-			verticalLayout.padding = new RectOffset(100, 100, 0, 0);
+			verticalLayout.padding = padding;
 			verticalLayout.spacing = 0;
-			verticalLayout.childAlignment = TextAnchor.MiddleCenter;
+			verticalLayout.childAlignment = anchor;
 			verticalLayout.childForceExpandHeight = false;
 			verticalLayout.childForceExpandWidth = false;
 			verticalLayout.childControlHeight = true;
@@ -752,7 +761,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			text.text = label;
 			text.font = Resources.Load<Font>("fonts/english - latin/Adobe - SerifGothicStd");
 			text.fontSize = 36;
-			text.alignment = TextAnchor.MiddleCenter;
+			text.alignment = anchor;
 			text.horizontalOverflow = HorizontalWrapMode.Wrap;
 			text.verticalOverflow = VerticalWrapMode.Truncate;
 

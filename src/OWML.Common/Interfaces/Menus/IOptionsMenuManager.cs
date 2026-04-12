@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OWML.Common.Enums;
+using UnityEngine;
 
 namespace OWML.Common
 {
@@ -122,6 +123,14 @@ namespace OWML.Common
 		/// <param name="menu">The menu to add the label to.</param>
 		/// <param name="label">The text of the label.</param>
 		public void CreateLabel(Menu menu, string label);
+
+		/// <summary>
+		/// Adds a visual label in a menu.
+		/// </summary>
+		/// <param name="menu">The menu to add the label to.</param>
+		/// <param name="label">The text of the label.</param>
+		/// <param name="side">The alignment of the label.</param>
+		public void CreateLabel(Menu menu, string label, MenuSide side);
 
 		public KeyRebindingElement CreateRebinding(Menu menu, string label, string tooltip, RebindableID id);
 	}
