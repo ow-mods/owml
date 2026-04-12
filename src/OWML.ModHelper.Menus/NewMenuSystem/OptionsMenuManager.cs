@@ -799,6 +799,19 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			menu._menuOptions = menu._menuOptions.Add(rebindingElement);
 
+			if (menu._selectOnActivate == null)
+			{
+				menu._selectOnActivate = newRebinding.GetComponent<Selectable>();
+			}
+
+			var labelBlock = newRebinding.transform.Find("HorizontalLayoutGroup").Find("LabelBlock").GetComponent<LayoutElement>();
+			labelBlock.minWidth = 860;
+			labelBlock.preferredWidth = -1;
+
+			var controlBlock = newRebinding.transform.Find("HorizontalLayoutGroup").Find("ControlBlock").GetComponent<LayoutElement>();
+			controlBlock.flexibleWidth = 1;
+			controlBlock.preferredWidth = -1;
+
 			return rebindingElement;
 		}
 
