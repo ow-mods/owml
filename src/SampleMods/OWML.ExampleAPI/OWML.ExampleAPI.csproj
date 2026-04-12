@@ -9,7 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj" IncludeAssets="compile" />
+    <ProjectReference Include="..\..\OWML.ModHelper\OWML.ModHelper.csproj" IncludeAssets="compile">
+      <Private>False</Private>
+      <CopyLocalSatelliteAssemblies>False</CopyLocalSatelliteAssemblies>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
