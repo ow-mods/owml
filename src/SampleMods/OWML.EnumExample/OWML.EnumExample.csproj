@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-	  <LangVersion>9.0</LangVersion>
+	  <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath Condition="Exists('../../OWML.Launcher/bin/Debug/net48/Mods')">../../OWML.Launcher/bin/Debug/net48/Mods/OWML.EnumExample</OutputPath>
