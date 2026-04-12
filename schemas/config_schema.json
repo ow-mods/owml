@@ -145,8 +145,10 @@
         "optionsSeparator": {
             "type": "object",
             "properties": {
-                "value": {
-                    "type": "string"
+                "dots": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Should this separator have dots?"
                 }
             }
         },
