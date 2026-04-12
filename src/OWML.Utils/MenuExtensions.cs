@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OWML.Common;
+using UnityEngine;
 
 namespace OWML.Utils
 {
@@ -22,6 +23,28 @@ namespace OWML.Utils
 
 			buttonAction.gameObject.SetActive(visible);
 			buttonAction.GetComponent<CanvasGroup>().alpha = visible ? activeAlpha : 0;
+		}
+
+		public static RectOffset GetLabelPadding(this MenuSide side)
+		{
+			return side switch
+			{
+				MenuSide.LEFT => new RectOffset(20, 180, 0, 0),
+				MenuSide.CENTER => new RectOffset(100, 100, 0, 0),
+				MenuSide.RIGHT => new RectOffset(180, 20, 0, 0),
+				_ => new RectOffset(100, 100, 0, 0)
+			};
+		}
+
+		public static TextAnchor GetTextAnchor(this MenuSide side)
+		{
+			return side switch
+			{
+				MenuSide.LEFT => TextAnchor.MiddleLeft,
+				MenuSide.CENTER => TextAnchor.MiddleCenter,
+				MenuSide.RIGHT => TextAnchor.MiddleRight,
+				_ => TextAnchor.MiddleCenter
+			};
 		}
 	}
 }

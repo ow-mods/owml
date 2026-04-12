@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
+using OWML.Common.Enums;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;
@@ -378,7 +379,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 					OptionsMenuManager.AddSeparator(newModTab, dots);
 					break;
 				case SettingType.LABEL:
-					OptionsMenuManager.CreateLabel(newModTab, label);
+					var side = settingObject["side"]?.ToObject<MenuSide>() ?? MenuSide.CENTER;
+					OptionsMenuManager.CreateLabel(newModTab, label, side);
 					break;
 				case SettingType.SLIDER:
 					var currentSliderValue = mod.ModHelper.Config.GetSettingsValue<float>(name);
