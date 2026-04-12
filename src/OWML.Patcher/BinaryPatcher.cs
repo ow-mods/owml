@@ -119,7 +119,7 @@ namespace OWML.Patcher
 			var increasedValueBytes = BitConverter.GetBytes(value + difference);
 			if (isBigEndian)
 			{
-				increasedValueBytes = increasedValueBytes.Reverse().ToArray();
+				Array.Reverse(increasedValueBytes);
 			}
 
 			increasedValueBytes.CopyTo(fileBytes, location);

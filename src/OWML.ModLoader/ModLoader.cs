@@ -16,13 +16,15 @@ namespace OWML.ModLoader
 {
 	public class ModLoader
 	{
+		private static Owo owo;
+
 		public static void LoadMods()
 		{
 			var appHelper = new ApplicationHelper();
 			var goHelper = new GameObjectHelper();
 			var container = CreateContainer(appHelper, goHelper);
 
-			var owo = container.Resolve<Owo>();
+			owo = container.Resolve<Owo>();
 			owo.LoadMods();
 		}
 
