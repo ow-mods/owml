@@ -11,7 +11,8 @@ namespace OWML.Common
 			string name,
 			string tooltip,
 			string primaryKeyboardKeybind,
-			string primaryGamepadKeybind);
+			string primaryGamepadKeybind,
+			bool axis);
 
 		public InputConsts.InputCommandType RegisterRebindable(
 			string name,
@@ -19,6 +20,9 @@ namespace OWML.Common
 			string primaryKeyboardKeybind,
 			string primaryGamepadKeybind,
 			string secondaryKeyboardKeybind,
-			string secondaryGamepadKeybind);
+			string secondaryGamepadKeybind,
+			bool axis);
+
+		public InputConsts.InputCommandType RegisterComposite(string name, string primaryName, string secondaryName);
 	}
 }

@@ -12,8 +12,13 @@ namespace OWML.MenuExample
 		{
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
 
-			rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Single Axis", "Test Tooltip", "<Keyboard>/c", "<Gamepad>/leftShoulder");
-			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Dual Axis", "Test Tooltip 2", "<Keyboard>/c", "<Gamepad>/rightShoulder", "<Keyboard>/v", "<Gamepad>/rightTrigger");
+			rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Button Single", "Test Tooltip", "<Keyboard>/c", "<Gamepad>/leftShoulder", false);
+			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Button Dual", "Test Tooltip 2", "<Keyboard>/c", "<Gamepad>/rightShoulder", "<Keyboard>/v", "<Gamepad>/rightTrigger", false);
+			rebindThree = ModHelper.RebindingHelper.RegisterRebindable("Test Axis Single", "Test Tooltip 3", "<Keyboard>/s", "<Gamepad>/rightStick/down", true);
+
+			rebindX = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis Dual)", "Test Tooltip X", "<Keyboard>/a", "<Gamepad>/leftStick/left", "<Keyboard>/d", "<Gamepad>/leftStick/right", true);
+			rebindY = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis Dual)", "Test Tooltip Y", "<Keyboard>/w", "<Gamepad>/leftStick/up", "<Keyboard>/s", "<Gamepad>/leftStick/down", true);
+			rebindComp = ModHelper.RebindingHelper.RegisterComposite("Test Composite", "Test X (Axis Dual)", "Test Y (Axis Dual)");
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
@@ -21,6 +26,10 @@ namespace OWML.MenuExample
 
 		private InputConsts.InputCommandType rebindOne;
 		private InputConsts.InputCommandType rebindTwo;
+		private InputConsts.InputCommandType rebindThree;
+		private InputConsts.InputCommandType rebindX;
+		private InputConsts.InputCommandType rebindY;
+		private InputConsts.InputCommandType rebindComp;
 
 		public override void SetupTitleMenu(ITitleMenuManager titleManager)
 		{
@@ -136,21 +145,42 @@ namespace OWML.MenuExample
 			ModHelper.Console.WriteLine($"CLEANUP OPTIONS MENU");
 		}
 
+		private void Print(IInputCommands c, string str)
+		{
+			var val = OWInput.GetValue(c);
+			var axisVal = OWInput.GetAxisValue(c);
+
+			if (OWInput.IsPressed(c))
+			{
+				ModHelper.Console.WriteLine($"{str} - {val} ||| {axisVal}");
+			}
+
+			if (OWInput.IsNewlyPressed(c))
+			{
+				ModHelper.Console.WriteLine($" - PRESSED");
+			}
+
+			if (OWInput.IsNewlyReleased(c))
+			{
+				ModHelper.Console.WriteLine($" - RELEASED");
+			}
+		}
+
 		public void Update()
 		{
-			var val1 = OWInput.GetAxisValue(InputLibrary.GetInputCommand(rebindOne));
+			var c1 = InputLibrary.GetInputCommand(rebindOne);
+			var c2 = InputLibrary.GetInputCommand(rebindTwo);
+			var c3 = InputLibrary.GetInputCommand(rebindThree);
+			var cX = InputLibrary.GetInputCommand(rebindX);
+			var cY = InputLibrary.GetInputCommand(rebindY);
+			var cComp = InputLibrary.GetInputCommand(rebindComp);
 
-			if (val1 != Vector2.zero)
-			{
-				ModHelper.Console.WriteLine($"COMMAND 1: {val1}");
-			}
-
-			var val2 = OWInput.GetAxisValue(InputLibrary.GetInputCommand(rebindTwo));
-
-			if (val2 != Vector2.zero)
-			{
-				ModHelper.Console.WriteLine($"COMMAND 2: {val2}");
-			}
+			Print(c1, "Test Button Single");
+			Print(c2, "Test Button Dual");
+			Print(c3, "Test Axis Single");
+			Print(cX, "Test X (Axis Dual)");
+			Print(cY, "Test Y (Axis Dual)");
+			Print(cComp, "Composite");
 
 			if (FourChoicePopupMenu != null)
 			{

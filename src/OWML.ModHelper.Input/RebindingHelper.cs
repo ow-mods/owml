@@ -1,6 +1,7 @@
 ﻿using OWML.Common;
 using OWML.Utils;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine.InputSystem;
 using static InputCommandDefinitions;
 
@@ -23,7 +24,8 @@ namespace OWML.ModHelper.Input
 			string name,
 			string tooltip,
 			string primaryKeyboardKeybind,
-			string primaryGamepadKeybind)
+			string primaryGamepadKeybind,
+			bool axis)
 		{
 			var uniqueName = _manifest.UniqueName + name;
 
@@ -32,7 +34,7 @@ namespace OWML.ModHelper.Input
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
 
 			var primaryName = uniqueName + "Primary";
-			var primaryAction = AddAction(_manifest, primaryName);
+			var primaryAction = AddAction(_manifest, primaryName, axis);
 			AddBinding(_manifest, primaryAction, primaryKeyboardKeybind, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
 			AddBinding(_manifest, primaryAction, primaryGamepadKeybind, InputConsts.InputControlSchemes.GAMEPAD);
 
@@ -51,7 +53,8 @@ namespace OWML.ModHelper.Input
 			string primaryKeyboardKeybind,
 			string primaryGamepadKeybind,
 			string secondaryKeyboardKeybind,
-			string secondaryGamepadKeybind)
+			string secondaryGamepadKeybind,
+			bool axis)
 		{
 			var uniqueName = _manifest.UniqueName + name;
 
@@ -61,8 +64,8 @@ namespace OWML.ModHelper.Input
 
 			var primaryName = uniqueName + "Primary";
 			var secondaryName = uniqueName + "Secondary";
-			var primaryAction = AddAction(_manifest, primaryName);
-			var secondaryAction = AddAction(_manifest, secondaryName);
+			var primaryAction = AddAction(_manifest, primaryName, axis);
+			var secondaryAction = AddAction(_manifest, secondaryName, axis);
 			AddBinding(_manifest, primaryAction, primaryKeyboardKeybind, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
 			AddBinding(_manifest, primaryAction, primaryGamepadKeybind, InputConsts.InputControlSchemes.GAMEPAD);
 			AddBinding(_manifest, secondaryAction, secondaryKeyboardKeybind, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
@@ -77,19 +80,38 @@ namespace OWML.ModHelper.Input
 			return commandType;
 		}
 
-		private InputAction AddAction(IModManifest manifest, string name)
+		public InputConsts.InputCommandType RegisterComposite(string name, string primaryName, string secondaryName)
+		{
+			_console.WriteLine($"RegisterComposite primary:{primaryName} secondary:{secondaryName}");
+
+			var uniqueName = _manifest.UniqueName + name;
+
+			var primaryId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), _manifest.UniqueName + primaryName);
+			var secondaryId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), _manifest.UniqueName + secondaryName);
+
+			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
+			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Composite, commandType);
+			inputCommandData.TrySetAsComposite(primaryId, _manifest.UniqueName + primaryName + "Primary", _manifest.UniqueName + primaryName + "Secondary", secondaryId, _manifest.UniqueName + secondaryName + "Primary", _manifest.UniqueName + secondaryName + "Secondary");
+			InputCommandDefinitions.AddInputCommandData(inputCommandData);
+
+			return commandType;
+		}
+
+		private InputAction AddAction(IModManifest manifest, string name, bool axis)
 		{
 			if (!OWMLRebinding.CustomActionMaps.ContainsKey(manifest.UniqueName))
 			{
 				OWMLRebinding.CustomActionMaps.Add(manifest.UniqueName, new InputActionMap(manifest.UniqueName));
 			}
 
+			_console.WriteLine($"AddAction {name}");
+
 			return OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddAction(
 				name,
-				InputActionType.Button,
+				axis ? InputActionType.Value : InputActionType.Button,
 				interactions: "OWInput",
 				processors: "OWAxis",
-				expectedControlLayout: "Button");
+				expectedControlLayout: axis ? "Axis" : "Button");
 		}
 
 		private void AddBinding(IModManifest manifest, InputAction action, string control, string inputControlScheme)
