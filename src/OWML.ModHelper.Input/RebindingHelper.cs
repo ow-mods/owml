@@ -102,13 +102,13 @@ namespace OWML.ModHelper.Input
 
 		public InputConsts.InputCommandType RegisterComposite(
 			string name, 
-			InputConsts.InputCommandType primary,
-			InputConsts.InputCommandType secondary)
+			InputConsts.InputCommandType yAxis,
+			InputConsts.InputCommandType xAxis)
 		{
 			var uniqueName = _manifest.UniqueName + name;
 
-			var primaryName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), primary);
-			var secondaryName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), secondary);
+			var primaryName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), yAxis);
+			var secondaryName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), xAxis);
 
 			_console.WriteLine($"RegisterComposite primary:{primaryName} secondary:{secondaryName}");
 
