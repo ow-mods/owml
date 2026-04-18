@@ -43,7 +43,7 @@ namespace OWML.Common
 		public IOWMLThreeChoicePopupMenu CreateThreeChoicePopup(string message, string confirm1Text, string confirm2Text, string cancelText);
 
 		/// <summary>
-		/// Creates a popup with three buttons to choose from.
+		/// Creates a popup with four buttons to choose from.
 		/// </summary>
 		/// <param name="message">The message text of the popup.</param>
 		/// <param name="confirm1Text">The text that appears on the first-from-the-left confirm button.</param>

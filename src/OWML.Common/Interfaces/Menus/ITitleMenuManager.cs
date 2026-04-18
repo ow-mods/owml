@@ -13,7 +13,7 @@ namespace OWML.Common
 		/// </summary>
 		/// <param name="name">The string to display on the button.</param>
 		/// <param name="index">The index of the button. 0 means it should be the first button, 1 means the second etc.</param>
-		/// <param name="fromTop">Whethether the index should be top-down or bottom-up.</param>
+		/// <param name="fromTop">Whether the index should be top-down or bottom-up.</param>
 		/// <returns>The SubmitAction of the button.</returns>
 		SubmitAction CreateTitleButton(string name, int index = 0, bool fromTop = false);
 
