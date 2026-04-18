@@ -2,7 +2,10 @@
 using OWML.Common.Interfaces.Menus;
 using OWML.ModHelper;
 using System.Globalization;
+using OWML.Common.Enums;
+using OWML.ModHelper.Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace OWML.MenuExample
 {
@@ -10,26 +13,52 @@ namespace OWML.MenuExample
 	{
 		public void Start()
 		{
+			gameObject.AddComponent<DebugGUI>();
+
 			ModHelper.MenuHelper.PopupMenuManager.RegisterStartupPopup("Test Startup Popup");
 
-			rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Button Single", "Test Tooltip", "<Keyboard>/c", "<Gamepad>/leftShoulder", false);
-			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Button Dual", "Test Tooltip 2", "<Keyboard>/c", "<Gamepad>/rightShoulder", "<Keyboard>/v", "<Gamepad>/rightTrigger", false);
-			rebindThree = ModHelper.RebindingHelper.RegisterRebindable("Test Axis Single", "Test Tooltip 3", "<Keyboard>/s", "<Gamepad>/rightStick/down", true);
+			/*rebindOne = ModHelper.RebindingHelper.RegisterRebindable("Test Single 0.4", "Test Tooltip", "<Keyboard>/c", "<Gamepad>/leftShoulder");
+			rebindTwo = ModHelper.RebindingHelper.RegisterRebindable("Test Dual", "Test Tooltip 2", "<Keyboard>/c", "<Gamepad>/rightShoulder", "<Keyboard>/v", "<Gamepad>/rightTrigger");
+			rebindThree = ModHelper.RebindingHelper.RegisterRebindable("Test Single 0.1", "Test Tooltip 3", "<Keyboard>/y", "<Gamepad>/leftTrigger", 0.1f);
 
-			rebindX = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis Dual)", "Test Tooltip X", "<Keyboard>/a", "<Gamepad>/leftStick/left", "<Keyboard>/d", "<Gamepad>/leftStick/right", true);
-			rebindY = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis Dual)", "Test Tooltip Y", "<Keyboard>/w", "<Gamepad>/leftStick/up", "<Keyboard>/s", "<Gamepad>/leftStick/down", true);
-			rebindComp = ModHelper.RebindingHelper.RegisterComposite("Test Composite", "Test X (Axis Dual)", "Test Y (Axis Dual)");
+			rebindX = ModHelper.RebindingHelper.RegisterRebindable("Test X (Dual)", "Test Tooltip X", "<Keyboard>/a", "<Gamepad>/leftStick/left", "<Keyboard>/d", "<Gamepad>/leftStick/right");
+			rebindY = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Dual)", "Test Tooltip Y", "<Keyboard>/w", "<Gamepad>/leftStick/up", "<Keyboard>/s", "<Gamepad>/leftStick/down");
+			rebindComp = ModHelper.RebindingHelper.RegisterComposite("Test Composite", rebindY, rebindX);*/
+
+			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.A, GamepadBinding.LeftStickLeft, Key.D, GamepadBinding.LeftStickRight, false);
+			rebindYButton = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Button)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, false);
+			rebindCompButton = ModHelper.RebindingHelper.RegisterComposite("Test Composite Button", rebindYButton, rebindXButton);
+
+			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.A, GamepadBinding.LeftStickLeft, Key.D, GamepadBinding.LeftStickRight, true);
+			rebindYAxis = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, true);
+			rebindCompAxis = ModHelper.RebindingHelper.RegisterComposite("Test Composite Axis", rebindYAxis, rebindXAxis);
+
+			rebindSingleButton = ModHelper.RebindingHelper.RegisterRebindable("Test (Button)", "", Key.Z, GamepadBinding.LeftTrigger, false);
+			rebindSingleButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Button) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, false, 0.7f);
+			rebindSingleAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Axis)", "", Key.Z, GamepadBinding.LeftTrigger, true);
+			rebindSingleAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Axis) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, true, 0.7f);
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
 		public IOWMLPopupInputMenu PopupInput;
 
-		private InputConsts.InputCommandType rebindOne;
-		private InputConsts.InputCommandType rebindTwo;
-		private InputConsts.InputCommandType rebindThree;
-		private InputConsts.InputCommandType rebindX;
-		private InputConsts.InputCommandType rebindY;
-		private InputConsts.InputCommandType rebindComp;
+		/*public InputConsts.InputCommandType rebindOne;
+		public InputConsts.InputCommandType rebindTwo;
+		public InputConsts.InputCommandType rebindThree;
+		public InputConsts.InputCommandType rebindX;
+		public InputConsts.InputCommandType rebindY;
+		public InputConsts.InputCommandType rebindComp;*/
+
+		public InputConsts.InputCommandType rebindXButton;
+		public InputConsts.InputCommandType rebindYButton;
+		public InputConsts.InputCommandType rebindXAxis;
+		public InputConsts.InputCommandType rebindYAxis;
+		public InputConsts.InputCommandType rebindCompButton;
+		public InputConsts.InputCommandType rebindCompAxis;
+		public InputConsts.InputCommandType rebindSingleButton;
+		public InputConsts.InputCommandType rebindSingleButton07Threshold;
+		public InputConsts.InputCommandType rebindSingleAxis;
+		public InputConsts.InputCommandType rebindSingleAxis07Threshold;
 
 		public override void SetupTitleMenu(ITitleMenuManager titleManager)
 		{
@@ -168,19 +197,28 @@ namespace OWML.MenuExample
 
 		public void Update()
 		{
-			var c1 = InputLibrary.GetInputCommand(rebindOne);
+			ModHelper.Console.WriteLine($"rebindSingleButton: {InputLibrary.GetInputCommand(rebindSingleButton).PressedThreshold}");
+			ModHelper.Console.WriteLine($"rebindSingleButton02Threshold: {InputLibrary.GetInputCommand(rebindSingleButton07Threshold).PressedThreshold}");
+			ModHelper.Console.WriteLine($"rebindSingleAxis: {InputLibrary.GetInputCommand(rebindSingleAxis).PressedThreshold}");
+			ModHelper.Console.WriteLine($"rebindSingleAxis02Threshold: {InputLibrary.GetInputCommand(rebindSingleAxis07Threshold).PressedThreshold}");
+
+			/*var c1 = InputLibrary.GetInputCommand(rebindOne);
 			var c2 = InputLibrary.GetInputCommand(rebindTwo);
 			var c3 = InputLibrary.GetInputCommand(rebindThree);
 			var cX = InputLibrary.GetInputCommand(rebindX);
 			var cY = InputLibrary.GetInputCommand(rebindY);
 			var cComp = InputLibrary.GetInputCommand(rebindComp);
 
-			Print(c1, "Test Button Single");
-			Print(c2, "Test Button Dual");
-			Print(c3, "Test Axis Single");
-			Print(cX, "Test X (Axis Dual)");
-			Print(cY, "Test Y (Axis Dual)");
-			Print(cComp, "Composite");
+			c1.PressedThreshold = Mathf.Epsilon;
+			c2.PressedThreshold = Mathf.Epsilon;
+			c3.PressedThreshold = Mathf.Epsilon;
+
+			Print(c1, "Test Single 0.4");
+			Print(c2, "Test Dual");
+			Print(c3, "Test Single 0.1");
+			Print(cX, "Test X (Dual)");
+			Print(cY, "Test Y (Dual)");
+			Print(cComp, "Composite");*/
 
 			if (FourChoicePopupMenu != null)
 			{
