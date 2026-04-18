@@ -78,9 +78,6 @@ namespace OWML.MenuExample
 			DrawCircle(new Vector2(200 + compVal.x * 200, 200 - compVal.y * 200), 8, Color.blue, 1);
 
 			var button = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindSingleButton);
-
-			ModConsole.OwmlConsole.WriteLine($"{button.GetType().Name} - PressDuration:{button.PressDuration}, PressedThreshold:{button.PressedThreshold}, Sensitivity:{button.Sensitivity}, InversionFactor:{button.InversionFactor}, GetValue:{button.GetValue()}");
-
 			var pressed = OWInput.IsPressed(button);
 			var buttonVal = OWInput.GetValue(button);
 			DrawRectangle(new Rect(10, 410, 200, 20), Color.white, true);

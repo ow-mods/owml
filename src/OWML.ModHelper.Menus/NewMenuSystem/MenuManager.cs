@@ -196,8 +196,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			#endregion
 
-			var modsWithSettings = modList.Where(x => x.ModHelper.Config.Settings.Count != 0);
-			var modsWithoutSettings = modList.Where(x => x.ModHelper.Config.Settings.Count == 0);
+			var modsWithSettings = modList.Where(x => x.ModHelper.Config.Settings.Count != 0 || x.ModHelper.RebindingHelper.Rebindables.Count != 0);
+			var modsWithoutSettings = modList.Where(x => x.ModHelper.Config.Settings.Count == 0 && x.ModHelper.RebindingHelper.Rebindables.Count == 0);
 
 			// Create buttons for each mod
 			foreach (var mod in modsWithSettings)

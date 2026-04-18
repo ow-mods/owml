@@ -197,11 +197,6 @@ namespace OWML.MenuExample
 
 		public void Update()
 		{
-			ModHelper.Console.WriteLine($"rebindSingleButton: {InputLibrary.GetInputCommand(rebindSingleButton).PressedThreshold}");
-			ModHelper.Console.WriteLine($"rebindSingleButton02Threshold: {InputLibrary.GetInputCommand(rebindSingleButton07Threshold).PressedThreshold}");
-			ModHelper.Console.WriteLine($"rebindSingleAxis: {InputLibrary.GetInputCommand(rebindSingleAxis).PressedThreshold}");
-			ModHelper.Console.WriteLine($"rebindSingleAxis02Threshold: {InputLibrary.GetInputCommand(rebindSingleAxis07Threshold).PressedThreshold}");
-
 			/*var c1 = InputLibrary.GetInputCommand(rebindOne);
 			var c2 = InputLibrary.GetInputCommand(rebindTwo);
 			var c3 = InputLibrary.GetInputCommand(rebindThree);
