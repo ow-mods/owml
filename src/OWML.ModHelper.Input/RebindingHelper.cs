@@ -11,13 +11,27 @@ namespace OWML.ModHelper.Input
 	{
 		public List<(RebindableID id, string name, string tooltip)> Rebindables { get; } = new();
 
-		private readonly IModConsole _console;
 		private readonly IModManifest _manifest;
 
-		public RebindingHelper(IModConsole console, IModManifest manifest)
+		public RebindingHelper(IModManifest manifest)
 		{
-			_console = console;
 			_manifest = manifest;
+		}
+
+		private string CreateActionAndBinding(
+			IModManifest manifest,
+			string name,
+			bool positive,
+			bool axis,
+			Key keyboardKeybind,
+			GamepadBinding gamepadKeybind)
+		{
+			var positiveName = name + (positive ? "Positive" : "Negative");
+			var positiveAction = AddAction(_manifest, positiveName, axis);
+			AddBinding(_manifest, positiveAction, Keyboard.current[keyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, positiveAction, GetGamepadPath(gamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
+
+			return positiveName;
 		}
 
 		public InputConsts.InputCommandType RegisterRebindable(
@@ -29,25 +43,17 @@ namespace OWML.ModHelper.Input
 			float pressedThreshold = 0.4f)
 		{
 			var uniqueName = _manifest.UniqueName + name;
-
 			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
+
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
-
-			var positiveName = uniqueName + "Positive";
-			var positiveAction = AddAction(_manifest, positiveName, axis);
-			AddBinding(_manifest, positiveAction, Keyboard.current[keyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, positiveAction, GetGamepadPath(gamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
-
-			inputCommandData.TrySetAsAxis(rebindableId, positiveName);
-
+			var action = CreateActionAndBinding(_manifest, uniqueName, true, axis, keyboardKeybind, gamepadKeybind);
+			inputCommandData.TrySetAsAxis(rebindableId, action);
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
-
 			Rebindables.Add((rebindableId, name, tooltip));
 
 			((InputManager)OWInput.SharedInputManager).commandManager.OnInputCommandsInitialized += () =>
 			{
-				_console.WriteLine($"OnInputCommandsInitialized -- setting {commandType} to {pressedThreshold}");
 				var command = InputLibrary.GetInputCommand(commandType);
 				command.PressedThreshold = pressedThreshold;
 			};
@@ -66,30 +72,19 @@ namespace OWML.ModHelper.Input
 			float pressedThreshold = 0.4f)
 		{
 			var uniqueName = _manifest.UniqueName + name;
-
 			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
+
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
-
-			var positiveName = uniqueName + "Positive";
-			var negativeName = uniqueName + "Negative";
-			var positiveAction = AddAction(_manifest, positiveName, axis);
-			var negativeAction = AddAction(_manifest, negativeName, axis);
-			AddBinding(_manifest, positiveAction, Keyboard.current[positiveKeyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, positiveAction, GetGamepadPath(positiveGamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
-			AddBinding(_manifest, negativeAction, Keyboard.current[negativeKeyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, negativeAction, GetGamepadPath(negativeGamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
-
-			inputCommandData.TrySetAsAxis(rebindableId, positiveName, negativeName);
-
+			var positiveAction = CreateActionAndBinding(_manifest, uniqueName, true, axis, positiveKeyboardKeybind, positiveGamepadKeybind);
+			var negativeAction = CreateActionAndBinding(_manifest, uniqueName, false, axis, negativeKeyboardKeybind, negativeGamepadKeybind);
+			inputCommandData.TrySetAsAxis(rebindableId, positiveAction, negativeAction);
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 
 			Rebindables.Add((rebindableId, name, tooltip));
 
 			((InputManager)OWInput.SharedInputManager).commandManager.OnInputCommandsInitialized += () =>
 			{
-				_console.WriteLine($"OnInputCommandsInitialized -- setting {commandType} to {pressedThreshold}");
-
 				var command = InputLibrary.GetInputCommand(commandType);
 				command.PressedThreshold = pressedThreshold;
 			};
@@ -104,17 +99,17 @@ namespace OWML.ModHelper.Input
 		{
 			var uniqueName = _manifest.UniqueName + name;
 
-			var primaryName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), yAxis);
-			var secondaryName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), xAxis);
+			var yName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), yAxis);
+			var xName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), xAxis);
 
-			_console.WriteLine($"RegisterComposite primary:{primaryName} secondary:{secondaryName}");
-
-			var primaryId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), primaryName);
-			var secondaryId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), secondaryName);
+			var yId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), yName);
+			var xId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), xName);
 
 			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Composite, commandType);
-			inputCommandData.TrySetAsComposite(primaryId, primaryName + "Primary", primaryName + "Secondary", secondaryId, secondaryName + "Primary", secondaryName + "Secondary");
+			inputCommandData.TrySetAsComposite(
+				yId, yName + "Positive", yName + "Negative",
+				xId, xName + "Positive", xName + "Negative");
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 
 			return commandType;
@@ -196,8 +191,6 @@ namespace OWML.ModHelper.Input
 			{
 				OWMLRebinding.CustomActionMaps.Add(manifest.UniqueName, new InputActionMap(manifest.UniqueName));
 			}
-
-			_console.WriteLine($"AddAction {name}");
 
 			return OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddAction(
 				name,

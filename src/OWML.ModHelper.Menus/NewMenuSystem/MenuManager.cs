@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using OWML.Common;
-using OWML.Common.Enums;
 using OWML.Utils;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,4 @@
 ﻿using OWML.Common;
-using OWML.Common.Enums;
-using OWML.ModHelper.Input;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
 using System.Collections.Generic;

@@ -16,33 +16,38 @@ namespace OWML.ModHelper.Input
 				foreach (var (uniqueName, actionMap) in OWMLRebinding.CustomActionMaps)
 				{
 					var existingActionMap = inputActionAsset.FindActionMap(actionMap.name);
-					if (existingActionMap != null)
-					{
-						// actionmap already exists in game files, but mod could have updated to add new actions...
 
-						foreach (var newAction in actionMap.actions)
-						{
-							if (existingActionMap.FindAction(newAction.name) == null)
-							{
-								var action = existingActionMap.AddAction(
-									newAction.name,
-									newAction.type,
-									null,
-									newAction.interactions,
-									newAction.processors, 
-									null,
-									newAction.expectedControlType);
-
-								foreach (var binding in newAction.bindings)
-								{
-									existingActionMap.AddBinding(binding.path, action, groups: binding.groups);
-								}
-							}
-						}
-					}
-					else
+					if (existingActionMap == null)
 					{
 						inputActionAsset.AddActionMap(actionMap);
+						continue;
+					}
+
+					// ActionMap already exists in game files, but mod could have updated to add new actions...
+
+					foreach (var newAction in actionMap.actions)
+					{
+						if (existingActionMap.FindAction(newAction.name) != null)
+						{
+							continue;
+						}
+
+						var action = existingActionMap.AddAction(
+							newAction.name,
+							newAction.type,
+							null,
+							newAction.interactions,
+							newAction.processors, 
+							null,
+							newAction.expectedControlType);
+
+						foreach (var binding in newAction.bindings)
+						{
+							existingActionMap.AddBinding(
+								binding.path, 
+								action, 
+								binding.groups);
+						}
 					}
 				}
 

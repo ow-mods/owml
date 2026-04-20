@@ -13,11 +13,16 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		internal static int ActivePopup;
 		internal static List<int> PopupsToShow = new();
+
+		// Must be kept up to date with the number of dummy strings in the Popups list.
+		internal const int BaseGamePopupCount = 3;
 		internal static List<string> Popups = new List<string>()
 		{
-			"BASEGAME0",
-			"BASEGAME1",
-			"BASEGAME2"
+			// These are just dummy strings to take the index place of base game popups.
+			// The actual strings are never used.
+			"BASEGAME0",	// Input update
+			"BASEGAME1",	// Reduced frights
+			"BASEGAME2"		// New exhibit
 		};
 
 		private GameObject _twoChoicePopupBase;
@@ -402,7 +407,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			PopupMenuManager.ActivePopup = PopupMenuManager.PopupsToShow.First();
 
-			if (PopupMenuManager.ActivePopup <= 2)
+			if (PopupMenuManager.ActivePopup < PopupMenuManager.BaseGamePopupCount)
 			{
 				switch(PopupMenuManager.ActivePopup)
 				{
