@@ -15,8 +15,6 @@ namespace OWML.ModHelper.Input
 		public OWMLRebinding(IModConsole console, IHarmonyHelper harmony)
 		{
 			harmony.AddPrefix(typeof(InputCommandManager).GetMethod("LoadActions", new Type[] { typeof(string) }), typeof(Patches), nameof(Patches.LoadActions));
-
-			harmony.AddPrefix(typeof(InputCommandUtils).GetMethod("TryCreateInputCommands"), typeof(Patches), nameof(Patches.TryCreateInputCommands));
 		}
 	}
 }
