@@ -2,11 +2,8 @@
 using OWML.Common;
 using OWML.Utils;
 using System.Collections.Generic;
-using System.Data;
 using OWML.Common.Enums;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
-using static InputCommandDefinitions;
 
 namespace OWML.ModHelper.Input
 {
@@ -37,12 +34,12 @@ namespace OWML.ModHelper.Input
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
 
-			var primaryName = uniqueName + "Primary";
-			var primaryAction = AddAction(_manifest, primaryName, axis);
-			AddBinding(_manifest, primaryAction, Keyboard.current[keyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, primaryAction, GetGamepadPath(gamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
+			var positiveName = uniqueName + "Positive";
+			var positiveAction = AddAction(_manifest, positiveName, axis);
+			AddBinding(_manifest, positiveAction, Keyboard.current[keyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, positiveAction, GetGamepadPath(gamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
 
-			inputCommandData.TrySetAsAxis(rebindableId, primaryName);
+			inputCommandData.TrySetAsAxis(rebindableId, positiveName);
 
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 
@@ -61,10 +58,10 @@ namespace OWML.ModHelper.Input
 		public InputConsts.InputCommandType RegisterRebindable(
 			string name,
 			string tooltip,
-			Key primaryKeyboardKeybind,
-			GamepadBinding primaryGamepadKeybind,
-			Key secondaryKeyboardKeybind,
-			GamepadBinding secondaryGamepadKeybind,
+			Key positiveKeyboardKeybind,
+			GamepadBinding positiveGamepadKeybind,
+			Key negativeKeyboardKeybind,
+			GamepadBinding negativeGamepadKeybind,
 			bool axis,
 			float pressedThreshold = 0.4f)
 		{
@@ -74,16 +71,16 @@ namespace OWML.ModHelper.Input
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
 
-			var primaryName = uniqueName + "Primary";
-			var secondaryName = uniqueName + "Secondary";
-			var primaryAction = AddAction(_manifest, primaryName, axis);
-			var secondaryAction = AddAction(_manifest, secondaryName, axis);
-			AddBinding(_manifest, primaryAction, Keyboard.current[primaryKeyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, primaryAction, GetGamepadPath(primaryGamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
-			AddBinding(_manifest, secondaryAction, Keyboard.current[secondaryKeyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, secondaryAction, GetGamepadPath(secondaryGamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
+			var positiveName = uniqueName + "Positive";
+			var negativeName = uniqueName + "Negative";
+			var positiveAction = AddAction(_manifest, positiveName, axis);
+			var negativeAction = AddAction(_manifest, negativeName, axis);
+			AddBinding(_manifest, positiveAction, Keyboard.current[positiveKeyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, positiveAction, GetGamepadPath(positiveGamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
+			AddBinding(_manifest, negativeAction, Keyboard.current[negativeKeyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, negativeAction, GetGamepadPath(negativeGamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
 
-			inputCommandData.TrySetAsAxis(rebindableId, primaryName, secondaryName);
+			inputCommandData.TrySetAsAxis(rebindableId, positiveName, negativeName);
 
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 

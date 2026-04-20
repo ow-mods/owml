@@ -67,7 +67,7 @@ namespace OWML.MenuExample
 			var y = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindYButton);
 			var yVal = OWInput.GetValue(y);
 
-			DrawCircle(new Vector2(200 - xVal * 200, 200 - yVal * 200), 5, Color.red, 1);
+			DrawCircle(new Vector2(200 + xVal * 200, 200 - yVal * 200), 5, Color.red, 1);
 
 			/*
 			 * TWO AXIS
@@ -81,7 +81,7 @@ namespace OWML.MenuExample
 			y = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindYAxis);
 			yVal = OWInput.GetValue(y);
 
-			DrawCircle(new Vector2(200 - xVal * 200, 200 - yVal * 200), 6, Color.green, 1);
+			DrawCircle(new Vector2(200 + xVal * 200, 200 - yVal * 200), 6, Color.green, 1);
 
 			// ----
 
@@ -114,6 +114,8 @@ namespace OWML.MenuExample
 			DrawDualBar(GetComponent<MenuExample>().rebindDualButton07Threshold);
 			DrawDualBar(GetComponent<MenuExample>().rebindDualAxis);
 			DrawDualBar(GetComponent<MenuExample>().rebindDualAxis07Threshold);
+
+			DrawDualBar(InputLibrary.toolOptionX.CommandType);
 		}
 
 		private Texture2D _tex;

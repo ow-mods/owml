@@ -32,20 +32,20 @@ namespace OWML.Common
 		/// </summary>
 		/// <param name="name">The name of the input. Showed in the mod config menu. Must be unique in your mod.</param>
 		/// <param name="tooltip">The tooltip showed in the mod config menu.</param>
-		/// <param name="primaryKeyboardKeybind">The default keyboard binding for the positive action.</param>
-		/// <param name="primaryGamepadKeybind">The default gamepad binding for the positive action.</param>
-		/// <param name="secondaryKeyboardKeybind">The default keyboard binding for the negative action.</param>
-		/// <param name="secondaryGamepadKeybind">The default gamepad binding for the negative action.</param>
+		/// <param name="positiveKeyboardKeybind">The default keyboard binding for the positive (ie. right, up) action.</param>
+		/// <param name="positiveGamepadKeybind">The default gamepad binding for the positive (ie. right, up) action.</param>
+		/// <param name="negativeKeyboardKeybind">The default keyboard binding for the negative (ie. left, down) action.</param>
+		/// <param name="negativeGamepadKeybind">The default gamepad binding for the negative (ie. left, down) action.</param>
 		/// <param name="axis">Should be true for inputs that expect an analog input - eg triggers. For simple buttons, this should be false. See the docs for more info.</param>
 		/// <param name="pressedThreshold">An <see cref="InputConsts.InputCommandType"/> used in <see cref="InputLibrary.GetInputCommand"/>.</param>
 		/// <returns>An <see cref="InputConsts.InputCommandType"/> used in <see cref="InputLibrary.GetInputCommand"/> or <see cref="RegisterComposite"/>.</returns>
 		public InputConsts.InputCommandType RegisterRebindable(
 			string name,
 			string tooltip,
-			Key primaryKeyboardKeybind,
-			GamepadBinding primaryGamepadKeybind,
-			Key secondaryKeyboardKeybind,
-			GamepadBinding secondaryGamepadKeybind,
+			Key positiveKeyboardKeybind,
+			GamepadBinding positiveGamepadKeybind,
+			Key negativeKeyboardKeybind,
+			GamepadBinding negativeGamepadKeybind,
 			bool axis,
 			float pressedThreshold = 0.4f);
 

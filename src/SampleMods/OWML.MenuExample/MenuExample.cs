@@ -25,11 +25,11 @@ namespace OWML.MenuExample
 			rebindY = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Dual)", "Test Tooltip Y", "<Keyboard>/w", "<Gamepad>/leftStick/up", "<Keyboard>/s", "<Gamepad>/leftStick/down");
 			rebindComp = ModHelper.RebindingHelper.RegisterComposite("Test Composite", rebindY, rebindX);*/
 
-			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.A, GamepadBinding.LeftStickLeft, Key.D, GamepadBinding.LeftStickRight, false);
+			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.A, GamepadBinding.LeftStickRight, Key.D, GamepadBinding.LeftStickLeft, false);
 			rebindYButton = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Button)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, false);
 			rebindCompButton = ModHelper.RebindingHelper.RegisterComposite("Test Composite Button", rebindYButton, rebindXButton);
 
-			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.A, GamepadBinding.LeftStickLeft, Key.D, GamepadBinding.LeftStickRight, true);
+			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.A, GamepadBinding.LeftStickRight, Key.D, GamepadBinding.LeftStickLeft, true);
 			rebindYAxis = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, true);
 			rebindCompAxis = ModHelper.RebindingHelper.RegisterComposite("Test Composite Axis", rebindYAxis, rebindXAxis);
 
@@ -38,10 +38,10 @@ namespace OWML.MenuExample
 			rebindSingleAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Axis)", "", Key.Z, GamepadBinding.LeftTrigger, true);
 			rebindSingleAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Axis) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, true, 0.7f);
 
-			rebindDualButton = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button)", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, false);
-			rebindDualButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, false, 0.7f);
-			rebindDualAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis)", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, true);
-			rebindDualAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, true, 0.7f);
+			rebindDualButton = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button)", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, false);
+			rebindDualButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button) 0.7", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, false, 0.7f);
+			rebindDualAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis)", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, true);
+			rebindDualAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis) 0.7", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, true, 0.7f);
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
