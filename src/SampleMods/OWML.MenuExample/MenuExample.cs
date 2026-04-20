@@ -37,6 +37,11 @@ namespace OWML.MenuExample
 			rebindSingleButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Button) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, false, 0.7f);
 			rebindSingleAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Axis)", "", Key.Z, GamepadBinding.LeftTrigger, true);
 			rebindSingleAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Axis) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, true, 0.7f);
+
+			rebindDualButton = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button)", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, false);
+			rebindDualButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, false, 0.7f);
+			rebindDualAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis)", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, true);
+			rebindDualAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, Key.X, GamepadBinding.RightTrigger, true, 0.7f);
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
@@ -55,10 +60,16 @@ namespace OWML.MenuExample
 		public InputConsts.InputCommandType rebindYAxis;
 		public InputConsts.InputCommandType rebindCompButton;
 		public InputConsts.InputCommandType rebindCompAxis;
+
 		public InputConsts.InputCommandType rebindSingleButton;
 		public InputConsts.InputCommandType rebindSingleButton07Threshold;
 		public InputConsts.InputCommandType rebindSingleAxis;
 		public InputConsts.InputCommandType rebindSingleAxis07Threshold;
+
+		public InputConsts.InputCommandType rebindDualButton;
+		public InputConsts.InputCommandType rebindDualButton07Threshold;
+		public InputConsts.InputCommandType rebindDualAxis;
+		public InputConsts.InputCommandType rebindDualAxis07Threshold;
 
 		public override void SetupTitleMenu(ITitleMenuManager titleManager)
 		{

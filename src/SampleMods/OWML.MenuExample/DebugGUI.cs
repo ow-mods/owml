@@ -22,7 +22,33 @@ namespace OWML.MenuExample
 			DrawGui();
 		}
 
-		private float lowest = 1.0f;
+		private int _barY = 410;
+
+		void DrawBar(InputConsts.InputCommandType type)
+		{
+			var command = InputLibrary.GetInputCommand(type);
+			var pressed = OWInput.IsPressed(command);
+			var val = OWInput.GetValue(command);
+
+			DrawRectangle(new Rect(10, _barY, 200, 20), pressed ? Color.green : Color.white, true);
+			DrawRectangle(new Rect(10, _barY, 200 * val, 20), pressed ? Color.green : Color.white, false);
+			GUI.Label(new Rect(220, _barY, 100, 20), $"{val}");
+
+			_barY += 30;
+		}
+
+		void DrawDualBar(InputConsts.InputCommandType type)
+		{
+			var command = InputLibrary.GetInputCommand(type);
+			var pressed = OWInput.IsPressed(command);
+			var val = OWInput.GetValue(command);
+
+			DrawRectangle(new Rect(10, _barY, 400, 20), pressed ? Color.green : Color.white, true);
+			DrawRectangle(new Rect(210, _barY, 200 * val, 20), pressed ? Color.green : Color.white, false);
+			GUI.Label(new Rect(420, _barY, 100, 20), $"{val}");
+
+			_barY += 30;
+		}
 
 		private void DrawGui()
 		{
@@ -77,38 +103,17 @@ namespace OWML.MenuExample
 
 			DrawCircle(new Vector2(200 + compVal.x * 200, 200 - compVal.y * 200), 8, Color.blue, 1);
 
-			var button = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindSingleButton);
-			var pressed = OWInput.IsPressed(button);
-			var buttonVal = OWInput.GetValue(button);
-			DrawRectangle(new Rect(10, 410, 200, 20), Color.white, true);
-			DrawRectangle(new Rect(10, 410, 200 * buttonVal, 20), pressed ? Color.green : Color.white, false);
-			GUI.Label(new Rect(220, 410, 100, 20), $"{buttonVal} - {lowest}");
+			_barY = 410;
 
-			if (buttonVal < lowest && buttonVal > 0.001f)
-			{
-				lowest = buttonVal;
-			}
+			DrawBar(GetComponent<MenuExample>().rebindSingleButton);
+			DrawBar(GetComponent<MenuExample>().rebindSingleButton07Threshold);
+			DrawBar(GetComponent<MenuExample>().rebindSingleAxis);
+			DrawBar(GetComponent<MenuExample>().rebindSingleAxis07Threshold);
 
-			button = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindSingleButton07Threshold);
-			pressed = OWInput.IsPressed(button);
-			buttonVal = OWInput.GetValue(button);
-			DrawRectangle(new Rect(10, 440, 200, 20), Color.white, true);
-			DrawRectangle(new Rect(10, 440, 200 * buttonVal, 20), pressed ? Color.green : Color.white, false);
-			GUI.Label(new Rect(220, 440, 100, 20), buttonVal.ToString());
-
-			var axis = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindSingleAxis);
-			pressed = OWInput.IsPressed(axis);
-			var axisVal = OWInput.GetValue(axis);
-			DrawRectangle(new Rect(10, 470, 200, 20), Color.white, true);
-			DrawRectangle(new Rect(10, 470, 200 * axisVal, 20), pressed ? Color.green : Color.white, false);
-			GUI.Label(new Rect(220, 470, 100, 20), axisVal.ToString());
-
-			axis = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindSingleAxis07Threshold);
-			pressed = OWInput.IsPressed(axis);
-			axisVal = OWInput.GetValue(axis);
-			DrawRectangle(new Rect(10, 500, 200, 20), Color.white, true);
-			DrawRectangle(new Rect(10, 500, 200 * axisVal, 20), pressed ? Color.green : Color.white, false);
-			GUI.Label(new Rect(220, 500, 100, 20), axisVal.ToString());
+			DrawDualBar(GetComponent<MenuExample>().rebindDualButton);
+			DrawDualBar(GetComponent<MenuExample>().rebindDualButton07Threshold);
+			DrawDualBar(GetComponent<MenuExample>().rebindDualAxis);
+			DrawDualBar(GetComponent<MenuExample>().rebindDualAxis07Threshold);
 		}
 
 		private Texture2D _tex;
