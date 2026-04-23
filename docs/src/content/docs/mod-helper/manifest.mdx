@@ -1,0 +1,24 @@
+---
+title: Manifest
+description: Access manifest metadata
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Get various metadata about your mod.
+
+## Schema
+
+Almost all properties in [the manifest schema](/schemas/manifest) are available in this module except for:
+
+- `pathsToPreserve`
+- `conflicts`
+- `warning`
+
+<Aside>
+These properties are converted from camelCase to PascalCase (ex: `uniqueName` -> `ModHelper.Manifest.UniqueName`)
+</Aside>
+
+## ModFolderPath
+
+The absolute file path to your mod's directory, most OWML methods auto-prepend this.
