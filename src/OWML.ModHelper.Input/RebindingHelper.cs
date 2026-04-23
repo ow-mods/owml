@@ -94,8 +94,8 @@ namespace OWML.ModHelper.Input
 
 		public InputConsts.InputCommandType RegisterComposite(
 			string name, 
-			InputConsts.InputCommandType yAxis,
-			InputConsts.InputCommandType xAxis)
+			InputConsts.InputCommandType xAxis,
+			InputConsts.InputCommandType yAxis)
 		{
 			var uniqueName = _manifest.UniqueName + name;
 

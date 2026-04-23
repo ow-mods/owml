@@ -27,11 +27,11 @@ namespace OWML.MenuExample
 
 			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.A, GamepadBinding.LeftStickRight, Key.D, GamepadBinding.LeftStickLeft, false);
 			rebindYButton = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Button)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, false);
-			rebindCompButton = ModHelper.RebindingHelper.RegisterComposite("Test Composite Button", rebindYButton, rebindXButton);
+			rebindCompButton = ModHelper.RebindingHelper.RegisterComposite("Test Composite Button", rebindXButton, rebindYButton);
 
 			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.A, GamepadBinding.LeftStickRight, Key.D, GamepadBinding.LeftStickLeft, true);
 			rebindYAxis = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, true);
-			rebindCompAxis = ModHelper.RebindingHelper.RegisterComposite("Test Composite Axis", rebindYAxis, rebindXAxis);
+			rebindCompAxis = ModHelper.RebindingHelper.RegisterComposite("Test Composite Axis", rebindXAxis, rebindYAxis);
 
 			rebindSingleButton = ModHelper.RebindingHelper.RegisterRebindable("Test (Button)", "", Key.Z, GamepadBinding.LeftTrigger, false);
 			rebindSingleButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Button) 0.7", "", Key.Z, GamepadBinding.LeftTrigger, false, 0.7f);
