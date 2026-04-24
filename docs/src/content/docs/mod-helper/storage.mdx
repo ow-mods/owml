@@ -1,0 +1,52 @@
+---
+title: Storage
+descrpition: Save and load data as JSON
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Helps with storing data that persists through different runs of the game using JSON.
+
+## Load&lt;T&gt;
+
+Loads an object (of type &lt;T&gt;) from the given file path. Loads the `default` of `T` if the file doesn't exist.
+
+### Load Parameters
+
+(*italicized* = optional)
+
+- `string filename`: The file path, relative to your mod's directory, of the JSON file to load the object from.
+- *`bool fixBackslashes`*: Replaces backslashes with forward-slashes, this can mess up escape characters; defaults to `true`
+- *`JsonSerializerSettings settings`*: Use custom [JsonSerializerSettings](https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_JsonSerializerSettings.htm).
+
+## Save&lt;T&gt;
+
+Saves an object (of type &lt;T&gt;) to the given file path. Creates a new file if one doesn't exist.
+
+### Save Parameters
+
+- `T obj`: The object to save.
+- `string filename`: The file path, relative to your mod's directory, of the file to save the object to.
+
+## Example
+
+```csharp title="MyCoolMod.cs"
+public class MyCoolMod : ModBehaviour {
+
+    public class MyModData {
+        public DateTime lastRunDate = DateTime.now();
+    }
+
+    public void Start() {
+        MyModData myData = ModHelper.Storage.Load<MyModData>("save.json") ?? new();
+        ModHelper.Console.WriteLine($"You last used my mod on {myData.lastRunDate.ToShortDateString()}");
+        myData.lastRunDate = DateTime.now();
+        ModHelper.Storage.Save<MyModData>(myData, "save.json");
+    }
+
+}
+```
+
+<Aside type="caution">
+Please note that you need to take extra steps to prevent your mod's save data fromo getting removed when updating it. To mitigate this, set [`pathsToPreserve`](/schemas/manifest#pathstopreserve) in your manifest.
+</Aside>
