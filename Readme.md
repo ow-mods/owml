@@ -42,7 +42,7 @@ If you want to keep mod data intact but still play without mods, verifying the g
 
 ### Get started
 
-To get started, check out [our tutorial on the docs](https://owml.outerwildsmods.com/guides/getting_started.html)
+To get started, check out [our tutorial on the docs](https://owml.outerwildsmods.com/guides/getting-started)
 
 ## Compatibility
 
@@ -53,7 +53,7 @@ OWML is compatible with Echoes of the Eye, and works on Epic, Steam, and Microso
 ## Feedback and Support
 
 OWML is developed by some of the same people making the mods!
-On the [Outer Wilds Modding Discord](https://discord.gg/9vE5aHxcF9), we are:
+On the [Outer Wilds Modding Discord](https://discord.gg/wusTQYbYTc), we are:
 - alek
 - Raicuparta
 - _nebula
