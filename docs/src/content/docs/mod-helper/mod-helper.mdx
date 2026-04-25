@@ -1,0 +1,28 @@
+---
+title: Mod Helper
+sidebar:
+    order: 0
+description: Introduction to the ModHelper API that OWML provides
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+`ModHelper` is a field provided on your `ModBehavior` that exposes several APIs from OWML for modifying many base-game
+behaviors. Generally, look to see if ModHelper can assist you with implementing a mod feature before implementing it yourself.
+
+## Usage
+
+```cs title="MyCoolMod.cs"
+public class MyCoolMod : ModBehaviour {
+    public void Start() {
+        // ModHelper is available inside your ModBehaviour
+        ModHelper.Console.WriteLine("Hello!");
+    }
+}
+```
+
+<Aside type="caution">
+ModHelper will *not* be available in the `Awake` method of your ModBehaviour. You will need to defer setup
+that require ModHelper to `Start`.
+</Aside>
+

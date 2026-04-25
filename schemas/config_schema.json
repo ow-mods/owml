@@ -42,7 +42,8 @@
                 ]
             }
         },
-        "optionsObject": {
+        
+        "optionsBase": {
             "allOf": [
                 {
                     "type": "object",
@@ -53,6 +54,7 @@
                         "type": {
                             "type": "string",
                             "enum": [
+                                "label",
                                 "separator",
                                 "slider",
                                 "toggle",
@@ -64,15 +66,52 @@
                         "dlcOnly": {
                             "type": "boolean",
                             "description": "Should this setting only show when the DLC is owned?"
-                        },
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsLabelBase": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
                         "title": {
                             "type": "string",
                             "description": "Label to show in the options menu"
-                        },
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsInteractiveBase": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsLabelBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
                         "tooltip": {
                             "type": "string",
                             "description": "Tooltip to show when hovering on the option"
                         }
+                    }
+                }
+            ]
+        },
+        
+        "optionsObject": {
+            "allOf": [
+                {
+                    "if": {
+                        "properties": { "type": { "const": "label" } }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/optionsLabel"
                     }
                 },
                 {
@@ -125,75 +164,138 @@
                 }
             ]
         },
-        "optionsSeparator": {
-            "type": "object",
-            "properties": {
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "optionsToggle": {
-            "type": "object",
-            "properties": {
-                "value": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "optionsNumber": {
-            "type": "object",
-            "properties": {
-                "value": {
-                    "type": "number"
-                }
-            }
-        },
-        "optionsText": {
-            "type": "object",
-            "properties": {
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "optionsSlider": {
-            "type": "object",
-            "required": [
-                "min",
-                "max"
-            ],
-            "properties": {
-                "value": {
-                    "type": "number"
+        
+        "optionsLabel": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsLabelBase"
                 },
-                "min": {
-                    "type": "number",
-                    "description": "Minimum value for this slider"
-                },
-                "max": {
-                    "type": "number",
-                    "description": "Maximum value for this slider"
-                }
-            }
-        },
-        "optionsSelector": {
-            "type": "object",
-            "required": [
-                "options"
-            ],
-            "properties": {
-                "value": {
-                    "type": "string"
-                },
-                "options": {
-                    "type": "array",
-                    "description": "List of options the user selects from",
-                    "items": {
-                        "type": "string"
+                {
+                    "type": "object",
+                    "properties": {
+                        "side": {
+                            "type": "string",
+                            "enum": ["left", "center", "right"],
+                            "default": "center",
+                            "description": "Alignment of the label"
+                        }
                     }
                 }
-            }
+            ]
+        },
+        "optionsSeparator": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "dots": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "Should this separator have dots?"
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsToggle": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsInteractiveBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsNumber": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsInteractiveBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "number"
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsText": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsInteractiveBase"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsSlider": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsInteractiveBase"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "min",
+                        "max"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": "number"
+                        },
+                        "min": {
+                            "type": "number",
+                            "description": "Minimum value for this slider"
+                        },
+                        "max": {
+                            "type": "number",
+                            "description": "Maximum value for this slider"
+                        }
+                    }
+                }
+            ]
+        },
+        "optionsSelector": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/optionsInteractiveBase"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "options"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": "string"
+                        },
+                        "options": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "List of options the user selects from"
+                        }
+                    }
+                }
+            ]
         }
     }
 }

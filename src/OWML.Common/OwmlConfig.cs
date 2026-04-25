@@ -47,5 +47,8 @@ namespace OWML.Common
 
 		[JsonProperty("socketPort")]
 		public int SocketPort { get; set; }
+
+		[JsonProperty("disableVersionPopup")]
+		public bool DisableVersionPopup { get; set; }
 	}
 }

@@ -94,6 +94,24 @@ namespace OWML.Patcher
 				{
 					uncopiedFiles.Add((filename, ex));
 				}
+
+				// If the file is a DLL, attempt to copy its PDB.
+				if (filename.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
+				{
+					var pdbName = Path.ChangeExtension(filename, ".pdb");
+					var pdbPath = $"{pathPrefix}{pdbName}";
+					if (File.Exists(pdbPath))
+					{
+						try
+						{
+							File.Copy(pdbPath, Path.Combine(destination, pdbName), true);
+						}
+						catch (Exception ex)
+						{
+							uncopiedFiles.Add((pdbName, ex));
+						}
+					}
+				}
 			}
 
 			if (uncopiedFiles.Any())

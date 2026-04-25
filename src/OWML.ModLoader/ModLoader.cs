@@ -16,13 +16,15 @@ namespace OWML.ModLoader
 {
 	public class ModLoader
 	{
+		private static Owo owo;
+
 		public static void LoadMods()
 		{
 			var appHelper = new ApplicationHelper();
 			var goHelper = new GameObjectHelper();
 			var container = CreateContainer(appHelper, goHelper);
 
-			var owo = container.Resolve<Owo>();
+			owo = container.Resolve<Owo>();
 			owo.LoadMods();
 		}
 
@@ -71,6 +73,7 @@ namespace OWML.ModLoader
 				.Add<IModPopupManager, ModPopupManager>()
 				.Add<IModMenus, ModMenus>()
 				.Add<IMenuManager, MenuManager>()
+				.Add<IOWMLRebinding, OWMLRebinding>()
 				.Add<IObjImporter, ObjImporter>()
 				.Add<IProcessHelper, ProcessHelper>()
 				.Add<IModVersionChecker, ModVersionChecker>()

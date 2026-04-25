@@ -27,8 +27,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var titleScreenManager = Object.FindObjectOfType<TitleScreenManager>();
 
 			var existingTitleButton = titleScreenManager.GetValue<SubmitAction>("_resetGameAction");
-			var newButton = Object.Instantiate(existingTitleButton.gameObject);
-			newButton.transform.parent = existingTitleButton.transform.parent;
+			var newButton = Object.Instantiate(existingTitleButton.gameObject, existingTitleButton.transform.parent);
 			newButton.transform.localScale = existingTitleButton.transform.localScale;
 			newButton.transform.localRotation = Quaternion.identity;
 			newButton.transform.localPosition = Vector3.zero;

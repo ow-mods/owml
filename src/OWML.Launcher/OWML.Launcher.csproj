@@ -2,9 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-	  <LangVersion>9.0</LangVersion>
-	  <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="OWML.Launcher.csproj.user" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OWML.GameFinder\OWML.GameFinder.csproj" />

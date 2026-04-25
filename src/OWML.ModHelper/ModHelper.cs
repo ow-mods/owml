@@ -30,6 +30,8 @@ namespace OWML.ModHelper
 
 		public IModInteraction Interaction { get; }
 
+		public IRebindingHelper RebindingHelper { get; }
+
 		public IMenuManager MenuHelper { get; }
 
 		public IModTranslations MenuTranslations { get; }
@@ -47,6 +49,7 @@ namespace OWML.ModHelper
 			IModDefaultConfig defaultConfig,
 			IOwmlConfig owmlConfig,
 			IModInteraction interaction,
+			IRebindingHelper rebinding,
 			IMenuManager menuHelper,
 			IModTranslations menuTranslations)
 		{
@@ -62,6 +65,7 @@ namespace OWML.ModHelper
 			DefaultConfig = defaultConfig;
 			OwmlConfig = owmlConfig;
 			Interaction = interaction;
+			RebindingHelper = rebinding;
 			MenuHelper = menuHelper;
 			MenuTranslations = menuTranslations;
 		}

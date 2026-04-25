@@ -42,7 +42,10 @@ jobs:
         uses: roryprimrose/set-vs-sdk-project-version@v1
         with:
           version: ${{ steps.version.outputs.prop }}
-            
+        
+      - name: Remove .csproj.user
+        run: if (Test-Path src\OWML.Launcher\OWML.Launcher.csproj.user) { rm src\OWML.Launcher\OWML.Launcher.csproj.user }
+        
       - name: setup msbuild
         uses: microsoft/setup-msbuild@v1
       - name: setup nuget

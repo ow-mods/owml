@@ -10,13 +10,15 @@ namespace OWML.Launcher
 		private readonly IModConsole _writer;
 		private readonly IModManifest _owmlManifest;
 		private readonly IProcessHelper _processHelper;
+		private readonly IOwmlConfig _owmlConfig;
 
-		public GameVersionHandler(IGameVersionReader versionReader, IModConsole writer, IModManifest owmlManifest, IProcessHelper processHelper)
+		public GameVersionHandler(IGameVersionReader versionReader, IModConsole writer, IModManifest owmlManifest, IProcessHelper processHelper, IOwmlConfig owmlConfig)
 		{
 			_versionReader = versionReader;
 			_writer = writer;
 			_owmlManifest = owmlManifest;
 			_processHelper = processHelper;
+			_owmlConfig = owmlConfig;
 		}
 
 		public void CompareVersions()
@@ -50,7 +52,7 @@ namespace OWML.Launcher
 				_writer.WriteLine($"Outdated Outer Wilds version. The oldest compatible version is {minVersion}.", MessageType.Warning);
 			}
 
-			if (showPopup)
+			if (showPopup && !_owmlConfig.DisableVersionPopup)
 			{
 				var result = MessageBox.Show($"OWML could not verify if it will work on this version of Outer Wilds ({gameVersionString}).\n\n" +
 					$"Reason: {reason}\n\n" +

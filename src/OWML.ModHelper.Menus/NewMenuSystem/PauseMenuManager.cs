@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OWML.Common;
 using OWML.Utils;
 using UnityEngine;
@@ -99,9 +96,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				MakePauseMenuItemsTemplate();
 			}
 
-			var newMenu = Object.Instantiate(_pauseMenuItemsTemplate);
+			var newMenu = Object.Instantiate(_pauseMenuItemsTemplate, GameObject.Find("PauseMenuBlock").transform);
 
-			newMenu.transform.parent = GameObject.Find("PauseMenuBlock").transform;
 			newMenu.transform.localScale = Vector3.one;
 			newMenu.transform.localPosition = Vector3.zero;
 			newMenu.transform.localRotation = Quaternion.identity;
@@ -197,11 +193,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				Object.Destroy(text.GetComponent<LocalizedText>());
 			}
 
-			var pauseButton = Object.Instantiate(_buttonPrefab);
-
 			// Make new button above dotted line
 			var mainMenuLayoutGroup = customMenu.transform.GetChild(1).GetComponent<VerticalLayoutGroup>();
-			pauseButton.transform.parent = mainMenuLayoutGroup.transform;
+			var pauseButton = Object.Instantiate(_buttonPrefab, mainMenuLayoutGroup.transform);
+
 			pauseButton.transform.localPosition = Vector3.zero;
 			pauseButton.transform.localScale = Vector3.one;
 			pauseButton.transform.SetSiblingIndex(pauseButton.transform.GetSiblingIndex() - 1); // -1 because no spacer in pause menu

@@ -1,0 +1,121 @@
+---
+title: Manifest Schema
+description: Schema for manifest.json
+sidebar:
+  order: 0
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+This page documents the fields allowed to be used in `manifest.json`.
+
+<Aside type="caution">
+The manifest is read by **both OWML and the mod manager**. The mod manager loads manifests a lot stricter than OWML, so please do not include comments, unquoted keys, etc. in your manifest.
+</Aside>
+
+## Usage
+
+To use the schema and get error-checking and documentation in your editor, add `$schema` at the top of your manifest.
+
+```json title="manifest.json" ins={2}
+{
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/refs/heads/master/schemas/manifest_schema.json",
+  "filename": "MyMod.dll",
+  "author": "Me",
+  "name": "My Mod",
+  "uniqueName": "Bwc9876.MyMod",
+  "version": "0.0.1",
+  "owmlVersion": "2.9.0"
+}
+```
+
+Here is the raw link to the manifest schema for copying:
+
+```
+https://raw.githubusercontent.com/ow-mods/owml/refs/heads/master/schemas/manifest_schema.json
+```
+
+## Properties
+
+### $schema
+
+The JSON schema for this manifest (see [Usage](#usage))
+
+### filename <Badge variant="caution" text="Required" />
+
+The name of the dll file to load
+
+### author <Badge variant="caution" text="Required" />
+
+The author of the mod
+
+### name <Badge variant="caution" text="Required" />
+
+The human-readable name of the mod
+
+### uniqueName <Badge variant="caution" text="Required" />
+
+The unique name of the mod. No two mods should ever have the same `uniqueName`.
+
+### version <Badge variant="caution" text="Required" />
+
+The version of the mod (should follow [semver](https://semver.org/spec/v2.0.0-rc.2.html))
+
+### owmlVersion <Badge variant="caution" text="Required" />
+
+The version of the OWML that this mod was created with
+
+### patcher
+
+Optional path to a [pre-patcher](/guides/prepatchers) to use
+
+### dependencies
+
+The dependencies of the mod. Should be a list of other mods' unique names.
+
+### priorityLoad
+
+Whether to load the mod before other mods
+
+### minGameVersion
+
+The minimum version of the game that this mod is compatible with
+
+### maxGameVersion
+
+The maximum version of the game that this mod is compatible with
+
+### requireLatestVersion
+
+Whether this mod needs the very latest game version
+
+### incompatibleVendors
+
+The vendors this mod does not work on
+
+Has to be `Steam`, `Epic`, or `Gamepass`
+
+### pathsToPreserve
+
+The paths to preserve when updating the mod
+
+Automatically includes `config.json`, `manifest.json`, and `save.json`
+
+### conflicts
+
+The mods that this mod conflicts with
+
+Should be a list of other mods' unique names
+
+### warning
+
+A warning to display when starting the mod for the first time
+
+### donateLinks
+
+Specify links to be displayed in the mod manager for the mod, currently `PayPal`, `Patreon`, `Buymeacoffee`, `CashApp`, and `Kofi` are available
+
+### donateLink
+
+*DEPRECATED*: Use [donateLinks](#donateLinks)
+

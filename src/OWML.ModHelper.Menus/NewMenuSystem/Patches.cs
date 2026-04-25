@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using OWML.Common;
 using OWML.Utils;
 using Newtonsoft.Json.Linq;
+using OWML.ModHelper.Input;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
@@ -30,6 +31,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				var incremental = MenuManager.OWMLSettingsMenu.GetMenuOptions()[2] as OWMLToggleElement;
 				incremental.Initialize(owmlDefaultConfig.IncrementalGC);
 
+				var versionPopup = MenuManager.OWMLSettingsMenu.GetMenuOptions()[3] as OWMLToggleElement;
+				versionPopup.Initialize(owmlDefaultConfig.DisableVersionPopup);
+
 				return;
 			}
 
@@ -43,7 +47,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				var settings = behaviour.ModHelper.Config.Settings;
 				var defaultSettings = behaviour.ModHelper.DefaultConfig;
 
-				var options = modMenu.GetMenuOptions().Where(x => x.name != "UIElement-GammaButton").ToArray();
+				var options = modMenu.GetMenuOptions().Where(x => x != null && x.name != "UIElement-GammaButton").ToArray();
 
 				for (var i = 0; i < options.Length; i++)
 				{
@@ -81,6 +85,26 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 							var defaultValue = defaultSettings.GetSettingsValue<string>(textEntry.ModSettingKey);
 							textEntry.SetCurrentValue(defaultValue);
 						}
+					}
+					else if (menuOption is KeyRebindingElement rebindingElement)
+					{
+						var actionMap = OWMLRebinding.CustomActionMaps[behaviour.ModHelper.Manifest.UniqueName];
+						InputCommandDefinitions.TryGetInputCommandData(rebindingElement._rebindID, out var data);
+
+						if (rebindingElement._rebindingInputCommand is RebindableAxisInputAction axis)
+						{
+							axis.UpdateFromAction(actionMap.FindAction(data.Primary.ActionName1));
+						}
+						else if (rebindingElement._rebindingInputCommand is RebindableInputActionPair pair)
+						{
+							// why is this both primary and not primary and secondary? no idea! 
+							pair.UpdateFromAction(actionMap.FindAction(data.Primary.ActionName1), actionMap.FindAction(data.Primary.ActionName2));
+						}
+						else
+						{
+							throw new NotImplementedException();
+						}
+						rebindingElement.UpdateDisplay(true);
 					}
 				}
 			}

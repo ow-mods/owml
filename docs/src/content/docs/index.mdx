@@ -1,0 +1,36 @@
+---
+title: OWML - The Outer Wilds Mod Loader
+description: The mod loader and framework for Outer Wilds
+template: splash
+hero:
+  tagline: The mod loader and framework for Outer Wilds
+  image:
+    file: ../../assets/images/owml_icon.svg
+  actions:
+    - text: Get Started
+      link: /start-here
+      icon: rocket
+    - text: ModHelper Reference
+      link: /mod-helper/mod-helper
+      icon: open-book
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Features
+
+<CardGrid stagger>
+	<Card title="Premade Template" icon="pen">
+		<a href="/guides/getting-started">Getting started</a> is easy thanks to the Outer Wilds Mod Template.
+	</Card>
+	<Card title="Patching with Harmony" icon="forward-slash">
+		<a href="https://github.com/BepInEx/HarmonyX" target="_blank">HamonyX</a> allows you to [patch base game behavior](/guides/patching) with annotated methods.
+	</Card>
+	<Card title="Publicized Assemblies" icon="puzzle">
+		OWML publicizes base game assemblies so you can easily reference items in your mod.
+	</Card>
+  <Card title="Amazing Community" icon="discord">
+    Need help? Join the <a target="_blank" href="https://discord.gg/wusTQYbYTc">Outer Wilds Modding Discord</a> to chat with fellow mod developers!
+    </Card>
+</CardGrid>
