@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputBinding;
 
 namespace OWML.ModLoader
 {
@@ -129,27 +130,21 @@ namespace OWML.ModLoader
 				if (index == -1)
 					return true;
 
-				var binding = action.bindings[index];
-				string effectivePath = binding.effectivePath;
+				action.GetBindingDisplayString(
+					index,
+					out var deviceLayoutName,
+					out var controlPath,
+					DisplayStringOptions.DontUseShortDisplayNames
+				);
 
-				string key = GetLastPathPart(effectivePath);
-
-				if (key != "none")
+				// Control paths that aren't attached to an actual control will be empty and return no images, but we don't want that.
+				if (!string.IsNullOrEmpty(controlPath))
 					return true;
 
 				textureList.Add(ButtonPromptLibrary.s_testButton);
 
 				__result = true;
 				return false;
-			}
-
-			private static string GetLastPathPart(string path)
-			{
-				if (string.IsNullOrEmpty(path))
-					return string.Empty;
-
-				int index = path.LastIndexOf('/');
-				return index >= 0 ? path.Substring(index + 1) : path;
 			}
 		}
 	}
