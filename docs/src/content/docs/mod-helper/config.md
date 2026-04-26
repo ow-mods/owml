@@ -1,0 +1,35 @@
+---
+title: Config
+description: Expose settings for your mod
+---
+
+Access your mod's settings. You can check out how to use this module in [the creating mod settings tutorial](/guides/mod-settings).
+
+## Enabled
+
+Whether your mod is enabled.
+
+## Settings
+
+A `Dictionary<string, object>` containing your mod's settings, it's recommended to use the below methods to access the settings instead of interfacing with this dictionary directly.
+
+## GetSettingValue&lt;T&gt;
+
+Gets the setting's value from the mod's config with the given key. Deserialized into type `T`.
+
+### Get Parameters
+
+- `string key`: The key to get.
+
+## SetSettingsValue
+
+Sets the setting's value in the mod's config with the given key to the given value.
+
+### Set Parameters
+
+- `string key`: The key to set.
+- `object value`: The value to set the key to, auto-serialized to a JSON string.
+
+## Copy
+
+Copies the config of the mod.
