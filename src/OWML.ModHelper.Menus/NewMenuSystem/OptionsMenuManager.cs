@@ -429,7 +429,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			layoutElement.flexibleWidth = 1;
 			layoutElement.preferredHeight = 70;
 
-			separatorObj.transform.parent = GetParentForAddedElements(menu);
+			separatorObj.transform.SetParent(GetParentForAddedElements(menu), false);
 			separatorObj.transform.localScale = Vector3.one;
 
 			if (!dots)
@@ -448,7 +448,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.sprite;
 
 			var imageObj = new GameObject("dots");
-			imageObj.transform.parent = separatorObj.transform;
+			imageObj.transform.SetParent(separatorObj.transform, false);
 			imageObj.transform.localPosition = Vector3.zero;
 			imageObj.transform.localScale = Vector3.one;
 
@@ -474,7 +474,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public SubmitAction CreateButton(Menu menu, string buttonLabel, string tooltip, MenuSide side)
 		{
 			var rootObj = new GameObject($"UIElement-{buttonLabel}");
-			rootObj.transform.parent = GetParentForAddedElements(menu);
+			rootObj.transform.SetParent(GetParentForAddedElements(menu), false);
 			rootObj.transform.localScale = Vector3.one;
 			rootObj.transform.localRotation = Quaternion.identity;
 			rootObj.transform.localPosition = Vector3.zero;
@@ -573,7 +573,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		public SubmitAction CreateButtonWithLabel(Menu menu, string label, string buttonLabel, string tooltip)
 		{
 			var newButtonObj = new GameObject($"UIElement-{label}");
-			newButtonObj.transform.parent = GetParentForAddedElements(menu);
+			newButtonObj.transform.SetParent(GetParentForAddedElements(menu), false);
 			newButtonObj.transform.localScale = Vector3.one;
 			newButtonObj.transform.localRotation = Quaternion.identity;
 			newButtonObj.transform.localPosition = Vector3.zero;
@@ -766,12 +766,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var textLayoutElement = textObj.AddComponent<LayoutElement>();
 			textLayoutElement.minHeight = 70;
 
-			textObj.transform.parent = newObj.transform;
+			textObj.transform.SetParent(newObj.transform, false);
 			textObj.transform.localScale = Vector3.one;
 			textObj.transform.localPosition = Vector3.zero;
 			textObj.transform.localRotation = Quaternion.identity;
 
-			newObj.transform.parent = GetParentForAddedElements(menu);
+			newObj.transform.SetParent(GetParentForAddedElements(menu), false);
 			newObj.transform.localScale = Vector3.one;
 			newObj.transform.localPosition = Vector3.zero;
 			newObj.transform.localRotation = Quaternion.identity;
@@ -779,7 +779,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		public KeyRebindingElement CreateRebinding(Menu menu, string label, string tooltip, RebindableID id)
 		{
-			_console.WriteLine($"Creating rebinding label:{label} tooltip:{tooltip} id:{id}");
+			_console.WriteLine($"Creating rebinding label:{label} tooltip:{tooltip} id:{id}", MessageType.Debug);
 
 			var existingRebinding = Resources.FindObjectsOfTypeAll<TabbedSubMenu>()
 				.Single(x => x.name == "InputMenu").transform
@@ -787,7 +787,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				.Find("UIElement-Pause").gameObject;
 
 			var newRebinding = UnityEngine.Object.Instantiate(existingRebinding);
-			newRebinding.transform.parent = GetParentForAddedElements(menu);
+			newRebinding.transform.SetParent(GetParentForAddedElements(menu), false);
 			newRebinding.transform.localScale = Vector3.one;
 			newRebinding.name = $"UIElement-{id}";
 
