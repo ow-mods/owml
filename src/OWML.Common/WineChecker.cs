@@ -10,9 +10,18 @@ namespace OWML.Common
 
 		public static bool IsUsingWine()
 		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				return false;
+			}
+
 			try
 			{
 				return wine_get_version() != IntPtr.Zero;
+			}
+			catch (DllNotFoundException)
+			{
+				return false;
 			}
 			catch (EntryPointNotFoundException)
 			{

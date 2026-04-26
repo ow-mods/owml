@@ -9,6 +9,7 @@ namespace OWML.Common
 		[JsonProperty("gamePath")]
 		private string gamePath;
 
+		[JsonIgnore]
 		public string GamePath
 		{
 			get => WineChecker.IsUsingWine() ? $"Z:{gamePath}" : gamePath;
@@ -45,6 +46,7 @@ namespace OWML.Common
 		[JsonProperty("owmlPath")]
 		private string owmlPath;
 
+		[JsonIgnore]
 		public string OWMLPath
 		{
 			get => WineChecker.IsUsingWine() ? $"Z:{owmlPath}" : owmlPath;
