@@ -1,8 +1,7 @@
 ---
-Title: Rebinding
+title: Rebinding
+description: Create rebindable actions for your mod
 ---
-
-# Using Key Rebinds
 
 The rebinding system lets mods create inputs with default keyboard/controller buttons assigned, and lets players change and save their bindings.
 
