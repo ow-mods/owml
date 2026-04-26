@@ -57,6 +57,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			OptionsMenuManager = new OptionsMenuManager(console, unityEvents, PopupMenuManager, this);
 			PauseMenuManager = new PauseMenuManager(console);
 
+			FixAxisIDCache();
+
 			var harmonyInstance = harmony.GetValue<Harmony>("_harmony");
 			harmonyInstance.PatchAll(typeof(Patches));
 
@@ -500,6 +502,35 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			_console.WriteLine($"Couldn't work out setting type. Type:{setting.GetType().Name} SettingObjectType:{settingObject?["type"].ToString()}", MessageType.Error);
 			return SettingType.NONE;
+		}
+
+		private static void FixAxisIDCache()
+		{
+			// Scroll only has one identifier
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_X] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_LEFT] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_RIGHT] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_Y] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_UP] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_DOWN] = AxisIdentifier.KEYBD_MOUSEWHEEL;
+
+			// Delta and Position share the same identifiers as the images express the same intention
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA] = AxisIdentifier.KEYBD_MOUSE;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_X] = AxisIdentifier.KEYBD_MOUSEX;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_LEFT] = AxisIdentifier.KEYBD_MOUSEX;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_RIGHT] = AxisIdentifier.KEYBD_MOUSEX;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_Y] = AxisIdentifier.KEYBD_MOUSEY;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_UP] = AxisIdentifier.KEYBD_MOUSEY;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_DOWN] = AxisIdentifier.KEYBD_MOUSEY;
+
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION] = AxisIdentifier.KEYBD_MOUSE;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_X] = AxisIdentifier.KEYBD_MOUSEX;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_LEFT] = AxisIdentifier.KEYBD_MOUSEX;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_RIGHT] = AxisIdentifier.KEYBD_MOUSEX;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_Y] = AxisIdentifier.KEYBD_MOUSEY;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_UP] = AxisIdentifier.KEYBD_MOUSEY;
+			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_DOWN] = AxisIdentifier.KEYBD_MOUSEY;
 		}
 	}
 }

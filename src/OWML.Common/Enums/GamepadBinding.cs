@@ -2,7 +2,7 @@
 {
 	public enum GamepadBinding
 	{
-		DPadUp,
+		DPadUp = 0,
 		DPadDown,
 		DPadLeft,
 		DPadRight,
@@ -29,6 +29,7 @@
 
 		LeftShoulder,
 		RightShoulder,
+
 		/// <summary>
 		/// Xbox: Menu Button, PS4: Options Button
 		/// </summary>
@@ -37,21 +38,30 @@
 		/// Xbox: View Button, PS4: Touchpad Press
 		/// </summary>
 		Select,
+
 		LeftTrigger,
 		RightTrigger,
+
 		/// <summary>
-		/// Xbox: ?, PS4: Share Button
+		/// Xbox: Unused, PS4: Share Button
 		/// </summary>
+		/// <remarks>
+		/// Even though the Share button is present on newer Xbox controllers, it doesn't have any functionality in Unity. It is only used as a capture/record button for Game Bar.
+		/// </remarks>
 		Share,
 		/// <summary>
-		/// Xbox: ?, PS4: PlayStation Button
+		/// Xbox: Unused, PS4: PlayStation Button
 		/// </summary>
+		/// <remarks>
+		/// Even though the System button is present on all Xbox controllers, it doesn't have any functionality in Unity. It is only used to open Game Bar and/or Steam overlay.
+		/// </remarks>
 		SystemButton,
 
 		LeftStickLeft,
 		LeftStickRight,
 		LeftStickUp,
 		LeftStickDown,
+
 		RightStickLeft,
 		RightStickRight,
 		RightStickUp,
