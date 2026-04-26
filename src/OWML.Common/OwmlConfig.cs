@@ -7,7 +7,14 @@ namespace OWML.Common
 	public class OwmlConfig : IOwmlConfig
 	{
 		[JsonProperty("gamePath")]
-		public string GamePath { get; set; }
+		private string gamePath;
+
+		[JsonIgnore]
+		public string GamePath
+		{
+			get => WineChecker.IsUsingWine() ? $"Z:{gamePath}" : gamePath;
+			set => gamePath = value;
+		}
 
 		[JsonProperty("debugMode")]
 		public bool DebugMode { get; set; }
@@ -37,7 +44,14 @@ namespace OWML.Common
 		public string PluginsPath => Path.Combine(DataPath, "Plugins");
 
 		[JsonProperty("owmlPath")]
-		public string OWMLPath { get; set; }
+		private string owmlPath;
+
+		[JsonIgnore]
+		public string OWMLPath
+		{
+			get => WineChecker.IsUsingWine() ? $"Z:{owmlPath}" : owmlPath;
+			set => owmlPath = value;
+		}
 
 		[JsonIgnore]
 		public string ModsPath => $"{OWMLPath}Mods";
