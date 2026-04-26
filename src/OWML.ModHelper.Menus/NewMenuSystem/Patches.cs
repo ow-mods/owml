@@ -5,10 +5,12 @@ using OWML.ModHelper.Input;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
@@ -175,7 +177,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		[HarmonyReversePatch]
 		[HarmonyPatch(typeof(Menu), nameof(Menu.Activate))]
-		public static void Menu_Activate_Stub(object instance) { }
+		public static void Menu_Activate_Stub(Menu __instance) { }
+
+		[HarmonyReversePatch]
+		[HarmonyPatch(typeof(Menu), nameof(Menu.Deactivate))]
+		private static void Menu_Deactivate_Stub(Menu __instance, bool remainVisible = false) { }
 
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.Activate))]
@@ -254,89 +260,28 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			return false;
 		}
 
-		/// <summary>
-		/// Modified TryGetAxisIdentifier that removes the device prefix of more than just gamepad.
-		/// </summary>
-		/// <remarks>
-		/// Fixes devices other than gamepad not being able to see button prompt for positive/negative axis inputs
-		/// </remarks>
-		[HarmonyPatch]
-		public static class InputTransitionUtilTryGetAxisIdentifierTwoPathsPatch
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.OnUpdateInputDevice))]
+		private static bool TabbedMenu_OnUpdateInputDevice(TabbedMenu __instance)
 		{
-			public static MethodBase TargetMethod() => AccessTools.Method(
-				typeof(InputTransitionUtil),
-				nameof(InputTransitionUtil.TryGetAxisIdentifier),
-				new[]
-				{
-					typeof(string),
-					typeof(string),
-					typeof(AxisIdentifier).MakeByRefType()
-				}
-			);
+			if ((object)__instance == null) return false;
+			if (__instance == null) return false;
+			if (__instance.gameObject == null) return false;
+			if (Utils.TypeExtensions.GetValue<UnityEngine.UI.Image>(__instance, "_tabLeftButtonImg") == null || Utils.TypeExtensions.GetValue<UnityEngine.UI.Image>(__instance, "_tabRightButtonImg") == null) return false;
+			return true;
+		}
 
-			[HarmonyPrefix]
-			public static bool Prefix(
-				string firstControlPath,
-				string secondControlPath,
-				ref AxisIdentifier axisID,
-				ref bool __result)
-			{
-				axisID = AxisIdentifier.NONE;
-
-				if (!TryGetAxisKey(firstControlPath, secondControlPath, out var key))
-				{
-					__result = false;
-					return false;
-				}
-
-				__result = TryGetAxisID(key, out axisID);
-				return false;
-			}
-
-			private static bool TryGetAxisID(string key, out AxisIdentifier axisID)
-			{
-				return InputTransitionUtil.AxisIDCache.TryGetValue(key, out axisID);
-			}
-
-			private static bool TryGetAxisKey(string firstPath, string secondPath, out string key)
-			{
-				key = null;
-
-				if (string.IsNullOrEmpty(firstPath) || string.IsNullOrEmpty(secondPath))
-					return false;
-
-				var first = firstPath.Split(new[] { ControlPathConstants.PATH_SEPARATOR_CHAR }, StringSplitOptions.RemoveEmptyEntries);
-				var second = secondPath.Split(new[] { ControlPathConstants.PATH_SEPARATOR_CHAR }, StringSplitOptions.RemoveEmptyEntries);
-
-				if (first.Length == 0 || second.Length == 0)
-					return false;
-
-				var axis = GetAxis(first[first.Length - 1], second[second.Length - 1]);
-				if (string.IsNullOrEmpty(axis))
-					return false;
-
-				var start = IsDevicePrefix(first[0]) ? 1 : 0;
-				first[first.Length - 1] = axis;
-
-				key = string.Join(ControlPathConstants.PATH_SEPARATOR, first, start, first.Length - start);
-				return true;
-			}
-
-			private static string GetAxis(string first, string second)
-			{
-				if ((first == ControlPathConstants.UP && second == ControlPathConstants.DOWN) || (first == ControlPathConstants.DOWN && second == ControlPathConstants.UP))
-					return ControlPathConstants.Y;
-
-				if ((first == ControlPathConstants.LEFT && second == ControlPathConstants.RIGHT) || (first == ControlPathConstants.RIGHT && second == ControlPathConstants.LEFT))
-					return ControlPathConstants.X;
-
-				return null;
-			}
-
-			private static bool IsDevicePrefix(string part)
-			{
-				return part == ControlPathConstants.Gamepad.DEVICE || part == ControlPathConstants.Mouse.DEVICE || part == ControlPathConstants.Keyboard.DEVICE;
-			}
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.Deactivate))]
+		private static bool TabbedMenu_Deactivate(TabbedMenu __instance, bool keepPreviousMenuVisible = false)
+		{
+			if (Locator.GetEventSystem().currentSelectedGameObject)
+				Utils.TypeExtensions.SetValue(__instance, "_lastSelectableOnDeactivate", Locator.GetEventSystem().currentSelectedGameObject.GetComponent<Selectable>());
+			foreach (var tabSelectablePair in Utils.TypeExtensions.GetValue<TabbedMenu.TabSelectablePair[]>(__instance, "_tabSelectablePairs"))
+				tabSelectablePair.tabButton.Enable(false);
+			Menu_Deactivate_Stub(__instance, keepPreviousMenuVisible);
+			Locator.GetMenuInputModule().OnInputModuleTab -= __instance.OnInputModuleTabEvent;
+			return false;
 		}
 	}
 }

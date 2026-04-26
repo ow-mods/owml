@@ -15,6 +15,8 @@ namespace OWML.Utils
 		{
 			return ControlPathConstants.Keyboard.DEVICE + ControlPathConstants.PATH_SEPARATOR + (key switch
 			{
+				Key.None => ControlPathConstants.NONE,
+
 				Key.Space => ControlPathConstants.Keyboard.SPACE,
 				Key.Enter => ControlPathConstants.Keyboard.ENTER,
 				Key.Tab => ControlPathConstants.Keyboard.TAB,
@@ -85,6 +87,8 @@ namespace OWML.Utils
 		{
 			return ControlPathConstants.Mouse.DEVICE + ControlPathConstants.PATH_SEPARATOR + (binding switch
 			{
+				MouseBinding.None => ControlPathConstants.NONE,
+
 				MouseBinding.Left => ControlPathConstants.Mouse.LEFT_BUTTON,
 				MouseBinding.Right => ControlPathConstants.Mouse.RIGHT_BUTTON,
 				MouseBinding.Middle => ControlPathConstants.Mouse.MIDDLE_BUTTON,
@@ -115,6 +119,8 @@ namespace OWML.Utils
 		{
 			return ControlPathConstants.Gamepad.DEVICE + ControlPathConstants.PATH_SEPARATOR + (binding switch
 			{
+				GamepadBinding.None => ControlPathConstants.NONE,
+
 				GamepadBinding.DPadUp => ControlPathConstants.Gamepad.DPAD_UP,
 				GamepadBinding.DPadDown => ControlPathConstants.Gamepad.DPAD_DOWN,
 				GamepadBinding.DPadLeft => ControlPathConstants.Gamepad.DPAD_LEFT,

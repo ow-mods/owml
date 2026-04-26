@@ -2,6 +2,8 @@
 {
 	public enum MouseBinding
 	{
+		None = -1,
+
 		Left = 0,
 		Right,
 		Middle,

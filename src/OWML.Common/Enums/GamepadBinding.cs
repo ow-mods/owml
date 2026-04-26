@@ -2,6 +2,8 @@
 {
 	public enum GamepadBinding
 	{
+		None = -1,
+
 		DPadUp = 0,
 		DPadDown,
 		DPadLeft,
