@@ -19,11 +19,6 @@
 		ScrollUp,
 		ScrollDown,
 		ScrollLeft,
-		ScrollRight,
-
-		PositionUp,
-		PositionDown,
-		PositionLeft,
-		PositionRight,
+		ScrollRight
 	}
 }

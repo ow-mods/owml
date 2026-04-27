@@ -515,7 +515,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_UP] = AxisIdentifier.KEYBD_MOUSEWHEEL;
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.SCROLL_DOWN] = AxisIdentifier.KEYBD_MOUSEWHEEL;
 
-			// Delta and Position share the same identifiers as the images express the same intention
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA] = AxisIdentifier.KEYBD_MOUSE;
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_X] = AxisIdentifier.KEYBD_MOUSEX;
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_LEFT] = AxisIdentifier.KEYBD_MOUSEX;
@@ -523,14 +522,6 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_Y] = AxisIdentifier.KEYBD_MOUSEY;
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_UP] = AxisIdentifier.KEYBD_MOUSEY;
 			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.DELTA_DOWN] = AxisIdentifier.KEYBD_MOUSEY;
-
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION] = AxisIdentifier.KEYBD_MOUSE;
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_X] = AxisIdentifier.KEYBD_MOUSEX;
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_LEFT] = AxisIdentifier.KEYBD_MOUSEX;
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_RIGHT] = AxisIdentifier.KEYBD_MOUSEX;
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_Y] = AxisIdentifier.KEYBD_MOUSEY;
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_UP] = AxisIdentifier.KEYBD_MOUSEY;
-			InputTransitionUtil.AxisIDCache[ControlPathConstants.Mouse.POSITION_DOWN] = AxisIdentifier.KEYBD_MOUSEY;
 		}
 	}
 }

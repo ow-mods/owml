@@ -147,11 +147,6 @@
 			public const string POSITION = "position";
 			public const string POSITION_X = POSITION + PATH_SEPARATOR + X;
 			public const string POSITION_Y = POSITION + PATH_SEPARATOR + Y;
-
-			public const string POSITION_UP = POSITION + PATH_SEPARATOR + UP;
-			public const string POSITION_DOWN = POSITION + PATH_SEPARATOR + DOWN;
-			public const string POSITION_LEFT = POSITION + PATH_SEPARATOR + LEFT;
-			public const string POSITION_RIGHT = POSITION + PATH_SEPARATOR + RIGHT;
 		}
 
 		public static class Gamepad

@@ -79,7 +79,7 @@ namespace OWML.Utils
 
 				>= Key.OEM1 and <= Key.OEM5 => ControlPathConstants.Keyboard.OEM + ((int)key - (int)Key.OEM1 + 1),
 
-				_ => throw new NotImplementedException(),
+				_ => throw new NotImplementedException($"Key {key} is not implemented in GetInputCommandPath."),
 			});
 		}
 
@@ -106,12 +106,7 @@ namespace OWML.Utils
 				MouseBinding.ScrollLeft => ControlPathConstants.Mouse.SCROLL_LEFT,
 				MouseBinding.ScrollRight => ControlPathConstants.Mouse.SCROLL_RIGHT,
 
-				MouseBinding.PositionUp => ControlPathConstants.Mouse.POSITION_UP,
-				MouseBinding.PositionDown => ControlPathConstants.Mouse.POSITION_DOWN,
-				MouseBinding.PositionLeft => ControlPathConstants.Mouse.POSITION_LEFT,
-				MouseBinding.PositionRight => ControlPathConstants.Mouse.POSITION_RIGHT,
-
-				_ => throw new NotImplementedException(),
+				_ => throw new NotImplementedException($"MouseBinding {binding} is not implemented in GetInputCommandPath."),
 			});
 		}
 
@@ -156,7 +151,7 @@ namespace OWML.Utils
 				GamepadBinding.RightStickLeft => ControlPathConstants.Gamepad.RIGHT_STICK_LEFT,
 				GamepadBinding.RightStickRight => ControlPathConstants.Gamepad.RIGHT_STICK_RIGHT,
 
-				_ => throw new NotImplementedException(),
+				_ => throw new NotImplementedException($"GamepadBinding {binding} is not implemented in GetInputCommandPath."),
 			});
 		}
 
