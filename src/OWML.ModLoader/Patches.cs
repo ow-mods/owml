@@ -1,9 +1,12 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using OWML.ModHelper.Menus.NewMenuSystem;
+using OWML.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputBinding;
@@ -145,6 +148,159 @@ namespace OWML.ModLoader
 
 				__result = true;
 				return false;
+			}
+		}
+
+
+		/// <summary>
+		/// Fixes mouse delta and scroll input handling in BasicInputAction, AxisInputAction, and InputActionPair
+		/// </summary>
+		/// <remarks>
+		/// The original code only supports mouse delta input for the "x" and "y" (not "up", "down", "left", "right"), and didn't support scroll input at all.
+		/// </remarks>
+		[HarmonyPatch]
+		public static class MouseAxisControlPatch
+		{
+			private static readonly FieldInfo MouseDeltaField =
+				AccessTools.Field(typeof(BaseInputManager), nameof(BaseInputManager.MouseDelta));
+
+			private static readonly FieldInfo Vector2XField =
+				AccessTools.Field(typeof(Vector2), nameof(Vector2.x));
+
+			private static readonly FieldInfo Vector2YField =
+				AccessTools.Field(typeof(Vector2), nameof(Vector2.y));
+
+			private static readonly MethodInfo ResolveMethod =
+				AccessTools.Method(typeof(MouseAxisControlPatch), nameof(ResolveMouseAxis));
+
+			[HarmonyTranspiler]
+			[HarmonyPatch(typeof(BasicInputAction), nameof(BasicInputAction.DoUpdate))]
+			[HarmonyPatch(typeof(AxisInputAction), nameof(AxisInputAction.DoUpdate))]
+			[HarmonyPatch(typeof(InputActionPair), nameof(InputActionPair.DoUpdate))]
+			private static IEnumerable<CodeInstruction> PatchWithMatcher(
+				IEnumerable<CodeInstruction> instructions)
+			{
+				var matcher = new CodeMatcher(instructions);
+
+				while (true)
+				{
+					// if (this._mouseAxisControl.name == "x")
+					// {
+					//	 value = BaseInputManager.MouseDelta.x;
+					// }
+					// else
+					// {
+					//	 value = BaseInputManager.MouseDelta.y;
+					// }
+					matcher.MatchForward(false,
+						new CodeMatch(OpCodes.Ldarg_0),
+						new CodeMatch(OpCodes.Ldfld),
+						new CodeMatch(IsNameGetter),
+						new CodeMatch(OpCodes.Ldstr, "x"),
+						new CodeMatch(IsStringEquals),
+						new CodeMatch(IsBranchFalse),
+						new CodeMatch(IsMouseDeltaLoad),
+						new CodeMatch(IsVector2AxisField),
+						new CodeMatch(IsStoreLocal),
+						new CodeMatch(IsBranch),
+						new CodeMatch(IsMouseDeltaLoad),
+						new CodeMatch(IsVector2AxisField),
+						new CodeMatch(IsStoreLocal)
+					);
+
+					if (!matcher.IsValid)
+						break;
+
+					var labels = matcher.Instruction.labels;
+					var field = matcher.InstructionAt(1).operand as FieldInfo;
+					var store = matcher.InstructionAt(8).Clone();
+
+					// value = MouseAxisControlPatch.ResolveMouseAxis(this._mouseAxisControl);
+					matcher
+						.RemoveInstructions(13)
+						.Insert(
+							new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
+							new CodeInstruction(OpCodes.Ldfld, field),
+							new CodeInstruction(OpCodes.Call, ResolveMethod),
+							store
+						);
+				}
+
+				return matcher.InstructionEnumeration();
+			}
+
+			private static float ResolveMouseAxis(InputControl control)
+			{
+				if (control == null)
+					return 0f;
+
+				var mouse = Mouse.current;
+				if (mouse == null)
+					return 0f;
+
+				string path = control.path; // e.g. "/Mouse/delta/x"
+
+				Vector2 vector = path.Contains("/scroll")
+					? Mouse.current.scroll.ReadValue()
+					: BaseInputManager.MouseDelta;
+
+				return path switch
+				{
+					var p when p.EndsWith("/x") => vector.x,
+					var p when p.EndsWith("/y") => vector.y,
+
+					var p when p.EndsWith("/right") => Mathf.Max(vector.x, 0f),
+					var p when p.EndsWith("/left") => Mathf.Max(-vector.x, 0f),
+
+					var p when p.EndsWith("/up") => Mathf.Max(vector.y, 0f),
+					var p when p.EndsWith("/down") => Mathf.Max(-vector.y, 0f),
+
+					_ => control.ReadValueAsObject() is float value ? value : 0f
+				};
+			}
+
+
+			private static bool IsMouseDeltaLoad(CodeInstruction i)
+			{
+				return (i.opcode == OpCodes.Ldsfld || i.opcode == OpCodes.Ldsflda)
+					&& Equals(i.operand, MouseDeltaField);
+			}
+
+			private static bool IsVector2AxisField(CodeInstruction i)
+			{
+				return i.opcode == OpCodes.Ldfld
+					&& (Equals(i.operand, Vector2XField) || Equals(i.operand, Vector2YField));
+			}
+
+			private static bool IsNameGetter(CodeInstruction i)
+			{
+				return i.opcode == OpCodes.Callvirt
+					&& Equals(i.operand, AccessTools.PropertyGetter(typeof(InputControl), nameof(InputControl.name)));
+			}
+
+			private static bool IsStringEquals(CodeInstruction i)
+			{
+				return i.opcode == OpCodes.Call
+					&& Equals(i.operand, AccessTools.Method(typeof(string), "op_Equality"));
+			}
+
+			private static bool IsStoreLocal(CodeInstruction i)
+			{
+				return i.opcode == OpCodes.Stloc_0
+					|| i.opcode == OpCodes.Stloc_1
+					|| i.opcode == OpCodes.Stloc_2
+					|| i.opcode == OpCodes.Stloc_3
+					|| i.opcode == OpCodes.Stloc_S;
+			}
+
+			private static bool IsBranch(CodeInstruction i)
+			{
+				return i.opcode == OpCodes.Br || i.opcode == OpCodes.Br_S;
+			}
+
+			private static bool IsBranchFalse(CodeInstruction i)
+			{
+				return i.opcode == OpCodes.Brfalse || i.opcode == OpCodes.Brfalse_S;
 			}
 		}
 	}
