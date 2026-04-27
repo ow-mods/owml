@@ -23,15 +23,27 @@ namespace OWML.ModHelper.Input
 			string name,
 			bool positive,
 			bool axis,
-			Key keyboardKeybind,
+			KeyOrMouse kbmKeybind,
 			GamepadBinding gamepadKeybind)
 		{
 			var positiveName = name + (positive ? "Positive" : "Negative");
-			var positiveAction = AddAction(_manifest, positiveName, axis);
-			AddBinding(_manifest, positiveAction, Keyboard.current[keyboardKeybind].path, InputConsts.InputControlSchemes.KEYBOARDMOUSE);
-			AddBinding(_manifest, positiveAction, GetGamepadPath(gamepadKeybind), InputConsts.InputControlSchemes.GAMEPAD);
 
-			return positiveName;
+			return CreateActionAndBinding(_manifest, positiveName, axis, kbmKeybind, gamepadKeybind);
+		}
+
+		private string CreateActionAndBinding(
+			IModManifest manifest,
+			string name,
+			bool axis,
+			KeyOrMouse kbmKeybind,
+			GamepadBinding gamepadKeybind)
+		{
+			var action = AddAction(_manifest, name, axis);
+
+			AddBinding(_manifest, action, kbmKeybind.GetInputCommandPath(), InputConsts.InputControlSchemes.KEYBOARDMOUSE);
+			AddBinding(_manifest, action, gamepadKeybind.GetInputCommandPath(), InputConsts.InputControlSchemes.GAMEPAD);
+
+			return name;
 		}
 
 		public InputConsts.InputCommandType RegisterRebindable(
@@ -42,14 +54,52 @@ namespace OWML.ModHelper.Input
 			bool axis,
 			float pressedThreshold = 0.4f)
 		{
+			return RegisterRebindable(
+				name,
+				tooltip,
+				new KeyOrMouse(keyboardKeybind),
+				gamepadKeybind,
+				axis,
+				pressedThreshold
+			);
+		}
+		public InputConsts.InputCommandType RegisterRebindable(
+			string name,
+			string tooltip,
+			MouseBinding mouseKeybind,
+			GamepadBinding gamepadKeybind,
+			bool axis,
+			float pressedThreshold = 0.4f)
+		{
+			return RegisterRebindable(
+				name,
+				tooltip,
+				new KeyOrMouse(mouseKeybind),
+				gamepadKeybind,
+				axis,
+				pressedThreshold
+			);
+		}
+
+		public InputConsts.InputCommandType RegisterRebindable(
+			string name,
+			string tooltip,
+			KeyOrMouse kbmKeybind,
+			GamepadBinding gamepadKeybind,
+			bool axis,
+			float pressedThreshold = 0.4f)
+		{
 			var uniqueName = _manifest.UniqueName + name;
 			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
 
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
-			var action = CreateActionAndBinding(_manifest, uniqueName, true, axis, keyboardKeybind, gamepadKeybind);
+
+			var action = CreateActionAndBinding(_manifest, uniqueName, axis, kbmKeybind, gamepadKeybind);
+
 			inputCommandData.TrySetAsAxis(rebindableId, action);
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
+
 			Rebindables.Add((rebindableId, name, tooltip));
 
 			((InputManager)OWInput.SharedInputManager).commandManager.OnInputCommandsInitialized += () =>
@@ -71,13 +121,59 @@ namespace OWML.ModHelper.Input
 			bool axis,
 			float pressedThreshold = 0.4f)
 		{
+			return RegisterRebindable(
+				name,
+				tooltip,
+				new KeyOrMouse(positiveKeyboardKeybind),
+				positiveGamepadKeybind,
+				new KeyOrMouse(negativeKeyboardKeybind),
+				negativeGamepadKeybind,
+				axis,
+				pressedThreshold
+			);
+		}
+
+		public InputConsts.InputCommandType RegisterRebindable(
+			string name,
+			string tooltip,
+			MouseBinding positiveMouseKeybind,
+			GamepadBinding positiveGamepadKeybind,
+			MouseBinding negativeMouseKeybind,
+			GamepadBinding negativeGamepadKeybind,
+			bool axis,
+			float pressedThreshold = 0.4f)
+		{
+			return RegisterRebindable(
+				name,
+				tooltip,
+				new KeyOrMouse(positiveMouseKeybind),
+				positiveGamepadKeybind,
+				new KeyOrMouse(negativeMouseKeybind),
+				negativeGamepadKeybind,
+				axis,
+				pressedThreshold
+			);
+		}
+
+		public InputConsts.InputCommandType RegisterRebindable(
+			string name,
+			string tooltip,
+			KeyOrMouse positiveKbmKeybind,
+			GamepadBinding positiveGamepadKeybind,
+			KeyOrMouse negativeKbmKeybind,
+			GamepadBinding negativeGamepadKeybind,
+			bool axis,
+			float pressedThreshold = 0.4f)
+		{
 			var uniqueName = _manifest.UniqueName + name;
 			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
 			var rebindableId = EnumUtils.Create<RebindableID>(uniqueName);
 
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Axis, commandType);
-			var positiveAction = CreateActionAndBinding(_manifest, uniqueName, true, axis, positiveKeyboardKeybind, positiveGamepadKeybind);
-			var negativeAction = CreateActionAndBinding(_manifest, uniqueName, false, axis, negativeKeyboardKeybind, negativeGamepadKeybind);
+
+			var positiveAction = CreateActionAndBinding(_manifest, uniqueName, true, axis, positiveKbmKeybind, positiveGamepadKeybind);
+			var negativeAction = CreateActionAndBinding(_manifest, uniqueName, false, axis, negativeKbmKeybind, negativeGamepadKeybind);
+
 			inputCommandData.TrySetAsAxis(rebindableId, positiveAction, negativeAction);
 			InputCommandDefinitions.AddInputCommandData(inputCommandData);
 
@@ -115,76 +211,6 @@ namespace OWML.ModHelper.Input
 			return commandType;
 		}
 
-		private string GetGamepadPath(GamepadBinding binding)
-		{
-			switch (binding)
-			{
-				case GamepadBinding.LeftStickUp:
-					return "<Gamepad>/leftStick/up";
-				case GamepadBinding.LeftStickDown:
-					return "<Gamepad>/leftStick/down";
-				case GamepadBinding.LeftStickLeft:
-					return "<Gamepad>/leftStick/left";
-				case GamepadBinding.LeftStickRight:
-					return "<Gamepad>/leftStick/right";
-
-				case GamepadBinding.RightStickUp:
-					return "<Gamepad>/rightStick/up";
-				case GamepadBinding.RightStickDown:
-					return "<Gamepad>/rightStick/down";
-				case GamepadBinding.RightStickLeft:
-					return "<Gamepad>/rightStick/left";
-				case GamepadBinding.RightStickRight:
-					return "<Gamepad>/rightStick/right";
-
-				case GamepadBinding.Share:
-					return "<Gamepad>/share";
-				case GamepadBinding.SystemButton:
-					return "<Gamepad>/systemButton";
-
-				case GamepadBinding.DPadUp:
-					return "<Gamepad>/dpad/up";
-				case GamepadBinding.DPadDown:
-					return "<Gamepad>/dpad/down";
-				case GamepadBinding.DPadLeft:
-					return "<Gamepad>/dpad/left";
-				case GamepadBinding.DPadRight:
-					return "<Gamepad>/dpad/right";
-
-				case GamepadBinding.UpButton:
-					return "<Gamepad>/buttonNorth";
-				case GamepadBinding.LeftButton:
-					return "<Gamepad>/buttonEast";
-				case GamepadBinding.DownButton:
-					return "<Gamepad>/buttonSouth";
-				case GamepadBinding.RightButton:
-					return "<Gamepad>/buttonWest";
-
-				case GamepadBinding.LeftStickClick:
-					return "<Gamepad>/leftStickPress";
-				case GamepadBinding.RightStickClick:
-					return "<Gamepad>/rightStickPress";
-
-				case GamepadBinding.LeftShoulder:
-					return "<Gamepad>/leftShoulder";
-				case GamepadBinding.RightShoulder:
-					return "<Gamepad>/rightShoulder";
-
-				case GamepadBinding.Start:
-					return "<Gamepad>/start";
-				case GamepadBinding.Select:
-					return "<Gamepad>/select";
-
-				case GamepadBinding.LeftTrigger:
-					return "<Gamepad>/leftTrigger";
-				case GamepadBinding.RightTrigger:
-					return "<Gamepad>/rightTrigger";
-
-				default:
-					throw new NotImplementedException();
-			}
-		}
-
 		private InputAction AddAction(IModManifest manifest, string name, bool axis)
 		{
 			if (!OWMLRebinding.CustomActionMaps.ContainsKey(manifest.UniqueName))
@@ -203,6 +229,26 @@ namespace OWML.ModHelper.Input
 		private void AddBinding(IModManifest manifest, InputAction action, string control, string inputControlScheme)
 		{
 			OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddBinding(control, action, groups: inputControlScheme);
+		}
+
+		public readonly struct KeyOrMouse
+		{
+			public readonly Key? key;
+			public readonly MouseBinding? mouse;
+
+			public KeyOrMouse(Key key) => (this.key, this.mouse) = (key, null);
+			public KeyOrMouse(MouseBinding mouse) => (this.key, this.mouse) = (null, mouse);
+
+			public string GetInputCommandPath()
+			{
+				if (key != null)
+					return key.Value.GetInputCommandPath();
+
+				if (mouse != null)
+					return mouse.Value.GetInputCommandPath();
+
+				throw new InvalidOperationException();
+			}
 		}
 	}
 }

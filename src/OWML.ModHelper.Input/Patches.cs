@@ -45,8 +45,8 @@ namespace OWML.ModHelper.Input
 						{
 							existingActionMap.AddBinding(
 								binding.path, 
-								action, 
-								binding.groups);
+								action,
+								groups: binding.groups);
 						}
 					}
 				}
