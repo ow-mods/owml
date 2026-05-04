@@ -25,11 +25,11 @@ namespace OWML.MenuExample
 			rebindY = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Dual)", "Test Tooltip Y", "<Keyboard>/w", "<Gamepad>/leftStick/up", "<Keyboard>/s", "<Gamepad>/leftStick/down");
 			rebindComp = ModHelper.RebindingHelper.RegisterComposite("Test Composite", rebindY, rebindX);*/
 
-			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.A, GamepadBinding.LeftStickRight, Key.D, GamepadBinding.LeftStickLeft, false);
+			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.D, GamepadBinding.LeftStickRight, Key.A, GamepadBinding.LeftStickLeft, false);
 			rebindYButton = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Button)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, false);
 			rebindCompButton = ModHelper.RebindingHelper.RegisterComposite("Test Composite Button", rebindXButton, rebindYButton);
 
-			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.A, GamepadBinding.LeftStickRight, Key.D, GamepadBinding.LeftStickLeft, true);
+			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.D, GamepadBinding.LeftStickRight, Key.A, GamepadBinding.LeftStickLeft, true);
 			rebindYAxis = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, true);
 			rebindCompAxis = ModHelper.RebindingHelper.RegisterComposite("Test Composite Axis", rebindXAxis, rebindYAxis);
 
@@ -42,6 +42,17 @@ namespace OWML.MenuExample
 			rebindDualButton07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Button) 0.7", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, false, 0.7f);
 			rebindDualAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis)", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, true);
 			rebindDualAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis) 0.7", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, true, 0.7f);
+			
+			rebindMouseLeft = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Left (Button)", "", MouseBinding.Left, GamepadBinding.None, false);
+			rebindMouseRight = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Right (Button)", "", MouseBinding.Right, GamepadBinding.None, false);
+			rebindMouseMiddle = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Middle (Button)", "", MouseBinding.Middle, GamepadBinding.None, false);
+			rebindMouseExtra = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Extra (Axis)", "", MouseBinding.Forward, GamepadBinding.None, MouseBinding.Back, GamepadBinding.None, true);
+
+			rebindDeltaX = ModHelper.RebindingHelper.RegisterRebindable("Test Delta X (Axis)", "", MouseBinding.DeltaRight, GamepadBinding.RightStickRight, MouseBinding.DeltaLeft, GamepadBinding.RightStickLeft, true);
+			rebindDeltaY = ModHelper.RebindingHelper.RegisterRebindable("Test Delta Y (Axis)", "", MouseBinding.DeltaUp, GamepadBinding.RightStickUp, MouseBinding.DeltaDown, GamepadBinding.RightStickDown, true);
+
+			rebindScrollY = ModHelper.RebindingHelper.RegisterRebindable("Test Scroll Y (Axis)", "", MouseBinding.ScrollUp, GamepadBinding.DPadUp, MouseBinding.ScrollDown, GamepadBinding.DPadDown, true);
+			rebindScrollX = ModHelper.RebindingHelper.RegisterRebindable("Test Scroll X (Axis)", "", MouseBinding.ScrollRight, GamepadBinding.DPadRight, MouseBinding.ScrollLeft, GamepadBinding.DPadLeft, true);
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
@@ -70,6 +81,17 @@ namespace OWML.MenuExample
 		public InputConsts.InputCommandType rebindDualButton07Threshold;
 		public InputConsts.InputCommandType rebindDualAxis;
 		public InputConsts.InputCommandType rebindDualAxis07Threshold;
+
+		// Mouse rebinds
+		public InputConsts.InputCommandType rebindMouseLeft;
+		public InputConsts.InputCommandType rebindMouseRight;
+		public InputConsts.InputCommandType rebindMouseMiddle;
+		public InputConsts.InputCommandType rebindMouseExtra;
+
+		public InputConsts.InputCommandType rebindDeltaX;
+		public InputConsts.InputCommandType rebindDeltaY;
+		public InputConsts.InputCommandType rebindScrollY;
+		public InputConsts.InputCommandType rebindScrollX;
 
 		public override void SetupTitleMenu(ITitleMenuManager titleManager)
 		{
