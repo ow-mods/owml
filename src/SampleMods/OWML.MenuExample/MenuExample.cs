@@ -43,8 +43,8 @@ namespace OWML.MenuExample
 			rebindDualAxis = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis)", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, true);
 			rebindDualAxis07Threshold = ModHelper.RebindingHelper.RegisterRebindable("Test (Dual Axis) 0.7", "", Key.Z, GamepadBinding.RightTrigger, Key.X, GamepadBinding.LeftTrigger, true, 0.7f);
 			
-			rebindMouseLeft = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Left (Button)", "", MouseBinding.Left, GamepadBinding.None, false);
-			rebindMouseRight = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Right (Button)", "", MouseBinding.Right, GamepadBinding.None, false);
+			rebindMouseLeft = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Left (Button)", "", MouseBinding.Left, GamepadBinding.LeftShoulder, false);
+			rebindMouseRight = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Right (Button)", "", MouseBinding.Right, GamepadBinding.RightShoulder, false);
 			rebindMouseMiddle = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Middle (Button)", "", MouseBinding.Middle, GamepadBinding.None, false);
 			rebindMouseExtra = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Extra (Axis)", "", MouseBinding.Forward, GamepadBinding.None, MouseBinding.Back, GamepadBinding.None, true);
 
