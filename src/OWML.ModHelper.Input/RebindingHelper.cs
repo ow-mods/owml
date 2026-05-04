@@ -231,7 +231,7 @@ namespace OWML.ModHelper.Input
 			OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddBinding(control, action, groups: inputControlScheme);
 		}
 
-		public void MarkAsXAxis(RebindableID id)
+		public void FlipImages(RebindableID id)
 		{
 			OWMLRebinding.XAxisRebindables.Add(id);
 		}
@@ -242,8 +242,8 @@ namespace OWML.ModHelper.Input
 			return EnumUtils.Parse<RebindableID>(name);
 		}
 
-		public void MarkAsXAxis(InputConsts.InputCommandType xAxis)
-			=> MarkAsXAxis(InputCommandToRebindable(xAxis));
+		public void FlipImages(InputConsts.InputCommandType xAxis)
+			=> FlipImages(InputCommandToRebindable(xAxis));
 
 		public readonly struct KeyOrMouse
 		{

@@ -26,12 +26,12 @@ namespace OWML.MenuExample
 			rebindComp = ModHelper.RebindingHelper.RegisterComposite("Test Composite", rebindY, rebindX);*/
 
 			rebindXButton = ModHelper.RebindingHelper.RegisterRebindable("Test X (Button)", "", Key.D, GamepadBinding.LeftStickRight, Key.A, GamepadBinding.LeftStickLeft, false);
-			ModHelper.RebindingHelper.MarkAsXAxis(rebindXButton);
+			ModHelper.RebindingHelper.FlipImages(rebindXButton);
 			rebindYButton = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Button)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, false);
 			rebindCompButton = ModHelper.RebindingHelper.RegisterComposite("Test Composite Button", rebindXButton, rebindYButton);
 
 			rebindXAxis = ModHelper.RebindingHelper.RegisterRebindable("Test X (Axis)", "", Key.D, GamepadBinding.LeftStickRight, Key.A, GamepadBinding.LeftStickLeft, true);
-			ModHelper.RebindingHelper.MarkAsXAxis(rebindXAxis);
+			ModHelper.RebindingHelper.FlipImages(rebindXAxis);
 			rebindYAxis = ModHelper.RebindingHelper.RegisterRebindable("Test Y (Axis)", "", Key.W, GamepadBinding.LeftStickUp, Key.S, GamepadBinding.LeftStickDown, true);
 			rebindCompAxis = ModHelper.RebindingHelper.RegisterComposite("Test Composite Axis", rebindXAxis, rebindYAxis);
 
@@ -51,12 +51,12 @@ namespace OWML.MenuExample
 			rebindMouseExtra = ModHelper.RebindingHelper.RegisterRebindable("Test Mouse Extra (Axis)", "", MouseBinding.Forward, GamepadBinding.None, MouseBinding.Back, GamepadBinding.None, true);
 
 			rebindDeltaX = ModHelper.RebindingHelper.RegisterRebindable("Test Delta X (Axis)", "", MouseBinding.DeltaRight, GamepadBinding.RightStickRight, MouseBinding.DeltaLeft, GamepadBinding.RightStickLeft, true);
-			ModHelper.RebindingHelper.MarkAsXAxis(rebindDeltaX);
+			ModHelper.RebindingHelper.FlipImages(rebindDeltaX);
 			rebindDeltaY = ModHelper.RebindingHelper.RegisterRebindable("Test Delta Y (Axis)", "", MouseBinding.DeltaUp, GamepadBinding.RightStickUp, MouseBinding.DeltaDown, GamepadBinding.RightStickDown, true);
 
 			rebindScrollY = ModHelper.RebindingHelper.RegisterRebindable("Test Scroll Y (Axis)", "", MouseBinding.ScrollUp, GamepadBinding.DPadUp, MouseBinding.ScrollDown, GamepadBinding.DPadDown, true);
 			rebindScrollX = ModHelper.RebindingHelper.RegisterRebindable("Test Scroll X (Axis)", "", MouseBinding.ScrollRight, GamepadBinding.DPadRight, MouseBinding.ScrollLeft, GamepadBinding.DPadLeft, true);
-			ModHelper.RebindingHelper.MarkAsXAxis(rebindScrollX);
+			ModHelper.RebindingHelper.FlipImages(rebindScrollX);
 		}
 
 		public IOWMLFourChoicePopupMenu FourChoicePopupMenu;
