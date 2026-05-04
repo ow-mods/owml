@@ -100,5 +100,19 @@ namespace OWML.Common
 			string name,
 			InputConsts.InputCommandType xAxis,
 			InputConsts.InputCommandType yAxis);
+
+		/// <summary>
+		/// Mark an X axis rebindable. Used by the menu system to flip the
+		/// positive/negative binding images for certain X axes.
+		/// </summary>
+		/// <param name="id">The rebindable ID to mark.</param>
+		public void MarkAsXAxis(RebindableID id);
+
+        /// <summary>
+        /// Mark an X axis rebindable. Used by the menu system to flip the
+        /// positive/negative binding images for certain X axes.
+        /// </summary>
+        /// <param name="xAxis">The command type to mark.</param>
+        public void MarkAsXAxis(InputConsts.InputCommandType xAxis);
 	}
 }

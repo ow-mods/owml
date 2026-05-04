@@ -195,11 +195,11 @@ namespace OWML.ModHelper.Input
 		{
 			var uniqueName = _manifest.UniqueName + name;
 
-			var yName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), yAxis);
-			var xName = EnumUtils.GetName(typeof(InputConsts.InputCommandType), xAxis);
+			var yName = EnumUtils.GetName<InputConsts.InputCommandType>(yAxis);
+			var xName = EnumUtils.GetName<InputConsts.InputCommandType>(xAxis);
 
-			var yId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), yName);
-			var xId = (RebindableID)EnumUtils.Parse(typeof(RebindableID), xName);
+			var yId = EnumUtils.Parse<RebindableID>(yName);
+			var xId = EnumUtils.Parse<RebindableID>(xName);
 
 			var commandType = EnumUtils.Create<InputConsts.InputCommandType>(uniqueName);
 			var inputCommandData = InputCommandDefinitions.InputCommandData.CreateCommandData(CommandDataType.Composite, commandType);
@@ -230,6 +230,20 @@ namespace OWML.ModHelper.Input
 		{
 			OWMLRebinding.CustomActionMaps[manifest.UniqueName].AddBinding(control, action, groups: inputControlScheme);
 		}
+
+		public void MarkAsXAxis(RebindableID id)
+		{
+			OWMLRebinding.XAxisRebindables.Add(id);
+		}
+
+		private static RebindableID InputCommandToRebindable(InputConsts.InputCommandType inputCommandType)
+		{
+			var name = EnumUtils.GetName<InputConsts.InputCommandType>(inputCommandType);
+			return EnumUtils.Parse<RebindableID>(name);
+		}
+
+		public void MarkAsXAxis(InputConsts.InputCommandType xAxis)
+			=> MarkAsXAxis(InputCommandToRebindable(xAxis));
 
 		public readonly struct KeyOrMouse
 		{

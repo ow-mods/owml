@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using HarmonyLib;
+using OWML.Common;
+using System.Linq;
 
 namespace OWML.ModHelper.Input
 {
@@ -62,6 +65,19 @@ namespace OWML.ModHelper.Input
 
 			__result = flag;
 			return false;
+		}
+
+		public static bool IsXAxisRebindable(RebindableID id, ref bool __result)
+		{
+			if (OWMLRebinding.XAxisRebindables.Contains(id))
+			{
+				__result = true;
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
 }
