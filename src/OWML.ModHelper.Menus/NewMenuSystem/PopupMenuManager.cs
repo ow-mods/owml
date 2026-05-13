@@ -63,23 +63,28 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Popups.Add(message);
 		}
 
-		public PopupMenu CreateTwoChoicePopup(string message, string confirmText, string cancelText)
+		public void ParentToPopupCanvas(GameObject popup)
 		{
-			var newPopup = Object.Instantiate(_twoChoicePopupBase);
-
 			switch (LoadManager.GetCurrentScene())
 			{
 				case OWScene.TitleScreen:
-					newPopup.transform.parent = GameObject.Find("/TitleMenu/PopupCanvas").transform;
+					popup.transform.SetParent(GameObject.Find("/TitleMenu/PopupCanvas").transform, false);
 					break;
 				case OWScene.SolarSystem:
 				case OWScene.EyeOfTheUniverse:
-					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
+					popup.transform.SetParent(GameObject.Find("/PauseMenu/PopupCanvas").transform, false);
 					break;
 				default:
 					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
 					break;
 			}
+		}
+
+		public PopupMenu CreateTwoChoicePopup(string message, string confirmText, string cancelText)
+		{
+			var newPopup = Object.Instantiate(_twoChoicePopupBase);
+
+			ParentToPopupCanvas(newPopup);
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
@@ -102,19 +107,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var newPopup = Object.Instantiate(_twoChoicePopupBase);
 
-			switch (LoadManager.GetCurrentScene())
-			{
-				case OWScene.TitleScreen:
-					newPopup.transform.parent = GameObject.Find("/TitleMenu/PopupCanvas").transform;
-					break;
-				case OWScene.SolarSystem:
-				case OWScene.EyeOfTheUniverse:
-					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
-					break;
-				default:
-					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
-					break;
-			}
+			ParentToPopupCanvas(newPopup);
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
@@ -137,19 +130,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var newPopup = Object.Instantiate(_twoChoicePopupBase);
 
-			switch (LoadManager.GetCurrentScene())
-			{
-				case OWScene.TitleScreen:
-					newPopup.transform.parent = GameObject.Find("/TitleMenu/PopupCanvas").transform;
-					break;
-				case OWScene.SolarSystem:
-				case OWScene.EyeOfTheUniverse:
-					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
-					break;
-				default:
-					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
-					break;
-			}
+			ParentToPopupCanvas(newPopup);
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
@@ -194,19 +175,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var newPopup = Object.Instantiate(_inputPopupBase);
 
-			switch (LoadManager.GetCurrentScene())
-			{
-				case OWScene.TitleScreen:
-					newPopup.transform.parent = GameObject.Find("/TitleMenu/PopupCanvas").transform;
-					break;
-				case OWScene.SolarSystem:
-				case OWScene.EyeOfTheUniverse:
-					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
-					break;
-				default:
-					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
-					break;
-			}
+			ParentToPopupCanvas(newPopup);
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;
@@ -263,19 +232,7 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 		{
 			var newPopup = Object.Instantiate(_twoChoicePopupBase);
 
-			switch (LoadManager.GetCurrentScene())
-			{
-				case OWScene.TitleScreen:
-					newPopup.transform.parent = GameObject.Find("/TitleMenu/PopupCanvas").transform;
-					break;
-				case OWScene.SolarSystem:
-				case OWScene.EyeOfTheUniverse:
-					newPopup.transform.parent = GameObject.Find("/PauseMenu/PopupCanvas").transform;
-					break;
-				default:
-					_console.WriteLine($"Cannot create popup in scene {LoadManager.GetCurrentScene()} !", MessageType.Error);
-					break;
-			}
+			ParentToPopupCanvas(newPopup);
 
 			newPopup.transform.localPosition = Vector3.zero;
 			newPopup.transform.localScale = Vector3.one;

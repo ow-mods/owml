@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using OWML.Common;
+﻿using OWML.Common;
 using OWML.Common.Menus;
 using OWML.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus
@@ -68,7 +69,7 @@ namespace OWML.ModHelper.Menus
 			Menu.SetValue("_menuTabs", tabs);
 			AddSelectablePair(tabMenu);
 			var parent = tabs[0].transform.parent;
-			tabMenu.TabButton.transform.parent = parent;
+			tabMenu.TabButton.transform.SetParent(parent, false);
 			tabMenu.OnOpened += () => OnTabOpen(tabMenu);
 			tabMenu.OnClosed += OnTabClose;
 

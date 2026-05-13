@@ -1,14 +1,17 @@
-﻿using System;
+﻿using HarmonyLib;
+using Newtonsoft.Json.Linq;
+using OWML.Common;
+using OWML.ModHelper.Input;
+using OWML.ModHelper.Menus.CustomInputs;
+using OWML.Utils;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using HarmonyLib;
-using OWML.ModHelper.Menus.CustomInputs;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using OWML.Common;
-using OWML.Utils;
-using Newtonsoft.Json.Linq;
-using OWML.ModHelper.Input;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
 {
@@ -174,7 +177,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 		[HarmonyReversePatch]
 		[HarmonyPatch(typeof(Menu), nameof(Menu.Activate))]
-		public static void Menu_Activate_Stub(object instance) { }
+		public static void Menu_Activate_Stub(Menu __instance) { }
+
+		[HarmonyReversePatch]
+		[HarmonyPatch(typeof(Menu), nameof(Menu.Deactivate))]
+		private static void Menu_Deactivate_Stub(Menu __instance, bool remainVisible = false) { }
 
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.Activate))]
@@ -250,6 +257,30 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Menu_Activate_Stub(__instance);
 			Locator.GetMenuInputModule().OnInputModuleTab += __instance.OnInputModuleTabEvent;
 
+			return false;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.OnUpdateInputDevice))]
+		private static bool TabbedMenu_OnUpdateInputDevice(TabbedMenu __instance)
+		{
+			if ((object)__instance == null) return false;
+			if (__instance == null) return false;
+			if (__instance.gameObject == null) return false;
+			if (Utils.TypeExtensions.GetValue<UnityEngine.UI.Image>(__instance, "_tabLeftButtonImg") == null || Utils.TypeExtensions.GetValue<UnityEngine.UI.Image>(__instance, "_tabRightButtonImg") == null) return false;
+			return true;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.Deactivate))]
+		private static bool TabbedMenu_Deactivate(TabbedMenu __instance, bool keepPreviousMenuVisible = false)
+		{
+			if (Locator.GetEventSystem().currentSelectedGameObject)
+				Utils.TypeExtensions.SetValue(__instance, "_lastSelectableOnDeactivate", Locator.GetEventSystem().currentSelectedGameObject.GetComponent<Selectable>());
+			foreach (var tabSelectablePair in Utils.TypeExtensions.GetValue<TabbedMenu.TabSelectablePair[]>(__instance, "_tabSelectablePairs"))
+				tabSelectablePair.tabButton.Enable(false);
+			Menu_Deactivate_Stub(__instance, keepPreviousMenuVisible);
+			Locator.GetMenuInputModule().OnInputModuleTab -= __instance.OnInputModuleTabEvent;
 			return false;
 		}
 	}

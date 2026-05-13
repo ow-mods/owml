@@ -116,6 +116,24 @@ namespace OWML.MenuExample
 			DrawDualBar(GetComponent<MenuExample>().rebindDualAxis07Threshold);
 
 			DrawDualBar(InputLibrary.toolOptionX.CommandType);
+
+			// Mouse inputs: buttons, delta (movement), and scroll
+			DrawBar(GetComponent<MenuExample>().rebindMouseLeft);
+			DrawBar(GetComponent<MenuExample>().rebindMouseRight);
+			DrawBar(GetComponent<MenuExample>().rebindMouseMiddle);
+			DrawDualBar(GetComponent<MenuExample>().rebindMouseExtra);
+
+			var mx = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindDeltaX);
+			var mxVal = OWInput.GetValue(mx);
+			var my = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindDeltaY);
+			var myVal = OWInput.GetValue(my);
+			DrawCircle(new Vector2(200 + mxVal * 200, 200 - myVal * 200), 5, Color.magenta, 1);
+
+			var sx = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindScrollX);
+			var sxVal = OWInput.GetValue(sx);
+			var sy = InputLibrary.GetInputCommand(GetComponent<MenuExample>().rebindScrollY);
+			var syVal = OWInput.GetValue(sy);
+			DrawCircle(new Vector2(200 + sxVal * 200, 200 - syVal * 200), 5, Color.cyan, 1);
 		}
 
 		private Texture2D _tex;

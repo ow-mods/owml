@@ -282,33 +282,5 @@ namespace OWML.ModLoader
 				return null;
 			}
 		}
-
-		[HarmonyPrefix]
-		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.OnUpdateInputDevice))]
-		private static bool TabbedMenu_OnUpdateInputDevice(TabbedMenu __instance)
-		{
-			if ((object)__instance == null) return false;
-			if (__instance == null) return false;
-			if (__instance.gameObject == null) return false;
-			if (Utils.TypeExtensions.GetValue<UnityEngine.UI.Image>(__instance, "_tabLeftButtonImg") == null || Utils.TypeExtensions.GetValue<UnityEngine.UI.Image>(__instance, "_tabRightButtonImg") == null) return false;
-			return true;
-		}
-
-		[HarmonyReversePatch]
-		[HarmonyPatch(typeof(Menu), nameof(Menu.Deactivate))]
-		private static void Menu_Deactivate(Menu __instance, bool remainVisible = false) { }
-
-		[HarmonyPrefix]
-		[HarmonyPatch(typeof(TabbedMenu), nameof(TabbedMenu.Deactivate))]
-		private static bool TabbedMenu_Deactivate(TabbedMenu __instance, bool keepPreviousMenuVisible = false)
-		{
-			if (Locator.GetEventSystem().currentSelectedGameObject)
-				Utils.TypeExtensions.SetValue(__instance, "_lastSelectableOnDeactivate", Locator.GetEventSystem().currentSelectedGameObject.GetComponent<Selectable>());
-			foreach (var tabSelectablePair in Utils.TypeExtensions.GetValue<TabbedMenu.TabSelectablePair[]>(__instance, "_tabSelectablePairs"))
-				tabSelectablePair.tabButton.Enable(false);
-			Menu_Deactivate(__instance, keepPreviousMenuVisible);
-			Locator.GetMenuInputModule().OnInputModuleTab -= __instance.OnInputModuleTabEvent;
-			return false;
-		}
 	}
 }
