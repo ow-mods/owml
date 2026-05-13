@@ -108,7 +108,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var transform = button.Button.transform;
 			var scale = transform.localScale;
-			transform.parent = Layout.transform;
+			transform.SetParent(Layout.transform, false);
 			button.Index = index;
 			button.Initialize(this);
 			BaseButtons.Add(button);
@@ -185,7 +185,7 @@ namespace OWML.ModHelper.Menus
 		{
 			var transform = input.Element.transform;
 			var scale = transform.localScale;
-			transform.parent = Layout.transform;
+			transform.SetParent(Layout.transform, false);
 			input.Index = index;
 			input.Initialize(this);
 			input.Element.transform.localScale = scale;
@@ -199,7 +199,7 @@ namespace OWML.ModHelper.Menus
 			Separators.Add(separator);
 			var transform = separator.Element.transform;
 			var scale = transform.localScale;
-			transform.parent = Layout.transform;
+			transform.SetParent(Layout.transform, false);
 			separator.Index = index;
 			separator.Initialize(this);
 			transform.localScale = scale;
