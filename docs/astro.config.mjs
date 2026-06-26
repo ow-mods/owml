@@ -39,15 +39,15 @@ export default defineConfig({
 				},
 				{
 					label: 'Guides',
-					autogenerate: { directory: 'guides' },
+					items: [{autogenerate: { directory: 'guides' }}],
 				},
 				{
 					label: 'Mod Helper',
-					autogenerate: { directory: 'mod-helper' },
+					items: [{autogenerate: { directory: 'mod-helper' }}],
 				},
 				{
 					label: "Schemas",
-					autogenerate: { directory: "schemas" },
+					items: [{autogenerate: { directory: "schemas" }}],
 				}
 			],
 		}),
