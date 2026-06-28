@@ -24,6 +24,14 @@ Here are some tips for viewing the base game code:
 - You can jump to the definition of a method, class, or variable by clicking on it, you can also control-click to open it in a new tab.
 - Sometimes the decompiler treats switch statements strangely, it may look like they're simply chaining else ifs when in reality they're using a switch
 
+### On Linux
+
+I just use `ilspy-cmd` and output the game's code to a folder for reading in my editor. Assuming you're in the game's folder:
+
+```sh title="~/.local/share/Steam/steamapps/common/Outer Wilds"
+ilspycmd -p -o "~/Documents/Outer_Wilds_Code" "OuterWilds_Data/Managed/Assembly-CSharp.dll"
+```
+
 ## Preparing For Patches
 
 To prepare for adding patches to our mod we'll do two things:

@@ -5,7 +5,7 @@ sidebar:
 description: Getting Started with the Outer Wilds Mod Loader
 ---
 
-import { Aside, FileTree } from '@astrojs/starlight/components';
+import { Aside, FileTree, Tabs, TabItem } from '@astrojs/starlight/components';
 
 This page will outline how to get a working mod that will simply log a message to the console when the game starts.
 
@@ -16,27 +16,37 @@ For this guide we'll assume you already have the [Outer Wilds Mod Manager](https
 
 An IDE will help provide the ability to create, edit, and build your mod.
 
-The recommended IDE for modding is [Visual Studio](https://visualstudio.microsoft.com/), however, stuff like Rider and VSCode can also work. This tutorial will assume you're using Visual Studio.
+The recommended IDE for modding is [Visual Studio](https://visualstudio.microsoft.com/). 
 
-## Installing Visual Studio
+On Linux (or if you just don't want to use Visual Studio), use the "Other Editors" tab to get instructions for a non-VS developer setup.
 
-Head to the [Visual Studio downloads page](https://visualstudio.microsoft.com) and select Community if asked what edition to install. After downloading and launching the installer, follow instructions until you reach this screen:
+## Editor Setup
 
-![Select the module in the installer](./dotnetinstall.webp)
+<Tabs syncKey="editor">
+  <TabItem label="Visual Studio">
+  Head to the [Visual Studio downloads page](https://visualstudio.microsoft.com) and select Community if asked what edition to install. After downloading and launching the installer, follow instructions until you reach this screen:
 
-We want the "Desktop development with .NET" module, this will provide us with the tools we need to build the mod.
+  ![Select the module in the installer](./dotnetinstall.webp)
 
-After installing Visual Studio, launch it once and then close it, this will ensure certain files are generated.
+  We want the "Desktop development with .NET" module, this will provide us with the tools we need to build the mod.
+
+  After installing Visual Studio, launch it once and then close it, this will ensure certain files are generated.
+  </TabItem>
+  <TabItem label="Other Editors">
+    If your editor supports LSP, I'd recommend the [C# language server](https://github.com/razzmatazz/csharp-language-server/tree/main). It's based on Roslyn which is the same "engine" Visual Studio uses for C#.
+
+    You will also need a .NET toolchain available. 
+
+    - On Windows, follow the "Visual Studio" setup tab to install .NET framework via the Visual Studio Installer
+    - On Linux, it will depend on your distro. Follow the [.NET install guide](https://learn.microsoft.com/en-us/dotnet/core/install/linux)
+  </TabItem>
+</Tabs>
 
 ## Installing the Template
 
 We provide a template to make creating mods easier, this template will handle renaming files and changing the manifest.
 
-Open up the windows search box and search for "Developer Command Line for Visual Studio 2022", it should look like this:
-
-![Select the developer command line](./devconsole.webp)
-
-To install the template, run the following command:
+To install the template, open a terminal and run the following command:
 
 ```sh title="Install The Template"
 dotnet new --install Bwc9876.OuterWildsModTemplate
@@ -59,13 +69,31 @@ Once installed, you can close the developer command prompt and re-open Visual St
 
 ## Using the Template
 
-Now that we have the template installed, open Visual Studio and select "New Project" from the welcome screen. Then search "Outer Wilds" and the template should appear in the list.
+This will depend on what editor you're using
 
-Set the project name to the name of your mod, **please note this should NOT have spaces or special characters in it**.  The standard casing for projects is PascalCase, which involves capitalizing the start of every word and removing spaces.
+<Tabs syncKey="editor">
+  <TabItem label="Visual Studio">
+  Open Visual Studio and select "New Project" from the welcome screen. Then search "Outer Wilds" and the template should appear in the list.
 
-On the next screen, set the author name to the name you want to appear in the manager and on the website, **this should also not contain spaces**
+  Set the project name to the name of your mod, **please note this should NOT have spaces or special characters in it**.  The standard casing for projects is PascalCase, which involves capitalizing the start of every word and removing spaces.
 
-Finally, click "Create Project"
+  On the next screen, set the author name to the name you want to appear in the manager and on the website, **this should also not contain spaces**
+
+  Finally, click "Create Project"
+  </TabItem>
+  <TabItem label="Other Editors">
+  You'll need to create a project via the `dotnet new` CLI.
+
+  ```sh
+  dotnet new sln --name MySolutionName
+  dotnet new OuterWildsMod -n MyProjectName --AuthorName MyName
+  dotnet sln add MyProjectName/
+  ```
+
+  See the [Outer Wilds Mod Template README](https://github.com/ow-mods/ow-mod-template/tree/main#readme) for a list of options.
+  </TabItem>
+</Tabs>
+  
 
 ## General Mod Layout
 
@@ -76,7 +104,7 @@ The general layout of an Outer Wilds mod is as follows:
   - default-config.json
   - manifest.json
   - YourProjectName.cs
-  - YourProjectName.csproj
+  - YourProjectName.csproj (Hidden in Visual Studio)
 </FileTree>
 
 ### manifest.json
@@ -93,7 +121,7 @@ This file is used by OWML to generate the settings menu for your mod, we'll go o
 
 ### YourProjectName.csproj
 
-This file tells Visual Studio about your project, it determines stuff like dependencies and versions, you shouldn't need to touch this.
+This file tells Visual Studio about your project, it determines stuff like dependencies and versions, you shouldn't need to touch this. If you're using Visual Studio, this file won't be explicitly listed. Instead it will be the parent of all files in the project.
 
 ## The ModBehaviour File
 
@@ -116,19 +144,23 @@ There's only one `ModBehaviour` allowed per-mod. To add more components, you'll 
 
 ## Building The Mod
 
-Now that we know what the mod *should* do, let's make sure it does it. Building your mod should be as simple as pressing "Solution -> Build Solution" in the menu bar, if you get an error involving Visual Studio not being able to find a path, please see the section below, otherwise, skip to "Running The Mod"
+<Tabs>
+  <TabItem label="Visual Studio">
+  Now that we know what the mod *should* do, let's make sure it does it. Building your mod should be as simple as pressing "Solution -> Build Solution" in the menu bar
+  </TabItem>
+  <TabItem label="Other Editors">
+  You _should_ just be able to run `dotnet build`. If not try running `dotnet restore` first. You may need to get the Mono runtime.
+  </TabItem>
+</Tabs>
 
-### Fixing .csproj.user
+<Aside type="caution">
+The mod template assumes your OWML mods folder is in a standard location.
 
-Your mod contains a special file called `YourProjectName.csproj.user`, this file tells Visual Studio where to build the mod, if you've installed the manager in a non-standard location, this file will be incorrect. To fix this, open the manager and select settings, then copy the path in the "OWML Path" field. Copy and paste this value between the `<OutputPath>` and `</OutputPath>`, and add `\Mods` to the end of the path. Then open up your manifest file and copy the `uniqueName` field (don't include the quotes). Paste this value preceded by a `\` at the end of the path.
+- `%APPDATA%/OuterWildsModManager/OWML/Mods` on Windows
+- `~/.local/share/OuterWildsModManager/OWML/Mods` on Linux
 
-For example, if my mod's uniqueName is `Bwc9876.CoolMod`, my file would look like this:
-
-```xml title="Bwc9876.CoolMod.csproj.user" "Bwc9876.CoolMod"
-<OutputPath>
-  C:\MyCoolFolder\DifferentManagerInstallFolderBcImAHacker\Mods\Bwc9876.CoolMod
-</OutputPath>
-```
+If you have OWML installed somewhere else, you may want to create a symlink from the standard location to your actual mods folder or change the output path in `YourProject.csproj.user`.
+</Aside>
 
 ## Running The Mod
 
