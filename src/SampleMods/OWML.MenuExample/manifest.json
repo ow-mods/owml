@@ -5,6 +5,6 @@
   "name": "MenuExample",
   "uniqueName": "_nebula.MenuExample",
   "version": "1.0.0",
-  "owmlVersion": "2.16.0",
+  "owmlVersion": "2.16.3",
   "description": "Example menus for the OWML menu system"
 }
