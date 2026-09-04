@@ -710,6 +710,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			textEntry.RegisterPopup(textInputPopup);
 			textEntry.IsNumeric = isNumeric;
 
+			menu._menuOptions = menu._menuOptions.Add(textEntry);
+
 			textEntry.OnConfirmEntry += () =>
 			{
 				_menuManager.ForceModOptionsOpen(false);
