@@ -100,6 +100,11 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				new ScreenPrompt(InputLibrary.cancel, cancelText),
 				true,
 				true);
+
+			MenuUtilities.AddToLangController(popup._labelText);
+			MenuUtilities.AddToLangController(popup._confirmButton._buttonText);
+			MenuUtilities.AddToLangController(popup._cancelButton._buttonText);
+
 			return popup;
 		}
 
@@ -123,6 +128,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				null,
 				true,
 				false);
+
+			MenuUtilities.AddToLangController(popup._labelText);
+			MenuUtilities.AddToLangController(popup._confirmButton._buttonText);
+
 			return popup;
 		}
 
@@ -168,6 +177,12 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				new ScreenPrompt(InputLibrary.menuConfirm, confirm1Text),
 				new ScreenPrompt(InputLibrary.confirm2, confirm2Text),
 				new ScreenPrompt(InputLibrary.cancel, cancelText));
+
+			MenuUtilities.AddToLangController(popup._labelText);
+			MenuUtilities.AddToLangController(popup._confirmButton1._buttonText);
+			MenuUtilities.AddToLangController(popup._confirmButton2._buttonText);
+			MenuUtilities.AddToLangController(popup._cancelButton._buttonText);
+
 			return popup;
 		}
 
@@ -225,6 +240,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				popup.SetInputFieldPlaceholderText(placeholderMessage);
 			};
 
+			MenuUtilities.AddToLangController(popup._labelText);
+			MenuUtilities.AddToLangController(popup._confirmButton._buttonText);
+			MenuUtilities.AddToLangController(popup._cancelButton._buttonText);
+
 			return popup;
 		}
 
@@ -279,6 +298,13 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				new ScreenPrompt(InputLibrary.confirm2, confirm2Text),
 				new ScreenPrompt(InputLibrary.signalscope, confirm3Text),
 				new ScreenPrompt(InputLibrary.cancel, cancelText));
+
+			MenuUtilities.AddToLangController(popup._labelText);
+			MenuUtilities.AddToLangController(popup._confirmButton1._buttonText);
+			MenuUtilities.AddToLangController(popup._confirmButton2._buttonText);
+			MenuUtilities.AddToLangController(popup._confirmButton3._buttonText);
+			MenuUtilities.AddToLangController(popup._cancelButton._buttonText);
+
 			return popup;
 		}
 	}

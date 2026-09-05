@@ -185,7 +185,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newSubMenuTabButton.transform.SetSiblingIndex(newSubMenuTabButton.transform.parent.childCount - 3);
 			newSubMenuTabButton.name = $"Button-{name}Tab";
 			Object.Destroy(newSubMenuTabButton.GetComponentInChildren<LocalizedText>());
-			newSubMenuTabButton.GetComponentInChildren<Text>().text = name;
+
+			var text = newSubMenuTabButton.GetComponentInChildren<Text>();
+			text.text = name;
+			MenuUtilities.AddToLangController(text);
 
 			var newSubMenu = Object.Instantiate(existingSubMenu, menu.transform);
 			newSubMenu.transform.localScale = Vector3.one;
@@ -282,6 +285,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			labelBlock.minWidth = 860;
 			labelBlock.preferredWidth = -1;
 
+			MenuUtilities.AddToLangController(customCheckboxScript._label);
+			MenuUtilities.AddToLangController(customCheckboxScript._displayText);
+
 			return customCheckboxScript;
 		}
 
@@ -334,6 +340,10 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			labelBlock.minWidth = 860;
 			labelBlock.preferredWidth = -1;
 
+			MenuUtilities.AddToLangController(newScript._label);
+			MenuUtilities.AddToLangController(newScript.ButtonTrue.GetComponent<UIStyleApplier>()._textItems[0]);
+			MenuUtilities.AddToLangController(newScript.ButtonFalse.GetComponent<UIStyleApplier>()._textItems[0]);
+
 			return newScript;
 		}
 
@@ -381,6 +391,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			labelBlock.minWidth = 860;
 			labelBlock.preferredWidth = -1;
 
+			MenuUtilities.AddToLangController(newScript._label);
+			MenuUtilities.AddToLangController(newScript._displayText);
+
 			return newScript;
 		}
 
@@ -418,6 +431,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			var labelBlock = newScript.transform.Find("HorizontalLayoutGroup").Find("Panel-Label").GetComponent<LayoutElement>();
 			labelBlock.minWidth = 860;
 			labelBlock.preferredWidth = -1;
+
+			MenuUtilities.AddToLangController(newScript._label);
 
 			return newScript;
 		}
@@ -567,6 +582,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				menu._selectOnActivate = newButtonObj.GetComponent<Selectable>();
 			}
 
+			MenuUtilities.AddToLangController(menuOption._label);
+
 			return submitAction;
 		}
 
@@ -692,6 +709,9 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 				menu._selectOnActivate = newButtonObj.GetComponent<Button>();
 			}
 
+			MenuUtilities.AddToLangController(menuOption._label);
+			MenuUtilities.AddToLangController(labelComponent);
+
 			return submitAction;
 		}
 
@@ -777,6 +797,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			newObj.transform.localScale = Vector3.one;
 			newObj.transform.localPosition = Vector3.zero;
 			newObj.transform.localRotation = Quaternion.identity;
+
+			MenuUtilities.AddToLangController(text);
 		}
 
 		public KeyRebindingElement CreateRebinding(Menu menu, string label, string tooltip, RebindableID id)
@@ -821,6 +843,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			controlBlock.flexibleWidth = 1;
 			controlBlock.preferredWidth = -1;
 
+			MenuUtilities.AddToLangController(text);
+
 			return rebindingElement;
 		}
 
@@ -844,6 +868,8 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 
 			var tabButton = newButton.GetComponent<TabButton>();
 			tabButton._tabbedMenu = menu ?? throw new System.Exception("Menu cannot be null.");
+
+			MenuUtilities.AddToLangController(text);
 
 			return tabButton;
 		}
