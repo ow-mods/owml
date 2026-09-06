@@ -5,12 +5,9 @@ using OWML.ModHelper.Input;
 using OWML.ModHelper.Menus.CustomInputs;
 using OWML.Utils;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace OWML.ModHelper.Menus.NewMenuSystem
@@ -282,6 +279,15 @@ namespace OWML.ModHelper.Menus.NewMenuSystem
 			Menu_Deactivate_Stub(__instance, keepPreviousMenuVisible);
 			Locator.GetMenuInputModule().OnInputModuleTab -= __instance.OnInputModuleTabEvent;
 			return false;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(FontAndLanguageController), nameof(FontAndLanguageController.InitializeFont))]
+		private static bool FontAndLanguageController_InitializeFont(FontAndLanguageController __instance)
+		{
+			// Remove null entries (eg where popup menus have been destroyed)
+			__instance._textContainerList = __instance._textContainerList.Where(x => x.textElement != null).ToList();
+			return true;
 		}
 	}
 }

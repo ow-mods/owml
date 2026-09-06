@@ -5,6 +5,6 @@
 	"name": "EnableDebugMode",
 	"uniqueName": "Alek.EnableDebugMode",
 	"version": "0.3.0",
-	"owmlVersion": "2.16.0",
+	"owmlVersion": "2.16.3",
 	"description": "Enables the debug mode in Outer Wilds"
 }
